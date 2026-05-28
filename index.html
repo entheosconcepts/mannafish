@@ -2237,12 +2237,31 @@ function showConfirmModal(){
 }
 
 function confirmPay(){
-  var words=cart.map(function(i){return i.qty+'x '+i.word;}).join(', ');
-  var total=cartQty();
-  var link=getStripeLink(total);
-  var url=link+'?prefilled_quantity='+total+'&client_reference_id='+encodeURIComponent('Words: '+words);
-  closeModal();
-  window.location.href=url;
+  var btn=document.getElementById('modalPayBtn');
+  btn.disabled=true;
+  btn.innerHTML='<span>Redirecting to checkout…</span>';
+
+  fetch('/.netlify/functions/create-checkout', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({cart:cart})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if(data.url){
+      closeModal();
+      window.location.href=data.url;
+    } else {
+      btn.disabled=false;
+      btn.innerHTML='<span>Pay Now</span><span id="modalPayTotal">$'+cartVal().toFixed(2)+'</span>';
+      alert('Checkout error: '+(data.error||'Unknown error. Please try again.'));
+    }
+  })
+  .catch(function(){
+    btn.disabled=false;
+    btn.innerHTML='<span>Pay Now</span><span id="modalPayTotal">$'+cartVal().toFixed(2)+'</span>';
+    alert('Could not connect to checkout. Please try again.');
+  });
 }
 
 function closeModal(){
