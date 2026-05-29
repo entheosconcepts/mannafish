@@ -5,24 +5,15 @@ export default async function handler(request, context) {
 
   const STRIPE_SECRET_KEY = Deno.env.get('STRIPE_SECRET_KEY');
 
-  const PRICE_IDS = {
-    1:   'price_1TTYZRRtZxkXbvGED2CshtmH',  // $2.99
-    2:   'price_1Tc5RWRtZxkXbvGEZ7AYAkOQ',  // $2.66
-    5:   'price_1Tc5WgRtZxkXbvGEA8ozxAVd',  // $2.40
-    10:  'price_1Tc5YeRtZxkXbvGEMAYe9xRw',  // $2.00
-    25:  'price_1Tc5ZWRtZxkXbvGEBrZ1PHSN',  // $1.60
-    50:  'price_1Tc5aIRtZxkXbvGEEH2WxThQ',  // $1.20
-    100: 'price_1Tc5b7RtZxkXbvGEUcnv5GX6'   // $1.00
-  };
-
-  function getPriceId(totalQty) {
-    if (totalQty >= 100) return PRICE_IDS[100];
-    if (totalQty >= 50)  return PRICE_IDS[50];
-    if (totalQty >= 25)  return PRICE_IDS[25];
-    if (totalQty >= 10)  return PRICE_IDS[10];
-    if (totalQty >= 5)   return PRICE_IDS[5];
-    if (totalQty >= 2)   return PRICE_IDS[2];
-    return PRICE_IDS[1];
+  // Price in cents based on total quantity
+  function getUnitAmount(totalQty) {
+    if (totalQty >= 100) return 100;  // $1.00
+    if (totalQty >= 50)  return 120;  // $1.20
+    if (totalQty >= 25)  return 160;  // $1.60
+    if (totalQty >= 10)  return 200;  // $2.00
+    if (totalQty >= 5)   return 240;  // $2.40
+    if (totalQty >= 2)   return 266;  // $2.66
+    return 299;                        // $2.99
   }
 
   try {
@@ -33,17 +24,10 @@ export default async function handler(request, context) {
     }
 
     const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-    const priceId = getPriceId(totalQty);
+    const unitAmount = getUnitAmount(totalQty);
     const wordList = cart.map(item => `${item.qty}× ${item.word}`).join(', ');
 
-    // Build line items
-    const lineItems = cart.map(item => ({
-      price: priceId,
-      quantity: item.qty,
-      adjustable_quantity: { enabled: false }
-    }));
-
-    // Call Stripe API directly (no SDK needed for Edge Functions)
+    // Build line items with custom name per word so customer sees their selections
     const body = new URLSearchParams();
     body.append('payment_method_types[]', 'card');
     body.append('mode', 'payment');
@@ -54,9 +38,12 @@ export default async function handler(request, context) {
     body.append('metadata[words]', wordList);
     body.append('metadata[total_qty]', totalQty);
 
-    lineItems.forEach((item, i) => {
-      body.append(`line_items[${i}][price]`, item.price);
-      body.append(`line_items[${i}][quantity]`, item.quantity);
+    cart.forEach((item, i) => {
+      body.append(`line_items[${i}][price_data][currency]`, 'usd');
+      body.append(`line_items[${i}][price_data][unit_amount]`, unitAmount);
+      body.append(`line_items[${i}][price_data][product_data][name]`, `MannaFish™ Decal — ${item.word}`);
+      body.append(`line_items[${i}][price_data][product_data][description]`, 'Clear Vinyl · 4″ × 2″ · Weatherproof · Made in the USA');
+      body.append(`line_items[${i}][quantity]`, item.qty);
       body.append(`line_items[${i}][adjustable_quantity][enabled]`, 'false');
     });
 
