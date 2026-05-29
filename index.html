@@ -20,6 +20,7 @@ html,body{background:var(--dark);color:var(--white);font-family:'IM Fell English
 .app-brand{font-family:'IM Fell English',serif;font-size:1.35rem;color:var(--white);line-height:1.1;}
 .app-brand sup{font-size:.42em;vertical-align:super;color:#888;}
 .app-slogan{font-family:'Oswald',sans-serif;font-size:.52rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--israel-light);margin-top:2px;}
+.app-tagline{font-family:'IM Fell English',serif;font-style:italic;font-size:.58rem;color:#666;margin-top:1px;}
 .cart-pill{display:flex;align-items:center;gap:6px;background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:5px 12px 5px 8px;cursor:pointer;transition:background .15s;}
 .cart-pill:hover{background:var(--israel);}
 .cart-pill-icon{font-size:.9rem;}
@@ -166,7 +167,7 @@ html,body{background:var(--dark);color:var(--white);font-family:'IM Fell English
   .tablet-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
   .tablet-left{border-right:1px solid var(--border);}
   .fish-stage{height:100%;}
-  .fish-stage-inner{height:200px;}
+  .fish-stage-inner{height:150px;}
 }
 
 /* ── DESKTOP 1024px ── */
@@ -178,7 +179,7 @@ html,body{background:var(--dark);color:var(--white);font-family:'IM Fell English
   .cart-view{display:block !important;position:sticky;top:61px;height:calc(100vh - 61px);overflow-y:auto;border-left:1px solid var(--border);}
   .desktop-show{display:block;}
   .desktop-hide{display:none;}
-  .fish-stage-inner{height:260px;}
+  .fish-stage-inner{height:180px;}
   .add-panel{padding:16px 24px 18px;}
   .word-section{padding:18px 24px 24px;}
   .scripture-band{padding:16px 28px;}
@@ -1099,7 +1100,7 @@ html,body{background:var(--dark);color:var(--white);font-family:'IM Fell English
 <header class="app-header">
   <div>
     <div class="app-brand">MannaFish<sup>™</sup></div>
-    <div class="app-slogan">A Call to Action</div>
+    <div class="app-slogan">Give a man a fish...</div>
   </div>
   <div class="cart-pill" onclick="goCart()">
     <span class="cart-pill-icon">🛒</span>
@@ -1113,7 +1114,7 @@ html,body{background:var(--dark);color:var(--white);font-family:'IM Fell English
   <!-- SHOP VIEW -->
   <div class="shop-view" id="shopView">
     <div class="brand-banner">
-      <p class="brand-banner-text">Every MannaFish decal emphasizes a <em>"One Word"</em> invitation to take a step of faith.</p>
+      <p class="brand-banner-text">MannaFish is your &#8220;One Word&#8221; invitation to take a step of faith.</p>
     </div>
     <div class="fish-stage">
       <div class="stage-hint">Tap a word below to preview your decal</div>
@@ -1882,7 +1883,6 @@ html,body{background:var(--dark);color:var(--white);font-family:'IM Fell English
     </div>
 
     <div class="word-section">
-      <p class="brand-desc">MannaFish decals emphasize a &#8220;One Word&#8221; invitation to take a step of faith.</p>
       <p class="ws-label">✦ All 24 Words — Choose Yours</p>
       <div class="word-grid">
 <button class="wc active" data-word="Rest" onclick="pickWord('Rest')">Rest</button>
@@ -1912,10 +1912,6 @@ html,body{background:var(--dark);color:var(--white);font-family:'IM Fell English
       </div>
     </div>
 
-    <div class="word-name-bar">
-      <span class="ap-word" id="apWord">Rest</span>
-      <span class="ap-tier" id="apTier">$2.99 /each</span>
-    </div>
     <div class="add-panel">
       <div class="ap-qty-row">
         <div class="qty-ctrl">
@@ -1995,28 +1991,28 @@ html,body{background:var(--dark);color:var(--white);font-family:'IM Fell English
 <script>
 var VERSES = {
   Rest:{full:'Come unto me, all ye that labour and are heavy laden, and I will give you rest.',ref:'Matthew 11:28'},
-  Trust:{full:'Trust in the LORD with all thine heart; and lean not unto thine own understanding.',ref:'Proverbs 3:5'},
-  Pray:{full:'Pray without ceasing. In every thing give thanks: for this is the will of God.',ref:'1 Thess. 5:17-18'},
+  Trust:{full:'Commit thy way unto the LORD; trust also in him; and he shall bring it to pass.',ref:'Psalm 37:5'},
+  Pray:{full:'If a son shall ask a fish of any of you that is a father, will he for a fish give him a serpent?',ref:'Luke 11:11'},
   Believe:{full:'Let not your heart be troubled: ye believe in God, believe also in me.',ref:'John 14:1'},
-  Love:{full:'Beloved, let us love one another: for love is of God; and every one that loveth is born of God.',ref:'1 John 4:7'},
-  Ask:{full:'Ask, and it shall be given you; seek, and ye shall find; knock, and it shall be opened unto you.',ref:'Matthew 7:7'},
+  Love:{full:'This is my commandment, That ye love one another, as I have loved you.',ref:'John 15:12'},
+  Ask:{full:'If ye then, being evil, know how to give good gifts unto your children: how much more shall your heavenly Father give the Holy Spirit to them that ask him?',ref:'Luke 11:13'},
   Seek:{full:'But seek ye first the kingdom of God, and his righteousness.',ref:'Matthew 6:33'},
   Knock:{full:'Knock, and it shall be opened unto you: for every one that asketh receiveth.',ref:'Matthew 7:7-8'},
   Breathe:{full:'Come from the four winds, O breath, and breathe upon these slain, that they may live.',ref:'Ezekiel 37:9'},
-  Enjoy:{full:'This is the day which the LORD hath made; we will rejoice and be glad in it.',ref:'Psalm 118:24'},
-  Laugh:{full:'A merry heart doeth good like a medicine: but a broken spirit drieth the bones.',ref:'Proverbs 17:22'},
-  Live:{full:'I am the way, the truth, and the life: no man cometh unto the Father, but by me.',ref:'John 14:6'},
-  Listen:{full:'He that hath ears to hear, let him hear.',ref:'Matthew 11:15'},
-  Forgive:{full:'And forgive us our debts, as we forgive our debtors.',ref:'Matthew 6:12'},
+  Enjoy:{full:'And also that every man should eat and drink, and enjoy the good of all his labour, it is the gift of God.',ref:'Ecclesiastes 3:13'},
+  Laugh:{full:'A time to weep, and a time to laugh; a time to mourn, and a time to dance.',ref:'Ecclesiastes 3:4'},
+  Live:{full:'I shall not die, but live, and declare the works of the LORD.',ref:'Psalm 118:17'},
+  Listen:{full:'But whoso hearkeneth unto me shall dwell safely, and shall be quiet from fear of evil.',ref:'Proverbs 1:33'},
+  Forgive:{full:'For if ye forgive men their trespasses, your heavenly Father will also forgive you.',ref:'Matthew 6:14'},
   Sing:{full:'O sing unto the LORD a new song: sing unto the LORD, all the earth.',ref:'Psalm 96:1'},
-  Choose:{full:'Choose you this day whom ye will serve; as for me and my house, we will serve the LORD.',ref:'Joshua 24:15'},
+  Choose:{full:'I call heaven and earth to record this day against you, that I have set before you life and death, blessing and cursing: therefore choose life.',ref:'Deuteronomy 30:19'},
   Grow:{full:'But grow in grace, and in the knowledge of our Lord and Saviour Jesus Christ.',ref:'2 Peter 3:18'},
   Gather:{full:'For where two or three are gathered together in my name, there am I in the midst.',ref:'Matthew 18:20'},
-  Accept:{full:'Wherefore receive ye one another, as Christ also received us to the glory of God.',ref:'Romans 15:7'},
-  Hope:{full:'For I know the thoughts that I think toward you, saith the LORD, thoughts of peace.',ref:'Jeremiah 29:11'},
-  Follow:{full:'And he saith unto them, Follow me, and I will make you fishers of men.',ref:'Matthew 4:19'},
+  Accept:{full:'Therefore, accept one another, just as Christ also accepted us to the glory of God.',ref:'Romans 15:7 NASB'},
+  Hope:{full:'Why art thou cast down, O my soul? and why art thou disquieted within me? hope thou in God: for I shall yet praise him.',ref:'Psalm 42:5'},
+  Follow:{full:'And they were all amazed at the mighty power of God.',ref:'Luke 9:43'},
   Give:{full:'Give, and it shall be given unto you; good measure, pressed down, and shaken together.',ref:'Luke 6:38'},
-  Remember:{full:'Remember the LORD thy God: for it is he that giveth thee power to get wealth.',ref:'Deuteronomy 8:18'},
+  Remember:{full:'And he took bread, and gave thanks, and brake it, and gave unto them, saying, This is my body which is given for you: this do in remembrance of me.',ref:'Luke 22:19'},
   Honor:{full:'Honour thy father and thy mother: that thy days may be long upon the land.',ref:'Exodus 20:12'}
 };
 
