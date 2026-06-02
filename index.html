@@ -110,8 +110,8 @@ html,body{background:var(--dark);color:var(--white);font-family:'IM Fell English
 .sr-badge{font-family:'Oswald',sans-serif;font-size:.56rem;font-weight:700;background:var(--green);color:#fff;padding:2px 7px;border-radius:8px;display:none;}
 
 .cart-empty-state{padding:48px 20px;text-align:center;}
-.cart-empty-fish{font-size:3rem;margin-bottom:14px;opacity:.25;}
-.cart-empty-text{font-family:'Oswald',sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#444;line-height:1.9;}
+.cart-empty-fish{font-size:3rem;margin-bottom:14px;opacity:1;color:var(--israel-light);}
+.cart-empty-text{font-family:'Oswald',sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--israel-light);line-height:1.9;}
 
 .cart-list{padding:10px 14px 0;}
 .ci{background:var(--dark2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
@@ -210,7 +210,7 @@ html,body{background:var(--dark);color:var(--white);font-family:'IM Fell English
   .order-sum{margin:14px 16px 100px;}
   .cart-empty-state{padding:80px 20px;}
   .cart-empty-fish{font-size:5rem;margin-bottom:20px;}
-  .cart-empty-text{font-size:.82rem;color:#555;line-height:2.2;}
+  .cart-empty-text{font-size:.82rem;color:var(--israel-light);line-height:2.2;}
 }
 @media(min-width:1024px){
   .cart-pill{display:none;}
@@ -2216,9 +2216,9 @@ function updatePill(){
 
 function renderCart(){
   var total=cartQty();var tier=getTier(total);var val=cartVal();var isEmpty=cart.length===0;
-  document.getElementById('cartEmptyState').style.display=isEmpty?'block':'none';
-  document.getElementById('cartList').style.display=isEmpty?'none':'block';
-  document.getElementById('orderSum').style.display=isEmpty?'none':'block';
+  document.getElementById('cartEmptyState').style.display='none';
+  document.getElementById('cartList').style.display='block';
+  document.getElementById('orderSum').style.display='block';
   var sb=document.getElementById('stickyBar');
   sb.className=(!isEmpty&&!isDesktop())?'sticky-bar show':'sticky-bar';
   document.getElementById('ccLabel').textContent=total+' decal'+(total!==1?'s':'');
@@ -2233,28 +2233,44 @@ function renderCart(){
   }
 
   var html='';
-  cart.forEach(function(item,idx){
-    var sub=(item.qty*tier.price).toFixed(2);
+  if(isEmpty){
     html+='<div class="ci">';
-    html+='<div class="ci-thumb"><div class="ci-thumb-svg">'+getThumbHTML(item.word)+'</div></div>';
-    html+='<div class="ci-info"><div class="ci-word">'+item.word+'</div><div class="ci-price">$'+tier.price.toFixed(2)+' each</div></div>';
+    html+='<div class="ci-thumb"><div class="ci-thumb-svg">'+getThumbHTML('Rest')+'</div></div>';
+    html+='<div class="ci-info"><div class="ci-word" style="color:var(--israel-light);">—</div><div class="ci-price">$'+tier.price.toFixed(2)+' each</div></div>';
     html+='<div class="ci-right">';
-    html+='<div class="ci-qty"><button class="cqb" onclick="cqAdj('+idx+',-1)">−</button><input class="cqn" type="number" value="'+item.qty+'" min="1" onchange="cqSet('+idx+',this.value)"/><button class="cqb" onclick="cqAdj('+idx+',1)">+</button></div>';
-    html+='<div class="ci-sub">$'+sub+'</div>';
-    html+='<button class="ci-remove" onclick="cqRem('+idx+')">✕ Remove</button>';
+    html+='<div class="ci-qty"><button class="cqb">−</button><input class="cqn" type="number" value="0" min="0" readonly/><button class="cqb">+</button></div>';
+    html+='<div class="ci-sub">$0.00</div>';
     html+='</div></div>';
-  });
+  } else {
+    cart.forEach(function(item,idx){
+      var sub=(item.qty*tier.price).toFixed(2);
+      html+='<div class="ci">';
+      html+='<div class="ci-thumb"><div class="ci-thumb-svg">'+getThumbHTML(item.word)+'</div></div>';
+      html+='<div class="ci-info"><div class="ci-word">'+item.word+'</div><div class="ci-price">$'+tier.price.toFixed(2)+' each</div></div>';
+      html+='<div class="ci-right">';
+      html+='<div class="ci-qty"><button class="cqb" onclick="cqAdj('+idx+',-1)">−</button><input class="cqn" type="number" value="'+item.qty+'" min="1" onchange="cqSet('+idx+',this.value)"/><button class="cqb" onclick="cqAdj('+idx+',1)">+</button></div>';
+      html+='<div class="ci-sub">$'+sub+'</div>';
+      html+='<button class="ci-remove" onclick="cqRem('+idx+')">✕ Remove</button>';
+      html+='</div></div>';
+    });
+  }
   document.getElementById('cartList').innerHTML=html;
 
   var savings=tier.save>0?Math.max(0,total*2.99-val).toFixed(2):0;
   var sRows='';
-  cart.forEach(function(item){sRows+='<div class="os-row"><span class="os-key">'+item.word+' × '+item.qty+'</span><span class="os-val">$'+(item.qty*tier.price).toFixed(2)+'</span></div>';});
+  if(isEmpty){
+    sRows+='<div class="os-row"><span class="os-key">— × 0</span><span class="os-val">$0.00</span></div>';
+  } else {
+    cart.forEach(function(item){sRows+='<div class="os-row"><span class="os-key">'+item.word+' × '+item.qty+'</span><span class="os-val">$'+(item.qty*tier.price).toFixed(2)+'</span></div>';});
+  }
   sRows+='<div class="os-row"><span class="os-key">Shipping</span><span class="os-val grn">FREE</span></div>';
   if(savings>0)sRows+='<div class="os-row"><span class="os-key">You saved</span><span class="os-val sav">−$'+savings+'</span></div>';
   sRows+='<div class="os-row"><span class="os-key">Total</span><span class="os-val big">$'+val.toFixed(2)+'</span></div>';
   document.getElementById('sumRows').innerHTML=sRows;
 
   var words=cart.map(function(i){return i.word;}).join(', ');
+  var dct=document.getElementById('desktopCoTotal');
+  if(dct){dct.textContent='$'+val.toFixed(2);}
   var coBtn=document.getElementById('coBtn');
   if(coBtn){
     coBtn.innerHTML='<span>Checkout</span><span>$'+val.toFixed(2)+'</span>';
