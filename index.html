@@ -448,9 +448,9 @@ a{color:inherit}
           <div class="wtitle" id="wTitle">Hope</div>
           <div class="hr"></div>
           <div class="langs">
-            <div class="lang"><div class="top"><span class="lab">Greek</span><span class="w" id="gkW"></span><span class="snd" id="gkS"></span></div><div class="mean" id="gkM"></div><a class="conc" id="gkC" target="_blank" rel="noopener">Concordance &#8599;</a></div>
+            <div class="lang"><div class="top"><span class="lab">Greek</span><span class="w" id="gkW"></span><span class="snd" id="gkS"></span></div><div class="mean" id="gkM"></div><a class="conc" id="gkC">Concordance &#8599;</a></div>
             <div class="div"></div>
-            <div class="lang"><div class="top"><span class="lab">Hebrew</span><span class="w" id="hbW"></span><span class="snd" id="hbS"></span></div><div class="mean" id="hbM"></div><a class="conc" id="hbC" target="_blank" rel="noopener">Concordance &#8599;</a></div>
+            <div class="lang"><div class="top"><span class="lab">Hebrew</span><span class="w" id="hbW"></span><span class="snd" id="hbS"></span></div><div class="mean" id="hbM"></div><a class="conc" id="hbC">Concordance &#8599;</a></div>
           </div>
           <div class="hr"></div>
           <div class="trace">Trace it through Scripture &mdash; tap a verse</div>
@@ -697,7 +697,17 @@ a{color:inherit}
   function setConc(id,lang,n){var a=$(id); if(!a) return;
     if(n){a.href='https://biblehub.com/'+lang+'/'+n+'.htm'; a.textContent='Concordance \u00b7 Strong\u2019s '+(lang==='greek'?'G':'H')+n+' \u2197'; a.style.display='';}
     else{a.removeAttribute('href'); a.style.display='none';}}
-  ['gkC','hbC'].forEach(function(id){var a=$(id); if(a) a.addEventListener('click',function(e){e.stopPropagation();});});
+  // Ken, 2 Oct: "There is no back button for the Strong's link." It opened a new tab, so the
+  // phone's Back arrow had nowhere to go. Now it opens in the same tab, and coming back puts
+  // him on the same word, card flipped, where he was on the page.
+  var RET='mf-return';
+  ['gkC','hbC'].forEach(function(id){var a=$(id); if(a) a.addEventListener('click',function(e){e.stopPropagation();
+    try{sessionStorage.setItem(RET,JSON.stringify({k:cur,y:window.scrollY}));}catch(x){}});});
+  function restoreReturn(){var r=null; try{r=JSON.parse(sessionStorage.getItem(RET)||'null');sessionStorage.removeItem(RET);}catch(x){}
+    if(!r||!DATA[r.k]) return;
+    pick(r.k,false); $('stage').classList.add('on'); sizeStage();
+    setTimeout(function(){window.scrollTo(0,r.y||0);},60);}
+  window.addEventListener('pageshow',function(e){if(e.persisted) restoreReturn();});
   // The card is as tall as whichever side is showing: the fish, or the whole study.
   function sizeStage(){var st=$('stage'); if(!st) return; var w=st.clientWidth, front=w*10/16;
     var back=st.querySelector('.face.back'); var bh=back?back.scrollHeight:0;
@@ -822,6 +832,7 @@ a{color:inherit}
   });
 
   pick(cur,false);
+  restoreReturn();
 })();
 
 </script>
