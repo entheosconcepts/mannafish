@@ -1,4 +1,6 @@
-
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MannaFish</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Archivo:wght@400;500;600;700&display=swap">
@@ -368,6 +370,46 @@ a{color:inherit}
 @media(max-width:760px){.theme-toggle{margin-left:auto}}
 .reduced *{transition:none!important;animation:none!important}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---- 2 Oct: one column -- purpose, fish, study, verse ---- */
+.hero{min-height:0;display:block}
+.hero .wrap.today{display:flex;flex-direction:column;align-items:center;gap:22px;max-width:860px;padding-block:30px 36px}
+.purpose{text-align:center;max-width:40em}
+.purpose p{margin:0}
+.purpose .p1{font-family:'Fraunces',serif;font-size:clamp(1.55rem,4.4vw,2.5rem);line-height:1.15;color:var(--foam)}
+.purpose .p2{font-family:'Fraunces',serif;font-size:clamp(1.15rem,3vw,1.6rem);line-height:1.3;color:#c6d2d4;margin-top:10px}
+.purpose b{font-family:'MFHobo',cursive;font-weight:400}
+.purpose .p3{font-family:'Archivo',sans-serif;text-transform:uppercase;letter-spacing:.2em;font-size:.74rem;font-weight:600;color:var(--brass);margin-top:16px}
+.hero .stage-col{width:100%}
+.hero .stage{aspect-ratio:auto;height:auto;transition:height .45s cubic-bezier(.4,.05,.2,1)}
+.hero .face.back{bottom:auto;padding:22px clamp(16px,4.5cqw,36px) 26px}
+.hero .back .wtitle{font-family:'MFHobo',cursive;font-size:clamp(2.3rem,8cqw,3.7rem);line-height:1}
+.hero .back .hr{margin:14px 0}
+.hero .lang .lab{font-size:.7rem}
+.hero .lang .w{font-size:clamp(1.35rem,4.2cqw,1.95rem)}
+.hero .lang .snd{font-size:.84rem}
+.hero .lang .mean{font-size:.95rem;margin-top:4px}
+.hero .conc{display:inline-block;margin-top:6px;font-family:'Archivo',sans-serif;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sea);text-decoration:none;border-bottom:1px solid rgba(79,155,184,.4)}
+.hero .conc:hover{color:var(--brass-soft)}
+.hero .trace{font-size:.7rem;margin-top:2px}
+.hero .refs{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 16px;margin-top:16px}
+.hero .ref{min-width:0}
+.hero .ref .r{font-size:.88rem}
+.hero .ref .s{font-size:.8rem}
+@media(max-width:640px){
+  .hero .langs{grid-template-columns:1fr;gap:16px}
+  .hero .langs .div{display:none}
+  .hero .refs{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+.rtools{display:flex;gap:8px;align-items:center;flex:0 0 auto}
+.rmode{background:none;border:1px solid rgba(42,95,176,.4);color:var(--parch-ink);border-radius:18px;padding:7px 11px;cursor:pointer;font-family:'Archivo',sans-serif;font-size:.68rem;letter-spacing:.06em}
+.rmode:hover{background:rgba(42,95,176,.14)}
+#readerSlot{width:100%}
+.reader.inline{position:static;transform:none;height:auto;width:100%;display:none;border-radius:6px;box-shadow:none}
+.reader.inline.open{display:flex}
+.reader.inline .reader-body{max-height:440px}
+.reader.inline .rmode{display:none}
+@media(min-width:861px){.reader.inline .rmode{display:inline-block}}
 </style>
 
 <div class="mf">
@@ -375,24 +417,22 @@ a{color:inherit}
 <header class="nav"><div class="wrap">
   <div class="brand"><span class="wm-m">Manna</span><span class="wm-f">Fish</span></div>
   <nav class="nav-links">
-    <a href="#devotional">The Devotional</a>
+    <a href="#today">The Devotional</a>
     <a href="#bundles">Bundles</a>
     <a href="#story">The 2 Fish Story</a>
     <a href="#shop">Shop</a>
     <a href="#ministry">Churches &amp; Business</a>
   </nav>
-  <a class="pill" href="free_devotional.html" style="text-decoration:none">Free devotional</a>
+  <a class="pill" href="#today" style="text-decoration:none">Free devotional</a>
 </div></header>
 
-<section class="hero"><div class="wrap">
-  <div class="hero-copy">
-    <p class="hero-slogan"><i>Give a <b><span class="wm-m">Manna</span><span class="wm-f">Fish</span></b> &mdash; feed him a meal. Teach a man <b><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></b> &mdash; feed him for life.</i></p>
-    <h1>Feed on the Word.<br>Then <em>feed someone else.</em></h1>
-    <p class="lede">Every MannaFish takes one word of God and opens it in its original Greek and Hebrew, with a dozen verses to trace it through all of Scripture. Take one for yourself &mdash; then hand one to the next person.</p>
-    <div class="cta-row">
-      <a class="btn btn-primary" href="free_devotional.html">Open the free devotional &#8594;</a>
-      <a class="btn btn-ghost" href="shop.html">Shop the line</a>
-    </div>
+<section class="hero" id="today"><div class="wrap today">
+  <!-- Ken, 2 Oct: "There's a lot of padding up top that we could fill in with the purpose of MannaFish."
+       The headline and the "Open the free devotional" button are gone: the fish IS the devotional. -->
+  <div class="purpose">
+    <p class="p1">Give a <b><span class="wm-m">Manna</span><span class="wm-f">Fish</span></b> &mdash; the Word for today.</p>
+    <p class="p2">Teach a man <b><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></b> &mdash; get the Word for yourself, then give it to someone else.</p>
+    <p class="p3">One for you. One for a friend.</p>
   </div>
   <div class="stage-col">
     <div class="stage" id="stage" aria-label="Interactive devotional decal, tap to flip">
@@ -408,9 +448,9 @@ a{color:inherit}
           <div class="wtitle" id="wTitle">Hope</div>
           <div class="hr"></div>
           <div class="langs">
-            <div class="lang"><div class="top"><span class="lab">Greek</span><span class="w" id="gkW"></span><span class="snd" id="gkS"></span></div><div class="mean" id="gkM"></div></div>
+            <div class="lang"><div class="top"><span class="lab">Greek</span><span class="w" id="gkW"></span><span class="snd" id="gkS"></span></div><div class="mean" id="gkM"></div><a class="conc" id="gkC" target="_blank" rel="noopener">Concordance &#8599;</a></div>
             <div class="div"></div>
-            <div class="lang"><div class="top"><span class="lab">Hebrew</span><span class="w" id="hbW"></span><span class="snd" id="hbS"></span></div><div class="mean" id="hbM"></div></div>
+            <div class="lang"><div class="top"><span class="lab">Hebrew</span><span class="w" id="hbW"></span><span class="snd" id="hbS"></span></div><div class="mean" id="hbM"></div><a class="conc" id="hbC" target="_blank" rel="noopener">Concordance &#8599;</a></div>
           </div>
           <div class="hr"></div>
           <div class="trace">Trace it through Scripture &mdash; tap a verse</div>
@@ -419,6 +459,8 @@ a{color:inherit}
       </div>
     </div>
   </div>
+
+  <div id="readerSlot"></div>
 </div></section>
 
 <section class="section reach" id="reach"><div class="wrap">
@@ -450,7 +492,7 @@ a{color:inherit}
   </div>
 </div></section>
 
-<section class="section" id="devotional"><div class="wrap">
+<section class="section" id="devotional" hidden><div class="wrap">
   <div class="section-head">
     <span class="eyebrow">The Devotional &middot; free, always</span>
     <h2>Twenty-four words. A lifetime of study.</h2>
@@ -524,7 +566,7 @@ a{color:inherit}
   </div>
   <div class="cta-row" style="margin-top:34px">
     <a class="btn btn-primary" href="mailto:hello@manna-fish.com?subject=MannaFish%20wholesale%20%26%20co-branding">Request wholesale info</a>
-    <a class="btn btn-ghost" href="#devotional">See the devotional again</a>
+    <a class="btn btn-ghost" href="#today">See the devotional again</a>
   </div>
 </div></section>
 
@@ -571,7 +613,7 @@ a{color:inherit}
     <p class="tagl">A Word-Study Devotional you can wear, gift, and multiply. We give a meal, we teach the catch, and we trust God for the growth.</p>
   </div>
   <div class="fl">
-    <a href="#devotional">The Devotional</a>
+    <a href="#today">The Devotional</a>
     <a href="#story">The 2 Fish Story</a>
     <a href="#shop">Shop</a>
     <a href="#ministry">Churches &amp; Business</a>
@@ -585,7 +627,7 @@ a{color:inherit}
 <aside class="reader" id="reader" aria-hidden="true">
   <div class="reader-top">
     <div><div class="rk" id="rKicker">Word study</div><div class="rref" id="rRef">Reference</div></div>
-    <button class="rclose" id="rClose" aria-label="Close">&#215;</button>
+    <span class="rtools"><button class="rmode" id="rMode" type="button"></button><button class="rclose" id="rClose" aria-label="Close">&#215;</button></span>
   </div>
   <div class="reader-body">
     <div class="pullquote" id="rQuote"></div>
@@ -644,6 +686,23 @@ a{color:inherit}
     return {book:m[1].trim(), ch:m[2], vs:m[3]};
   }
   var cur='HOPE'; if(ORDER.indexOf(cur)<0) cur=ORDER[0];
+  // Strong's numbers for each word's Greek and Hebrew, for the free concordance at Bible Hub.
+  // Enjoy has no Greek link: the verb is not in the New Testament.
+  var STRONGS={REST:['373','7673'],HOPE:['1680','8615'],LOVE:['26','160'],TRUST:['3982','982'],
+    PRAY:['4336','6419'],BELIEVE:['4100','539'],FORGIVE:['863','5545'],GIVE:['1325','5414'],
+    SEEK:['2212','1875'],ASK:['154','7592'],KNOCK:['2925','1849'],FOLLOW:['190','1980'],
+    LISTEN:['191','8085'],REMEMBER:['3421','2142'],CHOOSE:['1586','977'],HONOR:['5091','3513'],
+    GROW:['837','1431'],GATHER:['4863','6908'],ACCEPT:['1209','7521'],BREATHE:['1720','5397'],
+    ENJOY:['','8055'],LIVE:['2198','2421'],SING:['103','7891'],LAUGH:['1070','6711']};
+  function setConc(id,lang,n){var a=$(id); if(!a) return;
+    if(n){a.href='https://biblehub.com/'+lang+'/'+n+'.htm'; a.textContent='Concordance \u00b7 Strong\u2019s '+(lang==='greek'?'G':'H')+n+' \u2197'; a.style.display='';}
+    else{a.removeAttribute('href'); a.style.display='none';}}
+  ['gkC','hbC'].forEach(function(id){var a=$(id); if(a) a.addEventListener('click',function(e){e.stopPropagation();});});
+  // The card is as tall as whichever side is showing: the fish, or the whole study.
+  function sizeStage(){var st=$('stage'); if(!st) return; var w=st.clientWidth, front=w*10/16;
+    var back=st.querySelector('.face.back'); var bh=back?back.scrollHeight:0;
+    st.style.height=(st.classList.contains('on')?Math.max(front,bh):front)+'px';}
+  window.addEventListener('resize',sizeStage);
 
   // build word picker
   var wc=$('words');
@@ -676,7 +735,9 @@ a{color:inherit}
     Array.prototype.forEach.call(wc.children,function(c){
       c.classList.toggle('sel', c.getAttribute('data-w')===k);
     });
-    $('stage').classList.remove('on');
+    var sg=STRONGS[k]||['',''];
+    setConc('gkC','greek',sg[0]); setConc('hbC','hebrew',sg[1]);
+    $('stage').classList.remove('on'); sizeStage();
     if(scroll && window.matchMedia('(max-width:860px)').matches){
       $('stage').scrollIntoView({behavior:'smooth',block:'center'});
     }
@@ -685,12 +746,28 @@ a{color:inherit}
   // flip
   var stage=$('stage');
   document.querySelectorAll('[data-flip]').forEach(function(b){
-    b.addEventListener('click',function(e){e.stopPropagation();stage.classList.toggle('on');});
+    b.addEventListener('click',function(e){e.stopPropagation();stage.classList.toggle('on');sizeStage();});
   });
-  $('flip').addEventListener('click',function(){stage.classList.toggle('on');});
+  $('flip').addEventListener('click',function(){stage.classList.toggle('on');sizeStage();});
 
   // reader
   var scrim=$('scrim'), reader=$('reader');
+  var RKEY='mf-reader-place';
+  function placePref(){try{return localStorage.getItem(RKEY)||'side';}catch(e){return 'side';}}
+  function inlineNow(){return window.matchMedia('(max-width:860px)').matches || placePref()==='below';}
+  function placeReader(){
+    var inl=inlineNow(), slot=$('readerSlot');
+    if(inl && slot && reader.parentNode!==slot){slot.appendChild(reader);}
+    if(!inl && reader.parentNode===slot){document.querySelector('.mf').appendChild(reader);}
+    reader.classList.toggle('inline',inl);
+    $('rMode').textContent = inl ? 'Show at the side' : 'Show under the fish';
+    if(inl) scrim.classList.remove('open'); else if(reader.classList.contains('open')) scrim.classList.add('open');
+  }
+  $('rMode').addEventListener('click',function(){
+    try{localStorage.setItem(RKEY, placePref()==='below'?'side':'below');}catch(e){}
+    placeReader(); if(inlineNow()) reader.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  window.addEventListener('resize',function(){if(reader.classList.contains('open'))placeReader();});
   function closeReader(){reader.classList.remove('open');scrim.classList.remove('open');reader.setAttribute('aria-hidden','true');}
   $('rClose').addEventListener('click',closeReader);
   scrim.addEventListener('click',closeReader);
@@ -703,7 +780,9 @@ a{color:inherit}
     $('rQuote').innerHTML='&ldquo;'+esc(ref[1])+'&rdquo;';
     $('rChapter').innerHTML='';
     $('rNote').textContent='';
-    reader.classList.add('open');scrim.classList.add('open');reader.setAttribute('aria-hidden','false');
+    reader.classList.add('open');reader.setAttribute('aria-hidden','false');
+    placeReader(); if(!inlineNow()) scrim.classList.add('open');
+    else setTimeout(function(){reader.scrollIntoView({behavior:'smooth',block:'start'});},30);
     if(p){
       var code=USFM[p.book]||'';
       $('rYouV').href = code ? ('https://www.bible.com/bible/1/'+code+'.'+p.ch+'.'+p.vs) : '#';
@@ -725,7 +804,8 @@ a{color:inherit}
       });
       html+='</p>';
       $('rChapter').innerHTML=html;
-      var h=reader.querySelector('.hi'); if(h){h.scrollIntoView({block:'center'});}
+      var h=reader.querySelector('.hi'), bd=reader.querySelector('.reader-body');
+      if(h&&bd){bd.scrollTop=Math.max(0,h.offsetTop-bd.offsetTop-bd.clientHeight/3);}
       $('rNote').textContent='King James Version · public domain';
     }).catch(function(){
       done=true;clearTimeout(t);

@@ -1,3 +1,6 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MannaFish Devotional</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Spectral:ital,wght@0,400;0,500;1,400&family=Archivo:wght@400;600;700&display=swap">
@@ -73,6 +76,9 @@
 #mfNav{position:fixed;top:12px;left:12px;z-index:200;display:flex;gap:8px}
 #mfNav a{font-family:'Archivo',sans-serif;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#eaf0f0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:7px 12px;text-decoration:none;cursor:pointer;line-height:1}
 #mfNav a:hover{background:#2a5fb0;border-color:#2a5fb0;color:#fff}
+
+/* 2 Oct: on a phone, the tagline fits and the Back/Home buttons sit above the logo, not on it */
+@media(max-width:640px){.sub{font-size:.78rem;letter-spacing:.16em;text-align:center}.mf{padding-top:64px}}
 </style>
 <div id="mfNav"><a href="#" onclick="history.back();return false;">&#8592; Back</a><a href="index.html">&#8962; Home</a></div>
 <div class="mf">
@@ -99,8 +105,9 @@
     </div>
   </div>
   <div class="dims">DECAL 4&#8243;&#215;2&#8243; &middot; CARD 4.5&#8243;&#215;2.75&#8243;</div>
-  <div class="hint">Choose a design</div>
-  <div class="words" id="words"></div>
+  <!-- Ken, 2 Oct: hide the design buttons for now; they are for something else later. -->
+  <div class="hint" style="display:none">Choose a design</div>
+  <div class="words" id="words" style="display:none"></div>
 </div>
 <div class="reader-scrim" id="scrim"></div>
 <aside class="reader" id="reader" aria-hidden="true">
