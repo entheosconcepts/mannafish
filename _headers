@@ -1,0 +1,4 @@
+# Test site only: keep it out of Google, and never let a phone hold on to an old copy.
+/*
+  X-Robots-Tag: noindex
+  Cache-Control: no-cache
