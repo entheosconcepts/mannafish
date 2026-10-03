@@ -441,20 +441,27 @@ a{color:inherit}
 
 /* the Word Study tab sits above the fish, never on it */
 .hero .face.front{padding:50px 0 34px;box-sizing:border-box}
+
+/* centred logo, nothing else in the bar */
+.nav .wrap.navc{justify-content:center}
+.nav .brand{font-size:2rem}
+.twofish-mark{font-family:'MFHobo',cursive;font-size:clamp(2.6rem,9vw,3.6rem);line-height:1;margin-top:6px}
+.giftbtn{font-size:1rem;padding:15px 26px}
+.giftbox{width:100%;max-width:720px;border:1px solid var(--brass);border-radius:6px;padding:22px 20px;background:linear-gradient(165deg,rgba(42,95,176,.14),transparent 70%)}
+.giftbox h3{font-size:1.5rem}
+.giftbox .gsub{color:var(--foam-dim);margin:6px 0 0}
+.netform select{background:var(--ink2);border:1px solid var(--line);color:var(--foam);padding:12px 14px;border-radius:2px;font-family:'Spectral',serif;font-size:1rem}
+.netform .chk{flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px 10px;font-size:.9rem}
+.netform .chk > input{width:auto}
+.freq.inline{width:auto;justify-content:flex-start;font-size:.9rem}
+.freq input{width:auto;padding:0;accent-color:var(--brass)}
 </style>
 
 <div class="mf">
 
-<header class="nav"><div class="wrap">
-  <div class="brand"><span class="wm-m">Manna</span><span class="wm-f">Fish</span></div>
-  <nav class="nav-links">
-    <a href="#today">The Devotional</a>
-    <a href="#bundles">Bundles</a>
-    <a href="#story">The 2 Fish Story</a>
-    <a href="#shop">Shop</a>
-    <a href="#ministry">Churches &amp; Business</a>
-  </nav>
-  <a class="pill" href="#today" style="text-decoration:none">Free devotional</a>
+<header class="nav"><div class="wrap navc">
+  <!-- Ken, 4 Oct: "MannaFish logo centered at top without Free Gift button." -->
+  <a class="brand" href="#today" style="text-decoration:none"><span class="wm-m">Manna</span><span class="wm-f">Fish</span></a>
 </div></header>
 
 <section class="hero" id="today"><div class="wrap today">
@@ -475,7 +482,7 @@ a{color:inherit}
           <div class="fishbox" id="fishbox"></div>
         </div>
         <div class="face back">
-          <button class="flip-tab" type="button" data-flip>&#8617; The decal</button>
+          <button class="flip-tab" type="button" data-flip>&#8617; The Fish</button>
           <div class="wtitle" id="wTitle">Hope</div>
           <div class="hr"></div>
           <div class="langs">
@@ -492,6 +499,26 @@ a{color:inherit}
   </div>
 
   <div class="sharerow"><button class="btn btn-ghost" type="button" id="shareWord">Share this word</button><span class="rnote" id="shareMsg"></span></div>
+  <div class="twofish-mark"><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></div>
+  <button class="btn btn-primary giftbtn" type="button" id="giftBtn">Free Gift &mdash; free decals, free postage</button>
+  <div class="giftbox" id="giftBox" hidden>
+    <h3>Your free MannaFish</h3>
+    <p class="gsub">Free decals and a free gift, posted to you at no cost. Keep one. Give one.</p>
+    <form class="netform mf-form" name="free-gift" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="giftForm">
+      <input type="hidden" name="form-name" value="free-gift">
+      <p style="display:none"><label>Leave this empty <input name="bot-field"></label></p>
+      <label>Your name<input name="name" required autocomplete="name"></label>
+      <label>Email<input name="email" type="email" required autocomplete="email"></label>
+      <label class="wide">Street address<input name="street" required autocomplete="street-address"></label>
+      <label>City<input name="city" required autocomplete="address-level2"></label>
+      <label>State and ZIP<input name="state-zip" required autocomplete="postal-code"></label>
+      <label class="wide">Which word would you like?<select name="word" id="giftWord"></select></label>
+      <label class="wide chk"><input type="checkbox" name="word-study" value="Yes" checked> Also send me a free word study by email
+        <span class="freq inline"><label><input type="radio" name="how-often" value="Daily"> Daily</label><label><input type="radio" name="how-often" value="Weekly" checked> Weekly</label><label><input type="radio" name="how-often" value="Monthly"> Monthly</label></span></label>
+      <button class="btn btn-primary" type="submit">Send my free gift</button>
+    </form>
+    <p class="rnote" id="giftFormMsg" style="margin-top:12px;color:var(--foam-dim)"></p>
+  </div>
   <div id="readerSlot"></div>
 </div></section>
 
@@ -924,13 +951,16 @@ a{color:inherit}
     if(navigator.share){navigator.share({title:title,text:title,url:url}).catch(function(){});return;}
     try{navigator.clipboard.writeText(url);$('shareMsg').textContent='Link copied: '+url;}catch(e){$('shareMsg').textContent=url;}
   });
+  var gsel=$('giftWord'); ORDER.forEach(function(k){var o=document.createElement('option');o.value=DATA[k].title;o.textContent=DATA[k].title;gsel.appendChild(o);});
+  $('giftBtn').addEventListener('click',function(){var bx=$('giftBox'); bx.hidden=!bx.hidden;
+    if(!bx.hidden){gsel.value=DATA[cur].title; bx.scrollIntoView({behavior:'smooth',block:'start'});}});
   // Netlify Forms, sent in the background so the page does not jump away
   document.querySelectorAll('form.mf-form').forEach(function(f){
     f.addEventListener('submit',function(e){e.preventDefault();
-      var msg=$(f.id==='signup'?'signupMsg':'fishnetMsg');
+      var msg=$(f.id==='signup'?'signupMsg':(f.id==='giftForm'?'giftFormMsg':'fishnetMsg'));
       fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()})
         .then(function(r){if(!r.ok) throw 0; f.reset();
-          msg.textContent = f.id==='signup' ? 'Thank you \u2014 you\u2019re on the list.' : 'Thank you \u2014 we\u2019ll be in touch about your Fish Net.';})
+          msg.textContent = f.id==='signup' ? 'Thank you \u2014 you\u2019re on the list.' : f.id==='giftForm' ? 'Thank you \u2014 your free MannaFish is on its way.' : 'Thank you \u2014 we\u2019ll be in touch about your Fish Net.';})
         .catch(function(){msg.textContent='That didn\u2019t go through. Please try again in a moment.';});
     });
   });
