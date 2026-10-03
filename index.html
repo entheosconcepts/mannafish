@@ -2,6 +2,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MannaFish</title>
+<meta property="og:title" content="MannaFish — a free word study">
+<meta property="og:description" content="Give a MannaFish, feed him a meal. Teach a man 2 Fish, feed him for life.">
+<meta property="og:image" content="https://yadamannafishtest.netlify.app/w/img/hope.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Archivo:wght@400;500;600;700&display=swap">
 
@@ -418,6 +421,23 @@ a{color:inherit}
 .lx p{margin:0}
 .lx-l{font-family:'MFGkHb','Spectral',serif}
 .lx-t{font-style:italic;font-size:.8em;color:var(--parch-dim)}
+
+/* full-size fish on a phone */
+@media(max-width:640px){
+  .hero .wrap.today{padding-inline:8px}
+  .hero .fishbox{width:100%}
+  .purpose{padding-inline:12px}
+}
+.sharerow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center}
+.freq{display:flex;gap:16px;justify-content:center;width:100%;font-family:'Archivo',sans-serif;font-size:.9rem;color:var(--foam-dim)}
+.freq label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.form .freq input{flex:none;min-width:0;width:auto;padding:0;margin:0;accent-color:var(--brass)}
+.netform{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:720px;margin-top:28px}
+.netform label{display:flex;flex-direction:column;gap:6px;font-family:'Archivo',sans-serif;font-size:.78rem;letter-spacing:.04em;color:var(--foam-dim)}
+.netform .wide{grid-column:1/-1}
+.netform input,.netform textarea{background:var(--ink2);border:1px solid var(--line);color:var(--foam);padding:12px 14px;border-radius:2px;font:inherit;font-family:'Spectral',serif;font-size:1rem}
+.netform button{justify-self:start}
+@media(max-width:600px){.netform{grid-template-columns:1fr}}
 </style>
 
 <div class="mf">
@@ -468,6 +488,7 @@ a{color:inherit}
     </div>
   </div>
 
+  <div class="sharerow"><button class="btn btn-ghost" type="button" id="shareWord">Share this word</button><span class="rnote" id="shareMsg"></span></div>
   <div id="readerSlot"></div>
 </div></section>
 
@@ -578,16 +599,46 @@ a{color:inherit}
   </div>
 </div></section>
 
-<section class="section signup"><div class="wrap">
+<section class="section signup" id="signup-section"><div class="wrap">
   <span class="eyebrow">Manna for your inbox</span>
-  <h2>A new word every week &mdash; free.</h2>
-  <p>Gather enough for yourself, and enough to give away.</p>
-  <form class="form" id="signup" onsubmit="return false">
+  <h2>A word study, free &mdash; as often as you like.</h2>
+  <p>One word of God, its Greek and Hebrew, and twelve verses to trace it. Gather enough for yourself, and enough to give away.</p>
+  <!-- Netlify Forms: entries show under Forms in the Netlify dashboard, and can email Ken. -->
+  <form class="form mf-form" name="word-study" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="signup">
+    <input type="hidden" name="form-name" value="word-study">
+    <p style="display:none"><label>Leave this empty <input name="bot-field"></label></p>
     <label for="email" style="position:absolute;left:-9999px">Email address</label>
-    <input id="email" type="email" placeholder="you@email.com" autocomplete="email">
+    <input id="email" name="email" type="email" placeholder="you@email.com" autocomplete="email" required>
+    <div class="freq" role="radiogroup" aria-label="How often">
+      <label><input type="radio" name="how-often" value="Daily"> Daily</label>
+      <label><input type="radio" name="how-often" value="Weekly" checked> Weekly</label>
+      <label><input type="radio" name="how-often" value="Monthly"> Monthly</label>
+    </div>
     <button class="btn btn-primary" type="submit" id="signupBtn">Send me a word</button>
   </form>
   <p class="rnote" id="signupMsg" style="margin-top:14px;color:var(--foam-dim)"></p>
+</div></section>
+
+<section class="section fishnet" id="fishnet"><div class="wrap">
+  <!-- Ken, 3 Oct: "if anyone wants to give them away they can ask for a Fish Net? That's the
+       display that holds a MannaFish product." -->
+  <div class="section-head">
+    <span class="eyebrow">Give them away</span>
+    <h2>Ask for a Fish Net.</h2>
+    <p>A Fish Net is the countertop display that holds MannaFish for people to take &mdash; <i>keep one, give one</i>. For a church welcome table, a shop counter, an office, an event. Tell us where it would go.</p>
+  </div>
+  <form class="netform mf-form" name="fish-net" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="fishnetForm">
+    <input type="hidden" name="form-name" value="fish-net">
+    <p style="display:none"><label>Leave this empty <input name="bot-field"></label></p>
+    <label>Your name<input name="name" required autocomplete="name"></label>
+    <label>Church, business or ministry<input name="organisation"></label>
+    <label>Email<input name="email" type="email" required autocomplete="email"></label>
+    <label>Phone<input name="phone" type="tel" autocomplete="tel"></label>
+    <label class="wide">Where would the Fish Net go? (address or city)<input name="where"></label>
+    <label class="wide">Anything else we should know?<textarea name="note" rows="3"></textarea></label>
+    <button class="btn btn-primary" type="submit">Ask for a Fish Net</button>
+  </form>
+  <p class="rnote" id="fishnetMsg" style="margin-top:14px;color:var(--foam-dim)"></p>
 </div></section>
 
 <section class="section brandmeaning"><div class="wrap">
@@ -860,13 +911,25 @@ a{color:inherit}
   }
 
   // signup (concept)
-  $('signupBtn').addEventListener('click',function(){
-    var e=$('email').value.trim();
-    $('signupMsg').textContent = (e && e.indexOf('@')>0)
-      ? 'Thank you — a word is on its way. (Concept demo: no email is stored.)'
-      : 'Enter your email and we’ll send you a word each week.';
-  });
 
+
+  // A shared link opens on its word: /?w=hope or /w/hope/
+  (function(){var m=(location.search+location.hash).match(/[?&#]w=([a-z]+)/i); if(m && DATA[m[1].toUpperCase()]) cur=m[1].toUpperCase();})();
+  $('shareWord').addEventListener('click',function(){
+    var url=location.origin+'/w/'+cur.toLowerCase()+'/', title=DATA[cur].title+' \u2014 a MannaFish word study';
+    if(navigator.share){navigator.share({title:title,text:title,url:url}).catch(function(){});return;}
+    try{navigator.clipboard.writeText(url);$('shareMsg').textContent='Link copied: '+url;}catch(e){$('shareMsg').textContent=url;}
+  });
+  // Netlify Forms, sent in the background so the page does not jump away
+  document.querySelectorAll('form.mf-form').forEach(function(f){
+    f.addEventListener('submit',function(e){e.preventDefault();
+      var msg=$(f.id==='signup'?'signupMsg':'fishnetMsg');
+      fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()})
+        .then(function(r){if(!r.ok) throw 0; f.reset();
+          msg.textContent = f.id==='signup' ? 'Thank you \u2014 you\u2019re on the list.' : 'Thank you \u2014 we\u2019ll be in touch about your Fish Net.';})
+        .catch(function(){msg.textContent='That didn\u2019t go through. Please try again in a moment.';});
+    });
+  });
   pick(cur,false);
   restoreReturn();
 })();
