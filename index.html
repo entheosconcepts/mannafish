@@ -475,6 +475,10 @@ a{color:inherit}
 .hero .face{transition:visibility 0s linear .3s}
 .hero .stage.on .face.front{visibility:hidden}
 .hero .stage:not(.on) .face.back{visibility:hidden}
+
+/* Ken, 4 Oct: 'Share this word' replaces 'Tap the fish', same size as the Word Study tab */
+.hero .flip-tab.share-tab{top:auto;right:auto;left:12px;bottom:11px}
+.sharerow:empty{display:none}
 </style>
 
 <div class="mf">
@@ -496,7 +500,7 @@ a{color:inherit}
       <div class="flip" id="flip">
         <div class="face front">
           <button class="flip-tab" type="button" data-flip>Word Study &#8646;</button>
-          <span class="corner" id="frontCorner">Tap the fish</span>
+          <button class="flip-tab share-tab" type="button" id="shareWord">Share this word &#8599;</button>
           <span class="ripple" id="ripple" aria-hidden="true"></span>
           <div class="fishbox" id="fishbox"></div>
         </div>
@@ -517,7 +521,7 @@ a{color:inherit}
     </div>
   </div>
 
-  <div class="sharerow"><button class="btn btn-ghost" type="button" id="shareWord">Share this word</button><span class="rnote" id="shareMsg"></span></div>
+  <div class="sharerow"><span class="rnote" id="shareMsg"></span></div>
   <div class="twofish-mark"><span class="tf-fish"><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></span> <span class="tf-dash">&mdash;</span> <span class="tf-words">Keep One. Give One.</span></div>
   <button class="btn btn-primary giftbtn" type="button" id="giftBtn">Free Gift, Free Postage</button>
   <div class="giftbox" id="giftBox" hidden>
@@ -972,7 +976,7 @@ a{color:inherit}
 
   // A shared link opens on its word: /?w=hope or /w/hope/
   (function(){var m=(location.search+location.hash).match(/[?&#]w=([a-z]+)/i); if(m && DATA[m[1].toUpperCase()]) cur=m[1].toUpperCase();})();
-  $('shareWord').addEventListener('click',function(){
+  $('shareWord').addEventListener('click',function(e){e.stopPropagation();
     var url=location.origin+'/w/'+cur.toLowerCase()+'/', title=DATA[cur].title+' \u2014 a MannaFish word study';
     if(navigator.share){navigator.share({title:title,text:title,url:url}).catch(function(){});return;}
     try{navigator.clipboard.writeText(url);$('shareMsg').textContent='Link copied: '+url;}catch(e){$('shareMsg').textContent=url;}
