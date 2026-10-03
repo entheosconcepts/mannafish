@@ -500,7 +500,7 @@ a{color:inherit}
       <div class="flip" id="flip">
         <div class="face front">
           <button class="flip-tab" type="button" data-flip>Word Study &#8646;</button>
-          <button class="flip-tab share-tab" type="button" id="shareWord">Share this word &#8599;</button>
+          
           <span class="ripple" id="ripple" aria-hidden="true"></span>
           <div class="fishbox" id="fishbox"></div>
         </div>
@@ -976,7 +976,7 @@ a{color:inherit}
 
   // A shared link opens on its word: /?w=hope or /w/hope/
   (function(){var m=(location.search+location.hash).match(/[?&#]w=([a-z]+)/i); if(m && DATA[m[1].toUpperCase()]) cur=m[1].toUpperCase();})();
-  $('shareWord').addEventListener('click',function(e){e.stopPropagation();
+  if($('shareWord')) $('shareWord').addEventListener('click',function(e){e.stopPropagation();
     var url=location.origin+'/w/'+cur.toLowerCase()+'/', title=DATA[cur].title+' \u2014 a MannaFish word study';
     if(navigator.share){navigator.share({title:title,text:title,url:url}).catch(function(){});return;}
     try{navigator.clipboard.writeText(url);$('shareMsg').textContent='Link copied: '+url;}catch(e){$('shareMsg').textContent=url;}
