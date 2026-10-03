@@ -455,6 +455,20 @@ a{color:inherit}
 .netform .chk > input{width:auto}
 .freq.inline{width:auto;justify-content:flex-start;font-size:.9rem}
 .freq input{width:auto;padding:0;accent-color:var(--brass)}
+
+/* Ken, 4 Oct: round buttons, and everything centred */
+.mf .btn,.rbtn,.flip-tab{border-radius:999px}
+.sharerow,.giftbtn{align-self:center}
+.twofish-mark{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;gap:4px 12px;text-align:center}
+.twofish-mark .tf-fish{font-family:'MFHobo',cursive;font-size:clamp(2.4rem,8vw,3.2rem);line-height:1}
+.twofish-mark .tf-dash{color:var(--foam-dim);font-size:1.4rem}
+.twofish-mark .tf-words{font-family:'Archivo',sans-serif;text-transform:uppercase;letter-spacing:.2em;font-size:.86rem;font-weight:600;color:#c6d2d4}
+.btn-ghost{background:transparent;border-color:rgba(200,215,218,.35);color:var(--foam)}
+.form input[hidden]{display:none}
+
+@media(max-width:640px){.twofish-mark{flex-direction:column;align-items:center;gap:6px}.twofish-mark .tf-dash{display:none}}
+.section.reach{padding-top:10px}
+.section.reach > .wrap{padding-top:30px}
 </style>
 
 <div class="mf">
@@ -470,7 +484,6 @@ a{color:inherit}
   <div class="purpose">
     <p class="p1">Give a <b><span class="wm-m">Manna</span><span class="wm-f">Fish</span></b>, feed him a meal.</p>
     <p class="p2">Teach a man <b><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></b>, feed him for life.</p>
-    <p class="p3"><b><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></b> &mdash; Keep One. Give One.</p>
   </div>
   <div class="stage-col">
     <div class="stage" id="stage" aria-label="Interactive devotional decal, tap to flip">
@@ -499,7 +512,7 @@ a{color:inherit}
   </div>
 
   <div class="sharerow"><button class="btn btn-ghost" type="button" id="shareWord">Share this word</button><span class="rnote" id="shareMsg"></span></div>
-  <div class="twofish-mark"><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></div>
+  <div class="twofish-mark"><span class="tf-fish"><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></span> <span class="tf-dash">&mdash;</span> <span class="tf-words">Keep One. Give One.</span></div>
   <button class="btn btn-primary giftbtn" type="button" id="giftBtn">Free Gift &mdash; free decals, free postage</button>
   <div class="giftbox" id="giftBox" hidden>
     <h3>Your free MannaFish</h3>
@@ -513,7 +526,9 @@ a{color:inherit}
       <label>City<input name="city" required autocomplete="address-level2"></label>
       <label>State and ZIP<input name="state-zip" required autocomplete="postal-code"></label>
       <label class="wide">Which word would you like?<select name="word" id="giftWord"></select></label>
-      <label class="wide chk"><input type="checkbox" name="word-study" value="Yes" checked> Also send me a free word study by email
+      <label>Mobile (for a text devotional)<input name="phone" type="tel" autocomplete="tel"></label>
+      <label class="wide chk"><input type="checkbox" name="word-study" value="Yes" checked> Also send me a free word study by
+        <span class="freq inline"><label><input type="radio" name="send-by" value="Email" checked> Email</label><label><input type="radio" name="send-by" value="Text"> Text</label></span>
         <span class="freq inline"><label><input type="radio" name="how-often" value="Daily"> Daily</label><label><input type="radio" name="how-often" value="Weekly" checked> Weekly</label><label><input type="radio" name="how-often" value="Monthly"> Monthly</label></span></label>
       <button class="btn btn-primary" type="submit">Send my free gift</button>
     </form>
@@ -638,7 +653,12 @@ a{color:inherit}
     <input type="hidden" name="form-name" value="word-study">
     <p style="display:none"><label>Leave this empty <input name="bot-field"></label></p>
     <label for="email" style="position:absolute;left:-9999px">Email address</label>
-    <input id="email" name="email" type="email" placeholder="you@email.com" autocomplete="email" required>
+    <div class="freq" role="radiogroup" aria-label="Send it by">
+      <label><input type="radio" name="send-by" value="Email" checked data-by="email"> Email</label>
+      <label><input type="radio" name="send-by" value="Text" data-by="text"> Text message</label>
+    </div>
+    <input id="email" name="email" type="email" placeholder="you@email.com" autocomplete="email" required data-for="email">
+    <input id="phone" name="phone" type="tel" placeholder="Mobile number" autocomplete="tel" data-for="text" hidden>
     <div class="freq" role="radiogroup" aria-label="How often">
       <label><input type="radio" name="how-often" value="Daily"> Daily</label>
       <label><input type="radio" name="how-often" value="Weekly" checked> Weekly</label>
@@ -951,6 +971,10 @@ a{color:inherit}
     if(navigator.share){navigator.share({title:title,text:title,url:url}).catch(function(){});return;}
     try{navigator.clipboard.writeText(url);$('shareMsg').textContent='Link copied: '+url;}catch(e){$('shareMsg').textContent=url;}
   });
+  // Ken, 4 Oct: "Give option for free text devotional as well as email."
+  document.querySelectorAll('#signup input[name=send-by]').forEach(function(r){r.addEventListener('change',function(){
+    var byText=(r.value==='Text'&&r.checked)||(r.value==='Email'&&!r.checked);
+    $('email').hidden=byText; $('email').required=!byText; $('phone').hidden=!byText; $('phone').required=byText;});});
   var gsel=$('giftWord'); ORDER.forEach(function(k){var o=document.createElement('option');o.value=DATA[k].title;o.textContent=DATA[k].title;gsel.appendChild(o);});
   $('giftBtn').addEventListener('click',function(){var bx=$('giftBox'); bx.hidden=!bx.hidden;
     if(!bx.hidden){gsel.value=DATA[cur].title; bx.scrollIntoView({behavior:'smooth',block:'start'});}});
