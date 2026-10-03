@@ -2,6 +2,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MannaFish</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="MannaFish">
+<meta name="theme-color" content="#000000">
 <meta property="og:title" content="MannaFish — a free word study">
 <meta property="og:description" content="Give a MannaFish, feed him a meal. Teach a man 2 Fish, feed him for life.">
 <meta property="og:image" content="https://yadamannafishtest.netlify.app/w/img/hope.png">
@@ -479,6 +484,10 @@ a{color:inherit}
 /* Ken, 4 Oct: 'Share this word' replaces 'Tap the fish', same size as the Word Study tab */
 .hero .flip-tab.share-tab{top:auto;right:auto;left:12px;bottom:11px}
 .sharerow:empty{display:none}
+
+#dailyBtn{align-self:center}
+.dailymsg{text-align:center;max-width:30em;margin:-8px auto 0;color:var(--foam-dim)}
+.dailymsg:empty{display:none}
 </style>
 
 <div class="mf">
@@ -524,6 +533,8 @@ a{color:inherit}
   <div class="sharerow"><span class="rnote" id="shareMsg"></span></div>
   <div class="twofish-mark"><span class="tf-fish"><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></span> <span class="tf-dash">&mdash;</span> <span class="tf-words">Keep One. Give One.</span></div>
   <button class="btn btn-primary giftbtn" type="button" id="giftBtn">Free Gift, Free Postage</button>
+  <button class="btn btn-ghost" type="button" id="dailyBtn">Daily MannaFish on my phone &mdash; free</button>
+  <p class="rnote dailymsg" id="dailyMsg"></p>
   <div class="giftbox" id="giftBox" hidden>
     <h3>Your free MannaFish</h3>
     <p class="gsub">Free decals and a free gift, posted to you at no cost. Keep one. Give one.</p>
@@ -985,6 +996,38 @@ a{color:inherit}
   document.querySelectorAll('#signup input[name=send-by]').forEach(function(r){r.addEventListener('change',function(){
     var byText=(r.value==='Text'&&r.checked)||(r.value==='Email'&&!r.checked);
     $('email').hidden=byText; $('email').required=!byText; $('phone').hidden=!byText; $('phone').required=byText;});});
+
+  // Ken, 4 Oct: a free daily devotional on the phone, no texting service needed. The phone's
+  // own notification; the site sends it each morning (netlify/functions/push-daily.mjs).
+  (function(){
+    var btn=$('dailyBtn'), msg=$('dailyMsg');
+    var ios=/iPhone|iPad|iPod/.test(navigator.userAgent), standalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+    var can='serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+    if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(function(){});}
+    function b64(u){var p='='.repeat((4-u.length%4)%4),s=(u+p).replace(/-/g,'+').replace(/_/g,'/'),r=atob(s),a=new Uint8Array(r.length);for(var i=0;i<r.length;i++)a[i]=r.charCodeAt(i);return a;}
+    function setOn(on){btn.textContent= on ? 'Stop the daily MannaFish' : 'Daily MannaFish on my phone — free'; btn.dataset.on=on?'1':'';}
+    if(can){navigator.serviceWorker.ready.then(function(r){return r.pushManager.getSubscription();}).then(function(s){setOn(!!s);}).catch(function(){});}
+    btn.addEventListener('click',function(){
+      if(ios && !standalone){msg.innerHTML='On iPhone: tap the <b>Share</b> button, then <b>Add to Home Screen</b>. Open MannaFish from your home screen and tap this again.';return;}
+      if(!can){msg.textContent='This phone or browser can’t take notifications. The free email or text sign-up below will work instead.';return;}
+      if(btn.dataset.on){
+        navigator.serviceWorker.ready.then(function(r){return r.pushManager.getSubscription();}).then(function(s){
+          if(!s) return; return fetch('/api/push-subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'remove',subscription:s.toJSON()})}).then(function(){return s.unsubscribe();});
+        }).then(function(){setOn(false);msg.textContent='Stopped. You won’t get the daily MannaFish any more.';});
+        return;
+      }
+      msg.textContent='One moment…';
+      Notification.requestPermission().then(function(p){
+        if(p!=='granted'){msg.textContent='Notifications are turned off for this site. Turn them on in your phone’s settings, then tap again.';throw 0;}
+        return fetch('/api/push-key').then(function(r){return r.json();});
+      }).then(function(k){
+        return navigator.serviceWorker.ready.then(function(r){return r.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64(k.publicKey)});});
+      }).then(function(s){
+        return fetch('/api/push-subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'add',subscription:s.toJSON()})});
+      }).then(function(r){if(!r.ok) throw 1; setOn(true); msg.textContent='You’re set. A word each morning, Sunday to Friday — Saturday is rest.';})
+        .catch(function(e){if(e!==0) msg.textContent='That didn’t work just now. Please try again in a moment.';});
+    });
+  })();
   var gsel=$('giftWord'); ORDER.forEach(function(k){var o=document.createElement('option');o.value=DATA[k].title;o.textContent=DATA[k].title;gsel.appendChild(o);});
   $('giftBtn').addEventListener('click',function(){var bx=$('giftBox'); bx.hidden=!bx.hidden;
     if(!bx.hidden){gsel.value=DATA[cur].title; bx.scrollIntoView({behavior:'smooth',block:'start'});}});
@@ -1000,6 +1043,7 @@ a{color:inherit}
   });
   pick(cur,false);
   restoreReturn();
+  (function(){var m=location.search.match(/[?&]r=(\d+)/); if(m && DATA[cur].refs[+m[1]]){ $('stage').classList.add('on'); sizeStage(); setTimeout(function(){openReader(cur,+m[1]);},300);} })();
 })();
 
 </script>
