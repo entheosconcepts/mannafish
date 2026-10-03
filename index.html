@@ -469,6 +469,12 @@ a{color:inherit}
 @media(max-width:640px){.twofish-mark{flex-direction:column;align-items:center;gap:6px}.twofish-mark .tf-dash{display:none}}
 .section.reach{padding-top:10px}
 .section.reach > .wrap{padding-top:30px}
+
+/* iPhone Safari let the front's tab and 'Tap the fish' show through the back, mirrored.
+   Each side is hidden outright once the card has turned past it. */
+.hero .face{transition:visibility 0s linear .3s}
+.hero .stage.on .face.front{visibility:hidden}
+.hero .stage:not(.on) .face.back{visibility:hidden}
 </style>
 
 <div class="mf">
