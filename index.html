@@ -440,7 +440,7 @@ a{color:inherit}
 @media(max-width:600px){.netform{grid-template-columns:1fr}}
 
 /* the Word Study tab sits above the fish, never on it */
-.hero .face.front{padding:50px 0 34px;box-sizing:border-box}
+.hero .face.front{padding:30px 0;box-sizing:border-box}
 
 /* centred logo, nothing else in the bar */
 .nav .wrap.navc{justify-content:center}
@@ -499,13 +499,13 @@ a{color:inherit}
     <div class="stage" id="stage" aria-label="Interactive devotional decal, tap to flip">
       <div class="flip" id="flip">
         <div class="face front">
-          <button class="flip-tab" type="button" data-flip>Word Study &#8646;</button>
+          
           
           <span class="ripple" id="ripple" aria-hidden="true"></span>
           <div class="fishbox" id="fishbox"></div>
         </div>
         <div class="face back">
-          <button class="flip-tab" type="button" data-flip>&#8617; The Fish</button>
+          
           <div class="wtitle" id="wTitle">Hope</div>
           <div class="hr"></div>
           <div class="langs">
@@ -835,7 +835,7 @@ a{color:inherit}
   window.addEventListener('pageshow',function(e){if(e.persisted) restoreReturn();});
   // The card is as tall as whichever side is showing: the fish, or the whole study.
   function sizeStage(){var st=$('stage'); if(!st) return; var w=st.clientWidth, fb=$('fishbox');
-    var front=Math.max(w*10/16,(fb?fb.offsetHeight:w/2)+92);
+    var front=Math.max(w*10/16,(fb?fb.offsetHeight:w/2)+60);
     var back=st.querySelector('.face.back'); var bh=back?back.scrollHeight:0;
     st.style.height=(st.classList.contains('on')?Math.max(front,bh):front)+'px';}
   window.addEventListener('resize',sizeStage);
