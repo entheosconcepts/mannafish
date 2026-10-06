@@ -551,6 +551,8 @@ section.section.bundles{display:block;margin-top:0}
 /* stacked offers */
 .offerbtn{align-self:center;min-width:min(320px,100%);justify-content:center}
 #dailyBtn:disabled{opacity:1;cursor:default;border-color:var(--brass);color:#fff}
+
+.rver{display:block;margin-bottom:6px;font-family:'Archivo',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.06em;color:var(--parch-ink);background:transparent;border:1px solid rgba(42,95,176,.45);border-radius:999px;padding:4px 10px;cursor:pointer}
 </style>
 
 <div class="mf">
@@ -777,7 +779,7 @@ section.section.bundles{display:block;margin-top:0}
        display that holds a MannaFish product." -->
   <div class="section-head">
     <span class="eyebrow">Give them away</span>
-    <h2>Ask for a Fish Net.</h2>
+    <h2>Ask for a FishNet.</h2>
     <p>FishNet is the countertop display that holds MannaFish for people to take <b>2 Fish</b> &mdash; <i>keep one, give one</i>. For a church welcome table, a shop counter, an office, an event. Tell us where it would go.</p>
   </div>
   <form class="netform mf-form" name="fish-net" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="fishnetForm">
@@ -787,9 +789,9 @@ section.section.bundles{display:block;margin-top:0}
     <label>Church, business or ministry<input name="organisation"></label>
     <label>Email<input name="email" type="email" required autocomplete="email"></label>
     <label>Phone<input name="phone" type="tel" autocomplete="tel"></label>
-    <label class="wide">Where would the Fish Net go? (address or city)<input name="where"></label>
+    <label class="wide">Where would the FishNet go? (address or city)<input name="where"></label>
     <label class="wide">Anything else we should know?<textarea name="note" rows="3"></textarea></label>
-    <button class="btn btn-primary" type="submit">Ask for a Fish Net</button>
+    <button class="btn btn-primary" type="submit">Ask for a FishNet</button>
   </form>
   <p class="rnote" id="fishnetMsg" style="margin-top:14px;color:var(--foam-dim)"></p>
 </div></section>
@@ -838,7 +840,7 @@ section.section.bundles{display:block;margin-top:0}
 <div class="reader-scrim" id="scrim"></div>
 <aside class="reader" id="reader" aria-hidden="true">
   <div class="reader-top">
-    <div><div class="rk" id="rKicker">Word study</div><div class="rref" id="rRef">Reference</div></div>
+    <div><select class="rver" id="rVer" aria-label="Bible version"></select><div class="rk" id="rKicker">Word study</div><div class="rref" id="rRef">Reference</div></div>
     <span class="rtools"><button class="rmode" id="rMode" type="button"></button><button class="rclose" id="rClose" aria-label="Close">&#215;</button></span>
   </div>
   <div class="reader-body">
@@ -1018,7 +1020,7 @@ section.section.bundles{display:block;margin-top:0}
     if(e.k) h+='<div class="lx"><div class="lx-h">How the King James Bible translates it</div><p>'+esc(e.k)+'</p></div>';
     $('rChapter').innerHTML=h;
     reader.querySelector('.reader-body').scrollTop=0;
-    $('rYouV').style.display='none';
+    $('rYouV').style.display='none'; $('rVer').style.display='none';
     var g=$('rGate'); g.href='https://biblehub.com/'+(gk?'greek':'hebrew')+'/'+n+'.htm'; g.removeAttribute('target');
     g.textContent='Every verse that uses this word (Bible Hub)';
     g.onclick=function(){try{sessionStorage.setItem(RET,JSON.stringify({k:k,y:window.scrollY}));}catch(x){}};
@@ -1026,7 +1028,7 @@ section.section.bundles{display:block;margin-top:0}
     showPanel();
   }
   function openReader(k,i){
-    $('rYouV').style.display=''; var g0=$('rGate'); g0.setAttribute('target','_blank'); g0.textContent='Read the full chapter'; g0.onclick=null;
+    $('rVer').style.display=''; $('rYouV').style.display=''; var g0=$('rGate'); g0.setAttribute('target','_blank'); g0.textContent='Read the full chapter'; g0.onclick=null;
     var d=DATA[k], ref=d.refs[i], p=parseRef(ref[0]);
     $('rKicker').textContent=d.title+' · word study';
     $('rRef').textContent=ref[0];
@@ -1041,8 +1043,27 @@ section.section.bundles{display:block;margin-top:0}
       loadChapter(p);
     }
   }
+  // Ken, 6 Oct: "a little select version button ... so people can change the translation."
+  // Only translations that are free to show in full (public domain, served by bible-api.com).
+  // NIV, ESV, NKJV and the like are copyrighted; the YouVersion button opens those.
+  var VERS=[{k:'kjv',n:'King James Version',s:'KJV',yv:1,bg:'KJV'},
+    {k:'web',n:'World English Bible',s:'WEB',yv:206,bg:'WEB'},
+    {k:'asv',n:'American Standard Version',s:'ASV',yv:12,bg:'ASV'},
+    {k:'ylt',n:'Young\u2019s Literal Translation',s:'YLT',yv:1,bg:'YLT'},
+    {k:'darby',n:'Darby Translation',s:'Darby',yv:1,bg:'DARBY'},
+    {k:'bbe',n:'Bible in Basic English',s:'BBE',yv:1,bg:'KJV'},
+    {k:'dra',n:'Douay-Rheims',s:'Douay-Rheims',yv:1,bg:'DRA'}];
+  var VKEY='mf-bible-version', lastP=null;
+  function curVer(){var k='kjv';try{k=localStorage.getItem(VKEY)||'kjv';}catch(e){} return VERS.filter(function(v){return v.k===k;})[0]||VERS[0];}
+  (function(){var sel=$('rVer'); VERS.forEach(function(v){var o=document.createElement('option');o.value=v.k;o.textContent=v.s;o.title=v.n;sel.appendChild(o);});
+    sel.value=curVer().k;
+    sel.addEventListener('change',function(){try{localStorage.setItem(VKEY,sel.value);}catch(e){} if(lastP) loadChapter(lastP);});})();
+  function setLinks(p){var v=curVer(), code=USFM[p.book]||'';
+    $('rYouV').href = code ? ('https://www.bible.com/bible/'+v.yv+'/'+code+'.'+p.ch+'.'+p.vs) : '#';
+    $('rGate').href = 'https://www.biblegateway.com/passage/?search='+encodeURIComponent(p.book+' '+p.ch)+'&version='+v.bg;}
   function loadChapter(p){
-    var url='https://bible-api.com/'+encodeURIComponent(p.book+' '+p.ch)+'?translation=kjv';
+    lastP=p; setLinks(p); var ver=curVer();
+    var url='https://bible-api.com/'+encodeURIComponent(p.book+' '+p.ch)+'?translation='+ver.k;
     var done=false;
     var t=setTimeout(function(){if(!done){$('rNote').textContent='Full chapter opens on the live site — use the buttons below to read it now.';}},1400);
     fetch(url).then(function(r){return r.json();}).then(function(j){
@@ -1057,7 +1078,7 @@ section.section.bundles{display:block;margin-top:0}
       $('rChapter').innerHTML=html;
       var h=reader.querySelector('.hi'), bd=reader.querySelector('.reader-body');
       if(h&&bd){bd.scrollTop=Math.max(0,h.offsetTop-bd.offsetTop-bd.clientHeight/3);}
-      $('rNote').textContent='King James Version · public domain';
+      $('rNote').textContent=ver.n+' · public domain';
     }).catch(function(){
       done=true;clearTimeout(t);
       $('rNote').textContent='Full chapter opens on the live site — use the buttons below to read it now.';
@@ -1127,7 +1148,7 @@ section.section.bundles{display:block;margin-top:0}
         .then(function(r){ if(r.ok) return r; return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); },
               function(){ return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); })
         .then(function(r){if(!r.ok) throw 0; f.reset();
-          msg.textContent = f.id==='signup' ? 'Thank you \u2014 you\u2019re on the list.' : f.id==='giftForm' ? 'Thank you \u2014 your free MannaFish decals are on their way.' : f.id==='devoForm' ? 'Thank you \u2014 your devotional starts soon.' : 'Thank you \u2014 we\u2019ll be in touch about your Fish Net.';})
+          msg.textContent = f.id==='signup' ? 'Thank you \u2014 you\u2019re on the list.' : f.id==='giftForm' ? 'Thank you \u2014 your free MannaFish decals are on their way.' : f.id==='devoForm' ? 'Thank you \u2014 your devotional starts soon.' : 'Thank you \u2014 we\u2019ll be in touch about your FishNet.';})
         .catch(function(){msg.textContent='That didn\u2019t go through. Please try again in a moment.';});
     });
   });
