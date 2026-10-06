@@ -2,7 +2,7 @@
 // sends the same fields here and they are kept in the site's own Netlify Blobs store,
 // so a free-gift request or a sign-up is never lost.
 import { getStore } from '@netlify/blobs';
-const FORMS = ['free-gift', 'word-study', 'fish-net'];
+const FORMS = ['free-gift', 'devotional', 'word-study', 'fish-net'];
 export default async (req) => {
   if (req.method !== 'POST') return new Response('POST only', { status: 405 });
   let f; try { f = Object.fromEntries(new URLSearchParams(await req.text())); } catch (e) { return new Response('Bad request', { status: 400 }); }

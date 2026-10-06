@@ -530,6 +530,23 @@ a{color:inherit}
 /* The Bundles section shares the class name of an older two-column grid, which pushed
    the whole section into the left column. The section itself is a plain block. */
 section.section.bundles{display:block;margin-top:0}
+
+/* 6 Oct: two offers side by side, each with its own look */
+.offers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;width:100%}
+.offerbtn{font-size:1rem;padding:14px 22px}
+.offerbtn .chev{display:inline-block;transition:transform .2s;margin-left:6px}
+.offerbtn.open .chev{transform:rotate(180deg)}
+.btn-devo{background:transparent;color:#fff;border:1.5px solid #eaf0f0}
+.btn-devo:hover{background:rgba(255,255,255,.08)}
+.devobox{border-color:rgba(234,240,240,.45);background:linear-gradient(165deg,rgba(255,255,255,.05),transparent 70%)}
+.devo-push{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:16px}
+.or{display:flex;align-items:center;gap:10px;width:100%;max-width:420px;color:var(--foam-dim);font-family:'Archivo',sans-serif;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.consent{margin:0;text-align:center;font-family:'Archivo',sans-serif;font-size:.74rem;color:var(--foam-dim)}
+.netform label[hidden]{display:none}
+#devoFormMsg{text-align:center;margin-top:12px;color:var(--foam-dim)}
+#devoFormMsg:empty{display:none}
+@media(max-width:520px){.offers{flex-direction:column;align-items:stretch}.offerbtn{width:100%;justify-content:center}}
 </style>
 
 <div class="mf">
@@ -573,12 +590,16 @@ section.section.bundles{display:block;margin-top:0}
   </div>
 
   <div class="sharerow"><span class="rnote" id="shareMsg"></span></div>
-  <!-- Ken, 6 Oct: a Free Gift tab that opens the 2 Fish section, everything centred. -->
-  <button class="btn btn-primary giftbtn" type="button" id="giftBtn" aria-expanded="false">Free Gift <span class="chev">&#9662;</span></button>
+  <!-- Ken, 6 Oct: two separate offers, side by side: Free Decals (posted) and the Free Daily
+       Devotional (email, text, or a phone notification). Each opens its own panel. -->
+  <div class="offers">
+    <button class="btn btn-primary offerbtn" type="button" id="giftBtn" aria-expanded="false" data-panel="giftBox">Free Decals <span class="chev">&#9662;</span></button>
+    <button class="btn btn-devo offerbtn" type="button" id="devoBtn" aria-expanded="false" data-panel="devoBox">Free Daily Devotional <span class="chev">&#9662;</span></button>
+  </div>
   <div class="giftbox" id="giftBox" hidden>
     <div class="twofish-mark"><span class="tf-fish"><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></span><span class="tf-words">Keep One. Give One.</span></div>
-    <h3>Your free MannaFish</h3>
-    <p class="gsub">Free adhesive decals and a free gift, posted to you at no cost. Keep one. Give one.</p>
+    <h3>Your free MannaFish decals</h3>
+    <p class="gsub">Free adhesive decals, posted to you at no cost. Keep one. Give one.</p>
     <form class="netform mf-form" name="free-gift" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="giftForm">
       <input type="hidden" name="form-name" value="free-gift">
       <p style="display:none"><label>Leave this empty <input name="bot-field"></label></p>
@@ -588,16 +609,33 @@ section.section.bundles{display:block;margin-top:0}
       <label>City<input name="city" required autocomplete="address-level2"></label>
       <label>State and ZIP<input name="state-zip" required autocomplete="postal-code"></label>
       <label class="wide">Which word would you like?<select name="word" id="giftWord"></select></label>
-      <label>Mobile (for a text devotional)<input name="phone" type="tel" autocomplete="tel"></label>
-      <div class="wide chkrow"><label class="chkline"><input type="checkbox" name="word-study" value="Yes" checked> Send me the MannaFish devotional word study by</label>
-        <span class="freq inline"><label><input type="radio" name="send-by" value="Email" checked> Email</label><label><input type="radio" name="send-by" value="Text"> Text</label></span>
-        <span class="freq inline"><label><input type="radio" name="how-often" value="Daily"> Daily</label><label><input type="radio" name="how-often" value="Weekly" checked> Weekly</label><label><input type="radio" name="how-often" value="Monthly"> Monthly</label></span></div>
-      <button class="btn btn-primary giftsend" type="submit">Free Adhesive Decals</button>
+      <button class="btn btn-primary giftsend" type="submit">Send My Free Decals</button>
     </form>
     <p class="rnote" id="giftFormMsg"></p>
   </div>
-  <button class="btn btn-ghost" type="button" id="dailyBtn">Daily MannaFish on my phone &mdash; free</button>
-  <p class="rnote dailymsg" id="dailyMsg"></p>
+  <div class="giftbox devobox" id="devoBox" hidden>
+    <h3>The MannaFish devotional, free</h3>
+    <p class="gsub">One word of God, its Greek and Hebrew, and a verse to trace it. Sunday to Friday; Saturday is rest.</p>
+    <div class="devo-push">
+      <button class="btn btn-ghost" type="button" id="dailyBtn">Daily MannaFish on my phone &mdash; free</button>
+      <p class="rnote dailymsg" id="dailyMsg"></p>
+      <div class="or"><span>or by email or text</span></div>
+    </div>
+    <form class="netform mf-form" name="devotional" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="devoForm">
+      <input type="hidden" name="form-name" value="devotional">
+      <p style="display:none"><label>Leave this empty <input name="bot-field"></label></p>
+      <div class="wide chkrow">
+        <span class="freq inline"><label><input type="radio" name="send-by" value="Email" checked> Email</label><label><input type="radio" name="send-by" value="Text"> Text message</label></span>
+        <span class="freq inline"><label><input type="radio" name="how-often" value="Daily" checked> Daily</label><label><input type="radio" name="how-often" value="Weekly"> Weekly</label><label><input type="radio" name="how-often" value="Monthly"> Monthly</label></span>
+      </div>
+      <label>Your name<input name="name" autocomplete="name"></label>
+      <label id="devoEmailL">Email<input name="email" type="email" autocomplete="email" required></label>
+      <label id="devoPhoneL" hidden>Mobile<input name="phone" type="tel" autocomplete="tel"></label>
+      <p class="wide consent">Free. Reply STOP to any text to stop. Msg &amp; data rates may apply.</p>
+      <button class="btn btn-devo giftsend" type="submit">Send Me the Devotional</button>
+    </form>
+    <p class="rnote" id="devoFormMsg"></p>
+  </div>
   <div id="readerSlot"></div>
 </div></section>
 
@@ -1072,18 +1110,27 @@ section.section.bundles{display:block;margin-top:0}
     });
   })();
   var gsel=$('giftWord'); ORDER.forEach(function(k){var o=document.createElement('option');o.value=DATA[k].title;o.textContent=DATA[k].title;gsel.appendChild(o);});
-  $('giftBtn').addEventListener('click',function(){var bx=$('giftBox'); bx.hidden=!bx.hidden; this.setAttribute('aria-expanded',String(!bx.hidden)); this.classList.toggle('open',!bx.hidden);
-    if(!bx.hidden){gsel.value=DATA[cur].title; bx.scrollIntoView({behavior:'smooth',block:'start'});}});
+  document.querySelectorAll('.offerbtn').forEach(function(btn){btn.addEventListener('click',function(){
+    var me=$(btn.dataset.panel), opening=me.hidden;
+    document.querySelectorAll('.offerbtn').forEach(function(o){$(o.dataset.panel).hidden=true;o.classList.remove('open');o.setAttribute('aria-expanded','false');});
+    if(opening){me.hidden=false;btn.classList.add('open');btn.setAttribute('aria-expanded','true');
+      if(me.id==='giftBox') gsel.value=DATA[cur].title;
+      me.scrollIntoView({behavior:'smooth',block:'start'});}
+  });});
+  document.querySelectorAll('#devoForm input[name=send-by]').forEach(function(r){r.addEventListener('change',function(){
+    var t=document.querySelector('#devoForm input[name=send-by]:checked').value==='Text';
+    $('devoEmailL').hidden=t; $('devoEmailL').querySelector('input').required=!t;
+    $('devoPhoneL').hidden=!t; $('devoPhoneL').querySelector('input').required=t;});});
   // Netlify Forms, sent in the background so the page does not jump away
   document.querySelectorAll('form.mf-form').forEach(function(f){
     f.addEventListener('submit',function(e){e.preventDefault();
-      var msg=$(f.id==='signup'?'signupMsg':(f.id==='giftForm'?'giftFormMsg':'fishnetMsg'));
+      var msg=$({signup:'signupMsg',giftForm:'giftFormMsg',devoForm:'devoFormMsg'}[f.id]||'fishnetMsg');
       var body=new URLSearchParams(new FormData(f)).toString(), H={'Content-Type':'application/x-www-form-urlencoded'};
       fetch('/',{method:'POST',headers:H,body:body})
         .then(function(r){ if(r.ok) return r; return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); },
               function(){ return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); })
         .then(function(r){if(!r.ok) throw 0; f.reset();
-          msg.textContent = f.id==='signup' ? 'Thank you \u2014 you\u2019re on the list.' : f.id==='giftForm' ? 'Thank you \u2014 your free MannaFish is on its way.' : 'Thank you \u2014 we\u2019ll be in touch about your Fish Net.';})
+          msg.textContent = f.id==='signup' ? 'Thank you \u2014 you\u2019re on the list.' : f.id==='giftForm' ? 'Thank you \u2014 your free MannaFish decals are on their way.' : f.id==='devoForm' ? 'Thank you \u2014 your devotional starts soon.' : 'Thank you \u2014 we\u2019ll be in touch about your Fish Net.';})
         .catch(function(){msg.textContent='That didn\u2019t go through. Please try again in a moment.';});
     });
   });
