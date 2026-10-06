@@ -547,6 +547,10 @@ section.section.bundles{display:block;margin-top:0}
 #devoFormMsg{text-align:center;margin-top:12px;color:var(--foam-dim)}
 #devoFormMsg:empty{display:none}
 @media(max-width:520px){.offers{flex-direction:column;align-items:stretch}.offerbtn{width:100%;justify-content:center}}
+
+/* stacked offers */
+.offerbtn{align-self:center;min-width:min(320px,100%);justify-content:center}
+#dailyBtn:disabled{opacity:1;cursor:default;border-color:var(--brass);color:#fff}
 </style>
 
 <div class="mf">
@@ -590,29 +594,8 @@ section.section.bundles{display:block;margin-top:0}
   </div>
 
   <div class="sharerow"><span class="rnote" id="shareMsg"></span></div>
-  <!-- Ken, 6 Oct: two separate offers, side by side: Free Decals (posted) and the Free Daily
-       Devotional (email, text, or a phone notification). Each opens its own panel. -->
-  <div class="offers">
-    <button class="btn btn-primary offerbtn" type="button" id="giftBtn" aria-expanded="false" data-panel="giftBox">Free Decals <span class="chev">&#9662;</span></button>
-    <button class="btn btn-devo offerbtn" type="button" id="devoBtn" aria-expanded="false" data-panel="devoBox">Free Daily Devotional <span class="chev">&#9662;</span></button>
-  </div>
-  <div class="giftbox" id="giftBox" hidden>
-    <div class="twofish-mark"><span class="tf-fish"><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></span><span class="tf-words">Keep One. Give One.</span></div>
-    <h3>Your free MannaFish decals</h3>
-    <p class="gsub">Free adhesive decals, posted to you at no cost. Keep one. Give one.</p>
-    <form class="netform mf-form" name="free-gift" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="giftForm">
-      <input type="hidden" name="form-name" value="free-gift">
-      <p style="display:none"><label>Leave this empty <input name="bot-field"></label></p>
-      <label>Your name<input name="name" required autocomplete="name"></label>
-      <label>Email<input name="email" type="email" required autocomplete="email"></label>
-      <label class="wide">Street address<input name="street" required autocomplete="street-address"></label>
-      <label>City<input name="city" required autocomplete="address-level2"></label>
-      <label>State and ZIP<input name="state-zip" required autocomplete="postal-code"></label>
-      <label class="wide">Which word would you like?<select name="word" id="giftWord"></select></label>
-      <button class="btn btn-primary giftsend" type="submit">Send My Free Decals</button>
-    </form>
-    <p class="rnote" id="giftFormMsg"></p>
-  </div>
+  <!-- Ken, 6 Oct: stacked. The free devotional first, the free decals under it. -->
+  <button class="btn btn-devo offerbtn" type="button" id="devoBtn" aria-expanded="false" data-panel="devoBox">Free Daily Devotional <span class="chev">&#9662;</span></button>
   <div class="giftbox devobox" id="devoBox" hidden>
     <h3>The MannaFish devotional, free</h3>
     <p class="gsub">One word of God, its Greek and Hebrew, and a verse to trace it. Sunday to Friday; Saturday is rest.</p>
@@ -635,6 +618,24 @@ section.section.bundles{display:block;margin-top:0}
       <button class="btn btn-devo giftsend" type="submit">Send Me the Devotional</button>
     </form>
     <p class="rnote" id="devoFormMsg"></p>
+  </div>
+  <button class="btn btn-primary offerbtn" type="button" id="giftBtn" aria-expanded="false" data-panel="giftBox">Free Decals <span class="chev">&#9662;</span></button>
+  <div class="giftbox" id="giftBox" hidden>
+    <div class="twofish-mark"><span class="tf-fish"><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></span><span class="tf-words">Keep One. Give One.</span></div>
+    <h3>Your free MannaFish decals</h3>
+    <p class="gsub">Free adhesive decals, posted to you at no cost. Keep one. Give one.</p>
+    <form class="netform mf-form" name="free-gift" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="giftForm">
+      <input type="hidden" name="form-name" value="free-gift">
+      <p style="display:none"><label>Leave this empty <input name="bot-field"></label></p>
+      <label>Your name<input name="name" required autocomplete="name"></label>
+      <label>Email<input name="email" type="email" required autocomplete="email"></label>
+      <label class="wide">Street address<input name="street" required autocomplete="street-address"></label>
+      <label>City<input name="city" required autocomplete="address-level2"></label>
+      <label>State and ZIP<input name="state-zip" required autocomplete="postal-code"></label>
+      <label class="wide">Which word would you like?<select name="word" id="giftWord"></select></label>
+      <button class="btn btn-primary giftsend" type="submit">Send My Free Decals</button>
+    </form>
+    <p class="rnote" id="giftFormMsg"></p>
   </div>
   <div id="readerSlot"></div>
 </div></section>
@@ -1086,17 +1087,13 @@ section.section.bundles{display:block;margin-top:0}
     var can='serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
     if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(function(){});}
     function b64(u){var p='='.repeat((4-u.length%4)%4),s=(u+p).replace(/-/g,'+').replace(/_/g,'/'),r=atob(s),a=new Uint8Array(r.length);for(var i=0;i<r.length;i++)a[i]=r.charCodeAt(i);return a;}
-    function setOn(on){btn.textContent= on ? 'Stop the daily MannaFish' : 'Daily MannaFish on my phone — free'; btn.dataset.on=on?'1':'';}
+    // Ken, 6 Oct: no stop button here. To stop, they turn notifications off on the phone.
+    function setOn(on){btn.textContent= on ? '✓ Daily MannaFish is on' : 'Daily MannaFish on my phone — free'; btn.dataset.on=on?'1':''; btn.disabled=!!on;}
     if(can){navigator.serviceWorker.ready.then(function(r){return r.pushManager.getSubscription();}).then(function(s){setOn(!!s);}).catch(function(){});}
     btn.addEventListener('click',function(){
       if(ios && !standalone){msg.innerHTML='On iPhone: tap the <b>Share</b> button, then <b>Add to Home Screen</b>. Open MannaFish from your home screen and tap this again.';return;}
       if(!can){msg.textContent='This phone or browser can’t take notifications. The free email or text sign-up below will work instead.';return;}
-      if(btn.dataset.on){
-        navigator.serviceWorker.ready.then(function(r){return r.pushManager.getSubscription();}).then(function(s){
-          if(!s) return; return fetch('/api/push-subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'remove',subscription:s.toJSON()})}).then(function(){return s.unsubscribe();});
-        }).then(function(){setOn(false);msg.textContent='Stopped. You won’t get the daily MannaFish any more.';});
-        return;
-      }
+      if(btn.dataset.on) return;
       msg.textContent='One moment…';
       Notification.requestPermission().then(function(p){
         if(p!=='granted'){msg.textContent='Notifications are turned off for this site. Turn them on in your phone’s settings, then tap again.';throw 0;}
@@ -1112,8 +1109,8 @@ section.section.bundles{display:block;margin-top:0}
   var gsel=$('giftWord'); ORDER.forEach(function(k){var o=document.createElement('option');o.value=DATA[k].title;o.textContent=DATA[k].title;gsel.appendChild(o);});
   document.querySelectorAll('.offerbtn').forEach(function(btn){btn.addEventListener('click',function(){
     var me=$(btn.dataset.panel), opening=me.hidden;
-    document.querySelectorAll('.offerbtn').forEach(function(o){$(o.dataset.panel).hidden=true;o.classList.remove('open');o.setAttribute('aria-expanded','false');});
-    if(opening){me.hidden=false;btn.classList.add('open');btn.setAttribute('aria-expanded','true');
+    me.hidden=!opening; btn.classList.toggle('open',opening); btn.setAttribute('aria-expanded',String(opening));
+    if(opening){
       if(me.id==='giftBox') gsel.value=DATA[cur].title;
       me.scrollIntoView({behavior:'smooth',block:'start'});}
   });});
