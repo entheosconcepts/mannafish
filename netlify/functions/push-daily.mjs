@@ -1,11 +1,9 @@
-// Every morning: today's word and verse to every phone that asked for it.
-// 11:00 UTC is 7am in Wilmington in summer, 6am in winter.
-import { todaysManna, notificationFor } from './lib/manna.mjs';
-import { sendAll } from './lib/push.mjs';
+// Every hour: today's word and verse to each phone where it has just turned 7am.
+// (Ken, 6 Oct: "7am in their own time zone.") Each person gets it once a day; anyone
+// who signed up after 7am gets that day's word on the next hourly run.
+import { sendDue } from './lib/push.mjs';
 export default async () => {
-  const m = todaysManna();
-  if (!m) { console.log('Saturday: rest, nothing sent'); return; }
-  const r = await sendAll(notificationFor(m));
-  console.log('daily MannaFish', m.key, m.ref, JSON.stringify(r));
+  const r = await sendDue();
+  console.log('daily MannaFish', JSON.stringify(r));
 };
-export const config = { schedule: '0 11 * * *' };
+export const config = { schedule: '5 * * * *' };

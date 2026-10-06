@@ -607,7 +607,7 @@ section.section.bundles{display:block;margin-top:0}
       <div class="or"><span>or by email or text</span></div>
     </div>
     <form class="netform mf-form" name="devotional" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="devoForm">
-      <input type="hidden" name="form-name" value="devotional">
+      <input type="hidden" name="form-name" value="devotional"><input type="hidden" name="time-zone" class="tzfield">
       <p style="display:none"><label>Leave this empty <input name="bot-field"></label></p>
       <div class="wide chkrow">
         <span class="freq inline"><label><input type="radio" name="send-by" value="Email" checked> Email</label><label><input type="radio" name="send-by" value="Text"> Text message</label></span>
@@ -627,7 +627,7 @@ section.section.bundles{display:block;margin-top:0}
     <h3>Your free MannaFish decals</h3>
     <p class="gsub">Free adhesive decals, posted to you at no cost. Keep one. Give one.</p>
     <form class="netform mf-form" name="free-gift" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="giftForm">
-      <input type="hidden" name="form-name" value="free-gift">
+      <input type="hidden" name="form-name" value="free-gift"><input type="hidden" name="time-zone" class="tzfield">
       <p style="display:none"><label>Leave this empty <input name="bot-field"></label></p>
       <label>Your name<input name="name" required autocomplete="name"></label>
       <label>Email<input name="email" type="email" required autocomplete="email"></label>
@@ -755,7 +755,7 @@ section.section.bundles{display:block;margin-top:0}
   <p>One word of God, its Greek and Hebrew, and twelve verses to trace it. Gather enough for yourself, and enough to give away.</p>
   <!-- Netlify Forms: entries show under Forms in the Netlify dashboard, and can email Ken. -->
   <form class="form mf-form" name="word-study" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="signup">
-    <input type="hidden" name="form-name" value="word-study">
+    <input type="hidden" name="form-name" value="word-study"><input type="hidden" name="time-zone" class="tzfield">
     <p style="display:none"><label>Leave this empty <input name="bot-field"></label></p>
     <label for="email" style="position:absolute;left:-9999px">Email address</label>
     <div class="freq" role="radiogroup" aria-label="Send it by">
@@ -1122,11 +1122,12 @@ section.section.bundles{display:block;margin-top:0}
       }).then(function(k){
         return navigator.serviceWorker.ready.then(function(r){return r.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64(k.publicKey)});});
       }).then(function(s){
-        return fetch('/api/push-subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'add',subscription:s.toJSON()})});
-      }).then(function(r){if(!r.ok) throw 1; setOn(true); msg.textContent='You’re set. A word each morning, Sunday to Friday — Saturday is rest.';})
+        return fetch('/api/push-subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'add',subscription:s.toJSON(),tz:(Intl.DateTimeFormat().resolvedOptions().timeZone||'')})});
+      }).then(function(r){if(!r.ok) throw 1; setOn(true); msg.textContent='You’re set. A word at 7am your time, Sunday to Friday — Saturday is rest.';})
         .catch(function(e){if(e!==0) msg.textContent='That didn’t work just now. Please try again in a moment.';});
     });
   })();
+  document.querySelectorAll('.tzfield').forEach(function(i){try{i.value=Intl.DateTimeFormat().resolvedOptions().timeZone||'';}catch(e){}});
   var gsel=$('giftWord'); ORDER.forEach(function(k){var o=document.createElement('option');o.value=DATA[k].title;o.textContent=DATA[k].title;gsel.appendChild(o);});
   document.querySelectorAll('.offerbtn').forEach(function(btn){btn.addEventListener('click',function(){
     var me=$(btn.dataset.panel), opening=me.hidden;

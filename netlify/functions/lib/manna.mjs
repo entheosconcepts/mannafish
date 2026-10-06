@@ -5,18 +5,26 @@ import WORDS from './words.json';
 
 export const START = Date.UTC(2026, 9, 4); // Sunday 4 Oct 2026
 
-// Today's date in Wilmington, as a UTC midnight timestamp, and its weekday (0 = Sunday).
-export function easternToday(now = new Date()) {
-  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', {
-    timeZone: 'America/New_York', year: 'numeric', month: 'numeric', day: 'numeric'
-  }).formatToParts(now).map(x => [x.type, x.value]));
-  const t = Date.UTC(+p.year, +p.month - 1, +p.day);
-  return { t, dow: new Date(t).getUTCDay() };
+export const DEFAULT_TZ = 'America/New_York';
+export const SEND_HOUR = 7;   // 7am in each person's own time zone (Ken, 6 Oct)
+
+export function validTz(tz) {
+  try { new Intl.DateTimeFormat('en-US', { timeZone: tz }); return !!tz; } catch (e) { return false; }
 }
 
-// What goes out on a given day, or null on the Sabbath.
-export function todaysManna(now = new Date()) {
-  const { t, dow } = easternToday(now);
+// The date and hour where the person is: date as a UTC-midnight timestamp, weekday 0 = Sunday.
+export function localNow(now = new Date(), tz = DEFAULT_TZ) {
+  if (!validTz(tz)) tz = DEFAULT_TZ;
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', {
+    timeZone: tz, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', hourCycle: 'h23'
+  }).formatToParts(now).map(x => [x.type, x.value]));
+  const t = Date.UTC(+p.year, +p.month - 1, +p.day);
+  return { t, dow: new Date(t).getUTCDay(), hour: +p.hour, date: new Date(t).toISOString().slice(0, 10) };
+}
+
+// What goes out on a given day where the person is, or null on the Sabbath.
+export function todaysManna(now = new Date(), tz = DEFAULT_TZ) {
+  const { t, dow } = localNow(now, tz);
   if (dow === 6) return null;
   const days = Math.floor((t - START) / 86400000);
   const week = Math.floor(days / 7);
