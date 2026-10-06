@@ -557,6 +557,8 @@ section.section.bundles{display:block;margin-top:0}
 /* the version picker sits under 'Show under the fish' */
 .rstack{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .rstack .rver{margin:0}
+
+.rhint{margin:0 0 -4px;text-align:center;font-family:'Archivo',sans-serif;font-size:.74rem;color:var(--parch-dim)}
 </style>
 
 <div class="mf">
@@ -852,7 +854,8 @@ section.section.bundles{display:block;margin-top:0}
     <div class="chapter" id="rChapter"></div>
   </div>
   <div class="reader-actions">
-    <a class="rbtn p" id="rYouV" target="_blank" rel="noopener">Open in the Bible app (YouVersion)</a>
+    <p class="rhint" id="rYouVHint">Click on the Bible App button for more versions</p>
+    <a class="rbtn p" id="rYouV" target="_blank" rel="noopener">Bible App</a>
     <a class="rbtn s" id="rGate" target="_blank" rel="noopener">Read the full chapter</a>
     <div class="rnote" id="rNote"></div>
   </div>
@@ -1024,7 +1027,7 @@ section.section.bundles{display:block;margin-top:0}
     if(e.k) h+='<div class="lx"><div class="lx-h">How the King James Bible translates it</div><p>'+esc(e.k)+'</p></div>';
     $('rChapter').innerHTML=h;
     reader.querySelector('.reader-body').scrollTop=0;
-    $('rYouV').style.display='none'; $('rVer').style.display='none';
+    $('rYouV').style.display='none'; $('rVer').style.display='none'; $('rYouVHint').style.display='none';
     var g=$('rGate'); g.href='https://biblehub.com/'+(gk?'greek':'hebrew')+'/'+n+'.htm'; g.removeAttribute('target');
     g.textContent='Every verse that uses this word (Bible Hub)';
     g.onclick=function(){try{sessionStorage.setItem(RET,JSON.stringify({k:k,y:window.scrollY}));}catch(x){}};
@@ -1032,7 +1035,7 @@ section.section.bundles{display:block;margin-top:0}
     showPanel();
   }
   function openReader(k,i){
-    $('rVer').style.display=''; $('rYouV').style.display=''; var g0=$('rGate'); g0.setAttribute('target','_blank'); g0.textContent='Read the full chapter'; g0.onclick=null;
+    $('rVer').style.display=''; $('rYouV').style.display=''; $('rYouVHint').style.display=''; var g0=$('rGate'); g0.setAttribute('target','_blank'); g0.textContent='Read the full chapter'; g0.onclick=null;
     var d=DATA[k], ref=d.refs[i], p=parseRef(ref[0]);
     $('rKicker').textContent=d.title+' · word study';
     $('rRef').textContent=ref[0];
