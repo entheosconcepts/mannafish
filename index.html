@@ -488,6 +488,44 @@ a{color:inherit}
 #dailyBtn{align-self:center}
 .dailymsg{text-align:center;max-width:30em;margin:-8px auto 0;color:var(--foam-dim)}
 .dailymsg:empty{display:none}
+
+/* 6 Oct: Free Gift tab opens the 2 Fish section; centred everywhere below the fish */
+.giftbtn .chev{display:inline-block;transition:transform .2s;margin-left:6px}
+.giftbtn.open .chev{transform:rotate(180deg)}
+.twofish-mark{flex-direction:column !important;align-items:center;gap:6px !important;margin:0 0 10px}
+.twofish-mark .tf-dash{display:none}
+.giftbox{text-align:center}
+.giftbox h3{margin-top:4px}
+.giftbox .gsub{margin:6px auto 0;max-width:30em}
+.giftbox .netform{margin-inline:auto;text-align:left}
+.giftbox .chkrow{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;font-family:'Archivo',sans-serif;font-size:.9rem;color:var(--foam-dim)}
+.giftbox .chkline{flex-direction:row !important;align-items:center;gap:8px;justify-content:center}
+.giftbox .chkline input{width:auto}
+.giftbox .chkrow .freq.inline{justify-content:center;width:100%}
+.giftbox .giftsend{justify-self:center;grid-column:1/-1}
+#giftFormMsg{text-align:center;margin-top:12px;color:var(--foam-dim)}
+#giftFormMsg:empty{display:none}
+/* centre the sections below */
+.section-head{margin-inline:auto;text-align:center}
+.section-head p{margin-inline:auto}
+.reach-chosen,.explore-note{text-align:center}
+.story .wrap>.eyebrow,.story h2{display:block;text-align:center;margin-inline:auto}
+.story-grid,.story-grid p{text-align:center;margin-inline:auto}
+.twofish .tf,.bene,.min,.tier,.card,.bundle{text-align:center}
+.bene{align-items:center}
+.tier .badge{align-self:center}
+.invite-copy{text-align:center}
+.prod-head,.shop-quiet .qhead{flex-direction:column;align-items:center;text-align:center}
+.shop-quiet .sub{margin-inline:auto;text-align:center}
+.cta-row{justify-content:center}
+.brandmeaning .col{text-align:center}
+.signup .freq{justify-content:center}
+.netform:not(.giftbox .netform){margin-inline:auto}
+.fishnet .netform button{justify-self:center;grid-column:1/-1}
+#fishnetMsg,#signupMsg{text-align:center}
+.foot .wrap{flex-direction:column;align-items:center;text-align:center}
+.foot .fl{align-items:center}
+.copy .wrap{justify-content:center;text-align:center}
 </style>
 
 <div class="mf">
@@ -531,13 +569,12 @@ a{color:inherit}
   </div>
 
   <div class="sharerow"><span class="rnote" id="shareMsg"></span></div>
-  <div class="twofish-mark"><span class="tf-fish"><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></span> <span class="tf-dash">&mdash;</span> <span class="tf-words">Keep One. Give One.</span></div>
-  <button class="btn btn-primary giftbtn" type="button" id="giftBtn">Free Gift, Free Postage</button>
-  <button class="btn btn-ghost" type="button" id="dailyBtn">Daily MannaFish on my phone &mdash; free</button>
-  <p class="rnote dailymsg" id="dailyMsg"></p>
+  <!-- Ken, 6 Oct: a Free Gift tab that opens the 2 Fish section, everything centred. -->
+  <button class="btn btn-primary giftbtn" type="button" id="giftBtn" aria-expanded="false">Free Gift <span class="chev">&#9662;</span></button>
   <div class="giftbox" id="giftBox" hidden>
+    <div class="twofish-mark"><span class="tf-fish"><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></span><span class="tf-words">Keep One. Give One.</span></div>
     <h3>Your free MannaFish</h3>
-    <p class="gsub">Free decals and a free gift, posted to you at no cost. Keep one. Give one.</p>
+    <p class="gsub">Free adhesive decals and a free gift, posted to you at no cost. Keep one. Give one.</p>
     <form class="netform mf-form" name="free-gift" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="giftForm">
       <input type="hidden" name="form-name" value="free-gift">
       <p style="display:none"><label>Leave this empty <input name="bot-field"></label></p>
@@ -548,13 +585,15 @@ a{color:inherit}
       <label>State and ZIP<input name="state-zip" required autocomplete="postal-code"></label>
       <label class="wide">Which word would you like?<select name="word" id="giftWord"></select></label>
       <label>Mobile (for a text devotional)<input name="phone" type="tel" autocomplete="tel"></label>
-      <label class="wide chk"><input type="checkbox" name="word-study" value="Yes" checked> Send me the MannaFish devotional word study by
+      <div class="wide chkrow"><label class="chkline"><input type="checkbox" name="word-study" value="Yes" checked> Send me the MannaFish devotional word study by</label>
         <span class="freq inline"><label><input type="radio" name="send-by" value="Email" checked> Email</label><label><input type="radio" name="send-by" value="Text"> Text</label></span>
-        <span class="freq inline"><label><input type="radio" name="how-often" value="Daily"> Daily</label><label><input type="radio" name="how-often" value="Weekly" checked> Weekly</label><label><input type="radio" name="how-often" value="Monthly"> Monthly</label></span></label>
-      <button class="btn btn-primary" type="submit">Send my free gift</button>
+        <span class="freq inline"><label><input type="radio" name="how-often" value="Daily"> Daily</label><label><input type="radio" name="how-often" value="Weekly" checked> Weekly</label><label><input type="radio" name="how-often" value="Monthly"> Monthly</label></span></div>
+      <button class="btn btn-primary giftsend" type="submit">Free Adhesive Decals</button>
     </form>
-    <p class="rnote" id="giftFormMsg" style="margin-top:12px;color:var(--foam-dim)"></p>
+    <p class="rnote" id="giftFormMsg"></p>
   </div>
+  <button class="btn btn-ghost" type="button" id="dailyBtn">Daily MannaFish on my phone &mdash; free</button>
+  <p class="rnote dailymsg" id="dailyMsg"></p>
   <div id="readerSlot"></div>
 </div></section>
 
@@ -1029,13 +1068,16 @@ a{color:inherit}
     });
   })();
   var gsel=$('giftWord'); ORDER.forEach(function(k){var o=document.createElement('option');o.value=DATA[k].title;o.textContent=DATA[k].title;gsel.appendChild(o);});
-  $('giftBtn').addEventListener('click',function(){var bx=$('giftBox'); bx.hidden=!bx.hidden;
+  $('giftBtn').addEventListener('click',function(){var bx=$('giftBox'); bx.hidden=!bx.hidden; this.setAttribute('aria-expanded',String(!bx.hidden)); this.classList.toggle('open',!bx.hidden);
     if(!bx.hidden){gsel.value=DATA[cur].title; bx.scrollIntoView({behavior:'smooth',block:'start'});}});
   // Netlify Forms, sent in the background so the page does not jump away
   document.querySelectorAll('form.mf-form').forEach(function(f){
     f.addEventListener('submit',function(e){e.preventDefault();
       var msg=$(f.id==='signup'?'signupMsg':(f.id==='giftForm'?'giftFormMsg':'fishnetMsg'));
-      fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()})
+      var body=new URLSearchParams(new FormData(f)).toString(), H={'Content-Type':'application/x-www-form-urlencoded'};
+      fetch('/',{method:'POST',headers:H,body:body})
+        .then(function(r){ if(r.ok) return r; return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); },
+              function(){ return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); })
         .then(function(r){if(!r.ok) throw 0; f.reset();
           msg.textContent = f.id==='signup' ? 'Thank you \u2014 you\u2019re on the list.' : f.id==='giftForm' ? 'Thank you \u2014 your free MannaFish is on its way.' : 'Thank you \u2014 we\u2019ll be in touch about your Fish Net.';})
         .catch(function(){msg.textContent='That didn\u2019t go through. Please try again in a moment.';});
