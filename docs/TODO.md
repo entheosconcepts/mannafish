@@ -50,31 +50,29 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [ ] **Speaker icon on the fish itself** (Ken, 7 Oct): a small speaker on each fish, including each one in the side-by-side language view, that speaks in that fish's own language. The listener chooses: just the **one word** in the middle, or the **whole verse**. Needs a natural voice for each language (Tagalog, Chinese, Hindi, Greek as well as English and Spanish), and a fluent listener to check each one.
 
 ### MannaFish Devotional accounts (website first, no app yet)
-Next steps, in order:
-1. [ ] **Ken:** make a free Supabase project just for MannaFish (not Majestic's), signed up with Ken@Manna-Fish.com. Send Claude the project URL and the "anon" public key (both are safe to share; the secret service key stays in Netlify only).
-2. [ ] Claude: sign-in by email code (no passwords), and a "My MannaFish" page.
-3. [ ] Claude: tables for notes, highlights, recent activity and decal orders, each locked so a person only ever sees their own.
-4. [ ] Claude: move device notes into the account; show order history from the Free Decals form (matched by email).
-5. [ ] Privacy page, and "Download my data" and "Delete my account" buttons.
-Sign in with email (a one-time code or link, no password to forget). Free.
-The tools devotional readers use most, roughly most-requested first:
-- [ ] Save highlights in colours, on any verse
-- [ ] Notes / journal on a verse or a day's word
-- [ ] Bookmarks and favourites
-- [ ] Recent activity: words read, verses opened, notes written
-- [ ] Reading streak and gentle reminders (choose the time)
-- [ ] Reading plans (the 24-word, 2-week rhythm is the first plan)
-- [ ] Prayer list, with "answered" marks
-- [ ] Memory verses with simple flash cards
-- [ ] Share a verse as an image (the fish as the picture)
-- [ ] Pick a Bible version and language, remembered
-- [ ] Search the Bible
-- [ ] Listen (audio Bible where the version allows it)
-- [ ] Small groups: share a word or note with friends or a church group
-- [ ] Download or export my notes
-- [ ] Delete my account and everything in it
+**Decided 7 Oct:** use Ken's existing **Yadah** Supabase project (the free plan allows only 2 projects; the other is Scripture That Sticks). One sign-in works across all the Yadah ministry sites; every row is labelled with its site, and each person sees only their own.
 
-Needs: a separate database for MannaFish (not Majestic's), a privacy page, and a way to export or delete a user's data.
+Built to last (so a no-fish scripture design, or a new product, needs no rebuild):
+- Words and verses are stored on their own (by word key and verse, e.g. HOPE, Psalm 42:5), not tied to the fish picture.
+- A **design** is one way of showing a word: its style (fish, plain scripture, or anything new), language and Bible version.
+- Notes, highlights and recent activity attach to the **verse**, so they stay when designs change.
+- Orders list design, language and quantity, so a fish decal and a plain scripture decal can share one order.
+- Table names are general (sites, words, designs, orders, notes, highlights, activity); nothing says "fish".
+- Later: decide whether Scripture That Sticks moves in too (only if it serves the same people), which frees the second free slot.
+
+What Claude needs from the Yadah project:
+1. [ ] **Ken:** the Project URL and the public key (Project Settings → API Keys: "publishable" or "anon public"). Safe to share.
+2. [ ] **Ken:** the secret key (or "service_role") goes **only** into Netlify → Environment variables as `SUPABASE_SECRET_KEY`. Never send it to anyone.
+3. [ ] **Ken:** a screenshot of the Table Editor list, so nothing already in Yadah gets touched.
+4. [ ] **Ken:** Authentication → URL Configuration: add https://manna-fish.com and https://yadamannafishtest.netlify.app.
+5. [ ] **Ken:** paste the SQL file Claude writes into the SQL Editor and press Run (creates the tables and the privacy locks).
+6. [ ] Sign-in emails: Supabase's own sender only allows a few emails an hour, so connect Brevo (the same account as the devotional emails) under Authentication → SMTP Settings.
+
+Then Claude builds, in order:
+1. [ ] Sign-in by email code (no passwords) and a "My MannaFish" page.
+2. [ ] Notes, highlights, recent activity and decal order history, each private to its owner.
+3. [ ] Move the notes already on a phone into the account at first sign-in; match past decal requests by email.
+4. [ ] Privacy page, "Download my data" and "Delete my account".
 
 ### Phone app
 - [ ] Later, once accounts are in use on the website. The website can already be added to a phone's home screen.
