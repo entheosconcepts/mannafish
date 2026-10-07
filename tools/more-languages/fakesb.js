@@ -14,5 +14,5 @@ window.supabase={createClient:function(url,key){ __calls.push(['create',url,key]
     getSession:function(){return Promise.resolve({data:{session:session}});},
     onAuthStateChange:function(cb){cbs.push(cb);},
     signInWithOtp:function(o){__calls.push(['otp',o.email,o.options.emailRedirectTo]);return Promise.resolve({});},
-    verifyOtp:function(o){ __calls.push(['verify',o.email,o.token,o.type]); if(o.token!=='123456') return Promise.resolve({error:{message:'bad'}}); session={user:{id:'u1',email:o.email}}; cbs.forEach(function(c){c('SIGNED_IN',session);}); return Promise.resolve({data:{session:session}});},
+    verifyOtp:function(o){ __calls.push(['verify',o.email||o.token_hash,o.token,o.type]); if(o.token_hash){ if(o.token_hash!=='goodhash') return Promise.resolve({error:{message:'expired'}}); o.email='link@x.com'; o.token='123456'; } if(o.token!=='123456') return Promise.resolve({error:{message:'bad'}}); session={user:{id:'u1',email:o.email}}; cbs.forEach(function(c){c('SIGNED_IN',session);}); return Promise.resolve({data:{session:session}});},
     signOut:function(){ session=null; cbs.forEach(function(c){c('SIGNED_OUT',null);}); return Promise.resolve({});} }}; }};

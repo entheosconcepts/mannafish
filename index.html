@@ -1437,13 +1437,22 @@ window.MF=(function(){
     $('acctMsg').textContent=T('Sending…','Enviando…');
     loadSb().then(function(){ return sb.auth.signInWithOtp({email:em,options:{shouldCreateUser:true,emailRedirectTo:location.origin+location.pathname}}); })
       .then(function(r){ if(r.error) throw r.error; $('acctCodeF').hidden=false; $('acctCode').focus();
-        $('acctMsg').textContent=T('Check your email for a code (or tap the link in it).','Revisa tu correo: escribe el código (o toca el enlace).'); })
+        $('acctMsg').textContent=T('Check your email and tap “Sign in to MannaFish”. Or type the code from the email here.','Revisa tu correo y toca “Entrar a MannaFish”. O escribe aquí el código del correo.'); })
       .catch(function(err){ $('acctMsg').textContent=T('Could not send the email','No se pudo enviar el correo')+(err&&err.message?': '+err.message:''); }); });
   $('acctCodeF').addEventListener('submit',function(e){ e.preventDefault(); var code=$('acctCode').value.replace(/\s/g,''); if(!code) return;
     sb.auth.verifyOtp({email:$('acctEmail').value.trim(),token:code,type:'email'}).then(function(r){ if(r.error) throw r.error; $('acctMsg').textContent=''; $('acctCodeF').hidden=true; $('acctCode').value=''; })
       .catch(function(){ $('acctMsg').textContent=T('That code did not work. Check it, or send a new one.','Ese código no funcionó. Revísalo o pide uno nuevo.'); }); });
   $('acctOutBtn').addEventListener('click',function(){ sb&&sb.auth.signOut(); });
   ['acctNotes','acctAct'].forEach(function(id){ $(id).addEventListener('click',function(e){ var b=e.target.closest('button[data-k]'); if(b){ pick(b.dataset.k,true); } }); });
+  // one tap from the email: the link carries a one-time key that is used only here, on the page,
+  // so mail programs that open links early to check them cannot use it up
+  (function(){ var q=new URLSearchParams(location.search), th=q.get('token_hash'); if(!th) return;
+    var type=q.get('type')||'email'; q.delete('token_hash'); q.delete('type');
+    try{ history.replaceState(null,'',location.pathname+(q.toString()?'?'+q:'')+location.hash); }catch(e){}
+    $('acctBox').hidden=false; $('acctBtn').setAttribute('aria-expanded','true'); $('acctMsg').textContent=T('Signing you in…','Iniciando sesión…');
+    loadSb().then(function(){ return sb.auth.verifyOtp({token_hash:th,type:type}); }).then(function(r){
+      if(r&&r.error) throw r.error; $('acctMsg').textContent=''; fillAcct(); setTimeout(function(){ $('acctBox').scrollIntoView({behavior:'smooth',block:'center'}); },300); })
+    .catch(function(){ $('acctMsg').textContent=T('That sign-in link has expired or was already used. Enter your email to get a new one.','Ese enlace ya se usó o venció. Escribe tu correo para recibir uno nuevo.'); }); })();
   // a sign-in link that was used already or is too old comes back with an error: say so, and offer the code
   (function(){ var h=location.hash; if(!/error_code=|error=access_denied/.test(h)) return;
     try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
