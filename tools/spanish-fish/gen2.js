@@ -49,12 +49,17 @@ const V=JSON.parse(fs.readFileSync(__dirname+'/verses_es.json','utf8'));
    // the size "MannaFish" is drawn at: solve against Ken's own lettering on the upper tail
    const degUp=aUp+180; // that text reads from the tail tip inward
    let lo2=10,hi2=400; for(let k=0;k<28;k++){const m=(lo2+hi2)/2; const t=rotText('MannaFish',m,mfC.x,mfC.y,degUp); const w=t.getBBox(); t.remove(); if(w.width>mf.width) hi2=m; else lo2=m;}
-   const sMF=124; /* solved against his MannaFish lettering; the first pass can run before the font settles */ const mfLen=(()=>{const t=rotText('MannaFish\u2122',sMF,0,0,0); const n=t.getComputedTextLength(); t.remove(); return n;})();
+   // measure his lettering along its own line: turn a copy back level, take its width, size our font to match
+   const sMF=(()=>{const P=els[20], L=P.getTotalLength(), pts=[]; for(let i=0;i<=4000;i++) pts.push(P.getPointAtLength(L*i/4000));
+     let best=1e9; for(let d=0; d<180; d+=0.25){const r=d*Math.PI/180, c=Math.cos(r), sn=Math.sin(r); let lo=1e9,hi=-1e9,wl=1e9,wh=-1e9;
+       for(const q of pts){const y=-q.x*sn+q.y*c, x=q.x*c+q.y*sn; if(y<lo)lo=y; if(y>hi)hi=y; if(x<wl)wl=x; if(x>wh)wh=x;}
+       if(wh-wl>hi-lo && hi-lo<best) best=hi-lo;}
+     return best/0.90;})(); /* "MannaFish" in MFHobo stands 0.90 of the font size; match his letter height */ /* "MannaFish" in MFHobo stands 0.90 of the font size, top of the h to the foot of the s */ const mfLen=(()=>{const t=rotText('MannaFish\u2122',sMF,0,0,0); const n=t.getComputedTextLength(); t.remove(); return n;})();
    // mirror point across the fish's middle line (half-way between where the two tail lines meet the body)
    const axis=(+up.getAttribute('y1') + +lo.getAttribute('y1'))/2;
    const rc={x:mfC.x, y:2*axis-mfC.y};
    const ABBR={'Deuteronomio':'Deut.','Eclesiastés':'Ecl.','Proverbios':'Prov.','Lamentaciones':'Lam.','Ezequiel':'Ez.','Romanos':'Rom.','Efesios':'Ef.','Hebreos':'Heb.','Salmos':'Sal.','Mateo':'Mat.','Lucas':'Luc.','Juan':'Jn.','2 Pedro':'2 Ped.','Génesis':'Gén.','Éxodo':'Éx.'};
-   const avail=mfLen*1.12;
+   const avail=mfLen*0.95;
    let refTxt=v.ref, t0=rotText(refTxt,sMF,rc.x,rc.y,aLo), n0=t0.getComputedTextLength(); t0.remove();
    if(n0>avail){ const m=v.ref.match(/^(.*?)\s+(\d.*)$/); if(m && ABBR[m[1]]) refTxt=ABBR[m[1]]+' '+m[2]; }
    const rt=rotText(refTxt,sMF,rc.x,rc.y,aLo); const n1=rt.getComputedTextLength();
