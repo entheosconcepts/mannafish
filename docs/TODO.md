@@ -74,7 +74,7 @@ Built 7 Oct (on the test site):
 2. [x] Notes follow the person to every device; device notes move into the account at first sign-in.
 3. [x] "My decal orders" (matched by sign-in email) and "Recently viewed" words.
 4. [ ] **Ken:** Netlify → Environment variables → `SUPABASE_SECRET_KEY` (Yadah's secret key), so new decal requests are recorded as orders.
-5. [ ] **Ken:** Supabase → Authentication → Emails: in "Magic Link" and "Confirm signup", add the line `Your code: {{ .Token }}` so the email shows a code as well as the link.
+5. [x] **Ken:** sign-in emails replaced with the one-tap MannaFish email (tools/supabase/email-template.html), links last 1 hour (7 Oct).
 6. [ ] Highlights on verses (the table is ready; the highlight buttons come next).
 7. [ ] Privacy page, "Download my data" and "Delete my account".
 
