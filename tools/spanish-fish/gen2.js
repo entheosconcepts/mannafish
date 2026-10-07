@@ -58,12 +58,21 @@ const V=JSON.parse(fs.readFileSync(__dirname+'/verses_es.json','utf8'));
    // mirror point across the fish's middle line (half-way between where the two tail lines meet the body)
    const axis=(+up.getAttribute('y1') + +lo.getAttribute('y1'))/2;
    const rc={x:mfC.x, y:2*axis-mfC.y};
+   // Ken, 7 Oct: centre it side to side on the tail -- find the white band's two edges straight across, take the middle
+   { const r=aLo*Math.PI/180, nx=-Math.sin(r), ny=Math.cos(r), body=els[0], P=svg.createSVGPoint();
+     const inside=(d)=>{P.x=rc.x+nx*d; P.y=rc.y+ny*d; return body.isPointInFill(P);};
+     const s0=inside(0); let a1=0; while(a1<600 && inside(a1+1)===s0) a1++; let a2=0; while(a2<600 && inside(-(a2+1))===s0) a2++; 
+     const mid=(a1-a2)/2; rc.x+=nx*mid; rc.y+=ny*mid; }
    const ABBR={'Deuteronomio':'Deut.','Eclesiastés':'Ecl.','Proverbios':'Prov.','Lamentaciones':'Lam.','Ezequiel':'Ez.','Romanos':'Rom.','Efesios':'Ef.','Hebreos':'Heb.','Salmos':'Sal.','Mateo':'Mat.','Lucas':'Luc.','Juan':'Jn.','2 Pedro':'2 Ped.','Génesis':'Gén.','Éxodo':'Éx.'};
    const avail=mfLen*0.95;
-   let refTxt=v.ref, t0=rotText(refTxt,sMF,rc.x,rc.y,aLo), n0=t0.getComputedTextLength(); t0.remove();
+   // Ken, 7 Oct: add (RVR60). It is set small after the reference, the way the TM sits after MannaFish.
+   const TAG=' (RVR60)', tagS=0.5;
+   function refText(txt){const t=rotText(txt,sMF,rc.x,rc.y,aLo); t.setAttribute('dominant-baseline','alphabetic'); t.setAttribute('y',(rc.y+0.41*sMF).toFixed(1)); /* letters stand 0.86 above the line and 0.04 below: this puts their middle on the band's middle */ const sp=document.createElementNS(NS,'tspan'); sp.setAttribute('font-size',(sMF*tagS).toFixed(1)); sp.setAttribute('dy',(-0.21*sMF).toFixed(1)); sp.textContent=TAG; t.appendChild(sp); return t;}
+   let refTxt=v.ref, t0=refText(refTxt), n0=t0.getComputedTextLength(); t0.remove();
    if(n0>avail){ const m=v.ref.match(/^(.*?)\s+(\d.*)$/); if(m && ABBR[m[1]]) refTxt=ABBR[m[1]]+' '+m[2]; }
-   const rt=rotText(refTxt,sMF,rc.x,rc.y,aLo); const n1=rt.getComputedTextLength();
+   const rt=refText(refTxt); const n1=rt.getComputedTextLength();
    if(n1>avail){ rt.setAttribute('textLength',avail.toFixed(1)); rt.setAttribute('lengthAdjust','spacingAndGlyphs'); }
+   refTxt+=TAG;
    const qRef=n1/avail;
    const sTop=H.top,sBot=H.bot;
    return {sWord:Math.round(sWord),topWidth:Math.round(100/Math.max(1,qTop))+'%',bottomWidth:Math.round(100/Math.max(1,qBot))+'%',refWidth:Math.round(100/Math.max(1,qRef))+'%',ref:refTxt,size:Math.round(sMF)};
