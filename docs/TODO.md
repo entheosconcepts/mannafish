@@ -47,6 +47,7 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [ ] **Natural voice (like ChatGPT's):** already wired. Ken adds an OpenAI API key in Netlify → Environment variables as `OPENAI_API_KEY`; nothing else changes. Each verse is recorded once and reused, so cost is a few cents in total. (Optional: `MF_TTS_VOICE` to pick a different voice.) Another voice company (ElevenLabs) can be swapped in later.
 - [x] **My notes** under the fish: a note for each word, typed or **spoken** (speech to text, on phones and Chrome/Edge/Safari), with a "Recent notes" list. Saved on that device only, for now.
 - [ ] When accounts arrive, notes on the device move into the person's account at first sign-in.
+- [ ] **Speaker icon on the fish itself** (Ken, 7 Oct): a small speaker on each fish, including each one in the side-by-side language view, that speaks in that fish's own language. The listener chooses: just the **one word** in the middle, or the **whole verse**. Needs a natural voice for each language (Tagalog, Chinese, Hindi, Greek as well as English and Spanish), and a fluent listener to check each one.
 
 ### MannaFish Devotional accounts (website first, no app yet)
 Next steps, in order:
