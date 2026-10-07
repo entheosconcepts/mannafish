@@ -67,7 +67,7 @@ What Claude needs from the Yadah project:
 3. [x] **Ken:** a screenshot of the Table Editor list, so nothing already in Yadah gets touched.
 4. [x] **Ken:** Authentication → URL Configuration: add https://manna-fish.com and https://yadamannafishtest.netlify.app.
 5. [x] **Ken:** ran tools/supabase/accounts.sql in Yadah (7 Oct) into the SQL Editor and press Run (creates the tables and the privacy locks).
-6. [ ] Sign-in emails: Supabase's own sender only allows a few emails an hour, so connect Brevo (the same account as the devotional emails) under Authentication → SMTP Settings.
+6. [x] Sign-in emails go through Brevo (Supabase SMTP set 7 Oct; from MannaFish <2fish@manna-fish.com>, up to 30 an hour).
 
 Built 7 Oct (on the test site):
 1. [x] Sign in by emailed code or link (no passwords); "My MannaFish" panel under the fish.
