@@ -10,9 +10,10 @@ Sign-ups are already being saved; nothing goes out yet except phone push notices
       Text messages through Brevo or RingCentral both need US carrier registration (10DLC or toll-free verification), which takes days to weeks.
 - [x] **Ken:** made the Brevo account with kenny@manna-fish.com (7 Oct).
 - [x] **Ken:** manna-fish.com authenticated in Brevo through GoDaddy, with links on em.manna-fish.com (7 Oct).
-- [ ] **Ken:** in Brevo, create an API key, then paste it in Netlify → mannafish site → Environment variables as `BREVO_API_KEY`. (It never needs to be sent to anyone.)
-- [ ] Claude: build the daily sender: 7am in each subscriber's own time zone, Daily / Weekly / Monthly, Spanish or English, an unsubscribe link in every email, and STOP for texts.
-- [ ] Claude: move the sign-ups already saved into the sender list.
+- [x] **Ken:** Brevo API key in Netlify as `BREVO_API_KEY`; sender MannaFish <2fish@manna-fish.com> verified (7 Oct).
+- [x] Claude: daily email sender built (7 Oct): 7am in each person's time zone; Daily = Sunday–Friday, Weekly = Sundays, Monthly = first Sunday; English or Spanish; welcome email on sign-up; one-click unsubscribe in every email; the mailing address at the bottom (change with `MF_MAIL_ADDRESS` in Netlify).
+- [ ] Sign-ups made before 7 Oct are only in Netlify Forms: Ken sends Claude that list (Netlify → Forms → devotional → export), or those people sign up again.
+- [ ] Texts: sign-ups by text are saved and wait for texting to be set up.
 - [ ] Texts: register the number (10DLC or toll-free), then turn texting on.
 
 ### 2. Spanish

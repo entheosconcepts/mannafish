@@ -1,0 +1,294 @@
+{
+"en": {
+"REST": {
+"word": "Rest",
+"top": "Come unto me, all ye that labour",
+"bottom": "and are heavy laden, and I will give you rest.",
+"ref": "Matthew 11:28"
+},
+"HOPE": {
+"word": "Hope",
+"top": "Hope thou in God:",
+"bottom": "for I shall yet praise him...",
+"ref": "Psalm 42:5"
+},
+"LOVE": {
+"word": "Love",
+"top": "This is my commandment, That ye",
+"bottom": "love one another, as I have loved you.",
+"ref": "John 15:12"
+},
+"TRUST": {
+"word": "Trust",
+"top": "Commit thy way unto the LORD;",
+"bottom": "trust also in him; and he shall bring it to pass.",
+"ref": "Psalm 37:5"
+},
+"PRAY": {
+"word": "Pray",
+"top": "And he said unto them, When ye pray, say,",
+"bottom": "Our Father which art in heaven, Hallowed be thy name.",
+"ref": "Luke 11:2"
+},
+"BELIEVE": {
+"word": "Believe",
+"top": "Let not your heart be troubled.",
+"bottom": "Believe in God, believe also in me.",
+"ref": "John 14:1"
+},
+"FORGIVE": {
+"word": "Forgive",
+"top": "For if ye forgive men their trespasses,",
+"bottom": "your heavenly Father will also forgive you.",
+"ref": "Matthew 6:14"
+},
+"GIVE": {
+"word": "Give",
+"top": "Give, and it shall be given unto you; good measure,",
+"bottom": "pressed down, and shaken together, and running over...",
+"ref": "Luke 6:38"
+},
+"SEEK": {
+"word": "Seek",
+"top": "But seek ye first the kingdom of God, and his righteousness;",
+"bottom": "and all these things shall be added unto you.",
+"ref": "Matthew 6:33"
+},
+"ASK": {
+"word": "Ask",
+"top": "...how much more shall your heavenly Father",
+"bottom": "give the Holy Spirit to them that ask Him?",
+"ref": "Luke 11:13"
+},
+"KNOCK": {
+"word": "Knock",
+"top": "Ask, and it will be given to you; seek and ye shall find;",
+"bottom": "knock and it shall be opened unto you.",
+"ref": "Matthew 7:7"
+},
+"FOLLOW": {
+"word": "Follow",
+"top": "If any man will come after me, let him deny himself,",
+"bottom": "and take up his cross daily, and follow me.",
+"ref": "Luke 9:23"
+},
+"LISTEN": {
+"word": "Listen",
+"top": "But whoever listens to me will dwell safely,",
+"bottom": "And will be secure, without fear of evil.",
+"ref": "Proverbs 1:33"
+},
+"REMEMBER": {
+"word": "Remember",
+"top": "This is my body which is given for you:",
+"bottom": "this do in remembrance of me.",
+"ref": "Luke 22:19"
+},
+"CHOOSE": {
+"word": "Choose",
+"top": "I have set before you life and death,",
+"bottom": "blessing and cursing: therefore choose life...",
+"ref": "Deuteronomy 30:19"
+},
+"HONOR": {
+"word": "Honor",
+"top": "Honor your father and mother,",
+"bottom": "which is the first commandment with a promise.",
+"ref": "Ephesians 6:2"
+},
+"GROW": {
+"word": "Grow",
+"top": "But grow in grace, and in the knowledge",
+"bottom": "of our Lord and Saviour Jesus Christ.",
+"ref": "2 Peter 3:18"
+},
+"GATHER": {
+"word": "Gather",
+"top": "For where two or three are gathered",
+"bottom": "in my name, there I am in the midst of them.",
+"ref": "Matthew 18:20"
+},
+"ACCEPT": {
+"word": "Accept",
+"top": "Therefore, accept one another, just as Christ",
+"bottom": "also accepted us, for the glory of God.",
+"ref": "Romans 15:7"
+},
+"BREATHE": {
+"word": "Breathe",
+"top": "Come from the four winds, O breath,",
+"bottom": "and breathe upon these slain, that they may live.",
+"ref": "Ezekiel 37:9"
+},
+"ENJOY": {
+"word": "Enjoy",
+"top": "And also that every man should eat and drink, and",
+"bottom": "enjoy the good of all his labour, it is the gift of God.",
+"ref": "Ecclesiastes 3:13"
+},
+"LIVE": {
+"word": "Live",
+"top": "I shall not die, but live,",
+"bottom": "And declare the works of the LORD.",
+"ref": "Psalm 118:17"
+},
+"SING": {
+"word": "Sing",
+"top": "Sing unto Him a new song;",
+"bottom": "Play skilfully with a loud noise.",
+"ref": "Psalm 33:3"
+},
+"LAUGH": {
+"word": "Laugh",
+"top": "A time to weep, and a time to laugh;",
+"bottom": "a time to mourn, and a time to dance;",
+"ref": "Ecclesiastes 3:4"
+}
+},
+"es": {
+"REST": {
+"word": "Descansa",
+"top": "Venid a mí todos los que estáis trabajados",
+"bottom": "y cargados, y yo os haré descansar.",
+"ref": "Mateo 11:28 (RVR1960)"
+},
+"HOPE": {
+"word": "Espera",
+"top": "Espera en Dios;",
+"bottom": "porque aún he de alabarle...",
+"ref": "Salmos 42:5 (RVR1960)"
+},
+"LOVE": {
+"word": "Ama",
+"top": "Este es mi mandamiento: Que os améis",
+"bottom": "unos a otros, como yo os he amado.",
+"ref": "Juan 15:12 (RVR1960)"
+},
+"TRUST": {
+"word": "Confía",
+"top": "Encomienda a Jehová tu camino,",
+"bottom": "y confía en él; y él hará.",
+"ref": "Salmos 37:5 (RVR1960)"
+},
+"PRAY": {
+"word": "Ora",
+"top": "Cuando oréis, decid: Padre nuestro",
+"bottom": "que estás en los cielos, santificado sea tu nombre.",
+"ref": "Lucas 11:2 (RVR1960)"
+},
+"BELIEVE": {
+"word": "Cree",
+"top": "No se turbe vuestro corazón;",
+"bottom": "creéis en Dios, creed también en mí.",
+"ref": "Juan 14:1 (RVR1960)"
+},
+"FORGIVE": {
+"word": "Perdona",
+"top": "Porque si perdonáis a los hombres sus ofensas,",
+"bottom": "os perdonará también a vosotros vuestro Padre celestial.",
+"ref": "Mateo 6:14 (RVR1960)"
+},
+"GIVE": {
+"word": "Da",
+"top": "Dad, y se os dará;",
+"bottom": "medida buena, apretada, remecida y rebosando...",
+"ref": "Lucas 6:38 (RVR1960)"
+},
+"SEEK": {
+"word": "Busca",
+"top": "Mas buscad primeramente el reino de Dios",
+"bottom": "y su justicia...",
+"ref": "Mateo 6:33 (RVR1960)"
+},
+"ASK": {
+"word": "Pide",
+"top": "¿Cuánto más vuestro Padre celestial dará",
+"bottom": "el Espíritu Santo a los que se lo pidan?",
+"ref": "Lucas 11:13 (RVR1960)"
+},
+"KNOCK": {
+"word": "Llama",
+"top": "Llamad, y se os abrirá.",
+"bottom": "Porque todo aquel que pide, recibe...",
+"ref": "Mateo 7:7-8 (RVR1960)"
+},
+"FOLLOW": {
+"word": "Sigue",
+"top": "Si alguno quiere venir en pos de mí,",
+"bottom": "niéguese a sí mismo, tome su cruz cada día, y sígame.",
+"ref": "Lucas 9:23 (RVR1960)"
+},
+"LISTEN": {
+"word": "Escucha",
+"top": "Mas el que me oyere, habitará confiadamente",
+"bottom": "y vivirá tranquilo, sin temor del mal.",
+"ref": "Proverbios 1:33 (RVR1960)"
+},
+"REMEMBER": {
+"word": "Recuerda",
+"top": "Esto es mi cuerpo, que por vosotros es dado;",
+"bottom": "haced esto en memoria de mí.",
+"ref": "Lucas 22:19 (RVR1960)"
+},
+"CHOOSE": {
+"word": "Escoge",
+"top": "Os he puesto delante la vida y la muerte...",
+"bottom": "escoge, pues, la vida.",
+"ref": "Deuteronomio 30:19 (RVR1960)"
+},
+"HONOR": {
+"word": "Honra",
+"top": "Honra a tu padre y a tu madre,",
+"bottom": "que es el primer mandamiento con promesa.",
+"ref": "Efesios 6:2 (RVR1960)"
+},
+"GROW": {
+"word": "Crece",
+"top": "Creced en la gracia y el conocimiento",
+"bottom": "de nuestro Señor y Salvador Jesucristo.",
+"ref": "2 Pedro 3:18 (RVR1960)"
+},
+"GATHER": {
+"word": "Reúnete",
+"top": "Donde están dos o tres congregados en mi nombre,",
+"bottom": "allí estoy yo en medio de ellos.",
+"ref": "Mateo 18:20 (RVR1960)"
+},
+"ACCEPT": {
+"word": "Recibe",
+"top": "Recibíos los unos a los otros,",
+"bottom": "como también Cristo nos recibió, para gloria de Dios.",
+"ref": "Romanos 15:7 (RVR1960)"
+},
+"BREATHE": {
+"word": "Respira",
+"top": "Espíritu, ven de los cuatro vientos,",
+"bottom": "y sopla sobre estos muertos, y vivirán.",
+"ref": "Ezequiel 37:9 (RVR1960)"
+},
+"ENJOY": {
+"word": "Goza",
+"top": "Que todo hombre coma y beba, y goce el bien",
+"bottom": "de toda su labor, es don de Dios.",
+"ref": "Eclesiastés 3:13 (RVR1960)"
+},
+"LIVE": {
+"word": "Vive",
+"top": "No moriré, sino que viviré,",
+"bottom": "y contaré las obras de JAH.",
+"ref": "Salmos 118:17 (RVR1960)"
+},
+"SING": {
+"word": "Canta",
+"top": "Cantad a Jehová cántico nuevo;",
+"bottom": "cantad a Jehová, toda la tierra.",
+"ref": "Salmos 96:1 (RVR1960)"
+},
+"LAUGH": {
+"word": "Ríe",
+"top": "Tiempo de llorar, y tiempo de reír;",
+"bottom": "tiempo de endechar, y tiempo de bailar.",
+"ref": "Eclesiastés 3:4 (RVR1960)"
+}
+}
+}

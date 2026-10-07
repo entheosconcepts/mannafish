@@ -1502,7 +1502,7 @@ window.MF=(function(){
       fetch('/',{method:'POST',headers:H,body:body})
         .then(function(r){ if(r.ok) return r; return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); },
               function(){ return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); })
-        .then(function(r){if(!r.ok) throw 0; if(f.id==='giftForm') fetch('/api/order-record',{method:'POST',headers:H,body:body}).catch(function(){}); f.reset();
+        .then(function(r){if(!r.ok) throw 0; if(f.id==='giftForm') fetch('/api/order-record',{method:'POST',headers:H,body:body}).catch(function(){}); if(f.id==='devoForm'||f.id==='signup') fetch('/api/devo-subscribe',{method:'POST',headers:H,body:body}).catch(function(){}); f.reset();
           msg.textContent = MF.t({signup:'th_signup',giftForm:'th_gift',devoForm:'th_devo'}[f.id]||'th_net');})
         .catch(function(){msg.textContent=MF.t('formfail');});
     });
