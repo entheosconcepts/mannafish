@@ -1,54 +1,590 @@
 {
 "en": {
-"REST": "Rest. Come unto me, all ye that labour and are heavy laden, and I will give you rest. Matthew 11:28.",
-"HOPE": "Hope. Hope thou in God: for I shall yet praise him… Psalm 42:5.",
-"LOVE": "Love. This is my commandment, That ye love one another, as I have loved you. John 15:12.",
-"TRUST": "Trust. Commit thy way unto the LORD; trust also in him; and he shall bring it to pass. Psalm 37:5.",
-"PRAY": "Pray. And he said unto them, When ye pray, say, Our Father which art in heaven, Hallowed be thy name. Luke 11:2.",
-"BELIEVE": "Believe. Let not your heart be troubled. Believe in God, believe also in me. John 14:1.",
-"FORGIVE": "Forgive. For if ye forgive men their trespasses, your heavenly Father will also forgive you. Matthew 6:14.",
-"GIVE": "Give. Give, and it shall be given unto you; good measure, pressed down, and shaken together, and running over… Luke 6:38.",
-"SEEK": "Seek. But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you. Matthew 6:33.",
-"ASK": "Ask.…how much more shall your heavenly Father give the Holy Spirit to them that ask Him? Luke 11:13.",
-"KNOCK": "Knock. Ask, and it will be given to you; seek and ye shall find; knock and it shall be opened unto you. Matthew 7:7.",
-"FOLLOW": "Follow. If any man will come after me, let him deny himself, and take up his cross daily, and follow me. Luke 9:23.",
-"LISTEN": "Listen. But whoever listens to me will dwell safely, And will be secure, without fear of evil. Proverbs 1:33.",
-"REMEMBER": "Remember. This is my body which is given for you: this do in remembrance of me. Luke 22:19.",
-"CHOOSE": "Choose. I have set before you life and death, blessing and cursing: therefore choose life… Deuteronomy 30:19.",
-"HONOR": "Honor. Honor your father and mother, which is the first commandment with a promise. Ephesians 6:2.",
-"GROW": "Grow. But grow in grace, and in the knowledge of our Lord and Saviour Jesus Christ. 2 Peter 3:18.",
-"GATHER": "Gather. For where two or three are gathered in my name, there I am in the midst of them. Matthew 18:20.",
-"ACCEPT": "Accept. Therefore, accept one another, just as Christ also accepted us, for the glory of God. Romans 15:7.",
-"BREATHE": "Breathe. Come from the four winds, O breath, and breathe upon these slain, that they may live. Ezekiel 37:9.",
-"ENJOY": "Enjoy. And also that every man should eat and drink, and enjoy the good of all his labour, it is the gift of God. Ecclesiastes 3:13.",
-"LIVE": "Live. I shall not die, but live, And declare the works of the LORD. Psalm 118:17.",
-"SING": "Sing. Sing unto Him a new song; Play skilfully with a loud noise. Psalm 33:3.",
-"LAUGH": "Laugh. A time to weep, and a time to laugh; a time to mourn, and a time to dance; Ecclesiastes 3:4."
+"REST": {
+"word": "Rest",
+"verse": "Come unto me, all ye that labour and are heavy laden, and I will give you rest. Matthew 11:28"
+},
+"HOPE": {
+"word": "Hope",
+"verse": "Hope thou in God: for I shall yet praise him. Psalm 42:5"
+},
+"LOVE": {
+"word": "Love",
+"verse": "This is my commandment, That ye love one another, as I have loved you. John 15:12"
+},
+"TRUST": {
+"word": "Trust",
+"verse": "Commit thy way unto the LORD; trust also in him; and he shall bring it to pass. Psalm 37:5"
+},
+"PRAY": {
+"word": "Pray",
+"verse": "And he said unto them, When ye pray, say, Our Father which art in heaven, Hallowed be thy name. Luke 11:2"
+},
+"BELIEVE": {
+"word": "Believe",
+"verse": "Let not your heart be troubled. Believe in God, believe also in me. John 14:1"
+},
+"FORGIVE": {
+"word": "Forgive",
+"verse": "For if ye forgive men their trespasses, your heavenly Father will also forgive you. Matthew 6:14"
+},
+"GIVE": {
+"word": "Give",
+"verse": "Give, and it shall be given unto you; good measure, pressed down, and shaken together, and running over. Luke 6:38"
+},
+"SEEK": {
+"word": "Seek",
+"verse": "But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you. Matthew 6:33"
+},
+"ASK": {
+"word": "Ask",
+"verse": "how much more shall your heavenly Father give the Holy Spirit to them that ask Him? Luke 11:13"
+},
+"KNOCK": {
+"word": "Knock",
+"verse": "Ask, and it will be given to you; seek and ye shall find; knock and it shall be opened unto you. Matthew 7:7"
+},
+"FOLLOW": {
+"word": "Follow",
+"verse": "If any man will come after me, let him deny himself, and take up his cross daily, and follow me. Luke 9:23"
+},
+"LISTEN": {
+"word": "Listen",
+"verse": "But whoever listens to me will dwell safely, And will be secure, without fear of evil. Proverbs 1:33"
+},
+"REMEMBER": {
+"word": "Remember",
+"verse": "This is my body which is given for you: this do in remembrance of me. Luke 22:19"
+},
+"CHOOSE": {
+"word": "Choose",
+"verse": "I have set before you life and death, blessing and cursing: therefore choose life. Deuteronomy 30:19"
+},
+"HONOR": {
+"word": "Honor",
+"verse": "Honor your father and mother, which is the first commandment with a promise. Ephesians 6:2"
+},
+"GROW": {
+"word": "Grow",
+"verse": "But grow in grace, and in the knowledge of our Lord and Saviour Jesus Christ. 2 Peter 3:18"
+},
+"GATHER": {
+"word": "Gather",
+"verse": "For where two or three are gathered in my name, there I am in the midst of them. Matthew 18:20"
+},
+"ACCEPT": {
+"word": "Accept",
+"verse": "Therefore, accept one another, just as Christ also accepted us, for the glory of God. Romans 15:7"
+},
+"BREATHE": {
+"word": "Breathe",
+"verse": "Come from the four winds, O breath, and breathe upon these slain, that they may live. Ezekiel 37:9"
+},
+"ENJOY": {
+"word": "Enjoy",
+"verse": "And also that every man should eat and drink, and enjoy the good of all his labour, it is the gift of God. Ecclesiastes 3:13"
+},
+"LIVE": {
+"word": "Live",
+"verse": "I shall not die, but live, And declare the works of the LORD. Psalm 118:17"
+},
+"SING": {
+"word": "Sing",
+"verse": "Sing unto Him a new song; Play skilfully with a loud noise. Psalm 33:3"
+},
+"LAUGH": {
+"word": "Laugh",
+"verse": "A time to weep, and a time to laugh; a time to mourn, and a time to dance; Ecclesiastes 3:4"
+}
 },
 "es": {
-"REST": "Descansa. Venid a mí todos los que estáis trabajados y cargados, y yo os haré descansar. Mateo 11:28.",
-"HOPE": "Espera. Espera en Dios; porque aún he de alabarle… Salmos 42:5.",
-"LOVE": "Ama. Este es mi mandamiento: Que os améis unos a otros, como yo os he amado. Juan 15:12.",
-"TRUST": "Confía. Encomienda a Jehová tu camino, y confía en él; y él hará. Salmos 37:5.",
-"PRAY": "Ora. Cuando oréis, decid: Padre nuestro que estás en los cielos, santificado sea tu nombre. Lucas 11:2.",
-"BELIEVE": "Cree. No se turbe vuestro corazón; creéis en Dios, creed también en mí. Juan 14:1.",
-"FORGIVE": "Perdona. Porque si perdonáis a los hombres sus ofensas, os perdonará también a vosotros vuestro Padre celestial. Mateo 6:14.",
-"GIVE": "Da. Dad, y se os dará; medida buena, apretada, remecida y rebosando… Lucas 6:38.",
-"SEEK": "Busca. Mas buscad primeramente el reino de Dios y su justicia… Mateo 6:33.",
-"ASK": "Pide. ¿Cuánto más vuestro Padre celestial dará el Espíritu Santo a los que se lo pidan? Lucas 11:13.",
-"KNOCK": "Llama. Llamad, y se os abrirá. Porque todo aquel que pide, recibe… Mateo 7:7-8.",
-"FOLLOW": "Sigue. Si alguno quiere venir en pos de mí, niéguese a sí mismo, tome su cruz cada día, y sígame. Lucas 9:23.",
-"LISTEN": "Escucha. Mas el que me oyere, habitará confiadamente y vivirá tranquilo, sin temor del mal. Proverbios 1:33.",
-"REMEMBER": "Recuerda. Esto es mi cuerpo, que por vosotros es dado; haced esto en memoria de mí. Lucas 22:19.",
-"CHOOSE": "Escoge. Os he puesto delante la vida y la muerte… escoge, pues, la vida. Deuteronomio 30:19.",
-"HONOR": "Honra. Honra a tu padre y a tu madre, que es el primer mandamiento con promesa. Efesios 6:2.",
-"GROW": "Crece. Creced en la gracia y el conocimiento de nuestro Señor y Salvador Jesucristo. 2 Pedro 3:18.",
-"GATHER": "Reúnete. Donde están dos o tres congregados en mi nombre, allí estoy yo en medio de ellos. Mateo 18:20.",
-"ACCEPT": "Recibe. Recibíos los unos a los otros, como también Cristo nos recibió, para gloria de Dios. Romanos 15:7.",
-"BREATHE": "Respira. Espíritu, ven de los cuatro vientos, y sopla sobre estos muertos, y vivirán. Ezequiel 37:9.",
-"ENJOY": "Goza. Que todo hombre coma y beba, y goce el bien de toda su labor, es don de Dios. Eclesiastés 3:13.",
-"LIVE": "Vive. No moriré, sino que viviré, y contaré las obras de JAH. Salmos 118:17.",
-"SING": "Canta. Cantad a Jehová cántico nuevo; cantad a Jehová, toda la tierra. Salmos 96:1.",
-"LAUGH": "Ríe. Tiempo de llorar, y tiempo de reír; tiempo de endechar, y tiempo de bailar. Eclesiastés 3:4."
+"REST": {
+"word": "Descansa",
+"verse": "Venid a mí todos los que estáis trabajados y cargados, y yo os haré descansar. Mateo 11:28"
+},
+"HOPE": {
+"word": "Espera",
+"verse": "Espera en Dios; porque aún he de alabarle. Salmos 42:5"
+},
+"LOVE": {
+"word": "Ama",
+"verse": "Este es mi mandamiento: Que os améis unos a otros, como yo os he amado. Juan 15:12"
+},
+"TRUST": {
+"word": "Confía",
+"verse": "Encomienda a Jehová tu camino, y confía en él; y él hará. Salmos 37:5"
+},
+"PRAY": {
+"word": "Ora",
+"verse": "Cuando oréis, decid: Padre nuestro que estás en los cielos, santificado sea tu nombre. Lucas 11:2"
+},
+"BELIEVE": {
+"word": "Cree",
+"verse": "No se turbe vuestro corazón; creéis en Dios, creed también en mí. Juan 14:1"
+},
+"FORGIVE": {
+"word": "Perdona",
+"verse": "Porque si perdonáis a los hombres sus ofensas, os perdonará también a vosotros vuestro Padre celestial. Mateo 6:14"
+},
+"GIVE": {
+"word": "Da",
+"verse": "Dad, y se os dará; medida buena, apretada, remecida y rebosando. Lucas 6:38"
+},
+"SEEK": {
+"word": "Busca",
+"verse": "Mas buscad primeramente el reino de Dios y su justicia. Mateo 6:33"
+},
+"ASK": {
+"word": "Pide",
+"verse": "¿Cuánto más vuestro Padre celestial dará el Espíritu Santo a los que se lo pidan? Lucas 11:13"
+},
+"KNOCK": {
+"word": "Llama",
+"verse": "Llamad, y se os abrirá. Porque todo aquel que pide, recibe. Mateo 7:7-8"
+},
+"FOLLOW": {
+"word": "Sigue",
+"verse": "Si alguno quiere venir en pos de mí, niéguese a sí mismo, tome su cruz cada día, y sígame. Lucas 9:23"
+},
+"LISTEN": {
+"word": "Escucha",
+"verse": "Mas el que me oyere, habitará confiadamente y vivirá tranquilo, sin temor del mal. Proverbios 1:33"
+},
+"REMEMBER": {
+"word": "Recuerda",
+"verse": "Esto es mi cuerpo, que por vosotros es dado; haced esto en memoria de mí. Lucas 22:19"
+},
+"CHOOSE": {
+"word": "Escoge",
+"verse": "Os he puesto delante la vida y la muerte … escoge, pues, la vida. Deuteronomio 30:19"
+},
+"HONOR": {
+"word": "Honra",
+"verse": "Honra a tu padre y a tu madre, que es el primer mandamiento con promesa. Efesios 6:2"
+},
+"GROW": {
+"word": "Crece",
+"verse": "Creced en la gracia y el conocimiento de nuestro Señor y Salvador Jesucristo. 2 Pedro 3:18"
+},
+"GATHER": {
+"word": "Reúnete",
+"verse": "Donde están dos o tres congregados en mi nombre, allí estoy yo en medio de ellos. Mateo 18:20"
+},
+"ACCEPT": {
+"word": "Recibe",
+"verse": "Recibíos los unos a los otros, como también Cristo nos recibió, para gloria de Dios. Romanos 15:7"
+},
+"BREATHE": {
+"word": "Respira",
+"verse": "Espíritu, ven de los cuatro vientos, y sopla sobre estos muertos, y vivirán. Ezequiel 37:9"
+},
+"ENJOY": {
+"word": "Goza",
+"verse": "Que todo hombre coma y beba, y goce el bien de toda su labor, es don de Dios. Eclesiastés 3:13"
+},
+"LIVE": {
+"word": "Vive",
+"verse": "No moriré, sino que viviré, y contaré las obras de JAH. Salmos 118:17"
+},
+"SING": {
+"word": "Canta",
+"verse": "Cantad a Jehová cántico nuevo; cantad a Jehová, toda la tierra. Salmos 96:1"
+},
+"LAUGH": {
+"word": "Ríe",
+"verse": "Tiempo de llorar, y tiempo de reír; tiempo de endechar, y tiempo de bailar. Eclesiastés 3:4"
+}
+},
+"tl": {
+"REST": {
+"word": "Magpahinga",
+"verse": "Magsiparito sa akin, kayong lahat na nangapapagal at nangabibigatang lubha, at kayo’y aking papagpapahingahin. Mateo 11:28"
+},
+"HOPE": {
+"word": "Umasa",
+"verse": "Umasa ka sa Dios: sapagka’t pupuri pa ako sa kaniya. Mga Awit 42:5"
+},
+"LOVE": {
+"word": "Umibig",
+"verse": "Ito ang aking utos, na kayo’y mangagibigan sa isa’t isa, na gaya ng pagibig ko sa inyo. Juan 15:12"
+},
+"TRUST": {
+"word": "Magtiwala",
+"verse": "Ihabilin mo ang iyong lakad sa Panginoon; Tumiwala ka rin naman sa kaniya, at kaniyang papangyayarihin. Mga Awit 37:5"
+},
+"PRAY": {
+"word": "Manalangin",
+"verse": "Pagka kayo’y nagsisipanalangin, inyong sabihin, Ama, Sambahin nawa ang pangalan mo. Lucas 11:2"
+},
+"BELIEVE": {
+"word": "Sumampalataya",
+"verse": "Huwag magulumihanan ang inyong puso: magsisampalataya kayo sa Dios, magsisampalataya naman kayo sa akin. Juan 14:1"
+},
+"FORGIVE": {
+"word": "Magpatawad",
+"verse": "Kung ipatawad ninyo sa mga tao ang kanilang mga kasalanan, ay patatawarin naman kayo ng inyong Ama sa kalangitan. Mateo 6:14"
+},
+"GIVE": {
+"word": "Magbigay",
+"verse": "Mangagbigay kayo, at kayo’y bibigyan; takal na mabuti, pikpik, liglig, at umaapaw. Lucas 6:38"
+},
+"SEEK": {
+"word": "Humanap",
+"verse": "Datapuwa’t hanapin muna ninyo ang kaniyang kaharian, at ang kaniyang katuwiran. Mateo 6:33"
+},
+"ASK": {
+"word": "Humingi",
+"verse": "Gaano pa kaya ang inyong Ama sa kalangitan na magbibigay ng Espiritu Santo sa nagsisihingi sa kaniya? Lucas 11:13"
+},
+"KNOCK": {
+"word": "Kumatok",
+"verse": "Magsituktok kayo, at kayo’y bubuksan: Sapagka’t ang bawa’t humihingi ay tumatanggap. Mateo 7:7-8"
+},
+"FOLLOW": {
+"word": "Sumunod",
+"verse": "Kung ang sinomang tao ay ibig sumunod sa akin, ay tumanggi sa kaniyang sarili, at pasanin sa araw-araw ang kaniyang krus. Lucas 9:23"
+},
+"LISTEN": {
+"word": "Makinig",
+"verse": "Nguni’t ang nakikinig sa akin ay tatahang tiwasay. At tatahimik na walang takot sa kasamaan. Mga Kawikaan 1:33"
+},
+"REMEMBER": {
+"word": "Alalahanin",
+"verse": "Ito’y aking katawan, na ibinibigay dahil sa inyo: gawin ninyo ito sa pagaalaala sa akin. Lucas 22:19"
+},
+"CHOOSE": {
+"word": "Pumili",
+"verse": "ilagay sa harap mo ang buhay at ang kamatayan … kaya’t piliin mo ang buhay. Deuteronomio 30:19"
+},
+"HONOR": {
+"word": "Igalang",
+"verse": "Igalang mo ang iyong ama at ina (na siyang unang utos na may pangako). Mga Taga-Efeso 6:2"
+},
+"GROW": {
+"word": "Lumago",
+"verse": "Datapuwa’t magsilago kayo sa biyaya at sa pagkakilala sa ating Panginoon at Tagapagligtas na si Jesucristo. 2 Pedro 3:18"
+},
+"GATHER": {
+"word": "Magtipon",
+"verse": "Kung saan nagkakatipon ang dalawa o tatlo sa aking pangalan, ay naroroon ako sa gitna nila. Mateo 18:20"
+},
+"ACCEPT": {
+"word": "Tumanggap",
+"verse": "Sa ganito’y mangagtanggapan kayo, gaya naman ni Cristo na tinanggap kayo sa kaluwalhatian ng Dios. Mga Taga-Roma 15:7"
+},
+"BREATHE": {
+"word": "Huminga",
+"verse": "Manggaling ka sa apat na hangin, Oh hinga, at humihip ka sa mga patay na ito, upang sila’y mangabuhay. Ezekiel 37:9"
+},
+"ENJOY": {
+"word": "Magalak",
+"verse": "Ang bawa’t tao rin naman ay marapat kumain at uminom, at magalak sa kabutihan sa lahat niyang gawa, siyang kaloob ng Dios. Eclesiastes 3:13"
+},
+"LIVE": {
+"word": "Mabuhay",
+"verse": "Hindi ako mamamatay, kundi mabubuhay, At magpapahayag ng mga gawa ng Panginoon. Mga Awit 118:17"
+},
+"SING": {
+"word": "Umawit",
+"verse": "Oh magsiawit kayo sa Panginoon ng bagong awit: Magsiawit kayo sa Panginoon, buong lupa. Mga Awit 96:1"
+},
+"LAUGH": {
+"word": "Tumawa",
+"verse": "Panahon ng pagiyak, at panahon ng pagtawa; panahon ng pagtangis, at panahon ng pagsayaw; Eclesiastes 3:4"
+}
+},
+"zh": {
+"REST": {
+"word": "安息",
+"verse": "凡劳苦担重担的人可以到我这里来，我就使你们得安息。马太福音11:28"
+},
+"HOPE": {
+"word": "仰望",
+"verse": "应当仰望 神，我还要称赞他。诗篇42:5"
+},
+"LOVE": {
+"word": "相爱",
+"verse": "你们要彼此相爱，像我爱你们一样；这就是我的命令。约翰福音15:12"
+},
+"TRUST": {
+"word": "倚靠",
+"verse": "当将你的事交托耶和华，并倚靠他，他就必成全。诗篇37:5"
+},
+"PRAY": {
+"word": "祷告",
+"verse": "你们祷告的时候，要说：我们在天上的父：愿人都尊你的名为圣。路加福音11:2"
+},
+"BELIEVE": {
+"word": "信",
+"verse": "你们心里不要忧愁；你们信 神，也当信我。约翰福音14:1"
+},
+"FORGIVE": {
+"word": "饶恕",
+"verse": "你们饶恕人的过犯，你们的天父也必饶恕你们的过犯。马太福音6:14"
+},
+"GIVE": {
+"word": "给予",
+"verse": "你们要给人，就必有给你们的，并且用十足的升斗，连摇带按，上尖下流地倒在你们怀里。路加福音6:38"
+},
+"SEEK": {
+"word": "寻求",
+"verse": "你们要先求他的国和他的义，这些东西都要加给你们了。马太福音6:33"
+},
+"ASK": {
+"word": "祈求",
+"verse": "何况天父，岂不更将圣灵给求他的人吗？路加福音11:13"
+},
+"KNOCK": {
+"word": "叩门",
+"verse": "叩门，就给你们开门。因为凡祈求的，就得着。马太福音7:7-8"
+},
+"FOLLOW": {
+"word": "跟从",
+"verse": "若有人要跟从我，就当舍己，天天背起他的十字架来跟从我。路加福音9:23"
+},
+"LISTEN": {
+"word": "听从",
+"verse": "惟有听从我的，必安然居住，得享安静，不怕灾祸。箴言1:33"
+},
+"REMEMBER": {
+"word": "记念",
+"verse": "这是我的身体，为你们舍的，你们也应当如此行，为的是记念我。路加福音22:19"
+},
+"CHOOSE": {
+"word": "拣选",
+"verse": "我将生死祸福陈明在你面前，所以你要拣选生命。申命记30:19"
+},
+"HONOR": {
+"word": "孝敬",
+"verse": "要孝敬父母，这是第一条带应许的诫命。以弗所书6:2"
+},
+"GROW": {
+"word": "长进",
+"verse": "你们却要在我们主－救主耶稣基督的恩典和知识上有长进。彼得后书3:18"
+},
+"GATHER": {
+"word": "聚会",
+"verse": "无论在哪里，有两三个人奉我的名聚会，那里就有我在他们中间。马太福音18:20"
+},
+"ACCEPT": {
+"word": "接纳",
+"verse": "你们要彼此接纳，如同基督接纳你们一样，使荣耀归与 神。罗马书15:7"
+},
+"BREATHE": {
+"word": "呼吸",
+"verse": "气息啊，要从四方而来，吹在这些被杀的人身上，使他们活了。以西结书37:9"
+},
+"ENJOY": {
+"word": "享福",
+"verse": "人人吃喝，在他一切劳碌中享福，这也是 神的恩赐。传道书3:13"
+},
+"LIVE": {
+"word": "存活",
+"verse": "我必不致死，仍要存活，并要传扬耶和华的作为。诗篇118:17"
+},
+"SING": {
+"word": "歌唱",
+"verse": "你们要向耶和华唱新歌！全地都要向耶和华歌唱！诗篇96:1"
+},
+"LAUGH": {
+"word": "欢笑",
+"verse": "哭有时，笑有时；哀恸有时，跳舞有时；传道书3:4"
+}
+},
+"hi": {
+"REST": {
+"word": "विश्राम करो",
+"verse": "हे सब परिश्रम करनेवालों और बोझ से दबे लोगों, मेरे पास आओ; मैं तुम्हें विश्राम दूँगा। मत्ती 11:28"
+},
+"HOPE": {
+"word": "आशा रखो",
+"verse": "परमेश्वर पर आशा लगाए रह; क्योंकि मैं … फिर उसका धन्यवाद करूँगा। भजन संहिता 42:5"
+},
+"LOVE": {
+"word": "प्रेम करो",
+"verse": "मेरी आज्ञा यह है, कि जैसा मैंने तुम से प्रेम रखा, वैसा ही तुम भी एक दूसरे से प्रेम रखो। यूहन्ना 15:12"
+},
+"TRUST": {
+"word": "भरोसा रखो",
+"verse": "अपने मार्ग की चिन्ता यहोवा पर छोड़; और उस पर भरोसा रख, वही पूरा करेगा। भजन संहिता 37:5"
+},
+"PRAY": {
+"word": "प्रार्थना करो",
+"verse": "जब तुम प्रार्थना करो, तो कहो: ‘हे पिता, तेरा नाम पवित्र माना जाए, तेरा राज्य आए।’ लूका 11:2"
+},
+"BELIEVE": {
+"word": "विश्वास करो",
+"verse": "तुम्हारा मन व्याकुल न हो, तुम परमेश्वर पर विश्वास रखते हो मुझ पर भी विश्वास रखो। यूहन्ना 14:1"
+},
+"FORGIVE": {
+"word": "क्षमा करो",
+"verse": "यदि तुम मनुष्य के अपराध क्षमा करोगे, तो तुम्हारा स्वर्गीय पिता भी तुम्हें क्षमा करेगा। मत्ती 6:14"
+},
+"GIVE": {
+"word": "दिया करो",
+"verse": "दिया करो, तो तुम्हें भी दिया जाएगा: लोग पूरा नाप दबा-दबाकर और हिला-हिलाकर और उभरता हुआ तुम्हारी गोद में डालेंगे. लूका 6:38"
+},
+"SEEK": {
+"word": "खोजो",
+"verse": "पहले तुम परमेश्वर के राज्य और धार्मिकता की खोज करो. मत्ती 6:33"
+},
+"ASK": {
+"word": "माँगो",
+"verse": "तो तुम्हारा स्वर्गीय पिता अपने माँगनेवालों को पवित्र आत्मा क्यों न देगा। लूका 11:13"
+},
+"KNOCK": {
+"word": "खटखटाओ",
+"verse": "खटखटाओ, तो तुम्हारे लिये खोला जाएगा। क्योंकि जो कोई माँगता है, उसे मिलता है. मत्ती 7:7-8"
+},
+"FOLLOW": {
+"word": "पीछे हो लो",
+"verse": "यदि कोई मेरे पीछे आना चाहे, तो अपने आप से इन्कार करे और प्रतिदिन अपना क्रूस उठाए हुए मेरे पीछे हो ले। लूका 9:23"
+},
+"LISTEN": {
+"word": "सुनो",
+"verse": "परन्तु जो मेरी सुनेगा, वह निडर बसा रहेगा, और विपत्ति से निश्चिन्त होकर सुख से रहेगा। नीतिवचन 1:33"
+},
+"REMEMBER": {
+"word": "स्मरण करो",
+"verse": "यह मेरी देह है, जो तुम्हारे लिये दी जाती है: मेरे स्मरण के लिये यही किया करो। लूका 22:19"
+},
+"CHOOSE": {
+"word": "चुनो",
+"verse": "मैंने जीवन और मरण, आशीष और श्राप को तुम्हारे आगे रखा है; इसलिए तू जीवन ही को अपना ले. व्यवस्थाविवरण 30:19"
+},
+"HONOR": {
+"word": "आदर करो",
+"verse": "अपनी माता और पिता का आदर कर (यह पहली आज्ञा है, जिसके साथ प्रतिज्ञा भी है)। इफिसियों 6:2"
+},
+"GROW": {
+"word": "बढ़ते जाओ",
+"verse": "हमारे प्रभु, और उद्धारकर्ता यीशु मसीह के अनुग्रह और पहचान में बढ़ते जाओ। 2 पतरस 3:18"
+},
+"GATHER": {
+"word": "इकट्ठे हो",
+"verse": "जहाँ दो या तीन मेरे नाम पर इकट्ठे होते हैं वहाँ मैं उनके बीच में होता हूँ। मत्ती 18:20"
+},
+"ACCEPT": {
+"word": "ग्रहण करो",
+"verse": "जैसा मसीह ने भी परमेश्वर की महिमा के लिये तुम्हें ग्रहण किया है, वैसे ही तुम भी एक दूसरे को ग्रहण करो। रोमियों 15:7"
+},
+"BREATHE": {
+"word": "साँस लो",
+"verse": "हे साँस … चारों दिशाओं से आकर इन घात किए हुओं में समा जा, कि ये जी उठें। यहेजकेल 37:9"
+},
+"ENJOY": {
+"word": "आनन्द करो",
+"verse": "यह भी परमेश्वर का दान है कि मनुष्य खाए-पीए और अपने सब परिश्रम में सुखी रहे। सभोपदेशक 3:13"
+},
+"LIVE": {
+"word": "जीवित रहो",
+"verse": "मैं न मरूँगा वरन् जीवित रहूँगा, और परमेश्वर के कामों का वर्णन करता रहूँगा। भजन संहिता 118:17"
+},
+"SING": {
+"word": "गाओ",
+"verse": "यहोवा के लिये एक नया गीत गाओ, हे सारी पृथ्वी के लोगों यहोवा के लिये गाओ! भजन संहिता 96:1"
+},
+"LAUGH": {
+"word": "हँसो",
+"verse": "रोने का समय, और हँसने का भी समय; छाती पीटने का समय, और नाचने का भी समय है; सभोपदेशक 3:4"
+}
+},
+"el": {
+"REST": {
+"word": "Αναπαύσου",
+"verse": "Ελάτε σε μένα όλοι όσοι κοπιάζετε και είστε φορτωμένοι, και εγώ θα σας αναπαύσω. Ματθαίος 11:28"
+},
+"HOPE": {
+"word": "Έλπισε",
+"verse": "Έλπισε στον Θεό· επειδή, ακόμα θα τον υμνώ. Ψαλμοί 42:5"
+},
+"LOVE": {
+"word": "Αγάπα",
+"verse": "Αυτή είναι η εντολή μου, να αγαπάτε ο ένας τον άλλον, όπως εγώ σας αγάπησα. Ιωάννης 15:12"
+},
+"TRUST": {
+"word": "Εμπιστέψου",
+"verse": "Ανάθεσε στον Κύριο τον δρόμο σου, και έλπιζε σ’ αυτόν, και αυτός θα ενεργήσει. Ψαλμοί 37:5"
+},
+"PRAY": {
+"word": "Προσευχήσου",
+"verse": "Όταν προσεύχεστε, να λέτε: Πατέρα μας, που είσαι στους ουρανούς, ας αγιαστεί το όνομά σου. Λουκάς 11:2"
+},
+"BELIEVE": {
+"word": "Πίστευε",
+"verse": "Ας μη ταράζεται η καρδιά σας· πιστεύετε στον Θεό, και σε μένα πιστεύετε. Ιωάννης 14:1"
+},
+"FORGIVE": {
+"word": "Συγχώρεσε",
+"verse": "Αν συγχωρήσετε στους ανθρώπους τα πταίσματά τους, θα συγχωρήσει και σε σας ο ουράνιος Πατέρας σας. Ματθαίος 6:14"
+},
+"GIVE": {
+"word": "Δίνε",
+"verse": "Να δίνετε, και θα σας δοθεί· καλό μέτρο, πιεσμένο, και συγκαθισμένο και υπερξεχειλιζόμενο. Λουκάς 6:38"
+},
+"SEEK": {
+"word": "Αναζήτα",
+"verse": "Να ζητάτε πρώτα τη βασιλεία τού Θεού, και τη δικαιοσύνη του. Ματθαίος 6:33"
+},
+"ASK": {
+"word": "Ζήτα",
+"verse": "Πόσο μάλλον ο Πατέρας ο ουράνιος θα δώσει Πνεύμα άγιο σ’ εκείνους που ζητούν απ’ αυτόν; Λουκάς 11:13"
+},
+"KNOCK": {
+"word": "Κρούε",
+"verse": "Κρούετε, και θα σας ανοιχτεί· επειδή, καθένας που ζητάει, παίρνει. Ματθαίος 7:7-8"
+},
+"FOLLOW": {
+"word": "Ακολούθα",
+"verse": "Αν κάποιος θέλει νάρθει πίσω μου, ας απαρνηθεί τον εαυτό του, και ας σηκώσει τον σταυρό του, καθημερινά. Λουκάς 9:23"
+},
+"LISTEN": {
+"word": "Άκου",
+"verse": "Όποιος, όμως, με ακούει, θα κατοικήσει με ασφάλεια· και θα ησυχάζει, χωρίς να φοβάται κακό. Παροιμίες 1:33"
+},
+"REMEMBER": {
+"word": "Θυμήσου",
+"verse": "Τούτο είναι το σώμα μου, που δίνεται για σας· αυτό να κάνετε στη δική μου ανάμνηση. Λουκάς 22:19"
+},
+"CHOOSE": {
+"word": "Διάλεξε",
+"verse": "Έβαλα μπροστά σας τη ζωή και τον θάνατο … γι’ αυτό, διαλέξτε τη ζωή. Δευτερονόμιο 30:19"
+},
+"HONOR": {
+"word": "Τίμα",
+"verse": "«Τίμα τον πατέρα σου και τη μητέρα», αυτή είναι η πρώτη εντολή με υπόσχεση. Εφεσίους 6:2"
+},
+"GROW": {
+"word": "Αυξάνου",
+"verse": "Να αυξάνεστε δε στη χάρη και στη γνώση τού Κυρίου μας και Σωτήρα, του Ιησού Χριστού. Β΄ Πέτρου 3:18"
+},
+"GATHER": {
+"word": "Μαζευτείτε",
+"verse": "Όπου είναι δύο ή τρεις συγκεντρωμένοι στο όνομά μου, εκεί είμαι εγώ ανάμεσά τους. Ματθαίος 18:20"
+},
+"ACCEPT": {
+"word": "Δέξου",
+"verse": "Προσδέχεστε ο ένας τον άλλον, όπως και ο Χριστός προσδέχθηκε εμάς προς δόξαν τού Θεού. Ρωμαίους 15:7"
+},
+"BREATHE": {
+"word": "Ανάπνευσε",
+"verse": "Έλα, πνεύμα, από τους τέσσερις ανέμους, και φύσηξε προς αυτούς τούς φονευμένους, και ας αναζήσουν. Ιεζεκιήλ 37:9"
+},
+"ENJOY": {
+"word": "Απόλαυσε",
+"verse": "Το να τρώει κάθε άνθρωπος, και να πίνει, και να απολαμβάνει καλό από ολόκληρο τον μόχθο του, είναι χάρισμα του Θεού. Εκκλησιαστής 3:13"
+},
+"LIVE": {
+"word": "Ζήσε",
+"verse": "Δεν θα πεθάνω, αλλά θα ζήσω, και θα διηγούμαι τα έργα τού Κυρίου. Ψαλμοί 118:17"
+},
+"SING": {
+"word": "Ψάλλε",
+"verse": "Ψάλτε στον Κύριο ένα καινούργιο τραγούδι· ψάλτε στον Κύριο, ολόκληρη η γη. Ψαλμοί 96:1"
+},
+"LAUGH": {
+"word": "Γέλα",
+"verse": "Καιρός να κλαίει, και καιρός να γελάει· καιρός να πενθεί, και καιρός να χορεύει· Εκκλησιαστής 3:4"
+}
 }
 }
