@@ -688,6 +688,9 @@ section.section.bundles{display:block;margin-top:0}
 .cmpmenu button[role="menuitemcheckbox"]::before{content:'';display:inline-block;width:14px;height:14px;border:1.5px solid currentColor;border-radius:3px;margin-right:10px;vertical-align:-2px;opacity:.7}
 .cmpmenu button[role="menuitemcheckbox"][aria-checked="true"]::before{background:#2a5fb0;border-color:#2a5fb0;opacity:1;box-shadow:inset 0 0 0 2px var(--panel,#0b1620)}
 @media(max-width:900px){.cmp figure{max-width:min(520px,100%)}}
+
+/* Ken, 7 Oct: one fish on its own is the same size as each fish in the side-by-side view (computers only) */
+@media(min-width:901px){ #stage{width:calc((50% - 9px) * 1.088);margin-left:auto;margin-right:auto} #stage.on{width:100%} }
 </style>
 
 <div class="mf">
