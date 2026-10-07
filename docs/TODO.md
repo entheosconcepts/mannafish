@@ -64,6 +64,15 @@ Needs: a separate database for MannaFish (not Majestic's), a privacy page, and a
 ### Phone app
 - [ ] Later, once accounts are in use on the website. The website can already be added to a phone's home screen.
 
+### Design polish: centring under the fish
+The eye takes the fish's body as its middle, not the whole picture with the tail. The body's middle sits about 10% left of the picture's middle (about 80 px on a computer), so anything centred under the fish looks pushed to the right.
+Options, pick one:
+- [ ] Centre things under the fish on the body, not the page: move the label or button left by the same 10%. (Recommended; simple and exact.)
+- [ ] Move the fish right by that 10% so its body sits on the page's centre line; the tail then reaches past the centred text.
+- [ ] Keep two buttons that fill the full width (as now), which sidesteps it.
+- [ ] Add a small counterweight on the left (for example the language label), to balance the tail.
+Also check the small alternate-language fish and its "English ⇄" label the same way.
+
 ### Other ideas waiting
 - [ ] Countertop "FishNet" display card print file (PDF).
 - [ ] Ken's cut-off message "Move the…" — still to clarify.
