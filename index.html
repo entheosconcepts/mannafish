@@ -537,6 +537,8 @@ section.section.bundles{display:block;margin-top:0}
 /* 6 Oct: two offers side by side, each with its own look */
 .offers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;width:100%}
 .offerbtn{font-size:1rem;padding:14px 22px}
+.offerrow{display:flex;gap:14px;justify-content:center;width:100%;max-width:720px}
+.offerrow .offerbtn{flex:1 1 0;min-width:0;align-self:stretch}
 .offerbtn .chev{display:inline-block;transition:transform .2s;margin-left:6px}
 .offerbtn.open .chev{transform:rotate(180deg)}
 .btn-devo{background:transparent;color:#fff;border:1.5px solid #eaf0f0}
@@ -653,8 +655,11 @@ section.section.bundles{display:block;margin-top:0}
 
   <div class="sharerow"><span class="rnote" id="shareMsg"></span></div>
   <div id="readerSlot"></div>
-  <!-- Ken, 6 Oct: stacked. The free devotional first, the free decals under it. -->
-  <button class="btn btn-devo offerbtn" type="button" id="devoBtn" aria-expanded="false" data-panel="devoBox">Free Daily Devotional</button>
+  <!-- Ken, 7 Oct: the two buttons side by side under the fish; the one tapped opens below them. -->
+  <div class="offerrow">
+    <button class="btn btn-devo offerbtn" type="button" id="devoBtn" aria-expanded="false" data-panel="devoBox">Free Daily Devotional</button>
+    <button class="btn btn-primary offerbtn" type="button" id="giftBtn" aria-expanded="false" data-panel="giftBox">Free Decals</button>
+  </div>
   <div class="giftbox devobox" id="devoBox" hidden>
     <h3>The MannaFish devotional, free</h3>
     <p class="gsub">One word of God, its Greek and Hebrew, and a verse to trace it. Sunday to Friday; Saturday is rest.</p>
@@ -678,7 +683,6 @@ section.section.bundles{display:block;margin-top:0}
     </form>
     <p class="rnote" id="devoFormMsg"></p>
   </div>
-  <button class="btn btn-primary offerbtn" type="button" id="giftBtn" aria-expanded="false" data-panel="giftBox">Free Decals</button>
   <div class="giftbox" id="giftBox" hidden>
     <div class="twofish-mark"><span class="tf-fish"><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></span><span class="tf-words">Keep One. Give One.</span></div>
     <h3>Your free MannaFish decals</h3>
@@ -1255,6 +1259,7 @@ window.MF=(function(){
   document.querySelectorAll('.offerbtn').forEach(function(btn){btn.addEventListener('click',function(){
     var me=$(btn.dataset.panel), opening=me.hidden;
     me.hidden=!opening; btn.classList.toggle('open',opening); btn.setAttribute('aria-expanded',String(opening));
+    if(opening) document.querySelectorAll('.offerbtn').forEach(function(o){if(o!==btn){$(o.dataset.panel).hidden=true;o.classList.remove('open');o.setAttribute('aria-expanded','false');}});
     if(opening){
       if(me.id==='giftBox') gsel.value=DATA[cur].title;
       me.scrollIntoView({behavior:'smooth',block:'start'});}

@@ -27,11 +27,13 @@ Sign-ups are already being saved; nothing goes out yet except phone push notices
 - [ ] Remove the test site's "do not index" setting from the live copy.
 
 ## Next: more languages
-Order: English and Spanish (done), then **Tagalog**, **Mandarin Chinese**, **Hindi**.
-For each one: a free-to-use Bible text, the 24 command words, the verse lines, the site text, a fluent reader to check it, and a lettering font. (The MannaFish Hobo font has no Chinese or Hindi letters, so a matching font has to be chosen.)
+Order: English and Spanish (done), then **Tagalog**, **Mandarin Chinese**, **Hindi**, **Greek**, **Hebrew**.
+For each one: a free-to-use Bible text, the 24 command words, the verse lines, the site text, a fluent reader to check it, and a lettering font. (The MannaFish Hobo font has no Chinese, Hindi, Greek or Hebrew letters, so a matching font has to be chosen.)
 - [ ] Tagalog: Ang Biblia (1905) is free to use.
 - [ ] Mandarin: Chinese Union Version (1919) is free to use.
 - [ ] Hindi: check permission for the Hindi Bible text first; most current Hindi Bibles are owned by the Bible Society of India.
+- [ ] Greek: the New Testament in its original Greek, and a modern Greek Bible for Greek readers. Older texts are free to use; check each one.
+- [ ] Hebrew: the Old Testament in its original Hebrew, and a Hebrew New Testament. Older texts are free to use; check each one. Hebrew reads right to left, so the fish lettering runs the other way.
 
 ## Later
 
