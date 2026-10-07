@@ -1444,6 +1444,12 @@ window.MF=(function(){
       .catch(function(){ $('acctMsg').textContent=T('That code did not work. Check it, or send a new one.','Ese código no funcionó. Revísalo o pide uno nuevo.'); }); });
   $('acctOutBtn').addEventListener('click',function(){ sb&&sb.auth.signOut(); });
   ['acctNotes','acctAct'].forEach(function(id){ $(id).addEventListener('click',function(e){ var b=e.target.closest('button[data-k]'); if(b){ pick(b.dataset.k,true); } }); });
+  // a sign-in link that was used already or is too old comes back with an error: say so, and offer the code
+  (function(){ var h=location.hash; if(!/error_code=|error=access_denied/.test(h)) return;
+    try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
+    $('acctBox').hidden=false; $('acctBtn').setAttribute('aria-expanded','true');
+    $('acctMsg').textContent=T('That sign-in link has expired or was already used. Enter your email to get a new one, then type the code from the email.','Ese enlace ya se usó o venció. Escribe tu correo para recibir uno nuevo y luego escribe el código del correo.');
+    setTimeout(function(){ $('acctBox').scrollIntoView({behavior:'smooth',block:'center'}); },400); })();
   // returning visitors who signed in before: start quietly, so their notes and history are ready
   try{ if(Object.keys(localStorage).some(function(k){return /^sb-.*-auth-token$/.test(k);}) || /access_token=|[?&]code=/.test(location.href)) loadSb().catch(function(){}); }catch(e){}
   window.MFview=logView;
