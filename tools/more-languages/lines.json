@@ -1,0 +1,790 @@
+{
+ "tl": {
+  "tag": " (ABTAG)",
+  "fish": [
+   {
+    "key": "REST",
+    "word": "Magpahinga",
+    "top": "Magsiparito sa akin, kayong lahat na nangapapagal",
+    "bottom": "at nangabibigatang lubha, at kayo’y aking papagpapahingahin.",
+    "ref": "Mateo 11:28",
+    "refShort": "Mat. 11:28"
+   },
+   {
+    "key": "HOPE",
+    "word": "Umasa",
+    "top": "Umasa ka sa Dios:",
+    "bottom": "sapagka’t pupuri pa ako sa kaniya...",
+    "ref": "Mga Awit 42:5",
+    "refShort": "Awit 42:5"
+   },
+   {
+    "key": "LOVE",
+    "word": "Umibig",
+    "top": "Ito ang aking utos, na kayo’y mangagibigan",
+    "bottom": "sa isa’t isa, na gaya ng pagibig ko sa inyo.",
+    "ref": "Juan 15:12",
+    "refShort": "Juan 15:12"
+   },
+   {
+    "key": "TRUST",
+    "word": "Magtiwala",
+    "top": "Ihabilin mo ang iyong lakad sa Panginoon;",
+    "bottom": "Tumiwala ka rin naman sa kaniya, at kaniyang papangyayarihin.",
+    "ref": "Mga Awit 37:5",
+    "refShort": "Awit 37:5"
+   },
+   {
+    "key": "PRAY",
+    "word": "Manalangin",
+    "top": "Pagka kayo’y nagsisipanalangin, inyong sabihin,",
+    "bottom": "Ama, Sambahin nawa ang pangalan mo.",
+    "ref": "Lucas 11:2",
+    "refShort": "Luc. 11:2"
+   },
+   {
+    "key": "BELIEVE",
+    "word": "Sumampalataya",
+    "top": "Huwag magulumihanan ang inyong puso:",
+    "bottom": "magsisampalataya kayo sa Dios, magsisampalataya naman kayo sa akin.",
+    "ref": "Juan 14:1",
+    "refShort": "Juan 14:1"
+   },
+   {
+    "key": "FORGIVE",
+    "word": "Magpatawad",
+    "top": "Kung ipatawad ninyo sa mga tao ang kanilang mga kasalanan,",
+    "bottom": "ay patatawarin naman kayo ng inyong Ama sa kalangitan.",
+    "ref": "Mateo 6:14",
+    "refShort": "Mat. 6:14"
+   },
+   {
+    "key": "GIVE",
+    "word": "Magbigay",
+    "top": "Mangagbigay kayo, at kayo’y bibigyan;",
+    "bottom": "takal na mabuti, pikpik, liglig, at umaapaw...",
+    "ref": "Lucas 6:38",
+    "refShort": "Luc. 6:38"
+   },
+   {
+    "key": "SEEK",
+    "word": "Humanap",
+    "top": "Datapuwa’t hanapin muna ninyo ang kaniyang kaharian,",
+    "bottom": "at ang kaniyang katuwiran...",
+    "ref": "Mateo 6:33",
+    "refShort": "Mat. 6:33"
+   },
+   {
+    "key": "ASK",
+    "word": "Humingi",
+    "top": "Gaano pa kaya ang inyong Ama sa kalangitan",
+    "bottom": "na magbibigay ng Espiritu Santo sa nagsisihingi sa kaniya?",
+    "ref": "Lucas 11:13",
+    "refShort": "Luc. 11:13"
+   },
+   {
+    "key": "KNOCK",
+    "word": "Kumatok",
+    "top": "Magsituktok kayo, at kayo’y bubuksan:",
+    "bottom": "Sapagka’t ang bawa’t humihingi ay tumatanggap...",
+    "ref": "Mateo 7:7-8",
+    "refShort": "Mat. 7:7-8"
+   },
+   {
+    "key": "FOLLOW",
+    "word": "Sumunod",
+    "top": "Kung ang sinomang tao ay ibig sumunod sa akin,",
+    "bottom": "ay tumanggi sa kaniyang sarili, at pasanin sa araw-araw ang kaniyang krus...",
+    "ref": "Lucas 9:23",
+    "refShort": "Luc. 9:23"
+   },
+   {
+    "key": "LISTEN",
+    "word": "Makinig",
+    "top": "Nguni’t ang nakikinig sa akin ay tatahang tiwasay.",
+    "bottom": "At tatahimik na walang takot sa kasamaan.",
+    "ref": "Mga Kawikaan 1:33",
+    "refShort": "Kaw. 1:33"
+   },
+   {
+    "key": "REMEMBER",
+    "word": "Alalahanin",
+    "top": "Ito’y aking katawan, na ibinibigay dahil sa inyo:",
+    "bottom": "gawin ninyo ito sa pagaalaala sa akin.",
+    "ref": "Lucas 22:19",
+    "refShort": "Luc. 22:19"
+   },
+   {
+    "key": "CHOOSE",
+    "word": "Pumili",
+    "top": "...ilagay sa harap mo ang buhay at ang kamatayan...",
+    "bottom": "kaya’t piliin mo ang buhay.",
+    "ref": "Deuteronomio 30:19",
+    "refShort": "Deut. 30:19"
+   },
+   {
+    "key": "HONOR",
+    "word": "Igalang",
+    "top": "Igalang mo ang iyong ama at ina",
+    "bottom": "(na siyang unang utos na may pangako).",
+    "ref": "Mga Taga-Efeso 6:2",
+    "refShort": "Efe. 6:2"
+   },
+   {
+    "key": "GROW",
+    "word": "Lumago",
+    "top": "Datapuwa’t magsilago kayo sa biyaya at sa pagkakilala",
+    "bottom": "sa ating Panginoon at Tagapagligtas na si Jesucristo.",
+    "ref": "2 Pedro 3:18",
+    "refShort": "2 Ped. 3:18"
+   },
+   {
+    "key": "GATHER",
+    "word": "Magtipon",
+    "top": "Kung saan nagkakatipon ang dalawa o tatlo sa aking pangalan,",
+    "bottom": "ay naroroon ako sa gitna nila.",
+    "ref": "Mateo 18:20",
+    "refShort": "Mat. 18:20"
+   },
+   {
+    "key": "ACCEPT",
+    "word": "Tumanggap",
+    "top": "Sa ganito’y mangagtanggapan kayo,",
+    "bottom": "gaya naman ni Cristo na tinanggap kayo sa kaluwalhatian ng Dios.",
+    "ref": "Mga Taga-Roma 15:7",
+    "refShort": "Roma 15:7"
+   },
+   {
+    "key": "BREATHE",
+    "word": "Huminga",
+    "top": "Manggaling ka sa apat na hangin, Oh hinga,",
+    "bottom": "at humihip ka sa mga patay na ito, upang sila’y mangabuhay.",
+    "ref": "Ezekiel 37:9",
+    "refShort": "Ezek. 37:9"
+   },
+   {
+    "key": "ENJOY",
+    "word": "Magalak",
+    "top": "Ang bawa’t tao rin naman ay marapat kumain at uminom,",
+    "bottom": "at magalak sa kabutihan sa lahat niyang gawa, siyang kaloob ng Dios.",
+    "ref": "Eclesiastes 3:13",
+    "refShort": "Ecl. 3:13"
+   },
+   {
+    "key": "LIVE",
+    "word": "Mabuhay",
+    "top": "Hindi ako mamamatay, kundi mabubuhay,",
+    "bottom": "At magpapahayag ng mga gawa ng Panginoon.",
+    "ref": "Mga Awit 118:17",
+    "refShort": "Awit 118:17"
+   },
+   {
+    "key": "SING",
+    "word": "Umawit",
+    "top": "Oh magsiawit kayo sa Panginoon ng bagong awit:",
+    "bottom": "Magsiawit kayo sa Panginoon, buong lupa.",
+    "ref": "Mga Awit 96:1",
+    "refShort": "Awit 96:1"
+   },
+   {
+    "key": "LAUGH",
+    "word": "Tumawa",
+    "top": "Panahon ng pagiyak, at panahon ng pagtawa;",
+    "bottom": "panahon ng pagtangis, at panahon ng pagsayaw;",
+    "ref": "Eclesiastes 3:4",
+    "refShort": "Ecl. 3:4"
+   }
+  ]
+ },
+ "zh": {
+  "tag": "（和合本）",
+  "fish": [
+   {
+    "key": "REST",
+    "word": "安息",
+    "top": "凡劳苦担重担的人",
+    "bottom": "可以到我这里来，我就使你们得安息。",
+    "ref": "马太福音11:28",
+    "refShort": "太11:28"
+   },
+   {
+    "key": "HOPE",
+    "word": "仰望",
+    "top": "应当仰望 神，",
+    "bottom": "我还要称赞他。",
+    "ref": "诗篇42:5",
+    "refShort": "诗42:5"
+   },
+   {
+    "key": "LOVE",
+    "word": "相爱",
+    "top": "你们要彼此相爱，",
+    "bottom": "像我爱你们一样；这就是我的命令。",
+    "ref": "约翰福音15:12",
+    "refShort": "约15:12"
+   },
+   {
+    "key": "TRUST",
+    "word": "倚靠",
+    "top": "当将你的事交托耶和华，",
+    "bottom": "并倚靠他，他就必成全。",
+    "ref": "诗篇37:5",
+    "refShort": "诗37:5"
+   },
+   {
+    "key": "PRAY",
+    "word": "祷告",
+    "top": "你们祷告的时候，要说：",
+    "bottom": "我们在天上的父：愿人都尊你的名为圣。",
+    "ref": "路加福音11:2",
+    "refShort": "路11:2"
+   },
+   {
+    "key": "BELIEVE",
+    "word": "信",
+    "top": "你们心里不要忧愁；",
+    "bottom": "你们信 神，也当信我。",
+    "ref": "约翰福音14:1",
+    "refShort": "约14:1"
+   },
+   {
+    "key": "FORGIVE",
+    "word": "饶恕",
+    "top": "你们饶恕人的过犯，",
+    "bottom": "你们的天父也必饶恕你们的过犯。",
+    "ref": "马太福音6:14",
+    "refShort": "太6:14"
+   },
+   {
+    "key": "GIVE",
+    "word": "给予",
+    "top": "你们要给人，就必有给你们的，",
+    "bottom": "并且用十足的升斗，连摇带按，上尖下流地倒在你们怀里……",
+    "ref": "路加福音6:38",
+    "refShort": "路6:38"
+   },
+   {
+    "key": "SEEK",
+    "word": "寻求",
+    "top": "你们要先求他的国和他的义，",
+    "bottom": "这些东西都要加给你们了。",
+    "ref": "马太福音6:33",
+    "refShort": "太6:33"
+   },
+   {
+    "key": "ASK",
+    "word": "祈求",
+    "top": "何况天父，",
+    "bottom": "岂不更将圣灵给求他的人吗？",
+    "ref": "路加福音11:13",
+    "refShort": "路11:13"
+   },
+   {
+    "key": "KNOCK",
+    "word": "叩门",
+    "top": "叩门，就给你们开门。",
+    "bottom": "因为凡祈求的，就得着……",
+    "ref": "马太福音7:7-8",
+    "refShort": "太7:7-8"
+   },
+   {
+    "key": "FOLLOW",
+    "word": "跟从",
+    "top": "若有人要跟从我，",
+    "bottom": "就当舍己，天天背起他的十字架来跟从我。",
+    "ref": "路加福音9:23",
+    "refShort": "路9:23"
+   },
+   {
+    "key": "LISTEN",
+    "word": "听从",
+    "top": "惟有听从我的，必安然居住，",
+    "bottom": "得享安静，不怕灾祸。",
+    "ref": "箴言1:33",
+    "refShort": "箴1:33"
+   },
+   {
+    "key": "REMEMBER",
+    "word": "记念",
+    "top": "这是我的身体，为你们舍的，",
+    "bottom": "你们也应当如此行，为的是记念我。",
+    "ref": "路加福音22:19",
+    "refShort": "路22:19"
+   },
+   {
+    "key": "CHOOSE",
+    "word": "拣选",
+    "top": "我将生死祸福陈明在你面前，",
+    "bottom": "所以你要拣选生命。",
+    "ref": "申命记30:19",
+    "refShort": "申30:19"
+   },
+   {
+    "key": "HONOR",
+    "word": "孝敬",
+    "top": "要孝敬父母，",
+    "bottom": "这是第一条带应许的诫命。",
+    "ref": "以弗所书6:2",
+    "refShort": "弗6:2"
+   },
+   {
+    "key": "GROW",
+    "word": "长进",
+    "top": "你们却要在我们主－救主耶稣基督的",
+    "bottom": "恩典和知识上有长进。",
+    "ref": "彼得后书3:18",
+    "refShort": "彼后3:18"
+   },
+   {
+    "key": "GATHER",
+    "word": "聚会",
+    "top": "无论在哪里，有两三个人奉我的名聚会，",
+    "bottom": "那里就有我在他们中间。",
+    "ref": "马太福音18:20",
+    "refShort": "太18:20"
+   },
+   {
+    "key": "ACCEPT",
+    "word": "接纳",
+    "top": "你们要彼此接纳，",
+    "bottom": "如同基督接纳你们一样，使荣耀归与 神。",
+    "ref": "罗马书15:7",
+    "refShort": "罗15:7"
+   },
+   {
+    "key": "BREATHE",
+    "word": "呼吸",
+    "top": "气息啊，要从四方而来，",
+    "bottom": "吹在这些被杀的人身上，使他们活了。",
+    "ref": "以西结书37:9",
+    "refShort": "结37:9"
+   },
+   {
+    "key": "ENJOY",
+    "word": "享福",
+    "top": "人人吃喝，在他一切劳碌中享福，",
+    "bottom": "这也是 神的恩赐。",
+    "ref": "传道书3:13",
+    "refShort": "传3:13"
+   },
+   {
+    "key": "LIVE",
+    "word": "存活",
+    "top": "我必不致死，仍要存活，",
+    "bottom": "并要传扬耶和华的作为。",
+    "ref": "诗篇118:17",
+    "refShort": "诗118:17"
+   },
+   {
+    "key": "SING",
+    "word": "歌唱",
+    "top": "你们要向耶和华唱新歌！",
+    "bottom": "全地都要向耶和华歌唱！",
+    "ref": "诗篇96:1",
+    "refShort": "诗96:1"
+   },
+   {
+    "key": "LAUGH",
+    "word": "欢笑",
+    "top": "哭有时，笑有时；",
+    "bottom": "哀恸有时，跳舞有时；",
+    "ref": "传道书3:4",
+    "refShort": "传3:4"
+   }
+  ]
+ },
+ "hi": {
+  "tag": " (IRV)",
+  "fish": [
+   {
+    "key": "REST",
+    "word": "विश्राम करो",
+    "top": "हे सब परिश्रम करनेवालों और बोझ से दबे लोगों,",
+    "bottom": "मेरे पास आओ; मैं तुम्हें विश्राम दूँगा।",
+    "ref": "मत्ती 11:28",
+    "refShort": "मत्ती 11:28"
+   },
+   {
+    "key": "HOPE",
+    "word": "आशा रखो",
+    "top": "परमेश्वर पर आशा लगाए रह;",
+    "bottom": "क्योंकि मैं ... फिर उसका धन्यवाद करूँगा।",
+    "ref": "भजन संहिता 42:5",
+    "refShort": "भज. 42:5"
+   },
+   {
+    "key": "LOVE",
+    "word": "प्रेम करो",
+    "top": "मेरी आज्ञा यह है, कि जैसा मैंने तुम से प्रेम रखा,",
+    "bottom": "वैसा ही तुम भी एक दूसरे से प्रेम रखो।",
+    "ref": "यूहन्ना 15:12",
+    "refShort": "यूह. 15:12"
+   },
+   {
+    "key": "TRUST",
+    "word": "भरोसा रखो",
+    "top": "अपने मार्ग की चिन्ता यहोवा पर छोड़;",
+    "bottom": "और उस पर भरोसा रख, वही पूरा करेगा।",
+    "ref": "भजन संहिता 37:5",
+    "refShort": "भज. 37:5"
+   },
+   {
+    "key": "PRAY",
+    "word": "प्रार्थना करो",
+    "top": "जब तुम प्रार्थना करो, तो कहो:",
+    "bottom": "‘हे पिता, तेरा नाम पवित्र माना जाए, तेरा राज्य आए।’",
+    "ref": "लूका 11:2",
+    "refShort": "लूका 11:2"
+   },
+   {
+    "key": "BELIEVE",
+    "word": "विश्वास करो",
+    "top": "तुम्हारा मन व्याकुल न हो,",
+    "bottom": "तुम परमेश्वर पर विश्वास रखते हो मुझ पर भी विश्वास रखो।",
+    "ref": "यूहन्ना 14:1",
+    "refShort": "यूह. 14:1"
+   },
+   {
+    "key": "FORGIVE",
+    "word": "क्षमा करो",
+    "top": "यदि तुम मनुष्य के अपराध क्षमा करोगे,",
+    "bottom": "तो तुम्हारा स्वर्गीय पिता भी तुम्हें क्षमा करेगा।",
+    "ref": "मत्ती 6:14",
+    "refShort": "मत्ती 6:14"
+   },
+   {
+    "key": "GIVE",
+    "word": "दिया करो",
+    "top": "दिया करो, तो तुम्हें भी दिया जाएगा:",
+    "bottom": "लोग पूरा नाप दबा-दबाकर और हिला-हिलाकर और उभरता हुआ तुम्हारी गोद में डालेंगे...",
+    "ref": "लूका 6:38",
+    "refShort": "लूका 6:38"
+   },
+   {
+    "key": "SEEK",
+    "word": "खोजो",
+    "top": "पहले तुम परमेश्वर के राज्य",
+    "bottom": "और धार्मिकता की खोज करो...",
+    "ref": "मत्ती 6:33",
+    "refShort": "मत्ती 6:33"
+   },
+   {
+    "key": "ASK",
+    "word": "माँगो",
+    "top": "तो तुम्हारा स्वर्गीय पिता अपने माँगनेवालों को",
+    "bottom": "पवित्र आत्मा क्यों न देगा।",
+    "ref": "लूका 11:13",
+    "refShort": "लूका 11:13"
+   },
+   {
+    "key": "KNOCK",
+    "word": "खटखटाओ",
+    "top": "खटखटाओ, तो तुम्हारे लिये खोला जाएगा।",
+    "bottom": "क्योंकि जो कोई माँगता है, उसे मिलता है...",
+    "ref": "मत्ती 7:7-8",
+    "refShort": "मत्ती 7:7-8"
+   },
+   {
+    "key": "FOLLOW",
+    "word": "पीछे हो लो",
+    "top": "यदि कोई मेरे पीछे आना चाहे,",
+    "bottom": "तो अपने आप से इन्कार करे और प्रतिदिन अपना क्रूस उठाए हुए मेरे पीछे हो ले।",
+    "ref": "लूका 9:23",
+    "refShort": "लूका 9:23"
+   },
+   {
+    "key": "LISTEN",
+    "word": "सुनो",
+    "top": "परन्तु जो मेरी सुनेगा, वह निडर बसा रहेगा,",
+    "bottom": "और विपत्ति से निश्चिन्त होकर सुख से रहेगा।",
+    "ref": "नीतिवचन 1:33",
+    "refShort": "नीति. 1:33"
+   },
+   {
+    "key": "REMEMBER",
+    "word": "स्मरण करो",
+    "top": "यह मेरी देह है, जो तुम्हारे लिये दी जाती है:",
+    "bottom": "मेरे स्मरण के लिये यही किया करो।",
+    "ref": "लूका 22:19",
+    "refShort": "लूका 22:19"
+   },
+   {
+    "key": "CHOOSE",
+    "word": "चुनो",
+    "top": "मैंने जीवन और मरण, आशीष और श्राप को तुम्हारे आगे रखा है;",
+    "bottom": "इसलिए तू जीवन ही को अपना ले...",
+    "ref": "व्यवस्थाविवरण 30:19",
+    "refShort": "व्य. 30:19"
+   },
+   {
+    "key": "HONOR",
+    "word": "आदर करो",
+    "top": "अपनी माता और पिता का आदर कर",
+    "bottom": "(यह पहली आज्ञा है, जिसके साथ प्रतिज्ञा भी है)।",
+    "ref": "इफिसियों 6:2",
+    "refShort": "इफि. 6:2"
+   },
+   {
+    "key": "GROW",
+    "word": "बढ़ते जाओ",
+    "top": "हमारे प्रभु, और उद्धारकर्ता यीशु मसीह के",
+    "bottom": "अनुग्रह और पहचान में बढ़ते जाओ।",
+    "ref": "2 पतरस 3:18",
+    "refShort": "2 पत. 3:18"
+   },
+   {
+    "key": "GATHER",
+    "word": "इकट्ठे हो",
+    "top": "जहाँ दो या तीन मेरे नाम पर इकट्ठे होते हैं",
+    "bottom": "वहाँ मैं उनके बीच में होता हूँ।",
+    "ref": "मत्ती 18:20",
+    "refShort": "मत्ती 18:20"
+   },
+   {
+    "key": "ACCEPT",
+    "word": "ग्रहण करो",
+    "top": "जैसा मसीह ने भी परमेश्वर की महिमा के लिये तुम्हें ग्रहण किया है,",
+    "bottom": "वैसे ही तुम भी एक दूसरे को ग्रहण करो।",
+    "ref": "रोमियों 15:7",
+    "refShort": "रोम. 15:7"
+   },
+   {
+    "key": "BREATHE",
+    "word": "साँस लो",
+    "top": "हे साँस... चारों दिशाओं से आकर",
+    "bottom": "इन घात किए हुओं में समा जा, कि ये जी उठें।",
+    "ref": "यहेजकेल 37:9",
+    "refShort": "यहे. 37:9"
+   },
+   {
+    "key": "ENJOY",
+    "word": "आनन्द करो",
+    "top": "यह भी परमेश्वर का दान है",
+    "bottom": "कि मनुष्य खाए-पीए और अपने सब परिश्रम में सुखी रहे।",
+    "ref": "सभोपदेशक 3:13",
+    "refShort": "सभो. 3:13"
+   },
+   {
+    "key": "LIVE",
+    "word": "जीवित रहो",
+    "top": "मैं न मरूँगा वरन् जीवित रहूँगा,",
+    "bottom": "और परमेश्वर के कामों का वर्णन करता रहूँगा।",
+    "ref": "भजन संहिता 118:17",
+    "refShort": "भज. 118:17"
+   },
+   {
+    "key": "SING",
+    "word": "गाओ",
+    "top": "यहोवा के लिये एक नया गीत गाओ,",
+    "bottom": "हे सारी पृथ्वी के लोगों यहोवा के लिये गाओ!",
+    "ref": "भजन संहिता 96:1",
+    "refShort": "भज. 96:1"
+   },
+   {
+    "key": "LAUGH",
+    "word": "हँसो",
+    "top": "रोने का समय, और हँसने का भी समय;",
+    "bottom": "छाती पीटने का समय, और नाचने का भी समय है;",
+    "ref": "सभोपदेशक 3:4",
+    "refShort": "सभो. 3:4"
+   }
+  ]
+ },
+ "el": {
+  "tag": " (FPB)",
+  "fish": [
+   {
+    "key": "REST",
+    "word": "Αναπαύσου",
+    "top": "Ελάτε σε μένα όλοι όσοι κοπιάζετε",
+    "bottom": "και είστε φορτωμένοι, και εγώ θα σας αναπαύσω.",
+    "ref": "Ματθαίος 11:28",
+    "refShort": "Ματθ. 11:28"
+   },
+   {
+    "key": "HOPE",
+    "word": "Έλπισε",
+    "top": "Έλπισε στον Θεό·",
+    "bottom": "επειδή, ακόμα θα τον υμνώ...",
+    "ref": "Ψαλμοί 42:5",
+    "refShort": "Ψαλμ. 42:5"
+   },
+   {
+    "key": "LOVE",
+    "word": "Αγάπα",
+    "top": "Αυτή είναι η εντολή μου, να αγαπάτε",
+    "bottom": "ο ένας τον άλλον, όπως εγώ σας αγάπησα.",
+    "ref": "Ιωάννης 15:12",
+    "refShort": "Ιω. 15:12"
+   },
+   {
+    "key": "TRUST",
+    "word": "Εμπιστέψου",
+    "top": "Ανάθεσε στον Κύριο τον δρόμο σου,",
+    "bottom": "και έλπιζε σ’ αυτόν, και αυτός θα ενεργήσει.",
+    "ref": "Ψαλμοί 37:5",
+    "refShort": "Ψαλμ. 37:5"
+   },
+   {
+    "key": "PRAY",
+    "word": "Προσευχήσου",
+    "top": "Όταν προσεύχεστε, να λέτε: Πατέρα μας,",
+    "bottom": "που είσαι στους ουρανούς, ας αγιαστεί το όνομά σου.",
+    "ref": "Λουκάς 11:2",
+    "refShort": "Λουκ. 11:2"
+   },
+   {
+    "key": "BELIEVE",
+    "word": "Πίστευε",
+    "top": "Ας μη ταράζεται η καρδιά σας·",
+    "bottom": "πιστεύετε στον Θεό, και σε μένα πιστεύετε.",
+    "ref": "Ιωάννης 14:1",
+    "refShort": "Ιω. 14:1"
+   },
+   {
+    "key": "FORGIVE",
+    "word": "Συγχώρεσε",
+    "top": "Αν συγχωρήσετε στους ανθρώπους τα πταίσματά τους,",
+    "bottom": "θα συγχωρήσει και σε σας ο ουράνιος Πατέρας σας.",
+    "ref": "Ματθαίος 6:14",
+    "refShort": "Ματθ. 6:14"
+   },
+   {
+    "key": "GIVE",
+    "word": "Δίνε",
+    "top": "Να δίνετε, και θα σας δοθεί·",
+    "bottom": "καλό μέτρο, πιεσμένο, και συγκαθισμένο και υπερξεχειλιζόμενο...",
+    "ref": "Λουκάς 6:38",
+    "refShort": "Λουκ. 6:38"
+   },
+   {
+    "key": "SEEK",
+    "word": "Αναζήτα",
+    "top": "Να ζητάτε πρώτα τη βασιλεία τού Θεού,",
+    "bottom": "και τη δικαιοσύνη του...",
+    "ref": "Ματθαίος 6:33",
+    "refShort": "Ματθ. 6:33"
+   },
+   {
+    "key": "ASK",
+    "word": "Ζήτα",
+    "top": "Πόσο μάλλον ο Πατέρας ο ουράνιος θα δώσει",
+    "bottom": "Πνεύμα άγιο σ’ εκείνους που ζητούν απ’ αυτόν;",
+    "ref": "Λουκάς 11:13",
+    "refShort": "Λουκ. 11:13"
+   },
+   {
+    "key": "KNOCK",
+    "word": "Κρούε",
+    "top": "Κρούετε, και θα σας ανοιχτεί·",
+    "bottom": "επειδή, καθένας που ζητάει, παίρνει...",
+    "ref": "Ματθαίος 7:7-8",
+    "refShort": "Ματθ. 7:7-8"
+   },
+   {
+    "key": "FOLLOW",
+    "word": "Ακολούθα",
+    "top": "Αν κάποιος θέλει νάρθει πίσω μου,",
+    "bottom": "ας απαρνηθεί τον εαυτό του, και ας σηκώσει τον σταυρό του, καθημερινά...",
+    "ref": "Λουκάς 9:23",
+    "refShort": "Λουκ. 9:23"
+   },
+   {
+    "key": "LISTEN",
+    "word": "Άκου",
+    "top": "Όποιος, όμως, με ακούει, θα κατοικήσει με ασφάλεια·",
+    "bottom": "και θα ησυχάζει, χωρίς να φοβάται κακό.",
+    "ref": "Παροιμίες 1:33",
+    "refShort": "Παρ. 1:33"
+   },
+   {
+    "key": "REMEMBER",
+    "word": "Θυμήσου",
+    "top": "Τούτο είναι το σώμα μου, που δίνεται για σας·",
+    "bottom": "αυτό να κάνετε στη δική μου ανάμνηση.",
+    "ref": "Λουκάς 22:19",
+    "refShort": "Λουκ. 22:19"
+   },
+   {
+    "key": "CHOOSE",
+    "word": "Διάλεξε",
+    "top": "Έβαλα μπροστά σας τη ζωή και τον θάνατο...",
+    "bottom": "γι’ αυτό, διαλέξτε τη ζωή.",
+    "ref": "Δευτερονόμιο 30:19",
+    "refShort": "Δευτ. 30:19"
+   },
+   {
+    "key": "HONOR",
+    "word": "Τίμα",
+    "top": "«Τίμα τον πατέρα σου και τη μητέρα»,",
+    "bottom": "αυτή είναι η πρώτη εντολή με υπόσχεση.",
+    "ref": "Εφεσίους 6:2",
+    "refShort": "Εφ. 6:2"
+   },
+   {
+    "key": "GROW",
+    "word": "Αυξάνου",
+    "top": "Να αυξάνεστε δε στη χάρη και στη γνώση",
+    "bottom": "τού Κυρίου μας και Σωτήρα, του Ιησού Χριστού.",
+    "ref": "Β΄ Πέτρου 3:18",
+    "refShort": "Β΄ Πέτρ. 3:18"
+   },
+   {
+    "key": "GATHER",
+    "word": "Μαζευτείτε",
+    "top": "Όπου είναι δύο ή τρεις συγκεντρωμένοι στο όνομά μου,",
+    "bottom": "εκεί είμαι εγώ ανάμεσά τους.",
+    "ref": "Ματθαίος 18:20",
+    "refShort": "Ματθ. 18:20"
+   },
+   {
+    "key": "ACCEPT",
+    "word": "Δέξου",
+    "top": "Προσδέχεστε ο ένας τον άλλον,",
+    "bottom": "όπως και ο Χριστός προσδέχθηκε εμάς προς δόξαν τού Θεού.",
+    "ref": "Ρωμαίους 15:7",
+    "refShort": "Ρωμ. 15:7"
+   },
+   {
+    "key": "BREATHE",
+    "word": "Ανάπνευσε",
+    "top": "Έλα, πνεύμα, από τους τέσσερις ανέμους,",
+    "bottom": "και φύσηξε προς αυτούς τούς φονευμένους, και ας αναζήσουν.",
+    "ref": "Ιεζεκιήλ 37:9",
+    "refShort": "Ιεζ. 37:9"
+   },
+   {
+    "key": "ENJOY",
+    "word": "Απόλαυσε",
+    "top": "Το να τρώει κάθε άνθρωπος, και να πίνει,",
+    "bottom": "και να απολαμβάνει καλό από ολόκληρο τον μόχθο του, είναι χάρισμα του Θεού.",
+    "ref": "Εκκλησιαστής 3:13",
+    "refShort": "Εκκλ. 3:13"
+   },
+   {
+    "key": "LIVE",
+    "word": "Ζήσε",
+    "top": "Δεν θα πεθάνω, αλλά θα ζήσω,",
+    "bottom": "και θα διηγούμαι τα έργα τού Κυρίου.",
+    "ref": "Ψαλμοί 118:17",
+    "refShort": "Ψαλμ. 118:17"
+   },
+   {
+    "key": "SING",
+    "word": "Ψάλλε",
+    "top": "Ψάλτε στον Κύριο ένα καινούργιο τραγούδι·",
+    "bottom": "ψάλτε στον Κύριο, ολόκληρη η γη.",
+    "ref": "Ψαλμοί 96:1",
+    "refShort": "Ψαλμ. 96:1"
+   },
+   {
+    "key": "LAUGH",
+    "word": "Γέλα",
+    "top": "Καιρός να κλαίει, και καιρός να γελάει·",
+    "bottom": "καιρός να πενθεί, και καιρός να χορεύει·",
+    "ref": "Εκκλησιαστής 3:4",
+    "refShort": "Εκκλ. 3:4"
+   }
+  ]
+ }
+}
