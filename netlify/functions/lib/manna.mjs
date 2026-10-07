@@ -2,6 +2,7 @@
 // day Sunday to Friday; nothing on Saturday, the Sabbath. Twelve verses per word = two
 // weeks of six gathering days. The cycle starts on START (a Sunday) with the first word.
 import WORDS from './words.json';
+import ES from './es.json';
 
 export const START = Date.UTC(2026, 9, 4); // Sunday 4 Oct 2026
 
@@ -40,10 +41,19 @@ export function todaysManna(now = new Date(), tz = DEFAULT_TZ) {
   };
 }
 
-export function notificationFor(m) {
+export function notificationFor(m, lang = 'en') {
+  if (lang === 'es') {
+    const mm = m.ref.match(/^(.*?)\s+(\d+:\d+.*)$/);
+    const ref = mm ? (ES.books[mm[1]] || mm[1]) + ' ' + mm[2] : m.ref;
+    return {
+      title: 'MannaFish de hoy: ' + (ES.titles[m.key] || m.title).toUpperCase(),
+      body: ref + ' \u2014 toca para leer.' + (m.friday ? '  \u00b7 Doble porci\u00f3n: lee tambi\u00e9n el vers\u00edculo del pez.' : ''),
+      url: m.url + '&lang=es'
+    };
+  }
   return {
-    title: 'Today’s MannaFish: ' + m.title.toUpperCase(),
-    body: m.ref + ' — “' + m.snippet + '”' + (m.friday ? '  · A double portion: read the verse on the fish too.' : ''),
+    title: 'Today\u2019s MannaFish: ' + m.title.toUpperCase(),
+    body: m.ref + ' \u2014 \u201c' + m.snippet + '\u201d' + (m.friday ? '  \u00b7 A double portion: read the verse on the fish too.' : ''),
     url: m.url
   };
 }

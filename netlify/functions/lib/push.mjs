@@ -15,7 +15,7 @@ export async function keys() {
   return k;
 }
 
-export async function save(sub, tz) { await store().setJSON('sub/' + idFor(sub.endpoint), { sub, tz: validTz(tz) ? tz : DEFAULT_TZ, at: new Date().toISOString() }); }
+export async function save(sub, tz, lang) { await store().setJSON('sub/' + idFor(sub.endpoint), { sub, tz: validTz(tz) ? tz : DEFAULT_TZ, lang: lang === 'es' ? 'es' : 'en', at: new Date().toISOString() }); }
 export async function drop(endpoint) { await store().delete('sub/' + idFor(endpoint)); }
 
 export async function sendTo(sub, payload) {
@@ -38,7 +38,7 @@ export async function sendDue(now = new Date()) {
     if (here.hour < SEND_HOUR || rec.lastSent === here.date) { notYet++; continue; }
     const m = todaysManna(now, tz);
     if (!m) { notYet++; continue; }
-    try { await sendTo(rec.sub, notificationFor(m)); sent++; await s.setJSON(b.key, { ...rec, lastSent: here.date }); }
+    try { await sendTo(rec.sub, notificationFor(m, rec.lang)); sent++; await s.setJSON(b.key, { ...rec, lastSent: here.date }); }
     catch (e) {
       if (e && (e.statusCode === 404 || e.statusCode === 410)) { await s.delete(b.key); gone++; }
       else failed++;
