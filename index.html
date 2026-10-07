@@ -609,6 +609,23 @@ section.section.bundles{display:block;margin-top:0}
 .langbtn:hover{border-color:var(--brass)}
 .es-read{font-style:italic}
 @media(max-width:380px){.nav .brand{font-size:1.6rem}.langbtn{padding:0 10px}}
+
+/* Ken, 7 Oct: header fish button shows both languages side by side (stacked on narrow screens) */
+.cmpbtn{position:absolute;right:62px;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:1px solid var(--line,#333);background:transparent;color:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.cmpbtn svg{width:24px;height:12px}
+.cmpbtn:hover,.cmpbtn[aria-pressed="true"]{border-color:var(--brass)}
+.cmpbtn[aria-pressed="true"]{background:rgba(42,95,176,.25)}
+.cmpcap{position:absolute;right:108px;top:50%;transform:translateY(-50%);font:600 .62rem/1.15 'Archivo',sans-serif;letter-spacing:.03em;text-align:right;color:var(--foam-dim,#aaa);pointer-events:none}
+@media(max-width:700px){.cmpcap{display:none}}
+@media(max-width:480px){.nav .brand{font-size:1.5rem}.cmpbtn{right:58px;width:34px;height:34px}.cmpbtn svg{width:20px;height:10px}.langbtn{padding:0 10px;font-size:.78rem;height:34px}.modebtn{width:34px;height:34px}}
+.cmp{display:flex;gap:18px;justify-content:center;width:100%}
+.cmp[hidden]{display:none}
+.cmp figure{flex:1 1 0;margin:0;text-align:center;cursor:pointer}
+.cmpf{position:relative;aspect-ratio:2/1;background:#000;border:1px solid rgba(255,255,255,.18);border-radius:6px;overflow:hidden}
+.cmpf svg{position:absolute;inset:0;width:100%;height:100%}
+.cmp figure:hover .cmpf{border-color:var(--brass)}
+.cmp figcaption{margin-top:6px;font:600 .8rem 'Archivo',sans-serif;letter-spacing:.04em;color:var(--foam-dim,#aaa)}
+@media(max-width:900px){.cmp{flex-direction:column;align-items:center}.cmp figure{width:min(520px,100%);flex:none}}
 </style>
 
 <div class="mf">
@@ -617,6 +634,7 @@ section.section.bundles{display:block;margin-top:0}
   <!-- Ken, 4 Oct: "MannaFish logo centered at top without Free Gift button." -->
   <a class="brand" href="#today" style="text-decoration:none"><span class="wm-m">Manna</span><span class="wm-f">Fish</span></a>
   <button class="langbtn" type="button" id="langBtn" aria-label="English / Español">Español</button>
+  <span class="cmpcap" id="cmpCap">Side-by-side<br>languages</span><button class="cmpbtn" type="button" id="cmpBtn" aria-pressed="false" aria-label="Show both languages side by side"><svg viewBox="0 0 64 32" aria-hidden="true"><path d="M4 16 C16 2 36 2 48 16 L60 4 M4 16 C16 30 36 30 48 16 L60 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   <button class="modebtn" type="button" id="modeBtn" aria-label="Switch between dark and light">&#9728;&#xFE0E;</button>
 </div></header>
 
@@ -628,7 +646,8 @@ section.section.bundles{display:block;margin-top:0}
     <p class="p2">Teach a man <b><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></b>, feed him for life.</p>
   </div>
   <div class="stage-col">
-    <div class="stage" id="stage" aria-label="Interactive devotional decal, tap to flip">
+    <div class="cmp" id="cmp" hidden><figure data-l="a"><div class="cmpf" id="cmpA"></div><figcaption id="cmpAL"></figcaption></figure><figure data-l="b"><div class="cmpf" id="cmpB"></div><figcaption id="cmpBL"></figcaption></figure></div>
+      <div class="stage" id="stage" aria-label="Interactive devotional decal, tap to flip">
       <div class="flip" id="flip">
         <div class="face front">
           
@@ -923,7 +942,7 @@ window.MFI18N={"es":{"titles":{"REST":"Descansa","HOPE":"Espera","LOVE":"Ama","T
 window.MF=(function(){
   var L='en'; try{var q=(location.search.match(/[?&]lang=(es|en)/)||[])[1]; L=q||localStorage.getItem('mf-lang')||(((navigator.language||'').toLowerCase().indexOf('es')===0)?'es':'en');}catch(e){}
   var hooks=[], orig=new WeakMap(), X=window.MFI18N;
-  var SKIP='script,style,#refs,#reader,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn';
+  var SKIP='script,style,#refs,#reader,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,.cmp';
   function norm(s){return s.replace(/\s+/g,' ').trim();}
   function t(k){var u=X.ui[k]; return u ? (L==='es'?u[1]:u[0]) : k;}
   function applyPage(){
@@ -1053,6 +1072,7 @@ window.MF=(function(){
     cur=k; var d=DATA[k];
     // Spanish fish (Ken's fish and tail, Spanish word and RVR1960 verse) when in Spanish
     $('fishbox').innerHTML=(MF.lang==='es' && MF.fish[k]) ? MF.fish[k] : (FISH[k]||'');
+    if(window.MFcmp) MFcmp();
     var fb=$('fishbox'); fb.classList.remove('splash'); void fb.offsetWidth; fb.classList.add('splash');
     var rp=$('ripple'); if(rp){rp.classList.remove('go'); void rp.offsetWidth; rp.classList.add('go');}
     var esm=MF.lang==='es' ? (MF.es.means[k]||[d.gkm,d.hbm]) : [d.gkm,d.hbm];
@@ -1255,6 +1275,15 @@ window.MF=(function(){
     if(wasOn){$('stage').classList.add('on'); sizeStage();}
   });
   $('langBtn').addEventListener('click',function(){MF.set(MF.lang==='es'?'en':'es');});
+  // side-by-side languages: the page's language first, the other beside it; tap one to read it big
+  window.MFcmp=function(){ if($('cmp').hidden) return; var es=MF.lang==='es', k=cur;
+    $('cmpA').innerHTML=es?(MF.fish[k]||''):(FISH[k]||''); $('cmpAL').textContent=es?'Español':'English';
+    $('cmpB').innerHTML=es?(FISH[k]||''):(MF.fish[k]||''); $('cmpBL').textContent=es?'English':'Español'; };
+  function setCmp(on){ $('cmp').hidden=!on; $('stage').hidden=on; $('cmpBtn').setAttribute('aria-pressed',String(on)); if(on){closeReader();MFcmp();} else sizeStage(); }
+  $('cmpBtn').addEventListener('click',function(){setCmp($('cmp').hidden);});
+  $('cmp').addEventListener('click',function(e){var f=e.target.closest('figure'); if(!f) return; var other=f.dataset.l==='b'; setCmp(false); if(other) MF.set(MF.lang==='es'?'en':'es');});
+  $('cmpCap').textContent=''; $('cmpCap').innerHTML=MF.lang==='es'?'Idiomas<br>lado a lado':'Side-by-side<br>languages';
+  MF.onChange(function(){ $('cmpCap').innerHTML=MF.lang==='es'?'Idiomas<br>lado a lado':'Side-by-side<br>languages'; MFcmp(); });
   MF.applyPage();
   document.querySelectorAll('.offerbtn').forEach(function(btn){btn.addEventListener('click',function(){
     var me=$(btn.dataset.panel), opening=me.hidden;
