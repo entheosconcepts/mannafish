@@ -65,9 +65,9 @@ const V=JSON.parse(fs.readFileSync(__dirname+'/verses_es.json','utf8'));
      const mid=(a1-a2)/2; rc.x+=nx*mid; rc.y+=ny*mid; }
    const ABBR={'Deuteronomio':'Deut.','Eclesiastés':'Ecl.','Proverbios':'Prov.','Lamentaciones':'Lam.','Ezequiel':'Ez.','Romanos':'Rom.','Efesios':'Ef.','Hebreos':'Heb.','Salmos':'Sal.','Mateo':'Mat.','Lucas':'Luc.','Juan':'Jn.','2 Pedro':'2 Ped.','Génesis':'Gén.','Éxodo':'Éx.'};
    const avail=mfLen*0.95;
-   // Ken, 7 Oct: add (RVR60). It is set small after the reference, the way the TM sits after MannaFish.
-   const TAG=' (RVR60)', tagS=0.5;
-   function refText(txt){const t=rotText(txt,sMF,rc.x,rc.y,aLo); t.setAttribute('dominant-baseline','alphabetic'); t.setAttribute('y',(rc.y+0.41*sMF).toFixed(1)); /* letters stand 0.86 above the line and 0.04 below: this puts their middle on the band's middle */ const sp=document.createElementNS(NS,'tspan'); sp.setAttribute('font-size',(sMF*tagS).toFixed(1)); sp.setAttribute('dy',(-0.21*sMF).toFixed(1)); sp.textContent=TAG; t.appendChild(sp); return t;}
+   // Ken, 7 Oct: add (RVR60), the same height as the reference; narrow the whole line to fit.
+   const TAG=' (RVR60)';
+   function refText(txt){const t=rotText(txt,sMF,rc.x,rc.y,aLo); t.setAttribute('dominant-baseline','alphabetic'); t.setAttribute('y',(rc.y+0.41*sMF).toFixed(1)); /* letters stand 0.86 above the line and 0.04 below: this puts their middle on the band's middle */ t.textContent+=TAG; return t;}
    let refTxt=v.ref, t0=refText(refTxt), n0=t0.getComputedTextLength(); t0.remove();
    if(n0>avail){ const m=v.ref.match(/^(.*?)\s+(\d.*)$/); if(m && ABBR[m[1]]) refTxt=ABBR[m[1]]+' '+m[2]; }
    const rt=refText(refTxt); const n1=rt.getComputedTextLength();
