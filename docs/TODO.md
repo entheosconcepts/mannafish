@@ -65,14 +65,17 @@ What Claude needs from the Yadah project:
 2. [ ] **Ken:** the secret key (or "service_role") goes **only** into Netlify → Environment variables as `SUPABASE_SECRET_KEY`. Never send it to anyone.
 3. [x] **Ken:** a screenshot of the Table Editor list, so nothing already in Yadah gets touched.
 4. [x] **Ken:** Authentication → URL Configuration: add https://manna-fish.com and https://yadamannafishtest.netlify.app.
-5. [ ] **Ken:** paste tools/supabase/accounts.sql (written and tested 7 Oct) into the SQL Editor and press Run (creates the tables and the privacy locks).
+5. [x] **Ken:** ran tools/supabase/accounts.sql in Yadah (7 Oct) into the SQL Editor and press Run (creates the tables and the privacy locks).
 6. [ ] Sign-in emails: Supabase's own sender only allows a few emails an hour, so connect Brevo (the same account as the devotional emails) under Authentication → SMTP Settings.
 
-Then Claude builds, in order:
-1. [ ] Sign-in by email code (no passwords) and a "My MannaFish" page.
-2. [ ] Notes, highlights, recent activity and decal order history, each private to its owner.
-3. [ ] Move the notes already on a phone into the account at first sign-in; match past decal requests by email.
-4. [ ] Privacy page, "Download my data" and "Delete my account".
+Built 7 Oct (on the test site):
+1. [x] Sign in by emailed code or link (no passwords); "My MannaFish" panel under the fish.
+2. [x] Notes follow the person to every device; device notes move into the account at first sign-in.
+3. [x] "My decal orders" (matched by sign-in email) and "Recently viewed" words.
+4. [ ] **Ken:** Netlify → Environment variables → `SUPABASE_SECRET_KEY` (Yadah's secret key), so new decal requests are recorded as orders.
+5. [ ] **Ken:** Supabase → Authentication → Emails: in "Magic Link" and "Confirm signup", add the line `Your code: {{ .Token }}` so the email shows a code as well as the link.
+6. [ ] Highlights on verses (the table is ready; the highlight buttons come next).
+7. [ ] Privacy page, "Download my data" and "Delete my account".
 
 ### Phone app
 - [ ] Later, once accounts are in use on the website. The website can already be added to a phone's home screen.
