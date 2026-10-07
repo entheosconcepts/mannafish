@@ -42,7 +42,19 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 ### All translations
 - [ ] Every language with a free-to-use Bible, the same way as above.
 
+### Already built (7 Oct), waiting on accounts or keys
+- [x] **Listen** button under the fish: reads the word and verse aloud (English or Spanish). Uses the phone's or computer's own voice today.
+- [ ] **Natural voice (like ChatGPT's):** already wired. Ken adds an OpenAI API key in Netlify → Environment variables as `OPENAI_API_KEY`; nothing else changes. Each verse is recorded once and reused, so cost is a few cents in total. (Optional: `MF_TTS_VOICE` to pick a different voice.) Another voice company (ElevenLabs) can be swapped in later.
+- [x] **My notes** under the fish: a note for each word, typed or **spoken** (speech to text, on phones and Chrome/Edge/Safari), with a "Recent notes" list. Saved on that device only, for now.
+- [ ] When accounts arrive, notes on the device move into the person's account at first sign-in.
+
 ### MannaFish Devotional accounts (website first, no app yet)
+Next steps, in order:
+1. [ ] **Ken:** make a free Supabase project just for MannaFish (not Majestic's), signed up with Ken@Manna-Fish.com. Send Claude the project URL and the "anon" public key (both are safe to share; the secret service key stays in Netlify only).
+2. [ ] Claude: sign-in by email code (no passwords), and a "My MannaFish" page.
+3. [ ] Claude: tables for notes, highlights, recent activity and decal orders, each locked so a person only ever sees their own.
+4. [ ] Claude: move device notes into the account; show order history from the Free Decals form (matched by email).
+5. [ ] Privacy page, and "Download my data" and "Delete my account" buttons.
 Sign in with email (a one-time code or link, no password to forget). Free.
 The tools devotional readers use most, roughly most-requested first:
 - [ ] Save highlights in colours, on any verse

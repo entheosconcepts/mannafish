@@ -643,6 +643,19 @@ section.section.bundles{display:block;margin-top:0}
 .cmpwait{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;margin:0;color:var(--foam-dim,#aaa);font:600 .9rem 'Archivo',sans-serif}
 .cmp figure{cursor:default}
 :root[data-mode="light"] .cmpmenu{background:#fff}
+
+.toolrow{display:flex;gap:10px;justify-content:center;margin:10px 0 2px}
+.toolbtn{font:600 .85rem 'Archivo',sans-serif;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;border:1px solid var(--line,#333);background:transparent;color:inherit;cursor:pointer}
+.toolbtn:hover,.toolbtn[aria-pressed="true"],.toolbtn[aria-expanded="true"]{border-color:var(--brass)}
+.toolbtn[aria-pressed="true"]{background:rgba(42,95,176,.25)}
+.notesbox{width:100%;max-width:720px;margin:8px auto 0;border:1px solid var(--line,#333);border-radius:8px;padding:14px;text-align:left}
+.notesbox[hidden]{display:none}
+.notesbox .nhd{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px;font-family:'Archivo',sans-serif}
+.notesbox textarea{width:100%;box-sizing:border-box;font:1rem/1.5 'Spectral',serif;background:rgba(255,255,255,.04);color:inherit;border:1px solid var(--line,#333);border-radius:6px;padding:10px;resize:vertical}
+.notesbox .nrow{display:flex;align-items:center;gap:12px;margin-top:8px;flex-wrap:wrap}
+.notesbox .nrecent{margin-top:12px;font:.82rem 'Archivo',sans-serif;color:var(--foam-dim,#aaa)}
+.notesbox .nrecent button{font:inherit;background:none;border:0;color:var(--brass-soft,#7fb0ff);cursor:pointer;padding:0 4px;text-decoration:underline}
+:root[data-mode="light"] .notesbox textarea{background:#fff}
 </style>
 
 <div class="mf">
@@ -690,6 +703,14 @@ section.section.bundles{display:block;margin-top:0}
   </div>
 
   <div class="sharerow"><span class="rnote" id="shareMsg"></span></div>
+  <!-- Ken, 7 Oct: hear the verse, and keep notes (typed or spoken). Notes stay on this device until accounts come. -->
+  <div class="toolrow"><button class="toolbtn" type="button" id="listenBtn" aria-pressed="false"><span aria-hidden="true">&#128266;</span> <span id="listenLab">Listen</span></button><button class="toolbtn" type="button" id="notesBtn" aria-expanded="false"><span aria-hidden="true">&#9998;</span> <span id="notesLab">My notes</span></button></div>
+  <div class="notesbox" id="notesBox" hidden>
+    <div class="nhd"><b id="notesWord"></b><span class="rnote" id="notesWhere">Saved on this device</span></div>
+    <textarea id="notesText" rows="5" placeholder="What is God showing you in this word?"></textarea>
+    <div class="nrow"><button class="toolbtn" type="button" id="micBtn" aria-pressed="false"><span aria-hidden="true">&#127908;</span> <span id="micLab">Speak a note</span></button><span class="rnote" id="notesMsg"></span></div>
+    <div class="nrecent" id="notesRecent"></div>
+  </div>
   <div id="readerSlot"></div>
   <!-- Ken, 7 Oct: the two buttons side by side under the fish; the one tapped opens below them. -->
   <div class="offerrow">
@@ -962,7 +983,7 @@ window.MFI18N={"es":{"titles":{"REST":"Descansa","HOPE":"Espera","LOVE":"Ama","T
 window.MF=(function(){
   var L='en'; try{var q=(location.search.match(/[?&]lang=(es|en)/)||[])[1]; L=q||localStorage.getItem('mf-lang')||(((navigator.language||'').toLowerCase().indexOf('es')===0)?'es':'en');}catch(e){}
   var hooks=[], orig=new WeakMap(), X=window.MFI18N;
-  var SKIP='script,style,#refs,#reader,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp';
+  var SKIP='script,style,#refs,#reader,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,.toolrow,#notesBox';
   function norm(s){return s.replace(/\s+/g,' ').trim();}
   function t(k){var u=X.ui[k]; return u ? (L==='es'?u[1]:u[0]) : k;}
   function applyPage(){
@@ -1093,6 +1114,7 @@ window.MF=(function(){
     // Spanish fish (Ken's fish and tail, Spanish word and RVR1960 verse) when in Spanish
     $('fishbox').innerHTML=(MF.lang==='es' && MF.fish[k]) ? MF.fish[k] : (FISH[k]||'');
     if(window.MFcmp) MFcmp();
+    if(window.MFword) MFword();
     var fb=$('fishbox'); fb.classList.remove('splash'); void fb.offsetWidth; fb.classList.add('splash');
     var rp=$('ripple'); if(rp){rp.classList.remove('go'); void rp.offsetWidth; rp.classList.add('go');}
     var esm=MF.lang==='es' ? (MF.es.means[k]||[d.gkm,d.hbm]) : [d.gkm,d.hbm];
@@ -1295,6 +1317,54 @@ window.MF=(function(){
     if(wasOn){$('stage').classList.add('on'); sizeStage();}
   });
   $('langBtn').addEventListener('click',function(){MF.set(MF.lang==='es'?'en':'es');});
+  // ── Listen: a natural voice from /api/tts once a voice key is added in Netlify; until then the device's own voice ──
+  var SPEAK={"en":{"REST":"Rest. Come unto me, all ye that labour and are heavy laden, and I will give you rest. Matthew 11:28.","HOPE":"Hope. Hope thou in God: for I shall yet praise him… Psalm 42:5.","LOVE":"Love. This is my commandment, That ye love one another, as I have loved you. John 15:12.","TRUST":"Trust. Commit thy way unto the LORD; trust also in him; and he shall bring it to pass. Psalm 37:5.","PRAY":"Pray. And he said unto them, When ye pray, say, Our Father which art in heaven, Hallowed be thy name. Luke 11:2.","BELIEVE":"Believe. Let not your heart be troubled. Believe in God, believe also in me. John 14:1.","FORGIVE":"Forgive. For if ye forgive men their trespasses, your heavenly Father will also forgive you. Matthew 6:14.","GIVE":"Give. Give, and it shall be given unto you; good measure, pressed down, and shaken together, and running over… Luke 6:38.","SEEK":"Seek. But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you. Matthew 6:33.","ASK":"Ask.…how much more shall your heavenly Father give the Holy Spirit to them that ask Him? Luke 11:13.","KNOCK":"Knock. Ask, and it will be given to you; seek and ye shall find; knock and it shall be opened unto you. Matthew 7:7.","FOLLOW":"Follow. If any man will come after me, let him deny himself, and take up his cross daily, and follow me. Luke 9:23.","LISTEN":"Listen. But whoever listens to me will dwell safely, And will be secure, without fear of evil. Proverbs 1:33.","REMEMBER":"Remember. This is my body which is given for you: this do in remembrance of me. Luke 22:19.","CHOOSE":"Choose. I have set before you life and death, blessing and cursing: therefore choose life… Deuteronomy 30:19.","HONOR":"Honor. Honor your father and mother, which is the first commandment with a promise. Ephesians 6:2.","GROW":"Grow. But grow in grace, and in the knowledge of our Lord and Saviour Jesus Christ. 2 Peter 3:18.","GATHER":"Gather. For where two or three are gathered in my name, there I am in the midst of them. Matthew 18:20.","ACCEPT":"Accept. Therefore, accept one another, just as Christ also accepted us, for the glory of God. Romans 15:7.","BREATHE":"Breathe. Come from the four winds, O breath, and breathe upon these slain, that they may live. Ezekiel 37:9.","ENJOY":"Enjoy. And also that every man should eat and drink, and enjoy the good of all his labour, it is the gift of God. Ecclesiastes 3:13.","LIVE":"Live. I shall not die, but live, And declare the works of the LORD. Psalm 118:17.","SING":"Sing. Sing unto Him a new song; Play skilfully with a loud noise. Psalm 33:3.","LAUGH":"Laugh. A time to weep, and a time to laugh; a time to mourn, and a time to dance; Ecclesiastes 3:4."},"es":{"REST":"Descansa. Venid a mí todos los que estáis trabajados y cargados, y yo os haré descansar. Mateo 11:28.","HOPE":"Espera. Espera en Dios; porque aún he de alabarle… Salmos 42:5.","LOVE":"Ama. Este es mi mandamiento: Que os améis unos a otros, como yo os he amado. Juan 15:12.","TRUST":"Confía. Encomienda a Jehová tu camino, y confía en él; y él hará. Salmos 37:5.","PRAY":"Ora. Cuando oréis, decid: Padre nuestro que estás en los cielos, santificado sea tu nombre. Lucas 11:2.","BELIEVE":"Cree. No se turbe vuestro corazón; creéis en Dios, creed también en mí. Juan 14:1.","FORGIVE":"Perdona. Porque si perdonáis a los hombres sus ofensas, os perdonará también a vosotros vuestro Padre celestial. Mateo 6:14.","GIVE":"Da. Dad, y se os dará; medida buena, apretada, remecida y rebosando… Lucas 6:38.","SEEK":"Busca. Mas buscad primeramente el reino de Dios y su justicia… Mateo 6:33.","ASK":"Pide. ¿Cuánto más vuestro Padre celestial dará el Espíritu Santo a los que se lo pidan? Lucas 11:13.","KNOCK":"Llama. Llamad, y se os abrirá. Porque todo aquel que pide, recibe… Mateo 7:7-8.","FOLLOW":"Sigue. Si alguno quiere venir en pos de mí, niéguese a sí mismo, tome su cruz cada día, y sígame. Lucas 9:23.","LISTEN":"Escucha. Mas el que me oyere, habitará confiadamente y vivirá tranquilo, sin temor del mal. Proverbios 1:33.","REMEMBER":"Recuerda. Esto es mi cuerpo, que por vosotros es dado; haced esto en memoria de mí. Lucas 22:19.","CHOOSE":"Escoge. Os he puesto delante la vida y la muerte… escoge, pues, la vida. Deuteronomio 30:19.","HONOR":"Honra. Honra a tu padre y a tu madre, que es el primer mandamiento con promesa. Efesios 6:2.","GROW":"Crece. Creced en la gracia y el conocimiento de nuestro Señor y Salvador Jesucristo. 2 Pedro 3:18.","GATHER":"Reúnete. Donde están dos o tres congregados en mi nombre, allí estoy yo en medio de ellos. Mateo 18:20.","ACCEPT":"Recibe. Recibíos los unos a los otros, como también Cristo nos recibió, para gloria de Dios. Romanos 15:7.","BREATHE":"Respira. Espíritu, ven de los cuatro vientos, y sopla sobre estos muertos, y vivirán. Ezequiel 37:9.","ENJOY":"Goza. Que todo hombre coma y beba, y goce el bien de toda su labor, es don de Dios. Eclesiastés 3:13.","LIVE":"Vive. No moriré, sino que viviré, y contaré las obras de JAH. Salmos 118:17.","SING":"Canta. Cantad a Jehová cántico nuevo; cantad a Jehová, toda la tierra. Salmos 96:1.","LAUGH":"Ríe. Tiempo de llorar, y tiempo de reír; tiempo de endechar, y tiempo de bailar. Eclesiastés 3:4."}}, audio=null, speaking=false;
+  function ui(){ var es=MF.lang==='es';
+    $('listenLab').textContent=speaking?(es?'Detener':'Stop'):(es?'Escuchar':'Listen');
+    $('notesLab').textContent=es?'Mis notas':'My notes'; $('micLab').textContent=recOn?(es?'Detener':'Stop'):(es?'Dictar una nota':'Speak a note');
+    $('notesWhere').textContent=es?'Guardado en este dispositivo':'Saved on this device';
+    $('notesText').placeholder=es?'¿Qué te muestra Dios en esta palabra?':'What is God showing you in this word?'; }
+  function stopSpeak(){ speaking=false; if(audio){audio.pause();audio=null;} if(window.speechSynthesis) speechSynthesis.cancel(); $('listenBtn').setAttribute('aria-pressed','false'); ui(); }
+  function bestVoice(lang){ var vs=(window.speechSynthesis&&speechSynthesis.getVoices())||[], want=lang==='es'?'es':'en';
+    var pick=vs.filter(function(v){return v.lang.toLowerCase().indexOf(want)===0;});
+    pick.sort(function(a,b){ var q=function(v){return /natural|neural|premium|enhanced|siri|google/i.test(v.name)?0:1;}; return q(a)-q(b); });
+    return pick[0]||null; }
+  function deviceSpeak(text,lang){ if(!window.speechSynthesis){ stopSpeak(); return; } var u=new SpeechSynthesisUtterance(text);
+    u.lang=lang==='es'?'es-US':'en-US'; var v=bestVoice(lang); if(v) u.voice=v; u.rate=.92; u.onend=u.onerror=stopSpeak; speechSynthesis.speak(u); }
+  $('listenBtn').addEventListener('click',function(){
+    if(speaking){ stopSpeak(); return; }
+    var lang=MF.lang==='es'?'es':'en', text=(SPEAK[lang]||{})[cur]; if(!text) return;
+    speaking=true; $('listenBtn').setAttribute('aria-pressed','true'); ui();
+    fetch('/api/tts?w='+cur+'&lang='+lang).then(function(r){ if(!r.ok) throw 0; return r.blob(); })
+      .then(function(b){ if(!speaking) return; audio=new Audio(URL.createObjectURL(b)); audio.onended=stopSpeak; return audio.play(); })
+      .catch(function(){ if(speaking) deviceSpeak(text,lang); });
+  });
+  // ── My notes: one note per word, kept in this browser; spoken notes use the device's dictation ──
+  var NKEY='mf-notes', recOn=false, rec=null;
+  function notes(){ try{ return JSON.parse(localStorage.getItem(NKEY)||'{}')||{}; }catch(e){ return {}; } }
+  function saveNotes(n){ try{ localStorage.setItem(NKEY,JSON.stringify(n)); return true; }catch(e){ return false; } }
+  function wordName(k){ return MF.lang==='es'&&MF.es&&MF.es.titles?(MF.es.titles[k]||DATA[k].title):DATA[k].title; }
+  function showNotes(){ var n=notes(), es=MF.lang==='es'; $('notesWord').textContent=wordName(cur); $('notesText').value=(n[cur]&&n[cur].text)||'';
+    var keys=Object.keys(n).filter(function(k){return k!==cur && n[k].text && DATA[k];}).sort(function(a,b){return (n[b].at||0)-(n[a].at||0);}).slice(0,6);
+    $('notesRecent').innerHTML=keys.length?((es?'Notas recientes: ':'Recent notes: ')+keys.map(function(k){return '<button type="button" data-k="'+k+'">'+wordName(k)+'</button>';}).join(' ')):''; }
+  var nt; $('notesText').addEventListener('input',function(){ clearTimeout(nt); nt=setTimeout(function(){ var n=notes(), t=$('notesText').value;
+    if(t.trim()) n[cur]={text:t,at:Date.now()}; else delete n[cur];
+    $('notesMsg').textContent=saveNotes(n)?(MF.lang==='es'?'Guardado':'Saved'):(MF.lang==='es'?'No se pudo guardar en este navegador':'Could not save in this browser'); },400); });
+  $('notesRecent').addEventListener('click',function(e){ var b=e.target.closest('button[data-k]'); if(b) pick(b.dataset.k,false); });
+  $('notesBtn').addEventListener('click',function(){ var open=$('notesBox').hidden; $('notesBox').hidden=!open; $('notesBtn').setAttribute('aria-expanded',String(open)); if(open) showNotes(); });
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR) $('micBtn').hidden=true;
+  $('micBtn').addEventListener('click',function(){
+    if(recOn){ rec&&rec.stop(); return; }
+    rec=new SR(); rec.lang=MF.lang==='es'?'es-US':'en-US'; rec.interimResults=false; rec.continuous=true;
+    rec.onresult=function(ev){ var t=''; for(var i=ev.resultIndex;i<ev.results.length;i++) if(ev.results[i].isFinal) t+=ev.results[i][0].transcript;
+      if(t){ var box=$('notesText'); box.value=(box.value&&!/\s$/.test(box.value)?box.value+' ':box.value)+t.trim(); box.dispatchEvent(new Event('input')); } };
+    rec.onend=function(){ recOn=false; $('micBtn').setAttribute('aria-pressed','false'); ui(); };
+    rec.onerror=function(){ $('notesMsg').textContent=MF.lang==='es'?'Permite el micrófono para dictar':'Allow the microphone to speak a note'; };
+    recOn=true; $('micBtn').setAttribute('aria-pressed','true'); ui(); rec.start(); });
+  ui();
+  window.MFword=function(){ stopSpeak(); if(!$('notesBox').hidden) showNotes(); };
+  MF.onChange(function(){ stopSpeak(); ui(); if(!$('notesBox').hidden) showNotes(); });
   // Ken, 7 Oct: "Select language" -- the page stays English (Spanish second); a viewer may pick
   // another language to see the same word's fish beside it. Nothing is compared until they pick one.
   var CMPL=[['en','English'],['es','Español'],['tl','Tagalog'],['zh','中文'],['hi','हिन्दी'],['el','Ελληνικά'],['he','עברית',1]];
