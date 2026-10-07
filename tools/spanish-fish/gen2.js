@@ -27,15 +27,20 @@ const V=JSON.parse(fs.readFileSync(__dirname+'/verses_es.json','utf8'));
    function fit(make,max,cap,measure){let lo=10,hi=cap,el; for(let k=0;k<28;k++){const m=(lo+hi)/2; el=make(m); const v=measure(el); el.remove(); if(v>max) hi=m; else lo=m;} return lo;}
    const len=e=>e.getComputedTextLength(), wid=e=>e.getBBox().width;
    // English HOPE sizes (solved against his artwork earlier): word 867, top 220, bottom 237, ref 129
+   // Ken, 7 Oct: "keep the heights of each word the same and uniform, and just adjust the
+   // width to make it fit" -- verse lines and the tail reference are one height on every fish;
+   // a long line is narrowed (textLength + spacingAndGlyphs), never made shorter.
+   const H={top:220, bot:220, ref:105};
    const sWord=fit(s=>plain(v.word,s), 1900, 867, wid);
-   const sTop=fit(s=>onPath('g_top',v.top,s,'#000'), L.top*0.86, 220, len);
-   const sBot=fit(s=>onPath('g_bot',v.bottom,s,'#000'), L.bot*0.80, 237, len);
+   function squeeze(t,max){const n=t.getComputedTextLength(); if(n>max){const tp=t.firstChild; tp.setAttribute('textLength',max.toFixed(1)); tp.setAttribute('lengthAdjust','spacingAndGlyphs');} return n/max;}
    const refTxt=v.ref+' (RVR1960)';
-   const sRef=fit(s=>onPath('g_ref',refTxt,s,'#000'), L.ref*0.9, 129, len);
-   // remove the English word, verse and reference; keep the body and the MannaFish(TM) tail
    [3,4,5,6,7,8,9,10,12,13,14,15,16,17].forEach(i=>els[i].remove());
-   plain(v.word,sWord); onPath('g_top',v.top,sTop,'#000'); onPath('g_bot',v.bottom,sBot,'#000'); onPath('g_ref',refTxt,sRef,'#000');
-   return {sWord:Math.round(sWord),sTop:Math.round(sTop),sBot:Math.round(sBot),sRef:Math.round(sRef)};
+   plain(v.word,sWord);
+   const qTop=squeeze(onPath('g_top',v.top,H.top,'#000'), L.top*0.86);
+   const qBot=squeeze(onPath('g_bot',v.bottom,H.bot,'#000'), L.bot*0.80);
+   const qRef=squeeze(onPath('g_ref',refTxt,H.ref,'#000'), L.ref*0.9);
+   const sTop=H.top,sBot=H.bot,sRef=Math.round(100/Math.max(1,qRef));
+   return {sWord:Math.round(sWord),topWidth:Math.round(100/Math.max(1,qTop))+'%',bottomWidth:Math.round(100/Math.max(1,qBot))+'%',refWidth:Math.round(100/Math.max(1,qRef))+'%'};
   }, v);
   await page.screenshot({path:`${__dirname}/out/${v.key}.png`});
   let xml=await page.evaluate(()=>document.getElementById('fish').outerHTML);
