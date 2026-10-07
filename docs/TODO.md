@@ -61,11 +61,11 @@ Built to last (so a no-fish scripture design, or a new product, needs no rebuild
 - Later: decide whether Scripture That Sticks moves in too (only if it serves the same people), which frees the second free slot.
 
 What Claude needs from the Yadah project:
-1. [ ] **Ken:** the Project URL and the public key (Project Settings → API Keys: "publishable" or "anon public"). Safe to share.
+1. [x] **Ken:** the Project URL and the public key (Project Settings → API Keys: "publishable" or "anon public"). Safe to share.
 2. [ ] **Ken:** the secret key (or "service_role") goes **only** into Netlify → Environment variables as `SUPABASE_SECRET_KEY`. Never send it to anyone.
-3. [ ] **Ken:** a screenshot of the Table Editor list, so nothing already in Yadah gets touched.
-4. [ ] **Ken:** Authentication → URL Configuration: add https://manna-fish.com and https://yadamannafishtest.netlify.app.
-5. [ ] **Ken:** paste the SQL file Claude writes into the SQL Editor and press Run (creates the tables and the privacy locks).
+3. [x] **Ken:** a screenshot of the Table Editor list, so nothing already in Yadah gets touched.
+4. [x] **Ken:** Authentication → URL Configuration: add https://manna-fish.com and https://yadamannafishtest.netlify.app.
+5. [ ] **Ken:** paste tools/supabase/accounts.sql (written and tested 7 Oct) into the SQL Editor and press Run (creates the tables and the privacy locks).
 6. [ ] Sign-in emails: Supabase's own sender only allows a few emails an hour, so connect Brevo (the same account as the devotional emails) under Authentication → SMTP Settings.
 
 Then Claude builds, in order:
