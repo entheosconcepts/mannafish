@@ -30,7 +30,7 @@ const V=JSON.parse(fs.readFileSync(__dirname+'/verses_es.json','utf8'));
    // Ken, 7 Oct: "keep the heights of each word the same and uniform, and just adjust the
    // width to make it fit" -- verse lines and the tail reference are one height on every fish;
    // a long line is narrowed (textLength + spacingAndGlyphs), never made shorter.
-   const H={top:220, bot:220, ref:105};
+   const H={top:220, bot:220, ref:129};
    const sWord=fit(s=>plain(v.word,s), 1900, 867, wid);
    function squeeze(t,max){const n=t.getComputedTextLength(); if(n>max){const tp=t.firstChild; tp.setAttribute('textLength',max.toFixed(1)); tp.setAttribute('lengthAdjust','spacingAndGlyphs');} return n/max;}
    const refTxt=v.ref+' (RVR1960)';
@@ -38,7 +38,7 @@ const V=JSON.parse(fs.readFileSync(__dirname+'/verses_es.json','utf8'));
    plain(v.word,sWord);
    const qTop=squeeze(onPath('g_top',v.top,H.top,'#000'), L.top*0.86);
    const qBot=squeeze(onPath('g_bot',v.bottom,H.bot,'#000'), L.bot*0.80);
-   const qRef=squeeze(onPath('g_ref',refTxt,H.ref,'#000'), L.ref*0.9);
+   const qRef=squeeze(onPath('g_ref',refTxt,H.ref,'#000'), L.ref*0.86);
    const sTop=H.top,sBot=H.bot,sRef=Math.round(100/Math.max(1,qRef));
    return {sWord:Math.round(sWord),topWidth:Math.round(100/Math.max(1,qTop))+'%',bottomWidth:Math.round(100/Math.max(1,qBot))+'%',refWidth:Math.round(100/Math.max(1,qRef))+'%'};
   }, v);
