@@ -6,9 +6,9 @@ Last updated 7 Oct 2026. Newest decisions go at the top of each section.
 
 ### 1. Daily devotional by email and text
 Sign-ups are already being saved; nothing goes out yet except phone push notices.
-- [ ] **Ken:** pick the sender. Recommended: **Brevo** for email now (free up to 300 emails a day).
+- [x] **Ken:** picked **Brevo** for email (7 Oct). Notes: Brevo for email now (free up to 300 emails a day).
       Text messages through Brevo or RingCentral both need US carrier registration (10DLC or toll-free verification), which takes days to weeks.
-- [ ] **Ken:** make a Brevo account with Ken@Manna-Fish.com (not the Majestic account).
+- [x] **Ken:** made the Brevo account with kenny@manna-fish.com (7 Oct).
 - [ ] **Ken:** in Brevo, add the manna-fish.com sender domain. Brevo shows 3–4 DNS records to paste where the domain is hosted.
 - [ ] **Ken:** in Brevo, create an API key, then paste it in Netlify → mannafish site → Environment variables as `BREVO_API_KEY`. (It never needs to be sent to anyone.)
 - [ ] Claude: build the daily sender: 7am in each subscriber's own time zone, Daily / Weekly / Monthly, Spanish or English, an unsubscribe link in every email, and STOP for texts.
