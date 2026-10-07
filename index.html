@@ -2,6 +2,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MannaFish</title>
+<script>try{if(localStorage.getItem("mf-mode")==="light")document.documentElement.setAttribute("data-mode","light");}catch(e){}</script>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -559,6 +560,44 @@ section.section.bundles{display:block;margin-top:0}
 .rstack .rver{margin:0}
 
 .rhint{margin:0 0 -4px;text-align:center;font-family:'Archivo',sans-serif;font-size:.74rem;color:var(--parch-dim)}
+
+/* ---- dark / light (Ken, 7 Oct) ---- */
+.nav .wrap.navc{position:relative}
+.modebtn{position:absolute;right:16px;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;
+  border:1px solid var(--line);background:transparent;color:var(--foam);font-size:1.1rem;cursor:pointer;line-height:1}
+.modebtn:hover{border-color:var(--brass)}
+:root[data-mode="light"]{
+  --ink:#f7f5ef; --ink2:#ffffff; --deep:#ffffff; --deep2:#f7f5ef;
+  --foam:#14181d; --foam-dim:#4b5560; --line:rgba(20,24,29,.16);
+  --brass:#0038b8; --brass-soft:#0038b8; --sea:#0b5c8f;
+  --wm-manna:#14181d; --wm-fish:#0038b8; color-scheme:light}
+:root[data-mode="light"] body{background:var(--ink)}
+:root[data-mode="light"] .nav{background:rgba(247,245,239,.9)}
+:root[data-mode="light"] .purpose .p2,
+:root[data-mode="light"] .purpose .p3,
+:root[data-mode="light"] .twofish-mark .tf-words,
+:root[data-mode="light"] .lede,
+:root[data-mode="light"] .brandmeaning .col p,
+:root[data-mode="light"] .brandmeaning .fuse p{color:#2c333b}
+/* the card keeps the decal look: white fish on black, study in white on black */
+:root[data-mode="light"] .hero .face{background:#000;border-color:rgba(20,24,29,.25)}
+:root[data-mode="light"] .hero .face.back{color:#eaf0f0;--foam:#eaf0f0;--foam-dim:#9fb2b6;--brass:#4b8fcf;--sea:#6fb3d1;--line:rgba(200,215,218,.14)}
+:root[data-mode="light"] .hero .face.back .lang .mean{color:#c6d2d4}
+:root[data-mode="light"] .giftbox{background:#fff;border-color:var(--brass)}
+:root[data-mode="light"] .devobox{border-color:rgba(20,24,29,.35)}
+:root[data-mode="light"] .btn-devo{color:#14181d;border-color:#14181d}
+:root[data-mode="light"] .btn-devo:hover{background:rgba(20,24,29,.06)}
+:root[data-mode="light"] .btn-ghost{color:#14181d;border-color:rgba(20,24,29,.35)}
+:root[data-mode="light"] .btn-primary{background:#0038b8;color:#fff}
+:root[data-mode="light"] #dailyBtn:disabled{color:#14181d}
+:root[data-mode="light"] .netform input,:root[data-mode="light"] .netform textarea,:root[data-mode="light"] .netform select,
+:root[data-mode="light"] .form input{background:#fff;color:#14181d;border-color:rgba(20,24,29,.25)}
+:root[data-mode="light"] .bene,:root[data-mode="light"] .card,:root[data-mode="light"] .pitem{background:#fff}
+:root[data-mode="light"] .tier,:root[data-mode="light"] .bundle{background:#fff}
+:root[data-mode="light"] .min{background:#fff}
+:root[data-mode="light"] .invite-card{background:#0a0f14}
+:root[data-mode="light"] .invite-card .inv-h{color:#fff}
+:root[data-mode="light"] .band{background:#fff}
 </style>
 
 <div class="mf">
@@ -566,6 +605,7 @@ section.section.bundles{display:block;margin-top:0}
 <header class="nav"><div class="wrap navc">
   <!-- Ken, 4 Oct: "MannaFish logo centered at top without Free Gift button." -->
   <a class="brand" href="#today" style="text-decoration:none"><span class="wm-m">Manna</span><span class="wm-f">Fish</span></a>
+  <button class="modebtn" type="button" id="modeBtn" aria-label="Switch between dark and light">&#9728;&#xFE0E;</button>
 </div></header>
 
 <section class="hero" id="today"><div class="wrap today">
@@ -602,6 +642,7 @@ section.section.bundles{display:block;margin-top:0}
   </div>
 
   <div class="sharerow"><span class="rnote" id="shareMsg"></span></div>
+  <div id="readerSlot"></div>
   <!-- Ken, 6 Oct: stacked. The free devotional first, the free decals under it. -->
   <button class="btn btn-devo offerbtn" type="button" id="devoBtn" aria-expanded="false" data-panel="devoBox">Free Daily Devotional</button>
   <div class="giftbox devobox" id="devoBox" hidden>
@@ -645,7 +686,6 @@ section.section.bundles{display:block;margin-top:0}
     </form>
     <p class="rnote" id="giftFormMsg"></p>
   </div>
-  <div id="readerSlot"></div>
 </div></section>
 
 <section class="section reach" id="reach"><div class="wrap">
@@ -1135,6 +1175,15 @@ section.section.bundles{display:block;margin-top:0}
     });
   })();
   document.querySelectorAll('.tzfield').forEach(function(i){try{i.value=Intl.DateTimeFormat().resolvedOptions().timeZone||'';}catch(e){}});
+
+  // Ken, 7 Oct: dark / light, for contrast. Remembered on this device.
+  (function(){var root=document.documentElement,b=$('modeBtn');
+    function show(){var light=root.getAttribute('data-mode')==='light'; b.innerHTML= light ? '&#9790;&#xFE0E;' : '&#9728;&#xFE0E;'; b.title= light ? 'Dark mode' : 'Light mode';
+      var m=document.querySelector('meta[name=theme-color]'); if(m) m.setAttribute('content', light ? '#f7f5ef' : '#000000');}
+    b.addEventListener('click',function(){var light=root.getAttribute('data-mode')!=='light';
+      if(light) root.setAttribute('data-mode','light'); else root.removeAttribute('data-mode');
+      try{localStorage.setItem('mf-mode',light?'light':'dark');}catch(e){} show();});
+    show();})();
   var gsel=$('giftWord'); ORDER.forEach(function(k){var o=document.createElement('option');o.value=DATA[k].title;o.textContent=DATA[k].title;gsel.appendChild(o);});
   document.querySelectorAll('.offerbtn').forEach(function(btn){btn.addEventListener('click',function(){
     var me=$(btn.dataset.panel), opening=me.hidden;
