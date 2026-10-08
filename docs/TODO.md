@@ -35,6 +35,8 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [ ] Mandarin: Chinese Union Version (1919) is free to use. The text used is the "New Punctuation" printing; check whether that printing's punctuation needs permission. Ephesians 6:2 was missing from the source and was typed in; check it.
 - [ ] Hindi (drafted from the Indian Revised Version 2019, CC BY-SA 4.0): free to use with credit; add a credit line before printing.
 - [ ] Greek (drafted from the Modern Greek FPB): check its licence before printing.
+- [ ] German (8 Oct, drafted from Elberfelder 1905, public domain): a German reader checks the 24 fish. Ephesians 6:2: this edition puts "Ehre deinen Vater und deine Mutter" at the end of verse 1; the fish shows it as the top line.
+- [ ] Korean (8 Oct, drafted from 개역성경, Korean Revised 1952/1961, listed as public domain): a Korean reader checks the 24 fish; confirm it is free to print on products.
 - [ ] Greek: the New Testament in its original Greek, and a modern Greek Bible for Greek readers. Older texts are free to use; check each one.
 - [ ] Hebrew (shows as "soon" in the menu): the Old Testament in its original Hebrew, and a Hebrew New Testament. Older texts are free to use; check each one. Hebrew reads right to left, so the fish lettering runs the other way.
 

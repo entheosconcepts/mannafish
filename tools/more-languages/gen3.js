@@ -6,7 +6,7 @@
 // Sizes: never larger than on the English HOPE fish; smaller only when a line is longer.
 const { chromium } = require('playwright'); const fs=require('fs');
 const LG=process.argv[2]; const ALL=JSON.parse(fs.readFileSync(__dirname+'/lines.json','utf8')); const V=ALL[LG].fish, TAG=ALL[LG].tag;
-const FONTS={tl:{fam:'MFHobo',w:'normal',file:null}, zh:{fam:'ZCOOL KuaiLe',w:'normal',file:'ZCOOLKuaiLe-Regular.ttf'}, hi:{fam:'Baloo 2',w:'800',file:'Baloo2[wght].ttf'}, el:{fam:'Ubuntu',w:'700',file:'Ubuntu-Bold.ttf'}};
+const FONTS={tl:{fam:'MFHobo',w:'normal',file:null}, zh:{fam:'ZCOOL KuaiLe',w:'normal',file:'ZCOOLKuaiLe-Regular.ttf'}, hi:{fam:'Baloo 2',w:'800',file:'Baloo2[wght].ttf'}, el:{fam:'Ubuntu',w:'700',file:'Ubuntu-Bold.ttf'}, de:{fam:'MFHobo',w:'normal',file:null}, ko:{fam:'Jua',w:'normal',file:'Jua-Regular.ttf'}};
 const F=FONTS[LG]; const OUT=__dirname+'/out-'+LG;
 (async()=>{ const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}); const page=await b.newPage({viewport:{width:1200,height:600}});
  const font=fs.readFileSync(__dirname+'/hobo.txt','utf8'); const base=fs.readFileSync(__dirname+'/en/HOPE.svg','utf8');

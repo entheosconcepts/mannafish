@@ -103,6 +103,57 @@ L['el']=dict(tag=' (FPB)', books={'Mt':('Ματθαίος','Ματθ.'),'Ps':('�
 'LIVE':('Ζήσε','Δεν θα πεθάνω, αλλά θα ζήσω,','και θα διηγούμαι τα έργα τού Κυρίου.'),
 'SING':('Ψάλλε','Ψάλτε στον Κύριο ένα καινούργιο τραγούδι·','ψάλτε στον Κύριο, ολόκληρη η γη.'),
 'LAUGH':('Γέλα','Καιρός να κλαίει, και καιρός να γελάει·','καιρός να πενθεί, και καιρός να χορεύει·')})
+
+L['de']=dict(tag=' (ELB)', books={'Mt':('Matthäus','Mt.'),'Ps':('Psalm','Ps.'),'Jn':('Johannes','Joh.'),'Lk':('Lukas','Lk.'),'Pr':('Sprüche','Spr.'),'Dt':('5. Mose','5. Mo.'),'Ep':('Epheser','Eph.'),'2P':('2. Petrus','2. Petr.'),'Ro':('Römer','Röm.'),'Ez':('Hesekiel','Hes.'),'Ec':('Prediger','Pred.')}, fish={
+'REST':('Ruhe','Kommet her zu mir, alle ihr Mühseligen','und Beladenen, und ich werde euch Ruhe geben.'),
+'HOPE':('Hoffe','Harre auf Gott!','Denn ich werde ihn noch preisen...'),
+'LOVE':('Liebe','Dies ist mein Gebot, daß ihr einander liebet,','gleichwie ich euch geliebt habe.'),
+'TRUST':('Vertraue','Befiehl Jehova deinen Weg','und vertraue auf ihn! Und er wird handeln;'),
+'PRAY':('Bete','Wenn ihr betet, so sprechet:','Vater, geheiligt werde dein Name; dein Reich komme;'),
+'BELIEVE':('Glaube','Euer Herz werde nicht bestürzt.','Ihr glaubet an Gott, glaubet auch an mich.'),
+'FORGIVE':('Vergib','Denn wenn ihr den Menschen ihre Vergehungen vergebet,','so wird euer himmlischer Vater auch euch vergeben;'),
+'GIVE':('Gib','Gebet, und es wird euch gegeben werden:','ein gutes, gedrücktes und gerütteltes und überlaufendes Maß...'),
+'SEEK':('Suche','Trachtet aber zuerst nach dem Reiche Gottes','und nach seiner Gerechtigkeit...'),
+'ASK':('Bitte','...wieviel mehr wird der Vater, der vom Himmel ist,','den Heiligen Geist geben denen, die ihn bitten!'),
+'KNOCK':('Klopfe','Klopfet an, und es wird euch aufgetan werden.','Denn jeder Bittende empfängt...'),
+'FOLLOW':('Folge','Wenn jemand mir nachkommen will,','der verleugne sich selbst und nehme sein Kreuz auf täglich und folge mir nach.'),
+'LISTEN':('Höre','Wer aber auf mich hört, wird sicher wohnen,','und wird ruhig sein vor des Übels Schrecken.'),
+'REMEMBER':('Gedenke','Dies ist mein Leib, der für euch gegeben wird;','dieses tut zu meinem Gedächtnis!'),
+'CHOOSE':('Wähle','Das Leben und den Tod habe ich euch vorgelegt...','So wähle das Leben.'),
+'HONOR':('Ehre','»Ehre deinen Vater und deine Mutter«,','welches das erste Gebot mit Verheißung ist.'),
+'GROW':('Wachse','Wachset aber in der Gnade und Erkenntnis','unseres Herrn und Heilandes Jesus Christus.'),
+'GATHER':('Versammelt euch','Denn wo zwei oder drei versammelt sind in meinem Namen,','da bin ich in ihrer Mitte.'),
+'ACCEPT':('Nimm an','Deshalb nehmet einander auf,','gleichwie auch der Christus euch aufgenommen hat, zu Gottes Herrlichkeit.'),
+'BREATHE':('Atme','Komm von den vier Winden her, du Odem,','und hauche diese Getöteten an, daß sie lebendig werden!'),
+'ENJOY':('Genieße','...daß er esse und trinke und Gutes sehe bei all seiner Mühe,','ist für jeden Menschen eine Gabe Gottes.'),
+'LIVE':('Lebe','Ich werde nicht sterben, sondern leben','und die Taten Jahs erzählen.'),
+'SING':('Singe','Singet Jehova ein neues Lied,','singet Jehova, ganze Erde!'),
+'LAUGH':('Lache','Weinen hat seine Zeit, und Lachen hat seine Zeit;','Klagen hat seine Zeit und Tanzen hat seine Zeit;')})
+L['ko']=dict(tag=' (개역)', books={'Mt':('마태복음','마'),'Ps':('시편','시'),'Jn':('요한복음','요'),'Lk':('누가복음','눅'),'Pr':('잠언','잠'),'Dt':('신명기','신'),'Ep':('에베소서','엡'),'2P':('베드로후서','벧후'),'Ro':('로마서','롬'),'Ez':('에스겔','겔'),'Ec':('전도서','전')}, fish={
+'REST':('쉬라','수고하고 무거운 짐진 자들아','다 내게로 오라 내가 너희를 쉬게 하리라'),
+'HOPE':('바라라','너는 하나님을 바라라','내가 오히려 찬송하리로다'),
+'LOVE':('사랑하라','내가 너희를 사랑한 것 같이','너희도 서로 사랑하라'),
+'TRUST':('의지하라','너의 길을 여호와께 맡기라','저를 의지하면 저가 이루시고'),
+'PRAY':('기도하라','너희는 기도할 때에 이렇게 하라','아버지여 이름이 거룩히 여김을 받으시오며'),
+'BELIEVE':('믿으라','너희는 마음에 근심하지 말라','하나님을 믿으니 또 나를 믿으라'),
+'FORGIVE':('용서하라','너희가 사람의 과실을 용서하면','너희 천부께서도 너희 과실을 용서하시려니와'),
+'GIVE':('주라','주라 그리하면 너희에게 줄 것이니','곧 후히 되어 누르고 흔들어 넘치도록 하여...'),
+'SEEK':('구하라','너희는 먼저 그의 나라와 그의 의를 구하라','그리하면 이 모든 것을 너희에게 더하시리라'),
+'ASK':('간구하라','하물며 너희 천부께서','구하는 자에게 성령을 주시지 않겠느냐'),
+'KNOCK':('두드리라','문을 두드리라 그러면 너희에게 열릴 것이니','구하는 이마다 얻을 것이요...'),
+'FOLLOW':('따르라','아무든지 나를 따라 오려거든','자기를 부인하고 날마다 제 십자가를 지고 나를 좇을 것이니라'),
+'LISTEN':('들으라','오직 나를 듣는 자는 안연히 살며','재앙의 두려움이 없이 평안하리라'),
+'REMEMBER':('기념하라','이것은 너희를 위하여 주는 내 몸이라','너희가 이를 행하여 나를 기념하라'),
+'CHOOSE':('택하라','내가 생명과 사망과 복과 저주를 네 앞에 두었은즉','...생명을 택하고'),
+'HONOR':('공경하라','네 아버지와 어머니를 공경하라','이것이 약속 있는 첫 계명이니'),
+'GROW':('자라가라','오직 우리 주 곧 구주 예수 그리스도의','은혜와 저를 아는 지식에서 자라가라'),
+'GATHER':('모이라','두세 사람이 내 이름으로 모인 곳에는','나도 그들 중에 있느니라'),
+'ACCEPT':('받으라','그리스도께서 우리를 받아 하나님께 영광을 돌리심과 같이','너희도 서로 받으라'),
+'BREATHE':('숨쉬라','생기야 사방에서부터 와서','이 사망을 당한 자에게 불어서 살게 하라'),
+'ENJOY':('누리라','사람마다 먹고 마시는 것과 수고함으로 낙을 누리는 것이','하나님의 선물인 줄을 또한 알았도다'),
+'LIVE':('살라','내가 죽지 않고 살아서','여호와의 행사를 선포하리로다'),
+'SING':('노래하라','새 노래로 여호와께 노래하라','온 땅이여 여호와께 노래할지어다'),
+'LAUGH':('웃으라','울 때가 있고 웃을 때가 있으며','슬퍼할 때가 있고 춤출 때가 있으며')})
 import json,re
 ORDER=list(CV)
 out={}
@@ -111,7 +162,8 @@ for lg,d in L.items():
     for k in ORDER:
         w,t,b=d['fish'][k]; full,ab=d['books'][BOOK[k]]
         sep='' if lg=='zh' else ' '
-        arr.append({'key':k,'word':w,'top':t,'bottom':b,'ref':full+sep+CV[k],'refShort':ab+sep+CV[k]})
+        cv=CV[k].replace(':',',') if lg=='de' else CV[k]
+        arr.append({'key':k,'word':w,'top':t,'bottom':b,'ref':full+sep+cv,'refShort':ab+sep+cv})
         if lg=='el': assert not re.search('[A-Za-z]',w+t+b), (k,w,t,b)
     out[lg]={'tag':d['tag'],'fish':arr}
 json.dump(out,open('lines.json','w'),ensure_ascii=False,indent=1)

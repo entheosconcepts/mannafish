@@ -786,5 +786,399 @@
     "refShort": "Εκκλ. 3:4"
    }
   ]
+ },
+ "de": {
+  "tag": " (ELB)",
+  "fish": [
+   {
+    "key": "REST",
+    "word": "Ruhe",
+    "top": "Kommet her zu mir, alle ihr Mühseligen",
+    "bottom": "und Beladenen, und ich werde euch Ruhe geben.",
+    "ref": "Matthäus 11,28",
+    "refShort": "Mt. 11,28"
+   },
+   {
+    "key": "HOPE",
+    "word": "Hoffe",
+    "top": "Harre auf Gott!",
+    "bottom": "Denn ich werde ihn noch preisen...",
+    "ref": "Psalm 42,5",
+    "refShort": "Ps. 42,5"
+   },
+   {
+    "key": "LOVE",
+    "word": "Liebe",
+    "top": "Dies ist mein Gebot, daß ihr einander liebet,",
+    "bottom": "gleichwie ich euch geliebt habe.",
+    "ref": "Johannes 15,12",
+    "refShort": "Joh. 15,12"
+   },
+   {
+    "key": "TRUST",
+    "word": "Vertraue",
+    "top": "Befiehl Jehova deinen Weg",
+    "bottom": "und vertraue auf ihn! Und er wird handeln;",
+    "ref": "Psalm 37,5",
+    "refShort": "Ps. 37,5"
+   },
+   {
+    "key": "PRAY",
+    "word": "Bete",
+    "top": "Wenn ihr betet, so sprechet:",
+    "bottom": "Vater, geheiligt werde dein Name; dein Reich komme;",
+    "ref": "Lukas 11,2",
+    "refShort": "Lk. 11,2"
+   },
+   {
+    "key": "BELIEVE",
+    "word": "Glaube",
+    "top": "Euer Herz werde nicht bestürzt.",
+    "bottom": "Ihr glaubet an Gott, glaubet auch an mich.",
+    "ref": "Johannes 14,1",
+    "refShort": "Joh. 14,1"
+   },
+   {
+    "key": "FORGIVE",
+    "word": "Vergib",
+    "top": "Denn wenn ihr den Menschen ihre Vergehungen vergebet,",
+    "bottom": "so wird euer himmlischer Vater auch euch vergeben;",
+    "ref": "Matthäus 6,14",
+    "refShort": "Mt. 6,14"
+   },
+   {
+    "key": "GIVE",
+    "word": "Gib",
+    "top": "Gebet, und es wird euch gegeben werden:",
+    "bottom": "ein gutes, gedrücktes und gerütteltes und überlaufendes Maß...",
+    "ref": "Lukas 6,38",
+    "refShort": "Lk. 6,38"
+   },
+   {
+    "key": "SEEK",
+    "word": "Suche",
+    "top": "Trachtet aber zuerst nach dem Reiche Gottes",
+    "bottom": "und nach seiner Gerechtigkeit...",
+    "ref": "Matthäus 6,33",
+    "refShort": "Mt. 6,33"
+   },
+   {
+    "key": "ASK",
+    "word": "Bitte",
+    "top": "...wieviel mehr wird der Vater, der vom Himmel ist,",
+    "bottom": "den Heiligen Geist geben denen, die ihn bitten!",
+    "ref": "Lukas 11,13",
+    "refShort": "Lk. 11,13"
+   },
+   {
+    "key": "KNOCK",
+    "word": "Klopfe",
+    "top": "Klopfet an, und es wird euch aufgetan werden.",
+    "bottom": "Denn jeder Bittende empfängt...",
+    "ref": "Matthäus 7,7-8",
+    "refShort": "Mt. 7,7-8"
+   },
+   {
+    "key": "FOLLOW",
+    "word": "Folge",
+    "top": "Wenn jemand mir nachkommen will,",
+    "bottom": "der verleugne sich selbst und nehme sein Kreuz auf täglich und folge mir nach.",
+    "ref": "Lukas 9,23",
+    "refShort": "Lk. 9,23"
+   },
+   {
+    "key": "LISTEN",
+    "word": "Höre",
+    "top": "Wer aber auf mich hört, wird sicher wohnen,",
+    "bottom": "und wird ruhig sein vor des Übels Schrecken.",
+    "ref": "Sprüche 1,33",
+    "refShort": "Spr. 1,33"
+   },
+   {
+    "key": "REMEMBER",
+    "word": "Gedenke",
+    "top": "Dies ist mein Leib, der für euch gegeben wird;",
+    "bottom": "dieses tut zu meinem Gedächtnis!",
+    "ref": "Lukas 22,19",
+    "refShort": "Lk. 22,19"
+   },
+   {
+    "key": "CHOOSE",
+    "word": "Wähle",
+    "top": "Das Leben und den Tod habe ich euch vorgelegt...",
+    "bottom": "So wähle das Leben.",
+    "ref": "5. Mose 30,19",
+    "refShort": "5. Mo. 30,19"
+   },
+   {
+    "key": "HONOR",
+    "word": "Ehre",
+    "top": "»Ehre deinen Vater und deine Mutter«,",
+    "bottom": "welches das erste Gebot mit Verheißung ist.",
+    "ref": "Epheser 6,2",
+    "refShort": "Eph. 6,2"
+   },
+   {
+    "key": "GROW",
+    "word": "Wachse",
+    "top": "Wachset aber in der Gnade und Erkenntnis",
+    "bottom": "unseres Herrn und Heilandes Jesus Christus.",
+    "ref": "2. Petrus 3,18",
+    "refShort": "2. Petr. 3,18"
+   },
+   {
+    "key": "GATHER",
+    "word": "Versammelt euch",
+    "top": "Denn wo zwei oder drei versammelt sind in meinem Namen,",
+    "bottom": "da bin ich in ihrer Mitte.",
+    "ref": "Matthäus 18,20",
+    "refShort": "Mt. 18,20"
+   },
+   {
+    "key": "ACCEPT",
+    "word": "Nimm an",
+    "top": "Deshalb nehmet einander auf,",
+    "bottom": "gleichwie auch der Christus euch aufgenommen hat, zu Gottes Herrlichkeit.",
+    "ref": "Römer 15,7",
+    "refShort": "Röm. 15,7"
+   },
+   {
+    "key": "BREATHE",
+    "word": "Atme",
+    "top": "Komm von den vier Winden her, du Odem,",
+    "bottom": "und hauche diese Getöteten an, daß sie lebendig werden!",
+    "ref": "Hesekiel 37,9",
+    "refShort": "Hes. 37,9"
+   },
+   {
+    "key": "ENJOY",
+    "word": "Genieße",
+    "top": "...daß er esse und trinke und Gutes sehe bei all seiner Mühe,",
+    "bottom": "ist für jeden Menschen eine Gabe Gottes.",
+    "ref": "Prediger 3,13",
+    "refShort": "Pred. 3,13"
+   },
+   {
+    "key": "LIVE",
+    "word": "Lebe",
+    "top": "Ich werde nicht sterben, sondern leben",
+    "bottom": "und die Taten Jahs erzählen.",
+    "ref": "Psalm 118,17",
+    "refShort": "Ps. 118,17"
+   },
+   {
+    "key": "SING",
+    "word": "Singe",
+    "top": "Singet Jehova ein neues Lied,",
+    "bottom": "singet Jehova, ganze Erde!",
+    "ref": "Psalm 96,1",
+    "refShort": "Ps. 96,1"
+   },
+   {
+    "key": "LAUGH",
+    "word": "Lache",
+    "top": "Weinen hat seine Zeit, und Lachen hat seine Zeit;",
+    "bottom": "Klagen hat seine Zeit und Tanzen hat seine Zeit;",
+    "ref": "Prediger 3,4",
+    "refShort": "Pred. 3,4"
+   }
+  ]
+ },
+ "ko": {
+  "tag": " (개역)",
+  "fish": [
+   {
+    "key": "REST",
+    "word": "쉬라",
+    "top": "수고하고 무거운 짐진 자들아",
+    "bottom": "다 내게로 오라 내가 너희를 쉬게 하리라",
+    "ref": "마태복음 11:28",
+    "refShort": "마 11:28"
+   },
+   {
+    "key": "HOPE",
+    "word": "바라라",
+    "top": "너는 하나님을 바라라",
+    "bottom": "내가 오히려 찬송하리로다",
+    "ref": "시편 42:5",
+    "refShort": "시 42:5"
+   },
+   {
+    "key": "LOVE",
+    "word": "사랑하라",
+    "top": "내가 너희를 사랑한 것 같이",
+    "bottom": "너희도 서로 사랑하라",
+    "ref": "요한복음 15:12",
+    "refShort": "요 15:12"
+   },
+   {
+    "key": "TRUST",
+    "word": "의지하라",
+    "top": "너의 길을 여호와께 맡기라",
+    "bottom": "저를 의지하면 저가 이루시고",
+    "ref": "시편 37:5",
+    "refShort": "시 37:5"
+   },
+   {
+    "key": "PRAY",
+    "word": "기도하라",
+    "top": "너희는 기도할 때에 이렇게 하라",
+    "bottom": "아버지여 이름이 거룩히 여김을 받으시오며",
+    "ref": "누가복음 11:2",
+    "refShort": "눅 11:2"
+   },
+   {
+    "key": "BELIEVE",
+    "word": "믿으라",
+    "top": "너희는 마음에 근심하지 말라",
+    "bottom": "하나님을 믿으니 또 나를 믿으라",
+    "ref": "요한복음 14:1",
+    "refShort": "요 14:1"
+   },
+   {
+    "key": "FORGIVE",
+    "word": "용서하라",
+    "top": "너희가 사람의 과실을 용서하면",
+    "bottom": "너희 천부께서도 너희 과실을 용서하시려니와",
+    "ref": "마태복음 6:14",
+    "refShort": "마 6:14"
+   },
+   {
+    "key": "GIVE",
+    "word": "주라",
+    "top": "주라 그리하면 너희에게 줄 것이니",
+    "bottom": "곧 후히 되어 누르고 흔들어 넘치도록 하여...",
+    "ref": "누가복음 6:38",
+    "refShort": "눅 6:38"
+   },
+   {
+    "key": "SEEK",
+    "word": "구하라",
+    "top": "너희는 먼저 그의 나라와 그의 의를 구하라",
+    "bottom": "그리하면 이 모든 것을 너희에게 더하시리라",
+    "ref": "마태복음 6:33",
+    "refShort": "마 6:33"
+   },
+   {
+    "key": "ASK",
+    "word": "간구하라",
+    "top": "하물며 너희 천부께서",
+    "bottom": "구하는 자에게 성령을 주시지 않겠느냐",
+    "ref": "누가복음 11:13",
+    "refShort": "눅 11:13"
+   },
+   {
+    "key": "KNOCK",
+    "word": "두드리라",
+    "top": "문을 두드리라 그러면 너희에게 열릴 것이니",
+    "bottom": "구하는 이마다 얻을 것이요...",
+    "ref": "마태복음 7:7-8",
+    "refShort": "마 7:7-8"
+   },
+   {
+    "key": "FOLLOW",
+    "word": "따르라",
+    "top": "아무든지 나를 따라 오려거든",
+    "bottom": "자기를 부인하고 날마다 제 십자가를 지고 나를 좇을 것이니라",
+    "ref": "누가복음 9:23",
+    "refShort": "눅 9:23"
+   },
+   {
+    "key": "LISTEN",
+    "word": "들으라",
+    "top": "오직 나를 듣는 자는 안연히 살며",
+    "bottom": "재앙의 두려움이 없이 평안하리라",
+    "ref": "잠언 1:33",
+    "refShort": "잠 1:33"
+   },
+   {
+    "key": "REMEMBER",
+    "word": "기념하라",
+    "top": "이것은 너희를 위하여 주는 내 몸이라",
+    "bottom": "너희가 이를 행하여 나를 기념하라",
+    "ref": "누가복음 22:19",
+    "refShort": "눅 22:19"
+   },
+   {
+    "key": "CHOOSE",
+    "word": "택하라",
+    "top": "내가 생명과 사망과 복과 저주를 네 앞에 두었은즉",
+    "bottom": "...생명을 택하고",
+    "ref": "신명기 30:19",
+    "refShort": "신 30:19"
+   },
+   {
+    "key": "HONOR",
+    "word": "공경하라",
+    "top": "네 아버지와 어머니를 공경하라",
+    "bottom": "이것이 약속 있는 첫 계명이니",
+    "ref": "에베소서 6:2",
+    "refShort": "엡 6:2"
+   },
+   {
+    "key": "GROW",
+    "word": "자라가라",
+    "top": "오직 우리 주 곧 구주 예수 그리스도의",
+    "bottom": "은혜와 저를 아는 지식에서 자라가라",
+    "ref": "베드로후서 3:18",
+    "refShort": "벧후 3:18"
+   },
+   {
+    "key": "GATHER",
+    "word": "모이라",
+    "top": "두세 사람이 내 이름으로 모인 곳에는",
+    "bottom": "나도 그들 중에 있느니라",
+    "ref": "마태복음 18:20",
+    "refShort": "마 18:20"
+   },
+   {
+    "key": "ACCEPT",
+    "word": "받으라",
+    "top": "그리스도께서 우리를 받아 하나님께 영광을 돌리심과 같이",
+    "bottom": "너희도 서로 받으라",
+    "ref": "로마서 15:7",
+    "refShort": "롬 15:7"
+   },
+   {
+    "key": "BREATHE",
+    "word": "숨쉬라",
+    "top": "생기야 사방에서부터 와서",
+    "bottom": "이 사망을 당한 자에게 불어서 살게 하라",
+    "ref": "에스겔 37:9",
+    "refShort": "겔 37:9"
+   },
+   {
+    "key": "ENJOY",
+    "word": "누리라",
+    "top": "사람마다 먹고 마시는 것과 수고함으로 낙을 누리는 것이",
+    "bottom": "하나님의 선물인 줄을 또한 알았도다",
+    "ref": "전도서 3:13",
+    "refShort": "전 3:13"
+   },
+   {
+    "key": "LIVE",
+    "word": "살라",
+    "top": "내가 죽지 않고 살아서",
+    "bottom": "여호와의 행사를 선포하리로다",
+    "ref": "시편 118:17",
+    "refShort": "시 118:17"
+   },
+   {
+    "key": "SING",
+    "word": "노래하라",
+    "top": "새 노래로 여호와께 노래하라",
+    "bottom": "온 땅이여 여호와께 노래할지어다",
+    "ref": "시편 96:1",
+    "refShort": "시 96:1"
+   },
+   {
+    "key": "LAUGH",
+    "word": "웃으라",
+    "top": "울 때가 있고 웃을 때가 있으며",
+    "bottom": "슬퍼할 때가 있고 춤출 때가 있으며",
+    "ref": "전도서 3:4",
+    "refShort": "전 3:4"
+   }
+  ]
  }
 }

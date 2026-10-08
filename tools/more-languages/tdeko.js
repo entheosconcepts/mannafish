@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');const fs=require('fs');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await b.newPage({viewport:{width:1300,height:900},deviceScaleFactor:1});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.addInitScript(()=>{ const V=[{lang:'en-US',name:'A'},{lang:'de-DE',name:'Google Deutsch'},{lang:'ko-KR',name:'Google 한국의'}];
+  const SS={getVoices:()=>V,cancel(){},speak(u){ window.__said=(window.__said||[]).concat([[u.lang,u.text]]); let ci=0;const w=u.text.split(' ');let i=0;const t=setInterval(()=>{if(i>=w.length){clearInterval(t);u.onend&&u.onend();return;}u.onboundary&&u.onboundary({charIndex:ci});ci+=w[i].length+1;i++;},80);} };
+  Object.defineProperty(window,'speechSynthesis',{value:SS,configurable:true}); Object.defineProperty(window,'SpeechSynthesisUtterance',{value:function(t){this.text=t;},configurable:true,writable:true}); });
+await p.route('**/*',r=>{const u=new URL(r.request().url());if(u.host==='mf.test'){ if(u.pathname.startsWith('/api/')) return r.fulfill({status:501,body:''}); if(u.pathname.startsWith('/fish-lang/')) return r.fulfill({body:fs.readFileSync('/home/user/mannafish'+u.pathname),contentType:u.pathname.endsWith('woff2')?'font/woff2':'application/json'}); return r.fulfill({body:fs.readFileSync('/home/user/mannafish/index.html'),contentType:'text/html'});}return r.abort();});
+await p.goto('http://mf.test/');await p.waitForTimeout(400);await p.click('#cmpBtn');
+const menu=await p.$$eval('#cmpMenu button[data-l]',a=>a.map(e=>e.textContent));
+await p.click('#cmpMenu button[data-l=de]');await p.click('#cmpMenu button[data-l=ko]');await p.mouse.click(3,890);await p.waitForTimeout(900);
+await p.click('#cmp figure[data-l=ko] .spk[data-part=verse]');await p.waitForTimeout(250);
+const lit=await p.evaluate(()=>[...document.querySelectorAll('#cmp figure[data-l=ko] svg tspan')].filter(t=>t.getAttribute('fill')).map(t=>t.textContent).join('|'));
+await p.screenshot({path:__dirname+'/deko.png'});await p.waitForTimeout(1500);
+await p.click('#cmp figure[data-l=de] .spk[data-part=word]');await p.waitForTimeout(300);
+console.log(JSON.stringify({menu,caps:await p.$$eval('#cmp figcaption',a=>a.map(e=>e.childNodes[0].textContent)),lit,said:await p.evaluate(()=>window.__said),errs}));await b.close();})();
