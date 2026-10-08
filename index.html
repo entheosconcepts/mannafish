@@ -702,6 +702,7 @@ section.section.bundles{display:block;margin-top:0}
 .cmpb .refs{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px}
 .cmpb .wtitle{font-size:clamp(1.6rem,9cqw,2.6rem)}
 .cmp figure:only-child .cmpb .refs{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cmpb .face:is([lang=zh],[lang=ko],[lang=hi]) :is(.lab,.mean,.trace,.conc,.s){letter-spacing:0;font-style:normal}
 .cmpb .wsub{text-align:center;font:1.15rem 'Spectral',serif;color:var(--foam-dim,#9fb2b6);margin:-4px 0 6px}
 
 /* Ken, 8 Oct: pick up where I left off -- the word, the flipped card, the open verse or Strong's entry, the languages */
@@ -1591,12 +1592,28 @@ window.MF=(function(){
   function fishFor(l,k){ return l==='en'?(FISH[k]||''):l==='es'?(MF.fish[k]||''):((LFISH[l]||{})[k]||''); }
   function loadLang(l){ if(l==='en'||l==='es'||LFISH[l]) return Promise.resolve();
     if(CMPFONT[l] && !document.getElementById('mf-font-'+l)){var k=document.createElement('style'); k.id='mf-font-'+l; k.textContent="@font-face{font-family:'"+CMPFONT[l]+"';src:url(/fish-lang/"+l+".woff2) format('woff2');font-weight:100 900;font-display:block}"; document.head.appendChild(k);}
-    return fetch('/fish-lang/'+l+'.json').then(function(r){return r.json();}).then(function(j){LFISH[l]=j;}); }
+    // Ken, 8 Oct: the word study on the back in that fish's own language too
+    return Promise.all([fetch('/fish-lang/'+l+'.json').then(function(r){return r.json();}),
+      fetch('/fish-lang/study-'+l+'.json').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})])
+      .then(function(j){LFISH[l]=j[0]; LSTUDY[l]=j[1];}); }
+  var LSTUDY={};
+  // back of a fish in language l: that language's word, meanings, book names and the start of each verse from its own Bible
+  function studyBack(back,l){ var S=LSTUDY[l], w=S&&S.words[cur], word=((SAY[l]||{})[cur]||[''])[0];
+    if(!w) return back.replace(/(<div class="wtitle">[^<]*<\/div>)/,'$1<div class="wsub">'+esc(word)+'</div>');
+    var t=document.createElement('div'); t.innerHTML=back; var L=S.labels, q=l==='de'?['„','“']:['“','”'];
+    var ti=t.querySelector('.wtitle'); ti.setAttribute('lang',l); ti.insertAdjacentHTML('afterend','<div class="wsub">'+esc(wordTitle(cur))+'</div>'); ti.textContent=word; if(CMPFONT[l]) ti.style.fontFamily="'"+CMPFONT[l]+"',sans-serif";
+    var labs=t.querySelectorAll('.lab'), means=t.querySelectorAll('.mean'), concs=t.querySelectorAll('.conc');
+    if(labs[0]) labs[0].textContent=L.gk; if(labs[1]) labs[1].textContent=L.hb;
+    if(means[0]) means[0].textContent=w.gkm; if(means[1]) means[1].textContent=w.hbm;
+    for(var i=0;i<concs.length;i++) concs[i].innerHTML=esc(L.conc)+' &#8599;';
+    var tr=t.querySelector('.trace'); if(tr) tr.textContent=L.trace;
+    var rf=t.querySelector('.refs'); if(rf) rf.innerHTML=w.refs.map(function(r,i){ return '<button class="ref" type="button" data-i="'+i+'"><span class="r">'+esc(r[0])+'</span>'+(r[1]?'<span class="s">'+q[0]+esc(r[1])+q[1]+'</span>':'')+'</button>'; }).join('');
+    t.firstChild.setAttribute('lang',l); return t.innerHTML; }
   var cmpSel=[];
   function cmpLangs(){ return [MF.lang].concat(CMPL.map(function(o){return o[0];}).filter(function(l){return l!==MF.lang && cmpSel.indexOf(l)>=0;})); }
   window.MFcmp=function(){ if(!cmpSel.length) return; var spk=$('spkMain').outerHTML.replace(' id="spkMain"','').replace(' hidden=""','');
     var back='<div class="face back">'+document.querySelector('#stage .face.back').innerHTML.replace(/\sid="[^"]*"/g,'')+'</div>';
-    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div><div class="cmpb">'+(l===MF.lang?back:back.replace(/(<div class="wtitle">[^<]*<\/div>)/,'$1<div class="wsub">'+esc(((SAY[l]||{})[cur]||[''])[0])+'</div>'))+'</div><figcaption>'+cmpLabel(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); };
+    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div><div class="cmpb">'+(l===MF.lang?back:(l==='en'||l==='es')?back.replace(/(<div class="wtitle">[^<]*<\/div>)/,'$1<div class="wsub">'+esc(((SAY[l]||{})[cur]||[''])[0])+'</div>'):studyBack(back,l))+'</div><figcaption>'+cmpLabel(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); };
   var cmpOn={};
   // tap a fish to turn it over; on the back, verses and Strong's open just as on the single fish
   $('cmp').addEventListener('click',function(e){ var f=e.target.closest('figure[data-l]'); if(!f||e.target.closest('.spk,figcaption,.saybox')) return;
