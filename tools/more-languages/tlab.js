@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const fs=require('fs');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await b.newPage({viewport:{width:390,height:844}});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.route('**/*',r=>{const u=new URL(r.request().url());if(u.host==='mf.test'){ if(u.pathname.startsWith('/fish-lang/')) return r.fulfill({body:fs.readFileSync('/home/user/mannafish'+u.pathname)}); return r.fulfill({body:fs.readFileSync('/home/user/mannafish/index.html'),contentType:'text/html'});}return r.abort();});
+await p.goto('http://mf.test/');await p.waitForTimeout(400);await p.click('#cmpBtn');
+const m1=await p.$$eval('#cmpMenu button[data-l]',a=>a.map(e=>e.textContent));
+await p.click('#cmpMenu button[data-l=zh]');await p.click('#cmpMenu button[data-l=el]');await p.mouse.click(3,840);await p.waitForTimeout(400);
+const c1=await p.$$eval('#cmp figcaption',a=>a.map(e=>e.childNodes[0].textContent));
+await p.evaluate(()=>MF.set('es'));await p.waitForTimeout(300);
+const c2=await p.$$eval('#cmp figcaption',a=>a.map(e=>e.childNodes[0].textContent));
+await p.click('#cmpBtn');const m2=await p.$$eval('#cmpMenu button[data-l]',a=>a.map(e=>e.textContent));
+console.log(JSON.stringify({m1,c1,c2,m2,errs}));await b.close();})();

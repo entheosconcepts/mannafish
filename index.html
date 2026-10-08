@@ -1463,7 +1463,7 @@ window.MF=(function(){
     var es=MF.lang==='es';
     if(!window.speechSynthesis){ sayNote(box,es?'Este navegador no puede leer en voz alta.':'This browser cannot read aloud.'); sp.on=false; stopSpeak(); return; }
     var vv=voiceFor(l);
-    if(vv.any && !vv.v){ sayNote(box,(es?'Este dispositivo aún no tiene voz en ':'This device has no voice for ')+cmpName(l)+(es?'. Con la voz natural del sitio sí se podrá.':' yet. The site’s natural voice will cover it once it is turned on.')); sp.on=false; stopSpeak(); return; }
+    if(vv.any && !vv.v){ sayNote(box,(es?'Este dispositivo aún no tiene voz en ':'This device has no voice for ')+cmpLabel(l)+(es?'. Con la voz natural del sitio sí se podrá.':' yet. The site’s natural voice will cover it once it is turned on.')); sp.on=false; stopSpeak(); return; }
     var u=new SpeechSynthesisUtterance(text); u.lang=LCODE[l]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.9;
     var got=false, t0=Date.now(), cps=l==='zh'?4:l==='hi'?11:13;
     u.onboundary=function(e){ got=true; mk(e.charIndex); };
@@ -1584,6 +1584,10 @@ window.MF=(function(){
   // each language's lettering is a small trimmed font kept on this site, so the fish draw exactly as made
   var CMPFONT={zh:'ZCOOL KuaiLe',hi:'Baloo 2',el:'Ubuntu'}, LFISH={}, cmpLang=null;
   function cmpName(l){for(var i=0;i<CMPL.length;i++) if(CMPL[i][0]===l) return CMPL[i][1]; return l;}
+  // Ken, 8 Oct: say which language it is in the reader's own language too -- "Chinese · 中文"
+  var LNAME={en:{en:'English',es:'Spanish',tl:'Tagalog',zh:'Chinese',hi:'Hindi',el:'Greek',he:'Hebrew',de:'German',ko:'Korean'},
+             es:{en:'Inglés',es:'Español',tl:'Tagalo',zh:'Chino',hi:'Hindi',el:'Griego',he:'Hebreo',de:'Alemán',ko:'Coreano'}};
+  function cmpLabel(l){ var mine=(LNAME[MF.lang]||LNAME.en)[l]||l, own=cmpName(l); return mine===own?own:mine+' \u00b7 '+own; }
   function fishFor(l,k){ return l==='en'?(FISH[k]||''):l==='es'?(MF.fish[k]||''):((LFISH[l]||{})[k]||''); }
   function loadLang(l){ if(l==='en'||l==='es'||LFISH[l]) return Promise.resolve();
     if(CMPFONT[l] && !document.getElementById('mf-font-'+l)){var k=document.createElement('style'); k.id='mf-font-'+l; k.textContent="@font-face{font-family:'"+CMPFONT[l]+"';src:url(/fish-lang/"+l+".woff2) format('woff2');font-weight:100 900;font-display:block}"; document.head.appendChild(k);}
@@ -1592,7 +1596,7 @@ window.MF=(function(){
   function cmpLangs(){ return [MF.lang].concat(CMPL.map(function(o){return o[0];}).filter(function(l){return l!==MF.lang && cmpSel.indexOf(l)>=0;})); }
   window.MFcmp=function(){ if(!cmpSel.length) return; var spk=$('spkMain').outerHTML.replace(' id="spkMain"','').replace(' hidden=""','');
     var back='<div class="face back">'+document.querySelector('#stage .face.back').innerHTML.replace(/\sid="[^"]*"/g,'')+'</div>';
-    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div><div class="cmpb">'+(l===MF.lang?back:back.replace(/(<div class="wtitle">[^<]*<\/div>)/,'$1<div class="wsub">'+esc(((SAY[l]||{})[cur]||[''])[0])+'</div>'))+'</div><figcaption>'+cmpName(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); };
+    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div><div class="cmpb">'+(l===MF.lang?back:back.replace(/(<div class="wtitle">[^<]*<\/div>)/,'$1<div class="wsub">'+esc(((SAY[l]||{})[cur]||[''])[0])+'</div>'))+'</div><figcaption>'+cmpLabel(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); };
   var cmpOn={};
   // tap a fish to turn it over; on the back, verses and Strong's open just as on the single fish
   $('cmp').addEventListener('click',function(e){ var f=e.target.closest('figure[data-l]'); if(!f||e.target.closest('.spk,figcaption,.saybox')) return;
@@ -1609,7 +1613,7 @@ window.MF=(function(){
     [['en','English'],['es','Español']].forEach(function(o){ h+='<button type="button" role="menuitemradio" class="pg" aria-checked="'+(MF.lang===o[0])+'" data-pg="'+o[0]+'">'+o[1]+'</button>'; });
     h+='<div class="sep"></div><div class="cmphd">'+(es?'Comparar el pez en':'Compare the fish in')+'</div>';
     CMPL.forEach(function(o){ if(o[0]===MF.lang) return;
-      h+='<button type="button" role="menuitemcheckbox" aria-checked="'+(cmpSel.indexOf(o[0])>=0)+'" data-l="'+o[0]+'"'+(o[2]?' disabled':'')+'>'+o[1]+(o[2]?' <small>'+(es?'pronto':'soon')+'</small>':'')+'</button>'; });
+      h+='<button type="button" role="menuitemcheckbox" aria-checked="'+(cmpSel.indexOf(o[0])>=0)+'" data-l="'+o[0]+'"'+(o[2]?' disabled':'')+'>'+cmpLabel(o[0])+(o[2]?' <small>'+(es?'pronto':'soon')+'</small>':'')+'</button>'; });
     if(cmpSel.length) h+='<button type="button" class="cmpoff" data-l="">'+(es?'Solo un pez':'Just one fish')+'</button>';
     $('cmpMenu').innerHTML=h; cmpCaps(); }
   function menu(open){ $('cmpMenu').hidden=!open; $('cmpBtn').setAttribute('aria-expanded',String(open)); if(open) buildMenu(); }
