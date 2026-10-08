@@ -680,6 +680,55 @@ section.section.bundles{display:block;margin-top:0}
 .saybox .w{border-radius:3px}
 .saybox .w.on{background:#f5d76e;color:#111}
 .saybox .sref{display:block;font:600 .8rem 'Archivo',sans-serif;letter-spacing:.04em;color:var(--foam-dim,#aaa);margin-top:4px}
+/* Every Tongue (Ken, 8 Oct): speak with anyone in their own language -- Revelation 7:9 */
+.etbtn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:55;display:flex;align-items:center;gap:8px;height:46px;padding:0 16px 0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:var(--brass);color:#fff;font:600 .9rem 'Archivo',sans-serif;box-shadow:0 6px 22px rgba(0,0,0,.45);cursor:pointer}
+.etbtn svg{width:24px;height:24px}
+.etbtn[hidden]{display:none}
+.etbox{position:fixed;right:16px;bottom:16px;z-index:58;width:min(430px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;overscroll-behavior:contain;background:var(--ink2,#0b1620);color:var(--foam);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.55);padding:14px 14px 18px;font-family:'Archivo',sans-serif}
+.etbox[hidden]{display:none}
+@media(max-width:600px){.etbox{left:0;right:0;bottom:0;width:auto;max-height:88vh;border-radius:16px 16px 0 0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}}
+.ethd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.ethd h2{margin:0;font:400 1.6rem 'MFHobo','Archivo',sans-serif;letter-spacing:.02em;color:var(--foam)}
+.etsub{margin:2px 0 0;font-size:.8rem;color:var(--foam-dim)}
+.etx{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--foam);font-size:1.3rem;line-height:1;cursor:pointer}
+.etto{display:flex;align-items:center;gap:10px;margin:12px 0 10px;font-size:.85rem;color:var(--foam-dim)}
+.etto select{flex:1;min-width:0;height:40px;border-radius:8px;border:1px solid var(--line);background:var(--ink);color:var(--foam);font:600 .95rem 'Archivo',sans-serif;padding:0 8px}
+.etshow{margin:0 0 12px;padding:12px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid var(--line);text-align:center}
+.etshow[hidden]{display:none}
+.etbig{font:600 1.45rem/1.5 system-ui,sans-serif;color:var(--foam);word-break:break-word}
+.etbig .w{border-radius:4px}.etbig .w.on{background:#f5d76e;color:#111}
+.etbig .sref{display:block;font:600 .8rem 'Archivo',sans-serif;color:var(--foam-dim);margin-top:6px}
+.etbig .snote{display:block;font:400 .82rem 'Archivo',sans-serif;color:var(--foam-dim);margin-top:6px}
+.etmine{margin-top:6px;font:italic 1rem 'Spectral',serif;color:var(--foam-dim)}
+.etmine:empty{display:none}
+.etrow{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.etrow button,.etlive button{height:38px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--foam);font:600 .85rem 'Archivo',sans-serif;cursor:pointer}
+.etrow button[aria-pressed="true"],.etlive button[aria-pressed="true"]{border-color:var(--brass);background:rgba(42,95,176,.25)}
+.etshow.full{position:fixed;inset:0;z-index:70;margin:0;border-radius:0;border:0;background:var(--ink);display:flex;flex-direction:column;justify-content:center;padding:24px 20px calc(24px + env(safe-area-inset-bottom,0px))}
+.etshow.full .etbig{font-size:clamp(1.8rem,7vw,3.4rem)}
+.etshow.full .etmine{font-size:1.1rem}
+.etshow.full #etFull{display:none}
+.ettabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:8px;scrollbar-width:none}
+.ettabs button{flex:none;height:34px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--foam-dim);font:600 .8rem 'Archivo',sans-serif;cursor:pointer}
+.ettabs button[aria-selected="true"]{color:#fff;background:var(--brass);border-color:var(--brass)}
+.etlist{display:grid;gap:8px}
+.etp{display:block;width:100%;text-align:left;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--foam);cursor:pointer}
+.etp:hover,.etp[aria-pressed="true"]{border-color:var(--brass)}
+.etp1{display:block;font:600 .95rem 'Archivo',sans-serif}
+.etp2{display:block;margin-top:3px;font:1rem/1.4 system-ui,sans-serif;color:var(--foam-dim)}
+.etref{display:inline-block;margin-top:4px;font:600 .72rem 'Archivo',sans-serif;letter-spacing:.04em;color:var(--brass-soft,#6f9be0)}
+.etlive[hidden]{display:none}
+.etlive textarea{width:100%;box-sizing:border-box;min-height:84px;border-radius:10px;border:1px solid var(--line);background:var(--ink);color:var(--foam);font:1rem/1.45 'Archivo',sans-serif;padding:10px}
+.etlive .etrow{justify-content:flex-start}
+.etlive .etgo{background:var(--brass);border-color:var(--brass);color:#fff}
+.ethr{height:1px;background:var(--line);margin:14px 0}
+.etmsg{font-size:.85rem;color:var(--foam-dim);margin-top:8px}
+.etmsg:empty{display:none}
+.etheard{margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid var(--line)}
+.etheard[hidden]{display:none}
+.etheard .a{font:1rem system-ui,sans-serif;color:var(--foam-dim)}
+.etheard .b{font:600 1.1rem 'Archivo',sans-serif;margin-top:4px}
+.etfoot{margin-top:14px;font-size:.72rem;color:var(--foam-dim);line-height:1.4}
 .saybox .snote{display:block;font:.82rem 'Archivo',sans-serif;color:var(--foam-dim,#aaa);margin-top:6px}
 .cmp{flex-wrap:wrap}
 .cmp figure{flex:1 1 calc(50% - 18px);max-width:calc(50% - 9px)}
@@ -1041,6 +1090,25 @@ section.section.bundles{display:block;margin-top:0}
 
 <!-- verse reader -->
 <div class="reader-scrim" id="scrim"></div>
+<!-- Every Tongue (Ken, 8 Oct): ready-made phrases and verses in the listener's language, plus live typing or speaking -->
+<button class="etbtn" type="button" id="etBtn" aria-expanded="false" aria-controls="etBox"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></svg><span id="etLab">Every Tongue</span></button>
+<section class="etbox" id="etBox" role="dialog" aria-labelledby="etTitle" hidden>
+  <div class="ethd"><div><h2 id="etTitle" translate="no">Every Tongue</h2><p class="etsub" id="etSub"></p></div><button class="etx" type="button" id="etX" aria-label="Close">&times;</button></div>
+  <label class="etto"><span id="etToLab"></span><select id="etTo"></select></label>
+  <div class="etshow" id="etShow" hidden><div class="etbig" id="etBig"></div><div class="etmine" id="etMine"></div>
+    <div class="etrow"><button type="button" id="etPlay"></button><button type="button" id="etFull"></button></div></div>
+  <div class="ettabs" id="etTabs" role="tablist"></div>
+  <div class="etlist" id="etList"></div>
+  <div class="etlive" id="etLive" hidden>
+    <textarea id="etText" maxlength="300"></textarea>
+    <div class="etrow"><button type="button" class="etgo" id="etGo"></button><button type="button" id="etMic" aria-pressed="false"></button></div>
+    <div class="ethr"></div>
+    <div class="etrow"><button type="button" id="etThem" aria-pressed="false"></button></div>
+    <div class="etheard" id="etHeard" hidden><div class="a" id="etHeardA"></div><div class="b" id="etHeardB"></div></div>
+    <div class="etmsg" id="etMsg" role="status"></div>
+  </div>
+  <p class="etfoot" id="etFoot"></p>
+</section>
 <aside class="reader" id="reader" aria-hidden="true">
   <div class="reader-top">
     <div><div class="rk" id="rKicker">Word study</div><div class="rref" id="rRef">Reference</div></div>
@@ -1475,6 +1543,85 @@ window.MF=(function(){
   document.addEventListener('click',function(e){ var b=e.target.closest&&e.target.closest('.spk'); if(!b) return;
     e.stopPropagation(); e.preventDefault(); var fig=b.closest('figure[data-l]');
     speakFish(fig?fig.dataset.l:MF.lang, b.dataset.part, b, fig?fig.querySelector('.saybox'):$('sayMain')); },true);
+  // ── Every Tongue (Ken, 8 Oct): "a great multitude ... of all nations, and kindreds, and people, and tongues" (Revelation 7:9).
+  // Ready-made phrases and four verses in the listener's language (/fish-lang/tongue.json), spoken in a natural voice
+  // (/api/tts?p=) or the device's own; live typing or speaking goes through /api/translate and /api/say.
+  var ET={en:{lab:'Every Tongue',sub:'Talk with anyone in their own language · Revelation 7:9',to:'Speak in',play:'🔊 Say it again',full:'Show them',
+      tabs:{open:'Openers',ask:'Questions',gift:'Gift',verses:'Verses',live:'Type or speak'},ph:'Type what you want to say…',go:'Translate and speak',mic:'🎤 Speak',stop:'■ Stop',
+      them:'🎤 Let them answer',wait:'Translating…',key:'Live translation is not switched on yet. The ready-made phrases and verses work now.',
+      busy:'Too many at once. Please wait a few minutes.',long:'Please keep it shorter (300 letters).',fail:'Could not translate just now. Please try again.',nomic:'Allow the microphone to speak.',
+      foot:'Translations are drafts being checked by fluent speakers. Tap a phrase to show it and say it aloud.',tap:'Tap anywhere to go back'},
+    es:{lab:'Toda lengua',sub:'Hable con cualquiera en su propio idioma · Apocalipsis 7:9',to:'Hablar en',play:'🔊 Decirlo otra vez',full:'Mostrar',
+      tabs:{open:'Para empezar',ask:'Preguntas',gift:'Regalo',verses:'Versículos',live:'Escribir o hablar'},ph:'Escriba lo que quiere decir…',go:'Traducir y decir',mic:'🎤 Hablar',stop:'■ Detener',
+      them:'🎤 Que respondan',wait:'Traduciendo…',key:'La traducción en vivo aún no está activada. Las frases y versículos ya funcionan.',
+      busy:'Demasiadas a la vez. Espere unos minutos.',long:'Por favor, más corto (300 letras).',fail:'No se pudo traducir ahora. Inténtelo de nuevo.',nomic:'Permita el micrófono para hablar.',
+      foot:'Las traducciones son borradores que revisan hablantes nativos. Toque una frase para mostrarla y decirla en voz alta.',tap:'Toque para volver'}};
+  var TG=null, etTab='open', etLast=null, etRec=null;
+  function etT(){ return ET[MF.lang]||ET.en; }
+  function etLangs(){ return CMPL.filter(function(o){ return !o[2] && o[0]!==MF.lang; }).map(function(o){ return o[0]; }); }
+  function etTo(){ var l=null; try{ l=localStorage.getItem('mf-et-to'); }catch(e){}
+    var ok=etLangs(); if(ok.indexOf(l)<0) l=cmpSel.filter(function(x){ return ok.indexOf(x)>=0; })[0]||(MF.lang==='es'?'en':'es'); return l; }
+  function etLoad(){ return TG?Promise.resolve(TG):fetch('/fish-lang/tongue.json').then(function(r){ return r.json(); }).then(function(j){ TG=j; return j; }); }
+  function etUI(){ var T=etT(), to=etTo();
+    $('etLab').textContent=$('etTitle').textContent=T.lab; $('etSub').textContent=T.sub; $('etToLab').textContent=T.to; $('etPlay').textContent=T.play; $('etFull').textContent=T.full;
+    $('etText').placeholder=T.ph; $('etGo').textContent=T.go; $('etMic').textContent=etRec&&etRec.mine?T.stop:T.mic; $('etThem').textContent=etRec&&!etRec.mine?T.stop:T.them; $('etFoot').textContent=T.foot;
+    $('etTo').innerHTML=etLangs().map(function(l){ return '<option value="'+l+'"'+(l===to?' selected':'')+'>'+esc(cmpLabel(l))+'</option>'; }).join('');
+    $('etTabs').innerHTML=['open','ask','gift','verses','live'].map(function(k){ return '<button type="button" role="tab" data-t="'+k+'" aria-selected="'+(k===etTab)+'">'+T.tabs[k]+'</button>'; }).join('');
+    $('etMic').hidden=$('etThem').hidden=!(window.SpeechRecognition||window.webkitSpeechRecognition);
+    etList(); }
+  function etList(){ var to=etTo(), live=etTab==='live'; $('etLive').hidden=!live; $('etList').hidden=live; if(live||!TG) return;
+    var rows=etTab==='verses'?TG.verses.map(function(v){ return {id:v.id,a:v.r[MF.lang]||v.r.en,b:v.t[to],ref:v.r[to]}; })
+      :TG.phrases.filter(function(p){ return p.g===etTab; }).map(function(p){ return {id:p.id,a:p.t[MF.lang]||p.t.en,b:p.t[to],ref:p.ref?(MF.lang==='es'?p.ref.replace('Acts','Hechos'):p.ref):''}; });
+    $('etList').innerHTML=rows.map(function(r){ return '<button type="button" class="etp" data-id="'+r.id+'"><span class="etp1">'+esc(r.a)+'</span><span class="etp2" lang="'+to+'">'+esc(r.b)+'</span>'+(r.ref&&etTab!=='verses'?'<span class="etref">'+esc(r.ref)+'</span>':'')+'</button>'; }).join(''); }
+  // show the words big and say them; the words light up as they are spoken
+  function etSay(l,text,ref,mine,get,btn){ stopSpeak(); var id=sp.id; sp.on=true; sp.btn=btn||null; if(btn) btn.setAttribute('aria-pressed','true');
+    etLast={l:l,text:text,ref:ref,mine:mine,get:get}; $('etShow').hidden=false; var box=$('etBig'); box.setAttribute('lang',l);
+    var spans=renderSay(box,text,l,ref), mk=function(ci){ mark(spans,ci); }; $('etMine').textContent=mine||'';
+    get().then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){ if(id!==sp.id) return; var a=new Audio(URL.createObjectURL(b)); sp.audio=a;
+      a.ontimeupdate=function(){ if(a.duration) mk(a.currentTime/a.duration*text.length); }; a.onended=function(){ if(id===sp.id){ stopSpeak(); mark(spans,-1); } }; return a.play();
+    }).catch(function(){ if(id!==sp.id) return; deviceSay(l,text,mk,id,box); }); }
+  function etPost(path,body){ return fetch(path,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}); }
+  function etOpen(open){ $('etBox').hidden=!open; $('etBtn').hidden=open; $('etBtn').setAttribute('aria-expanded',String(open));
+    if(open){ etUI(); etLoad().then(etList).catch(function(){}); $('etX').focus(); } else { stopSpeak(); etShowFull(false); if(etRec) etRec.r.stop(); $('etBtn').focus(); } }
+  function etShowFull(on){ $('etShow').classList.toggle('full',on); $('etShow').title=on?etT().tap:''; }
+  $('etBtn').addEventListener('click',function(){ etOpen(true); });
+  $('etX').addEventListener('click',function(){ etOpen(false); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && !$('etBox').hidden){ if($('etShow').classList.contains('full')) etShowFull(false); else etOpen(false); } });
+  $('etTo').addEventListener('change',function(){ try{ localStorage.setItem('mf-et-to',this.value); }catch(e){} stopSpeak(); $('etShow').hidden=true; etList(); });
+  $('etTabs').addEventListener('click',function(e){ var b=e.target.closest('button[data-t]'); if(!b) return; etTab=b.dataset.t;
+    [].forEach.call(this.children,function(c){ c.setAttribute('aria-selected',String(c===b)); }); etList(); });
+  $('etList').addEventListener('click',function(e){ var b=e.target.closest('.etp'); if(!b||!TG) return; var to=etTo(), id=b.dataset.id;
+    var v=TG.verses.filter(function(x){ return x.id===id; })[0], p=TG.phrases.filter(function(x){ return x.id===id; })[0], row=v||p;
+    etSay(to,row.t[to],v?v.r[to]:'',(v?v.r[MF.lang]+' — ':'')+(row.t[MF.lang]||row.t.en),function(){ return fetch('/api/tts?p='+id+'&lang='+to); },b);
+    $('etShow').scrollIntoView({block:'nearest'}); });
+  $('etPlay').addEventListener('click',function(){ if(etLast) etSay(etLast.l,etLast.text,etLast.ref,etLast.mine,etLast.get,this); });
+  $('etFull').addEventListener('click',function(e){ e.stopPropagation(); etShowFull(true); });
+  $('etShow').addEventListener('click',function(e){ if(this.classList.contains('full') && !e.target.closest('button')) etShowFull(false); });
+  function etErr(r){ var T=etT(); return r.json().catch(function(){ return {}; }).then(function(j){ var c=j.error;
+    $('etMsg').textContent=(c==='key'||c==='nokey'||r.status===404)?T.key:c==='busy'?T.busy:c==='long'?T.long:T.fail; throw 0; }); }
+  // live: what I type or say, translated into their language and spoken
+  function etGo(){ var T=etT(), to=etTo(), text=$('etText').value.trim(); if(!text) return; $('etMsg').textContent=T.wait;
+    etPost('/api/translate',{text:text,to:to,from:MF.lang}).then(function(r){ return r.ok?r.json():etErr(r); }).then(function(j){ $('etMsg').textContent='';
+      etSay(to,j.text,'',text,function(){ return etPost('/api/say',{text:j.text,lang:to}); },null); $('etShow').scrollIntoView({block:'nearest'}); })
+    .catch(function(e){ if(e!==0) $('etMsg').textContent=T.fail; }); }
+  $('etGo').addEventListener('click',etGo);
+  // dictation: "Speak" listens in my language; "Let them answer" listens in theirs and shows it in mine
+  function etListen(mine){ var SRC=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SRC) return;
+    if(etRec){ var was=etRec.mine; etRec.r.stop(); if(was===mine) return; }
+    stopSpeak(); var to=etTo(), r=new SRC(), got=''; r.lang=LCODE[mine?MF.lang:to]||'en-US'; r.interimResults=false; r.continuous=false;
+    etRec={r:r,mine:mine}; etUI(); var btn=mine?$('etMic'):$('etThem'); btn.setAttribute('aria-pressed','true');
+    r.onresult=function(ev){ for(var i=ev.resultIndex;i<ev.results.length;i++) if(ev.results[i].isFinal) got+=ev.results[i][0].transcript+' '; };
+    r.onerror=function(ev){ if(ev.error==='not-allowed'||ev.error==='service-not-allowed') $('etMsg').textContent=etT().nomic; };
+    r.onend=function(){ if(etRec&&etRec.r===r) etRec=null; btn.setAttribute('aria-pressed','false'); etUI(); got=got.trim(); if(!got) return;
+      if(mine){ $('etText').value=got; etGo(); return; }
+      $('etHeard').hidden=false; $('etHeardA').setAttribute('lang',to); $('etHeardA').textContent=got; $('etHeardB').textContent=etT().wait;
+      etPost('/api/translate',{text:got,to:MF.lang,from:to}).then(function(x){ return x.ok?x.json():etErr(x); }).then(function(j){ $('etHeardB').textContent=j.text; })
+        .catch(function(){ $('etHeardB').textContent=''; }); };
+    try{ r.start(); }catch(e){ etRec=null; etUI(); } }
+  $('etMic').addEventListener('click',function(){ etListen(true); });
+  $('etThem').addEventListener('click',function(){ etListen(false); });
+  MF.onChange(function(){ if(!$('etBox').hidden) etUI(); else $('etLab').textContent=etT().lab; });
+  $('etLab').textContent=etT().lab;
   // ── My notes: one note per word, kept in this browser; spoken notes use the device's dictation ──
   var NKEY='mf-notes', recOn=false, rec=null;
   function notes(){ try{ return JSON.parse(localStorage.getItem(NKEY)||'{}')||{}; }catch(e){ return {}; } }

@@ -1,0 +1,336 @@
+{
+ "langs": [
+  "en",
+  "es",
+  "tl",
+  "zh",
+  "hi",
+  "el",
+  "de",
+  "ko"
+ ],
+ "groups": [
+  {
+   "id": "open",
+   "en": "Caring openers",
+   "es": "Para empezar"
+  },
+  {
+   "id": "ask",
+   "en": "Conversation",
+   "es": "Conversación"
+  },
+  {
+   "id": "gift",
+   "en": "Gift and follow-up",
+   "es": "Regalo y seguimiento"
+  }
+ ],
+ "phrases": [
+  {
+   "id": "pray_for",
+   "g": "open",
+   "t": {
+    "en": "Can I pray for you?",
+    "es": "¿Puedo orar por usted?",
+    "tl": "Maaari ba kitang ipanalangin?",
+    "zh": "我可以为你祷告吗？",
+    "hi": "क्या मैं आपके लिए प्रार्थना करूँ?",
+    "el": "Μπορώ να προσευχηθώ για εσάς;",
+    "de": "Darf ich für Sie beten?",
+    "ko": "당신을 위해 기도해 드려도 될까요?"
+   }
+  },
+  {
+   "id": "pray_together",
+   "g": "open",
+   "t": {
+    "en": "Let's pray together.",
+    "es": "Oremos juntos.",
+    "tl": "Manalangin tayo nang sama-sama.",
+    "zh": "我们一起祷告吧。",
+    "hi": "आइए, हम मिलकर प्रार्थना करें।",
+    "el": "Ας προσευχηθούμε μαζί.",
+    "de": "Lassen Sie uns zusammen beten.",
+    "ko": "함께 기도합시다."
+   }
+  },
+  {
+   "id": "want_pray",
+   "g": "open",
+   "t": {
+    "en": "Would you like to pray?",
+    "es": "¿Le gustaría orar?",
+    "tl": "Gusto mo bang manalangin?",
+    "zh": "你愿意祷告吗？",
+    "hi": "क्या आप प्रार्थना करना चाहेंगे?",
+    "el": "Θα θέλατε να προσευχηθείτε;",
+    "de": "Möchten Sie beten?",
+    "ko": "기도하시겠어요?"
+   }
+  },
+  {
+   "id": "god_loves",
+   "g": "open",
+   "t": {
+    "en": "God loves you, and so does Jesus.",
+    "es": "Dios le ama, y Jesús también.",
+    "tl": "Mahal ka ng Diyos, at mahal ka rin ni Jesus.",
+    "zh": "神爱你，耶稣也爱你。",
+    "hi": "परमेश्वर आपसे प्रेम करता है, और यीशु भी।",
+    "el": "Ο Θεός σας αγαπά, και ο Ιησούς επίσης.",
+    "de": "Gott liebt Sie, und Jesus auch.",
+    "ko": "하나님은 당신을 사랑하십니다. 예수님도 당신을 사랑하십니다."
+   }
+  },
+  {
+   "id": "pray_about",
+   "g": "open",
+   "t": {
+    "en": "Is there anything I can pray with you about?",
+    "es": "¿Hay algo por lo que pueda orar con usted?",
+    "tl": "May bagay ba na maaari nating ipanalangin nang magkasama?",
+    "zh": "有什么事情我可以和你一起祷告吗？",
+    "hi": "क्या कोई बात है जिसके लिए मैं आपके साथ प्रार्थना करूँ?",
+    "el": "Υπάρχει κάτι για το οποίο μπορώ να προσευχηθώ μαζί σας;",
+    "de": "Gibt es etwas, wofür ich mit Ihnen beten darf?",
+    "ko": "함께 기도해 드릴 일이 있을까요?"
+   }
+  },
+  {
+   "id": "beliefs",
+   "g": "ask",
+   "t": {
+    "en": "Do you have any spiritual beliefs?",
+    "es": "¿Tiene alguna creencia espiritual?",
+    "tl": "Mayroon ka bang paniniwalang espirituwal?",
+    "zh": "你有什么信仰吗？",
+    "hi": "क्या आपकी कोई आध्यात्मिक मान्यता है?",
+    "el": "Έχετε κάποιες πνευματικές πεποιθήσεις;",
+    "de": "Haben Sie geistliche Überzeugungen?",
+    "ko": "믿고 계신 신앙이 있으신가요?"
+   }
+  },
+  {
+   "id": "who_jesus",
+   "g": "ask",
+   "t": {
+    "en": "Who do you think Jesus is?",
+    "es": "¿Quién cree usted que es Jesús?",
+    "tl": "Sa palagay mo, sino si Jesus?",
+    "zh": "你认为耶稣是谁？",
+    "hi": "आपके विचार में यीशु कौन है?",
+    "el": "Ποιος πιστεύετε ότι είναι ο Ιησούς;",
+    "de": "Was meinen Sie, wer ist Jesus?",
+    "ko": "예수님이 누구라고 생각하세요?"
+   }
+  },
+  {
+   "id": "heaven",
+   "g": "ask",
+   "t": {
+    "en": "If you died today, do you know for sure you would go to heaven?",
+    "es": "Si muriera hoy, ¿sabe con seguridad que iría al cielo?",
+    "tl": "Kung mamatay ka ngayon, sigurado ka bang mapupunta ka sa langit?",
+    "zh": "如果你今天离世，你确定自己会上天堂吗？",
+    "hi": "यदि आज आपकी मृत्यु हो जाए, तो क्या आप निश्चित रूप से जानते हैं कि आप स्वर्ग जाएँगे?",
+    "el": "Αν πεθαίνατε σήμερα, ξέρετε με βεβαιότητα ότι θα πηγαίνατε στον ουρανό;",
+    "de": "Wenn Sie heute sterben würden, wissen Sie sicher, dass Sie in den Himmel kommen?",
+    "ko": "오늘 세상을 떠난다면, 천국에 간다는 확신이 있으신가요?"
+   }
+  },
+  {
+   "id": "shown_bible",
+   "g": "ask",
+   "t": {
+    "en": "Has anyone ever shown you from the Bible how to know God?",
+    "es": "¿Alguien le ha mostrado alguna vez en la Biblia cómo conocer a Dios?",
+    "tl": "May nagpakita na ba sa iyo mula sa Biblia kung paano makilala ang Diyos?",
+    "zh": "有没有人用圣经告诉过你怎样认识神？",
+    "hi": "क्या किसी ने कभी आपको बाइबल से दिखाया है कि परमेश्वर को कैसे जानें?",
+    "el": "Σας έχει δείξει ποτέ κανείς από τη Βίβλο πώς να γνωρίσετε τον Θεό;",
+    "de": "Hat Ihnen schon einmal jemand aus der Bibel gezeigt, wie man Gott kennenlernen kann?",
+    "ko": "누군가 성경으로 하나님을 아는 방법을 보여 준 적이 있나요?"
+   }
+  },
+  {
+   "id": "know_jesus",
+   "g": "ask",
+   "t": {
+    "en": "Would you like to know Jesus personally?",
+    "es": "¿Le gustaría conocer a Jesús personalmente?",
+    "tl": "Gusto mo bang personal na makilala si Jesus?",
+    "zh": "你想亲自认识耶稣吗？",
+    "hi": "क्या आप यीशु को व्यक्तिगत रूप से जानना चाहेंगे?",
+    "el": "Θα θέλατε να γνωρίσετε τον Ιησού προσωπικά;",
+    "de": "Möchten Sie Jesus persönlich kennenlernen?",
+    "ko": "예수님을 인격적으로 알고 싶으신가요?"
+   }
+  },
+  {
+   "id": "receive_jesus",
+   "g": "ask",
+   "t": {
+    "en": "Would you like to receive Jesus as your Lord and Savior?",
+    "es": "¿Le gustaría recibir a Jesús como su Señor y Salvador?",
+    "tl": "Gusto mo bang tanggapin si Jesus bilang iyong Panginoon at Tagapagligtas?",
+    "zh": "你愿意接受耶稣作你的主和救主吗？",
+    "hi": "क्या आप यीशु को अपने प्रभु और उद्धारकर्ता के रूप में ग्रहण करना चाहेंगे?",
+    "el": "Θα θέλατε να δεχτείτε τον Ιησού ως Κύριο και Σωτήρα σας;",
+    "de": "Möchten Sie Jesus als Ihren Herrn und Retter annehmen?",
+    "ko": "예수님을 당신의 주님과 구원자로 영접하시겠어요?"
+   }
+  },
+  {
+   "id": "holy_spirit",
+   "g": "ask",
+   "t": {
+    "en": "Have you received the Holy Spirit since you believed?",
+    "es": "¿Ha recibido el Espíritu Santo desde que creyó?",
+    "tl": "Tinanggap mo na ba ang Espiritu Santo mula nang ikaw ay sumampalataya?",
+    "zh": "你信的时候受了圣灵没有？",
+    "hi": "क्या आपने विश्वास करने के बाद पवित्र आत्मा पाया?",
+    "el": "Λάβατε Άγιο Πνεύμα αφού πιστέψατε;",
+    "de": "Haben Sie den Heiligen Geist empfangen, seit Sie gläubig geworden sind?",
+    "ko": "믿은 후에 성령을 받으셨나요?"
+   },
+   "ref": "Acts 19:2"
+  },
+  {
+   "id": "gift",
+   "g": "gift",
+   "t": {
+    "en": "May I give you this? It's a free gift.",
+    "es": "¿Puedo darle esto? Es un regalo gratis.",
+    "tl": "Maaari ko bang ibigay ito sa iyo? Libreng regalo ito.",
+    "zh": "我可以送你这个吗？这是免费的礼物。",
+    "hi": "क्या मैं आपको यह दूँ? यह एक मुफ़्त उपहार है।",
+    "el": "Μπορώ να σας δώσω αυτό; Είναι δωρεάν δώρο.",
+    "de": "Darf ich Ihnen das schenken? Es ist ein kostenloses Geschenk.",
+    "ko": "이것을 드려도 될까요? 무료 선물입니다."
+   }
+  },
+  {
+   "id": "have_bible",
+   "g": "gift",
+   "t": {
+    "en": "Do you have a Bible?",
+    "es": "¿Tiene una Biblia?",
+    "tl": "Mayroon ka bang Biblia?",
+    "zh": "你有圣经吗？",
+    "hi": "क्या आपके पास बाइबल है?",
+    "el": "Έχετε Βίβλο;",
+    "de": "Haben Sie eine Bibel?",
+    "ko": "성경책 있으세요?"
+   }
+  },
+  {
+   "id": "visit_church",
+   "g": "gift",
+   "t": {
+    "en": "Would you like to visit a church?",
+    "es": "¿Le gustaría visitar una iglesia?",
+    "tl": "Gusto mo bang dumalaw sa isang simbahan?",
+    "zh": "你愿意去教会看看吗？",
+    "hi": "क्या आप किसी चर्च में जाना चाहेंगे?",
+    "el": "Θα θέλατε να επισκεφθείτε μια εκκλησία;",
+    "de": "Möchten Sie einmal eine Kirche besuchen?",
+    "ko": "교회에 한번 가 보시겠어요?"
+   }
+  }
+ ],
+ "verses": [
+  {
+   "id": "jn316",
+   "t": {
+    "en": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+    "es": "Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree, no se pierda, mas tenga vida eterna.",
+    "tl": "Sapagka't gayon na lamang ang pagsinta ng Dios sa sanglibutan, na ibinigay niya ang kaniyang bugtong na Anak, upang ang sinomang sa kaniya'y sumampalataya ay huwag mapahamak, kundi magkaroon ng buhay na walang hanggan.",
+    "zh": "神爱世人，甚至将他的独生子赐给他们，叫一切信他的，不致灭亡，反得永生。",
+    "hi": "क्योंकि परमेश्वर ने जगत से ऐसा प्रेम रखा कि उसने अपना एकलौता पुत्र दे दिया, ताकि जो कोई उस पर विश्वास करे, वह नाश न हो, परन्तु अनन्त जीवन पाए।",
+    "el": "Επειδή, με τέτοιον τρόπο αγάπησε ο Θεός τον κόσμο, ώστε έδωσε τον Υιό του τον μονογενή, για να μη χαθεί καθένας που πιστεύει σ’ αυτόν, αλλά να έχει αιώνια ζωή.",
+    "de": "Denn also hat Gott die Welt geliebt, daß er seinen eingeborenen Sohn gab, auf daß jeder, der an ihn glaubt, nicht verloren gehe, sondern ewiges Leben habe.",
+    "ko": "하나님이 세상을 이처럼 사랑하사 독생자를 주셨으니 이는 저를 믿는 자마다 멸망치 않고 영생을 얻게 하려 하심이니라"
+   },
+   "r": {
+    "tl": "Juan 3:16",
+    "zh": "约翰福音 3:16",
+    "hi": "यूहन्ना 3:16",
+    "el": "Ιωάννης 3:16",
+    "de": "Johannes 3,16",
+    "ko": "요한복음 3:16",
+    "en": "John 3:16",
+    "es": "Juan 3:16"
+   }
+  },
+  {
+   "id": "ro323",
+   "t": {
+    "en": "For all have sinned, and come short of the glory of God…",
+    "es": "Por cuanto todos pecaron, y están destituidos de la gloria de Dios…",
+    "tl": "Sapagka't ang lahat ay nangagkasala nga, at hindi nangakaabot sa kaluwalhatian ng Dios…",
+    "zh": "因为世人都犯了罪，亏缺了神的荣耀。",
+    "hi": "इसलिए कि सब ने पाप किया है और परमेश्वर की महिमा से रहित हैं…",
+    "el": "Δεδομένου ότι, όλοι αμάρτησαν, και στερούνται τη δόξα τού Θεού.",
+    "de": "Denn alle haben gesündigt und erreichen nicht die Herrlichkeit Gottes…",
+    "ko": "모든 사람이 죄를 범하였으매 하나님의 영광에 이르지 못하더니"
+   },
+   "r": {
+    "tl": "Mga Taga-Roma 3:23",
+    "zh": "罗马书 3:23",
+    "hi": "रोमियों 3:23",
+    "el": "Ρωμαίους 3:23",
+    "de": "Römer 3,23",
+    "ko": "로마서 3:23",
+    "en": "Romans 3:23",
+    "es": "Romanos 3:23"
+   }
+  },
+  {
+   "id": "ro623",
+   "t": {
+    "en": "For the wages of sin is death; but the gift of God is eternal life through Jesus Christ our Lord.",
+    "es": "Porque la paga del pecado es muerte, mas la dádiva de Dios es vida eterna en Cristo Jesús Señor nuestro.",
+    "tl": "Sapagka't ang kabayaran ng kasalanan ay kamatayan; datapuwa't ang kaloob na walang bayad ng Dios ay buhay na walang hanggan kay Cristo Jesus na Panginoon natin.",
+    "zh": "因为罪的工价乃是死；惟有神的恩赐，在我们的主基督耶稣里，乃是永生。",
+    "hi": "क्योंकि पाप की मजदूरी तो मृत्यु है, परन्तु परमेश्वर का वरदान हमारे प्रभु मसीह यीशु में अनन्त जीवन है।",
+    "el": "Επειδή, ο μισθός τής αμαρτίας είναι θάνατος· το χάρισμα, όμως, του Θεού αιώνια ζωή διαμέσου τού Ιησού Χριστού τού Κυρίου μας.",
+    "de": "Denn der Lohn der Sünde ist der Tod, die Gnadengabe Gottes aber ewiges Leben in Christo Jesu, unserem Herrn.",
+    "ko": "죄의 삯은 사망이요 하나님의 은사는 그리스도 예수 우리 주 안에 있는 영생이니라"
+   },
+   "r": {
+    "tl": "Mga Taga-Roma 6:23",
+    "zh": "罗马书 6:23",
+    "hi": "रोमियों 6:23",
+    "el": "Ρωμαίους 6:23",
+    "de": "Römer 6,23",
+    "ko": "로마서 6:23",
+    "en": "Romans 6:23",
+    "es": "Romanos 6:23"
+   }
+  },
+  {
+   "id": "ro109",
+   "t": {
+    "en": "That if thou shalt confess with thy mouth the Lord Jesus, and shalt believe in thine heart that God hath raised him from the dead, thou shalt be saved.",
+    "es": "Que si confesares con tu boca que Jesús es el Señor, y creyeres en tu corazón que Dios le levantó de los muertos, serás salvo.",
+    "tl": "Sapagka't kung ipahahayag mo ng iyong bibig si Jesus na Panginoon, at sasampalataya ka sa iyong puso na binuhay siyang maguli ng Dios sa mga patay ay maliligtas ka.",
+    "zh": "你若口里认耶稣为主，心里信神叫他从死里复活，就必得救。",
+    "hi": "कि यदि तू अपने मुँह से यीशु को प्रभु जानकर अंगीकार करे और अपने मन से विश्वास करे, कि परमेश्वर ने उसे मरे हुओं में से जिलाया, तो तू निश्चय उद्धार पाएगा।",
+    "el": "Ότι, αν με το στόμα σου ομολογήσεις Κύριο, τον Ιησού, και μέσα στην καρδιά σου πιστέψεις ότι ο Θεός τον ανέστησε από τους νεκρούς, θα σωθείς.",
+    "de": "Wenn du mit deinem Munde Jesum als Herrn bekennen und in deinem Herzen glauben wirst, daß Gott ihn aus den Toten auferweckt hat, du errettet werden wirst.",
+    "ko": "네가 만일 네 입으로 예수를 주로 시인하며 또 하나님께서 그를 죽은 자 가운데서 살리신 것을 네 마음에 믿으면 구원을 얻으리니"
+   },
+   "r": {
+    "tl": "Mga Taga-Roma 10:9",
+    "zh": "罗马书 10:9",
+    "hi": "रोमियों 10:9",
+    "el": "Ρωμαίους 10:9",
+    "de": "Römer 10,9",
+    "ko": "로마서 10:9",
+    "en": "Romans 10:9",
+    "es": "Romanos 10:9"
+   }
+  }
+ ]
+}

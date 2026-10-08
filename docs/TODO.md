@@ -44,6 +44,14 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 
 ## Later
 
+### Every Tongue (built 8 Oct, on the test site)
+The speech-bubble button at the bottom right of every page. Pick a language; tap a phrase to show it big and say it aloud. "Show them" fills the screen so the other person can read it.
+- [x] 15 ready-made phrases (openers, questions, gift and follow-up) and 4 verses (John 3:16, Romans 3:23, 6:23, 10:9) in all 8 languages. Verses come from each language's Bible.
+- [x] "Type or speak": type or say anything; it is translated into their language and spoken. "Let them answer" listens in their language and shows it in yours.
+- [ ] **Ken:** turn on live translation. OpenAI → API keys → the MannaFish key → Permissions → set **Chat completions** to Request (or Write). Or make a second key and add it in Netlify as `OPENAI_TRANSLATE_KEY`. Until then the phrases and verses work and "Type or speak" says it isn't switched on yet.
+- [ ] A fluent reader checks the 15 phrases in each language (Claude translated them). File: fish-lang/tongue.json.
+- [ ] Limits: up to 300 letters at a time, 80 translations an hour per visitor, only from MannaFish pages. Change in netlify/functions/translate.mjs if needed.
+
 ### All translations
 - [ ] Every language with a free-to-use Bible, the same way as above.
 

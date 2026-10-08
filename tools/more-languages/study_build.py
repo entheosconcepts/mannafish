@@ -3,7 +3,7 @@ import opencc
 CC=opencc.OpenCC('t2s')
 sys.path.insert(0,'.')
 from study_i18n import *
-B='../bibles/'  # numbered Bible JSON files (scratchpad); writes study.json -> fish-lang/study-<lang>.json
+B='../bibles/'
 CAN=['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalm','Proverbs','Ecclesiastes','Song of Solomon','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi','Matthew','Mark','Luke','John','Acts','Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon','Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation']
 def numbered(f):
   d=json.load(open(B+f));bk=d['books'];assert len(bk)==66,(f,len(bk))
@@ -24,6 +24,7 @@ def clean(l,t):
   t=re.sub(r'\s*\((?:[^()]*\d+:\d+[^()]*)\)','',t)  # cross-reference notes
   t=re.sub(r'\[[^\]]*\]','',t)
   if l=='zh': t=re.sub(r'\s+','',t)
+  if l=='el': t=re.sub(r'(?<=[^\W\d_]|[,·.;:’])\d+','',t)
   if l=='el': t=t.translate(str.maketrans('ABEZHIKMNOPTYXo','ΑΒΕΖΗΙΚΜΝΟΡΤΥΧο'))
   t=re.sub(r'\s+',' ',t).strip()
   t=t.lstrip('¶ ').strip()
