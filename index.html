@@ -703,6 +703,14 @@ section.section.bundles{display:block;margin-top:0}
 .cmpb .wtitle{font-size:clamp(1.6rem,9cqw,2.6rem)}
 .cmp figure:only-child .cmpb .refs{grid-template-columns:repeat(4,minmax(0,1fr))}
 .cmpb .wsub{text-align:center;font:1.15rem 'Spectral',serif;color:var(--foam-dim,#9fb2b6);margin:-4px 0 6px}
+
+/* Ken, 8 Oct: pick up where I left off -- the word, the flipped card, the open verse or Strong's entry, the languages */
+.resumebar{display:flex;align-items:center;justify-content:center;gap:10px 14px;flex-wrap:wrap;max-width:720px;margin:4px auto 14px;padding:10px 14px;border:1px solid var(--brass,#2a5fb0);border-radius:10px;background:rgba(42,95,176,.12);font:.92rem 'Archivo',sans-serif;text-align:center}
+.resumebar[hidden]{display:none}
+.resumebar .rbtns{display:inline-flex;gap:8px;align-items:center}
+.resumebar .rx{background:none;border:0;color:inherit;font-size:1.3rem;line-height:1;cursor:pointer;opacity:.7;padding:4px 6px}
+.acctresume{margin-top:12px;display:flex;flex-direction:column;gap:6px;align-items:flex-start;font:.9rem 'Archivo',sans-serif}
+.acctresume[hidden]{display:none}
 </style>
 
 <div class="mf">
@@ -722,6 +730,7 @@ section.section.bundles{display:block;margin-top:0}
     <p class="p1">Give a <b><span class="wm-m">Manna</span><span class="wm-f">Fish</span></b>, feed him a meal.</p>
     <p class="p2">Teach a man <b><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></b>, feed him for life.</p>
   </div>
+  <div class="resumebar" id="resumeBar" hidden><span id="resumeTxt"></span><span class="rbtns"><button type="button" class="toolbtn" id="resumeGo">Pick up where I left off</button><button type="button" class="rx" id="resumeX" aria-label="Dismiss">&#215;</button></span></div>
   <div class="stage-col">
     <div class="cmp" id="cmp" hidden><figure data-l="a"><div class="cmpf" id="cmpA"></div><figcaption id="cmpAL"></figcaption></figure><figure data-l="b"><div class="cmpf" id="cmpB"></div><figcaption id="cmpBL"></figcaption></figure></div>
       <div class="stage" id="stage" aria-label="Interactive devotional decal, tap to flip">
@@ -760,7 +769,7 @@ section.section.bundles{display:block;margin-top:0}
       <form id="acctCodeF" class="acctrow" hidden><input id="acctCode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="Code from the email"><button class="toolbtn" type="submit" id="acctGo">Sign in</button></form>
       <p class="rnote" id="acctMsg"></p></div>
     <div id="acctIn" hidden><div class="nhd"><b id="acctMe"></b><button class="toolbtn" type="button" id="acctOutBtn">Sign out</button></div>
-      <h4 id="acctNotesH">My notes</h4><div id="acctNotes" class="acctlist"></div>
+      <div id="acctResume" class="acctresume" hidden></div><h4 id="acctNotesH">My notes</h4><div id="acctNotes" class="acctlist"></div>
       <h4 id="acctOrdersH">My decal orders</h4><div id="acctOrders" class="acctlist"></div>
       <h4 id="acctActH">Recently viewed</h4><div id="acctAct" class="acctlist"></div></div>
   </div>
@@ -1042,7 +1051,7 @@ window.MFI18N={"es":{"titles":{"REST":"Descansa","HOPE":"Espera","LOVE":"Ama","T
 window.MF=(function(){
   var L='en'; try{var q=(location.search.match(/[?&]lang=(es|en)/)||[])[1]; L=q||localStorage.getItem('mf-lang')||(((navigator.language||'').toLowerCase().indexOf('es')===0)?'es':'en');}catch(e){}
   var hooks=[], orig=new WeakMap(), X=window.MFI18N;
-  var SKIP='script,style,#refs,#reader,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,.toolrow,#notesBox,#acctBox,.fishspk,.saybox';
+  var SKIP='script,style,#refs,#reader,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
   function norm(s){return s.replace(/\s+/g,' ').trim();}
   function t(k){var u=X.ui[k]; return u ? (L==='es'?u[1]:u[0]) : k;}
   function applyPage(){
@@ -1198,9 +1207,9 @@ window.MF=(function(){
   // flip
   var stage=$('stage');
   document.querySelectorAll('[data-flip]').forEach(function(b){
-    b.addEventListener('click',function(e){e.stopPropagation();stage.classList.toggle('on');sizeStage();});
+    b.addEventListener('click',function(e){e.stopPropagation();stage.classList.toggle('on');sizeStage();if(window.MFsave)MFsave();});
   });
-  $('flip').addEventListener('click',function(){stage.classList.toggle('on');sizeStage();});
+  $('flip').addEventListener('click',function(){stage.classList.toggle('on');sizeStage();if(window.MFsave)MFsave();});
 
   // reader
   var scrim=$('scrim'), reader=$('reader');
@@ -1220,7 +1229,7 @@ window.MF=(function(){
     placeReader(); if(inlineNow()) reader.scrollIntoView({behavior:'smooth',block:'start'});
   });
   window.addEventListener('resize',function(){if(reader.classList.contains('open'))placeReader();});
-  function closeReader(){reader.classList.remove('open');scrim.classList.remove('open');reader.setAttribute('aria-hidden','true');}
+  function closeReader(){window.MFreader=null; if(window.MFsave) MFsave(); reader.classList.remove('open');scrim.classList.remove('open');reader.setAttribute('aria-hidden','true');}
   $('rClose').addEventListener('click',closeReader);
   scrim.addEventListener('click',closeReader);
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closeReader();});
@@ -1231,6 +1240,7 @@ window.MF=(function(){
     else setTimeout(function(){reader.scrollIntoView({behavior:'smooth',block:'start'});},30);
   }
   function openStrongs(k,gk){
+    window.MFreader={kind:'strongs',k:k,gk:!!gk}; if(window.MFsave) setTimeout(MFsave,0);
     var d=DATA[k], sg=STRONGS[k]||['',''], n=gk?sg[0]:sg[1], id=(gk?'G':'H')+n, e=LEX[id];
     $('rKicker').textContent=wordTitle(k)+' \u00b7 Strong '+id;
     $('rRef').innerHTML='<span class="lx-l">'+esc(e.l)+'</span> <span class="lx-t">'+esc(e.t)+'</span>';
@@ -1249,6 +1259,7 @@ window.MF=(function(){
     showPanel();
   }
   function openReader(k,i){
+    window.MFreader={kind:'ref',k:k,i:i}; if(window.MFsave) setTimeout(MFsave,0);
     $('rVer').style.display=''; $('rYouV').style.display=''; $('rYouVHint').style.display=''; var g0=$('rGate'); g0.setAttribute('target','_blank'); g0.textContent=MF.t('fullch'); g0.onclick=null; $('rYouV').textContent=MF.t('bibleapp'); $('rYouVHint').textContent=MF.t('hint');
     var d=DATA[k], ref=d.refs[i], p=parseRef(ref[0]);
     $('rKicker').textContent=wordTitle(k)+MF.t('study');
@@ -1452,7 +1463,7 @@ window.MF=(function(){
     rec.onerror=function(){ $('notesMsg').textContent=MF.lang==='es'?'Permite el micrófono para dictar':'Allow the microphone to speak a note'; };
     recOn=true; $('micBtn').setAttribute('aria-pressed','true'); ui(); rec.start(); });
   ui();
-  window.MFword=function(){ stopSpeak(); $('sayMain').hidden=true; cmpOn={}; if(!$('notesBox').hidden) showNotes(); if(window.MFview) MFview(cur); };
+  window.MFword=function(){ stopSpeak(); $('sayMain').hidden=true; cmpOn={}; if(window.MFsave) MFsave(); if(!$('notesBox').hidden) showNotes(); if(window.MFview) MFview(cur); };
   MF.onChange(function(){ stopSpeak(); ui(); if(!$('notesBox').hidden) showNotes(); });
   // ── Accounts (Ken's Yadah Supabase project). Sign in with an emailed code or link; notes follow the person
   // to every device, decal orders and recently viewed words show in "My MannaFish". Every row is private
@@ -1467,7 +1478,7 @@ window.MF=(function(){
         sb.auth.onAuthStateChange(function(ev,session){ setMe(session&&session.user||null); }); return sb.auth.getSession(); })
       .then(function(r){ setMe(r&&r.data&&r.data.session&&r.data.session.user||null); return sb; });
     return sbLoading; }
-  function setMe(u){ var was=me; me=u; acctUi(); if(u && (!was || was.id!==u.id)){ moveDeviceNotes().then(function(){ if(!$('acctBox').hidden) fillAcct(); if(!$('notesBox').hidden) showNotes(); }); logView(cur); } }
+  function setMe(u){ var was=me; me=u; acctUi(); if(u && (!was || was.id!==u.id)){ if(window.MFresumeCloud) MFresumeCloud(u.user_metadata&&u.user_metadata.mf_resume); moveDeviceNotes().then(function(){ if(!$('acctBox').hidden) fillAcct(); if(!$('notesBox').hidden) showNotes(); }); logView(cur); } }
   function acctUi(){ $('acctLab').textContent=me?T('My MannaFish','Mi MannaFish'):T('Sign in','Iniciar sesión');
     $('acctOut').hidden=!!me; $('acctIn').hidden=!me; if(me) $('acctMe').textContent=me.email||'';
     $('acctHd').textContent=T('Sign in to MannaFish','Inicia sesión en MannaFish');
@@ -1576,6 +1587,53 @@ window.MF=(function(){
   function cmpCaps(){ var es=MF.lang==='es'; $('cmpCap').innerHTML=es?'Elegir<br>idioma':'Select<br>language'; $('cmpBtn').setAttribute('data-cap',es?'Idioma':'Language'); }
   cmpCaps();
   MF.onChange(function(){ cmpCaps(); setCmp(cmpSel); ui(); });
+  // ── Pick up where I left off (Ken, 8 Oct). The page keeps a note of where the person is: the word, the card
+  // turned over, the verse or Strong's entry open, the languages side by side. Kept on the device, and in the
+  // person's account when signed in, so it follows them to another phone or computer.
+  var RKEY2='mf-resume', saveReady=false, resumeState=null, cloudT=null, lastSaved='';
+  function readResume(){ try{ return JSON.parse(localStorage.getItem(RKEY2)||'null'); }catch(e){ return null; } }
+  function snapshot(){ var r=window.MFreader, on=[]; for(var l in cmpOn) if(cmpOn[l]) on.push(l);
+    return {w:cur, lang:MF.lang, flipped:$('stage').classList.contains('on'), cmp:cmpSel.slice(), cmpOn:on,
+      reader:r&&r.k===cur?{kind:r.kind,i:r.i,gk:r.gk}:null, at:Date.now()}; }
+  window.MFsave=function(){ if(!saveReady) return; var st=snapshot(), sig=JSON.stringify([st.w,st.lang,st.flipped,st.cmp,st.cmpOn,st.reader]);
+    if(sig===lastSaved) return; lastSaved=sig; resumeState=st;
+    try{ localStorage.setItem(RKEY2,JSON.stringify(st)); }catch(e){}
+    clearTimeout(cloudT); cloudT=setTimeout(function(){ if(me&&sb) sb.auth.updateUser({data:{mf_resume:st}}).catch(function(){}); },3000);
+    fillResumeLink(); };
+  function describe(st){ var es=MF.lang==='es', d=DATA[st.w]; if(!d) return ''; var t=wordTitle(st.w);
+    if(st.reader&&st.reader.kind==='ref'&&d.refs[st.reader.i]){ var r=d.refs[st.reader.i][0]; t+=' · '+(es?esRef(r):r); }
+    else if(st.reader&&st.reader.kind==='strongs'){ var sg=STRONGS[st.w]||['','']; t+=' · Strong’s '+(st.reader.gk?'G'+sg[0]:'H'+sg[1]); }
+    else if(st.flipped) t+=' · '+(es?'estudio de la palabra':'word study');
+    if(st.cmp&&st.cmp.length) t+=' · '+(st.cmp.length+1)+(es?' idiomas':' languages');
+    return t; }
+  function worthIt(st){ return st && DATA[st.w] && (Date.now()-(st.at||0) < 60*86400000) &&
+    (st.w!==cur || st.flipped || st.reader || (st.cmp&&st.cmp.length)); }
+  function resumeTo(st){ if(!st||!DATA[st.w]) return; saveReady=false;
+    if(st.lang && st.lang!==MF.lang) MF.set(st.lang);
+    pick(st.w,false);
+    if(st.cmp&&st.cmp.length){ setCmp(st.cmp); (st.cmpOn||[]).forEach(function(l){ cmpOn[l]=true; }); MFcmp(); }
+    else if(st.flipped){ $('stage').classList.add('on'); sizeStage(); }
+    if(st.reader&&st.reader.kind==='ref') openReader(st.w,st.reader.i);
+    else if(st.reader&&st.reader.kind==='strongs') openStrongs(st.w,st.reader.gk);
+    $('resumeBar').hidden=true; saveReady=true; lastSaved=''; MFsave();
+    setTimeout(function(){ var t=(st.reader&&reader.classList.contains('inline'))?reader:(st.cmp&&st.cmp.length?$('cmp'):$('stage')); t.scrollIntoView({behavior:'smooth',block:'start'}); },250); }
+  function resumeLabels(){ var es=MF.lang==='es'; $('resumeGo').textContent=es?'Continuar donde lo dejé':'Pick up where I left off';
+    if(resumeState && !$('resumeBar').hidden) $('resumeTxt').textContent=(es?'Bienvenido de nuevo — ':'Welcome back — ')+describe(resumeState); fillResumeLink(); }
+  function fillResumeLink(){ var box=$('acctResume'); if(!box) return; var st=resumeState||readResume();
+    if(!st||!DATA[st.w]){ box.hidden=true; return; } var es=MF.lang==='es';
+    box.innerHTML='<span class="mu">'+(es?'Donde lo dejaste: ':'Where you left off: ')+esc2(describe(st))+'</span><button type="button" class="toolbtn" id="acctResumeGo">'+(es?'Continuar donde lo dejé':'Pick up where I left off')+'</button>';
+    box.hidden=false; }
+  function offer(st){ if(!worthIt(st)) return; resumeState=st; $('resumeBar').hidden=false; resumeLabels(); }
+  $('resumeGo').addEventListener('click',function(){ resumeTo(resumeState); });
+  $('resumeX').addEventListener('click',function(){ $('resumeBar').hidden=true; });
+  $('acctResume').addEventListener('click',function(e){ if(e.target.closest('#acctResumeGo')) resumeTo(resumeState||readResume()); });
+  // when the person signs in: the account's place, if it is newer than this device's
+  window.MFresumeCloud=function(st){ var local=readResume(); if(st && (!local || (st.at||0)>(local.at||0))){ try{ localStorage.setItem(RKEY2,JSON.stringify(st)); }catch(e){} if(!saveReady||$('resumeBar').hidden) offer(st); else { resumeState=st; resumeLabels(); } } fillResumeLink(); };
+  // after the page has set itself up: offer the last place (not when a link asked for a particular word)
+  window.MFresumeInit=function(){ var st=readResume(); resumeState=st;
+    if(!/[?&#]w=|[?&]token_hash=/.test(location.search+location.hash)) offer(st);
+    saveReady=true; fillResumeLink(); };
+  MF.onChange(resumeLabels);
   MF.applyPage();
   document.querySelectorAll('.offerbtn').forEach(function(btn){btn.addEventListener('click',function(){
     var me=$(btn.dataset.panel), opening=me.hidden;
@@ -1604,6 +1662,7 @@ window.MF=(function(){
   });
   pick(cur,false);
   restoreReturn();
+  if(window.MFresumeInit) MFresumeInit();
   (function(){var m=location.search.match(/[?&]r=(\d+)/); if(m && DATA[cur].refs[+m[1]]){ $('stage').classList.add('on'); sizeStage(); setTimeout(function(){openReader(cur,+m[1]);},300);} })();
 })();
 
