@@ -691,6 +691,18 @@ section.section.bundles{display:block;margin-top:0}
 
 /* Ken, 7 Oct: one fish on its own is the same size as each fish in the side-by-side view (computers only) */
 @media(min-width:901px){ #stage{width:calc((50% - 9px) * 1.088);margin-left:auto;margin-right:auto} #stage.on{width:100%} }
+
+/* Ken, 8 Oct: the fish in the side-by-side view flip to the word study too (tap the fish) */
+.cmp .cmpf{cursor:pointer}
+.cmpb{display:none;container-type:inline-size;border:1px solid rgba(255,255,255,.18);border-radius:6px;background:#000;color:#eaf0f0;cursor:pointer}
+.cmp figure.on .cmpf{display:none}
+.cmp figure.on .cmpb{display:block;animation:cmpflip .35s ease}
+@keyframes cmpflip{from{transform:perspective(900px) rotateY(90deg)}to{transform:none}}
+.cmpb .face{position:static;inset:auto;backface-visibility:visible;-webkit-backface-visibility:visible;visibility:visible;padding:18px 14px 20px;border:0;background:none;transform:none}
+.cmpb .refs{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px}
+.cmpb .wtitle{font-size:clamp(1.6rem,9cqw,2.6rem)}
+.cmp figure:only-child .cmpb .refs{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cmpb .wsub{text-align:center;font:1.15rem 'Spectral',serif;color:var(--foam-dim,#9fb2b6);margin:-4px 0 6px}
 </style>
 
 <div class="mf">
@@ -1160,8 +1172,6 @@ window.MF=(function(){
     cur=k; var d=DATA[k];
     // Spanish fish (Ken's fish and tail, Spanish word and RVR1960 verse) when in Spanish
     $('fishbox').innerHTML=(MF.lang==='es' && MF.fish[k]) ? MF.fish[k] : (FISH[k]||'');
-    if(window.MFcmp) MFcmp();
-    if(window.MFword) MFword();
     var fb=$('fishbox'); fb.classList.remove('splash'); void fb.offsetWidth; fb.classList.add('splash');
     var rp=$('ripple'); if(rp){rp.classList.remove('go'); void rp.offsetWidth; rp.classList.add('go');}
     var esm=MF.lang==='es' ? (MF.es.means[k]||[d.gkm,d.hbm]) : [d.gkm,d.hbm];
@@ -1178,6 +1188,8 @@ window.MF=(function(){
     var sg=STRONGS[k]||['',''];
     setConc('gkC','greek',sg[0]); setConc('hbC','hebrew',sg[1]);
     $('stage').classList.remove('on'); sizeStage();
+    if(window.MFword) MFword();
+    if(window.MFcmp) MFcmp();
     if(scroll && window.matchMedia('(max-width:860px)').matches){
       $('stage').scrollIntoView({behavior:'smooth',block:'center'});
     }
@@ -1440,7 +1452,7 @@ window.MF=(function(){
     rec.onerror=function(){ $('notesMsg').textContent=MF.lang==='es'?'Permite el micrófono para dictar':'Allow the microphone to speak a note'; };
     recOn=true; $('micBtn').setAttribute('aria-pressed','true'); ui(); rec.start(); });
   ui();
-  window.MFword=function(){ stopSpeak(); $('sayMain').hidden=true; if(!$('notesBox').hidden) showNotes(); if(window.MFview) MFview(cur); };
+  window.MFword=function(){ stopSpeak(); $('sayMain').hidden=true; cmpOn={}; if(!$('notesBox').hidden) showNotes(); if(window.MFview) MFview(cur); };
   MF.onChange(function(){ stopSpeak(); ui(); if(!$('notesBox').hidden) showNotes(); });
   // ── Accounts (Ken's Yadah Supabase project). Sign in with an emailed code or link; notes follow the person
   // to every device, decal orders and recently viewed words show in "My MannaFish". Every row is private
@@ -1532,7 +1544,15 @@ window.MF=(function(){
   var cmpSel=[];
   function cmpLangs(){ return [MF.lang].concat(CMPL.map(function(o){return o[0];}).filter(function(l){return l!==MF.lang && cmpSel.indexOf(l)>=0;})); }
   window.MFcmp=function(){ if(!cmpSel.length) return; var spk=$('spkMain').outerHTML.replace(' id="spkMain"','').replace(' hidden=""','');
-    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"><div class="cmpf">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div><figcaption>'+cmpName(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); };
+    var back='<div class="face back">'+document.querySelector('#stage .face.back').innerHTML.replace(/\sid="[^"]*"/g,'')+'</div>';
+    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div><div class="cmpb">'+(l===MF.lang?back:back.replace(/(<div class="wtitle">[^<]*<\/div>)/,'$1<div class="wsub">'+esc(((SAY[l]||{})[cur]||[''])[0])+'</div>'))+'</div><figcaption>'+cmpName(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); };
+  var cmpOn={};
+  // tap a fish to turn it over; on the back, verses and Strong's open just as on the single fish
+  $('cmp').addEventListener('click',function(e){ var f=e.target.closest('figure[data-l]'); if(!f||e.target.closest('.spk,figcaption,.saybox')) return;
+    var ref=e.target.closest('.ref'); if(ref){ e.stopPropagation(); openReader(cur,+ref.dataset.i); return; }
+    var conc=e.target.closest('.conc'); if(conc){ var gk=conc===f.querySelectorAll('.conc')[0], sg=STRONGS[cur]||['',''], n=gk?sg[0]:sg[1];
+      if(n && LEX[(gk?'G':'H')+n]){ e.preventDefault(); e.stopPropagation(); openStrongs(cur,gk); } return; }
+    var l=f.dataset.l; cmpOn[l]=!cmpOn[l]; f.classList.toggle('on',!!cmpOn[l]); if(window.MFsave) MFsave(); });
   function setCmp(list){ stopSpeak(); cmpSel=(list||[]).filter(function(l){return l && l!==MF.lang;}); cmpLang=cmpSel[0]||null; var on=cmpSel.length>0;
     $('cmp').hidden=!on; $('stage').hidden=on; $('spkMain').hidden=on; $('sayMain').hidden=true; $('cmpBtn').setAttribute('aria-pressed',String(on)); buildMenu();
     if(on){ closeReader(); MFcmp(); cmpSel.forEach(function(l){ loadLang(l).then(function(){ MFcmp(); }).catch(function(){}); }); }
