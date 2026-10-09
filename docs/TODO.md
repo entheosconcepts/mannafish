@@ -58,6 +58,9 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [ ] Daily devotional emails and phone notices stay English or Spanish.
 
 ### Bible reader speaker (9 Oct, on the test site)
+- [x] Words light up one by one as the reader speaks (Bible reader and the readers under each fish).
+- [x] With fish side by side, a verse opens right under its own fish in that fish's language, so two or more passages can be open at once, each with its own speaker.
+- [x] Everything stays on the site: the Bible App, Bible Gateway and Bible Hub links are gone (Strong's entries and chapters open inside the site).
 - [x] In the Bible reader: hear the verse or the whole chapter; pick the language (the passage opens in that language's Bible) and the voice. The verse being read is marked.
 - [x] Spanish chapters now show in the reader from the Reina-Valera 1909 (public domain), with a "Leer en RVR1960" link; the fish still quote the RVR1960.
 

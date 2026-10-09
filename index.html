@@ -565,6 +565,26 @@ section.section.bundles{display:block;margin-top:0}
 .rstack .rver{margin:0}
 
 .rhint{margin:0 0 -4px;text-align:center;font-family:'Archivo',sans-serif;font-size:.74rem;color:var(--parch-dim)}
+/* Ken, 9 Oct: everything stays on the site -- no links out to Bible Gateway, Bible Hub or the Bible App */
+#rGate,#rYouV,#rYouVHint{display:none!important}
+.chapter .rw.on{background:#f5d76e;color:#111;border-radius:3px}
+.chapter .reading{background:rgba(42,95,176,.25);border-radius:3px}
+/* the small reader under each fish in the side-by-side view */
+.fr{margin-top:10px;border:1px solid var(--line);border-radius:10px;background:var(--ink2,#0b1620);color:var(--foam);text-align:start;cursor:default;overflow:hidden}
+.fr[hidden]{display:none}
+.frtop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:12px 14px 8px;border-bottom:1px solid var(--line)}
+.frtop .rk{font:600 .66rem 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--brass-soft,#6f9be0)}
+.frtop .rref{font:1.25rem/1.15 'Fraunces',serif;color:var(--foam)}
+.frx{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--foam);font-size:1.05rem;line-height:1;cursor:pointer}
+.frsay{display:flex;gap:8px;flex-wrap:wrap;padding:8px 14px}
+.frsay .rplay{height:32px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--foam);font:600 .78rem 'Archivo',sans-serif;cursor:pointer}
+.frsay .rplay[aria-pressed="true"]{border-color:var(--brass);background:rgba(42,95,176,.3)}
+.frbody{max-height:340px;overflow-y:auto;padding:4px 14px 10px}
+.fr .chapter p{font:1rem/1.75 'Spectral',serif;color:var(--foam);opacity:.9;margin:0}
+.fr .chapter .vn{font:700 .6rem 'Archivo',sans-serif;color:var(--brass-soft,#6f9be0);vertical-align:super;margin-right:3px}
+.fr .chapter .hi{background:rgba(245,215,110,.2)}
+.frv{padding:6px 14px 10px;font:.72rem 'Archivo',sans-serif;color:var(--foam-dim);text-align:center;border-top:1px solid var(--line)}
+.frwait{color:var(--foam-dim)}
 /* the speaker in the Bible reader */
 .rsay{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 24px;border-bottom:1px solid var(--line)}
 .rsay[hidden]{display:none}
@@ -1281,7 +1301,7 @@ window.MF=(function(){
     GROW:['837','1431'],GATHER:['4863','6908'],ACCEPT:['1209','7521'],BREATHE:['1720','5397'],
     ENJOY:['','8055'],LIVE:['2198','2421'],SING:['103','7891'],LAUGH:['1070','6711']};
   function setConc(id,lang,n){var a=$(id); if(!a) return;
-    if(n){a.href='https://biblehub.com/'+lang+'/'+n+'.htm'; a.textContent=studyLabels(MF.lang).conc+(lang==='greek'?'G':'H')+n; a.style.display='';}
+    if(n){a.href='#'; a.textContent=studyLabels(MF.lang).conc+(lang==='greek'?'G':'H')+n; a.style.display='';}
     else{a.removeAttribute('href'); a.style.display='none';}}
   // Ken, 2 Oct: "There is no back button for the Strong's link." It opened a new tab, so the
   // phone's Back arrow had nowhere to go. Now it opens in the same tab, and coming back puts
@@ -1488,24 +1508,39 @@ window.MF=(function(){
   function rChunks(t){ var out=[]; t=String(t||'').trim(); while(t.length>300){ var cut=-1, m, re=/[.!?;:,。！？；：，।׃·]\s*/g;
       while((m=re.exec(t)) && m.index<300) cut=m.index+m[0].length; if(cut<60) cut=t.lastIndexOf(' ',300); if(cut<1) cut=300; out.push(t.slice(0,cut).trim()); t=t.slice(cut).trim(); }
     if(t) out.push(t); return out; }
-  function rMark(v){ reader.querySelectorAll('.chapter .reading').forEach(function(e){ e.classList.remove('reading'); });
-    var e=v&&reader.querySelector('.chapter [data-v="'+v+'"]'); if(!e) return; e.classList.add('reading');
-    var bd=reader.querySelector('.reader-body'); if(bd && !reader.classList.contains('inline')) bd.scrollTop=Math.max(0,e.offsetTop-bd.offsetTop-bd.clientHeight/3); else e.scrollIntoView({block:'nearest',behavior:'smooth'}); }
-  function rStop(){ if(typeof sp!=='undefined' && sp && sp.btn && (sp.btn.id==='rPlayV'||sp.btn.id==='rPlayC')) stopSpeak(); rMark(0); }
-  function rRead(from,to,btn){ if(sp.on && sp.btn===btn){ stopSpeak(); rMark(0); return; } if(!RD) return;
-    stopSpeak(); var id=sp.id, L=RD.l, he=L==='he'; sp.on=true; sp.btn=btn; btn.setAttribute('aria-pressed','true');
-    var done=function(){ if(id===sp.id){ stopSpeak(); rMark(0); } };
-    var vv=voiceFor(L);
-    function say(t,next){ if(id!==sp.id) return; if(he) t=t.replace(/ה׳/g,'אדוני');
-      var v=aiVoice(); (v?etPost('/api/say',{text:t,lang:L,voice:v}):Promise.reject()).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){
-        if(id!==sp.id) return; var a=new Audio(URL.createObjectURL(b)); sp.audio=a; a.onended=function(){ if(id===sp.id) next(); }; return a.play(); })
+  // Reading aloud, verse after verse (Ken, 9 Oct): the verse being read is marked and each word lights up as it is
+  // spoken. Works for the Bible reader and for the small reader under each fish in the side-by-side view.
+  function rWords(span,l){ if(span.dataset.w) return; var txt=span.textContent, parts=l==='zh'?txt.split(''):txt.split(/(\s+)/), h='', i=0;
+    parts.forEach(function(t){ if(t==='') return; if(/^\s+$/.test(t)) h+=t; else h+='<span class="rw" data-s="'+i+'" data-e="'+(i+t.length)+'">'+esc(t)+'</span>'; i+=t.length; });
+    span.innerHTML=h; span.dataset.w='1'; }
+  function rMarkIn(ctx,v){ document.querySelectorAll('.chapter .reading').forEach(function(e){ e.classList.remove('reading'); e.querySelectorAll('.rw.on').forEach(function(w){ w.classList.remove('on'); }); });
+    var e=v&&ctx.root.querySelector('[data-v="'+v+'"]'); if(!e) return null; e.classList.add('reading'); rWords(e,ctx.data.l);
+    var bd=ctx.box; if(bd && bd.scrollHeight>bd.clientHeight+4) bd.scrollTop=Math.max(0,e.offsetTop-bd.offsetTop-bd.clientHeight/3); else e.scrollIntoView({block:'nearest',behavior:'smooth'});
+    return e; }
+  function rWordAt(e,ci){ if(!e) return; [].forEach.call(e.querySelectorAll('.rw'),function(w){ w.classList.toggle('on', ci>=+w.dataset.s && ci<+w.dataset.e); }); }
+  function rMark(v){ rMarkIn({root:reader,data:RD||{l:'en'},box:reader.querySelector('.reader-body')},v); }
+  function rStop(){ if(typeof sp!=='undefined' && sp && sp.btn && sp.btn.classList.contains('rplay')) stopSpeak(); document.querySelectorAll('.chapter .reading').forEach(function(e){ e.classList.remove('reading'); }); }
+  function readAloud(ctx,from,to,btn){ if(sp.on && sp.btn===btn){ stopSpeak(); rMarkIn(ctx,0); return; } var D=ctx.data; if(!D) return;
+    stopSpeak(); var id=sp.id, L=D.l, he=L==='he'; sp.on=true; sp.btn=btn; btn.setAttribute('aria-pressed','true');
+    var done=function(){ if(id===sp.id){ stopSpeak(); rMarkIn(ctx,0); } }, vv=voiceFor(L);
+    function say(t,base,el,next){ if(id!==sp.id) return; var spoken=he?t.replace(/ה׳/g,'אדוני'):t;
+      var v=aiVoice(); (v?etPost('/api/say',{text:spoken,lang:L,voice:v}):Promise.reject()).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){
+        if(id!==sp.id) return; var a=new Audio(URL.createObjectURL(b)); sp.audio=a;
+        a.ontimeupdate=function(){ if(a.duration) rWordAt(el,base+a.currentTime/a.duration*t.length); };
+        a.onended=function(){ if(id===sp.id) next(); }; return a.play(); })
       .catch(function(){ if(id!==sp.id) return; if(!window.speechSynthesis||(vv.any&&!vv.v)){ done(); return; }
-        var u=new SpeechSynthesisUtterance(t); u.lang=LCODE[L]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.92; u.onend=function(){ if(id===sp.id) next(); }; u.onerror=done; speechSynthesis.speak(u); }); }
-    function verse(v){ if(id!==sp.id) return; if(v>to||!RD.t[v-1]){ if(v>to||v>RD.t.length) done(); else verse(v+1); return; }
-      rMark(v); var parts=rChunks(RD.t[v-1]), k=0; (function nextPart(){ if(k>=parts.length){ verse(v+1); return; } say(parts[k++],nextPart); })(); }
+        var u=new SpeechSynthesisUtterance(spoken); u.lang=LCODE[L]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.92;
+        var got=false, t0=Date.now(), cps=L==='zh'?4:L==='hi'?11:13; clearInterval(sp.timer);
+        u.onboundary=function(e){ got=true; rWordAt(el,base+e.charIndex); };
+        sp.timer=setInterval(function(){ if(!got) rWordAt(el,base+(Date.now()-t0)/1000*cps); },150);
+        u.onend=function(){ clearInterval(sp.timer); if(id===sp.id) next(); }; u.onerror=done; speechSynthesis.speak(u); }); }
+    function verse(v){ if(id!==sp.id) return; if(v>to||v>D.t.length){ done(); return; } if(!D.t[v-1]){ verse(v+1); return; }
+      var el=rMarkIn(ctx,v), full=D.t[v-1], parts=rChunks(full), k=0, pos=0;
+      (function nextPart(){ if(k>=parts.length){ verse(v+1); return; } var part=parts[k++], base=full.indexOf(part,pos); if(base<0) base=pos; pos=base+part.length; say(part,base,el,nextPart); })(); }
     verse(from); }
-  $('rPlayV').addEventListener('click',function(){ if(RD) rRead(RD.vs,RD.vs,this); });
-  $('rPlayC').addEventListener('click',function(){ if(RD) rRead(1,RD.t.length,this); });
+  function readerCtx(){ return {root:$('rChapter'),data:RD,box:reader.classList.contains('inline')?null:reader.querySelector('.reader-body')}; }
+  $('rPlayV').addEventListener('click',function(){ if(RD) readAloud(readerCtx(),RD.vs,RD.vs,this); });
+  $('rPlayC').addEventListener('click',function(){ if(RD) readAloud(readerCtx(),1,RD.t.length,this); });
   MF.onChange(function(){ var r=window.MFreader; if(r&&r.kind==='ref') rsayUI(r.l||MF.lang); });
   // Ken, 6 Oct: "a little select version button ... so people can change the translation."
   // Only translations that are free to show in full (public domain, served by bible-api.com).
@@ -1972,10 +2007,36 @@ window.MF=(function(){
     window.addEventListener('resize',function(){ clearTimeout(window.__gpT); window.__gpT=setTimeout(cmpLayout,150); }); })();
   function gpLabels(){ var es=MF.lang==='es'; $('cmpGridLab').textContent=es?'Diseño':'Layout'; $('gpAuto').textContent=es?'Automático':'Auto'; }
   gpLabels(); MF.onChange(gpLabels);
+  // Ken, 9 Oct: with fish side by side, a verse opens right under its own fish, in that fish's language -- so two
+  // (or more) passages can be open at once, each with its own Verse / Chapter speaker.
+  function openFigReader(f,k,i,l){ var fr=f.querySelector('.fr'); if(!fr){ fr=document.createElement('div'); fr.className='fr'; f.appendChild(fr); }
+    if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak();
+    var ref=DATA[k].refs[i], p=parseRef(ref[0]), w=(l!=='en'&&l!=='es')?studyOf(l,k):null, T=RSAY[MF.lang]||RSAY.en;
+    var label=l==='en'?ref[0]:l==='es'?esRef(ref[0]):(w?w.refs[i][0]:ref[0]);
+    fr.setAttribute('lang',l); fr.hidden=false; fr._rd=null;
+    fr.innerHTML='<div class="frtop"><div><div class="rk">'+esc(titleIn(l,k))+'</div><div class="rref">'+esc(label)+'</div></div><button type="button" class="frx" aria-label="Close">&times;</button></div>'
+      +'<div class="frsay"><button type="button" class="rplay" data-a="v">🔊 '+esc(T[0])+'</button><button type="button" class="rplay" data-a="c">🔊 '+esc(T[1])+'</button></div>'
+      +'<div class="frbody"><div class="chapter"><p class="frwait">…</p></div></div><div class="frv"></div>';
+    if(!p) return; var vs=+p.vs, ch=fr.querySelector('.chapter');
+    var got=l==='en'
+      ? fetch('https://bible-api.com/'+encodeURIComponent(p.book+' '+p.ch)+'?translation='+curVer().k).then(function(r){ return r.json(); }).then(function(j){ return {v:curVer().n,t:j.verses.map(function(x){ return x.text.trim(); })}; })
+      : fetch('/fish-lang/bible/'+l+'/'+p.book.replace(/ /g,'_')+'-'+p.ch+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); });
+    got.then(function(j){ if(!fr.isConnected) return; var h='<p>';
+      j.t.forEach(function(t,n){ if(!t) return; h+='<span class="vn">'+(n+1)+'</span><span data-v="'+(n+1)+'" class="'+(n+1===vs?'hi':'')+'">'+esc(t)+'</span> '; });
+      ch.innerHTML=h+'</p>'; fr.querySelector('.frv').textContent=j.v; fr._rd={l:l,t:j.t,vs:vs};
+      var hv=ch.querySelector('.hi'), bd=fr.querySelector('.frbody'); if(hv) bd.scrollTop=Math.max(0,hv.offsetTop-bd.offsetTop-bd.clientHeight/3); })
+    .catch(function(){ if(fr.isConnected) ch.innerHTML='<p class="frwait">'+(MF.lang==='es'?'No se pudo abrir este capítulo.':'Could not open this chapter.')+'</p>'; });
+    fr.scrollIntoView({block:'nearest',behavior:'smooth'}); }
+  function figReaderClick(e){ var fr=e.target.closest('.fr'); if(!fr) return false;
+    if(e.target.closest('.frx')){ if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak(); fr.hidden=true; fr.innerHTML=''; return true; }
+    var b=e.target.closest('.rplay'); if(b && fr._rd){ var ctx={root:fr.querySelector('.chapter'),data:fr._rd,box:fr.querySelector('.frbody')};
+      if(b.dataset.a==='v') readAloud(ctx,fr._rd.vs,fr._rd.vs,b); else readAloud(ctx,1,fr._rd.t.length,b); }
+    return true; }
   var cmpOn={};
   // tap a fish to turn it over; on the back, verses and Strong's open just as on the single fish
   $('cmp').addEventListener('click',function(e){ var f=e.target.closest('figure[data-l]'); if(!f||e.target.closest('.spk,figcaption,.saybox')) return;
-    var ref=e.target.closest('.ref'); if(ref){ e.stopPropagation(); openReader(cur,+ref.dataset.i,ref.dataset.l); return; }
+    if(figReaderClick(e)){ e.stopPropagation(); return; }
+    var ref=e.target.closest('.ref'); if(ref){ e.stopPropagation(); if(cmpShown()) openFigReader(f,cur,+ref.dataset.i,ref.dataset.l||f.dataset.l); else openReader(cur,+ref.dataset.i,ref.dataset.l); return; }
     var conc=e.target.closest('.conc'); if(conc){ var gk=conc===f.querySelectorAll('.conc')[0], sg=STRONGS[cur]||['',''], n=gk?sg[0]:sg[1];
       if(n && LEX[(gk?'G':'H')+n]){ e.preventDefault(); e.stopPropagation(); openStrongs(cur,gk); } return; }
     var l=f.dataset.l; cmpOn[l]=!cmpOn[l]; f.classList.toggle('on',!!cmpOn[l]); if(window.MFsave) MFsave(); });
