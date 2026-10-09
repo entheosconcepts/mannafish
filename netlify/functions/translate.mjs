@@ -59,6 +59,24 @@ export default async (req, context) => {
     return new Response(audio, { headers: { 'content-type': 'audio/mpeg', 'cache-control': 'private, max-age=86400' } });
   }
 
+  // the Translator's one microphone: the words are in one of two languages; find which, and give the other
+  const pair = Array.isArray(b.pair) && b.pair.length === 2 && NAMES[b.pair[0]] && NAMES[b.pair[1]] && b.pair[0] !== b.pair[1] ? b.pair : null;
+  if (pair && !NAMES[b.to]) {
+    const [A, B] = pair;
+    const r = await fetch('https://api.openai.com/v1/chat/completions', { method: 'POST', headers: H,
+      body: JSON.stringify({ model: MODEL, temperature: 0.2, max_tokens: 500, response_format: { type: 'json_object' }, messages: [
+        { role: 'system', content: `You translate for a Christian sharing the gospel face to face with someone who speaks another language. `
+          + `The user's message is in ${NAMES[A]} (code "${A}") or ${NAMES[B]} (code "${B}"). Decide which, then translate it into the other one. `
+          + `Keep the meaning and the warmth; use natural, polite, everyday wording, and the usual Bible words of the churches that speak that language. `
+          + `Reply with JSON only: {"from":"<code of the message's language>","to":"<code of the other>","text":"<the translation>"}.` },
+        { role: 'user', content: text }] }) });
+    if (r.status === 401 || r.status === 403) return bad('Key not allowed', 503, 'key');
+    if (!r.ok) return bad('Translation service error', 502);
+    let o = {}; try { o = JSON.parse((((await r.json()).choices || [])[0] || {}).message.content || '{}'); } catch (e) { o = {}; }
+    const fr = o.from === B ? B : A, out = String(o.text || '').trim();
+    if (!out) return bad('No translation', 502);
+    return Response.json({ text: out, from: fr, to: fr === A ? B : A });
+  }
   const to = NAMES[b.to] ? b.to : 'es', from = NAMES[b.from] ? b.from : null;
   const r = await fetch('https://api.openai.com/v1/chat/completions', { method: 'POST', headers: H,
     body: JSON.stringify({ model: MODEL, temperature: 0.2, max_tokens: 400, messages: [

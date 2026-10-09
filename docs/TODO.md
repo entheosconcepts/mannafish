@@ -94,6 +94,12 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [x] In the Bible reader: hear the verse or the whole chapter; pick the language (the passage opens in that language's Bible) and the voice. The verse being read is marked.
 - [x] Spanish chapters now show in the reader from the Reina-Valera 1909 (public domain), with a "Leer en RVR1960" link; the fish still quote the RVR1960.
 
+### MannaFish Translator page (9 Oct, on the test site): /translate/  (also /translator)
+- Its own page, opened in a new tab from the Translator buttons; "← Devotional" goes back. Can be added to a phone's home screen as its own app.
+- One big microphone: speak in either language; OpenAI speech-to-text (/api/hear) hears it, the translator works out which of the two it was, shows it in the other and says it aloud. Stops by itself after a short pause.
+- Small 🎤 English / 🎤 Español buttons to say which language; any two of the 9 languages, swap ⇄; voice picker; type instead; ready-made phrases and verses; "Show them" (large, turns round for someone across the table).
+- [ ] Ken: try it on an iPhone and an Android phone, in a quiet room and outdoors.
+
 ### MannaFish Translator (was "Every Tongue"; built 8 Oct; renamed 9 Oct, on the test site)
 The Every Tongue button sits with My notes and Sign in. It is a translator first: type or speak, and it is said in the other person's language; "Let them answer" hears them and says it back in yours. The 15 phrases and 4 verses are in a drop-down. "Show them" fills the screen so the other person can read it.
 - [x] Voice choice (9 Oct): 11 natural voices (Sage, Coral, Nova, Shimmer, Alloy, Ash, Ballad, Echo, Fable, Onyx, Verse) or the device's own voice. In Every Tongue and in the language menu; used by every speaker on the site. Each line is recorded once per voice.

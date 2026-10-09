@@ -1,7 +1,7 @@
 # MannaFish design review (9 Oct)
 
 Every fish has a number: **language code + word number**, e.g. **TL-01** is the Tagalog "Rest" fish.
-Open a sheet to see all 24 fish in that language. On the test site: https://yadamannafishtest.netlify.app/docs/designs/tl.png
+Open a sheet to see all 24 fish in that language. On the test site: https://yadamannafishtest.netlify.app/designs/ (all languages; e.g. /designs/tl.png)
 
 ## Word numbers
 01. Rest
@@ -30,15 +30,15 @@ Open a sheet to see all 24 fish in that language. On the test site: https://yada
 24. Laugh
 
 ## Sheets
-- EN English: [en.png](en.png)
-- ES Spanish: [es.png](es.png)
-- TL Tagalog: [tl.png](tl.png)
-- ZH Chinese: [zh.png](zh.png)
-- HI Hindi: [hi.png](hi.png)
-- EL Greek: [el.png](el.png)
-- DE German: [de.png](de.png)
-- KO Korean: [ko.png](ko.png)
-- HE Hebrew: [he.png](he.png)
+- EN English: [/designs/en.png](/designs/en.png)
+- ES Spanish: [/designs/es.png](/designs/es.png)
+- TL Tagalog: [/designs/tl.png](/designs/tl.png)
+- ZH Chinese: [/designs/zh.png](/designs/zh.png)
+- HI Hindi: [/designs/hi.png](/designs/hi.png)
+- EL Greek: [/designs/el.png](/designs/el.png)
+- DE German: [/designs/de.png](/designs/de.png)
+- KO Korean: [/designs/ko.png](/designs/ko.png)
+- HE Hebrew: [/designs/he.png](/designs/he.png)
 
 ## To look at together
 - Word size: long words come out smaller. TL-01 (Rest) now keeps taller letters, narrowed to fit (Ken, 9 Oct). Others to review: TL-04, TL-05, TL-06, TL-07, TL-14, TL-19; Hindi and Greek long words.

@@ -2130,7 +2130,10 @@ window.MF=(function(){
   function etOpen(open){ $('etBox').hidden=!open; $('etBtn').setAttribute('aria-expanded',String(open));
     if(open){ etUI(); etLoad().then(etSugs).catch(function(){}); } else { stopSpeak(); etShowFull(false); if(etRec) etRec.r.stop(); } }
   function etShowFull(on){ $('etShow').classList.toggle('full',on); $('etShow').title=on?etT().tap:''; }
-  $('etBtn').addEventListener('click',function(){ etOpen($('etBox').hidden); });
+  // Ken, 9 Oct: the MannaFish Translator is its own page now (/translate/), opened beside the devotional
+  function openTranslator(){ var w=window.open('/translate/','_blank'); if(w){ try{ w.opener=null; }catch(e){} } else location.href='/translate/'; }
+  window.MFopenTranslator=openTranslator;
+  $('etBtn').addEventListener('click',openTranslator);
   $('etX').addEventListener('click',function(){ etOpen(false); $('etBtn').focus(); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape' && $('etShow').classList.contains('full')) etShowFull(false); });
   $('etTo').addEventListener('change',function(){ try{ localStorage.setItem('mf-et-to',this.value); }catch(e){} stopSpeak(); $('etShow').hidden=true; });
@@ -2171,7 +2174,7 @@ window.MF=(function(){
   MF.onChange(function(){ if(!$('etBox').hidden) etUI(); else $('etLab').textContent=trn()[1]; $('trnLab').textContent=trn()[1]; });
   $('etLab').textContent=$('trnLab').textContent=trn()[1];
   // the Translator button at the top opens it (the same as the one under the fish) and brings it into view
-  $('trnBtn').addEventListener('click',function(){ if($('etBox').hidden) $('etBtn').click(); setTimeout(function(){ $('etBox').scrollIntoView({behavior:'smooth',block:'start'}); },60); });
+  $('trnBtn').addEventListener('click',function(){ if(window.MFopenTranslator) MFopenTranslator(); });
   // ── Ken, 9 Oct: "if any text on the website needs to be read in that language ... highlight it and push play."
   // Select any words on the page: a small 🔊 button offers to say them, translated into the reading language first
   // when that is not English. Uses /api/translate and /api/say; the device's own voice when those are not available.
