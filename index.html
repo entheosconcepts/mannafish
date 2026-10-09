@@ -814,6 +814,11 @@ section.section.bundles{display:block;margin-top:0}
 .cmpf svg{position:absolute;inset:0;width:100%;height:100%}
 .cmp figure:hover .cmpf{border-color:var(--brass)}
 .cmp figcaption{margin-top:6px;font:600 .8rem 'Archivo',sans-serif;letter-spacing:.04em;color:var(--foam-dim,#aaa)}
+.cmp .flwrap{position:relative;display:inline-block}
+.cmp .fishlang{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid var(--line,#333);border-radius:999px;color:var(--foam);font:600 .8rem 'Archivo',sans-serif;letter-spacing:.04em;padding:4px 26px 4px 12px;cursor:pointer;text-align:center;max-width:100%}
+.cmp .flwrap::after{content:'▾';position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:.7rem;color:var(--foam-dim,#aaa);pointer-events:none}
+.cmp .fishlang:hover{border-color:var(--brass)}
+.cmp .fishlang option{background:var(--ink2,#0b1620);color:var(--foam)}
 .cmp figcaption .forwho{display:block;font:700 .72rem 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--brass-soft,#6f9be0);margin-bottom:2px}
 @media(max-width:900px){.cmp{flex-direction:column;align-items:center}.cmp figure{width:100%;flex:none}}
 .giftbox .dlab{font-family:'Archivo',sans-serif;font-size:.78rem;letter-spacing:.04em;color:var(--foam-dim)}
@@ -2447,10 +2452,17 @@ window.MF=(function(){
   var cmpDefault=false;
   function twoFish(){ return [MF.lang, MF.lang==='en'?'es':'en']; }
   function oneFish(on){ try{ if(on) localStorage.setItem('mf-one','1'); else localStorage.removeItem('mf-one'); }catch(e){} }
+  // Ken, 9 Oct: tap the language under a fish to change it -- "For you" changes your own reading language,
+  // "For someone else" changes just that fish
+  function fishLang(l){ return '<span class="flwrap"><select class="fishlang" data-l="'+l+'" aria-label="Language">'+CMPL.filter(function(o){ return !o[2]; }).map(function(o){
+      return '<option value="'+o[0]+'"'+(o[0]===l?' selected':'')+'>'+esc(cmpLabel(o[0]))+'</option>'; }).join('')+'</select></span>'; }
+  document.addEventListener('change',function(e){ var t=e.target; if(!t.classList||!t.classList.contains('fishlang')) return; var from=t.dataset.l, to=t.value; if(from===to) return;
+    if(from===MF.lang){ if(!cmpDefault) cmpSel=cmpSel.map(function(x){ return x===from?to:x; }).filter(function(x,i,a){ return a.indexOf(x)===i; }); MF.set(to); return; }
+    cmpDefault=false; oneFish(false); var next=cmpSel.filter(function(x){ return x!==from && x!==to; }); next.push(to); if(next.indexOf(MF.lang)<0 && cmpSel.indexOf(MF.lang)>=0) next.unshift(MF.lang); setCmp(next); });
   function forWho(l){ if(cmpSel.indexOf(MF.lang)<0) return ''; var T=FORYOU[MF.lang]||FORYOU.en; return '<span class="forwho">'+esc(l===MF.lang?T[0]:T[1])+'</span>'; }
   function cmpShown(){ return cmpSel.length>1 || (cmpSel.length===1 && cmpSel[0]!==MF.lang); }
   window.MFcmp=function(){ if(!cmpShown()) return; var spk=$('spkMain').outerHTML.replace(' id="spkMain"','').replace(' hidden=""','');
-    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf"><div class="cmpfb">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div></div><div class="cmpb">'+backFor(l)+'</div><figcaption>'+forWho(l)+cmpLabel(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); cmpLayout(); $('cmp').querySelectorAll('figure.on').forEach(cmpDeck); };
+    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf"><div class="cmpfb">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div></div><div class="cmpb">'+backFor(l)+'</div><figcaption>'+forWho(l)+fishLang(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); cmpLayout(); $('cmp').querySelectorAll('figure.on').forEach(cmpDeck); };
   // Ken, 9 Oct: every fish stays the size it is with two side by side, whatever the layout. "Per row" picks how many
   // go across (as many as the screen has room for at that size); more simply wrap to the next row. A clear button
   // above the fish goes straight back to one fish.
