@@ -58,6 +58,7 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [ ] Daily devotional emails and phone notices stay English or Spanish.
 
 ### Compare looks like the real decal (9 Oct, on the test site)
+- [x] Passages and Strong's entries lie on top of the word-study card, the same size, like a card dealt onto a deck; close it to see the card again. Nothing on the page moves.
 - [x] Every compared fish is the same card as the single fish: same size, same black frame and padding (phone and computer).
 - [x] Turned over, a compared fish opens to the single fish's full width with the very same word study layout (Greek and Hebrew side by side, verses in four columns on a computer).
 - [x] "Per row" picker (computer) picks how many fish across, as many as fit at that size; a "✕ Just one fish" button above the fish goes back to one.

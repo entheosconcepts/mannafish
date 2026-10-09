@@ -567,12 +567,21 @@ section.section.bundles{display:block;margin-top:0}
 .rstack .rver{margin:0}
 
 .rhint{margin:0 0 -4px;text-align:center;font-family:'Archivo',sans-serif;font-size:.74rem;color:var(--parch-dim)}
+/* a passage laid on top of the card, like a card dealt onto a deck */
+@keyframes mfdeal{from{opacity:0;transform:translateY(14px) rotate(-1.2deg)}to{opacity:1;transform:none}}
+.reader.stacked{position:absolute;inset:0;z-index:8;width:100%;height:100%;transform:none;transition:none;display:none;border:1px solid var(--line);border-radius:6px;box-shadow:0 -8px 0 -4px rgba(255,255,255,.06),0 18px 40px -12px #000;overflow:hidden}
+.reader.stacked.open{display:flex;animation:mfdeal .28s ease}
+.reader.stacked .rmode{display:none}
+.reader.stacked .reader-body{flex:1;min-height:0;overflow-y:auto}
+.cmp figure{position:relative}
+.fr{position:absolute;left:0;right:0;z-index:6;margin-top:0;display:flex;flex-direction:column;box-shadow:0 -8px 0 -4px rgba(255,255,255,.06),0 18px 40px -12px #000;animation:mfdeal .28s ease}
+.fr .frbody{flex:1;min-height:0;max-height:none}
 /* Ken, 9 Oct: everything stays on the site -- no links out to Bible Gateway, Bible Hub or the Bible App */
 #rGate,#rYouV,#rYouVHint{display:none!important}
 .chapter .rw.on{background:#f5d76e;color:#111;border-radius:3px}
 .chapter .reading{background:rgba(42,95,176,.25);border-radius:3px}
 /* the small reader under each fish in the side-by-side view */
-.fr{margin-top:10px;border:1px solid var(--line);border-radius:10px;background:var(--ink2,#0b1620);color:var(--foam);text-align:start;cursor:default;overflow:hidden}
+.fr{border:1px solid var(--line);border-radius:6px;background:var(--ink2,#0b1620);color:var(--foam);text-align:start;cursor:default;overflow:hidden}
 .fr[hidden]{display:none}
 .frtop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:12px 14px 8px;border-bottom:1px solid var(--line)}
 .frtop .rk{font:600 .66rem 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--brass-soft,#6f9be0)}
@@ -1329,7 +1338,7 @@ window.MF=(function(){
     setTimeout(function(){window.scrollTo(0,r.y||0);},60);}
   window.addEventListener('pageshow',function(e){if(e.persisted) restoreReturn();});
   // The card is as tall as whichever side is showing: the fish, or the whole study.
-  function sizeStage(){var st=$('stage'); if(!st) return; var w=st.clientWidth, fb=$('fishbox');
+  function sizeStage(){var st=$('stage'); if(!st) return; if(!st.classList.contains('on') && reader.classList.contains('stacked') && reader.classList.contains('open')) closeReader(); var w=st.clientWidth, fb=$('fishbox');
     var front=Math.max(w*10/16,(fb?fb.offsetHeight:w/2)+60);
     var back=st.querySelector('.face.back'); var bh=back?back.scrollHeight:0;
     st.style.height=(st.classList.contains('on')?Math.max(front,bh):front)+'px';}
@@ -1407,7 +1416,12 @@ window.MF=(function(){
   function placePref(){try{return localStorage.getItem(RKEY)||'side';}catch(e){return 'side';}}
   var landing=false;  // opened from an email link: the verse sits under the fish and the page stays on the fish
   function inlineNow(){return landing || window.matchMedia('(max-width:860px)').matches || placePref()==='below';}
+  // Ken, 9 Oct: "stacked ... like a deck of cards" -- a verse or Strong's entry opened from the back of the fish lies
+  // on top of the word-study card, the same size, instead of opening a panel under or beside it. Close it to see the card.
+  function stackNow(){ var st=$('stage'); return !landing && st && !st.hidden && st.classList.contains('on'); }
   function placeReader(){
+    if(stackNow()){ if(reader.parentNode!==$('stage')) $('stage').appendChild(reader); reader.classList.add('stacked'); reader.classList.remove('inline'); scrim.classList.remove('open'); return; }
+    reader.classList.remove('stacked');
     var inl=inlineNow(), slot=$('readerSlot');
     if(inl && slot && reader.parentNode!==slot){slot.appendChild(reader);}
     if(!inl && reader.parentNode===slot){document.querySelector('.mf').appendChild(reader);}
@@ -1427,7 +1441,8 @@ window.MF=(function(){
 
   function showPanel(){
     reader.classList.add('open');reader.setAttribute('aria-hidden','false');
-    placeReader(); if(!inlineNow()) scrim.classList.add('open');
+    placeReader(); if(reader.classList.contains('stacked')){ setTimeout(function(){ $('stage').scrollIntoView({behavior:'smooth',block:'nearest'}); },30); return; }
+    if(!inlineNow()) scrim.classList.add('open');
     else if(!landing) setTimeout(function(){reader.scrollIntoView({behavior:'smooth',block:'start'});},30);
   }
   function openStrongs(k,gk){
@@ -2024,6 +2039,7 @@ window.MF=(function(){
   // Ken, 9 Oct: with fish side by side, a verse opens right under its own fish, in that fish's language -- so two
   // (or more) passages can be open at once, each with its own Verse / Chapter speaker.
   function openFigReader(f,k,i,l){ var fr=f.querySelector('.fr'); if(!fr){ fr=document.createElement('div'); fr.className='fr'; f.appendChild(fr); }
+    var card=f.classList.contains('on')?f.querySelector('.cmpb'):f.querySelector('.cmpf'); fr.style.top=card.offsetTop+'px'; fr.style.height=Math.max(card.offsetHeight,300)+'px';
     if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak();
     var ref=DATA[k].refs[i], p=parseRef(ref[0]), w=(l!=='en'&&l!=='es')?studyOf(l,k):null, T=RSAY[MF.lang]||RSAY.en;
     var label=l==='en'?ref[0]:l==='es'?esRef(ref[0]):(w?w.refs[i][0]:ref[0]);
@@ -2040,7 +2056,7 @@ window.MF=(function(){
       ch.innerHTML=h+'</p>'; fr.querySelector('.frv').textContent=j.v; fr._rd={l:l,t:j.t,vs:vs};
       var hv=ch.querySelector('.hi'), bd=fr.querySelector('.frbody'); if(hv) bd.scrollTop=Math.max(0,hv.offsetTop-bd.offsetTop-bd.clientHeight/3); })
     .catch(function(){ if(fr.isConnected) ch.innerHTML='<p class="frwait">'+(MF.lang==='es'?'No se pudo abrir este capítulo.':'Could not open this chapter.')+'</p>'; });
-    fr.scrollIntoView({block:'nearest',behavior:'smooth'}); }
+    f.scrollIntoView({block:'nearest',behavior:'smooth'}); }
   function figReaderClick(e){ var fr=e.target.closest('.fr'); if(!fr) return false;
     if(e.target.closest('.frx')){ if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak(); fr.hidden=true; fr.innerHTML=''; return true; }
     var b=e.target.closest('.rplay'); if(b && fr._rd){ var ctx={root:fr.querySelector('.chapter'),data:fr._rd,box:fr.querySelector('.frbody')};
