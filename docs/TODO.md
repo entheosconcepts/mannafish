@@ -1,6 +1,6 @@
 # MannaFish master to-do list
 
-Last updated 8 Oct 2026. Newest decisions go at the top of each section.
+Last updated 9 Oct 2026. Newest decisions go at the top of each section.
 
 ## Now
 
@@ -43,6 +43,15 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [ ] Hebrew (shows as "soon" in the menu): the Old Testament in its original Hebrew, and a Hebrew New Testament. Older texts are free to use; check each one. Hebrew reads right to left, so the fish lettering runs the other way.
 
 ## Later
+
+### Read the site in any language (9 Oct, on the test site)
+- [x] "Read the site in" lists all 8 languages. The chosen one sets the main fish, the word study on its back, the Word/Verse speakers, the Bible reader and Every Tongue. The browser's language is picked the first time.
+- [x] "Compare the fish in" lists every language, English too; only ticked fish are shown.
+- [x] A verse tapped on a Tagalog, Chinese, Hindi, Greek, German or Korean fish opens that chapter in that language's Bible (fish-lang/bible/). The English version picker and Bible App buttons are hidden there.
+- [x] Highlight any words on the page and tap 🔊 to hear them in the reading language (translated first when needed; needs live translation turned on, see Every Tongue).
+- [ ] The rest of the page text (headings, buttons, forms) is in English for the 6 new languages. Next step if wanted: translate the ~190 page lines into each language, like Spanish.
+- [ ] Bible App (YouVersion) links for the 6 new languages: confirm each one's version number on bible.com, then add the buttons back.
+- [ ] Daily devotional emails and phone notices stay English or Spanish.
 
 ### Every Tongue (built 8 Oct, on the test site)
 The speech-bubble button at the bottom right of every page. Pick a language; tap a phrase to show it big and say it aloud. "Show them" fills the screen so the other person can read it.
