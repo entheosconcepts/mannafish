@@ -52,7 +52,7 @@ export function emailFor(m, lang, unsub, opts = {}) {
 <tr><td align="center" style="padding:20px 22px 22px"><a href="${read}" style="display:inline-block;background:#2a5fb0;color:#ffffff;text-decoration:none;font:bold 16px Arial,sans-serif;padding:13px 30px;border-radius:999px">${esc(T.read)}</a></td></tr>
 <tr><td align="center" style="padding:16px 22px 0;border-top:1px solid #1f2a33;${lab}">${esc(T.fish)}</td></tr>
 <tr><td align="center" style="padding:8px 26px 22px;font:italic 17px/1.55 Georgia,serif;color:#c6d2d4">“${esc(f.top)} ${esc(f.bottom)}”<br><span style="font:normal 13px Arial,sans-serif;color:#8a9aa0">${esc(f.ref)}</span></td></tr>
-<tr><td align="center" style="padding:16px 22px 22px;border-top:1px solid #1f2a33;font:12px/1.7 Arial,sans-serif;color:#8a9aa0">${esc(T.why)} <a href="${unsub}" style="color:#8a9aa0">${esc(T.stop)}</a><br>${esc(ADDRESS())}</td></tr>
+<tr><td align="center" style="padding:16px 22px 22px;border-top:1px solid #1f2a33;font:12px/1.7 Arial,sans-serif;color:#8a9aa0">${esc(T.why)} <a href="${unsub}" style="color:#8a9aa0">${esc(T.stop)}</a> · <a href="${SITE()}/privacy/" style="color:#8a9aa0">${es ? 'Privacidad' : 'Privacy'}</a><br>${esc(ADDRESS())}</td></tr>
 </table></td></tr></table></body></html>`;
   const text = `${T.hello}: ${word}\n\n${T.today}: ${ref}${snippet}\n${T.read}: ${read}\n\n${T.fish}: “${f.top} ${f.bottom}” ${f.ref}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
   return { subject: T.sub, html, text };

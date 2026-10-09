@@ -1,2 +1,4 @@
 /docs/*  /404  404!
 /tools/*  /404  404!
+/terms  /privacy/#terms  301
+/privacy.html  /privacy/  301
