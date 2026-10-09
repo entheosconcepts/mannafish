@@ -57,8 +57,9 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [ ] Bible App (YouVersion) links for the 6 new languages: confirm each one's version number on bible.com, then add the buttons back.
 - [ ] Daily devotional emails and phone notices stay English or Spanish.
 
-### Every Tongue (built 8 Oct, on the test site)
-The speech-bubble button at the bottom right of every page. Pick a language; tap a phrase to show it big and say it aloud. "Show them" fills the screen so the other person can read it.
+### Every Tongue (built 8 Oct; changed 9 Oct, on the test site)
+The Every Tongue button sits with My notes and Sign in. It is a translator first: type or speak, and it is said in the other person's language; "Let them answer" hears them and says it back in yours. The 15 phrases and 4 verses are in a drop-down. "Show them" fills the screen so the other person can read it.
+- [x] Voice choice (9 Oct): 11 natural voices (Sage, Coral, Nova, Shimmer, Alloy, Ash, Ballad, Echo, Fable, Onyx, Verse) or the device's own voice. In Every Tongue and in the language menu; used by every speaker on the site. Each line is recorded once per voice.
 - [x] 15 ready-made phrases (openers, questions, gift and follow-up) and 4 verses (John 3:16, Romans 3:23, 6:23, 10:9) in all 8 languages. Verses come from each language's Bible.
 - [x] "Type or speak": type or say anything; it is translated into their language and spoken. "Let them answer" listens in their language and shows it in yours.
 - [ ] **Ken:** turn on live translation. OpenAI → API keys → the MannaFish key → Permissions → set **Chat completions** to Request (or Write). Or make a second key and add it in Netlify as `OPENAI_TRANSLATE_KEY`. Until then the phrases and verses work and "Type or speak" says it isn't switched on yet.

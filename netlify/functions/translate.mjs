@@ -10,6 +10,7 @@ const NAMES = { en: 'English', es: 'Spanish', tl: 'Tagalog (Filipino)', zh: 'Sim
   el: 'Modern Greek', de: 'German', ko: 'Korean', he: 'Modern Hebrew' };
 const MODEL = process.env.MF_TRANSLATE_MODEL || 'gpt-4.1-mini';
 const VOICE = process.env.MF_TTS_VOICE || 'sage';
+const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];
 const MAX = 300, PER_HOUR = 80;
 const okOrigin = (o) => /^https:\/\/([a-z0-9-]+\.)?manna-fish\.com$|^https:\/\/([a-z0-9-]+--)?yadamannafishtest\.netlify\.app$|^http:\/\/localhost(:\d+)?$/.test(o || '');
 const bad = (msg, status, error) => Response.json({ error: error || 'bad', msg }, { status });
@@ -41,11 +42,12 @@ export default async (req, context) => {
 
   if (say) {
     const lang = NAMES[b.lang] ? b.lang : 'en';
-    const store = getStore('mannafish-tts'), id = `live/${lang}-${await sha(VOICE + '|' + text)}.mp3`;
+    const voice = VOICES.includes(b.voice) ? b.voice : VOICE;
+    const store = getStore('mannafish-tts'), id = `live/${lang}-${await sha(voice + '|' + text)}.mp3`;
     let audio = await store.get(id, { type: 'arrayBuffer' });
     if (!audio) {
       const r = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST', headers: H,
-        body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice: VOICE, input: text, response_format: 'mp3',
+        body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice, input: text, response_format: 'mp3',
           instructions: `Speak warmly, clearly and a little slowly, like a kind friend talking face to face, in ${NAMES[lang]}.` }) });
       if (r.status === 401 || r.status === 403) return bad('Key not allowed', 503, 'key');
       if (!r.ok) return bad('Voice service error', 502);
