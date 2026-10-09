@@ -606,6 +606,55 @@ section.section.bundles{display:block;margin-top:0}
 .deck .lang[data-c]:hover{background:rgba(255,255,255,.06)}
 .chapter p.lxq,.fr .chapter p.lxq{font:italic 1.2rem/1.5 'Spectral',serif;color:var(--foam);margin:0 0 14px}
 .fr .lx{margin-bottom:12px}
+/* Ken, 9 Oct: the Strong's card -- title and word centred at the top with a speaker for the word, the meaning straight
+   under it, Hear it + voice below, the credit small at the very bottom, and Expand when there is more than fits */
+.lexc{text-align:center}
+.lexc p.lxq{margin-bottom:10px}
+.lxsay{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--foam);font-size:.8rem;line-height:1;cursor:pointer;align-self:center;padding:0}
+.lxsay.on{border-color:var(--brass);background:rgba(42,95,176,.3)}
+.rvlab{font:600 .72rem 'Archivo',sans-serif;color:var(--foam-dim)}
+.rsay .rvlab,.rsay .lxexp{display:none}
+.reader.lexmode .reader-top{position:relative;justify-content:center;text-align:center;padding:12px 50px 4px;border-bottom:0}
+.reader.lexmode .reader-top>div{width:100%}
+.reader.lexmode .rtools{position:absolute;top:10px;right:12px}
+.reader.lexmode .reader-top .rref{font-size:1.45rem;display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px}
+.reader.lexmode .reader-body{order:2;padding:4px 22px 10px}
+.reader.lexmode .rsay{order:3;border-bottom:0;border-top:1px solid var(--line);padding:7px 14px;justify-content:center;gap:6px}
+.reader.lexmode .rsay .rplays{order:1}.reader.lexmode .rsay .rvlab{order:2;display:inline}.reader.lexmode .rsay .rvoice{order:3;flex:0 1 170px}
+.reader.lexmode .rsay .lxexp:not([hidden]){order:4;display:inline-block}
+.reader.lexmode .reader-actions{order:4;padding:0 14px 5px;border-top:0;gap:0}
+.reader.lexmode .rnote{font-size:.6rem;opacity:.7}
+.reader.stacked.lexbig{height:auto;min-height:100%;bottom:auto;overflow:visible}
+.reader.stacked.lexbig .reader-body{flex:none;overflow:visible}
+.fr.lex .frtop{position:relative;justify-content:center;text-align:center;border-bottom:0;padding:10px 44px 2px}
+.fr.lex .frtop>div{width:100%}
+.fr.lex .frx{position:absolute;top:8px;right:10px}
+.fr.lex .frtop .rref{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap}
+.fr.lex .frsay{justify-content:center;align-items:center;border-top:1px solid var(--line);gap:6px;padding:6px 10px}
+.fr.lex .frsay select{height:32px;border-radius:999px;border:1px solid var(--line);background:var(--ink2,#0b1620);color:var(--foam);font:600 .74rem 'Archivo',sans-serif;padding:0 8px;max-width:150px}
+.fr.lex .frv{font-size:.6rem;padding:1px 10px 5px;border-top:0;opacity:.7}
+.fr.big{overflow:visible}
+.reader.lexmode #rQuote{display:none}
+.reader.lexmode .rsay .rvoice{flex:0 1 150px;min-width:0}
+@media(max-width:640px){
+  .reader.lexmode .reader-top{padding:7px 42px 0}
+  .reader.lexmode .rtools{top:6px;right:8px}
+  .reader.lexmode .rclose,.fr.lex .frx{width:28px;height:28px;font-size:.95rem}
+  .reader.lexmode .reader-top .rk,.fr.lex .frtop .rk{font-size:.6rem}
+  .reader.lexmode .reader-top .rref,.fr.lex .frtop .rref{font-size:1.15rem;gap:6px}
+  .lxsay{width:26px;height:26px;font-size:.7rem}
+  .reader.lexmode .reader-body{padding:2px 14px 6px}
+  .lexc p.lxq,.fr .lexc p.lxq{font-size:1rem;margin-bottom:6px}
+  .lexc .chapter p,.lexc p{font-size:.92rem;line-height:1.5}
+  .reader.lexmode .rsay,.fr.lex .frsay{flex-wrap:nowrap;padding:4px 6px;gap:4px}
+  .reader.lexmode .rsay .rplay,.fr.lex .frsay .rplay{height:28px;padding:0 8px;font-size:.68rem}
+  .reader.lexmode .rsay select,.fr.lex .frsay select{height:28px;font-size:.66rem;padding:0 4px;min-width:0;flex:0 1 112px}
+  .reader.lexmode .rsay .rvlab,.fr.lex .rvlab{font-size:.6rem}
+  .reader.lexmode .rnote,.fr.lex .frv{font-size:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-bottom:3px}
+  .fr.lex .frtop{padding:7px 40px 0}
+  .fr.lex .frx{top:5px;right:6px}
+}
+.fr.big .frbody{flex:none;overflow:visible;max-height:none}
 .chapter .rw.on{background:#f5d76e;color:#111;border-radius:3px}
 .chapter .reading{background:rgba(42,95,176,.25);border-radius:3px}
 /* the small reader under each fish in the side-by-side view */
@@ -1242,7 +1291,7 @@ section.section.bundles{display:block;margin-top:0}
     <div><div class="rk" id="rKicker">Word study</div><div class="rref" id="rRef">Reference</div></div>
     <span class="rtools"><span class="rstack"><button class="rmode" id="rMode" type="button"></button><select class="rver" id="rVer" aria-label="Bible version"></select></span><button class="rclose" id="rClose" aria-label="Close">&#215;</button></span>
   </div>
-  <div class="rsay" id="rSay" hidden><select class="rlang" id="rLang" aria-label="Language"></select><select class="voicesel rvoice" id="rVoice" aria-label="Voice"></select><span class="rplays"><button type="button" class="rplay" id="rPlayV"></button><button type="button" class="rplay" id="rPlayC"></button></span></div>
+  <div class="rsay" id="rSay" hidden><select class="rlang" id="rLang" aria-label="Language"></select><span class="rvlab" id="rVLab"></span><select class="voicesel rvoice" id="rVoice" aria-label="Voice"></select><span class="rplays"><button type="button" class="rplay" id="rPlayV"></button><button type="button" class="rplay" id="rPlayC"></button></span><button type="button" class="rplay lxexp" id="rExp" hidden></button></div>
   <div class="reader-body">
     <div class="pullquote" id="rQuote"></div>
     <div class="chapter" id="rChapter"></div>
@@ -1496,7 +1545,7 @@ window.MF=(function(){
     placeReader(); if(inlineNow()) reader.scrollIntoView({behavior:'smooth',block:'start'});
   });
   window.addEventListener('resize',function(){if(reader.classList.contains('open'))placeReader();});
-  function closeReader(){ rStop(); if(landing){ landing=false; setTimeout(placeReader,350); } window.MFreader=null; if(window.MFsave) MFsave(); reader.classList.remove('open');scrim.classList.remove('open');reader.setAttribute('aria-hidden','true');}
+  function closeReader(){ rStop(); reader.classList.remove('lexbig'); if(landing){ landing=false; setTimeout(placeReader,350); } window.MFreader=null; if(window.MFsave) MFsave(); reader.classList.remove('open');scrim.classList.remove('open');reader.setAttribute('aria-hidden','true');}
   $('rClose').addEventListener('click',closeReader);
   scrim.addEventListener('click',closeReader);
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closeReader();});
@@ -1514,20 +1563,43 @@ window.MF=(function(){
     var t=[e.s.charAt(0).toUpperCase()+e.s.slice(1)], h='<p class="lxq"><span data-v="1">'+esc(t[0])+'</span></p>';
     [[e.p,'sounds',1],[e.d,'from',0],[e.k,'kjvtr',1]].forEach(function(q){ if(!q[0]) return; if(q[2]) t.push(q[0]);   // the "from H6960" line is shown, not read
       h+='<div class="lx"><div class="lx-h">'+MF.t(q[1])+'</div><p>'+(q[2]?'<span data-v="'+t.length+'">'+esc(q[0])+'</span>':esc(q[0]))+'</p></div>'; });
-    return {id:id,t:t,html:h,head:'<span class="lx-l">'+esc(e.l)+'</span> <span class="lx-t">'+esc(e.t)+'</span>'}; }
+    return {id:id,t:t,html:'<div class="lexc">'+h+'</div>',head:'<span class="lx-l">'+esc(e.l)+'</span> <span class="lx-t">'+esc(e.t)+'</span>'
+      +'<button type="button" class="lxsay" data-l="'+(gk?'el':'he')+'" data-t="'+encodeURIComponent(e.l)+'" data-p="'+encodeURIComponent(e.p||e.t)+'" aria-label="Say the word">🔊</button>'}; }
+  var EXPL={en:['Expand','Collapse'],es:['Ampliar','Reducir'],tl:['Palakihin','Paliitin'],zh:['展开','收起'],hi:['विस्तार करें','छोटा करें'],el:['Ανάπτυξη','Σύμπτυξη'],de:['Erweitern','Einklappen'],ko:['펼치기','접기'],he:['הרחבה','כיווץ']},
+    VOICEL={en:'Voice',es:'Voz',tl:'Boses',zh:'声音',hi:'आवाज़',el:'Φωνή',de:'Stimme',ko:'목소리',he:'קול'};
+  function expLab(big){ var E=EXPL[MF.lang]||EXPL.en; return big?'▴ '+E[1]:'▾ '+E[0]; }
+  // the Greek or Hebrew word said aloud: the natural voice in that language, else the device's, else the "sounds like" in English
+  function sayWord(b){ stopSpeak(); var id=sp.id, t=decodeURIComponent(b.dataset.t), pr=decodeURIComponent(b.dataset.p||''), L=b.dataset.l, v=aiVoice(), end=function(){ b.classList.remove('on'); };
+    b.classList.add('on');
+    (v?etPost('/api/say',{text:t,lang:L,voice:v}):Promise.reject()).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(bl){
+      if(id!==sp.id) return end(); var a=new Audio(URL.createObjectURL(bl)); sp.audio=a; a.onended=end; a.onpause=end; return a.play(); })
+    .catch(function(){ if(id!==sp.id||!window.speechSynthesis) return end(); var vv=voiceFor(L), u;
+      if(vv.v){ u=new SpeechSynthesisUtterance(t); u.lang=LCODE[L]; u.voice=vv.v; } else { u=new SpeechSynthesisUtterance(pr.replace(/'/g,'')); u.lang='en-US'; }
+      u.rate=.85; u.onend=end; u.onerror=end; speechSynthesis.speak(u); }); }
+  // Expand shows only when the entry is longer than the card
+  function fitExp(btn,body,big){ if(btn) btn.hidden=!(big || body.scrollHeight>body.clientHeight+2); }
+  function readerFit(){ fitExp($('rExp'),reader.querySelector('.reader-body'),reader.classList.contains('lexbig')); }
+  document.addEventListener('click',function(e){ var t=e.target.closest&&e.target.closest('.lxsay,.lxexp'); if(!t) return; e.stopPropagation(); e.preventDefault();
+    if(t.classList.contains('lxsay')){ sayWord(t); return; }
+    var fr=t.closest('.fr');
+    if(fr){ var big=fr.classList.toggle('big'), f=fr.parentNode, card=f.classList.contains('on')?f.querySelector('.cmpb'):f.querySelector('.cmpf');
+      fr.style.height=big?'auto':card.offsetHeight+'px'; fr.style.minHeight=big?card.offsetHeight+'px':''; t.textContent=expLab(big); return; }
+    var bg=reader.classList.toggle('lexbig'); t.textContent=expLab(bg); },true);
+  document.addEventListener('change',function(e){ if(e.target.matches&&e.target.matches('.fr .voicesel')) setVoice(e.target.value); });
   function openStrongs(k,gk){
     window.MFreader={kind:'strongs',k:k,gk:!!gk}; if(window.MFsave) setTimeout(MFsave,0); RD=null; rStop();
     var x=lexBody(k,gk); if(!x) return;
     $('rKicker').textContent=wordTitle(k)+' \u00b7 Strong '+x.id;
     $('rRef').innerHTML=x.head; $('rQuote').innerHTML=''; $('rChapter').innerHTML=x.html;
-    RD={l:'en',t:x.t,vs:1}; rsayUI('en');
+    reader.classList.add('lexmode'); reader.classList.remove('lexbig');
+    RD={l:'en',t:x.t,vs:1}; rsayUI('en'); setTimeout(readerFit,60);
     reader.querySelector('.reader-body').scrollTop=0;
     $('rYouV').style.display='none'; $('rVer').style.display='none'; $('rYouVHint').style.display='none';
     $('rGate').style.display='none';
     $('rNote').textContent=MF.t('lexnote');
     showPanel();
   }
-  function openReader(k,i,l){ l=l||MF.lang;
+  function openReader(k,i,l){ l=l||MF.lang; reader.classList.remove('lexmode','lexbig');
     window.MFreader={kind:'ref',k:k,i:i,l:l}; if(window.MFsave) setTimeout(MFsave,0);
     ['rKicker','rRef','rQuote','rChapter'].forEach(function(id){ $(id).setAttribute('lang',l); });
     RD=null; rsayUI(l);
@@ -1584,7 +1656,8 @@ window.MF=(function(){
     el:['Εδάφιο','Κεφάλαιο','Διακοπή'],de:['Vers','Kapitel','Stopp'],ko:['구절','장 전체','멈춤'],he:['פסוק','פרק','עצור']};
   var RBIB={en:'KJV',es:'RV 1909',tl:'Ang Biblia',zh:'和合本',hi:'IRV',el:'FPB',de:'Elberfelder',ko:'개역',he:'המסורה · דליטש'};
   function rsayUI(l){ var T=RSAY[MF.lang]||RSAY.en, kd=window.MFreader&&window.MFreader.kind, st=kd==='ref'||kd==='strongs', lx=kd==='strongs';
-    $('rSay').hidden=!st; $('rLang').hidden=lx; $('rPlayV').hidden=lx;
+    $('rSay').hidden=!st; $('rLang').hidden=lx; $('rPlayV').hidden=lx; $('rVLab').textContent=VOICEL[MF.lang]||VOICEL.en;
+    $('rExp').textContent=expLab(reader.classList.contains('lexbig')); if(!lx) $('rExp').hidden=true;
     $('rLang').innerHTML=CMPL.filter(function(o){ return !o[2]; }).map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===l?' selected':'')+'>'+esc(cmpLabel(o[0]))+' · '+RBIB[o[0]]+'</option>'; }).join('');
     $('rVoice').innerHTML=voiceOptions();
     $('rPlayV').innerHTML='🔊 '+esc(T[0]); $('rPlayC').innerHTML='🔊 '+esc(lx?(HEARIT[MF.lang]||HEARIT.en):T[1]); $('rPlayV').setAttribute('aria-pressed','false'); $('rPlayC').setAttribute('aria-pressed','false'); }
@@ -2108,7 +2181,7 @@ window.MF=(function(){
     if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak();
     var ref=DATA[k].refs[i], p=parseRef(ref[0]), w=(l!=='en'&&l!=='es')?studyOf(l,k):null, T=RSAY[MF.lang]||RSAY.en;
     var label=l==='en'?ref[0]:l==='es'?esRef(ref[0]):(w?w.refs[i][0]:ref[0]);
-    fr.setAttribute('lang',l); fr.hidden=false; fr._rd=null;
+    fr.setAttribute('lang',l); fr.hidden=false; fr._rd=null; fr.classList.remove('lex','big'); fr.style.minHeight='';
     fr.innerHTML='<div class="frtop"><div><div class="rk">'+esc(titleIn(l,k))+'</div><div class="rref">'+esc(label)+'</div></div><button type="button" class="frx" aria-label="Close">&times;</button></div>'
       +'<div class="frsay"><button type="button" class="rplay" data-a="v">🔊 '+esc(T[0])+'</button><button type="button" class="rplay" data-a="c">🔊 '+esc(T[1])+'</button></div>'
       +'<div class="frbody"><div class="chapter"><p class="frwait">…</p></div></div><div class="frv"></div>';
@@ -2125,10 +2198,12 @@ window.MF=(function(){
   function openFigStrongs(f,k,gk){ var x=lexBody(k,gk); if(!x) return; var fr=f.querySelector('.fr'); if(!fr){ fr=document.createElement('div'); fr.className='fr'; f.appendChild(fr); }
     var card=f.classList.contains('on')?f.querySelector('.cmpb'):f.querySelector('.cmpf'); fr.style.top=card.offsetTop+'px'; fr.style.height=card.offsetHeight+'px';
     if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak();
-    fr.setAttribute('lang','en'); fr.hidden=false; fr._rd={l:'en',t:x.t,vs:1};
+    fr.setAttribute('lang','en'); fr.hidden=false; fr._rd={l:'en',t:x.t,vs:1}; fr.classList.add('lex'); fr.classList.remove('big'); fr.style.minHeight='';
     fr.innerHTML='<div class="frtop"><div><div class="rk">'+esc(titleIn(f.dataset.l,k))+' \u00b7 Strong '+x.id+'</div><div class="rref">'+x.head+'</div></div><button type="button" class="frx" aria-label="Close">&times;</button></div>'
-      +'<div class="frsay"><button type="button" class="rplay" data-a="c">🔊 '+esc(HEARIT[MF.lang]||HEARIT.en)+'</button></div>'
-      +'<div class="frbody"><div class="chapter">'+x.html+'</div></div><div class="frv">Strong\u2019s Concordance</div>';
+      +'<div class="frbody"><div class="chapter">'+x.html+'</div></div>'
+      +'<div class="frsay"><button type="button" class="rplay" data-a="c">🔊 '+esc(HEARIT[MF.lang]||HEARIT.en)+'</button><span class="rvlab">'+esc(VOICEL[MF.lang]||VOICEL.en)+'</span><select class="voicesel" aria-label="Voice">'+voiceOptions()+'</select><button type="button" class="rplay lxexp" hidden>'+expLab(false)+'</button></div>'
+      +'<div class="frv">Strong\u2019s Exhaustive Concordance (1890) \u00b7 public domain</div>';
+    fitExp(fr.querySelector('.lxexp'),fr.querySelector('.frbody'),false);
     f.scrollIntoView({block:'nearest',behavior:'smooth'}); }
   function figReaderClick(e){ var fr=e.target.closest('.fr'); if(!fr) return false;
     if(e.target.closest('.frx')){ if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak(); fr.hidden=true; fr.innerHTML=''; return true; }
