@@ -766,6 +766,24 @@ section.section.bundles{display:block;margin-top:0}
 .hearbox .etrow button[aria-pressed="true"]{border-color:var(--brass);background:rgba(42,95,176,.25)}
 .saybox .snote{display:block;font:.82rem 'Archivo',sans-serif;color:var(--foam-dim,#aaa);margin-top:6px}
 .cmp{flex-wrap:wrap}
+/* Ken, 9 Oct: on a computer, compare up to five fish across, and a very small picker for how many across and how
+   many rows fit the window (shown once two or more fish are on screen). Phones keep one fish under another. */
+.cmpgrid{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:0 0 8px;font:600 .68rem 'Archivo',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--foam-dim,#aaa)}
+.cmpgrid[hidden]{display:none}
+.cmpgrid .gp{display:inline-grid;grid-template-columns:repeat(5,10px);grid-auto-rows:10px;gap:2px;cursor:pointer}
+.cmpgrid .gp i{display:block;border:1px solid var(--line,#444);border-radius:2px;background:transparent}
+.cmpgrid .gp i.on{background:var(--brass);border-color:var(--brass)}
+.cmpgrid .gp i.hov{background:rgba(42,95,176,.45);border-color:var(--brass)}
+.cmpgrid .gpsz{min-width:34px;text-align:center;text-transform:none;letter-spacing:0}
+.cmpgrid button{font:inherit;letter-spacing:inherit;text-transform:inherit;background:none;border:1px solid var(--line,#444);color:inherit;border-radius:999px;padding:2px 8px;cursor:pointer}
+.cmpgrid button[aria-pressed="true"]{border-color:var(--brass);color:var(--foam)}
+@media(min-width:901px){
+  .cmp.grid{display:grid;grid-template-columns:repeat(var(--cols,2),minmax(0,1fr));gap:18px;justify-items:center;align-items:start}
+  .cmp.grid figure{max-width:var(--fmax,100%);width:100%;flex:none}
+  .cmp.wide,.cmpgrid.wide{width:min(96vw,1900px);margin-left:calc(50% - min(48vw,950px))}
+}
+@media(max-width:900px){.cmpgrid{display:none}}
+
 .cmp figure{flex:1 1 calc(50% - 18px);max-width:calc(50% - 9px)}
 .cmp figure:only-child{max-width:100%}
 .cmp .saybox{font-size:.98rem}
@@ -831,6 +849,7 @@ section.section.bundles{display:block;margin-top:0}
   </div>
   <div class="resumebar" id="resumeBar" hidden><span id="resumeTxt"></span><span class="rbtns"><button type="button" class="toolbtn" id="resumeGo">Pick up where I left off</button><button type="button" class="rx" id="resumeX" aria-label="Dismiss">&#215;</button></span></div>
   <div class="stage-col">
+    <div class="cmpgrid" id="cmpGrid" hidden><span id="cmpGridLab">Layout</span><span class="gp" id="gp" role="group"></span><span class="gpsz" id="gpSz"></span><button type="button" id="gpAuto">Auto</button></div>
     <div class="cmp" id="cmp" hidden><figure data-l="a"><div class="cmpf" id="cmpA"></div><figcaption id="cmpAL"></figcaption></figure><figure data-l="b"><div class="cmpf" id="cmpB"></div><figcaption id="cmpBL"></figcaption></figure></div>
       <div class="stage" id="stage" aria-label="Interactive devotional decal, tap to flip">
       <div class="flip" id="flip">
@@ -1877,7 +1896,29 @@ window.MF=(function(){
   function cmpLangs(){ return CMPL.map(function(o){return o[0];}).filter(function(l){return cmpSel.indexOf(l)>=0;}); }
   function cmpShown(){ return cmpSel.length>1 || (cmpSel.length===1 && cmpSel[0]!==MF.lang); }
   window.MFcmp=function(){ if(!cmpShown()) return; var spk=$('spkMain').outerHTML.replace(' id="spkMain"','').replace(' hidden=""','');
-    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div><div class="cmpb">'+backFor(l)+'</div><figcaption>'+cmpLabel(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); };
+    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div><div class="cmpb">'+backFor(l)+'</div><figcaption>'+cmpLabel(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); cmpLayout(); };
+  // Ken, 9 Oct: how many fish across, and how many rows fit the window (computers); "Auto" up to five across
+  var GPK='mf-cmp-grid';
+  function gpPref(){ try{ var g=JSON.parse(localStorage.getItem(GPK)||'null'); if(g&&g.c>=1&&g.c<=5&&g.r>=1&&g.r<=3) return g; }catch(e){} return null; }
+  function gpAutoCols(n){ return n<=5?n:Math.min(5,Math.ceil(n/2)); }
+  function cmpLayout(){ var box=$('cmp'), n=box.querySelectorAll('figure').length, desk=window.matchMedia('(min-width:901px)').matches, g=gpPref();
+    $('cmpGrid').hidden=!(desk && cmpShown() && n>=2);
+    if(!desk || !cmpShown()){ box.classList.remove('grid','wide'); $('cmpGrid').classList.remove('wide'); return; }
+    var c=g?g.c:gpAutoCols(n), r=g?g.r:0; box.classList.add('grid'); box.style.setProperty('--cols',c);
+    box.classList.toggle('wide',c>=3); $('cmpGrid').classList.toggle('wide',c>=3);
+    // rows chosen: size each fish so that many rows fit in the window (the fish is twice as wide as tall, plus its caption)
+    if(r){ var h=Math.max(120,(window.innerHeight-170)/r-78); box.style.setProperty('--fmax',Math.round(h*2)+'px'); } else box.style.removeProperty('--fmax');
+    gpPaint(g?g.c:0,g?g.r:0); $('gpSz').textContent=g?(g.c+' × '+g.r):''; $('gpAuto').setAttribute('aria-pressed',String(!g)); }
+  function gpPaint(c,r,hov){ [].forEach.call($('gp').children,function(e){ var x=+e.dataset.c, y=+e.dataset.r;
+    e.classList.toggle('on',!hov && x<=c && y<=r); e.classList.toggle('hov',!!hov && x<=c && y<=r); }); }
+  (function(){ var h=''; for(var y=1;y<=3;y++) for(var x=1;x<=5;x++) h+='<i data-c="'+x+'" data-r="'+y+'" title="'+x+' × '+y+'"></i>'; $('gp').innerHTML=h;
+    $('gp').addEventListener('mouseover',function(e){ var t=e.target.closest('i'); if(!t) return; gpPaint(+t.dataset.c,+t.dataset.r,true); $('gpSz').textContent=t.dataset.c+' × '+t.dataset.r; });
+    $('gp').addEventListener('mouseleave',cmpLayout);
+    $('gp').addEventListener('click',function(e){ var t=e.target.closest('i'); if(!t) return; try{ localStorage.setItem(GPK,JSON.stringify({c:+t.dataset.c,r:+t.dataset.r})); }catch(x){} cmpLayout(); });
+    $('gpAuto').addEventListener('click',function(){ try{ localStorage.removeItem(GPK); }catch(x){} cmpLayout(); });
+    window.addEventListener('resize',function(){ clearTimeout(window.__gpT); window.__gpT=setTimeout(cmpLayout,150); }); })();
+  function gpLabels(){ var es=MF.lang==='es'; $('cmpGridLab').textContent=es?'Diseño':'Layout'; $('gpAuto').textContent=es?'Automático':'Auto'; }
+  gpLabels(); MF.onChange(gpLabels);
   var cmpOn={};
   // tap a fish to turn it over; on the back, verses and Strong's open just as on the single fish
   $('cmp').addEventListener('click',function(e){ var f=e.target.closest('figure[data-l]'); if(!f||e.target.closest('.spk,figcaption,.saybox')) return;
@@ -1889,7 +1930,7 @@ window.MF=(function(){
     cmpSel=(list||[]).filter(function(l,i,a){return ok.indexOf(l)>=0 && a.indexOf(l)===i;}); cmpLang=cmpSel[0]||null; var on=cmpShown();
     $('cmp').hidden=!on; $('stage').hidden=on; $('spkMain').hidden=on; $('sayMain').hidden=true; $('cmpBtn').setAttribute('aria-pressed',String(on)); buildMenu();
     if(on){ closeReader(); MFcmp(); cmpSel.forEach(function(l){ loadLang(l).then(function(){ MFcmp(); }).catch(function(){}); }); }
-    else sizeStage(); if(window.MFsave) MFsave(); }
+    else sizeStage(); cmpLayout(); if(window.MFsave) MFsave(); }
   window.MFsetCmp=setCmp; window.MFcmpSel=function(){ return cmpSel.slice(); };
   var MENU={en:['Read the site in','Compare the fish in','Just one fish','soon'],es:['Leer el sitio en','Comparar el pez en','Solo un pez','pronto'],
     tl:['Basahin ang site sa','Ihambing ang isda sa','Isang isda lang','malapit na'],zh:['网站语言','对照的鱼','只看一条鱼','即将推出'],
