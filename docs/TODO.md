@@ -57,6 +57,11 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [ ] Bible App (YouVersion) links for the 6 new languages: confirm each one's version number on bible.com, then add the buttons back.
 - [ ] Daily devotional emails and phone notices stay English or Spanish.
 
+### Compare looks like the real decal (9 Oct, on the test site)
+- [x] Every compared fish is the same card as the single fish: same size, same black frame and padding (phone and computer).
+- [x] Turned over, a compared fish opens to the single fish's full width with the very same word study layout (Greek and Hebrew side by side, verses in four columns on a computer).
+- [x] "Per row" picker (computer) picks how many fish across, as many as fit at that size; a "✕ Just one fish" button above the fish goes back to one.
+
 ### Bible reader speaker (9 Oct, on the test site)
 - [x] Words light up one by one as the reader speaks (Bible reader and the readers under each fish).
 - [x] With fish side by side, a verse opens right under its own fish in that fish's language, so two or more passages can be open at once, each with its own speaker.

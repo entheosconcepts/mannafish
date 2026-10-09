@@ -663,11 +663,14 @@ section.section.bundles{display:block;margin-top:0}
 .cmp{display:flex;gap:18px;justify-content:center;width:100%}
 .cmp[hidden]{display:none}
 .cmp figure{flex:1 1 0;margin:0;text-align:center;cursor:pointer}
-.cmpf{position:relative;aspect-ratio:2/1;background:#000;border:1px solid rgba(255,255,255,.18);border-radius:6px;overflow:hidden}
+/* Ken, 9 Oct: each fish in the side-by-side view is the same card as the single fish -- same black frame and padding */
+.cmpf{position:relative;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;background:#000;border:1px solid rgba(196,210,214,.16);border-radius:6px;overflow:hidden;box-shadow:0 30px 70px -30px #000, inset 0 1px 0 rgba(255,255,255,.05)}
+.cmpfb{position:relative;width:92%;aspect-ratio:2/1}
+@media(max-width:640px){.cmpf{aspect-ratio:auto;padding:29px 0}.cmpfb{width:100%}}  /* as the single fish on a phone */
 .cmpf svg{position:absolute;inset:0;width:100%;height:100%}
 .cmp figure:hover .cmpf{border-color:var(--brass)}
 .cmp figcaption{margin-top:6px;font:600 .8rem 'Archivo',sans-serif;letter-spacing:.04em;color:var(--foam-dim,#aaa)}
-@media(max-width:900px){.cmp{flex-direction:column;align-items:center}.cmp figure{width:min(520px,100%);flex:none}}
+@media(max-width:900px){.cmp{flex-direction:column;align-items:center}.cmp figure{width:100%;flex:none}}
 .giftbox .dlab{font-family:'Archivo',sans-serif;font-size:.78rem;letter-spacing:.04em;color:var(--foam-dim)}
 .giftbox #giftLang{flex-wrap:wrap;gap:10px 16px}
 .giftbox #giftLang label{flex-direction:row;font-size:.9rem;letter-spacing:0}
@@ -815,6 +818,7 @@ section.section.bundles{display:block;margin-top:0}
 @media(min-width:901px){
   .cmp.grid{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:flex-start;max-width:none}
   .cmp.grid figure{max-width:none;width:var(--fw);flex:none}
+  .cmp.grid figure.on{width:var(--bw)}
 }
 @media(max-width:900px){.cmpgrid{justify-content:center}}
 
@@ -823,21 +827,18 @@ section.section.bundles{display:block;margin-top:0}
 .cmp .saybox{font-size:.98rem}
 .cmpmenu button[role="menuitemcheckbox"]::before{content:'';display:inline-block;width:14px;height:14px;border:1.5px solid currentColor;border-radius:3px;margin-right:10px;vertical-align:-2px;opacity:.7}
 .cmpmenu button[role="menuitemcheckbox"][aria-checked="true"]::before{background:#2a5fb0;border-color:#2a5fb0;opacity:1;box-shadow:inset 0 0 0 2px var(--panel,#0b1620)}
-@media(max-width:900px){.cmp figure{max-width:min(520px,100%)}}
+@media(max-width:900px){.cmp figure{max-width:100%}}
 
 /* Ken, 7 Oct: one fish on its own is the same size as each fish in the side-by-side view (computers only) */
 @media(min-width:901px){ #stage{width:calc((50% - 9px) * 1.088);margin-left:auto;margin-right:auto} #stage.on{width:100%} }
 
 /* Ken, 8 Oct: the fish in the side-by-side view flip to the word study too (tap the fish) */
 .cmp .cmpf{cursor:pointer}
-.cmpb{display:none;container-type:inline-size;border:1px solid rgba(255,255,255,.18);border-radius:6px;background:#000;color:#eaf0f0;cursor:pointer}
+.cmpb{display:none;container-type:inline-size;border:1px solid rgba(196,210,214,.16);border-radius:6px;background:#000;color:#eaf0f0;cursor:pointer;box-shadow:0 30px 70px -30px #000, inset 0 1px 0 rgba(255,255,255,.05);text-align:initial}
 .cmp figure.on .cmpf{display:none}
 .cmp figure.on .cmpb{display:block;animation:cmpflip .35s ease}
 @keyframes cmpflip{from{transform:perspective(900px) rotateY(90deg)}to{transform:none}}
-.cmpb .face{position:static;inset:auto;backface-visibility:visible;-webkit-backface-visibility:visible;visibility:visible;padding:18px 14px 20px;border:0;background:none;transform:none}
-.cmpb .refs{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px}
-.cmpb .wtitle{font-size:clamp(1.6rem,9cqw,2.6rem)}
-.cmp figure:only-child .cmpb .refs{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cmpb .face{position:static;inset:auto;backface-visibility:visible;-webkit-backface-visibility:visible;visibility:visible;border:0;background:none;transform:none;box-shadow:none}
 .face.back:is([lang=zh],[lang=ko],[lang=hi],[lang=he]) :is(.lab,.mean,.trace,.conc,.s){letter-spacing:0;font-style:normal}
 .cmpb .wsub{text-align:center;font:1.15rem 'Spectral',serif;color:var(--foam-dim,#9fb2b6);margin:-4px 0 6px}
 
@@ -1991,7 +1992,7 @@ window.MF=(function(){
   function cmpLangs(){ return CMPL.map(function(o){return o[0];}).filter(function(l){return cmpSel.indexOf(l)>=0;}); }
   function cmpShown(){ return cmpSel.length>1 || (cmpSel.length===1 && cmpSel[0]!==MF.lang); }
   window.MFcmp=function(){ if(!cmpShown()) return; var spk=$('spkMain').outerHTML.replace(' id="spkMain"','').replace(' hidden=""','');
-    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div><div class="cmpb">'+backFor(l)+'</div><figcaption>'+cmpLabel(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); cmpLayout(); };
+    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf"><div class="cmpfb">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div></div><div class="cmpb">'+backFor(l)+'</div><figcaption>'+cmpLabel(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); cmpLayout(); };
   // Ken, 9 Oct: every fish stays the size it is with two side by side, whatever the layout. "Per row" picks how many
   // go across (as many as the screen has room for at that size); more simply wrap to the next row. A clear button
   // above the fish goes straight back to one fish.
@@ -2000,13 +2001,13 @@ window.MF=(function(){
   function cmpLayout(){ gpLabels(); var box=$('cmp'), n=box.querySelectorAll('figure').length, desk=window.matchMedia('(min-width:901px)').matches, on=cmpShown();
     $('cmpGrid').hidden=!on; $('cmpGrid').querySelector('.gpwrap').hidden=!(desk && n>=2);
     if(!desk || !on){ box.classList.remove('grid'); [box,$('cmpGrid')].forEach(function(e){ e.style.width=''; e.style.marginLeft=''; }); box.style.removeProperty('--fw'); box.style.removeProperty('--cols'); return; }
-    var pw=box.parentElement.clientWidth, gap=18, fw=Math.floor((pw-gap)/2), room=Math.min(window.innerWidth*0.96,1900);
+    var pw=box.parentElement.clientWidth, gap=18, fw=Math.round(Math.floor((pw-gap)/2)*1.088), room=Math.min(window.innerWidth*0.96,1900);
     var maxC=Math.max(1,Math.min(5,Math.floor((room+gap)/(fw+gap)))), want=gpPref(), c;
     if(want) c=Math.min(want,maxC); else { var rows=Math.ceil(n/maxC); c=Math.min(maxC,Math.ceil(n/rows)); }
     c=Math.max(1,Math.min(c,n));
-    box.classList.add('grid'); box.style.setProperty('--cols',c); box.style.setProperty('--fw',fw+'px');
+    box.classList.add('grid'); box.style.setProperty('--cols',c); box.style.setProperty('--fw',fw+'px'); box.style.setProperty('--bw',pw+'px');
     // the rows are exactly c fish wide, centred on the page (a short last row sits in the middle)
-    var tw=c*fw+(c-1)*gap; [box,$('cmpGrid')].forEach(function(e){ e.style.width=tw+'px'; e.style.marginLeft='calc(50% - '+(tw/2)+'px)'; });
+    var tw=Math.max(c*fw+(c-1)*gap, box.querySelector('figure.on')?pw:0); [box,$('cmpGrid')].forEach(function(e){ e.style.width=tw+'px'; e.style.marginLeft='calc(50% - '+(tw/2)+'px)'; });
     [].forEach.call($('gp').children,function(e){ var x=+e.dataset.c; e.classList.toggle('on',!!want && x<=c); e.classList.toggle('off',x>maxC); e.classList.remove('hov'); });
     $('gpSz').textContent=want?String(c):''; $('gpAuto').setAttribute('aria-pressed',String(!want)); }
   (function(){ var h=''; for(var x=1;x<=5;x++) h+='<i data-c="'+x+'" title="'+x+'"></i>'; $('gp').innerHTML=h;
@@ -2052,7 +2053,7 @@ window.MF=(function(){
     var ref=e.target.closest('.ref'); if(ref){ e.stopPropagation(); if(cmpShown()) openFigReader(f,cur,+ref.dataset.i,ref.dataset.l||f.dataset.l); else openReader(cur,+ref.dataset.i,ref.dataset.l); return; }
     var conc=e.target.closest('.conc'); if(conc){ var gk=conc===f.querySelectorAll('.conc')[0], sg=STRONGS[cur]||['',''], n=gk?sg[0]:sg[1];
       if(n && LEX[(gk?'G':'H')+n]){ e.preventDefault(); e.stopPropagation(); openStrongs(cur,gk); } return; }
-    var l=f.dataset.l; cmpOn[l]=!cmpOn[l]; f.classList.toggle('on',!!cmpOn[l]); if(window.MFsave) MFsave(); });
+    var l=f.dataset.l; cmpOn[l]=!cmpOn[l]; f.classList.toggle('on',!!cmpOn[l]); cmpLayout(); if(window.MFsave) MFsave(); });
   function setCmp(list){ stopSpeak(); var ok=CMPL.filter(function(o){return !o[2];}).map(function(o){return o[0];});
     cmpSel=(list||[]).filter(function(l,i,a){return ok.indexOf(l)>=0 && a.indexOf(l)===i;}); cmpLang=cmpSel[0]||null; var on=cmpShown();
     $('cmp').hidden=!on; $('stage').hidden=on; $('spkMain').hidden=on; $('sayMain').hidden=true; $('cmpBtn').setAttribute('aria-pressed',String(on)); buildMenu();
