@@ -661,6 +661,10 @@ section.section.bundles{display:block;margin-top:0}
 .toolbtn{font:600 .85rem 'Archivo',sans-serif;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;border:1px solid var(--line,#333);background:transparent;color:inherit;cursor:pointer}
 .toolbtn:hover,.toolbtn[aria-pressed="true"],.toolbtn[aria-expanded="true"]{border-color:var(--brass)}
 .toolbtn[aria-pressed="true"]{background:rgba(42,95,176,.25)}
+/* Ken, 9 Oct: Every Tongue in the middle, as the main feature; all three on one line on a phone */
+.toolbtn.tbmain{background:var(--brass);border-color:var(--brass);color:#fff}
+.toolbtn.tbmain[aria-expanded="true"]{box-shadow:0 0 0 2px rgba(255,255,255,.35)}
+@media(max-width:430px){.toolrow{gap:6px;flex-wrap:nowrap}.toolbtn{padding:8px 10px;font-size:.78rem;gap:4px;white-space:nowrap}}
 .notesbox{width:100%;max-width:720px;margin:8px auto 0;border:1px solid var(--line,#333);border-radius:8px;padding:14px;text-align:left}
 .notesbox[hidden]{display:none}
 .notesbox .nhd{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px;font-family:'Archivo',sans-serif}
@@ -857,7 +861,7 @@ section.section.bundles{display:block;margin-top:0}
   <div class="saybox" id="sayMain" hidden></div>
   <div class="sharerow"><span class="rnote" id="shareMsg"></span></div>
   <!-- Ken, 7 Oct: hear the verse, and keep notes (typed or spoken). Notes stay on this device until accounts come. -->
-  <div class="toolrow"><button class="toolbtn" type="button" id="notesBtn" aria-expanded="false"><span aria-hidden="true">&#9998;</span> <span id="notesLab">My notes</span></button><button class="toolbtn" type="button" id="acctBtn" aria-expanded="false"><span aria-hidden="true">&#128100;</span> <span id="acctLab">Sign in</span></button><button class="toolbtn" type="button" id="etBtn" aria-expanded="false" aria-controls="etBox"><span aria-hidden="true">&#128172;</span> <span id="etLab">Every Tongue</span></button></div>
+  <div class="toolrow"><button class="toolbtn" type="button" id="notesBtn" aria-expanded="false"><span aria-hidden="true">&#9998;</span> <span id="notesLab">My notes</span></button><button class="toolbtn tbmain" type="button" id="etBtn" aria-expanded="false" aria-controls="etBox"><span aria-hidden="true">&#128172;</span> <span id="etLab">Every Tongue</span></button><button class="toolbtn" type="button" id="acctBtn" aria-expanded="false"><span aria-hidden="true">&#128100;</span> <span id="acctLab">Sign in</span></button></div>
   <!-- Every Tongue (Ken, 8-9 Oct): a translator for sharing the gospel; ready-made phrases and verses in a drop-down -->
   <section class="notesbox etbox" id="etBox" aria-labelledby="etTitle" hidden>
     <div class="ethd"><div><h2 id="etTitle" translate="no">Every Tongue</h2><p class="etsub" id="etSub"></p></div><button class="etx" type="button" id="etX" aria-label="Close">&times;</button></div>
