@@ -748,6 +748,14 @@ section.section.bundles{display:block;margin-top:0}
 .modebtn{position:absolute;right:16px;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;
   border:1px solid var(--line);background:transparent;color:var(--foam);font-size:1.1rem;cursor:pointer;line-height:1}
 .modebtn:hover{border-color:var(--brass)}
+.modebtn.mlight{right:auto;left:16px}
+.modebtn[aria-pressed="true"]{border-color:var(--brass);background:rgba(42,95,176,.25)}
+.nav .cmpbtn{left:62px!important}
+.trnbtn{position:absolute;right:62px;top:50%;transform:translateY(-50%);height:38px;padding:0 13px;border-radius:999px;border:1px solid var(--brass);background:transparent;color:var(--foam);font:600 .82rem 'Archivo',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.trnbtn:hover,.trnbtn[aria-expanded="true"]{background:rgba(42,95,176,.25)}
+@media(max-width:560px){.trnbtn .trnlab{display:none}.trnbtn{width:34px;height:34px;padding:0;justify-content:center;right:58px}.nav .cmpbtn{left:58px!important}.modebtn.mlight{left:16px}}
+@media(max-width:420px){.nav .brand{font-size:1.25rem!important}.modebtn.mlight{left:10px}.modebtn.mdark{right:10px}.nav .cmpbtn{left:50px!important;padding:0 8px;gap:4px}.trnbtn{right:50px}}
+@media(max-width:370px){.nav .brand{font-size:1.1rem!important}.nav .cmpbtn .caret{display:none}}
 :root[data-mode="light"]{
   --ink:#f7f5ef; --ink2:#ffffff; --deep:#ffffff; --deep2:#f7f5ef;
   --foam:#14181d; --foam-dim:#4b5560; --line:rgba(20,24,29,.16);
@@ -829,7 +837,7 @@ section.section.bundles{display:block;margin-top:0}
 
 .toolrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0 2px}
 /* Ken, 9 Oct: "Listen" from the email -- the day's fish, the verse read aloud in a reader that rises over half the
-   fish (expand it, shrink it to a bar, pause), and a Listen / Pause button beside My notes, Every Tongue and Sign in */
+   fish (expand it, shrink it to a bar, pause), and a Listen / Pause button beside My notes, the Translator and Sign in */
 .toolbtn.tblisten{border-color:var(--brass)}
 .toolbtn.tblisten.tap{background:var(--brass);color:#fff;animation:mfpulse 1.4s ease-in-out infinite}
 @keyframes mfpulse{0%,100%{box-shadow:0 0 0 0 rgba(42,95,176,.6)}50%{box-shadow:0 0 0 8px rgba(42,95,176,0)}}
@@ -895,7 +903,8 @@ section.section.bundles{display:block;margin-top:0}
 .etheard .eth{font:600 .72rem 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--foam-dim);margin-bottom:4px}
 .etheard .b .w.on{background:#f5d76e;color:#111;border-radius:3px}
 .etbox .etshow{margin:12px 0 0}
-.ethd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.ethd{display:flex;align-items:flex-start;justify-content:center;gap:10px;position:relative;text-align:center;padding:0 40px}
+.ethd .etx{position:absolute;right:0;top:0}
 .ethd h2{margin:0;font:400 1.6rem 'MFHobo','Archivo',sans-serif;letter-spacing:.02em;color:var(--foam)}
 .etsub{margin:2px 0 0;font-size:.8rem;color:var(--foam-dim)}
 .etx{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--foam);font-size:1.3rem;line-height:1;cursor:pointer}
@@ -1025,7 +1034,10 @@ section.section.bundles{display:block;margin-top:0}
   <a class="brand" href="#today" style="text-decoration:none"><span class="wm-m">Manna</span><span class="wm-f">Fish</span></a>
   <button class="langbtn" type="button" id="langBtn" hidden aria-label="English / Español">Español</button>
   <span class="cmpcap" id="cmpCap" hidden>Select<br>language</span><button class="cmpbtn" type="button" id="cmpBtn" aria-pressed="false" aria-haspopup="true" aria-expanded="false" aria-label="Language"><svg viewBox="0 0 64 32" aria-hidden="true"><path d="M4 16 C16 2 36 2 48 16 L60 4 M4 16 C16 30 36 30 48 16 L60 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="cmpLab">English</span><span id="cmpLabS">EN</span><span class="caret" aria-hidden="true">&#9662;</span></button><div class="cmpmenu" id="cmpMenu" role="menu" hidden></div>
-  <button class="modebtn" type="button" id="modeBtn" aria-label="Switch between dark and light">&#9728;&#xFE0E;</button>
+  <!-- Ken, 9 Oct: balanced top bar -- sun (light) and language on the left; MannaFish Translator and moon (dark) on the right -->
+  <button class="modebtn mlight" type="button" id="modeBtn" aria-label="Light mode" aria-pressed="false">&#9728;&#xFE0E;</button>
+  <button class="trnbtn" type="button" id="trnBtn" aria-label="MannaFish Translator"><span aria-hidden="true">&#128172;</span><span class="trnlab" id="trnLab">Translator</span></button>
+  <button class="modebtn mdark" type="button" id="modeDark" aria-label="Dark mode" aria-pressed="true">&#9790;&#xFE0E;</button>
 </div></header>
 
 <section class="hero" id="today"><div class="wrap today">
@@ -1070,10 +1082,10 @@ section.section.bundles{display:block;margin-top:0}
   <div class="saybox" id="sayMain" hidden></div>
   <div class="sharerow"><span class="rnote" id="shareMsg"></span></div>
   <!-- Ken, 7 Oct: hear the verse, and keep notes (typed or spoken). Notes stay on this device until accounts come. -->
-  <div class="toolrow"><button class="toolbtn" type="button" id="notesBtn" aria-expanded="false"><span aria-hidden="true">&#9998;</span> <span id="notesLab">My notes</span></button><button class="toolbtn tbmain" type="button" id="etBtn" aria-expanded="false" aria-controls="etBox"><span aria-hidden="true">&#128172;</span> <span id="etLab">Every Tongue</span></button><button class="toolbtn" type="button" id="acctBtn" aria-expanded="false"><span aria-hidden="true">&#128100;</span> <span id="acctLab">Sign in</span></button><button class="toolbtn tblisten" type="button" id="listenBtn" hidden><span id="listenIco" aria-hidden="true">&#9654;&#xFE0E;</span> <span id="listenLab">Listen</span></button></div>
+  <div class="toolrow"><button class="toolbtn" type="button" id="notesBtn" aria-expanded="false"><span aria-hidden="true">&#9998;</span> <span id="notesLab">My notes</span></button><button class="toolbtn tbmain" type="button" id="etBtn" aria-expanded="false" aria-controls="etBox"><span aria-hidden="true">&#128172;</span> <span id="etLab">Translator</span></button><button class="toolbtn" type="button" id="acctBtn" aria-expanded="false"><span aria-hidden="true">&#128100;</span> <span id="acctLab">Sign in</span></button><button class="toolbtn tblisten" type="button" id="listenBtn" hidden><span id="listenIco" aria-hidden="true">&#9654;&#xFE0E;</span> <span id="listenLab">Listen</span></button></div>
   <!-- Every Tongue (Ken, 8-9 Oct): a translator for sharing the gospel; ready-made phrases and verses in a drop-down -->
   <section class="notesbox etbox" id="etBox" aria-labelledby="etTitle" hidden>
-    <div class="ethd"><div><h2 id="etTitle" translate="no">Every Tongue</h2><p class="etsub" id="etSub"></p></div><button class="etx" type="button" id="etX" aria-label="Close">&times;</button></div>
+    <div class="ethd"><div><h2 id="etTitle" translate="no">MannaFish Translator</h2><p class="etsub" id="etSub"></p></div><button class="etx" type="button" id="etX" aria-label="Close">&times;</button></div>
     <div class="etsets"><label class="etto"><span id="etToLab"></span><select id="etTo"></select></label><label class="etto"><span id="etVoiceLab"></span><select id="etVoice" class="voicesel"></select></label></div>
     <div class="etlive" id="etLive">
       <textarea id="etText" maxlength="300"></textarea>
@@ -1385,7 +1397,7 @@ window.MF=(function(){
   function detect(){ var n=(navigator.language||'').toLowerCase().split('-')[0]; if(n==='fil') n='tl'; if(n==='iw') n='he'; return LL.indexOf(n)>=0?n:'en'; }
   var L='en'; try{var q=(location.search.match(/[?&]lang=(es|en|tl|zh|hi|el|de|ko|he)\b/)||[])[1], st=localStorage.getItem('mf-lang'); L=q||(LL.indexOf(st)>=0?st:'')||detect();}catch(e){}
   var hooks=[], orig=new WeakMap(), X=window.MFI18N;
-  var SKIP='script,style,#refs,#reader,#listenBtn,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#okBox,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
+  var SKIP='script,style,#refs,#reader,#listenBtn,#trnBtn,#modeDark,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#okBox,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
   function norm(s){return s.replace(/\s+/g,' ').trim();}
   function t(k){var u=X.ui[k]; return u ? (L==='es'?u[1]:u[0]) : k;}
   function applyPage(){
@@ -1929,12 +1941,12 @@ window.MF=(function(){
   document.querySelectorAll('.tzfield').forEach(function(i){try{i.value=Intl.DateTimeFormat().resolvedOptions().timeZone||'';}catch(e){}});
 
   // Ken, 7 Oct: dark / light, for contrast. Remembered on this device.
-  (function(){var root=document.documentElement,b=$('modeBtn');
-    function show(){var light=root.getAttribute('data-mode')==='light'; b.innerHTML= light ? '&#9790;&#xFE0E;' : '&#9728;&#xFE0E;'; b.title= light ? 'Dark mode' : 'Light mode';
+  (function(){var root=document.documentElement,sun=$('modeBtn'),moon=$('modeDark');
+    function show(){var light=root.getAttribute('data-mode')==='light'; sun.setAttribute('aria-pressed',light?'true':'false'); moon.setAttribute('aria-pressed',light?'false':'true');
       var m=document.querySelector('meta[name=theme-color]'); if(m) m.setAttribute('content', light ? '#f7f5ef' : '#000000');}
-    b.addEventListener('click',function(){var light=root.getAttribute('data-mode')!=='light';
-      if(light) root.setAttribute('data-mode','light'); else root.removeAttribute('data-mode');
-      try{localStorage.setItem('mf-mode',light?'light':'dark');}catch(e){} show();});
+    function set(light){ if(light) root.setAttribute('data-mode','light'); else root.removeAttribute('data-mode');
+      try{localStorage.setItem('mf-mode',light?'light':'dark');}catch(e){} show(); }
+    sun.addEventListener('click',function(){ set(true); }); moon.addEventListener('click',function(){ set(false); });
     show();})();
   var gsel=$('giftWord'); ORDER.forEach(function(k){var o=document.createElement('option');o.value=DATA[k].title;o.textContent=titleIn(MF.lang==='es'?'es':'en',k);o.dataset.k=k;gsel.appendChild(o);});
   MF.onChange(function(){
@@ -2042,12 +2054,23 @@ window.MF=(function(){
       foot:'Las traducciones son borradores que revisan hablantes nativos.',tap:'Toque para volver'}};
   var TG=null, etLast=null, etRec=null;
   function etT(){ return ET[MF.lang]||ET.en; }
+  // Ken, 9 Oct: "Every Tongue" is now the MannaFish Translator -- [title, short name, what it is for]
+  var TRN={en:['MannaFish Translator','Translator','A translator for sharing Jesus with anyone in their own language'],
+    es:['Traductor MannaFish','Traductor','Un traductor para compartir a Jesús con cualquiera en su propio idioma'],
+    tl:['MannaFish Tagasalin','Tagasalin','Isang tagasalin para maibahagi si Jesus sa sinuman sa sarili nilang wika'],
+    zh:['MannaFish 翻译','翻译','用对方自己的语言，与任何人分享耶稣'],
+    hi:['MannaFish अनुवादक','अनुवादक','किसी को भी उसकी अपनी भाषा में यीशु के बारे में बताने के लिए एक अनुवादक'],
+    el:['Μεταφραστής MannaFish','Μεταφραστής','Ένας μεταφραστής για να μοιράζεστε τον Ιησού με τον καθένα στη δική του γλώσσα'],
+    de:['MannaFish-Übersetzer','Übersetzer','Ein Übersetzer, um Jesus mit jedem in seiner eigenen Sprache zu teilen'],
+    ko:['MannaFish 번역기','번역기','누구에게나 그 사람의 언어로 예수님을 전하는 번역기'],
+    he:['המתרגם של MannaFish','מתרגם','מתרגם לשיתוף ישוע עם כל אדם בשפתו שלו']};
+  function trn(){ return TRN[MF.lang]||TRN.en; }
   function etLangs(){ return CMPL.filter(function(o){ return !o[2] && o[0]!==MF.lang; }).map(function(o){ return o[0]; }); }
   function etTo(){ var l=null; try{ l=localStorage.getItem('mf-et-to'); }catch(e){}
     var ok=etLangs(); if(ok.indexOf(l)<0) l=cmpSel.filter(function(x){ return ok.indexOf(x)>=0; })[0]||(MF.lang==='es'?'en':'es'); return l; }
   function etLoad(){ return TG?Promise.resolve(TG):fetch('/fish-lang/tongue.json').then(function(r){ return r.json(); }).then(function(j){ TG=j; return j; }); }
   function etUI(){ var T=etT(), to=etTo();
-    $('etLab').textContent=$('etTitle').textContent=T.lab; $('etSub').textContent=T.sub; $('etToLab').textContent=T.to; $('etVoiceLab').textContent=T.voice;
+    var N=trn(); $('etLab').textContent=N[1]; $('etTitle').textContent=N[0]; $('etSub').textContent=N[2]; $('etToLab').textContent=T.to; $('etVoiceLab').textContent=T.voice;
     $('etPlay').textContent=T.play; $('etFull').textContent=T.full; $('etSugLab').textContent=T.sug; $('etHeardH').textContent=T.theySaid;
     $('etText').placeholder=T.ph; $('etGo').textContent=T.go; $('etMic').textContent=etRec&&etRec.mine?T.stop:T.mic; $('etThem').textContent=etRec&&!etRec.mine?T.stop:T.them; $('etFoot').textContent=T.foot;
     $('etTo').innerHTML=etLangs().map(function(l){ return '<option value="'+l+'"'+(l===to?' selected':'')+'>'+esc(cmpLabel(l))+'</option>'; }).join('');
@@ -2110,8 +2133,10 @@ window.MF=(function(){
   window.MFetHeard=etHeard;
   $('etMic').addEventListener('click',function(){ etListen(true); });
   $('etThem').addEventListener('click',function(){ etListen(false); });
-  MF.onChange(function(){ if(!$('etBox').hidden) etUI(); else $('etLab').textContent=etT().lab; });
-  $('etLab').textContent=etT().lab;
+  MF.onChange(function(){ if(!$('etBox').hidden) etUI(); else $('etLab').textContent=trn()[1]; $('trnLab').textContent=trn()[1]; });
+  $('etLab').textContent=$('trnLab').textContent=trn()[1];
+  // the Translator button at the top opens it (the same as the one under the fish) and brings it into view
+  $('trnBtn').addEventListener('click',function(){ if($('etBox').hidden) $('etBtn').click(); setTimeout(function(){ $('etBox').scrollIntoView({behavior:'smooth',block:'start'}); },60); });
   // ── Ken, 9 Oct: "if any text on the website needs to be read in that language ... highlight it and push play."
   // Select any words on the page: a small 🔊 button offers to say them, translated into the reading language first
   // when that is not English. Uses /api/translate and /api/say; the device's own voice when those are not available.
