@@ -567,6 +567,30 @@ section.section.bundles{display:block;margin-top:0}
 .rstack .rver{margin:0}
 
 .rhint{margin:0 0 -4px;text-align:center;font-family:'Archivo',sans-serif;font-size:.74rem;color:var(--parch-dim)}
+/* the deck on the back of the fish: every card the same rectangle as the decal */
+.face.back.decked{padding:0 !important;bottom:0 !important}
+.face.back .bsrc{display:none}
+.face.back:not(.decked) .bsrc{display:block}
+.deck{position:absolute;inset:0}
+.cmpb{position:relative;overflow:hidden}
+.cmpb .face.back{position:absolute !important;inset:0 !important}
+.dcard{position:absolute;inset:0 9px 9px 0;background:#000;border:1px solid rgba(196,210,214,.18);border-radius:6px;padding:16px clamp(14px,4cqw,30px) 40px;overflow:hidden;transition:transform .32s ease,opacity .32s ease;box-shadow:0 6px 16px -8px #000}
+.dcard.cur{z-index:4}
+.dcard.under1{z-index:3;transform:translate(4px,4px);cursor:pointer}
+.dcard.under2{z-index:2;transform:translate(8px,8px)}
+.dcard.under3{z-index:1;transform:translate(8px,8px);opacity:0}
+.dcard.past{z-index:5;opacity:0;transform:translateX(-24px);pointer-events:none}
+.dcard .wtitle{margin:0}
+.dcard .wtitle.small{font-size:1.6rem !important}
+.dcard .hr{margin:10px 0 !important}
+.dcard .langs.one{grid-template-columns:1fr !important}
+.dcard .langs.one .div{display:none}
+.deck .refs{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:12px 14px !important;margin-top:12px !important}
+.deck .trace{margin-top:0 !important}
+.dnav{position:absolute;right:20px;bottom:18px;z-index:6;display:flex;align-items:center;gap:8px;font:600 .72rem 'Archivo',sans-serif;color:var(--foam-dim,#9fb2b6)}
+.dnav[hidden]{display:none}
+.dnav button{width:30px;height:30px;border-radius:50%;border:1px solid rgba(196,210,214,.3);background:#000;color:#eaf0f0;font-size:1.1rem;line-height:1;cursor:pointer;padding:0}
+.dnav button:disabled{opacity:.3;cursor:default}
 /* a passage laid on top of the card, like a card dealt onto a deck */
 @keyframes mfdeal{from{opacity:0;transform:translateY(14px) rotate(-1.2deg)}to{opacity:1;transform:none}}
 .reader.stacked{position:absolute;inset:0;z-index:8;width:100%;height:100%;transform:none;transition:none;display:none;border:1px solid var(--line);border-radius:6px;box-shadow:0 -8px 0 -4px rgba(255,255,255,.06),0 18px 40px -12px #000;overflow:hidden}
@@ -838,7 +862,7 @@ section.section.bundles{display:block;margin-top:0}
 @media(max-width:900px){.cmp figure{max-width:100%}}
 
 /* Ken, 7 Oct: one fish on its own is the same size as each fish in the side-by-side view (computers only) */
-@media(min-width:901px){ #stage{width:calc((50% - 9px) * 1.088);margin-left:auto;margin-right:auto} #stage.on{width:100%} }
+@media(min-width:901px){ #stage{width:calc((50% - 9px) * 1.088);margin-left:auto;margin-right:auto} }
 
 /* Ken, 8 Oct: the fish in the side-by-side view flip to the word study too (tap the fish) */
 .cmp .cmpf{cursor:pointer}
@@ -846,11 +870,6 @@ section.section.bundles{display:block;margin-top:0}
 .cmp figure.on .cmpf{display:none}
 .cmp figure.on .cmpb{display:block;animation:cmpflip .35s ease}
 @keyframes cmpflip{from{transform:perspective(900px) rotateY(90deg)}to{transform:none}}
-/* Ken, 9 Oct: a turned-over fish keeps its place beside the others and grows taller, laid out like the single fish's
-   word study on a phone (Greek above Hebrew, verses in two columns) */
-.cmp .cmpb .langs{grid-template-columns:1fr;gap:16px}
-.cmp .cmpb .langs .div{display:none}
-.cmp .cmpb .refs{grid-template-columns:repeat(2,minmax(0,1fr))}
 .cmpb .face{position:static;inset:auto;backface-visibility:visible;-webkit-backface-visibility:visible;visibility:visible;border:0;background:none;transform:none;box-shadow:none}
 .face.back:is([lang=zh],[lang=ko],[lang=hi],[lang=he]) :is(.lab,.mean,.trace,.conc,.s){letter-spacing:0;font-style:normal}
 .cmpb .wsub{text-align:center;font:1.15rem 'Spectral',serif;color:var(--foam-dim,#9fb2b6);margin:-4px 0 6px}
@@ -908,17 +927,19 @@ section.section.bundles{display:block;margin-top:0}
           <div class="fishbox" id="fishbox"></div>
         </div>
         <div class="face back">
-          
+          <div class="bsrc">          
           <div class="wtitle" id="wTitle">Hope</div>
           <div class="hr"></div>
           <div class="langs">
-            <div class="lang"><div class="top"><span class="lab" id="gkLab">Greek</span><span class="w" id="gkW"></span><span class="snd" id="gkS"></span></div><div class="mean" id="gkM"></div><a class="conc" id="gkC">Concordance &#8599;</a></div>
+            <div class="lang"><div class="top"><span class="lab" id="gkLab">Greek</span><span class="w" id="gkW"></span><span class="snd" id="gkS"></span></div><div class="mean" id="gkM"></div><a class="conc" id="gkC" data-c="g">Concordance &#8599;</a></div>
             <div class="div"></div>
-            <div class="lang"><div class="top"><span class="lab" id="hbLab">Hebrew</span><span class="w" id="hbW"></span><span class="snd" id="hbS"></span></div><div class="mean" id="hbM"></div><a class="conc" id="hbC">Concordance &#8599;</a></div>
+            <div class="lang"><div class="top"><span class="lab" id="hbLab">Hebrew</span><span class="w" id="hbW"></span><span class="snd" id="hbS"></span></div><div class="mean" id="hbM"></div><a class="conc" id="hbC" data-c="h">Concordance &#8599;</a></div>
           </div>
           <div class="hr"></div>
           <div class="trace" id="traceLab">Trace it through Scripture &mdash; tap a verse</div>
           <div class="refs" id="refs"></div>
+          </div>
+          <div class="deck"></div>
         </div>
       </div>
     </div>
@@ -1344,10 +1365,43 @@ window.MF=(function(){
   // The card is as tall as whichever side is showing: the fish, or the whole study.
   function sizeStage(){var st=$('stage'); if(!st) return; if(!st.classList.contains('on') && reader.classList.contains('stacked') && reader.classList.contains('open')) closeReader(); var w=st.clientWidth, fb=$('fishbox');
     var front=Math.max(w*10/16,(fb?fb.offsetHeight:w/2)+60);
-    var back=st.querySelector('.face.back'); var bh=back?back.scrollHeight:0;
-    st.style.height=(st.classList.contains('on')?Math.max(front,bh):front)+'px';}
+    st.style.height=front+'px'; if(st.classList.contains('on')) buildDeck(st.querySelector('.face.back')); }
   window.addEventListener('resize',sizeStage);
 
+  // Ken, 9 Oct: "a deck of cards" -- the back of the fish is the same rectangle as the decal. The word with its Greek
+  // and Hebrew is the first card; the verses follow on as many cards as they need, stacked, with arrows to move through.
+  // A verse opened from a card is laid on top of the deck, the same size.
+  function deckCardH(w){ return window.matchMedia('(max-width:640px)').matches ? Math.round((w-2)/2+60) : Math.round(Math.max(w*0.625, w*0.46+60)); }
+  function noIds(e){ e.removeAttribute('id'); [].forEach.call(e.querySelectorAll('[id]'),function(x){ x.removeAttribute('id'); }); return e; }
+  function buildDeck(face){ if(!face) return; var src=face.querySelector('.bsrc'), deck=face.querySelector('.deck'); if(!src||!deck) return;
+    face.classList.add('decked'); if(!deck.clientHeight||!deck.clientWidth) return;
+    var keep=+(deck.dataset.at||0), cards=[]; deck.innerHTML='';
+    function card(cls){ var c=document.createElement('div'); c.className='dcard '+cls; deck.appendChild(c); cards.push(c); return c; }
+    function over(c){ return c.scrollHeight>c.clientHeight+1; }
+    function cl(sel){ var e=src.querySelector(sel); return e?noIds(e.cloneNode(true)):null; }
+    var c1=card('dstudy'); ['.wtitle','.wsub'].forEach(function(q){ var e=cl(q); if(e) c1.appendChild(e); }); c1.appendChild(cl('.hr'));
+    var langs=cl('.langs'); c1.appendChild(langs);
+    if(over(c1)){ var ls=langs.querySelectorAll('.lang'), dv=langs.querySelector('.div'); if(dv) dv.remove(); langs.classList.add('one');
+      var c2=card('dstudy'); var t2=cl('.wtitle'); t2.classList.add('small'); c2.appendChild(t2); c2.appendChild(cl('.hr'));
+      var l2=document.createElement('div'); l2.className='langs one'; l2.appendChild(ls[1]); c2.appendChild(l2); }
+    var refs=[].slice.call(src.querySelectorAll('.refs .ref')), at=0;
+    while(at<refs.length){ var rc=card('drefs'); rc.appendChild(cl('.trace')); var g=document.createElement('div'); g.className='refs'; rc.appendChild(g); var n=0;
+      while(at<refs.length){ g.appendChild(noIds(refs[at].cloneNode(true))); if(over(rc) && n>0){ g.lastChild.remove(); break; } at++; n++; }
+      if(!n) at++; }
+    var nav=document.createElement('div'); nav.className='dnav'; nav.innerHTML='<button type="button" class="dprev" aria-label="Previous card">‹</button><span class="dpos"></span><button type="button" class="dnext" aria-label="Next card">›</button>';
+    deck.appendChild(nav); deckShow(deck, Math.min(keep, cards.length-1)); }
+  function deckShow(deck,k){ var cs=deck.querySelectorAll('.dcard'), N=cs.length; k=Math.max(0,Math.min(N-1,k)); deck.dataset.at=k;
+    [].forEach.call(cs,function(c,i){ c.className=c.className.replace(/\s*\b(cur|under1|under2|under3|past)\b/g,''); c.classList.add(i<k?'past':i===k?'cur':'under'+Math.min(3,i-k)); });
+    var nav=deck.querySelector('.dnav'); if(nav){ nav.querySelector('.dpos').textContent=(k+1)+' / '+N; nav.querySelector('.dprev').disabled=k===0; nav.querySelector('.dnext').disabled=k===N-1; nav.hidden=N<2; } }
+  // arrows (and the edge of the next card) move through the deck without turning the fish back over
+  document.addEventListener('click',function(e){ var t=e.target, deck=t.closest&&t.closest('.deck'); if(!deck) return;
+    var b=t.closest('.dprev,.dnext,.under1'); if(!b) return; e.stopPropagation(); e.preventDefault();
+    deckShow(deck, +(deck.dataset.at||0)+(b.classList.contains('dprev')?-1:1)); },true);
+  // verses and Strong's on any card of the single fish
+  document.querySelector('#stage .face.back').addEventListener('click',function(e){ var r=e.target.closest('.deck .ref'), c=e.target.closest('.deck .conc');
+    if(r){ e.stopPropagation(); openReader(cur,+r.dataset.i,r.dataset.l); }
+    else if(c){ e.stopPropagation(); e.preventDefault(); openStrongs(cur,c.dataset.c==='g'); } });
+  window.addEventListener('resize',function(){ clearTimeout(window.__dkT); window.__dkT=setTimeout(function(){ document.querySelectorAll('.face.back.decked').forEach(function(f){ if(f.offsetParent) buildDeck(f); }); },200); });
   // build word picker
   var wc=$('words');
   ORDER.forEach(function(k){
@@ -1378,13 +1432,13 @@ window.MF=(function(){
   }
   // the main fish and its back, in the reading language (the other languages load their fish and study on first use)
   function fillMain(k){ var l=MF.lang, d=DATA[k], L=studyLabels(l), m=meansIn(l,k);
-    if(l!=='en'&&l!=='es'&&!LFISH[l]) loadLang(l).then(function(){ if(cur===k&&MF.lang===l){ fillMain(k); sizeStage(); } }).catch(function(){});
+    if(l!=='en'&&(l==='es'?!LSTUDY.es:!LFISH[l])) loadLang(l).then(function(){ if(cur===k&&MF.lang===l){ fillMain(k); sizeStage(); } }).catch(function(){});
     $('fishbox').innerHTML=fishFor(l,k)||FISH[k]||'';
     $('wTitle').textContent=wordTitle(k); $('wTitle').style.fontFamily=CMPFONT[l]?"'"+CMPFONT[l]+"',sans-serif":'';
     $('gkLab').textContent=L.gk; $('hbLab').textContent=L.hb; $('traceLab').textContent=L.trace; $('stage').querySelector('.face.back').setAttribute('lang',l);
     $('gkW').textContent=d.gkw; $('gkS').textContent='('+d.gks+')'; $('gkM').textContent=m[0];
     $('hbW').textContent=d.hbw; $('hbS').textContent='('+d.hbs+')'; $('hbM').textContent=m[1];
-    $('refs').innerHTML=renderRefs(k);
+    $('refs').innerHTML=renderRefs(k); var dk=$('stage').querySelector('.deck'); if(dk) dk.dataset.at=0;
     $('refs').querySelectorAll('.ref').forEach(function(btn){
       btn.addEventListener('click',function(e){e.stopPropagation();openReader(k,+btn.getAttribute('data-i'),btn.dataset.l);});
     });
@@ -1987,7 +2041,9 @@ window.MF=(function(){
              he:{en:'אנגלית',es:'ספרדית',tl:'טגלוג',zh:'סינית',hi:'הינדי',el:'יוונית',he:'עברית',de:'גרמנית',ko:'קוריאנית'}};
   function cmpLabel(l){ var mine=(LNAME[MF.lang]||LNAME.en)[l]||l, own=cmpName(l); return mine===own?own:mine+' \u00b7 '+own; }
   function fishFor(l,k){ return l==='en'?(FISH[k]||''):l==='es'?(MF.fish[k]||''):((LFISH[l]||{})[k]||''); }
-  function loadLang(l){ if(l==='en'||l==='es'||LFISH[l]) return Promise.resolve();
+  function loadLang(l){ if(l==='en'||LFISH[l]) return Promise.resolve();
+    // Spanish: the fish are built in; only the verse quotes for the back are fetched (Reina-Valera 1909)
+    if(l==='es') return LSTUDY.es?Promise.resolve():fetch('/fish-lang/study-es.json').then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(j) LSTUDY.es=j; }).catch(function(){});
     if(CMPFONT[l] && !document.getElementById('mf-font-'+l)){var k=document.createElement('style'); k.id='mf-font-'+l; k.textContent="@font-face{font-family:'"+CMPFONT[l]+"';src:url(/fish-lang/"+l+".woff2) format('woff2');font-weight:100 900;font-display:block}"; document.head.appendChild(k);}
     // Ken, 8 Oct: the word study on the back in that fish's own language too
     return Promise.all([fetch('/fish-lang/'+l+'.json').then(function(r){return r.json();}),
@@ -1997,7 +2053,7 @@ window.MF=(function(){
   // back of a fish in any language: its word, the Greek and Hebrew meanings, book names and the start of each verse
   // from that language's own Bible; under the word, the reader's own word when it is not their language
   function backFor(l){ var k=cur, t=document.createElement('div'), L=studyLabels(l), m=meansIn(l,k), sg=STRONGS[k]||['',''];
-    t.innerHTML='<div class="face back">'+document.querySelector('#stage .face.back').innerHTML.replace(/\sid="[^"]*"/g,'')+'</div>';
+    t.innerHTML='<div class="face back"><div class="bsrc">'+document.querySelector('#stage .face.back .bsrc').innerHTML.replace(/\sid="[^"]*"/g,'')+'</div><div class="deck"></div></div>';
     var f=t.firstChild; f.setAttribute('lang',l);
     var ti=f.querySelector('.wtitle'); ti.textContent=titleIn(l,k); ti.style.fontFamily=CMPFONT[l]?"'"+CMPFONT[l]+"',sans-serif":'';
     if(l!==MF.lang) ti.insertAdjacentHTML('afterend','<div class="wsub">'+esc(wordTitle(k))+'</div>');
@@ -2011,7 +2067,7 @@ window.MF=(function(){
   function cmpLangs(){ return CMPL.map(function(o){return o[0];}).filter(function(l){return cmpSel.indexOf(l)>=0;}); }
   function cmpShown(){ return cmpSel.length>1 || (cmpSel.length===1 && cmpSel[0]!==MF.lang); }
   window.MFcmp=function(){ if(!cmpShown()) return; var spk=$('spkMain').outerHTML.replace(' id="spkMain"','').replace(' hidden=""','');
-    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf"><div class="cmpfb">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div></div><div class="cmpb">'+backFor(l)+'</div><figcaption>'+cmpLabel(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); cmpLayout(); };
+    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf"><div class="cmpfb">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div></div><div class="cmpb">'+backFor(l)+'</div><figcaption>'+cmpLabel(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); cmpLayout(); $('cmp').querySelectorAll('figure.on').forEach(cmpDeck); };
   // Ken, 9 Oct: every fish stays the size it is with two side by side, whatever the layout. "Per row" picks how many
   // go across (as many as the screen has room for at that size); more simply wrap to the next row. A clear button
   // above the fish goes straight back to one fish.
@@ -2043,7 +2099,7 @@ window.MF=(function(){
   // Ken, 9 Oct: with fish side by side, a verse opens right under its own fish, in that fish's language -- so two
   // (or more) passages can be open at once, each with its own Verse / Chapter speaker.
   function openFigReader(f,k,i,l){ var fr=f.querySelector('.fr'); if(!fr){ fr=document.createElement('div'); fr.className='fr'; f.appendChild(fr); }
-    var card=f.classList.contains('on')?f.querySelector('.cmpb'):f.querySelector('.cmpf'); fr.style.top=card.offsetTop+'px'; fr.style.height=Math.max(card.offsetHeight,300)+'px';
+    var card=f.classList.contains('on')?f.querySelector('.cmpb'):f.querySelector('.cmpf'); fr.style.top=card.offsetTop+'px'; fr.style.height=card.offsetHeight+'px';
     if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak();
     var ref=DATA[k].refs[i], p=parseRef(ref[0]), w=(l!=='en'&&l!=='es')?studyOf(l,k):null, T=RSAY[MF.lang]||RSAY.en;
     var label=l==='en'?ref[0]:l==='es'?esRef(ref[0]):(w?w.refs[i][0]:ref[0]);
@@ -2066,14 +2122,15 @@ window.MF=(function(){
     var b=e.target.closest('.rplay'); if(b && fr._rd){ var ctx={root:fr.querySelector('.chapter'),data:fr._rd,box:fr.querySelector('.frbody')};
       if(b.dataset.a==='v') readAloud(ctx,fr._rd.vs,fr._rd.vs,b); else readAloud(ctx,1,fr._rd.t.length,b); }
     return true; }
+  function cmpDeck(f){ if(!f.classList.contains('on')) return; var b=f.querySelector('.cmpb'); b.style.height=deckCardH(f.clientWidth)+'px'; buildDeck(b.querySelector('.face.back')); }
   var cmpOn={};
   // tap a fish to turn it over; on the back, verses and Strong's open just as on the single fish
   $('cmp').addEventListener('click',function(e){ var f=e.target.closest('figure[data-l]'); if(!f||e.target.closest('.spk,figcaption,.saybox')) return;
     if(figReaderClick(e)){ e.stopPropagation(); return; }
     var ref=e.target.closest('.ref'); if(ref){ e.stopPropagation(); if(cmpShown()) openFigReader(f,cur,+ref.dataset.i,ref.dataset.l||f.dataset.l); else openReader(cur,+ref.dataset.i,ref.dataset.l); return; }
-    var conc=e.target.closest('.conc'); if(conc){ var gk=conc===f.querySelectorAll('.conc')[0], sg=STRONGS[cur]||['',''], n=gk?sg[0]:sg[1];
+    var conc=e.target.closest('.conc'); if(conc){ var gk=conc.dataset.c?conc.dataset.c==='g':conc===f.querySelectorAll('.conc')[0], sg=STRONGS[cur]||['',''], n=gk?sg[0]:sg[1];
       if(n && LEX[(gk?'G':'H')+n]){ e.preventDefault(); e.stopPropagation(); openStrongs(cur,gk); } return; }
-    var l=f.dataset.l; cmpOn[l]=!cmpOn[l]; f.classList.toggle('on',!!cmpOn[l]); cmpLayout(); if(window.MFsave) MFsave(); });
+    var l=f.dataset.l; cmpOn[l]=!cmpOn[l]; f.classList.toggle('on',!!cmpOn[l]); cmpLayout(); cmpDeck(f); if(window.MFsave) MFsave(); });
   function setCmp(list){ stopSpeak(); var ok=CMPL.filter(function(o){return !o[2];}).map(function(o){return o[0];});
     cmpSel=(list||[]).filter(function(l,i,a){return ok.indexOf(l)>=0 && a.indexOf(l)===i;}); cmpLang=cmpSel[0]||null; var on=cmpShown();
     $('cmp').hidden=!on; $('stage').hidden=on; $('spkMain').hidden=on; $('sayMain').hidden=true; $('cmpBtn').setAttribute('aria-pressed',String(on)); buildMenu();

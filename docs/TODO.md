@@ -61,6 +61,12 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [ ] Bible App (YouVersion) links for the 6 new languages: confirm each one's version number on bible.com, then add the buttons back.
 - [ ] Daily devotional emails and phone notices stay English or Spanish.
 
+### The back of the fish is a deck of cards (9 Oct, on the test site)
+- [x] Turned over, every fish (single or side by side) stays the exact rectangle of the decal. Card 1: the word with Greek and Hebrew (on a phone Hebrew gets its own card); then the verses, as many as fit per card (6 on a computer, 4 on a phone), with ‹ › arrows and the next cards peeking out underneath.
+- [x] A verse or Strong's entry opened from a card lies on top, the same size.
+- [x] Spanish backs show the start of each verse too (Reina-Valera 1909).
+- [x] See the devotional email any time: /api/devo-preview (add ?lang=es for Spanish, ?welcome=1 for the welcome email).
+
 ### Compare looks like the real decal (9 Oct, on the test site)
 - [x] Passages and Strong's entries lie on top of the word-study card, the same size, like a card dealt onto a deck; close it to see the card again. Nothing on the page moves.
 - [x] Every compared fish is the same card as the single fish: same size, same black frame and padding (phone and computer).
