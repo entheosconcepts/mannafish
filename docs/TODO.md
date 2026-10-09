@@ -61,6 +61,16 @@ The speech-bubble button at the bottom right of every page. Pick a language; tap
 - [ ] A fluent reader checks the 15 phrases in each language (Claude translated them). File: fish-lang/tongue.json.
 - [ ] Limits: up to 300 letters at a time, 80 translations an hour per visitor, only from MannaFish pages. Change in netlify/functions/translate.mjs if needed.
 
+### Printing decals in every language (Ken, 9 Oct: discuss and plan later)
+Make the fish orderable and printable in Tagalog, Chinese, Hindi, Greek, German and Korean, not just English and Spanish. To plan together:
+- [ ] Which languages to offer first.
+- [ ] A fluent reader signs off each language's 24 fish before anything is printed.
+- [ ] Permission to print each Bible text on products (some are free to use, some need checking: see "Next: more languages").
+- [ ] Print-ready files for each language (high-resolution, numbered proofs like the Spanish ones in /print/).
+- [ ] Add the languages to the free-decal form, the order emails and the CRM (today they offer English, Español, or one of each).
+- [ ] Brand: keep MannaFish™ as the name in every language; maybe a small line under the logo explaining it (e.g. "Maná del cielo + el pez").
+- [ ] Costs, how many to print, and shipping outside the US.
+
 ### All translations
 - [ ] Every language with a free-to-use Bible, the same way as above.
 
