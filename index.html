@@ -871,6 +871,23 @@ section.section.bundles{display:block;margin-top:0}
 .notesbox .nrecent{margin-top:12px;font:.82rem 'Archivo',sans-serif;color:var(--foam-dim,#aaa)}
 .notesbox .nrecent button{font:inherit;background:none;border:0;color:var(--brass-soft,#7fb0ff);cursor:pointer;padding:0 4px;text-decoration:underline}
 :root[data-mode="light"] .notesbox textarea{background:#fff}
+/* Ken, 9 Oct: each note its own bubble with the date and time; highlight a note or a verse; My highlights */
+.ntabs{display:flex;gap:6px;margin:0 0 10px}
+.ntab{font:600 .8rem 'Archivo',sans-serif;padding:6px 12px;border-radius:999px;border:1px solid var(--line,#333);background:transparent;color:inherit;cursor:pointer}
+.ntab[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:#fff}
+.nlist{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.nb{position:relative;align-self:flex-start;max-width:92%;background:rgba(42,95,176,.16);border:1px solid rgba(42,95,176,.35);border-radius:14px 14px 14px 4px;padding:8px 12px 6px}
+.nb .nt{font:1rem/1.5 'Spectral',serif;white-space:pre-wrap;word-break:break-word}
+.nb .nm{display:flex;align-items:center;gap:8px;margin-top:4px;font:600 .68rem 'Archivo',sans-serif;color:var(--foam-dim,#aaa)}
+.nb .nm button{font:inherit;background:none;border:0;color:inherit;cursor:pointer;padding:2px 4px;border-radius:4px}
+.nb .nm button:hover{color:var(--foam)}
+.nb.mk{background:rgba(245,215,110,.16);border-color:rgba(245,215,110,.6);box-shadow:inset 4px 0 0 #f5d76e}
+.nb .nref{display:block;font:700 .74rem 'Archivo',sans-serif;letter-spacing:.04em;color:var(--brass-soft,#6f9be0);margin-bottom:2px;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+.hlhint{font:.8rem 'Archivo',sans-serif;color:var(--foam-dim,#aaa);margin:0 0 8px}
+.chapter span.mk{background:linear-gradient(transparent 50%,rgba(245,215,110,.55) 50%);border-radius:2px}
+.chapter span[data-v]{cursor:pointer}
+.mftoast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:90;background:#111;color:#fff;border:1px solid var(--brass);border-radius:999px;padding:9px 16px;font:600 .82rem 'Archivo',sans-serif;box-shadow:0 10px 30px -8px #000}
+.mftoast[hidden]{display:none}
 
 .acctbox h4{font:600 .75rem 'Archivo',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--foam-dim,#aaa);margin:14px 0 6px}
 .acctrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
@@ -969,6 +986,7 @@ section.section.bundles{display:block;margin-top:0}
    many rows fit the window (shown once two or more fish are on screen). Phones keep one fish under another. */
 .cmpgrid{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 0 10px;font:600 .68rem 'Archivo',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--foam-dim,#aaa)}
 .cmpgrid[hidden],.cmpgrid .gpwrap[hidden]{display:none}
+.cmpgrid.onebar{justify-content:flex-end}
 .cmpgrid .gpwrap{display:inline-flex;align-items:center;gap:8px;margin-left:auto}
 .cmpgrid .cmpclear{font:600 .8rem 'Archivo',sans-serif;letter-spacing:0;text-transform:none;color:var(--foam);background:transparent;border:1px solid var(--line,#444);border-radius:999px;padding:7px 14px;cursor:pointer}
 .cmpgrid .cmpclear:hover{border-color:var(--brass)}
@@ -1051,6 +1069,7 @@ section.section.bundles{display:block;margin-top:0}
   </div>
   <div class="resumebar" id="resumeBar" hidden><span id="resumeTxt"></span><span class="rbtns"><button type="button" class="toolbtn" id="resumeGo">Pick up where I left off</button><button type="button" class="rx" id="resumeX" aria-label="Dismiss">&#215;</button></span></div>
   <div class="stage-col">
+    <div class="cmpgrid onebar" id="oneBar" hidden><button type="button" class="cmpclear" id="twoBtn"></button></div>
     <div class="cmpgrid" id="cmpGrid" hidden><button type="button" class="cmpclear" id="cmpClear"></button><span class="gpwrap"><span id="cmpGridLab">Per row</span><span class="gp" id="gp" role="group"></span><span class="gpsz" id="gpSz"></span><button type="button" id="gpAuto">Auto</button></span></div>
     <div class="cmp" id="cmp" hidden><figure data-l="a"><div class="cmpf" id="cmpA"></div><figcaption id="cmpAL"></figcaption></figure><figure data-l="b"><div class="cmpf" id="cmpB"></div><figcaption id="cmpBL"></figcaption></figure></div>
       <div class="stage" id="stage" aria-label="Interactive devotional decal, tap to flip">
@@ -1106,15 +1125,20 @@ section.section.bundles{display:block;margin-top:0}
       <form id="acctCodeF" class="acctrow" hidden><input id="acctCode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="Code from the email"><button class="toolbtn" type="submit" id="acctGo">Sign in</button></form>
       <p class="rnote" id="acctMsg"></p></div>
     <div id="acctIn" hidden><div class="nhd"><b id="acctMe"></b><button class="toolbtn" type="button" id="acctOutBtn">Sign out</button></div>
-      <div id="acctResume" class="acctresume" hidden></div><h4 id="acctNotesH">My notes</h4><div id="acctNotes" class="acctlist"></div>
+      <div id="acctResume" class="acctresume" hidden></div><h4 id="acctNotesH">My notes</h4><div id="acctNotes" class="acctlist"></div><h4 id="acctHlH">My highlights</h4><div id="acctHl" class="acctlist"></div>
       <h4 id="acctOrdersH">My decal orders</h4><div id="acctOrders" class="acctlist"></div>
       <h4 id="acctActH">Recently viewed</h4><div id="acctAct" class="acctlist"></div></div>
   </div>
   <div class="notesbox" id="notesBox" hidden>
     <div class="nhd"><b id="notesWord"></b><span class="rnote" id="notesWhere">Saved on this device</span></div>
-    <textarea id="notesText" rows="5" placeholder="What is God showing you in this word?"></textarea>
-    <div class="nrow"><button class="toolbtn" type="button" id="micBtn" aria-pressed="false"><span aria-hidden="true">&#127908;</span> <span id="micLab">Speak a note</span></button><span class="rnote" id="notesMsg"></span></div>
+    <div class="ntabs" role="group"><button type="button" class="ntab" id="ntabN" aria-pressed="true"></button><button type="button" class="ntab" id="ntabH" aria-pressed="false"></button></div>
+    <div id="notesPane">
+    <div class="nlist" id="notesList"></div>
+    <textarea id="notesText" rows="3" placeholder="What is God showing you in this word?"></textarea>
+    <div class="nrow"><button class="toolbtn tbmain" type="button" id="noteSave"></button><button class="toolbtn" type="button" id="micBtn" aria-pressed="false"><span aria-hidden="true" id="micIco">&#127908;</span> <span id="micLab">Speak a note</span></button><span class="rnote" id="notesMsg"></span></div>
     <div class="nrecent" id="notesRecent"></div>
+    </div>
+    <div id="hlPane" hidden><p class="hlhint" id="hlHint"></p><div class="nlist" id="hlList"></div></div>
   </div>
   <div id="readerSlot"></div>
   <!-- Ken, 7 Oct: the two buttons side by side under the fish; the one tapped opens below them. -->
@@ -1365,6 +1389,7 @@ section.section.bundles{display:block;margin-top:0}
 
 <!-- verse reader -->
 <div class="reader-scrim" id="scrim"></div>
+<div class="mftoast" id="mfToast" role="status" hidden></div>
 <button class="hearsel" type="button" id="hearSel" hidden><span aria-hidden="true">&#128266;</span> <span id="hearLab">Hear it</span></button>
 <div class="hearbox" id="hearBox" role="status" hidden><button class="etx" type="button" id="hearX" aria-label="Close">&times;</button><div class="etbig" id="hearTxt"></div><div class="etmine" id="hearMine"></div><div class="etrow"><button type="button" id="hearPlay">&#128266;</button></div></div>
 <div class="okbox" id="okBox" role="dialog" aria-modal="true" aria-labelledby="okTitle" hidden><div class="okcard"><div class="okcheck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><h2 id="okTitle"></h2><div id="okBody"></div><button class="btn" type="button" id="okDone">Done</button></div></div>
@@ -1399,7 +1424,7 @@ window.MF=(function(){
   function detect(){ var n=(navigator.language||'').toLowerCase().split('-')[0]; if(n==='fil') n='tl'; if(n==='iw') n='he'; return LL.indexOf(n)>=0?n:'en'; }
   var L='en'; try{var q=(location.search.match(/[?&]lang=(es|en|tl|zh|hi|el|de|ko|he)\b/)||[])[1], st=localStorage.getItem('mf-lang'); L=q||(LL.indexOf(st)>=0?st:'')||detect();}catch(e){}
   var hooks=[], orig=new WeakMap(), X=window.MFI18N;
-  var SKIP='script,style,#refs,#reader,#listenBtn,#trnBtn,#modeDark,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#okBox,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
+  var SKIP='script,style,#refs,#reader,#notesBox,#mfToast,#listenBtn,#trnBtn,#modeDark,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#okBox,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
   function norm(s){return s.replace(/\s+/g,' ').trim();}
   function t(k){var u=X.ui[k]; return u ? (L==='es'?u[1]:u[0]) : k;}
   function applyPage(){
@@ -1770,7 +1795,7 @@ window.MF=(function(){
     fetch('/fish-lang/bible/'+l+'/'+p.book.replace(/ /g,'_')+'-'+p.ch+'.json').then(function(x){ if(!x.ok) throw 0; return x.json(); }).then(function(j){
       if(window.MFreader!==want) return; var vs=+p.vs, h='<p>';
       j.t.forEach(function(t,n){ if(!t) return; h+='<span class="vn">'+(n+1)+'</span><span data-v="'+(n+1)+'" class="'+(n+1===vs?'hi':'')+'">'+esc(t)+'</span> '; });
-      $('rChapter').innerHTML=h+'</p>'; setTimeout(readerFit,60); if(j.t[vs-1]) $('rQuote').textContent=j.t[vs-1]; $('rNote').textContent=j.v;
+      $('rChapter').innerHTML=h+'</p>'; setTimeout(readerFit,60); RD={l:l,t:j.t,vs:vs}; if(window.MFhlMarkStage) MFhlMarkStage(); if(j.t[vs-1]) $('rQuote').textContent=j.t[vs-1]; $('rNote').textContent=j.v;
       RD={l:l,t:j.t,vs:vs};
       var hv=reader.querySelector('.chapter .hi'), bd=reader.querySelector('.reader-body'); if(hv&&bd&&!reader.classList.contains('inline')) bd.scrollTop=Math.max(0,hv.offsetTop-bd.offsetTop-bd.clientHeight/3);
     }).catch(function(){}); }
@@ -1849,7 +1874,7 @@ window.MF=(function(){
     if(RO){ openReader(r.k,r.i,r.l); return; }
     var p=parseRef(DATA[r.k].refs[r.i][0]); if(!p) return;
     loadOrig(p).then(function(j){ if(window.MFreader!==r) return; var o=origView(j,p,r.k); RO=true; $('rOrig').setAttribute('aria-pressed','true');
-      $('rChapter').innerHTML=o.html; RD={l:o.l,t:o.t,vs:+p.vs}; $('rNote').textContent=o.credit; $('rVer').style.display='none';
+      $('rChapter').innerHTML=o.html; RD={l:o.l,t:o.t,vs:+p.vs}; if(window.MFhlMarkStage) MFhlMarkStage(); $('rNote').textContent=o.credit; $('rVer').style.display='none';
       reader.querySelector('.reader-body').scrollTop=0; setTimeout(readerFit,60); }).catch(function(){}); });
   $('rPlayV').addEventListener('click',function(){ if(RD) readAloud(readerCtx(),RD.vs,RD.vs,this); });
   $('rPlayC').addEventListener('click',function(){ if(RD) readAloud(readerCtx(),1,RD.t.length,this); });
@@ -1886,7 +1911,7 @@ window.MF=(function(){
         html+='<span class="vn">'+v.verse+'</span><span data-v="'+v.verse+'" class="'+(hi?'hi':'')+'">'+esc(v.text.trim())+'</span> ';
       });
       html+='</p>';
-      $('rChapter').innerHTML=html; setTimeout(readerFit,60);
+      $('rChapter').innerHTML=html; setTimeout(readerFit,60); if(window.MFhlMarkStage) MFhlMarkStage();
       RD={l:'en',t:j.verses.map(function(v){ return v.text.trim(); }),vs:+p.vs};
       var h=reader.querySelector('.hi'), bd=reader.querySelector('.reader-body');
       if(h&&bd){bd.scrollTop=Math.max(0,h.offsetTop-bd.offsetTop-bd.clientHeight/3);}
@@ -1963,8 +1988,11 @@ window.MF=(function(){
   var LCODE={en:'en-US',es:'es-US',tl:'fil-PH',zh:'zh-CN',hi:'hi-IN',el:'el-GR',de:'de-DE',ko:'ko-KR',he:'he-IL'}, LPRE={en:['en'],es:['es'],tl:['fil','tl'],zh:['zh','cmn'],hi:['hi'],el:['el'],de:['de'],ko:['ko'],he:['he','iw']};
   var sp={on:false,id:0,btn:null,box:null,audio:null,timer:null};
   function ui(){ var es=MF.lang==='es';
-    $('notesLab').textContent=es?'Mis notas':'My notes'; $('micLab').textContent=recOn?(es?'Detener':'Stop'):(es?'Dictar una nota':'Speak a note');
-    $('notesWhere').textContent=es?'Guardado en este dispositivo':'Saved on this device';
+    $('notesLab').textContent=es?'Mis notas':'My notes'; $('micIco').innerHTML=recOn?'&#10074;&#10074;':'&#127908;';
+    $('micLab').textContent=recOn?(es?'Pausa':'Pause'):($('notesText').value.trim()?(es?'Seguir dictando':'Keep speaking'):(es?'Dictar una nota':'Speak a note'));
+    $('noteSave').textContent=es?'Guardar nota':'Save note'; $('ntabN').textContent=es?'Mis notas':'My notes'; $('ntabH').textContent=es?'Mis resaltados':'My highlights';
+    $('hlHint').textContent=es?'Toca cualquier versículo del lector para resaltarlo; toca otra vez para quitarlo.':'Tap any verse in the reader to highlight it; tap it again to remove it.';
+    $('notesWhere').textContent=cloudOn()?(es?'Guardado en tu cuenta':'Saved to your account'):(es?'Guardado en este dispositivo':'Saved on this device');
     $('notesText').placeholder=es?'¿Qué te muestra Dios en esta palabra?':'What is God showing you in this word?';
     var SPK={es:['Palabra','Versículo'],tl:['Salita','Talata'],zh:['词','经文'],hi:['शब्द','पद'],el:['Λέξη','Εδάφιο'],de:['Wort','Vers'],ko:['단어','구절'],he:['מילה','פסוק']}, sw=SPK[MF.lang]||['Word','Verse'];
     document.querySelectorAll('.spkw').forEach(function(e){e.textContent=sw[0];});
@@ -2163,30 +2191,101 @@ window.MF=(function(){
     etPost('/api/translate',{text:text,to:l}).then(function(r){ if(!r.ok) throw r; return r.json(); }).then(function(j){ speak(j.text,text); })
       .catch(function(){ if(l==='en'||l==='es') speak(text,''); else $('hearTxt').textContent=T.key.split('. ')[0]+'.'; }); });
   $('hearX').addEventListener('click',function(){ stopSpeak(); $('hearBox').hidden=true; });
-  // ── My notes: one note per word, kept in this browser; spoken notes use the device's dictation ──
-  var NKEY='mf-notes', recOn=false, rec=null;
+  // ── My notes (Ken, 9 Oct): every note is its own bubble with the date and time it was written, and can be
+  // highlighted. Kept in this browser, and in the account when signed in (window.MFcloudNotes). Dictation pauses and carries on.
+  var NKEY='mf-notes', N2='mf-notes2', DKEY='mf-note-draft', recOn=false, rec=null, spoke=false;
   function notes(){ try{ return JSON.parse(localStorage.getItem(NKEY)||'{}')||{}; }catch(e){ return {}; } }
-  function saveNotes(n){ try{ localStorage.setItem(NKEY,JSON.stringify(n)); return true; }catch(e){ return false; } }
+  function notesAll(){ var n=null; try{ n=JSON.parse(localStorage.getItem(N2)||'null'); }catch(e){}
+    if(!n){ n={}; var old=notes(); Object.keys(old).forEach(function(k){ if(old[k]&&old[k].text) n[k]=[{id:'d'+(old[k].at||Date.now()),text:old[k].text,at:old[k].at||Date.now()}]; }); saveAll(n); }
+    return n; }
+  function saveAll(n){ try{ localStorage.setItem(N2,JSON.stringify(n)); return true; }catch(e){ return false; } }
+  window.MFlocalNotes=notesAll;
   function wordName(k){ return MF.lang==='es'&&MF.es&&MF.es.titles?(MF.es.titles[k]||DATA[k].title):DATA[k].title; }
-  function showNotes(){ var n=notes(), es=MF.lang==='es'; $('notesWord').textContent=wordName(cur); $('notesText').value=(n[cur]&&n[cur].text)||'';
-    if(window.MFnoteLoad) MFnoteLoad(cur,function(body){ if(document.activeElement!==$('notesText')) $('notesText').value=body; });
-    var keys=Object.keys(n).filter(function(k){return k!==cur && n[k].text && DATA[k];}).sort(function(a,b){return (n[b].at||0)-(n[a].at||0);}).slice(0,6);
-    $('notesRecent').innerHTML=keys.length?((es?'Notas recientes: ':'Recent notes: ')+keys.map(function(k){return '<button type="button" data-k="'+k+'">'+wordName(k)+'</button>';}).join(' ')):''; }
-  var nt; $('notesText').addEventListener('input',function(){ clearTimeout(nt); nt=setTimeout(function(){ var n=notes(), t=$('notesText').value;
-    if(t.trim()) n[cur]={text:t,at:Date.now()}; else delete n[cur];
-    $('notesMsg').textContent=saveNotes(n)?(MF.lang==='es'?'Guardado':'Saved'):(MF.lang==='es'?'No se pudo guardar en este navegador':'Could not save in this browser'); if(window.MFnoteSaved) MFnoteSaved(cur,t); },400); });
+  function cloudOn(){ return !!(window.MFcloudNotes&&MFcloudNotes.on()); }
+  function stamp(t){ try{ return new Date(t).toLocaleString(MF.lang==='en'?'en-US':MF.lang,{weekday:'short',month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}); }catch(e){ return ''; } }
+  function noteList(k){ return cloudOn()?MFcloudNotes.list(k):Promise.resolve((notesAll()[k]||[]).slice()); }
+  function noteBubble(n,k,word){ var on=!!hls()['note:'+n.id], es=MF.lang==='es';
+    return '<div class="nb'+(on?' mk':'')+'" data-id="'+esc(String(n.id))+'"'+(k?' data-k="'+k+'"':'')+'>'+(word?'<button type="button" class="nref" data-k="'+k+'">'+esc(word)+'</button>':'')+'<div class="nt">'+esc(n.text)+'</div>'
+      +'<div class="nm"><span>'+esc(stamp(n.at))+'</span><button type="button" data-a="hl" title="'+(es?'Resaltar':'Highlight')+'">🖍 '+(on?(es?'Quitar':'Unhighlight'):(es?'Resaltar':'Highlight'))+'</button>'
+      +'<button type="button" data-a="del" title="'+(es?'Borrar':'Delete')+'">🗑</button></div></div>'; }
+  function showNotes(){ var es=MF.lang==='es', k=cur; $('notesWord').textContent=wordName(k);
+    var d={}; try{ d=JSON.parse(localStorage.getItem(DKEY)||'{}')||{}; }catch(e){} if(document.activeElement!==$('notesText')) $('notesText').value=d[k]||'';
+    noteList(k).then(function(list){ if(k!==cur) return; list.sort(function(a,b){ return a.at-b.at; });
+      $('notesList').innerHTML=list.map(function(n){ return noteBubble(n); }).join(''); }).catch(function(){});
+    var n=notesAll(), keys=Object.keys(n).filter(function(x){ return x!==k && n[x].length && DATA[x]; }).sort(function(a,b){ return n[b][n[b].length-1].at-n[a][n[a].length-1].at; }).slice(0,6);
+    $('notesRecent').innerHTML=keys.length?((es?'Notas recientes: ':'Recent notes: ')+keys.map(function(x){return '<button type="button" data-k="'+x+'">'+esc(wordName(x))+'</button>';}).join(' ')):'';
+    if(!$('hlPane').hidden) showHl(); ui(); }
+  function draft(t){ var d={}; try{ d=JSON.parse(localStorage.getItem(DKEY)||'{}')||{}; }catch(e){} if(t.trim()) d[cur]=t; else delete d[cur]; try{ localStorage.setItem(DKEY,JSON.stringify(d)); }catch(e){} }
+  $('notesText').addEventListener('input',function(){ draft(this.value); ui(); });
+  $('noteSave').addEventListener('click',function(){ var t=$('notesText').value.trim(), k=cur, es=MF.lang==='es'; if(!t) return;
+    if(recOn&&rec) rec.stop();
+    var n=notesAll(), item={id:'d'+Date.now(),text:t,at:Date.now()}; (n[k]=n[k]||[]).push(item); saveAll(n);
+    var done=function(){ $('notesText').value=''; draft(''); spoke=false; $('notesMsg').textContent=es?'Guardado':'Saved'; showNotes(); };
+    if(cloudOn()) MFcloudNotes.add(k,t,spoke).then(function(row){ var m=notesAll(); (m[k]||[]).forEach(function(x){ if(x.id===item.id) x.id=row.id; }); saveAll(m); done(); })
+      .catch(function(){ done(); $('notesMsg').textContent=es?'Guardado aquí; no en la cuenta':'Saved on this device; account save failed'; });
+    else done(); });
+  $('notesList').addEventListener('click',function(e){ var b=e.target.closest('button[data-a]'), nb=e.target.closest('.nb'); if(!b||!nb) return; var id=nb.dataset.id, es=MF.lang==='es';
+    if(b.dataset.a==='hl'){ hlToggle('note:'+id,{kind:'note',id:id,k:cur,text:nb.querySelector('.nt').textContent.slice(0,200)}); showNotes(); return; }
+    if(b.dataset.a==='del'){ if(!confirm(es?'¿Borrar esta nota?':'Delete this note?')) return;
+      var n=notesAll(); Object.keys(n).forEach(function(k){ n[k]=n[k].filter(function(x){ return String(x.id)!==id; }); if(!n[k].length) delete n[k]; }); saveAll(n);
+      var h=hls(); if(h['note:'+id]){ delete h['note:'+id]; saveHls(h); if(window.MFcloudHl&&MFcloudHl.on()) MFcloudHl.del('note:'+id,'note'); }
+      (cloudOn()&&!/^d\d+$/.test(id)?MFcloudNotes.del(id):Promise.resolve()).then(showNotes,showNotes); } });
   $('notesRecent').addEventListener('click',function(e){ var b=e.target.closest('button[data-k]'); if(b) pick(b.dataset.k,false); });
   $('notesBtn').addEventListener('click',function(){ var open=$('notesBox').hidden; $('notesBox').hidden=!open; $('notesBtn').setAttribute('aria-expanded',String(open)); if(open) showNotes(); });
+  function tab(h){ $('ntabN').setAttribute('aria-pressed',h?'false':'true'); $('ntabH').setAttribute('aria-pressed',h?'true':'false'); $('notesPane').hidden=h; $('hlPane').hidden=!h; if(h) showHl(); }
+  $('ntabN').addEventListener('click',function(){ tab(false); }); $('ntabH').addEventListener('click',function(){ tab(true); });
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR) $('micBtn').hidden=true;
+  // the microphone: tap to speak, tap again to pause; tap again to carry on adding to the same note
   $('micBtn').addEventListener('click',function(){
     if(recOn){ rec&&rec.stop(); return; }
     rec=new SR(); rec.lang=LCODE[MF.lang]||'en-US'; rec.interimResults=false; rec.continuous=true;
     rec.onresult=function(ev){ var t=''; for(var i=ev.resultIndex;i<ev.results.length;i++) if(ev.results[i].isFinal) t+=ev.results[i][0].transcript;
-      if(t){ var box=$('notesText'); box.value=(box.value&&!/\s$/.test(box.value)?box.value+' ':box.value)+t.trim(); box.dispatchEvent(new Event('input')); } };
+      if(t){ var box=$('notesText'); box.value=(box.value&&!/\s$/.test(box.value)?box.value+' ':box.value)+t.trim(); spoke=true; draft(box.value); } };
     rec.onend=function(){ recOn=false; $('micBtn').setAttribute('aria-pressed','false'); ui(); };
     rec.onerror=function(){ $('notesMsg').textContent=MF.lang==='es'?'Permite el micrófono para dictar':'Allow the microphone to speak a note'; };
     recOn=true; $('micBtn').setAttribute('aria-pressed','true'); ui(); rec.start(); });
+  // ── Highlights: a verse in any reader, or a note. Kept in this browser, and in the account when signed in.
+  var HKEY='mf-hl';
+  function hls(){ try{ return JSON.parse(localStorage.getItem(HKEY)||'{}')||{}; }catch(e){ return {}; } }
+  function saveHls(h){ try{ localStorage.setItem(HKEY,JSON.stringify(h)); }catch(e){} }
+  window.MFhls=hls; window.MFsaveHls=saveHls;
+  function toast(t){ var b=$('mfToast'); b.textContent=t; b.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(function(){ b.hidden=true; },1800); }
+  function hlToggle(key,info){ var h=hls(), on=!h[key], es=MF.lang==='es', ver=info.kind==='note'?'note':info.ver, ref=info.kind==='note'?key:info.ref;
+    if(on){ info.at=Date.now(); h[key]=info; } else delete h[key]; saveHls(h);
+    if(window.MFcloudHl&&MFcloudHl.on()) (on?MFcloudHl.add(ref,ver):MFcloudHl.del(ref,ver));
+    toast(on?(es?'Resaltado · en Mis resaltados':'Highlighted · saved to My highlights'):(es?'Resaltado quitado':'Highlight removed')); return on; }
+  // where a verse in a reader comes from: the word's reference, the language and the Bible version
+  function verCode(l,orig){ return orig?'orig':l==='en'?'en:'+curVer().k:l; }
+  function hlCtx(k,i,l,orig){ var p=parseRef(DATA[k].refs[i][0]); return p?{k:k,i:i,l:l,book:p.book,ch:p.ch,ver:verCode(l,orig)}:null; }
+  function hlKey(c,v){ return c.book+' '+c.ch+':'+v+'|'+c.ver; }
+  function hlMark(root,c){ if(!root||!c) return; var h=hls(); [].forEach.call(root.querySelectorAll('span[data-v]'),function(sp){ sp.classList.toggle('mk',!!h[hlKey(c,sp.dataset.v)]); }); }
+  function stageCtx(){ var r=window.MFreader; return r&&r.kind==='ref'?hlCtx(r.k,r.i,r.l||MF.lang,RO):null; }
+  window.MFhlMarkStage=function(){ hlMark($('rChapter'),stageCtx()); };
+  window.MFhlMarkFig=function(fr){ var c=fr&&fr._ctx; if(c) hlMark(fr.querySelector('.chapter'),hlCtx(c.k,c.i,c.l,c.orig)); };
+  function verseTap(e,root,c){ var sp=e.target.closest('span[data-v]'); if(!sp||!c||!root.contains(sp)) return false;
+    var sel=window.getSelection&&getSelection(); if(sel&&sel.toString().trim().length>1) return false;
+    var v=sp.dataset.v, ref=c.book+' '+c.ch+':'+v, on=hlToggle(hlKey(c,v),{kind:'verse',ref:ref,ver:c.ver,k:c.k,i:c.i,l:c.l,v:+v,text:sp.textContent.slice(0,220)});
+    sp.classList.toggle('mk',on); return true; }
+  $('rChapter').addEventListener('click',function(e){ verseTap(e,this,stageCtx()); });
+  document.addEventListener('click',function(e){ var fr=e.target.closest&&e.target.closest('.fr'); if(!fr||!fr._ctx||!e.target.closest('.chapter span[data-v]')) return;
+    var c=fr._ctx; verseTap(e,fr.querySelector('.chapter'),hlCtx(c.k,c.i,c.l,c.orig)); },true);
+  function verLabel(v){ if(v==='orig') return 'Hebrew/Greek'; if(v.indexOf('en:')===0){ var x=VERS.filter(function(z){ return 'en:'+z.k===v; })[0]; return x?x.s:'KJV'; } return (typeof cmpName==='function'?cmpName(v):v); }
+  function showHl(){ var h=hls(), es=MF.lang==='es', ks=Object.keys(h).sort(function(a,b){ return (h[b].at||0)-(h[a].at||0); });
+    $('hlList').innerHTML=ks.length?ks.map(function(key){ var x=h[key];
+      if(x.kind==='note') return '<div class="nb mk" data-hk="'+esc(key)+'">'+(x.k&&DATA[x.k]?'<button type="button" class="nref" data-k="'+x.k+'">'+esc(wordName(x.k))+' · '+(es?'nota':'note')+'</button>':'')+'<div class="nt">'+esc(x.text||'')+'</div><div class="nm"><span>'+esc(stamp(x.at))+'</span><button type="button" data-a="unhl">🖍 '+(es?'Quitar':'Unhighlight')+'</button></div></div>';
+      return '<div class="nb mk" data-hk="'+esc(key)+'"><button type="button" class="nref" data-open="'+esc(key)+'">'+esc(x.ref)+' · '+esc(verLabel(x.ver||''))+' ›</button>'+(x.text?'<div class="nt">'+esc(x.text)+'</div>':'')+'<div class="nm"><span>'+esc(stamp(x.at))+'</span><button type="button" data-a="unhl">🖍 '+(es?'Quitar':'Unhighlight')+'</button></div></div>';
+    }).join(''):'<p class="hlhint">'+(es?'Aún no hay resaltados.':'No highlights yet.')+'</p>'; }
+  // open a highlighted verse: the word's reader for that chapter, scrolled to the verse
+  function openHl(x){ if(!x||!DATA[x.k]) return; pick(x.k,false); var l=x.ver&&x.ver.indexOf('en:')===0?'en':(x.ver==='orig'?'en':x.l||'en');
+    if(x.ver&&x.ver.indexOf('en:')===0){ try{ localStorage.setItem(VKEY,x.ver.slice(3)); }catch(e){} if($('rVer')) $('rVer').value=x.ver.slice(3); }
+    openReader(x.k,x.i,l);
+    var t0=Date.now(); (function find(){ var sp=$('rChapter').querySelector('span[data-v="'+x.v+'"]'); if(sp&&RD){ (x.ver==='orig'&&!RO)?$('rOrig').click():0; setTimeout(function(){ var s2=$('rChapter').querySelector('span[data-v="'+x.v+'"]'); if(s2) s2.scrollIntoView({block:'center',behavior:'smooth'}); },x.ver==='orig'?700:50); return; } if(Date.now()-t0<8000) setTimeout(find,150); })(); }
+  window.MFopenHl=function(key){ openHl(hls()[key]); };
+  $('hlList').addEventListener('click',function(e){ var o=e.target.closest('[data-open]'), w=e.target.closest('.nref[data-k]'), u=e.target.closest('button[data-a="unhl"]'), nb=e.target.closest('.nb');
+    if(o){ openHl(hls()[o.dataset.open]); return; }
+    if(w){ pick(w.dataset.k,false); tab(false); return; }
+    if(u&&nb){ var key=nb.dataset.hk, x=hls()[key]; if(x) hlToggle(key,x); showHl(); } });
   ui();
   window.MFword=function(){ stopSpeak(); $('sayMain').hidden=true; cmpOn={}; if(window.MFsave) MFsave(); if(!$('notesBox').hidden) showNotes(); if(window.MFview) MFview(cur); };
   MF.onChange(function(){ stopSpeak(); ui(); if(!$('notesBox').hidden) showNotes(); });
@@ -2210,7 +2309,7 @@ window.MF=(function(){
     $('acctWhy').textContent=T('Keep your notes on every device, and see your decal orders. No password: we email you a code.','Guarda tus notas en todos tus dispositivos y ve tus pedidos de calcomanías. Sin contraseña: te enviamos un código por correo.');
     $('acctSend').textContent=T('Email me a code','Envíame un código'); $('acctGo').textContent=T('Sign in','Entrar'); $('acctOutBtn').textContent=T('Sign out','Salir');
     $('acctCode').placeholder=T('Code from the email','Código del correo');
-    $('acctNotesH').textContent=T('My notes','Mis notas'); $('acctOrdersH').textContent=T('My decal orders','Mis pedidos de calcomanías'); $('acctActH').textContent=T('Recently viewed','Visto recientemente');
+    $('acctNotesH').textContent=T('My notes','Mis notas'); $('acctHlH').textContent=T('My highlights','Mis resaltados'); $('acctOrdersH').textContent=T('My decal orders','Mis pedidos de calcomanías'); $('acctActH').textContent=T('Recently viewed','Visto recientemente');
     $('notesWhere').textContent=me?T('Saved to your account','Guardado en tu cuenta'):T('Saved on this device','Guardado en este dispositivo'); }
   function esc2(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
   function when(d){ try{ return new Date(d).toLocaleDateString(MF.lang==='es'?'es':'en',{month:'short',day:'numeric',year:'numeric'}); }catch(e){ return ''; } }
@@ -2218,6 +2317,8 @@ window.MF=(function(){
     sb.from('notes').select('word_key,body,updated_at').eq('site',SITE).order('updated_at',{ascending:false}).limit(20).then(function(r){
       var rows=(r.data||[]).filter(function(n){return n.body&&DATA[n.word_key];});
       $('acctNotes').innerHTML=rows.length?rows.map(function(n){return '<div class="it"><button type="button" data-k="'+n.word_key+'">'+esc2(wordName(n.word_key))+'</button> <span class="mu">'+when(n.updated_at)+'</span><br>'+esc2(n.body.length>140?n.body.slice(0,140)+'…':n.body)+'</div>';}).join(''):'<div class="mu">'+T('No notes yet.','Aún no hay notas.')+'</div>'; });
+    hlSync().then(function(){ var h=window.MFhls?MFhls():{}, ks=Object.keys(h).filter(function(x){ return h[x].kind==='verse'; }).sort(function(a,b){ return (h[b].at||0)-(h[a].at||0); }).slice(0,30);
+      $('acctHl').innerHTML=ks.length?ks.map(function(x){ var y=h[x]; return '<div class="it"><button type="button" data-hl="'+esc2(x)+'">'+esc2(y.ref)+'</button> <span class="mu">'+when(y.at)+'</span>'+(y.text?'<br>'+esc2(y.text.length>140?y.text.slice(0,140)+'…':y.text):'')+'</div>'; }).join(''):'<div class="mu">'+T('No highlights yet. Tap a verse in the reader to highlight it.','Aún no hay resaltados. Toca un versículo en el lector para resaltarlo.')+'</div>'; });
     sb.from('orders').select('created_at,status,order_items(word_key,language,qty)').eq('site',SITE).order('created_at',{ascending:false}).limit(20).then(function(r){
       var rows=r.data||[];
       $('acctOrders').innerHTML=rows.length?rows.map(function(o){ var it=(o.order_items||[]).map(function(i){return (i.qty||'')+' × '+esc2(DATA[i.word_key]?wordName(i.word_key):i.word_key)+' ('+esc2(i.language||'')+')';}).join(', ');
@@ -2231,8 +2332,35 @@ window.MF=(function(){
   function cloudPut(k,text){ return cloudGet(k).then(function(row){
       if(row) return text.trim()? sb.from('notes').update({body:text}).eq('id',row.id) : sb.from('notes').delete().eq('id',row.id);
       if(text.trim()) return sb.from('notes').insert({site:SITE,word_key:k,body:text}); }); }
-  function moveDeviceNotes(){ var n=notes(), ks=Object.keys(n).filter(function(k){return n[k].text;});
-    return Promise.all(ks.map(function(k){ return cloudGet(k).then(function(row){ if(!row) return sb.from('notes').insert({site:SITE,word_key:k,body:n[k].text}); }); })).catch(function(){}); }
+  // device notes and highlights move into the account at sign-in (each note once; the same words are not copied twice)
+  function moveDeviceNotes(){ var n=window.MFlocalNotes?MFlocalNotes():{}, ks=Object.keys(n).filter(function(k){ return (n[k]||[]).length && DATA[k]; });
+    // a highlighted note keeps its highlight under the note's account id
+    var h=window.MFhls?MFhls():{};
+    var a=Promise.all(ks.map(function(k){ return sb.from('notes').select('id,body').eq('site',SITE).eq('word_key',k).then(function(r){ var have={}; (r.data||[]).forEach(function(x){ have[x.body]=x.id; });
+      var add=n[k].filter(function(x){ return x.text && !have[x.text]; }).map(function(x){ return {site:SITE,word_key:k,body:x.text,created_at:new Date(x.at).toISOString()}; });
+      return (add.length?sb.from('notes').insert(add).select('id,body'):Promise.resolve({data:[]})).then(function(r2){ (r2.data||[]).forEach(function(x){ have[x.body]=x.id; });
+        n[k].forEach(function(x){ var old='note:'+x.id, nid=have[x.text]; if(h[old]&&nid&&String(nid)!==String(x.id)){ h['note:'+nid]=Object.assign({},h[old],{id:nid}); delete h[old]; } }); }); }); }));
+    return a.then(function(){ if(window.MFsaveHls) MFsaveHls(h); return hlSync(); }).catch(function(){}); }
+  window.MFcloudNotes={ on:function(){ return !!(me&&sb); },
+    list:function(k){ return sb.from('notes').select('id,body,created_at').eq('site',SITE).eq('word_key',k).order('created_at',{ascending:true}).then(function(r){
+      if(r.error) throw r.error; return (r.data||[]).filter(function(x){ return x.body; }).map(function(x){ return {id:x.id,text:x.body,at:Date.parse(x.created_at)}; }); }); },
+    add:function(k,text,spoken){ return sb.from('notes').insert({site:SITE,word_key:k,body:text,spoken:!!spoken}).select('id,created_at').then(function(r){ if(r.error) throw r.error; var x=(r.data||[])[0]||{}; return {id:x.id,at:Date.parse(x.created_at)}; }); },
+    del:function(id){ return sb.from('notes').delete().eq('id',id); } };
+  window.MFcloudHl={ on:function(){ return !!(me&&sb); },
+    add:function(ref,ver){ return sb.from('highlights').upsert({site:SITE,verse_ref:ref,version:ver,color:'yellow'},{onConflict:'user_id,site,verse_ref,version',ignoreDuplicates:true}).then(function(){}); },
+    del:function(ref,ver){ return sb.from('highlights').delete().eq('site',SITE).eq('verse_ref',ref).eq('version',ver).then(function(){}); } };
+  // highlights: the account's list joins this device's (a verse highlighted on another device opens from its chapter here)
+  function hlSync(){ if(!(me&&sb)||!window.MFhls) return Promise.resolve(); var h=MFhls(), mine={};
+    Object.keys(h).forEach(function(key){ var x=h[key]; mine[(x.kind==='note'?key:x.ref)+'|'+(x.kind==='note'?'note':x.ver)]=key; });
+    return sb.from('highlights').select('verse_ref,version,created_at').eq('site',SITE).then(function(r){ var got={};
+      (r.data||[]).forEach(function(row){ got[row.verse_ref+'|'+row.version]=1; if(mine[row.verse_ref+'|'+row.version]) return;
+        if(row.version==='note') return;   // a highlighted note from another device: shown with its note
+        var m=row.verse_ref.match(/^(.*)\s+(\d+):(\d+)$/); if(!m) return; var k=null,i=0;
+        Object.keys(DATA).some(function(w){ return DATA[w].refs.some(function(rf,j){ var p=parseRef(rf[0]); if(p&&p.book===m[1]&&p.ch===m[2]){ k=w; i=j; return true; } }); });
+        if(!k) return; var l=row.version.indexOf('en:')===0||row.version==='orig'?'en':row.version;
+        h[row.verse_ref+'|'+row.version]={kind:'verse',ref:row.verse_ref,ver:row.version,k:k,i:i,l:l,v:+m[3],text:'',at:Date.parse(row.created_at)}; });
+      Object.keys(mine).forEach(function(id){ if(!got[id]){ var x=h[mine[id]]; MFcloudHl.add(x.kind==='note'?mine[id]:x.ref,x.kind==='note'?'note':x.ver); } });
+      MFsaveHls(h); }); }
   window.MFnoteSaved=function(k,text){ if(me&&sb) cloudPut(k,text).then(function(r){ if(r&&r.error) $('notesMsg').textContent=T('Saved on this device; account save failed','Guardado aquí; no se pudo guardar en la cuenta'); }); };
   window.MFnoteLoad=function(k,cb){ if(!(me&&sb)) return; cloudGet(k).then(function(row){ if(row&&k===cur) cb(row.body); }); };
   $('acctBtn').addEventListener('click',function(){ var open=$('acctBox').hidden; $('acctBox').hidden=!open; $('acctBtn').setAttribute('aria-expanded',String(open));
@@ -2248,6 +2376,7 @@ window.MF=(function(){
       .catch(function(){ $('acctMsg').textContent=T('That code did not work. Check it, or send a new one.','Ese código no funcionó. Revísalo o pide uno nuevo.'); }); });
   $('acctOutBtn').addEventListener('click',function(){ sb&&sb.auth.signOut(); });
   ['acctNotes','acctAct'].forEach(function(id){ $(id).addEventListener('click',function(e){ var b=e.target.closest('button[data-k]'); if(b){ pick(b.dataset.k,true); } }); });
+  $('acctHl').addEventListener('click',function(e){ var b=e.target.closest('button[data-hl]'); if(b&&window.MFopenHl) MFopenHl(b.dataset.hl); });
   // one tap from the email: the link carries a one-time key that is used only here, on the page,
   // so mail programs that open links early to check them cannot use it up
   (function(){ var q=new URLSearchParams(location.search), th=q.get('token_hash'); if(!th) return;
@@ -2328,7 +2457,7 @@ window.MF=(function(){
   var GPK='mf-cmp-cols';
   function gpPref(){ var c=0; try{ c=+localStorage.getItem(GPK)||0; }catch(e){} return c>=1&&c<=5?c:0; }
   function cmpLayout(){ gpLabels(); var box=$('cmp'), n=box.querySelectorAll('figure').length, desk=window.matchMedia('(min-width:901px)').matches, on=cmpShown();
-    $('cmpGrid').hidden=!on; $('cmpGrid').querySelector('.gpwrap').hidden=!(desk && n>=2);
+    $('cmpGrid').hidden=!on; $('cmpGrid').querySelector('.gpwrap').hidden=!(desk && n>=2); $('oneBar').hidden=on;
     if(!desk || !on){ box.classList.remove('grid'); [box,$('cmpGrid')].forEach(function(e){ e.style.width=''; e.style.marginLeft=''; }); box.style.removeProperty('--fw'); box.style.removeProperty('--cols'); return; }
     var pw=box.parentElement.clientWidth, gap=18, fw=Math.round(Math.floor((pw-gap)/2)*1.088), room=Math.min(window.innerWidth*0.96,1900);
     var maxC=Math.max(1,Math.min(5,Math.floor((room+gap)/(fw+gap)))), want=gpPref(), c;
@@ -2345,10 +2474,14 @@ window.MF=(function(){
     $('gp').addEventListener('mouseleave',cmpLayout);
     $('gp').addEventListener('click',function(e){ var t=e.target.closest('i'); if(!t||t.classList.contains('off')) return; try{ localStorage.setItem(GPK,t.dataset.c); }catch(x){} cmpLayout(); });
     $('gpAuto').addEventListener('click',function(){ try{ localStorage.removeItem(GPK); }catch(x){} cmpLayout(); });
+    // Ken, 9 Oct: back to two fish from one, with the button on the other side
+    $('twoBtn').addEventListener('click',function(){ cmpDefault=true; oneFish(false); setCmp(twoFish()); });
     $('cmpClear').addEventListener('click',function(){ cmpDefault=false; oneFish(true); setCmp([]); $('stage').scrollIntoView({block:'center',behavior:'smooth'}); });
     window.addEventListener('resize',function(){ clearTimeout(window.__gpT); window.__gpT=setTimeout(cmpLayout,150); }); })();
   function gpLabels(){ var es=MF.lang==='es', M=(typeof MENU!=='undefined'&&MENU&&(MENU[MF.lang]||MENU.en))||['','','Just one fish']; $('cmpGridLab').textContent=es?'Por fila':'Per row'; $('gpAuto').textContent=es?'Automático':'Auto';
-    $('cmpClear').textContent='✕ '+M[2]; }
+    $('cmpClear').textContent='✕ '+M[2];
+    var TW={en:'Two fish',es:'Dos peces',tl:'Dalawang isda',zh:'两条鱼',hi:'दो मछलियाँ',el:'Δύο ψάρια',de:'Zwei Fische',ko:'물고기 두 마리',he:'שני דגים'};
+    $('twoBtn').textContent='+ '+(TW[MF.lang]||TW.en); }
   gpLabels(); MF.onChange(gpLabels);
   // Ken, 9 Oct: with fish side by side, a verse opens right under its own fish, in that fish's language -- so two
   // (or more) passages can be open at once, each with its own Verse / Chapter speaker.
@@ -2365,7 +2498,7 @@ window.MF=(function(){
       +'<div class="frbody"><div class="chapter"><p class="frwait">…</p></div></div><div class="frv"></div>';
     if(!p) return; var vs=+p.vs, ch=fr.querySelector('.chapter'), ctx=fr._ctx;
     var fit=function(){ fitExp(fr.querySelector('.lxexp'),fr.querySelector('.frbody'),fr.classList.contains('big')); };
-    if(orig){ loadOrig(p).then(function(j){ if(!fr.isConnected||fr._ctx!==ctx) return; var o=origView(j,p,k); ch.innerHTML=o.html; fr._rd={l:o.l,t:o.t,vs:vs};
+    if(orig){ loadOrig(p).then(function(j){ if(!fr.isConnected||fr._ctx!==ctx) return; var o=origView(j,p,k); ch.innerHTML=o.html; fr._rd={l:o.l,t:o.t,vs:vs}; if(window.MFhlMarkFig) MFhlMarkFig(fr);
         fr.querySelector('.frv').textContent=o.credit; fit(); })
       .catch(function(){ if(fr.isConnected) ch.innerHTML='<p class="frwait">'+(MF.lang==='es'?'No se pudo abrir este capítulo.':'Could not open this chapter.')+'</p>'; });
       f.scrollIntoView({block:'nearest',behavior:'smooth'}); return; }
@@ -2374,7 +2507,7 @@ window.MF=(function(){
       : fetch('/fish-lang/bible/'+l+'/'+p.book.replace(/ /g,'_')+'-'+p.ch+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); });
     got.then(function(j){ if(!fr.isConnected||fr._ctx!==ctx) return; var h='<p>';
       j.t.forEach(function(t,n){ if(!t) return; h+='<span class="vn">'+(n+1)+'</span><span data-v="'+(n+1)+'" class="'+(n+1===vs?'hi':'')+'">'+esc(t)+'</span> '; });
-      ch.innerHTML=h+'</p>'; fr._rd={l:l,t:j.t,vs:vs};
+      ch.innerHTML=h+'</p>'; fr._rd={l:l,t:j.t,vs:vs}; if(window.MFhlMarkFig) MFhlMarkFig(fr);
       var fv=fr.querySelector('.frv'), cv=curVer();
       if(l==='en') fv.innerHTML='<select class="frver" aria-label="Bible version">'+VERS.map(function(v){ return '<option value="'+v.k+'"'+(v.k===cv.k?' selected':'')+'>'+esc(v.s)+'</option>'; }).join('')+'</select>'+esc(cv.n);
       else fv.textContent=j.v;

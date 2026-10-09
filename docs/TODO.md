@@ -148,7 +148,8 @@ Built 7 Oct (on the test site):
 3. [x] "My decal orders" (matched by sign-in email) and "Recently viewed" words.
 4. [ ] **Ken:** Netlify → Environment variables → `SUPABASE_SECRET_KEY` (Yadah's secret key), so new decal requests are recorded as orders.
 5. [x] **Ken:** sign-in emails replaced with the one-tap MannaFish email (tools/supabase/email-template.html), links last 1 hour (7 Oct).
-6. [ ] Highlights on verses (the table is ready; the highlight buttons come next).
+6. [x] Highlights (9 Oct): tap any verse in a reader to highlight it; highlight a note; "My highlights" in the notes panel and on the account page; saved to the account when signed in.
+6b. [x] Notes as bubbles with the date and time; Save note button; dictation pauses and carries on; delete a note.
 7. [x] Privacy & Terms page at /privacy/ (9 Oct), with the texting terms carriers require; linked from the footer, both sign-up forms and every devotional email.
 8. [x] Ken confirmed (9 Oct): the Privacy page names Yadah Collaborative.
 9. [ ] "Download my data" and "Delete my account" buttons (for now, by email request, as the Privacy page says).
