@@ -11,7 +11,12 @@ import ES from './es.json';
 
 export const store = () => getStore('mannafish-devo');
 export const idFor = (email) => 'sub/' + createHash('sha256').update(String(email).trim().toLowerCase()).digest('hex').slice(0, 40);
-const SITE = () => (process.env.URL || 'https://manna-fish.com').replace(/\/$/, '');
+// Ken, 9 Oct: the links in an email go back to the site the person signed up on (the test site while testing,
+// manna-fish.com once live). MF_LINK_URL in Netlify overrides it for everyone.
+let LINK = null;
+const SITE = () => (process.env.MF_LINK_URL || LINK || process.env.URL || 'https://manna-fish.com').replace(/\/$/, '');
+export function siteOf(origin) { try { const u = new URL(origin);
+  return u.protocol === 'https:' && /(^|\.)(manna-fish\.com|netlify\.app)$/.test(u.hostname) ? u.origin : null; } catch (e) { return null; } }
 const ADDRESS = () => process.env.MF_MAIL_ADDRESS || 'MannaFish · Yadah Collaborative · 4563 Technology Dr, Unit 6, Wilmington, NC 28405';
 const FREQS = ['Daily', 'Weekly', 'Monthly'];
 
@@ -25,6 +30,7 @@ export async function unsubUrl(email) { return SITE() + '/api/devo-unsubscribe?e
 
 // a word on a day: the day's verse, and the verse on the fish
 export function emailFor(m, lang, unsub, opts = {}) {
+  const keep = LINK; if (opts.site) LINK = opts.site;
   const es = lang === 'es', f = FISH[es ? 'es' : 'en'][m.key];
   const word = es ? (ES.titles[m.key] || m.title) : m.title;
   const mm = m.ref.match(/^(.*?)\s+(\d+:\d+.*)$/);
@@ -59,18 +65,20 @@ export function emailFor(m, lang, unsub, opts = {}) {
 <tr><td align="center" style="padding:16px 22px 22px;border-top:1px solid #1f2a33;font:12px/1.7 Arial,sans-serif;color:#8a9aa0">${esc(T.why)} <a href="${unsub}" style="color:#8a9aa0">${esc(T.stop)}</a> · <a href="${SITE()}/privacy/" style="color:#8a9aa0">${es ? 'Privacidad' : 'Privacy'}</a><br>${esc(ADDRESS())}</td></tr>
 </table></td></tr></table></body></html>`;
   const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${T.today}: ${ref}${snippet}\n${T.listen}: ${listen}\n${T.read}: ${read}\n\n${T.fish}: “${f.top} ${f.bottom}” ${f.ref}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
+  LINK = keep;
   return { subject: T.sub, html, text };
 }
 
 export async function deliver(rec, m, opts) {
+  LINK = rec.site || null;
   const unsub = await unsubUrl(rec.email);
-  const e = emailFor(m, rec.lang, unsub, opts);
+  const e = emailFor(m, rec.lang, unsub, opts); LINK = null;
   return sendMail({ to: rec.email, name: rec.name, subject: e.subject, html: e.html, text: e.text, tag: 'devotional',
     headers: { 'List-Unsubscribe': '<' + unsub + '>', 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' } });
 }
 
 // save or update a sign-up; returns { rec, isNew }
-export async function subscribe(f, now = new Date()) {
+export async function subscribe(f, now = new Date(), site = null) {
   const by = f['send-by'] === 'Text' ? 'Text' : 'Email';
   const email = String(f.email || '').trim().slice(0, 200), phone = String(f.phone || '').replace(/[^\d+]/g, '').slice(0, 20);
   if (by === 'Email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) throw new Error('email');
@@ -80,7 +88,7 @@ export async function subscribe(f, now = new Date()) {
   const rec = { ...(old || {}), by, email, phone, name: String(f.name || '').slice(0, 120),
     freq: FREQS.includes(f['how-often']) ? f['how-often'] : 'Daily',
     tz: validTz(f['time-zone']) ? f['time-zone'] : DEFAULT_TZ, lang: f.language === 'es' ? 'es' : 'en',
-    form: f['form-name'] || '', unsub: false, at: (old && old.at) || now.toISOString(), updated: now.toISOString() };
+    form: f['form-name'] || '', site: site || (old && old.site) || null, unsub: false, at: (old && old.at) || now.toISOString(), updated: now.toISOString() };
   await s.setJSON(key, rec);
   return { rec, key, isNew: !old || old.unsub };
 }
