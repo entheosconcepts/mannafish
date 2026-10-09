@@ -4,6 +4,7 @@
 // (OPENAI_API_KEY), it answers 501 and the page uses the phone's or computer's own voice.
 // Each clip is made once and kept in Blobs, so a line costs a fraction of a cent one time only.
 import { getStore } from '@netlify/blobs';
+import { createHash } from 'node:crypto';
 import SPEAK from './lib/speak.json';
 import TONGUE from './lib/tongue.json';
 const VOICE = process.env.MF_TTS_VOICE || 'sage';
@@ -18,7 +19,9 @@ export default async (req) => {
   if (!text) return new Response('Unknown word', { status: 404 });
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) return new Response('No voice key yet', { status: 501 });
-  const store = getStore('mannafish-tts'), id = pid ? `${lang}/tongue-${pid}-${VOICE}.mp3` : `${lang}/${key}-${part}-${VOICE}.mp3`;
+  // the clip's name carries a short fingerprint of its words, so a corrected line is recorded afresh
+  const fp = createHash('sha256').update(text).digest('hex').slice(0, 8);
+  const store = getStore('mannafish-tts'), id = pid ? `${lang}/tongue-${pid}-${VOICE}-${fp}.mp3` : `${lang}/${key}-${part}-${VOICE}-${fp}.mp3`;
   let audio = await store.get(id, { type: 'arrayBuffer' });
   if (!audio) {
     const r = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST',
