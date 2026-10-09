@@ -602,6 +602,10 @@ section.section.bundles{display:block;margin-top:0}
 .fr .frbody{flex:1;min-height:0;max-height:none}
 /* Ken, 9 Oct: everything stays on the site -- no links out to Bible Gateway, Bible Hub or the Bible App */
 #rGate,#rYouV,#rYouVHint{display:none!important}
+.deck .lang[data-c]{cursor:pointer;border-radius:6px;transition:background .15s}
+.deck .lang[data-c]:hover{background:rgba(255,255,255,.06)}
+.chapter p.lxq,.fr .chapter p.lxq{font:italic 1.2rem/1.5 'Spectral',serif;color:var(--foam);margin:0 0 14px}
+.fr .lx{margin-bottom:12px}
 .chapter .rw.on{background:#f5d76e;color:#111;border-radius:3px}
 .chapter .reading{background:rgba(42,95,176,.25);border-radius:3px}
 /* the small reader under each fish in the side-by-side view */
@@ -931,9 +935,9 @@ section.section.bundles{display:block;margin-top:0}
           <div class="wtitle" id="wTitle">Hope</div>
           <div class="hr"></div>
           <div class="langs">
-            <div class="lang"><div class="top"><span class="lab" id="gkLab">Greek</span><span class="w" id="gkW"></span><span class="snd" id="gkS"></span></div><div class="mean" id="gkM"></div><a class="conc" id="gkC" data-c="g">Concordance &#8599;</a></div>
+            <div class="lang" data-c="g"><div class="top"><span class="lab" id="gkLab">Greek</span><span class="w" id="gkW"></span><span class="snd" id="gkS"></span></div><div class="mean" id="gkM"></div><a class="conc" id="gkC" data-c="g">Concordance &#8599;</a></div>
             <div class="div"></div>
-            <div class="lang"><div class="top"><span class="lab" id="hbLab">Hebrew</span><span class="w" id="hbW"></span><span class="snd" id="hbS"></span></div><div class="mean" id="hbM"></div><a class="conc" id="hbC" data-c="h">Concordance &#8599;</a></div>
+            <div class="lang" data-c="h"><div class="top"><span class="lab" id="hbLab">Hebrew</span><span class="w" id="hbW"></span><span class="snd" id="hbS"></span></div><div class="mean" id="hbM"></div><a class="conc" id="hbC" data-c="h">Concordance &#8599;</a></div>
           </div>
           <div class="hr"></div>
           <div class="trace" id="traceLab">Trace it through Scripture &mdash; tap a verse</div>
@@ -1398,7 +1402,7 @@ window.MF=(function(){
     var b=t.closest('.dprev,.dnext,.under1'); if(!b) return; e.stopPropagation(); e.preventDefault();
     deckShow(deck, +(deck.dataset.at||0)+(b.classList.contains('dprev')?-1:1)); },true);
   // verses and Strong's on any card of the single fish
-  document.querySelector('#stage .face.back').addEventListener('click',function(e){ var r=e.target.closest('.deck .ref'), c=e.target.closest('.deck .conc');
+  document.querySelector('#stage .face.back').addEventListener('click',function(e){ var r=e.target.closest('.deck .ref'), c=e.target.closest('.deck .lang[data-c]');
     if(r){ e.stopPropagation(); openReader(cur,+r.dataset.i,r.dataset.l); }
     else if(c){ e.stopPropagation(); e.preventDefault(); openStrongs(cur,c.dataset.c==='g'); } });
   window.addEventListener('resize',function(){ clearTimeout(window.__dkT); window.__dkT=setTimeout(function(){ document.querySelectorAll('.face.back.decked').forEach(function(f){ if(f.offsetParent) buildDeck(f); }); },200); });
@@ -1503,22 +1507,23 @@ window.MF=(function(){
     if(!inlineNow()) scrim.classList.add('open');
     else if(!landing) setTimeout(function(){reader.scrollIntoView({behavior:'smooth',block:'start'});},30);
   }
+  // Ken, 9 Oct: the Strong's entry is a card of its own -- laid on top of the deck, the same size, with a speaker
+  // that reads it aloud (each word lit as it is read). The parts that are read are the spans marked data-v.
+  var HEARIT={en:'Hear it',es:'Escuchar',tl:'Pakinggan',zh:'收听',hi:'सुनें',el:'Ακούστε',de:'Anhören',ko:'듣기',he:'האזינו'};
+  function lexBody(k,gk){ var sg=STRONGS[k]||['',''], n=gk?sg[0]:sg[1], id=(gk?'G':'H')+n, e=n&&LEX[id]; if(!e) return null;
+    var t=[e.s.charAt(0).toUpperCase()+e.s.slice(1)], h='<p class="lxq"><span data-v="1">'+esc(t[0])+'</span></p>';
+    [[e.p,'sounds',1],[e.d,'from',0],[e.k,'kjvtr',1]].forEach(function(q){ if(!q[0]) return; if(q[2]) t.push(q[0]);   // the "from H6960" line is shown, not read
+      h+='<div class="lx"><div class="lx-h">'+MF.t(q[1])+'</div><p>'+(q[2]?'<span data-v="'+t.length+'">'+esc(q[0])+'</span>':esc(q[0]))+'</p></div>'; });
+    return {id:id,t:t,html:h,head:'<span class="lx-l">'+esc(e.l)+'</span> <span class="lx-t">'+esc(e.t)+'</span>'}; }
   function openStrongs(k,gk){
-    window.MFreader={kind:'strongs',k:k,gk:!!gk}; if(window.MFsave) setTimeout(MFsave,0); RD=null; rStop(); $('rSay').hidden=true;
-    var d=DATA[k], sg=STRONGS[k]||['',''], n=gk?sg[0]:sg[1], id=(gk?'G':'H')+n, e=LEX[id];
-    $('rKicker').textContent=wordTitle(k)+' \u00b7 Strong '+id;
-    $('rRef').innerHTML='<span class="lx-l">'+esc(e.l)+'</span> <span class="lx-t">'+esc(e.t)+'</span>';
-    $('rQuote').innerHTML=esc(e.s.charAt(0).toUpperCase()+e.s.slice(1));
-    var h='';
-    if(e.p) h+='<div class="lx"><div class="lx-h">'+MF.t('sounds')+'</div><p>'+esc(e.p)+'</p></div>';
-    if(e.d) h+='<div class="lx"><div class="lx-h">'+MF.t('from')+'</div><p>'+esc(e.d)+'</p></div>';
-    if(e.k) h+='<div class="lx"><div class="lx-h">'+MF.t('kjvtr')+'</div><p>'+esc(e.k)+'</p></div>';
-    $('rChapter').innerHTML=h;
+    window.MFreader={kind:'strongs',k:k,gk:!!gk}; if(window.MFsave) setTimeout(MFsave,0); RD=null; rStop();
+    var x=lexBody(k,gk); if(!x) return;
+    $('rKicker').textContent=wordTitle(k)+' \u00b7 Strong '+x.id;
+    $('rRef').innerHTML=x.head; $('rQuote').innerHTML=''; $('rChapter').innerHTML=x.html;
+    RD={l:'en',t:x.t,vs:1}; rsayUI('en');
     reader.querySelector('.reader-body').scrollTop=0;
     $('rYouV').style.display='none'; $('rVer').style.display='none'; $('rYouVHint').style.display='none';
-    var g=$('rGate'); g.href='https://biblehub.com/'+(gk?'greek':'hebrew')+'/'+n+'.htm'; g.removeAttribute('target');
-    g.textContent=MF.t('everyverse');
-    g.onclick=function(){try{sessionStorage.setItem(RET,JSON.stringify({k:k,y:window.scrollY}));}catch(x){}};
+    $('rGate').style.display='none';
     $('rNote').textContent=MF.t('lexnote');
     showPanel();
   }
@@ -1578,11 +1583,11 @@ window.MF=(function(){
   var RSAY={en:['Verse','Chapter','Stop'],es:['Versículo','Capítulo','Detener'],tl:['Talata','Kabanata','Ihinto'],zh:['经文','整章','停止'],hi:['पद','अध्याय','रोकें'],
     el:['Εδάφιο','Κεφάλαιο','Διακοπή'],de:['Vers','Kapitel','Stopp'],ko:['구절','장 전체','멈춤'],he:['פסוק','פרק','עצור']};
   var RBIB={en:'KJV',es:'RV 1909',tl:'Ang Biblia',zh:'和合本',hi:'IRV',el:'FPB',de:'Elberfelder',ko:'개역',he:'המסורה · דליטש'};
-  function rsayUI(l){ var T=RSAY[MF.lang]||RSAY.en, st=window.MFreader&&window.MFreader.kind==='ref';
-    $('rSay').hidden=!st;
+  function rsayUI(l){ var T=RSAY[MF.lang]||RSAY.en, kd=window.MFreader&&window.MFreader.kind, st=kd==='ref'||kd==='strongs', lx=kd==='strongs';
+    $('rSay').hidden=!st; $('rLang').hidden=lx; $('rPlayV').hidden=lx;
     $('rLang').innerHTML=CMPL.filter(function(o){ return !o[2]; }).map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===l?' selected':'')+'>'+esc(cmpLabel(o[0]))+' · '+RBIB[o[0]]+'</option>'; }).join('');
     $('rVoice').innerHTML=voiceOptions();
-    $('rPlayV').innerHTML='🔊 '+esc(T[0]); $('rPlayC').innerHTML='🔊 '+esc(T[1]); $('rPlayV').setAttribute('aria-pressed','false'); $('rPlayC').setAttribute('aria-pressed','false'); }
+    $('rPlayV').innerHTML='🔊 '+esc(T[0]); $('rPlayC').innerHTML='🔊 '+esc(lx?(HEARIT[MF.lang]||HEARIT.en):T[1]); $('rPlayV').setAttribute('aria-pressed','false'); $('rPlayC').setAttribute('aria-pressed','false'); }
   $('rLang').addEventListener('change',function(){ var r=window.MFreader; rStop(); if(r&&r.kind==='ref') openReader(r.k,r.i,this.value); });
   $('rVoice').addEventListener('change',function(){ setVoice(this.value); });
   // long verses go to the voice in pieces of up to 300 letters, split where a sentence or clause ends
@@ -1622,7 +1627,7 @@ window.MF=(function(){
   function readerCtx(){ return {root:$('rChapter'),data:RD,box:reader.classList.contains('inline')?null:reader.querySelector('.reader-body')}; }
   $('rPlayV').addEventListener('click',function(){ if(RD) readAloud(readerCtx(),RD.vs,RD.vs,this); });
   $('rPlayC').addEventListener('click',function(){ if(RD) readAloud(readerCtx(),1,RD.t.length,this); });
-  MF.onChange(function(){ var r=window.MFreader; if(r&&r.kind==='ref') rsayUI(r.l||MF.lang); });
+  MF.onChange(function(){ var r=window.MFreader; if(r&&r.kind==='ref') rsayUI(r.l||MF.lang); if(r&&r.kind==='strongs') rsayUI('en'); });
   // Ken, 6 Oct: "a little select version button ... so people can change the translation."
   // Only translations that are free to show in full (public domain, served by bible-api.com).
   // NIV, ESV, NKJV and the like are copyrighted; the YouVersion button opens those.
@@ -2117,6 +2122,14 @@ window.MF=(function(){
       var hv=ch.querySelector('.hi'), bd=fr.querySelector('.frbody'); if(hv) bd.scrollTop=Math.max(0,hv.offsetTop-bd.offsetTop-bd.clientHeight/3); })
     .catch(function(){ if(fr.isConnected) ch.innerHTML='<p class="frwait">'+(MF.lang==='es'?'No se pudo abrir este capítulo.':'Could not open this chapter.')+'</p>'; });
     f.scrollIntoView({block:'nearest',behavior:'smooth'}); }
+  function openFigStrongs(f,k,gk){ var x=lexBody(k,gk); if(!x) return; var fr=f.querySelector('.fr'); if(!fr){ fr=document.createElement('div'); fr.className='fr'; f.appendChild(fr); }
+    var card=f.classList.contains('on')?f.querySelector('.cmpb'):f.querySelector('.cmpf'); fr.style.top=card.offsetTop+'px'; fr.style.height=card.offsetHeight+'px';
+    if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak();
+    fr.setAttribute('lang','en'); fr.hidden=false; fr._rd={l:'en',t:x.t,vs:1};
+    fr.innerHTML='<div class="frtop"><div><div class="rk">'+esc(titleIn(f.dataset.l,k))+' \u00b7 Strong '+x.id+'</div><div class="rref">'+x.head+'</div></div><button type="button" class="frx" aria-label="Close">&times;</button></div>'
+      +'<div class="frsay"><button type="button" class="rplay" data-a="c">🔊 '+esc(HEARIT[MF.lang]||HEARIT.en)+'</button></div>'
+      +'<div class="frbody"><div class="chapter">'+x.html+'</div></div><div class="frv">Strong\u2019s Concordance</div>';
+    f.scrollIntoView({block:'nearest',behavior:'smooth'}); }
   function figReaderClick(e){ var fr=e.target.closest('.fr'); if(!fr) return false;
     if(e.target.closest('.frx')){ if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak(); fr.hidden=true; fr.innerHTML=''; return true; }
     var b=e.target.closest('.rplay'); if(b && fr._rd){ var ctx={root:fr.querySelector('.chapter'),data:fr._rd,box:fr.querySelector('.frbody')};
@@ -2128,8 +2141,8 @@ window.MF=(function(){
   $('cmp').addEventListener('click',function(e){ var f=e.target.closest('figure[data-l]'); if(!f||e.target.closest('.spk,figcaption,.saybox')) return;
     if(figReaderClick(e)){ e.stopPropagation(); return; }
     var ref=e.target.closest('.ref'); if(ref){ e.stopPropagation(); if(cmpShown()) openFigReader(f,cur,+ref.dataset.i,ref.dataset.l||f.dataset.l); else openReader(cur,+ref.dataset.i,ref.dataset.l); return; }
-    var conc=e.target.closest('.conc'); if(conc){ var gk=conc.dataset.c?conc.dataset.c==='g':conc===f.querySelectorAll('.conc')[0], sg=STRONGS[cur]||['',''], n=gk?sg[0]:sg[1];
-      if(n && LEX[(gk?'G':'H')+n]){ e.preventDefault(); e.stopPropagation(); openStrongs(cur,gk); } return; }
+    var conc=e.target.closest('.deck .lang[data-c]'); if(conc){ var gk=conc.dataset.c==='g', sg=STRONGS[cur]||['',''], n=gk?sg[0]:sg[1];
+      if(n && LEX[(gk?'G':'H')+n]){ e.preventDefault(); e.stopPropagation(); if(cmpShown()) openFigStrongs(f,cur,gk); else openStrongs(cur,gk); } return; }
     var l=f.dataset.l; cmpOn[l]=!cmpOn[l]; f.classList.toggle('on',!!cmpOn[l]); cmpLayout(); cmpDeck(f); if(window.MFsave) MFsave(); });
   function setCmp(list){ stopSpeak(); var ok=CMPL.filter(function(o){return !o[2];}).map(function(o){return o[0];});
     cmpSel=(list||[]).filter(function(l,i,a){return ok.indexOf(l)>=0 && a.indexOf(l)===i;}); cmpLang=cmpSel[0]||null; var on=cmpShown();
