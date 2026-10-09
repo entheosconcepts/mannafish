@@ -683,18 +683,18 @@ section.section.bundles{display:block;margin-top:0}
 }
 .fr.big .frbody{flex:none;overflow:visible;max-height:none}
 /* compact controls on the stacked cards: two rows at most on a computer, one sliding row on a phone */
-.reader.stacked .reader-top{padding:8px 14px 4px;align-items:center}
-.reader.stacked .reader-top .rk{font-size:.6rem}
-.reader.stacked .reader-top .rref{font-size:1.25rem}
-.reader.stacked .rclose,.fr .frx{width:28px;height:28px;font-size:.95rem}
-.reader.stacked .rsay,.fr .frsay{padding:5px 8px;gap:4px;justify-content:center}
-.reader.stacked .rsay .rplays{display:flex;gap:4px;flex:none;order:1}
-.reader.stacked .rsay .lxexp{order:2}.reader.stacked .rsay .rlang{order:3;flex:0 1 150px}.reader.stacked .rsay .rvlab{order:4}.reader.stacked .rsay .rvoice{order:5;flex:0 1 140px}
-.reader.stacked .rsay .rplay,.fr .frsay .rplay{height:28px;padding:0 9px;font-size:.7rem;flex:none}
-.reader.stacked .rsay select,.fr .frsay select{height:28px;font-size:.68rem;padding:0 4px;min-width:0;text-overflow:ellipsis}
+.reader.stacked .reader-top,.reader.sheet .reader-top{padding:8px 14px 4px;align-items:center}
+.reader.stacked .reader-top .rk,.reader.sheet .reader-top .rk{font-size:.6rem}
+.reader.stacked .reader-top .rref,.reader.sheet .reader-top .rref{font-size:1.25rem}
+.reader.stacked .rclose,.reader.sheet .rclose,.fr .frx{width:28px;height:28px;font-size:.95rem}
+.reader.stacked .rsay,.reader.sheet .rsay,.fr .frsay{padding:5px 8px;gap:4px;justify-content:center}
+.reader.stacked .rsay .rplays,.reader.sheet .rsay .rplays{display:flex;gap:4px;flex:none;order:1}
+.reader.stacked .rsay .lxexp,.reader.sheet .rsay .lxexp{order:2}.reader.stacked .rsay .rlang,.reader.sheet .rsay .rlang{order:3;flex:0 1 150px}.reader.stacked .rsay .rvlab,.reader.sheet .rsay .rvlab{order:4}.reader.stacked .rsay .rvoice,.reader.sheet .rsay .rvoice{order:5;flex:0 1 140px}
+.reader.stacked .rsay .rplay,.reader.sheet .rsay .rplay,.fr .frsay .rplay{height:28px;padding:0 9px;font-size:.7rem;flex:none}
+.reader.stacked .rsay select,.reader.sheet .rsay select,.fr .frsay select{height:28px;font-size:.68rem;padding:0 4px;min-width:0;text-overflow:ellipsis}
 .fr .frsay select{max-width:140px}
-.reader.stacked .rsay .rvlab,.fr .rvlab{font-size:.62rem;flex:none}
-.reader.stacked .reader-body{padding:8px 16px}
+.reader.stacked .rsay .rvlab,.reader.sheet .rsay .rvlab,.fr .rvlab{font-size:.62rem;flex:none}
+.reader.stacked .reader-body,.reader.sheet .reader-body{padding:8px 16px}
 .fr .frtop{padding:8px 12px 4px;align-items:center}
 .fr .frtop .rref{font-size:1.1rem}
 .ilin{gap:2px;padding:6px}
@@ -702,8 +702,8 @@ section.section.bundles{display:block;margin-top:0}
 .ilw b{font-size:1.1rem}
 .ilw i,.ilw small{font-size:.64rem}
 @media(max-width:640px){
-  .reader.stacked .rsay,.fr .frsay{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start}
-  .reader.stacked .rsay .rlang,.reader.stacked .rsay .rvoice,.fr .frsay select{flex:0 0 auto;width:118px;max-width:none}
+  .reader.stacked .rsay,.reader.sheet .rsay,.fr .frsay{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start}
+  .reader.stacked .rsay .rlang,.reader.sheet .rsay .rlang,.reader.stacked .rsay .rvoice,.reader.sheet .rsay .rvoice,.fr .frsay select{flex:0 0 auto;width:118px;max-width:none}
 }
 .chapter .rw.on{background:#f5d76e;color:#111;border-radius:3px}
 .chapter .reading{background:rgba(42,95,176,.25);border-radius:3px}
@@ -828,6 +828,24 @@ section.section.bundles{display:block;margin-top:0}
 :root[data-mode="light"] .cmpmenu{background:#fff}
 
 .toolrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0 2px}
+/* Ken, 9 Oct: "Listen" from the email -- the day's fish, the verse read aloud in a reader that rises over half the
+   fish (expand it, shrink it to a bar, pause), and a Listen / Pause button beside My notes, Every Tongue and Sign in */
+.toolbtn.tblisten{border-color:var(--brass)}
+.toolbtn.tblisten.tap{background:var(--brass);color:#fff;animation:mfpulse 1.4s ease-in-out infinite}
+@keyframes mfpulse{0%,100%{box-shadow:0 0 0 0 rgba(42,95,176,.6)}50%{box-shadow:0 0 0 8px rgba(42,95,176,0)}}
+.reader.sheet{position:fixed;top:auto;bottom:0;left:0;right:0;margin:0 auto;width:min(760px,100%);height:52vh;border:1px solid var(--line);border-bottom:0;border-radius:14px 14px 0 0;box-shadow:0 -24px 60px -12px #000;transform:translateY(110%);transition:transform .32s cubic-bezier(.4,.05,.2,1),height .3s ease;z-index:61}
+.reader.sheet.open{transform:none}
+.reader.sheet.full{height:92vh}
+.reader.sheet.mini{height:auto}
+.reader.sheet.mini>:not(.reader-top){display:none}
+.reader.sheet .rmode{display:none}
+.rsheet{display:none;gap:6px}
+.reader.sheet .rsheet{display:inline-flex}
+.rsb{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--foam);font-size:.85rem;line-height:1;cursor:pointer;padding:0}
+.rsb[aria-pressed="true"]{border-color:var(--brass);background:rgba(42,95,176,.3)}
+.reader.sheet .reader-top{padding:12px 16px 8px}
+.rtap{display:none}
+.reader.sheet.tap .rtap{display:block;margin:10px auto 6px;flex:none;padding:12px 22px;border-radius:999px;border:0;background:var(--brass);color:#fff;font:700 1rem 'Archivo',sans-serif;cursor:pointer;animation:mfpulse 1.4s ease-in-out infinite}
 .toolbtn{font:600 .85rem 'Archivo',sans-serif;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;border:1px solid var(--line,#333);background:transparent;color:inherit;cursor:pointer}
 .toolbtn:hover,.toolbtn[aria-pressed="true"],.toolbtn[aria-expanded="true"]{border-color:var(--brass)}
 .toolbtn[aria-pressed="true"]{background:rgba(42,95,176,.25)}
@@ -1052,7 +1070,7 @@ section.section.bundles{display:block;margin-top:0}
   <div class="saybox" id="sayMain" hidden></div>
   <div class="sharerow"><span class="rnote" id="shareMsg"></span></div>
   <!-- Ken, 7 Oct: hear the verse, and keep notes (typed or spoken). Notes stay on this device until accounts come. -->
-  <div class="toolrow"><button class="toolbtn" type="button" id="notesBtn" aria-expanded="false"><span aria-hidden="true">&#9998;</span> <span id="notesLab">My notes</span></button><button class="toolbtn tbmain" type="button" id="etBtn" aria-expanded="false" aria-controls="etBox"><span aria-hidden="true">&#128172;</span> <span id="etLab">Every Tongue</span></button><button class="toolbtn" type="button" id="acctBtn" aria-expanded="false"><span aria-hidden="true">&#128100;</span> <span id="acctLab">Sign in</span></button></div>
+  <div class="toolrow"><button class="toolbtn" type="button" id="notesBtn" aria-expanded="false"><span aria-hidden="true">&#9998;</span> <span id="notesLab">My notes</span></button><button class="toolbtn tbmain" type="button" id="etBtn" aria-expanded="false" aria-controls="etBox"><span aria-hidden="true">&#128172;</span> <span id="etLab">Every Tongue</span></button><button class="toolbtn" type="button" id="acctBtn" aria-expanded="false"><span aria-hidden="true">&#128100;</span> <span id="acctLab">Sign in</span></button><button class="toolbtn tblisten" type="button" id="listenBtn" hidden><span id="listenIco" aria-hidden="true">&#9654;&#xFE0E;</span> <span id="listenLab">Listen</span></button></div>
   <!-- Every Tongue (Ken, 8-9 Oct): a translator for sharing the gospel; ready-made phrases and verses in a drop-down -->
   <section class="notesbox etbox" id="etBox" aria-labelledby="etTitle" hidden>
     <div class="ethd"><div><h2 id="etTitle" translate="no">Every Tongue</h2><p class="etsub" id="etSub"></p></div><button class="etx" type="button" id="etX" aria-label="Close">&times;</button></div>
@@ -1339,8 +1357,9 @@ section.section.bundles{display:block;margin-top:0}
 <aside class="reader" id="reader" aria-hidden="true">
   <div class="reader-top">
     <div><div class="rk" id="rKicker">Word study</div><div class="rref" id="rRef">Reference</div></div>
-    <span class="rtools"><span class="rstack"><button class="rmode" id="rMode" type="button"></button></span><button class="rclose" id="rClose" aria-label="Close">&#215;</button></span>
+    <span class="rtools"><span class="rstack"><button class="rmode" id="rMode" type="button"></button></span><span class="rsheet"><button class="rsb" id="rPause" type="button" aria-label="Pause">&#10074;&#10074;</button><button class="rsb" id="rMin" type="button" aria-label="Minimize">&#9662;</button><button class="rsb" id="rFull" type="button" aria-label="Expand">&#9652;</button></span><button class="rclose" id="rClose" aria-label="Close">&#215;</button></span>
   </div>
+  <button type="button" class="rtap" id="rTap"></button>
   <div class="rsay" id="rSay" hidden><select class="rlang" id="rLang" aria-label="Language"></select><span class="rvlab" id="rVLab"></span><select class="voicesel rvoice" id="rVoice" aria-label="Voice"></select><span class="rplays"><button type="button" class="rplay" id="rPlayV"></button><button type="button" class="rplay" id="rPlayC"></button><button type="button" class="rplay rorig" id="rOrig" hidden></button></span><button type="button" class="rplay lxexp" id="rExp" hidden></button></div>
   <div class="reader-body">
     <div class="pullquote" id="rQuote"></div>
@@ -1366,7 +1385,7 @@ window.MF=(function(){
   function detect(){ var n=(navigator.language||'').toLowerCase().split('-')[0]; if(n==='fil') n='tl'; if(n==='iw') n='he'; return LL.indexOf(n)>=0?n:'en'; }
   var L='en'; try{var q=(location.search.match(/[?&]lang=(es|en|tl|zh|hi|el|de|ko|he)\b/)||[])[1], st=localStorage.getItem('mf-lang'); L=q||(LL.indexOf(st)>=0?st:'')||detect();}catch(e){}
   var hooks=[], orig=new WeakMap(), X=window.MFI18N;
-  var SKIP='script,style,#refs,#reader,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#okBox,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
+  var SKIP='script,style,#refs,#reader,#listenBtn,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#okBox,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
   function norm(s){return s.replace(/\s+/g,' ').trim();}
   function t(k){var u=X.ui[k]; return u ? (L==='es'?u[1]:u[0]) : k;}
   function applyPage(){
@@ -1581,7 +1600,11 @@ window.MF=(function(){
   // Ken, 9 Oct: "stacked ... like a deck of cards" -- a verse or Strong's entry opened from the back of the fish lies
   // on top of the word-study card, the same size, instead of opening a panel under or beside it. Close it to see the card.
   function stackNow(){ var st=$('stage'); return !landing && st && !st.hidden && st.classList.contains('on'); }
+  var sheet=false;
   function placeReader(){
+    reader.classList.toggle('sheet',sheet);
+    if(sheet){ if(reader.parentNode!==document.querySelector('.mf')) document.querySelector('.mf').appendChild(reader); reader.classList.remove('stacked','inline'); scrim.classList.remove('open'); return; }
+    reader.classList.remove('full','mini','tap');
     if(stackNow()){ if(reader.parentNode!==$('stage')) $('stage').appendChild(reader); reader.classList.add('stacked'); reader.classList.remove('inline'); scrim.classList.remove('open'); return; }
     reader.classList.remove('stacked');
     var inl=inlineNow(), slot=$('readerSlot');
@@ -1591,12 +1614,13 @@ window.MF=(function(){
     $('rMode').textContent = inl ? MF.t('side') : MF.t('below');
     if(inl) scrim.classList.remove('open'); else if(reader.classList.contains('open')) scrim.classList.add('open');
   }
-  $('rMode').addEventListener('click',function(){
-    try{localStorage.setItem(RKEY, placePref()==='below'?'side':'below');}catch(e){}
+  $('rMode').addEventListener('click',function(){   // "Show at the side" works after arriving from the email too
+    var inl=reader.classList.contains('inline'); landing=false;
+    try{localStorage.setItem(RKEY, inl?'side':'below');}catch(e){}
     placeReader(); if(inlineNow()) reader.scrollIntoView({behavior:'smooth',block:'start'});
   });
   window.addEventListener('resize',function(){if(reader.classList.contains('open'))placeReader();});
-  function closeReader(){ rStop(); unbig(); if(landing){ landing=false; setTimeout(placeReader,350); } window.MFreader=null; if(window.MFsave) MFsave(); reader.classList.remove('open');scrim.classList.remove('open');reader.setAttribute('aria-hidden','true');}
+  function closeReader(){ rStop(); unbig(); if(sheet){ sheet=false; listenUI(); setTimeout(placeReader,350); } if(landing){ landing=false; setTimeout(placeReader,350); } window.MFreader=null; if(window.MFsave) MFsave(); reader.classList.remove('open');scrim.classList.remove('open');reader.setAttribute('aria-hidden','true');}
   $('rClose').addEventListener('click',closeReader);
   scrim.addEventListener('click',closeReader);
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closeReader();});
@@ -1605,7 +1629,7 @@ window.MF=(function(){
     reader.classList.add('open');reader.setAttribute('aria-hidden','false');
     placeReader(); setTimeout(readerFit,80); if(reader.classList.contains('stacked')){ setTimeout(function(){ $('stage').scrollIntoView({behavior:'smooth',block:'nearest'}); },30); return; }
     if(!inlineNow()) scrim.classList.add('open');
-    else if(!landing) setTimeout(function(){reader.scrollIntoView({behavior:'smooth',block:'start'});},30);
+    else if(!landing && !sheet) setTimeout(function(){reader.scrollIntoView({behavior:'smooth',block:'start'});},30);
   }
   // Ken, 9 Oct: the Strong's entry is a card of its own -- laid on top of the deck, the same size, with a speaker
   // that reads it aloud (each word lit as it is read). The parts that are read are the spans marked data-v.
@@ -1773,19 +1797,39 @@ window.MF=(function(){
     var done=function(){ if(id===sp.id){ stopSpeak(); rMarkIn(ctx,0); } }, vv=voiceFor(L);
     function say(t,base,el,next){ if(id!==sp.id) return; var spoken=he?t.replace(/ה׳|י[\u0591-\u05C7]*ה[\u0591-\u05C7]*ו[\u0591-\u05C7]*ה[\u0591-\u05C7]*/g,'אדוני'):t;
       var v=aiVoice(); (v?etPost('/api/say',{text:spoken,lang:L,voice:v}):Promise.reject()).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){
-        if(id!==sp.id) return; var a=new Audio(URL.createObjectURL(b)); sp.audio=a;
+        if(id!==sp.id) return; var a=new Audio(URL.createObjectURL(b)); sp.audio=a; a.onplaying=function(){ sp.started=true; listenUI(); }; a.onpause=function(){ listenUI(); };
         a.ontimeupdate=function(){ if(a.duration) rWordAt(el,base+a.currentTime/a.duration*t.length); };
         a.onended=function(){ if(id===sp.id) next(); }; return a.play(); })
-      .catch(function(){ if(id!==sp.id) return; if(!window.speechSynthesis||(vv.any&&!vv.v)){ done(); return; }
+      .catch(function(err){ if(id!==sp.id) return; if(err&&err.name==='NotAllowedError'){ listenBlocked(); return; } if(!window.speechSynthesis||(vv.any&&!vv.v)){ done(); return; }
         var u=new SpeechSynthesisUtterance(spoken); u.lang=LCODE[L]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.92;
         var got=false, t0=Date.now(), cps=L==='zh'?4:L==='hi'?11:13; clearInterval(sp.timer);
         u.onboundary=function(e){ got=true; rWordAt(el,base+e.charIndex); };
         sp.timer=setInterval(function(){ if(!got) rWordAt(el,base+(Date.now()-t0)/1000*cps); },150);
-        u.onend=function(){ clearInterval(sp.timer); if(id===sp.id) next(); }; u.onerror=done; speechSynthesis.speak(u); }); }
+        u.onstart=function(){ sp.started=true; listenUI(); };
+        u.onend=function(){ clearInterval(sp.timer); if(id===sp.id) next(); }; u.onerror=function(e){ if(e&&e.error==='not-allowed') listenBlocked(); else done(); }; speechSynthesis.speak(u); }); }
     function verse(v){ if(id!==sp.id) return; if(v>to||v>D.t.length){ done(); return; } if(!D.t[v-1]){ verse(v+1); return; }
       var el=rMarkIn(ctx,v), full=D.t[v-1], parts=rChunks(full), k=0, pos=0;
       (function nextPart(){ if(k>=parts.length){ verse(v+1); return; } var part=parts[k++], base=full.indexOf(part,pos); if(base<0) base=pos; pos=base+part.length; say(part,base,el,nextPart); })(); }
     verse(from); }
+  // Listen: start the day's verse, pause and carry on, and ask for one tap when the browser will not play by itself
+  var LIS={en:['Listen','Pause','Tap to listen'],es:['Escuchar','Pausa','Toca para escuchar'],tl:['Pakinggan','I-pause','Pindutin para makinig'],zh:['收听','暂停','点此收听'],
+    hi:['सुनें','रोकें','सुनने के लिए दबाएँ'],el:['Ακούστε','Παύση','Πατήστε για ακρόαση'],de:['Anhören','Pause','Zum Anhören tippen'],ko:['듣기','일시정지','눌러서 듣기'],he:['האזינו','השהיה','הקישו להאזנה']};
+  function rPlaying(){ return sp.on && sp.btn && reader.contains(sp.btn) && !(sp.audio?sp.audio.paused:(window.speechSynthesis&&speechSynthesis.paused)); }
+  function listenUI(tap){ var b=$('listenBtn'); if(!b) return; var T=LIS[MF.lang]||LIS.en, play=rPlaying();
+    b.hidden=!sheet; b.classList.toggle('tap',!!tap); reader.classList.toggle('tap',!!tap&&sheet);
+    $('listenIco').innerHTML=play?'&#10074;&#10074;':'&#9654;&#xFE0E;'; $('listenLab').textContent=tap?T[2]:play?T[1]:T[0];
+    $('rTap').textContent='▶ '+T[2]; $('rPause').innerHTML=play?'&#10074;&#10074;':'&#9654;&#xFE0E;'; $('rPause').setAttribute('aria-label',play?T[1]:T[0]); }
+  function listenBlocked(){ stopSpeak(); rMark(0); listenUI(true); }
+  function startListen(){ if(!RD) return; sp.started=false; readAloud(readerCtx(),RD.vs,RD.vs,$('rPlayV')); listenUI();
+    var id=sp.id; setTimeout(function(){ if(sp.id===id && sp.on && !sp.started) listenBlocked(); },8000); }
+  function listenToggle(){ if(!sp.on || !sp.btn || !reader.contains(sp.btn)){ startListen(); return; }
+    if(sp.audio){ if(sp.audio.paused) sp.audio.play(); else sp.audio.pause(); }
+    else if(window.speechSynthesis){ if(speechSynthesis.paused) speechSynthesis.resume(); else speechSynthesis.pause(); }
+    setTimeout(listenUI,50); }
+  $('listenBtn').addEventListener('click',listenToggle); $('rPause').addEventListener('click',listenToggle); $('rTap').addEventListener('click',listenToggle);
+  $('rMin').addEventListener('click',function(){ var m=reader.classList.toggle('mini'); reader.classList.remove('full'); this.innerHTML=m?'&#9652;':'&#9662;'; $('rFull').hidden=m; });
+  $('rFull').addEventListener('click',function(){ var f=reader.classList.toggle('full'); this.innerHTML=f?'&#9662;':'&#9652;'; this.setAttribute('aria-pressed',f?'true':'false'); });
+  MF.onChange(function(){ listenUI(); }); window.MFlistenUI=function(){ listenUI(); };
   function readerCtx(){ return {root:$('rChapter'),data:RD,box:reader.classList.contains('inline')?null:reader.querySelector('.reader-body')}; }
   $('rOrig').addEventListener('click',function(){ var r=window.MFreader; if(!r||r.kind!=='ref') return; rStop();
     if(RO){ openReader(r.k,r.i,r.l); return; }
@@ -1914,7 +1958,7 @@ window.MF=(function(){
   function stopSpeak(){ sp.id++; clearInterval(sp.timer); if(sp.audio){ sp.audio.pause(); sp.audio=null; } if(window.speechSynthesis) speechSynthesis.cancel();
     if(sp.btn) sp.btn.setAttribute('aria-pressed','false');
     if(sp.fh){ sp.fh.reset(); sp.fh=null; }
-    sp.on=false; sp.btn=null; }
+    sp.on=false; sp.btn=null; if(window.MFlistenUI) MFlistenUI(); }
   function voiceFor(l){ var vs=(window.speechSynthesis&&speechSynthesis.getVoices())||[];
     var m=vs.filter(function(v){ var c=(v.lang||'').toLowerCase().replace('_','-'); return LPRE[l].some(function(p){return c.indexOf(p)===0;}); });
     m.sort(function(a,b){ var q=function(v){return /natural|neural|premium|enhanced|siri|google/i.test(v.name)?0:1;}; return q(a)-q(b); });
@@ -2470,7 +2514,12 @@ window.MF=(function(){
   restoreReturn();
   if(window.MFresumeInit) MFresumeInit();
   // Ken, 9 Oct: from the devotional email, land on the day's fish (as on the site) with the verse open right under it
-  (function(){var m=location.search.match(/[?&]r=(\d+)/); if(m && DATA[cur].refs[+m[1]]){ landing=true; openReader(cur,+m[1]); setTimeout(function(){ window.scrollTo(0,0); },60);} })();
+  (function(){var m=location.search.match(/[?&]r=(\d+)/); if(m && DATA[cur].refs[+m[1]]){ landing=true;
+    if(/[?&]listen=1/.test(location.search)){ sheet=true; listenUI(); var want=null, t0=Date.now();
+      openReader(cur,+m[1]); want=window.MFreader;
+      (function wait(){ if(window.MFreader!==want) return; if(RD){ startListen(); return; } if(Date.now()-t0<12000) setTimeout(wait,150); })(); }
+    else openReader(cur,+m[1]);
+    setTimeout(function(){ window.scrollTo(0,0); },60);} })();
 })();
 
 </script>

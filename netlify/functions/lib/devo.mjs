@@ -40,7 +40,8 @@ export function emailFor(m, lang, unsub, opts = {}) {
   const logo = SITE() + '/w/img/logo-email.png';
   const lab = 'font:bold 12px Arial,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#4a7fd6';
   // Ken, 9 Oct: always black, in every mail app and in both light and dark mode (bgcolor for the apps that ignore styles)
-  const listen = `${SITE()}/api/listen?w=${m.key.toLowerCase()}&r=${m.refIndex}&lang=${es ? 'es' : 'en'}`;
+  // Listen opens the day's fish on the site, the same as Read the chapter, and starts reading the verse aloud
+  const listen = read + '&listen=1';
   const btn = 'display:inline-block;color:#ffffff;text-decoration:none;font:bold 16px Arial,sans-serif;padding:13px 26px;border-radius:999px;margin:4px 5px';
   const html = `<!doctype html><html style="background:#000"><head><meta charset="utf-8"><meta name="color-scheme" content="only dark"><meta name="supported-color-schemes" content="dark">
 <style>:root{color-scheme:only dark}body,table,td{background-color:#000000 !important}u + .body,[data-ogsc] body{background:#000 !important}</style></head>
