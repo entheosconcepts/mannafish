@@ -61,6 +61,13 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [ ] Bible App (YouVersion) links for the 6 new languages: confirm each one's version number on bible.com, then add the buttons back.
 - [ ] Daily devotional emails and phone notices stay English or Spanish.
 
+### Verse cards: Expand, Greek/Hebrew, version at the bottom (9 Oct, on the test site)
+- Every card (verse or Strong's) has its controls at the top: speaker, voice, Expand. Scrolling still works; Expand opens the whole chapter and pushes the page down.
+- 📜 Hebrew / 📜 Greek beside Verse and Chapter: the same chapter as written (Hebrew Old Testament, the Greek the KJV translators read), with the verse word by word (word, how it sounds, meaning, Strong's number; the study word lit up). Read aloud in Hebrew or Greek; the divine name is read as Adonai.
+- Bible version picker (KJV, WEB, ASV, YLT, Darby, BBE, Douay-Rheims) at the bottom of English verse cards, beside the version's name.
+- Files: fish-lang/orig/<Book>-<ch>.json (206 chapters, from STEPBible TAHOT/TAGNT, CC BY 4.0), made by tools/more-languages/orig.py.
+- [ ] The word-by-word meanings are in English for every fish; translate them later if wanted.
+
 ### Strong's card in every language, with Dig deeper (9 Oct, on the test site)
 - Tap anywhere on the Greek or Hebrew: the Strong's entry opens as a card stacked on the deck, in the fish's language (on the single fish, the site's language).
 - Dig deeper (below the entry; Expand shows it all): where the word is used (counted from STEPBible's tagged Hebrew and Greek texts), shades of meaning, related words, and a note. Written from STEPBible's lexicons (CC BY 4.0, credited on the card and the Privacy page).

@@ -613,25 +613,43 @@ section.section.bundles{display:block;margin-top:0}
 .lxsay{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--foam);font-size:.8rem;line-height:1;cursor:pointer;align-self:center;padding:0}
 .lxsay.on{border-color:var(--brass);background:rgba(42,95,176,.3)}
 .rvlab{font:600 .72rem 'Archivo',sans-serif;color:var(--foam-dim)}
-.rsay .rvlab,.rsay .lxexp{display:none}
+.rsay .lxexp[hidden],.rsay .rorig[hidden]{display:none}
 .reader.lexmode .reader-top{position:relative;justify-content:center;text-align:center;padding:12px 50px 4px;border-bottom:0}
 .reader.lexmode .reader-top>div{width:100%}
 .reader.lexmode .rtools{position:absolute;top:10px;right:12px}
 .reader.lexmode .reader-top .rref{font-size:1.45rem;display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px}
-.reader.lexmode .reader-body{order:2;padding:4px 22px 10px}
-.reader.lexmode .rsay{order:3;border-bottom:0;border-top:1px solid var(--line);padding:7px 14px;justify-content:center;gap:6px}
-.reader.lexmode .rsay .rplays{order:1}.reader.lexmode .rsay .rvlab{order:2;display:inline}.reader.lexmode .rsay .rvoice{order:3;flex:0 1 170px}
-.reader.lexmode .rsay .lxexp:not([hidden]){order:4;display:inline-block}
-.reader.lexmode .reader-actions{order:4;padding:0 14px 5px;border-top:0;gap:0}
-.reader.lexmode .rnote{font-size:.6rem;opacity:.7}
-.reader.stacked.lexbig{height:auto;min-height:100%;bottom:auto;overflow:visible}
+.reader.lexmode .reader-body{padding:8px 22px 10px}
+.reader.lexmode .rsay,.reader.stacked .rsay{padding:7px 14px;justify-content:center;gap:6px}
+.reader.lexmode .rsay .rplays{order:1}.reader.lexmode .rsay .rvlab{order:2}.reader.lexmode .rsay .rvoice{order:3;flex:0 1 170px}
+.reader.lexmode .rsay .lxexp{order:4}
+.reader.stacked .reader-actions{padding:3px 14px 5px;border-top:1px solid var(--line);gap:0}
+.reader.stacked .rnote{font-size:.6rem;opacity:.7}
+/* the version picker at the bottom of the card, beside the version's name */
+.rfoot{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.rfoot .rver{margin:0;font-size:.66rem;padding:3px 8px}
+.reader.lexmode .rfoot .rver{display:none!important}
+.frv select{height:24px;border-radius:999px;border:1px solid var(--line);background:var(--ink2,#0b1620);color:var(--foam);font:600 .66rem 'Archivo',sans-serif;padding:0 6px;margin-inline-end:6px}
+.frsay select{height:32px;border-radius:999px;border:1px solid var(--line);background:var(--ink2,#0b1620);color:var(--foam);font:600 .74rem 'Archivo',sans-serif;padding:0 8px;max-width:150px;min-width:0}
+.frsay .rvlab{align-self:center}
+.rplay.rorig[aria-pressed="true"]{border-color:var(--brass);background:rgba(42,95,176,.3)}
+/* Ken, 9 Oct: the Greek / Hebrew button -- the chapter in the language it was written in, the verse word by word */
+.ilin{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:0 0 12px;padding:10px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.03)}
+.ilinh{font:600 .62rem 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--brass-soft,#6f9be0);text-align:center;margin:0 0 6px}
+.ilw{display:flex;flex-direction:column;align-items:center;padding:4px 6px;border-radius:6px;min-width:44px;text-align:center}
+.ilw b{font:400 1.25rem/1.3 'SBL Hebrew','Ezra SIL','Noto Serif Hebrew','Gentium Plus','Noto Serif','Times New Roman',serif;color:var(--foam)}
+.ilw i{font:italic .7rem 'Spectral',serif;color:var(--foam-dim)}
+.ilw small{font:.7rem/1.2 'Archivo',sans-serif;color:var(--foam);opacity:.85;max-width:110px}
+.ilw em{font:600 .56rem 'Archivo',sans-serif;font-style:normal;color:var(--foam-dim)}
+.ilw.on{background:rgba(42,95,176,.3)}
+.chapter p.orig{font-family:'SBL Hebrew','Ezra SIL','Noto Serif Hebrew','Gentium Plus','Noto Serif','Times New Roman',serif;font-size:1.12rem;line-height:1.9}
+.chapter .otitle{font-style:italic;opacity:.8}
+.reader.stacked.lexbig{position:relative;inset:auto;height:auto;min-height:0;overflow:visible}
 .reader.stacked.lexbig .reader-body{flex:none;overflow:visible}
 .fr.lex .frtop{position:relative;justify-content:center;text-align:center;border-bottom:0;padding:10px 44px 2px}
 .fr.lex .frtop>div{width:100%}
 .fr.lex .frx{position:absolute;top:8px;right:10px}
 .fr.lex .frtop .rref{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap}
-.fr.lex .frsay{justify-content:center;align-items:center;border-top:1px solid var(--line);gap:6px;padding:6px 10px}
-.fr.lex .frsay select{height:32px;border-radius:999px;border:1px solid var(--line);background:var(--ink2,#0b1620);color:var(--foam);font:600 .74rem 'Archivo',sans-serif;padding:0 8px;max-width:150px}
+.fr.lex .frsay{justify-content:center;align-items:center;gap:6px;padding:6px 10px;border-bottom:1px solid var(--line)}
 .fr.lex .frv{font-size:.6rem;padding:1px 10px 5px;border-top:0;opacity:.7}
 .fr.big{overflow:visible}
 .lxdeep{margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}
@@ -650,15 +668,43 @@ section.section.bundles{display:block;margin-top:0}
   .reader.lexmode .reader-body{padding:2px 14px 6px}
   .lexc p.lxq,.fr .lexc p.lxq{font-size:1rem;margin-bottom:6px}
   .lexc .chapter p,.lexc p{font-size:.92rem;line-height:1.5}
-  .reader.lexmode .rsay,.fr.lex .frsay{flex-wrap:nowrap;padding:4px 6px;gap:4px}
-  .reader.lexmode .rsay .rplay,.fr.lex .frsay .rplay{height:28px;padding:0 8px;font-size:.68rem}
-  .reader.lexmode .rsay select,.fr.lex .frsay select{height:28px;font-size:.66rem;padding:0 4px;min-width:0;flex:0 1 112px}
-  .reader.lexmode .rsay .rvlab,.fr.lex .rvlab{font-size:.6rem}
-  .reader.lexmode .rnote,.fr.lex .frv{font-size:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-bottom:3px}
+  .reader.stacked .rsay,.fr .frsay{flex-wrap:nowrap;padding:4px 6px;gap:4px;justify-content:flex-start;overflow-x:auto;scrollbar-width:none}
+  .reader.lexmode .rsay,.fr.lex .frsay{justify-content:center}
+  .reader.stacked .rsay .rplays{flex:none}
+  .reader.stacked .rsay .rplay,.fr .frsay .rplay{height:28px;padding:0 8px;font-size:.68rem;flex:none}
+  .reader.stacked .rsay select,.fr .frsay select{height:28px;font-size:.66rem;padding:0 4px;min-width:0;flex:0 0 auto;max-width:120px}
+  .reader.stacked .rsay .rvlab,.fr .rvlab{font-size:.6rem;flex:none}
+  .reader.stacked .rnote,.fr.lex .frv{font-size:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-bottom:3px}
+  .reader.stacked .reader-top{padding:8px 12px 4px}
+  .reader.stacked .reader-top .rref{font-size:1.15rem}
+  .reader.stacked .reader-body{padding:8px 14px}
   .fr.lex .frtop{padding:7px 40px 0}
   .fr.lex .frx{top:5px;right:6px}
 }
 .fr.big .frbody{flex:none;overflow:visible;max-height:none}
+/* compact controls on the stacked cards: two rows at most on a computer, one sliding row on a phone */
+.reader.stacked .reader-top{padding:8px 14px 4px;align-items:center}
+.reader.stacked .reader-top .rk{font-size:.6rem}
+.reader.stacked .reader-top .rref{font-size:1.25rem}
+.reader.stacked .rclose,.fr .frx{width:28px;height:28px;font-size:.95rem}
+.reader.stacked .rsay,.fr .frsay{padding:5px 8px;gap:4px;justify-content:center}
+.reader.stacked .rsay .rplays{display:flex;gap:4px;flex:none;order:1}
+.reader.stacked .rsay .lxexp{order:2}.reader.stacked .rsay .rlang{order:3;flex:0 1 150px}.reader.stacked .rsay .rvlab{order:4}.reader.stacked .rsay .rvoice{order:5;flex:0 1 140px}
+.reader.stacked .rsay .rplay,.fr .frsay .rplay{height:28px;padding:0 9px;font-size:.7rem;flex:none}
+.reader.stacked .rsay select,.fr .frsay select{height:28px;font-size:.68rem;padding:0 4px;min-width:0;text-overflow:ellipsis}
+.fr .frsay select{max-width:140px}
+.reader.stacked .rsay .rvlab,.fr .rvlab{font-size:.62rem;flex:none}
+.reader.stacked .reader-body{padding:8px 16px}
+.fr .frtop{padding:8px 12px 4px;align-items:center}
+.fr .frtop .rref{font-size:1.1rem}
+.ilin{gap:2px;padding:6px}
+.ilw{padding:2px 4px;min-width:36px}
+.ilw b{font-size:1.1rem}
+.ilw i,.ilw small{font-size:.64rem}
+@media(max-width:640px){
+  .reader.stacked .rsay,.fr .frsay{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start}
+  .reader.stacked .rsay .rlang,.reader.stacked .rsay .rvoice,.fr .frsay select{flex:0 0 auto;width:118px;max-width:none}
+}
 .chapter .rw.on{background:#f5d76e;color:#111;border-radius:3px}
 .chapter .reading{background:rgba(42,95,176,.25);border-radius:3px}
 /* the small reader under each fish in the side-by-side view */
@@ -1293,9 +1339,9 @@ section.section.bundles{display:block;margin-top:0}
 <aside class="reader" id="reader" aria-hidden="true">
   <div class="reader-top">
     <div><div class="rk" id="rKicker">Word study</div><div class="rref" id="rRef">Reference</div></div>
-    <span class="rtools"><span class="rstack"><button class="rmode" id="rMode" type="button"></button><select class="rver" id="rVer" aria-label="Bible version"></select></span><button class="rclose" id="rClose" aria-label="Close">&#215;</button></span>
+    <span class="rtools"><span class="rstack"><button class="rmode" id="rMode" type="button"></button></span><button class="rclose" id="rClose" aria-label="Close">&#215;</button></span>
   </div>
-  <div class="rsay" id="rSay" hidden><select class="rlang" id="rLang" aria-label="Language"></select><span class="rvlab" id="rVLab"></span><select class="voicesel rvoice" id="rVoice" aria-label="Voice"></select><span class="rplays"><button type="button" class="rplay" id="rPlayV"></button><button type="button" class="rplay" id="rPlayC"></button></span><button type="button" class="rplay lxexp" id="rExp" hidden></button></div>
+  <div class="rsay" id="rSay" hidden><select class="rlang" id="rLang" aria-label="Language"></select><span class="rvlab" id="rVLab"></span><select class="voicesel rvoice" id="rVoice" aria-label="Voice"></select><span class="rplays"><button type="button" class="rplay" id="rPlayV"></button><button type="button" class="rplay" id="rPlayC"></button><button type="button" class="rplay rorig" id="rOrig" hidden></button></span><button type="button" class="rplay lxexp" id="rExp" hidden></button></div>
   <div class="reader-body">
     <div class="pullquote" id="rQuote"></div>
     <div class="chapter" id="rChapter"></div>
@@ -1304,7 +1350,7 @@ section.section.bundles{display:block;margin-top:0}
     <p class="rhint" id="rYouVHint">Click on the Bible App button for more versions</p>
     <a class="rbtn p" id="rYouV" target="_blank" rel="noopener">Bible App</a>
     <a class="rbtn s" id="rGate" target="_blank" rel="noopener">Read the full chapter</a>
-    <div class="rnote" id="rNote"></div>
+    <div class="rfoot"><select class="rver" id="rVer" aria-label="Bible version"></select><div class="rnote" id="rNote"></div></div>
   </div>
 </aside>
 
@@ -1423,7 +1469,7 @@ window.MF=(function(){
   function sizeStage(){var st=$('stage'); if(!st) return; if(!st.classList.contains('on') && reader.classList.contains('stacked') && reader.classList.contains('open')) closeReader(); var w=st.clientWidth, fb=$('fishbox');
     var front=Math.max(w*10/16,(fb?fb.offsetHeight:w/2)+60);
     st.style.height=front+'px'; if(st.classList.contains('on')) buildDeck(st.querySelector('.face.back'));
-    if(reader.classList.contains('lexbig') && reader.classList.contains('stacked')) st.style.height=Math.max(front,reader.offsetHeight)+'px'; }
+    if(reader.classList.contains('lexbig') && reader.classList.contains('stacked')) st.style.height='auto'; }
   window.addEventListener('resize',sizeStage);
 
   // Ken, 9 Oct: "a deck of cards" -- the back of the fish is the same rectangle as the decal. The word with its Greek
@@ -1557,7 +1603,7 @@ window.MF=(function(){
 
   function showPanel(){
     reader.classList.add('open');reader.setAttribute('aria-hidden','false');
-    placeReader(); if(reader.classList.contains('stacked')){ setTimeout(function(){ $('stage').scrollIntoView({behavior:'smooth',block:'nearest'}); },30); return; }
+    placeReader(); setTimeout(readerFit,80); if(reader.classList.contains('stacked')){ setTimeout(function(){ $('stage').scrollIntoView({behavior:'smooth',block:'nearest'}); },30); return; }
     if(!inlineNow()) scrim.classList.add('open');
     else if(!landing) setTimeout(function(){reader.scrollIntoView({behavior:'smooth',block:'start'});},30);
   }
@@ -1588,6 +1634,18 @@ window.MF=(function(){
     return {id:id,t:t,l:l,credit:lab('credit'),html:'<div class="lexc"'+(l==='he'?' dir="rtl"':'')+'>'+h+'</div>',head:'<span class="lx-l">'+esc(e.l)+'</span> <span class="lx-t">'+esc(e.t)+'</span>'
       +'<button type="button" class="lxsay" data-l="'+(gk?'el':'he')+'" data-t="'+encodeURIComponent(e.l)+'" data-p="'+encodeURIComponent(e.p||e.t)+'" aria-label="Say the word">🔊</button>'}; }
   function withLex(l,fn){ var go=function(){ fn(); }; Promise.all([loadLex('en').catch(function(){}), l&&l!=='en'?loadLex(l).catch(function(){}):null]).then(go,go); }
+  var NTC={MAT:1,MRK:1,LUK:1,JHN:1,ACT:1,ROM:1,'1CO':1,'2CO':1,GAL:1,EPH:1,PHP:1,COL:1,'1TH':1,'2TH':1,'1TI':1,'2TI':1,TIT:1,PHM:1,HEB:1,JAS:1,'1PE':1,'2PE':1,'1JN':1,'2JN':1,'3JN':1,JUD:1,REV:1}, RO=false,
+    WBW={en:'Word by word',es:'Palabra por palabra',tl:'Salita por salita',zh:'逐字对照',hi:'शब्दशः',el:'Λέξη προς λέξη',de:'Wort für Wort',ko:'단어별',he:'מילה במילה'};
+  function origLab(p){ var L=studyLabels(MF.lang); return '📜 '+(NTC[USFM[p.book]]?L.gk:L.hb); }
+  function loadOrig(p){ return fetch('/fish-lang/orig/'+p.book.replace(/ /g,'_')+'-'+p.ch+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }); }
+  // the verse word by word (the study word lit up), then the whole chapter as written, ready to be read aloud
+  function origView(j,p,k){ var V=j.v, he=j.l==='he', vs=+p.vs, max=Math.max.apply(null,Object.keys(V).map(Number)), t=[], sg=STRONGS[k]||['',''], want=he?'H'+sg[1]:'G'+sg[0], dir=he?' dir="rtl"':'', L=he?'he':'grc';
+    for(var v=1;v<=max;v++) t[v-1]=(V[v]||[]).map(function(w){ return w[0]; }).join(' ');
+    var h='<div class="ilinh">'+esc(WBW[MF.lang]||WBW.en)+' \u00b7 '+esc(p.book+' '+p.ch+':'+p.vs)+'</div><div class="ilin"'+dir+'>'+(V[vs]||[]).map(function(w){
+      return '<span class="ilw'+(w[3]===want?' on':'')+'"><b lang="'+L+'">'+esc(w[0])+'</b><i>'+esc(w[1])+'</i><small>'+esc(w[2])+'</small><em>'+esc(w[3])+'</em></span>'; }).join('')+'</div>';
+    h+='<p class="orig" lang="'+L+'"'+dir+'>'+(V[0]?'<span class="otitle">'+esc(V[0].map(function(w){ return w[0]; }).join(' '))+'</span> ':'');
+    t.forEach(function(x,n){ if(x) h+='<span class="vn">'+(n+1)+'</span><span data-v="'+(n+1)+'" class="'+(n+1===vs?'hi':'')+'">'+esc(x)+'</span> '; });
+    return {html:h+'</p>',t:t,l:he?'he':'el',credit:(he?'Hebrew: Leningrad Codex':'Greek: the text the King James translators read')+' \u00b7 STEPBible.org (CC BY 4.0)'}; }
   var EXPL={en:['Expand','Collapse'],es:['Ampliar','Reducir'],tl:['Palakihin','Paliitin'],zh:['展开','收起'],hi:['विस्तार करें','छोटा करें'],el:['Ανάπτυξη','Σύμπτυξη'],de:['Erweitern','Einklappen'],ko:['펼치기','접기'],he:['הרחבה','כיווץ']},
     VOICEL={en:'Voice',es:'Voz',tl:'Boses',zh:'声音',hi:'आवाज़',el:'Φωνή',de:'Stimme',ko:'목소리',he:'קול'};
   function expLab(big){ var E=EXPL[MF.lang]||EXPL.en; return big?'▴ '+E[1]:'▾ '+E[0]; }
@@ -1601,7 +1659,7 @@ window.MF=(function(){
       u.rate=.85; u.onend=end; u.onerror=end; speechSynthesis.speak(u); }); }
   // Expand shows only when the entry is longer than the card
   function fitExp(btn,body,big){ if(btn) btn.hidden=!(big || body.scrollHeight>body.clientHeight+2); }
-  function readerFit(){ fitExp($('rExp'),reader.querySelector('.reader-body'),reader.classList.contains('lexbig')); }
+  function readerFit(){ var b=$('rExp'); if(!reader.classList.contains('stacked')){ b.hidden=true; return; } fitExp(b,reader.querySelector('.reader-body'),reader.classList.contains('lexbig')); }
   document.addEventListener('click',function(e){ var t=e.target.closest&&e.target.closest('.lxsay,.lxexp'); if(!t) return; e.stopPropagation(); e.preventDefault();
     if(t.classList.contains('lxsay')){ sayWord(t); return; }
     var fr=t.closest('.fr');
@@ -1610,7 +1668,7 @@ window.MF=(function(){
       fr.style.height=big?'auto':card.offsetHeight+'px'; fr.style.minHeight=big?card.offsetHeight+'px':''; t.textContent=expLab(big); f.style.paddingBottom='';
       if(big){ var extra=fr.offsetTop+fr.offsetHeight-f.offsetHeight; if(extra>0) f.style.paddingBottom=(extra+12)+'px'; } return; }
     var bg=reader.classList.toggle('lexbig'); t.textContent=expLab(bg);
-    if(bg && reader.classList.contains('stacked')) $('stage').style.height=reader.offsetHeight+'px'; else sizeStage(); },true);
+    if(bg && reader.classList.contains('stacked')) $('stage').style.height='auto'; else sizeStage(); },true);
   function unbig(){ if(reader.classList.contains('lexbig')){ reader.classList.remove('lexbig'); sizeStage(); } }
   document.addEventListener('change',function(e){ if(e.target.matches&&e.target.matches('.fr .voicesel')) setVoice(e.target.value); });
   function openStrongs(k,gk,l){ l=l||MF.lang;
@@ -1628,7 +1686,7 @@ window.MF=(function(){
     $('rNote').textContent=x.credit;
     showPanel();
   }
-  function openReader(k,i,l){ l=l||MF.lang; unbig(); reader.classList.remove('lexmode');
+  function openReader(k,i,l){ l=l||MF.lang; unbig(); reader.classList.remove('lexmode'); RO=false;
     window.MFreader={kind:'ref',k:k,i:i,l:l}; if(window.MFsave) setTimeout(MFsave,0);
     ['rKicker','rRef','rQuote','rChapter'].forEach(function(id){ $(id).setAttribute('lang',l); });
     RD=null; rsayUI(l);
@@ -1674,7 +1732,7 @@ window.MF=(function(){
     fetch('/fish-lang/bible/'+l+'/'+p.book.replace(/ /g,'_')+'-'+p.ch+'.json').then(function(x){ if(!x.ok) throw 0; return x.json(); }).then(function(j){
       if(window.MFreader!==want) return; var vs=+p.vs, h='<p>';
       j.t.forEach(function(t,n){ if(!t) return; h+='<span class="vn">'+(n+1)+'</span><span data-v="'+(n+1)+'" class="'+(n+1===vs?'hi':'')+'">'+esc(t)+'</span> '; });
-      $('rChapter').innerHTML=h+'</p>'; if(j.t[vs-1]) $('rQuote').textContent=j.t[vs-1]; $('rNote').textContent=j.v;
+      $('rChapter').innerHTML=h+'</p>'; setTimeout(readerFit,60); if(j.t[vs-1]) $('rQuote').textContent=j.t[vs-1]; $('rNote').textContent=j.v;
       RD={l:l,t:j.t,vs:vs};
       var hv=reader.querySelector('.chapter .hi'), bd=reader.querySelector('.reader-body'); if(hv&&bd&&!reader.classList.contains('inline')) bd.scrollTop=Math.max(0,hv.offsetTop-bd.offsetTop-bd.clientHeight/3);
     }).catch(function(){}); }
@@ -1686,7 +1744,9 @@ window.MF=(function(){
   var RBIB={en:'KJV',es:'RV 1909',tl:'Ang Biblia',zh:'和合本',hi:'IRV',el:'FPB',de:'Elberfelder',ko:'개역',he:'המסורה · דליטש'};
   function rsayUI(l){ var T=RSAY[MF.lang]||RSAY.en, kd=window.MFreader&&window.MFreader.kind, st=kd==='ref'||kd==='strongs', lx=kd==='strongs';
     $('rSay').hidden=!st; $('rLang').hidden=lx; $('rPlayV').hidden=lx; $('rVLab').textContent=VOICEL[MF.lang]||VOICEL.en;
-    $('rExp').textContent=expLab(reader.classList.contains('lexbig')); if(!lx) $('rExp').hidden=true;
+    $('rExp').textContent=expLab(reader.classList.contains('lexbig')); if(!st) $('rExp').hidden=true;
+    var R0=window.MFreader, p0=kd==='ref'&&R0&&DATA[R0.k]&&DATA[R0.k].refs[R0.i]?parseRef(DATA[R0.k].refs[R0.i][0]):null;
+    $('rOrig').hidden=!p0; if(p0){ $('rOrig').textContent=origLab(p0); $('rOrig').setAttribute('aria-pressed',RO?'true':'false'); }
     $('rLang').innerHTML=CMPL.filter(function(o){ return !o[2]; }).map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===l?' selected':'')+'>'+esc(cmpLabel(o[0]))+' · '+RBIB[o[0]]+'</option>'; }).join('');
     $('rVoice').innerHTML=voiceOptions();
     $('rPlayV').innerHTML='🔊 '+esc(T[0]); $('rPlayC').innerHTML='🔊 '+esc(lx?(HEARIT[MF.lang]||HEARIT.en):T[1]); $('rPlayV').setAttribute('aria-pressed','false'); $('rPlayC').setAttribute('aria-pressed','false'); }
@@ -1711,7 +1771,7 @@ window.MF=(function(){
   function readAloud(ctx,from,to,btn){ if(sp.on && sp.btn===btn){ stopSpeak(); rMarkIn(ctx,0); return; } var D=ctx.data; if(!D) return;
     stopSpeak(); var id=sp.id, L=D.l, he=L==='he'; sp.on=true; sp.btn=btn; btn.setAttribute('aria-pressed','true');
     var done=function(){ if(id===sp.id){ stopSpeak(); rMarkIn(ctx,0); } }, vv=voiceFor(L);
-    function say(t,base,el,next){ if(id!==sp.id) return; var spoken=he?t.replace(/ה׳/g,'אדוני'):t;
+    function say(t,base,el,next){ if(id!==sp.id) return; var spoken=he?t.replace(/ה׳|י[\u0591-\u05C7]*ה[\u0591-\u05C7]*ו[\u0591-\u05C7]*ה[\u0591-\u05C7]*/g,'אדוני'):t;
       var v=aiVoice(); (v?etPost('/api/say',{text:spoken,lang:L,voice:v}):Promise.reject()).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){
         if(id!==sp.id) return; var a=new Audio(URL.createObjectURL(b)); sp.audio=a;
         a.ontimeupdate=function(){ if(a.duration) rWordAt(el,base+a.currentTime/a.duration*t.length); };
@@ -1727,6 +1787,12 @@ window.MF=(function(){
       (function nextPart(){ if(k>=parts.length){ verse(v+1); return; } var part=parts[k++], base=full.indexOf(part,pos); if(base<0) base=pos; pos=base+part.length; say(part,base,el,nextPart); })(); }
     verse(from); }
   function readerCtx(){ return {root:$('rChapter'),data:RD,box:reader.classList.contains('inline')?null:reader.querySelector('.reader-body')}; }
+  $('rOrig').addEventListener('click',function(){ var r=window.MFreader; if(!r||r.kind!=='ref') return; rStop();
+    if(RO){ openReader(r.k,r.i,r.l); return; }
+    var p=parseRef(DATA[r.k].refs[r.i][0]); if(!p) return;
+    loadOrig(p).then(function(j){ if(window.MFreader!==r) return; var o=origView(j,p,r.k); RO=true; $('rOrig').setAttribute('aria-pressed','true');
+      $('rChapter').innerHTML=o.html; RD={l:o.l,t:o.t,vs:+p.vs}; $('rNote').textContent=o.credit; $('rVer').style.display='none';
+      reader.querySelector('.reader-body').scrollTop=0; setTimeout(readerFit,60); }).catch(function(){}); });
   $('rPlayV').addEventListener('click',function(){ if(RD) readAloud(readerCtx(),RD.vs,RD.vs,this); });
   $('rPlayC').addEventListener('click',function(){ if(RD) readAloud(readerCtx(),1,RD.t.length,this); });
   MF.onChange(function(){ var r=window.MFreader; if(r&&r.kind==='ref') rsayUI(r.l||MF.lang); if(r&&r.kind==='strongs') rsayUI(r.l||'en'); });
@@ -1762,7 +1828,7 @@ window.MF=(function(){
         html+='<span class="vn">'+v.verse+'</span><span data-v="'+v.verse+'" class="'+(hi?'hi':'')+'">'+esc(v.text.trim())+'</span> ';
       });
       html+='</p>';
-      $('rChapter').innerHTML=html;
+      $('rChapter').innerHTML=html; setTimeout(readerFit,60);
       RD={l:'en',t:j.verses.map(function(v){ return v.text.trim(); }),vs:+p.vs};
       var h=reader.querySelector('.hi'), bd=reader.querySelector('.reader-body');
       if(h&&bd){bd.scrollTop=Math.max(0,h.offsetTop-bd.offsetTop-bd.clientHeight/3);}
@@ -2205,25 +2271,37 @@ window.MF=(function(){
   gpLabels(); MF.onChange(gpLabels);
   // Ken, 9 Oct: with fish side by side, a verse opens right under its own fish, in that fish's language -- so two
   // (or more) passages can be open at once, each with its own Verse / Chapter speaker.
-  function openFigReader(f,k,i,l){ var fr=f.querySelector('.fr'); if(!fr){ fr=document.createElement('div'); fr.className='fr'; f.appendChild(fr); }
+  function openFigReader(f,k,i,l,orig){ var fr=f.querySelector('.fr'); if(!fr){ fr=document.createElement('div'); fr.className='fr'; f.appendChild(fr); }
     var card=f.classList.contains('on')?f.querySelector('.cmpb'):f.querySelector('.cmpf'); fr.style.top=card.offsetTop+'px'; fr.style.height=card.offsetHeight+'px';
     if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak();
     var ref=DATA[k].refs[i], p=parseRef(ref[0]), w=(l!=='en'&&l!=='es')?studyOf(l,k):null, T=RSAY[MF.lang]||RSAY.en;
     var label=l==='en'?ref[0]:l==='es'?esRef(ref[0]):(w?w.refs[i][0]:ref[0]);
-    fr.setAttribute('lang',l); fr.hidden=false; fr._rd=null; fr.classList.remove('lex','big'); fr.style.minHeight=''; f.style.paddingBottom='';
+    fr.setAttribute('lang',l); fr.hidden=false; fr._rd=null; fr._ctx={k:k,i:i,l:l,orig:!!orig}; fr.classList.remove('lex','big'); fr.style.minHeight=''; f.style.paddingBottom='';
     fr.innerHTML='<div class="frtop"><div><div class="rk">'+esc(titleIn(l,k))+'</div><div class="rref">'+esc(label)+'</div></div><button type="button" class="frx" aria-label="Close">&times;</button></div>'
-      +'<div class="frsay"><button type="button" class="rplay" data-a="v">🔊 '+esc(T[0])+'</button><button type="button" class="rplay" data-a="c">🔊 '+esc(T[1])+'</button></div>'
+      +'<div class="frsay"><button type="button" class="rplay" data-a="v">🔊 '+esc(T[0])+'</button><button type="button" class="rplay" data-a="c">🔊 '+esc(T[1])+'</button>'
+      +(p?'<button type="button" class="rplay rorig" aria-pressed="'+(orig?'true':'false')+'">'+esc(origLab(p))+'</button>':'')
+      +'<span class="rvlab">'+esc(VOICEL[MF.lang]||VOICEL.en)+'</span><select class="voicesel" aria-label="Voice">'+voiceOptions()+'</select><button type="button" class="rplay lxexp" hidden>'+expLab(false)+'</button></div>'
       +'<div class="frbody"><div class="chapter"><p class="frwait">…</p></div></div><div class="frv"></div>';
-    if(!p) return; var vs=+p.vs, ch=fr.querySelector('.chapter');
+    if(!p) return; var vs=+p.vs, ch=fr.querySelector('.chapter'), ctx=fr._ctx;
+    var fit=function(){ fitExp(fr.querySelector('.lxexp'),fr.querySelector('.frbody'),fr.classList.contains('big')); };
+    if(orig){ loadOrig(p).then(function(j){ if(!fr.isConnected||fr._ctx!==ctx) return; var o=origView(j,p,k); ch.innerHTML=o.html; fr._rd={l:o.l,t:o.t,vs:vs};
+        fr.querySelector('.frv').textContent=o.credit; fit(); })
+      .catch(function(){ if(fr.isConnected) ch.innerHTML='<p class="frwait">'+(MF.lang==='es'?'No se pudo abrir este capítulo.':'Could not open this chapter.')+'</p>'; });
+      f.scrollIntoView({block:'nearest',behavior:'smooth'}); return; }
     var got=l==='en'
       ? fetch('https://bible-api.com/'+encodeURIComponent(p.book+' '+p.ch)+'?translation='+curVer().k).then(function(r){ return r.json(); }).then(function(j){ return {v:curVer().n,t:j.verses.map(function(x){ return x.text.trim(); })}; })
       : fetch('/fish-lang/bible/'+l+'/'+p.book.replace(/ /g,'_')+'-'+p.ch+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); });
-    got.then(function(j){ if(!fr.isConnected) return; var h='<p>';
+    got.then(function(j){ if(!fr.isConnected||fr._ctx!==ctx) return; var h='<p>';
       j.t.forEach(function(t,n){ if(!t) return; h+='<span class="vn">'+(n+1)+'</span><span data-v="'+(n+1)+'" class="'+(n+1===vs?'hi':'')+'">'+esc(t)+'</span> '; });
-      ch.innerHTML=h+'</p>'; fr.querySelector('.frv').textContent=j.v; fr._rd={l:l,t:j.t,vs:vs};
-      var hv=ch.querySelector('.hi'), bd=fr.querySelector('.frbody'); if(hv) bd.scrollTop=Math.max(0,hv.offsetTop-bd.offsetTop-bd.clientHeight/3); })
+      ch.innerHTML=h+'</p>'; fr._rd={l:l,t:j.t,vs:vs};
+      var fv=fr.querySelector('.frv'), cv=curVer();
+      if(l==='en') fv.innerHTML='<select class="frver" aria-label="Bible version">'+VERS.map(function(v){ return '<option value="'+v.k+'"'+(v.k===cv.k?' selected':'')+'>'+esc(v.s)+'</option>'; }).join('')+'</select>'+esc(cv.n);
+      else fv.textContent=j.v;
+      var hv=ch.querySelector('.hi'), bd=fr.querySelector('.frbody'); if(hv) bd.scrollTop=Math.max(0,hv.offsetTop-bd.offsetTop-bd.clientHeight/3); fit(); })
     .catch(function(){ if(fr.isConnected) ch.innerHTML='<p class="frwait">'+(MF.lang==='es'?'No se pudo abrir este capítulo.':'Could not open this chapter.')+'</p>'; });
     f.scrollIntoView({block:'nearest',behavior:'smooth'}); }
+  document.addEventListener('change',function(e){ var t=e.target; if(!t.matches||!t.matches('.fr .frver')) return; try{ localStorage.setItem(VKEY,t.value); }catch(x){}
+    if($('rVer')) $('rVer').value=t.value; var fr=t.closest('.fr'), c=fr&&fr._ctx; if(c) openFigReader(fr.parentNode,c.k,c.i,c.l,false); });
   function openFigStrongs(f,k,gk){ var l=f.dataset.l;
     if(!LEXP['x'+l] && (!LEXI.en || (l!=='en' && !LEXI[l]))){ LEXP['x'+l]=1; withLex(l,function(){ openFigStrongs(f,k,gk); }); }
     var x=lexBody(k,gk,l); if(!x) return; var fr=f.querySelector('.fr'); if(!fr){ fr=document.createElement('div'); fr.className='fr'; f.appendChild(fr); }
@@ -2231,13 +2309,15 @@ window.MF=(function(){
     if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak();
     fr.setAttribute('lang',x.l); fr.hidden=false; fr._rd={l:x.l,t:x.t,vs:1}; fr.classList.add('lex'); fr.classList.remove('big'); fr.style.minHeight=''; f.style.paddingBottom='';
     fr.innerHTML='<div class="frtop"><div><div class="rk">'+esc(titleIn(f.dataset.l,k))+' \u00b7 Strong '+x.id+'</div><div class="rref">'+x.head+'</div></div><button type="button" class="frx" aria-label="Close">&times;</button></div>'
-      +'<div class="frbody"><div class="chapter">'+x.html+'</div></div>'
       +'<div class="frsay"><button type="button" class="rplay" data-a="c">🔊 '+esc(HEARIT[MF.lang]||HEARIT.en)+'</button><span class="rvlab">'+esc(VOICEL[MF.lang]||VOICEL.en)+'</span><select class="voicesel" aria-label="Voice">'+voiceOptions()+'</select><button type="button" class="rplay lxexp" hidden>'+expLab(false)+'</button></div>'
+      +'<div class="frbody"><div class="chapter">'+x.html+'</div></div>'
       +'<div class="frv">'+esc(x.credit)+'</div>';
     fitExp(fr.querySelector('.lxexp'),fr.querySelector('.frbody'),false);
     f.scrollIntoView({block:'nearest',behavior:'smooth'}); }
   function figReaderClick(e){ var fr=e.target.closest('.fr'); if(!fr) return false;
     if(e.target.closest('.frx')){ if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak(); fr.hidden=true; fr.innerHTML=''; fr.classList.remove('big'); fr.parentNode.style.paddingBottom=''; return true; }
+    var o=e.target.closest('.rorig'); if(o && fr._ctx){ var c=fr._ctx; if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak(); openFigReader(fr.parentNode,c.k,c.i,c.l,!c.orig); return true; }
+    if(e.target.closest('select')) return true;
     var b=e.target.closest('.rplay'); if(b && fr._rd){ var ctx={root:fr.querySelector('.chapter'),data:fr._rd,box:fr.querySelector('.frbody')};
       if(b.dataset.a==='v') readAloud(ctx,fr._rd.vs,fr._rd.vs,b); else readAloud(ctx,1,fr._rd.t.length,b); }
     return true; }
