@@ -11,6 +11,9 @@ const FONTS={tl:{fam:'MFHobo',w:'normal',file:null}, zh:{fam:'ZCOOL KuaiLe',w:'n
 // along the curve and the full stop and "..." land on the left, while sizing and centring stay as for every other language.
 if(LG==='he') V.forEach(v=>['word','top','bottom','ref','refShort'].forEach(k=>{ v[k]='\u202B'+v[k]+'\u202C'; }));
 const F=FONTS[LG]; const OUT=__dirname+'/out-'+LG;
+// Ken, 9 Oct: a long word keeps the letter height of a 9-letter English word ("Surrender") and is narrowed to fit,
+// instead of shrinking. Only for the fish named:  node gen3.js tl REST
+const TALL=(process.argv[3]||'').split(',').filter(Boolean); V.forEach(v=>{ v.tall=TALL.includes(v.key); v.tallSize=+(process.env.TALL||520); });
 (async()=>{ const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}); const page=await b.newPage({viewport:{width:1200,height:600}});
  const font=fs.readFileSync(__dirname+'/hobo.txt','utf8'); const base=fs.readFileSync(__dirname+'/en/HOPE.svg','utf8');
  fs.mkdirSync(OUT,{recursive:true}); const ff=F.file?`@font-face{font-family:'${F.fam}';src:url(data:font/ttf;base64,${fs.readFileSync(__dirname+'/../fonts/'+F.file).toString('base64')});font-weight:100 900}`:'';
@@ -38,7 +41,8 @@ const F=FONTS[LG]; const OUT=__dirname+'/out-'+LG;
    // width to make it fit" -- verse lines and the tail reference are one height on every fish;
    // a long line is narrowed (textLength + spacingAndGlyphs), never made shorter.
    const H={top:220, bot:220, ref:129};
-   const sWord=fit(s=>plain(v.word,s), 1900, 867, wid);
+   let sWord=fit(s=>plain(v.word,s), 1900, 867, wid);
+   if(v.tall) sWord=Math.max(sWord, v.tallSize);   // the long word's letter size; the width is narrowed below to fit
    // tall scripts (accents above, hooks below): keep the word's real letter height within the English word's
    { const c2=document.createElement('canvas').getContext('2d'); c2.font=F.w+' 100px "'+F.fam+'"'; const m2=c2.measureText(v.word);
      const gh=(m2.actualBoundingBoxAscent+m2.actualBoundingBoxDescent)/100; var sWordH=Math.min(sWord, wordBox.h*1.0/gh); }
@@ -46,7 +50,8 @@ const F=FONTS[LG]; const OUT=__dirname+'/out-'+LG;
    function squeeze(t,max){const n=t.getComputedTextLength(); if(n>max){const tp=t.firstChild; tp.setAttribute('textLength',max.toFixed(1)); tp.setAttribute('lengthAdjust','spacingAndGlyphs');} return n/max;}
    [3,4,5,6,7,8,9,10,12,13,14,15,16,17].forEach(i=>els[i].remove());
    { const w=plain(v.word,sWordH); w.setAttribute('dominant-baseline','alphabetic'); const c3=document.createElement('canvas').getContext('2d'); c3.font=F.w+' 100px "'+F.fam+'"'; const m3=c3.measureText(v.word);
-     w.setAttribute('y',(wordBox.cy+(m3.actualBoundingBoxAscent-m3.actualBoundingBoxDescent)/2/100*sWordH).toFixed(1)); }
+     w.setAttribute('y',(wordBox.cy+(m3.actualBoundingBoxAscent-m3.actualBoundingBoxDescent)/2/100*sWordH).toFixed(1));
+     const bw=wid(w); if(bw>1900){ w.setAttribute('textLength',(w.getComputedTextLength()*1900/bw).toFixed(1)); w.setAttribute('lengthAdjust','spacingAndGlyphs'); } }
    const qTop=squeeze(onPath('g_top',v.top,H.top,'#000'), L.top*0.86);
    const qBot=squeeze(onPath('g_bot',v.bottom,H.bot,'#000'), L.bot*0.80);
    // Ken, 7 Oct: the tail reference the same size as "MannaFish" on the other side of the tail,

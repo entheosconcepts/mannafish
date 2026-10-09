@@ -814,6 +814,7 @@ section.section.bundles{display:block;margin-top:0}
 .cmpf svg{position:absolute;inset:0;width:100%;height:100%}
 .cmp figure:hover .cmpf{border-color:var(--brass)}
 .cmp figcaption{margin-top:6px;font:600 .8rem 'Archivo',sans-serif;letter-spacing:.04em;color:var(--foam-dim,#aaa)}
+.cmp figcaption .forwho{display:block;font:700 .72rem 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--brass-soft,#6f9be0);margin-bottom:2px}
 @media(max-width:900px){.cmp{flex-direction:column;align-items:center}.cmp figure{width:100%;flex:none}}
 .giftbox .dlab{font-family:'Archivo',sans-serif;font-size:.78rem;letter-spacing:.04em;color:var(--foam-dim)}
 .giftbox #giftLang{flex-wrap:wrap;gap:10px 16px}
@@ -838,6 +839,7 @@ section.section.bundles{display:block;margin-top:0}
 .toolrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0 2px}
 /* Ken, 9 Oct: "Listen" from the email -- the day's fish, the verse read aloud in a reader that rises over half the
    fish (expand it, shrink it to a bar, pause), and a Listen / Pause button beside My notes, the Translator and Sign in */
+.toolbtn[hidden]{display:none}
 .toolbtn.tblisten{border-color:var(--brass)}
 .toolbtn.tblisten.tap{background:var(--brass);color:#fff;animation:mfpulse 1.4s ease-in-out infinite}
 @keyframes mfpulse{0%,100%{box-shadow:0 0 0 0 rgba(42,95,176,.6)}50%{box-shadow:0 0 0 8px rgba(42,95,176,0)}}
@@ -2306,10 +2308,20 @@ window.MF=(function(){
     return t.innerHTML; }
   // Ken, 9 Oct: only the fish that are ticked -- the reading language too is just one of the choices
   var cmpSel=[];
-  function cmpLangs(){ return CMPL.map(function(o){return o[0];}).filter(function(l){return cmpSel.indexOf(l)>=0;}); }
+  // the reader's own language first ("For you"), then the others in menu order
+  function cmpLangs(){ var a=CMPL.map(function(o){return o[0];}).filter(function(l){return cmpSel.indexOf(l)>=0;}), i=a.indexOf(MF.lang);
+    if(i>0){ a.splice(i,1); a.unshift(MF.lang); } return a; }
+  // Ken, 9 Oct: "Teach a man 2 Fish" -- two fish on the front page by default: one for you, one to give away
+  // (Spanish beside English; English beside any other language). "Just one fish" is remembered.
+  var FORYOU={en:['For you','For someone else'],es:['Para ti','Para alguien más'],tl:['Para sa iyo','Para sa iba'],zh:['给你','给别人'],
+    hi:['आपके लिए','किसी और के लिए'],el:['Για σένα','Για κάποιον άλλο'],de:['Für dich','Für jemand anderen'],ko:['당신을 위해','다른 사람을 위해'],he:['בשבילך','בשביל מישהו אחר']};
+  var cmpDefault=false;
+  function twoFish(){ return [MF.lang, MF.lang==='en'?'es':'en']; }
+  function oneFish(on){ try{ if(on) localStorage.setItem('mf-one','1'); else localStorage.removeItem('mf-one'); }catch(e){} }
+  function forWho(l){ if(cmpSel.indexOf(MF.lang)<0) return ''; var T=FORYOU[MF.lang]||FORYOU.en; return '<span class="forwho">'+esc(l===MF.lang?T[0]:T[1])+'</span>'; }
   function cmpShown(){ return cmpSel.length>1 || (cmpSel.length===1 && cmpSel[0]!==MF.lang); }
   window.MFcmp=function(){ if(!cmpShown()) return; var spk=$('spkMain').outerHTML.replace(' id="spkMain"','').replace(' hidden=""','');
-    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf"><div class="cmpfb">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div></div><div class="cmpb">'+backFor(l)+'</div><figcaption>'+cmpLabel(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); cmpLayout(); $('cmp').querySelectorAll('figure.on').forEach(cmpDeck); };
+    $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf"><div class="cmpfb">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div></div><div class="cmpb">'+backFor(l)+'</div><figcaption>'+forWho(l)+cmpLabel(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join(''); cmpLayout(); $('cmp').querySelectorAll('figure.on').forEach(cmpDeck); };
   // Ken, 9 Oct: every fish stays the size it is with two side by side, whatever the layout. "Per row" picks how many
   // go across (as many as the screen has room for at that size); more simply wrap to the next row. A clear button
   // above the fish goes straight back to one fish.
@@ -2333,7 +2345,7 @@ window.MF=(function(){
     $('gp').addEventListener('mouseleave',cmpLayout);
     $('gp').addEventListener('click',function(e){ var t=e.target.closest('i'); if(!t||t.classList.contains('off')) return; try{ localStorage.setItem(GPK,t.dataset.c); }catch(x){} cmpLayout(); });
     $('gpAuto').addEventListener('click',function(){ try{ localStorage.removeItem(GPK); }catch(x){} cmpLayout(); });
-    $('cmpClear').addEventListener('click',function(){ setCmp([]); $('stage').scrollIntoView({block:'center',behavior:'smooth'}); });
+    $('cmpClear').addEventListener('click',function(){ cmpDefault=false; oneFish(true); setCmp([]); $('stage').scrollIntoView({block:'center',behavior:'smooth'}); });
     window.addEventListener('resize',function(){ clearTimeout(window.__gpT); window.__gpT=setTimeout(cmpLayout,150); }); })();
   function gpLabels(){ var es=MF.lang==='es', M=(typeof MENU!=='undefined'&&MENU&&(MENU[MF.lang]||MENU.en))||['','','Just one fish']; $('cmpGridLab').textContent=es?'Por fila':'Per row'; $('gpAuto').textContent=es?'Automático':'Auto';
     $('cmpClear').textContent='✕ '+M[2]; }
@@ -2431,17 +2443,17 @@ window.MF=(function(){
   $('cmpBtn').addEventListener('click',function(e){ e.stopPropagation(); menu($('cmpMenu').hidden); });
   $('cmpMenu').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b||b.disabled) return; e.stopPropagation();
     if(b.dataset.pg){ menu(false); if(b.dataset.pg!==MF.lang) MF.set(b.dataset.pg); return; }
-    var l=b.dataset.l; if(!l){ menu(false); setCmp([]); return; }
-    var next=cmpSel.slice(), i=next.indexOf(l); if(i>=0) next.splice(i,1); else next.push(l); setCmp(next); });
+    var l=b.dataset.l; cmpDefault=false; if(!l){ menu(false); oneFish(true); setCmp([]); return; }
+    var next=cmpSel.slice(), i=next.indexOf(l); if(i>=0) next.splice(i,1); else next.push(l); oneFish(next.length<2); setCmp(next); });
   document.addEventListener('click',function(e){ if(!$('cmpMenu').hidden && !e.target.closest('#cmpMenu')) menu(false); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') menu(false); });
   var langPicked=false; $('giftLang').addEventListener('change',function(){langPicked=true;});
   function giftLangDefault(){ if(langPicked) return; var v=MF.lang==='es'?'Español':'English'; $('giftLang').querySelector('input[value="'+v+'"]').checked=true; }
   giftLangDefault(); MF.onChange(giftLangDefault);
   function cmpCaps(){ var es=MF.lang==='es', n=cmpShown()?cmpSel.filter(function(l){return l!==MF.lang;}).length:0;
-    $('cmpLab').textContent=cmpName(MF.lang)+(n?' +'+n:''); $('cmpLabS').textContent=MF.lang.toUpperCase()+(n?' +'+n:''); $('cmpBtn').setAttribute('aria-label',es?'Idioma':'Language'); }
+    $('cmpLab').textContent=cmpName(MF.lang)+(n?' +'+n:''); $('cmpLabS').textContent=MF.lang.toUpperCase();   /* on a phone just the code, so it never runs into the logo */ $('cmpBtn').setAttribute('aria-label',es?'Idioma':'Language'); }
   cmpCaps();
-  MF.onChange(function(){ cmpCaps(); setCmp(cmpSel); ui(); });
+  MF.onChange(function(){ cmpCaps(); if(cmpDefault) cmpSel=twoFish(); setCmp(cmpSel); ui(); });
   // ── Pick up where I left off (Ken, 8 Oct). The page keeps a note of where the person is: the word, the card
   // turned over, the verse or Strong's entry open, the languages side by side. Kept on the device, and in the
   // person's account when signed in, so it follows them to another phone or computer.
@@ -2538,6 +2550,9 @@ window.MF=(function(){
   pick(cur,false);
   restoreReturn();
   if(window.MFresumeInit) MFresumeInit();
+  // two fish unless they chose one (or came from an email link, which opens the day's verse under one fish)
+  (function(){ var one=null; try{ one=localStorage.getItem('mf-one'); }catch(e){}
+    if(one==='1' || /[?&]r=\d/.test(location.search) || cmpShown()) return; cmpDefault=true; setCmp(twoFish()); })();
   // Ken, 9 Oct: from the devotional email, land on the day's fish (as on the site) with the verse open right under it
   (function(){var m=location.search.match(/[?&]r=(\d+)/); if(m && DATA[cur].refs[+m[1]]){ landing=true;
     if(/[?&]listen=1/.test(location.search)){ sheet=true; listenUI(); var want=null, t0=Date.now();
