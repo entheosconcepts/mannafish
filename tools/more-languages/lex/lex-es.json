@@ -1,0 +1,1276 @@
+{
+ "labels": {
+  "sounds": "Se pronuncia",
+  "from": "De dónde viene la palabra",
+  "kjvtr": "Cómo se traduce (Biblia King James)",
+  "deeper": "Para profundizar",
+  "used": "Dónde se usa",
+  "senses": "Matices de significado",
+  "related": "Palabras relacionadas",
+  "note": "Vale la pena saber",
+  "credit": "Concordancia Strong’s (1890) · léxicos y textos etiquetados de STEPBible.org (CC BY 4.0)"
+ },
+ "words": {
+  "G373": {
+   "s": "(reflexivo) reposar (literal o figuradamente: quedar libre, permanecer); por implicación, refrescar",
+   "p": "",
+   "d": "de G303 (ἀνά) y G3973 (παύω);",
+   "k": "tomar descanso, confortar, dar descanso, descansar",
+   "use": "Se usa unas 12 veces en el Nuevo Testamento, en 8 libros — la primera vez en Mateo 11:28; más a menudo en Filemón (2), Apocalipsis (2) y Mateo (2).",
+   "senses": [
+    "Dar a alguien un respiro del trabajo, darle descanso o reanimarlo, como en Mateo 11:28.",
+    "Confortar el corazón o el espíritu de alguien, como dice Pablo que los creyentes hicieron con él y con otros.",
+    "Descansar o disfrutar del descanso, ya sea una breve pausa en el trabajo o el descanso de los que mueren en el Señor.",
+    "Del Espíritu de Dios, reposar sobre una persona, como en 1 Pedro 4:14."
+   ],
+   "related": [
+    [
+     "ἀνά",
+     "aná",
+     "G303",
+     "arriba, de nuevo"
+    ],
+    [
+     "παύω",
+     "paúō",
+     "G3973",
+     "parar, cesar"
+    ],
+    [
+     "ἀνάπαυσις",
+     "anápausis",
+     "G372",
+     "descanso, alivio"
+    ]
+   ],
+   "note": "La palabra se forma con \"arriba\" más \"parar\", y describe una pausa que da nuevas fuerzas. En el Antiguo Testamento griego traduce casi siempre el verbo hebreo \"descansar\" (nuach)."
+  },
+  "H7673": {
+   "s": "reposar, es decir, dejar de esforzarse; se usa con muchos sentidos derivados (causativo, figurado o específico)",
+   "p": "sha-BAT",
+   "d": "raíz primitiva;",
+   "k": "cesar, hacer cesar, celebrar, hacer faltar, guardar (el día de reposo), dejar que falte, dejar, quitar, deponer, descansar, hacer descansar, librar, calmar",
+   "use": "Se usa unas 71 veces en el Antiguo Testamento, en 19 libros — la primera vez en Génesis 2:2; más a menudo en Ezequiel (13), Isaías (10) y Éxodo (7).",
+   "senses": [
+    "Cesar o parar, llegar a su fin.",
+    "Descansar o dejar de trabajar, como lo hizo Dios el séptimo día en Génesis 2:2.",
+    "Guardar u observar el día de reposo.",
+    "Hacer que algo pare: ponerle fin, quitarlo o hacer que falle."
+   ],
+   "related": [
+    [
+     "שַׁבָּת",
+     "shabbâth",
+     "H7676",
+     "día de reposo, día de descanso"
+    ],
+    [
+     "שַׁבָּתוֹן",
+     "shabbâthôwn",
+     "H7677",
+     "reposo sabático, día de fiesta especial"
+    ]
+   ],
+   "note": "La idea básica es parar, más que relajarse. La palabra \"sábado\" (shabbat) viene de este verbo, así que el día de reposo es literalmente un día de \"parar\"."
+  },
+  "G1680": {
+   "s": "expectativa (en sentido abstracto o concreto) o confianza",
+   "p": "",
+   "d": "de una palabra primaria (anticipar, por lo general con gusto);",
+   "k": "fe, esperanza",
+   "use": "Se usa unas 54 veces en el Nuevo Testamento, en 15 libros — la primera vez en Hechos 2:26; más a menudo en Romanos (13), Hechos (8) y Hebreos (5).",
+   "senses": [
+    "La espera de algo bueno; en el Nuevo Testamento siempre es una espera llena de esperanza, no de temor.",
+    "La esperanza de la fe, como la esperanza de Israel en el Mesías o la esperanza cristiana de la vida eterna, como en Tito 3:7.",
+    "La persona o cosa en la que se apoya la esperanza, como cuando a Cristo se le llama \"nuestra esperanza\" en 1 Timoteo 1:1.",
+    "Lo que se espera, como \"la esperanza que os está guardada en los cielos\" en Colosenses 1:5."
+   ],
+   "related": [
+    [
+     "ἐλπίζω",
+     "elpízō",
+     "G1679",
+     "esperar, aguardar"
+    ]
+   ],
+   "note": "Romanos usa esta palabra más que ningún otro libro, como en \"en esperanza fuimos salvos\" (Romanos 8:24) y \"el Dios de esperanza\" (Romanos 15:13). También es una de las tres cosas que \"permanecen\" en 1 Corintios 13:13."
+  },
+  "H8615": {
+   "s": "literalmente, una cuerda (como algo que sujeta); en sentido figurado, expectativa",
+   "p": "tik-VA",
+   "d": "de H6960 (קָוָה); (compárese H6961 (קָוֶה))",
+   "k": "expectativa, esperanza, vivir, lo que anhelo",
+   "use": "Se usa unas 34 veces en el Antiguo Testamento, en 10 libros — la primera vez en Josué 2:18; más a menudo en Job (13), Proverbios (8) y Salmos (3).",
+   "senses": [
+    "Literalmente, una cuerda o cordón, algo que sujeta o se mantiene firme.",
+    "Esperanza o expectativa, el mirar hacia lo que ha de venir.",
+    "El fundamento o la razón de la esperanza.",
+    "Lo que se espera, o el resultado final que alguien aguarda."
+   ],
+   "related": [
+    [
+     "קָוָה",
+     "qâvâh",
+     "H6960",
+     "esperar, aguardar con anhelo"
+    ],
+    [
+     "קָוֶה",
+     "qâveh",
+     "H6961",
+     "cordel de medir"
+    ]
+   ],
+   "note": "Su primer uso, en Josué 2:18, es el \"cordón de grana\" literal que Rahab ató a su ventana. En otros lugares la misma palabra se traduce \"esperanza\", así que el cordón y la esperanza comparten un mismo término hebreo."
+  },
+  "G26": {
+   "s": "amor, es decir, afecto o benevolencia; en especial (en plural), una comida fraternal de amor",
+   "p": "",
+   "d": "de G25 (ἀγαπάω);",
+   "k": "amor, caridad, (fiesta de) amor, querido",
+   "use": "Se usa unas 116 veces en el Nuevo Testamento, en 24 libros — la primera vez en Mateo 24:12; más a menudo en 1 Juan (18), 1 Corintios (14) y Efesios (10).",
+   "senses": [
+    "Amor, buena voluntad y aprecio entre las personas, como en Juan 13:35.",
+    "El amor de las personas hacia Dios, como en 1 Juan 2:5.",
+    "El amor de Dios por las personas, como en Romanos 5:8, y el amor de Cristo por ellas, como en Romanos 8:35.",
+    "En plural, los \"ágapes\", las comidas compartidas de los primeros creyentes mencionadas en Judas 12."
+   ],
+   "related": [
+    [
+     "ἀγαπάω",
+     "agapáō",
+     "G25",
+     "amar"
+    ],
+    [
+     "ἀγαπητός",
+     "agapētós",
+     "G27",
+     "amado, querido"
+    ]
+   ],
+   "note": "Los estudiosos casi no encuentran ejemplos claros de este sustantivo fuera de la Biblia y de los escritos de la iglesia, así que fue el Nuevo Testamento el que le dio su peso particular. 1 Juan la usa más que ningún otro libro."
+  },
+  "H160": {
+   "s": "{afecto (en buen o en mal sentido)}",
+   "p": "a-ha-BA",
+   "d": "femenino de H158 (אַהַב) y con el mismo significado",
+   "k": "amor",
+   "use": "Se usa unas 38 veces en el Antiguo Testamento, en 14 libros — la primera vez en Génesis 29:20; más a menudo en Cantares (11), Proverbios (5) y Jeremías (3).",
+   "senses": [
+    "El amor humano de una persona hacia otra, incluida la amistad.",
+    "El amor entre un hombre y una mujer, incluido el deseo romántico y sexual.",
+    "El amor de Dios por su pueblo.",
+    "Strong señala que puede describir el afecto tanto en mal sentido como en buen sentido."
+   ],
+   "related": [
+    [
+     "אָהַב",
+     "ʼâhab",
+     "H157",
+     "amar"
+    ],
+    [
+     "אַהַב",
+     "ʼahab",
+     "H158",
+     "amor, afecto"
+    ]
+   ],
+   "note": "Su primer uso es Génesis 29:20, donde los siete años que Jacob trabajó por Raquel le parecieron pocos días por el amor que le tenía. Cantares la usa más que ningún otro libro."
+  },
+  "G3982": {
+   "s": "convencer (con argumentos, verdaderos o falsos); por analogía, apaciguar o ganarse a alguien (por otros medios lícitos); en forma reflexiva o pasiva, asentir (ante pruebas o autoridad), apoyarse (por una certeza interior)",
+   "p": "",
+   "d": "verbo primario;",
+   "k": "estar de acuerdo, asegurar, creer, tener confianza, estar confiado, ganarse la amistad, obedecer, persuadir, confiar, ceder",
+   "use": "Se usa unas 55 veces en el Nuevo Testamento, en 14 libros — la primera vez en Mateo 27:20; más a menudo en Hechos (17), Filipenses (6) y Romanos (5).",
+   "senses": [
+    "Persuadir, convencer o ganarse a alguien, como hacía Pablo en las sinagogas en Hechos 18:4.",
+    "Confiar o estar seguro, como en \"estando persuadido de esto\" en Filipenses 1:6.",
+    "Estar persuadido o convencido, como en Romanos 8:38: \"estoy seguro de que ni la muerte, ni la vida...\".",
+    "Escuchar y obedecer a alguien, como en Hebreos 13:17."
+   ],
+   "related": [
+    [
+     "πίστις",
+     "pístis",
+     "G4102",
+     "fe, confianza"
+    ],
+    [
+     "πεποίθησις",
+     "pepoíthēsis",
+     "G4006",
+     "confianza, seguridad"
+    ]
+   ],
+   "note": "La palabra pasa de \"persuadir\" a \"ser persuadido\" y a \"confiar\": quien está plenamente persuadido tiene confianza. En el Antiguo Testamento griego traduce sobre todo el hebreo batach, \"confiar\"."
+  },
+  "H982": {
+   "s": "en sentido figurado, confiar, estar confiado o seguro",
+   "p": "ba-TAJ",
+   "d": "raíz primitiva; propiamente, esconderse buscando refugio (pero no tan precipitadamente como H2620 (חָסָה));",
+   "k": "ser osado (confiado, seguro), descuidado (uno, mujer), poner confianza, (hacer) esperar, (poner, hacer) confiar",
+   "use": "Se usa unas 120 veces en el Antiguo Testamento, en 16 libros — la primera vez en Deuteronomio 28:52; más a menudo en Salmos (46), Isaías (20) y Jeremías (16).",
+   "senses": [
+    "Confiar en alguien o algo, apoyarse en él o poner en él la confianza.",
+    "Estar confiado, ser valiente y sentirse seguro.",
+    "Hacer que alguien confíe, o hacer que se sienta seguro.",
+    "Sentirse seguro de manera descuidada o despreocupada; la versión King James a veces lo traduce \"careless\" (descuidado)."
+   ],
+   "related": [
+    [
+     "בֶּטַח",
+     "beṭach",
+     "H983",
+     "seguridad, seguramente"
+    ],
+    [
+     "בִּטָּחוֹן",
+     "biṭṭâchôwn",
+     "H986",
+     "confianza"
+    ]
+   ],
+   "note": "Strong sugiere que la imagen de fondo es refugiarse, esconderse en un lugar seguro. Los Salmos la usan más que ningún otro libro, 46 veces."
+  },
+  "G4336": {
+   "s": "orar a Dios, es decir, suplicar, adorar",
+   "p": "",
+   "d": "de G4314 (πρός) y G2172 (εὔχομαι);",
+   "k": "orar (fervientemente, por), hacer oración",
+   "use": "Se usa unas 87 veces en el Nuevo Testamento, en 15 libros — la primera vez en Mateo 5:44; más a menudo en Lucas (19), Hechos (16) y Mateo (16).",
+   "senses": [
+    "Orar, siempre en el sentido de una oración dirigida a Dios.",
+    "Orar por otros, incluso por los enemigos, como en Mateo 5:44.",
+    "Pedir en oración que suceda algo concreto, como en Marcos 13:18.",
+    "Orar en el Espíritu, como en Efesios 6:18."
+   ],
+   "related": [
+    [
+     "πρός",
+     "prós",
+     "G4314",
+     "hacia"
+    ],
+    [
+     "εὔχομαι",
+     "eúchomai",
+     "G2172",
+     "desear, orar"
+    ],
+    [
+     "προσευχή",
+     "proseuchḗ",
+     "G4335",
+     "oración"
+    ]
+   ],
+   "note": "Lucas usa esta palabra más que ningún otro libro y a menudo muestra a Jesús orando en momentos clave, como en su bautismo (Lucas 3:21) y antes de escoger a los doce (Lucas 6:12)."
+  },
+  "H6419": {
+   "s": "juzgar (oficialmente o en la mente); por extensión, interceder, orar",
+   "p": "pa-LAL",
+   "d": "raíz primitiva;",
+   "k": "rogar, juzgar, juicio, orar, oración, hacer súplica",
+   "use": "Se usa unas 84 veces en el Antiguo Testamento, en 18 libros — la primera vez en Génesis 20:7; más a menudo en 2 Crónicas (14), 1 Samuel (11) y Jeremías (10).",
+   "senses": [
+    "Intervenir o ponerse en medio entre dos partes.",
+    "Mediar o actuar como juez.",
+    "Interceder a favor de otra persona.",
+    "Orar."
+   ],
+   "related": [
+    [
+     "תְּפִלָּה",
+     "tᵉphillâh",
+     "H8605",
+     "oración"
+    ]
+   ],
+   "note": "Su primer uso es Génesis 20:7, donde Dios dice que Abraham es profeta y orará por Abimelec. La palabra hebrea común para \"oración\", tefilá (tephillah), viene de esta raíz."
+  },
+  "G4100": {
+   "s": "tener fe (en, sobre o con respecto a una persona o cosa), es decir, dar crédito; por implicación, confiar algo a alguien (en especial, el bienestar espiritual propio a Cristo)",
+   "p": "",
+   "d": "de G4102 (πίστις);",
+   "k": "creer, creyente, encomendar, confiar",
+   "use": "Se usa unas 245 veces en el Nuevo Testamento, en 21 libros — la primera vez en Mateo 8:13; más a menudo en Juan (98), Hechos (39) y Romanos (21).",
+   "senses": [
+    "Creer que algo es verdad, o creer lo que alguien dice.",
+    "Creer en alguien, es decir, confiar y apoyarse personalmente en él, no solo estar de acuerdo con unos hechos.",
+    "A los que creen se les llama \"creyentes\", como en Hechos 2:44.",
+    "Confiar algo a alguien, o recibir algo en confianza, como en Romanos 3:2."
+   ],
+   "related": [
+    [
+     "πίστις",
+     "pístis",
+     "G4102",
+     "fe, confianza"
+    ],
+    [
+     "πιστός",
+     "pistós",
+     "G4103",
+     "fiel, digno de confianza"
+    ]
+   ],
+   "note": "El Evangelio de Juan usa este verbo unas 98 veces, más que ningún otro libro, pero nunca usa el sustantivo \"fe\" (pistis). En el Antiguo Testamento griego traduce sobre todo el hebreo aman."
+  },
+  "H539": {
+   "s": "propiamente, edificar o sostener; criar como un padre o una nodriza; en sentido figurado, hacer (o ser) firme o fiel, confiar o creer, ser duradero o tranquilo; moralmente, ser verdadero o cierto;",
+   "p": "a-MAN",
+   "d": "raíz primitiva; (Isaías 30:21; intercambiable con H541 (אָמַן), ir hacia la derecha)",
+   "k": "seguridad, creer, criar, establecer, faltar, ser fiel (duradero, firme, seguro, ciertamente, fidedigno, confirmado), nodriza, padre que cría, confiar, ir a la derecha",
+   "use": "Se usa unas 106 veces en el Antiguo Testamento, en 24 libros — la primera vez en Génesis 15:6; más a menudo en Salmos (16), Isaías (15) y Job (10).",
+   "senses": [
+    "Sostener o sujetar; como sustantivo, un padre adoptivo, una nodriza o las columnas que sostienen una puerta.",
+    "Ser afirmado, establecido, duradero y seguro.",
+    "Ser confiable, fiel y digno de confianza.",
+    "Mantenerse firme, confiar y creer en alguien."
+   ],
+   "related": [
+    [
+     "אָמֵן",
+     "ʼâmên",
+     "H543",
+     "verdaderamente, así sea"
+    ],
+    [
+     "אֱמוּנָה",
+     "ʼĕmûwnâh",
+     "H530",
+     "fidelidad, firmeza"
+    ],
+    [
+     "אֱמֶת",
+     "ʼĕmeth",
+     "H571",
+     "verdad, fiabilidad"
+    ]
+   ],
+   "note": "Su primer uso es Génesis 15:6, donde Abraham \"creyó a Jehová, y le fue contado por justicia\". La palabra \"amén\" viene de la misma raíz."
+  },
+  "G863": {
+   "s": "enviar, en diversas aplicaciones (como sigue)",
+   "p": "",
+   "d": "de G575 (ἀπό) y ἵημι (enviar; forma intensiva de εἶμι, ir)",
+   "k": "clamar, perdonar, abandonar, dejar a un lado, dejar, permitir (dejar en paz, dejar ir), omitir, despedir, remitir, consentir, entregar",
+   "use": "Se usa unas 146 veces en el Nuevo Testamento, en 11 libros — la primera vez en Mateo 3:15; más a menudo en Mateo (47), Marcos (36) y Lucas (32).",
+   "senses": [
+    "Despedir o soltar, incluso entregar el espíritu al morir, como en Mateo 27:50.",
+    "Librar a alguien de una deuda, y en especial perdonar pecados, como en 1 Juan 1:9.",
+    "Dejar atrás, abandonar o descuidar, como dejar \"tu primer amor\" en Apocalipsis 2:4.",
+    "Dejar, consentir o permitir, como en \"Deja ahora\" en Mateo 3:15."
+   ],
+   "related": [
+    [
+     "ἀπό",
+     "apó",
+     "G575",
+     "de, desde, lejos"
+    ],
+    [
+     "ἄφεσις",
+     "áphesis",
+     "G859",
+     "liberación, perdón"
+    ]
+   ],
+   "note": "La imagen básica es soltar algo de uno mismo; por eso un mismo verbo abarca perdonar, dejar y permitir. En Mateo 18:27 se usa para un señor que le perdona la deuda a su siervo."
+  },
+  "H5545": {
+   "s": "perdonar",
+   "p": "sa-LAJ",
+   "d": "raíz primitiva;",
+   "k": "perdonar, perdonar la vida",
+   "use": "Se usa unas 46 veces en el Antiguo Testamento, en 13 libros — la primera vez en Éxodo 34:9; más a menudo en Levítico (10), Números (8) y Jeremías (6).",
+   "senses": [
+    "Perdonar una ofensa.",
+    "Ser perdonado, una forma muy usada en las leyes de los sacrificios de Levítico y Números.",
+    "La versión King James también lo traduce \"spare\", es decir, retener el castigo merecido."
+   ],
+   "related": [
+    [
+     "סְלִיחָה",
+     "çᵉlîychâh",
+     "H5547",
+     "perdón"
+    ],
+    [
+     "סַלָּח",
+     "çallâch",
+     "H5546",
+     "dispuesto a perdonar"
+    ]
+   ],
+   "note": "En el Antiguo Testamento este verbo se usa solo para el perdón de Dios, nunca para el perdón entre personas. Su primer uso es la súplica de Moisés en Éxodo 34:9: \"perdona nuestra iniquidad y nuestro pecado\"."
+  },
+  "G1325": {
+   "s": "dar (con una aplicación muy amplia, en sentido propio o por implicación, literal o figurado; muy matizado por el contexto)",
+   "p": "",
+   "d": "forma prolongada de un verbo primario (que se usa como alternativa en la mayoría de los tiempos);",
+   "k": "aventurarse, otorgar, producir, encomendar, entregar, dar, conceder, impedir, hacer, ministrar, contar, ofrecer, tener poder, poner, recibir, colocar, mostrar, golpear (con la mano), abofetear (con la palma de la mano), permitir, tomar, pronunciar, rendir",
+   "use": "Se usa unas 417 veces en el Nuevo Testamento, en 22 libros — la primera vez en Mateo 4:9; más a menudo en Juan (77), Lucas (60) y Apocalipsis (58).",
+   "senses": [
+    "Dar, otorgar o conceder algo a alguien, como en Juan 3:16.",
+    "Entregar o encomendar, como cuando el Padre da el juicio al Hijo en Juan 5:22.",
+    "Producir o rendir, como la semilla que da fruto en Marcos 4:8.",
+    "Darse a sí mismo, como Cristo dio su vida \"en rescate por muchos\" en Marcos 10:45."
+   ],
+   "related": [
+    [
+     "δῶρον",
+     "dōron",
+     "G1435",
+     "regalo, ofrenda"
+    ],
+    [
+     "παραδίδωμι",
+     "paradídōmi",
+     "G3860",
+     "entregar"
+    ]
+   ],
+   "note": "Es uno de los verbos más comunes del Nuevo Testamento: se usa más de 400 veces. Pablo cita las palabras de Jesús \"Más bienaventurado es dar que recibir\" con esta palabra en Hechos 20:35."
+  },
+  "H5414": {
+   "s": "dar, usado con una gran amplitud de aplicaciones (poner, hacer, etc.)",
+   "p": "na-TAN",
+   "d": "raíz primitiva;",
+   "k": "añadir, aplicar, designar, atribuir, asignar, vengar, ser sanado, otorgar, traer, echar, causar, encargar, venir, encomendar, considerar, contar, clamar, entregar, dirigir, repartir, hacer, sin duda, sin falta, sujetar, formar, obtener, dar, conceder, colgar, tener, en verdad, poner, cargar, dejar, prestar, soltar, acostarse, levantar, hacer, ¡ojalá!, ocupar, ofrecer, ordenar, pagar, cumplir, colocar, derramar, imprimir, tirar, poner, recompensar, rendir, retribuir, restituir, enviar, establecer, mostrar, brotar, cantar, calumniar, golpear, someter, permitir, ciertamente, tomar, empujar, comerciar, volver, pronunciar, llorar, de buena gana, retirar, ¡quiera Dios!, ceder",
+   "use": "Se usa unas 2011 veces en el Antiguo Testamento, en 38 libros — la primera vez en Génesis 1:17; más a menudo en Ezequiel (208), Deuteronomio (176) y Génesis (150).",
+   "senses": [
+    "Dar, conceder, pagar, prestar o entregar algo a alguien.",
+    "Poner, colocar o situar algo, o designar a alguien para una tarea.",
+    "Hacer o convertir una cosa en otra.",
+    "Permitir o dejar; y en la expresión \"¿quién dará?\" expresa un deseo que significa \"¡ojalá!\"."
+   ],
+   "related": [
+    [
+     "מַתָּנָה",
+     "mattânâh",
+     "H4979",
+     "regalo, don"
+    ],
+    [
+     "נָתָן",
+     "Nâthân",
+     "H5416",
+     "Natán (\"él dio\")"
+    ]
+   ],
+   "note": "Se usa más de 2000 veces y es uno de los verbos más comunes del Antiguo Testamento. Su primer uso es Génesis 1:17, donde Dios \"puso\" las lumbreras en el cielo."
+  },
+  "G2212": {
+   "s": "buscar (literal o figuradamente); en especial (como hebraísmo), adorar (a Dios), o (en mal sentido) conspirar (contra la vida de alguien)",
+   "p": "",
+   "d": "de origen incierto;",
+   "k": "andar en, desear, procurar, preguntar (por), requerir, buscar (procurar, buscar la manera)",
+   "use": "Se usa unas 119 veces en el Nuevo Testamento, en 16 libros — la primera vez en Mateo 2:13; más a menudo en Juan (35), Lucas (26) y Mateo (14).",
+   "senses": [
+    "Buscar a alguien o algo, como en \"buscad, y hallaréis\" en Mateo 7:7.",
+    "Indagar con el pensamiento, investigar o buscar a Dios, como en Hechos 17:27.",
+    "Procurar o desear algo con empeño, como en \"buscad primeramente el reino de Dios\" en Mateo 6:33.",
+    "Exigir o pedir, como en \"los judíos piden señales\" en 1 Corintios 1:22."
+   ],
+   "related": [
+    [
+     "ἐκζητέω",
+     "ekzētéō",
+     "G1567",
+     "buscar con diligencia"
+    ],
+    [
+     "ζήτησις",
+     "zḗtēsis",
+     "G2214",
+     "discusión, debate"
+    ]
+   ],
+   "note": "También puede significar conspirar contra la vida de alguien, como en su primer uso, Mateo 2:13, donde Herodes busca al niño para matarlo. En el Antiguo Testamento griego traduce sobre todo el hebreo baqash."
+  },
+  "H1875": {
+   "s": "propiamente, pisar o frecuentar; por lo general, seguir (para perseguir o buscar); por implicación, buscar o preguntar; en especial, adorar",
+   "p": "da-RASH",
+   "d": "raíz primitiva;",
+   "k": "preguntar, en absoluto, cuidar de, diligentemente, inquirir, hacer inquisición, adivino (que consulta a los muertos), interrogar, requerir, escudriñar, buscar, ciertamente",
+   "use": "Se usa unas 164 veces en el Antiguo Testamento, en 25 libros — la primera vez en Génesis 9:5; más a menudo en 2 Crónicas (30), Salmos (24) y Ezequiel (16).",
+   "senses": [
+    "Acudir a un lugar o frecuentarlo.",
+    "Consultar o preguntar a Dios, y buscarlo en oración y adoración.",
+    "Buscar con cuidado, estudiar o seguir con diligencia.",
+    "Exigir o demandar, en especial \"demandar\" la sangre, como en Génesis 9:5."
+   ],
+   "related": [
+    [
+     "מִדְרָשׁ",
+     "midrâsh",
+     "H4097",
+     "estudio, relato escrito"
+    ]
+   ],
+   "note": "2 Crónicas la usa más que ningún otro libro, y a menudo pregunta si un rey \"buscó a Jehová\". La palabra judía posterior midrash, que significa estudio o interpretación de las Escrituras, viene de esta raíz."
+  },
+  "G154": {
+   "s": "pedir (en caso genitivo)",
+   "p": "",
+   "d": "de origen incierto;",
+   "k": "pedir, mendigar, reclamar, anhelar, desear, requerir",
+   "use": "Se usa unas 70 veces en el Nuevo Testamento, en 11 libros — la primera vez en Mateo 5:42; más a menudo en Mateo (14), Lucas (11) y Juan (11).",
+   "senses": [
+    "Pedir algo, hacer una petición, como en \"Pedid, y se os dará\" en Mateo 7:7.",
+    "Pedir a Dios en oración, como en Santiago 1:5-6.",
+    "Rogar, reclamar o exigir, como la multitud pidió a Barrabás en Mateo 27:20."
+   ],
+   "related": [
+    [
+     "αἴτημα",
+     "aítēma",
+     "G155",
+     "petición, solicitud"
+    ]
+   ],
+   "note": "Los estudiosos antiguos hacían una distinción muy marcada entre esta palabra y erōtaō, otra palabra para \"pedir\", pero en tiempos del Nuevo Testamento las dos se usaban casi igual. En el Antiguo Testamento griego traduce sobre todo el hebreo sha'al."
+  },
+  "H7592": {
+   "s": "inquirir; por implicación, pedir; por extensión, exigir",
+   "p": "sha-AL",
+   "d": "o שָׁאֵל; raíz primitiva;",
+   "k": "pedir (consejo), mendigar, pedir prestado, imputar, consultar, exigir, desear, encarecidamente, inquirir, saludar, obtener permiso, prestar, orar, solicitar, requerir, estrictamente, ciertamente, desear",
+   "use": "Se usa unas 171 veces en el Antiguo Testamento, en 27 libros — la primera vez en Génesis 24:47; más a menudo en 1 Samuel (31), 1 Reyes (15) y Jueces (14).",
+   "senses": [
+    "Pedir, o pedir algo, a veces como favor o como préstamo.",
+    "Preguntar o hacer una pregunta, incluso consultar a Dios.",
+    "Mendigar.",
+    "Conceder algo que se pide, dejando que la petición de alguien tenga éxito."
+   ],
+   "related": [
+    [
+     "שְׁאֵלָה",
+     "shᵉʼêlâh",
+     "H7596",
+     "petición, solicitud"
+    ],
+    [
+     "שָׁאוּל",
+     "Shâʼûwl",
+     "H7586",
+     "Saúl (\"pedido\")"
+    ]
+   ],
+   "note": "El nombre del rey Saúl viene de este verbo y significa \"pedido\". \"Preguntar por la paz\" de alguien era un saludo normal; por eso la versión King James a veces lo traduce \"salute\" (saludar)."
+  },
+  "G2925": {
+   "s": "golpear con los nudillos",
+   "p": "",
+   "d": "al parecer, un verbo primario;",
+   "k": "llamar (a la puerta)",
+   "use": "Se usa unas 9 veces en el Nuevo Testamento, en 4 libros — la primera vez en Mateo 7:7; más a menudo en Lucas (4), Hechos (2) y Mateo (2).",
+   "senses": [
+    "Llamar, en especial a una puerta.",
+    "Se usa como imagen de la oración perseverante: \"llamad, y se os abrirá\" en Mateo 7:7.",
+    "Se usa del Señor que llama y espera que le abran, como en Apocalipsis 3:20."
+   ],
+   "related": [],
+   "note": "En Hechos 12:13-16, Pedro, liberado de la cárcel, sigue llamando a la puerta mientras los de la casa no pueden creer que sea él. En el Antiguo Testamento griego traduce el hebreo dāphaq en Cantares 5:2."
+  },
+  "H1849": {
+   "s": "llamar (a la puerta); por analogía, apremiar con dureza",
+   "p": "da-FAK",
+   "d": "raíz primitiva;",
+   "k": "golpear, llamar, fatigar",
+   "use": "Se usa unas 3 veces en el Antiguo Testamento, en 3 libros — la primera vez en Génesis 33:13; más a menudo en Génesis (1), Cantares (1) y Jueces (1).",
+   "senses": [
+    "Llamar, como a una puerta.",
+    "Golpear algo con violencia.",
+    "Arrear o forzar con dureza, como al fatigar un rebaño."
+   ],
+   "related": [],
+   "note": "Aparece solo tres veces: los rebaños de Jacob morirían si se les forzaba a andar (Génesis 33:13), unos hombres que golpean una puerta (Jueces 19:22) y el amado que llama en Cantares 5:2."
+  },
+  "G190": {
+   "s": "propiamente, ir por el mismo camino que alguien, es decir, acompañarlo (en especial, como discípulo)",
+   "p": "",
+   "d": "de G1 (Α) (como partícula de unión) y κέλευθος (camino)",
+   "k": "seguir, alcanzar",
+   "use": "Se usa unas 91 veces en el Nuevo Testamento, en 7 libros — la primera vez en Mateo 4:20; más a menudo en Mateo (25), Marcos (19) y Juan (19).",
+   "senses": [
+    "Acompañar o seguir a alguien, como las multitudes seguían a Jesús en Mateo 4:25.",
+    "Seguir como discípulo, comprometerse con el camino de un maestro, como en Mateo 9:9.",
+    "\"Ir en pos de\" alguien, como al tomar la propia cruz y seguirlo en Mateo 10:38."
+   ],
+   "related": [
+    [
+     "συνακολουθέω",
+     "sunakolouthéō",
+     "G4870",
+     "seguir junto con"
+    ],
+    [
+     "ἐπακολουθέω",
+     "epakolouthéō",
+     "G1872",
+     "seguir detrás"
+    ]
+   ],
+   "note": "La palabra describe estar \"en el mismo camino\" que alguien. Su primer uso, Mateo 4:20, es el de los pescadores que dejan sus redes para seguir a Jesús, y casi todos sus usos están en los Evangelios."
+  },
+  "H1980": {
+   "s": "andar (con una gran variedad de aplicaciones, literales y figuradas)",
+   "p": "ha-LAK",
+   "d": "emparentado con H3212 (יָלַךְ); raíz primitiva;",
+   "k": "a lo largo, aprisa, comportarse, venir, continuamente, conversar, partir, aliviarse, entrar, ejercitarse, seguir, adelante, salir, ir (de un lado a otro, lejos, adelante, fuera, arriba y abajo), crecer, frecuentar, guiar, marchar, cada vez más, moverse, pasar, estar a punto, correr, enviar, rápidamente, extenderse, todavía, ciertamente, chismoso, viajar, viajero, andar (de aquí para allá), vagar, hacerse, caminante, debilitarse, girar",
+   "use": "Se usa unas 1549 veces en el Antiguo Testamento, en 37 libros — la primera vez en Génesis 2:14; más a menudo en 1 Samuel (138), Génesis (122) y 1 Reyes (122).",
+   "senses": [
+    "Ir, venir, andar, partir o viajar.",
+    "Andar como imagen de la manera en que uno vive o se comporta.",
+    "Ir en pos de alguien, es decir, seguirlo.",
+    "Guiar, traer o llevar a alguien o algo."
+   ],
+   "related": [
+    [
+     "יָלַךְ",
+     "yâlak",
+     "H3212",
+     "ir, andar"
+    ],
+    [
+     "הֲלִיכָה",
+     "hălîykâh",
+     "H1979",
+     "paso, camino, procesión"
+    ]
+   ],
+   "note": "Se usa más de 1500 veces y es uno de los verbos más comunes del Antiguo Testamento. El término judío posterior halajá (halakhah), que significa el \"camino por donde andar\" o la ley práctica, viene de esta raíz."
+  },
+  "G191": {
+   "s": "oír (en varios sentidos)",
+   "p": "",
+   "d": "verbo primario;",
+   "k": "dar audiencia, llegar a oídos, oír, oyente, escuchar, divulgarse, ser informado, entender",
+   "use": "Se usa unas 436 veces en el Nuevo Testamento, en 23 libros — la primera vez en Mateo 2:3; más a menudo en Hechos (91), Mateo (66) y Lucas (65).",
+   "senses": [
+    "Oír: percibir sonidos con los oídos, o simplemente tener la capacidad de oír.",
+    "Escuchar y prestar atención, como en \"El que tiene oídos para oír, oiga\" (Mateo 11:15).",
+    "Oír algo que se cuenta o se enseña, y así aprenderlo o entenderlo.",
+    "Se usa de Dios que oye y responde la oración (1 Juan 5:14-15)."
+   ],
+   "related": [
+    [
+     "ἀκοή",
+     "akoē",
+     "G189",
+     "oído, noticia, mensaje"
+    ],
+    [
+     "ὑπακούω",
+     "hypakouō",
+     "G5219",
+     "escuchar, obedecer"
+    ]
+   ],
+   "note": "En el Antiguo Testamento griego es la palabra habitual para el hebreo shama, \"oír\". La palabra \"acústica\" viene de la misma raíz griega."
+  },
+  "H8085": {
+   "s": "oír con entendimiento (a menudo con la idea de atención, obediencia, etc.; en forma causativa, contar, etc.)",
+   "p": "sha-MA",
+   "d": "raíz primitiva;",
+   "k": "atentamente, convocar (reunir), cuidadosamente, ciertamente, consentir, considerar, estar contento, declarar, diligentemente, discernir, prestar oído, oír, escuchar, hacer oír, contar, en verdad, hacer ruido, ser obediente, obedecer, percibir, proclamar, proclamación, publicar, atender, informar, anunciar, hacer sonar, entender, cualquiera (que oye), testificar",
+   "use": "Se usa unas 1160 veces en el Antiguo Testamento, en 39 libros — la primera vez en Génesis 3:8; más a menudo en Jeremías (184), Isaías (106) y Deuteronomio (92).",
+   "senses": [
+    "Oír con los oídos, u oír noticias sobre alguien o algo.",
+    "Escuchar con atención y tomar a pecho; a menudo significa acceder a una petición o hacer caso.",
+    "Muy a menudo significa obedecer: oír una orden y cumplirla.",
+    "En sentido causativo significa hacer que otros oigan: anunciar, proclamar o hacer sonar en voz alta."
+   ],
+   "related": [
+    [
+     "שֵׁמַע",
+     "shema",
+     "H8088",
+     "noticia, rumor, oído"
+    ],
+    [
+     "שְׁמוּעָה",
+     "shemuah",
+     "H8052",
+     "noticia, informe"
+    ]
+   ],
+   "note": "Este verbo abre Deuteronomio 6:4, \"Oye, Israel\", y ese versículo todavía se llama la Shemá por su primera palabra. El hebreo no tiene otra palabra común para \"obedecer\"; este verbo abarca tanto oír como obedecer."
+  },
+  "G3421": {
+   "s": "ejercitar la memoria, es decir, recordar; por implicación, castigar; también repasar",
+   "p": "",
+   "d": "de un derivado de G3420 (μνήμη);",
+   "k": "hacer mención, tener presente, acordarse",
+   "use": "Se usa unas 21 veces en el Nuevo Testamento, en 13 libros — la primera vez en Mateo 16:9; más a menudo en Hebreos (3), Apocalipsis (3) y Juan (3).",
+   "senses": [
+    "Traer algo a la mente y recordarlo, como personas, palabras o hechos pasados.",
+    "Tener a alguien presente con cariño, como pide Pablo: \"Acordaos de mis prisiones\" (Colosenses 4:18).",
+    "Mencionar algo o hablar de ello, como en Hebreos 11:22."
+   ],
+   "related": [
+    [
+     "μνήμη",
+     "mnēmē",
+     "G3420",
+     "memoria, recuerdo"
+    ],
+    [
+     "μνημεῖον",
+     "mnēmeion",
+     "G3419",
+     "sepulcro, monumento"
+    ],
+    [
+     "μιμνῄσκομαι",
+     "mimnēskomai",
+     "G3403",
+     "acordarse"
+    ]
+   ],
+   "note": "Viene de una palabra que significa \"atento, que tiene presente\". La advertencia más breve de Jesús la usa: \"Acordaos de la mujer de Lot\" (Lucas 17:32)."
+  },
+  "H2142": {
+   "s": "propiamente, marcar (para que se reconozca), es decir, recordar; por implicación, mencionar; ser varón",
+   "p": "za-KAR",
+   "d": "raíz primitiva; también como denominativo de H2145 (זָכָר)",
+   "k": "quemar (incienso), encarecidamente, ser varón, hacer mención, tener presente, contar, registrar, cronista, acordarse, hacer recordar, traer a la memoria, todavía, pensar en, bien",
+   "use": "Se usa unas 232 veces en el Antiguo Testamento, en 32 libros — la primera vez en Génesis 8:1; más a menudo en Salmos (53), Isaías (26) y Ezequiel (21).",
+   "senses": [
+    "Recordar: acordarse de algo o traerlo a la mente.",
+    "Ser recordado o tenido en cuenta, volver a la mente de alguien.",
+    "Recordar algo a otros, o mantenerlo en la memoria mencionándolo o registrándolo.",
+    "Hacer un memorial, para que algo no se olvide."
+   ],
+   "related": [
+    [
+     "זִכָּרוֹן",
+     "zikkaron",
+     "H2146",
+     "memorial, recordatorio"
+    ],
+    [
+     "זֵכֶר",
+     "zeker",
+     "H2143",
+     "recuerdo, memoria"
+    ]
+   ],
+   "note": "Su primer uso es Génesis 8:1, \"Y se acordó Dios de Noé\", y el versículo sigue de inmediato con Dios enviando un viento para secar las aguas. En hebreo, recordar suele ser el primer paso para actuar."
+  },
+  "G1586": {
+   "s": "seleccionar",
+   "p": "",
+   "d": "voz media de G1537 (ἐκ) y G3004 (λέγω) (en su sentido primario);",
+   "k": "hacer elección, escoger, elegido",
+   "use": "Se usa unas 22 veces en el Nuevo Testamento, en 7 libros — la primera vez en Marcos 13:20; más a menudo en Hechos (7), Juan (5) y Lucas (4).",
+   "senses": [
+    "Escoger o elegir algo para uno mismo, como un lugar en la mesa (Lucas 14:7).",
+    "Se usa de personas que eligen a otras para una tarea, como cuando la iglesia eligió a los siete en Hechos 6:5.",
+    "Se usa de Jesús cuando escogió a sus discípulos (Juan 15:16).",
+    "Se usa de la elección que Dios mismo hace de personas y cosas (Efesios 1:4)."
+   ],
+   "related": [
+    [
+     "ἐκλεκτός",
+     "eklektos",
+     "G1588",
+     "escogido, elegido"
+    ],
+    [
+     "ἐκλογή",
+     "eklogē",
+     "G1589",
+     "elección"
+    ]
+   ],
+   "note": "Se forma con ek (\"de, fuera de\") y legō, cuyo significado más antiguo es \"juntar o recoger\", y da la imagen de escoger de entre otros. En el Antiguo Testamento griego traduce casi siempre el hebreo bachar, \"escoger\"."
+  },
+  "H977": {
+   "s": "propiamente, probar, es decir (por implicación), seleccionar",
+   "p": "ba-JAR",
+   "d": "raíz primitiva;",
+   "k": "aceptable, designar, escoger, escogido, excelente, unirse, preferir, requerir",
+   "use": "Se usa unas 171 veces en el Antiguo Testamento, en 22 libros — la primera vez en Génesis 6:2; más a menudo en Deuteronomio (31), Isaías (20) y 2 Crónicas (16).",
+   "senses": [
+    "Escoger, seleccionar o decidirse por una cosa en lugar de otra.",
+    "Se usa de Dios que escoge para sí un pueblo, un lugar o una persona.",
+    "Ser escogido o seleccionado, como lo que es selecto y excelente."
+   ],
+   "related": [
+    [
+     "בָּחִיר",
+     "bachir",
+     "H972",
+     "escogido"
+    ],
+    [
+     "מִבְחָר",
+     "mibchar",
+     "H4005",
+     "lo más escogido, lo mejor"
+    ]
+   ],
+   "note": "Strong señala que su idea de raíz es probar o examinar, y así seleccionar lo que resulta mejor. Deuteronomio habla una y otra vez de \"el lugar que Jehová vuestro Dios escogiere\" (Deuteronomio 12:5)."
+  },
+  "G5091": {
+   "s": "apreciar, es decir, fijar un valor a algo; por implicación, reverenciar",
+   "p": "",
+   "d": "de G5093 (τίμιος);",
+   "k": "honrar, valorar",
+   "use": "Se usa unas 21 veces en el Nuevo Testamento, en 8 libros — la primera vez en Mateo 15:4; más a menudo en Mateo (6), Juan (6) y Marcos (3).",
+   "senses": [
+    "Poner un valor o precio a algo; se usa del precio puesto a Jesús (Mateo 27:9).",
+    "Honrar: mostrar respeto y aprecio a una persona.",
+    "Se usa en el mandamiento de honrar al padre y a la madre (Mateo 15:4).",
+    "Se usa de honrar a Dios y al Hijo (Juan 5:23)."
+   ],
+   "related": [
+    [
+     "τιμή",
+     "timē",
+     "G5092",
+     "honra, precio, valor"
+    ],
+    [
+     "τίμιος",
+     "timios",
+     "G5093",
+     "precioso, valioso"
+    ]
+   ],
+   "note": "La misma raíz abarca \"precio\" y \"honra\": honrar a alguien es tratarlo como valioso. En el Antiguo Testamento griego a menudo traduce el hebreo kabad."
+  },
+  "H3513": {
+   "s": "ser pesado, es decir, en mal sentido (gravoso, severo, torpe) o en buen sentido (numeroso, rico, honorable); en forma causativa, hacer pesado (en los mismos dos sentidos)",
+   "p": "ka-BAD",
+   "d": "o כָּבֵד; raíz primitiva;",
+   "k": "abundar, afligir más gravemente, jactarse, ser gravoso, oscurecerse, glorificar, ser (hacer) glorioso, gloria, (muy) grande, ser penoso, endurecer, ser (hacer) pesado, ser más pesado, cargar pesadamente, honrar, ser honrado, honorable, cargar, multiplicarse, nobles, prevalecer, promover (a honra), ser rico, agravarse, detener",
+   "use": "Se usa unas 113 veces en el Antiguo Testamento, en 26 libros — la primera vez en Génesis 18:20; más a menudo en Isaías (20), Salmos (11) y 1 Samuel (11).",
+   "senses": [
+    "Ser pesado o de peso, en buen sentido: rico, honrado o glorioso.",
+    "Honrar o glorificar a alguien, darle peso y respeto.",
+    "En mal sentido: ser gravoso, severo o penoso.",
+    "Ser torpe o insensible, como oídos pesados, ojos oscurecidos o un corazón endurecido."
+   ],
+   "related": [
+    [
+     "כָּבוֹד",
+     "kavod",
+     "H3519",
+     "gloria, honra, esplendor"
+    ],
+    [
+     "כָּבֵד",
+     "kaved",
+     "H3515",
+     "pesado, de peso"
+    ]
+   ],
+   "note": "La imagen de fondo es el peso. El mismo verbo se usa para honrar al padre y a la madre (Éxodo 20:12) y para el corazón de Faraón que se hizo pesado, o se endureció (Éxodo 8:15)."
+  },
+  "G837": {
+   "s": "crecer, es decir, aumentar (literal o figuradamente, en sentido activo o pasivo)",
+   "p": "",
+   "d": "forma prolongada de un verbo primario;",
+   "k": "crecer, dar el crecimiento, aumentar",
+   "use": "Se usa unas 23 veces en el Nuevo Testamento, en 11 libros — la primera vez en Mateo 6:28; más a menudo en Hechos (4), Lucas (4) y Colosenses (3).",
+   "senses": [
+    "Crecer o aumentar; se usa de plantas, de niños y de multitudes que crecen.",
+    "Hacer crecer, como cuando \"el crecimiento lo ha dado Dios\" (1 Corintios 3:6).",
+    "Se usa de la expansión del evangelio: \"la palabra de Dios crecía\" (Hechos 12:24).",
+    "Se usa de crecer en la gracia y el conocimiento de Dios (2 Pedro 3:18)."
+   ],
+   "related": [
+    [
+     "αὔξησις",
+     "auxēsis",
+     "G838",
+     "crecimiento, aumento"
+    ],
+    [
+     "συναυξάνω",
+     "synauxanō",
+     "G4885",
+     "crecer juntos"
+    ]
+   ],
+   "note": "Juan el Bautista la usa en Juan 3:30: \"Es necesario que él crezca, pero que yo mengüe\"."
+  },
+  "H1431": {
+   "s": "ser (en forma causativa, hacer) grande (en varios sentidos: en cuerpo, mente, posición u honra, y también en orgullo)",
+   "p": "ga-DAL",
+   "d": "raíz primitiva; propiamente, torcer (compárese H1434 (גְּדִל)), es decir,",
+   "k": "avanzar, jactarse, criar, exceder, excelente, ser (hacerse, hacer) grande, mayor, llegar a gran posición, grandes cosas, crecer, aumentar, levantar, engrandecer, magnífico, ser muy estimado, nutrir, pasar, promover, hablar con soberbia, torre",
+   "use": "Se usa unas 117 veces en el Antiguo Testamento, en 31 libros — la primera vez en Génesis 12:2; más a menudo en Salmos (16), Génesis (14) y Isaías (9).",
+   "senses": [
+    "Crecer, como lo hace un niño, o hacerse grande.",
+    "Llegar a ser grande o importante, o hacer a alguien grande y poderoso.",
+    "Engrandecer o alabar, declarar lo grande que es alguien.",
+    "En mal sentido, engrandecerse uno mismo: jactarse o actuar con soberbia."
+   ],
+   "related": [
+    [
+     "גָּדוֹל",
+     "gadol",
+     "H1419",
+     "grande"
+    ],
+    [
+     "גֹּדֶל",
+     "godel",
+     "H1433",
+     "grandeza"
+    ],
+    [
+     "מִגְדָּל",
+     "migdal",
+     "H4026",
+     "torre"
+    ]
+   ],
+   "note": "Su primer uso es la promesa de Dios a Abram: \"engrandeceré tu nombre\" (Génesis 12:2). La invitación \"Engrandeced a Jehová conmigo\" del Salmo 34:3 usa el mismo verbo."
+  },
+  "G4863": {
+   "s": "conducir juntos, es decir, reunir o convocar; en especial, hospedar (con hospitalidad)",
+   "p": "",
+   "d": "de G4862 (σύν) y G71 (ἄγω);",
+   "k": "acompañar, congregarse, reunirse, guardar, juntarse, recoger, juntar, llevar a, acudir, recibir (en casa)",
+   "use": "Se usa unas 61 veces en el Nuevo Testamento, en 7 libros — la primera vez en Mateo 2:4; más a menudo en Mateo (24), Hechos (11) y Juan (8).",
+   "senses": [
+    "Juntar o recoger cosas, como el grano en el granero o la comida que sobró (Juan 6:12).",
+    "Convocar a la gente, o que la gente se reúna, en especial para una asamblea.",
+    "Recibir a alguien en casa como huésped: \"fui forastero, y me recogisteis\" (Mateo 25:35)."
+   ],
+   "related": [
+    [
+     "συναγωγή",
+     "synagōgē",
+     "G4864",
+     "reunión, sinagoga"
+    ],
+    [
+     "σύν",
+     "syn",
+     "G4862",
+     "con, juntamente"
+    ],
+    [
+     "ἄγω",
+     "agō",
+     "G71",
+     "guiar, llevar"
+    ]
+   ],
+   "note": "Literalmente significa \"conducir juntos\". Su forma sustantiva, synagōgē, es el origen de la palabra \"sinagoga\"."
+  },
+  "H6908": {
+   "s": "agarrar, es decir, reunir",
+   "p": "ka-BATS",
+   "d": "raíz primitiva;",
+   "k": "congregarse, reunir, juntar, juntarse, recoger, amontonar, acudir, ciertamente, tomar",
+   "use": "Se usa unas 127 veces en el Antiguo Testamento, en 25 libros — la primera vez en Génesis 41:35; más a menudo en Isaías (20), Ezequiel (16) y 2 Crónicas (11).",
+   "senses": [
+    "Juntar o recoger cosas, como el grano almacenado en Egipto (Génesis 41:35).",
+    "Congregar a personas, o que las personas se reúnan.",
+    "Se usa a menudo de Dios que vuelve a reunir a su pueblo esparcido entre las naciones."
+   ],
+   "related": [
+    [
+     "קִבּוּץ",
+     "qibbuts",
+     "H6899",
+     "compañía, multitud reunida"
+    ]
+   ],
+   "note": "Profetas como Isaías y Ezequiel la usan a menudo para la reunión prometida de Israel. La palabra hebrea moderna \"kibutz\" viene de la misma raíz."
+  },
+  "G1209": {
+   "s": "recibir (con diversas aplicaciones, literal o figuradamente)",
+   "p": "",
+   "d": "voz media de un verbo primario;",
+   "k": "aceptar, recibir, tomar",
+   "use": "Se usa unas 57 veces en el Nuevo Testamento, en 15 libros — la primera vez en Mateo 10:14; más a menudo en Lucas (16), Mateo (10) y Hechos (8).",
+   "senses": [
+    "Tomar o aceptar lo que se ofrece, como una copa o una carta.",
+    "Aceptar un mensaje en la mente, como recibir la palabra de Dios (1 Tesalonicenses 2:13).",
+    "Recibir a una persona con amabilidad como huésped (Mateo 10:40).",
+    "Tomar en los brazos, como Simeón tomó al niño Jesús (Lucas 2:28)."
+   ],
+   "related": [
+    [
+     "δεκτός",
+     "dektos",
+     "G1184",
+     "aceptable, bienvenido"
+    ],
+    [
+     "ἀποδέχομαι",
+     "apodechomai",
+     "G588",
+     "recibir con gozo"
+    ],
+    [
+     "προσδέχομαι",
+     "prosdechomai",
+     "G4327",
+     "recibir, esperar"
+    ]
+   ],
+   "note": "La oración de Esteban al morir la usa: \"Señor Jesús, recibe mi espíritu\" (Hechos 7:59)."
+  },
+  "H7521": {
+   "s": "agradarse de; en especial, saldar una deuda",
+   "p": "ra-TSA",
+   "d": "raíz primitiva;",
+   "k": "ser aceptado, aceptable, cumplir, poner afecto, aprobar, consentir, deleitarse, gozar, favorecer, ser favorable, querer, observar, perdonar, agradar, complacerse, reconciliarse",
+   "use": "Se usa unas 56 veces en el Antiguo Testamento, en 20 libros — la primera vez en Génesis 33:10; más a menudo en Salmos (13), Levítico (11) y Job (4).",
+   "senses": [
+    "Agradarse de alguien, mirarlo con favor.",
+    "Aceptar con agrado; se usa a menudo de Dios cuando acepta una ofrenda o a una persona.",
+    "Hacerse agradable, o buscar el favor de alguien.",
+    "Pagar o compensar lo que se debe, como la tierra que recupera los días de reposo que no tuvo."
+   ],
+   "related": [
+    [
+     "רָצוֹן",
+     "ratson",
+     "H7522",
+     "favor, agrado, voluntad"
+    ]
+   ],
+   "note": "Levítico la usa para las ofrendas que Dios acepta. En Levítico 26:34 describe a la tierra que \"gozará\", o recuperará, sus días de reposo."
+  },
+  "G1720": {
+   "s": "soplar hacia algo o sobre algo",
+   "p": "",
+   "d": "de G1722 (ἐν) y φυσάω (soplar) (compárese G5453 (φύω))",
+   "k": "soplar sobre",
+   "use": "Se usa 1 vez en el Nuevo Testamento, en 1 libro — la primera vez en Juan 20:22; más a menudo en Juan (1).",
+   "senses": [
+    "Soplar o echar el aliento sobre alguien.",
+    "Se usa una sola vez en el Nuevo Testamento, cuando Jesús resucitado sopló sobre sus discípulos (Juan 20:22)."
+   ],
+   "related": [
+    [
+     "ἐν",
+     "en",
+     "G1722",
+     "en, sobre"
+    ]
+   ],
+   "note": "El Antiguo Testamento griego usa este mismo verbo en Génesis 2:7, donde Dios sopló en la nariz del hombre aliento de vida."
+  },
+  "H5397": {
+   "s": "un soplo, es decir, viento, aliento de ira o de vida, inspiración divina, intelecto; o (en concreto) un animal",
+   "p": "ne-sha-MA",
+   "d": "de H5395 (נָשַׁם);",
+   "k": "ráfaga, aliento, lo que respira, inspiración, alma, espíritu",
+   "use": "Se usa unas 24 veces en el Antiguo Testamento, en 10 libros — la primera vez en Génesis 2:7; más a menudo en Job (7), Isaías (4) y Josué (3).",
+   "senses": [
+    "Aliento, en especial el aliento de vida en las personas y las criaturas.",
+    "El aliento de Dios, que da vida o sopla como una ráfaga de su poder.",
+    "Todo lo que respira, es decir, todos los seres vivos.",
+    "El espíritu interior de una persona."
+   ],
+   "related": [
+    [
+     "נָשַׁם",
+     "nasham",
+     "H5395",
+     "jadear, respirar con dificultad"
+    ],
+    [
+     "נִשְׁמָא",
+     "nishma",
+     "H5396",
+     "aliento (arameo)"
+    ]
+   ],
+   "note": "Su primer uso es Génesis 2:7, donde Dios sopla en el hombre \"aliento de vida\". Proverbios 20:27 llama al espíritu humano (esta palabra) \"lámpara de Jehová\"."
+  },
+  "H8055": {
+   "s": "probablemente, iluminarse, es decir (en sentido figurado), estar (en forma causativa, hacer) alegre o gozoso",
+   "p": "sa-MAJ",
+   "d": "raíz primitiva;",
+   "k": "animar, alegrarse, alegrar, gozo, gozoso, regocijarse, hacer regocijar, estar contento, muy",
+   "use": "Se usa unas 155 veces en el Antiguo Testamento, en 30 libros — la primera vez en Éxodo 4:14; más a menudo en Salmos (52), Proverbios (17) y Deuteronomio (10).",
+   "senses": [
+    "Regocijarse o alegrarse.",
+    "Regocijarse en la adoración, celebrando delante de Dios.",
+    "En mal sentido, alegrarse con malicia del mal ajeno.",
+    "Alegrar a otros o hacer que se regocijen."
+   ],
+   "related": [
+    [
+     "שִׂמְחָה",
+     "simchah",
+     "H8057",
+     "gozo, alegría"
+    ],
+    [
+     "שָׂמֵחַ",
+     "sameach",
+     "H8056",
+     "alegre, gozoso"
+    ]
+   ],
+   "note": "Strong sugiere que la idea de raíz es iluminarse. Su primer uso es Éxodo 4:14, donde Aarón \"se alegrará en su corazón\" al ver a Moisés."
+  },
+  "G2198": {
+   "s": "vivir (literal o figuradamente)",
+   "p": "",
+   "d": "verbo primario;",
+   "k": "vida, vivir, vivo, viviente",
+   "use": "Se usa unas 143 veces en el Nuevo Testamento, en 20 libros — la primera vez en Mateo 4:4; más a menudo en Romanos (23), Juan (18) y Apocalipsis (14).",
+   "senses": [
+    "Estar vivo, vivir físicamente, en contraste con estar muerto.",
+    "Se usa de Dios como \"el Dios viviente\" (Mateo 16:16), y de volver a la vida.",
+    "Vivir la vida de cierta manera, como \"por la fe\" o \"para Dios\".",
+    "Se usa en imágenes como \"agua viva\", es decir, agua fresca que corre (Juan 4:10)."
+   ],
+   "related": [
+    [
+     "ζωή",
+     "zōē",
+     "G2222",
+     "vida"
+    ],
+    [
+     "ζῷον",
+     "zōon",
+     "G2226",
+     "ser viviente"
+    ],
+    [
+     "ζωοποιέω",
+     "zōopoieō",
+     "G2227",
+     "dar vida"
+    ]
+   ],
+   "note": "\"Agua viva\" era la expresión común para el agua de manantial que corre, a diferencia del agua quieta de una cisterna. El juramento \"Vivo yo\" (Romanos 14:11) recuerda un juramento común del Antiguo Testamento."
+  },
+  "H2421": {
+   "s": "vivir, ya sea literal o figuradamente; en forma causativa, revivir",
+   "p": "ja-YA",
+   "d": "raíz primitiva (compárese H2331 (חָוָה), H2421 (חָיָה));",
+   "k": "conservar con vida, dejar con vida, ciertamente, dar vida, prometer vida, vivir, dejar vivir, sustentar, preservar la vida, vivificar, recobrarse, reparar, restaurar (la vida), revivir, salvar la vida, salvar vidas, sanar",
+   "use": "Se usa unas 282 veces en el Antiguo Testamento, en 27 libros — la primera vez en Génesis 3:22; más a menudo en Génesis (59), Ezequiel (48) y Salmos (31).",
+   "senses": [
+    "Vivir, tener vida o seguir con vida.",
+    "Revivir o recuperarse, de una enfermedad, del desánimo o incluso de la muerte.",
+    "Conservar la vida de alguien o dejarlo vivir.",
+    "Dar vida, restaurar o reanimar."
+   ],
+   "related": [
+    [
+     "חַי",
+     "chay",
+     "H2416",
+     "vivo, viviente; vida"
+    ],
+    [
+     "חַוָּה",
+     "Chavvah",
+     "H2332",
+     "Eva"
+    ]
+   ],
+   "note": "El nombre de Eva está ligado a la vida: \"madre de todos los vivientes\" (Génesis 3:20). En Ezequiel 37:3 Dios pregunta: \"¿vivirán estos huesos?\", usando este verbo."
+  },
+  "G103": {
+   "s": "cantar",
+   "p": "",
+   "d": "verbo primario;",
+   "k": "cantar",
+   "use": "Se usa unas 5 veces en el Nuevo Testamento, en 3 libros — la primera vez en Efesios 5:19; más a menudo en Apocalipsis (3), Efesios (1) y Colosenses (1).",
+   "senses": [
+    "Cantar, en especial cantos de alabanza a Dios (Efesios 5:19).",
+    "Cantar un cántico, como las multitudes celestiales cantan \"un nuevo cántico\" (Apocalipsis 5:9)."
+   ],
+   "related": [
+    [
+     "ᾠδή",
+     "ōdē",
+     "G5603",
+     "canto, oda"
+    ]
+   ],
+   "note": "El sustantivo relacionado ōdē es el origen de la palabra \"oda\". En el Antiguo Testamento griego este verbo traduce casi siempre el hebreo shir, \"cantar\"."
+  },
+  "H7891": {
+   "s": "cantar",
+   "p": "SHIR",
+   "d": "o (la forma original) שׁוּר; (1 Samuel 18:6), raíz primitiva (más bien idéntica a H7788 (שׁוּר) por la idea de los juglares que van de lugar en lugar);",
+   "k": "mirar (por error en lugar de H7789 (שׁוּר)), cantar, cantor, cantora",
+   "use": "Se usa unas 87 veces en el Antiguo Testamento, en 18 libros — la primera vez en Éxodo 15:1; más a menudo en Salmos (27), Nehemías (17) y 2 Crónicas (9).",
+   "senses": [
+    "Cantar.",
+    "Como forma casi sustantiva, un cantor o una cantora, como los cantores del templo.",
+    "Ser cantado, cuando se canta un cántico."
+   ],
+   "related": [
+    [
+     "שִׁיר",
+     "shir",
+     "H7892",
+     "canto, cántico"
+    ]
+   ],
+   "note": "Su primer uso es Éxodo 15:1, cuando Moisés e Israel cantaron después de cruzar el mar Rojo. El libro llamado Cantar de los Cantares toma su nombre del sustantivo relacionado."
+  },
+  "G1070": {
+   "s": "reír (como señal de alegría o satisfacción)",
+   "p": "",
+   "d": "de origen incierto;",
+   "k": "reír",
+   "use": "Se usa unas 2 veces en el Nuevo Testamento, en 1 libro — la primera vez en Lucas 6:21; más a menudo en Lucas (2).",
+   "senses": [
+    "Reír, como señal de alegría o satisfacción.",
+    "Jesús la usa como promesa y como advertencia en Lucas 6:21 y 6:25."
+   ],
+   "related": [
+    [
+     "καταγελάω",
+     "katagelaō",
+     "G2606",
+     "burlarse, ridiculizar"
+    ],
+    [
+     "γέλως",
+     "gelōs",
+     "G1071",
+     "risa"
+    ]
+   ],
+   "note": "Aparece solo dos veces, ambas en el sermón del llano en Lucas: \"Bienaventurados los que ahora lloráis, porque reiréis\" y \"¡Ay de vosotros, los que ahora reís!\"."
+  },
+  "H6711": {
+   "s": "reír abiertamente (de alegría o con burla); por implicación, jugar",
+   "p": "tsa-JAK",
+   "d": "raíz primitiva;",
+   "k": "reír, burlarse, jugar, divertirse",
+   "use": "Se usa unas 13 veces en el Antiguo Testamento, en 3 libros — la primera vez en Génesis 17:17; más a menudo en Génesis (11), Éxodo (1) y Jueces (1).",
+   "senses": [
+    "Reír, ya sea de alegría, de sorpresa o de incredulidad.",
+    "Burlarse o mofarse de alguien.",
+    "Jugar, bromear o divertirse; a veces del juego entre esposo y esposa (Génesis 26:8)."
+   ],
+   "related": [
+    [
+     "יִצְחָק",
+     "Yitschaq",
+     "H3327",
+     "Isaac (\"él ríe\")"
+    ]
+   ],
+   "note": "El nombre de Isaac viene de este verbo. Tanto Abraham (Génesis 17:17) como Sara (Génesis 18:12) se rieron ante la promesa de su nacimiento."
+  }
+ }
+}

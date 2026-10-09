@@ -61,6 +61,13 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [ ] Bible App (YouVersion) links for the 6 new languages: confirm each one's version number on bible.com, then add the buttons back.
 - [ ] Daily devotional emails and phone notices stay English or Spanish.
 
+### Strong's card in every language, with Dig deeper (9 Oct, on the test site)
+- Tap anywhere on the Greek or Hebrew: the Strong's entry opens as a card stacked on the deck, in the fish's language (on the single fish, the site's language).
+- Dig deeper (below the entry; Expand shows it all): where the word is used (counted from STEPBible's tagged Hebrew and Greek texts), shades of meaning, related words, and a note. Written from STEPBible's lexicons (CC BY 4.0, credited on the card and the Privacy page).
+- Files: fish-lang/lex-<lang>.json; sources and the checker in tools/more-languages/lex/.
+- [ ] A fluent reader checks each language (machine-assisted translation), starting with Spanish and Tagalog.
+- [ ] Greek words have no "sounds like" line in English (Strong's Greek gives none); add one.
+
 ### The back of the fish is a deck of cards (9 Oct, on the test site)
 - [x] Turned over, every fish (single or side by side) stays the exact rectangle of the decal. Card 1: the word with Greek and Hebrew (on a phone Hebrew gets its own card); then the verses, as many as fit per card (6 on a computer, 4 on a phone), with ‹ › arrows and the next cards peeking out underneath.
 - [x] A verse or Strong's entry opened from a card lies on top, the same size.
@@ -138,6 +145,11 @@ Built 7 Oct (on the test site):
 7. [x] Privacy & Terms page at /privacy/ (9 Oct), with the texting terms carriers require; linked from the footer, both sign-up forms and every devotional email.
 8. [x] Ken confirmed (9 Oct): the Privacy page names Yadah Collaborative.
 9. [ ] "Download my data" and "Delete my account" buttons (for now, by email request, as the Privacy page says).
+10. [ ] **My word studies (Ken, 9 Oct, still in design):** for a signed-in person, a list of the MannaFish word studies they have completed, opened from a small button (like My notes) as a drop-down. To decide with Ken:
+    - what counts as "completed" (for example: turned the fish over, opened both the Greek and Hebrew, and read at least one verse; or a "✓ I studied this" button on the last card of the deck);
+    - whether the list shows the date, the language, and any notes made on that word;
+    - whether it lives in "My MannaFish" or as its own bubble beside My notes.
+    Stored in the existing `activity` table (kind "study"), so nothing new is needed in Supabase.
 
 ### Phone app
 - [ ] Later, once accounts are in use on the website. The website can already be added to a phone's home screen.

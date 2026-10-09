@@ -1,0 +1,1276 @@
+{
+ "labels": {
+  "sounds": "So klingt es",
+  "from": "Woher das Wort kommt",
+  "kjvtr": "Wie es übersetzt wird (King-James-Bibel)",
+  "deeper": "Tiefer graben",
+  "used": "Wo es vorkommt",
+  "senses": "Bedeutungsnuancen",
+  "related": "Verwandte Wörter",
+  "note": "Wissenswert",
+  "credit": "Strong’s Concordance (1890) · Lexika und annotierte Texte von STEPBible.org (CC BY 4.0)"
+ },
+ "words": {
+  "G373": {
+   "s": "(rückbezüglich) ausruhen (wörtlich oder übertragen: befreit sein), bleiben; daraus folgend: erquicken",
+   "p": "",
+   "d": "von G303 (ἀνά) und G3973 (παύω)",
+   "k": "sich Ruhe gönnen, erquicken, Ruhe geben, ruhen",
+   "use": "Kommt etwa 12-mal im Neuen Testament vor, in 8 Büchern – zuerst in Matthäus 11:28; am häufigsten: Philemon (2), Offenbarung (2) und Matthäus (2).",
+   "senses": [
+    "Jemandem eine Pause von der Mühe geben, ihm Ruhe schenken oder ihn erquicken, wie in Matthäus 11:28.",
+    "Das Herz oder den Geist eines Menschen erquicken, wie Paulus es von Gläubigen sagt, die ihn und andere erquickt haben.",
+    "Selbst ruhen oder Ruhe genießen – sei es eine kurze Pause von der Arbeit oder die Ruhe derer, die im Herrn sterben.",
+    "Vom Geist Gottes: auf einem Menschen ruhen, wie in 1. Petrus 4:14."
+   ],
+   "related": [
+    [
+     "ἀνά",
+     "aná",
+     "G303",
+     "hinauf, wieder"
+    ],
+    [
+     "παύω",
+     "paúō",
+     "G3973",
+     "aufhören, beenden"
+    ],
+    [
+     "ἀνάπαυσις",
+     "anápausis",
+     "G372",
+     "Ruhe, Erleichterung"
+    ]
+   ],
+   "note": "Das Wort ist aus „hinauf“ und „aufhören“ gebildet und zeichnet das Bild einer Pause, die erquickt. Im griechischen Alten Testament übersetzt es meist das hebräische Verb für „ruhen“ (nuach)."
+  },
+  "H7673": {
+   "s": "ruhen, d. h. von der Anstrengung ablassen; in vielen abgeleiteten Bedeutungen gebraucht (veranlassend, übertragen oder speziell)",
+   "p": "scha-BAT",
+   "d": "eine Grundwurzel",
+   "k": "aufhören (lassen), feiern, ausbleiben lassen, (den Sabbat) halten, Mangel leiden lassen, ablassen, wegtun, ablegen, ruhen (lassen), beseitigen, stillen, wegnehmen",
+   "use": "Kommt etwa 71-mal im Alten Testament vor, in 19 Büchern – zuerst in 1. Mose 2:2; am häufigsten: Hesekiel (13), Jesaja (10) und 2. Mose (7).",
+   "senses": [
+    "Aufhören oder anhalten, zu Ende kommen.",
+    "Ruhen oder mit der Arbeit aufhören, wie Gott am siebten Tag in 1. Mose 2:2.",
+    "Den Sabbat halten oder feiern.",
+    "Etwas zum Aufhören bringen: ihm ein Ende machen, es beseitigen oder ausbleiben lassen."
+   ],
+   "related": [
+    [
+     "שַׁבָּת",
+     "shabbâth",
+     "H7676",
+     "Sabbat, Ruhetag"
+    ],
+    [
+     "שַׁבָּתוֹן",
+     "shabbâthôwn",
+     "H7677",
+     "Sabbatruhe, besonderer Feiertag"
+    ]
+   ],
+   "note": "Der Grundgedanke ist Aufhören, nicht Entspannen. Das Wort „Sabbat“ kommt von diesem Verb; der Sabbat ist also wörtlich ein Tag des „Aufhörens“."
+  },
+  "G1680": {
+   "s": "Erwartung (abstrakt oder konkret) oder Zuversicht",
+   "p": "",
+   "d": "von einem Grundwort (vorwegnehmen, meist mit Freude)",
+   "k": "Glaube, Hoffnung",
+   "use": "Kommt etwa 54-mal im Neuen Testament vor, in 15 Büchern – zuerst in Apostelgeschichte 2:26; am häufigsten: Römer (13), Apostelgeschichte (8) und Hebräer (5).",
+   "senses": [
+    "Erwartung von etwas Gutem; im Neuen Testament ist es immer eine hoffnungsvolle, keine ängstliche Erwartung.",
+    "Hoffnung im Glauben, etwa Israels Hoffnung auf den Messias oder die christliche Hoffnung auf das ewige Leben, wie in Titus 3:7.",
+    "Die Person oder Sache, auf die sich die Hoffnung gründet, wie wenn Christus in 1. Timotheus 1:1 „unsere Hoffnung“ genannt wird.",
+    "Das Erhoffte selbst, etwa „die Hoffnung, die für euch bereitliegt im Himmel“ in Kolosser 1:5."
+   ],
+   "related": [
+    [
+     "ἐλπίζω",
+     "elpízō",
+     "G1679",
+     "hoffen, erwarten"
+    ]
+   ],
+   "note": "Der Römerbrief gebraucht dieses Wort häufiger als jedes andere Buch, so in „wir sind gerettet auf Hoffnung“ (Römer 8:24) und „der Gott der Hoffnung“ (Römer 15:13). Es gehört auch zu den dreien, die nach 1. Korinther 13:13 „bleiben“."
+  },
+  "H8615": {
+   "s": "wörtlich eine Schnur (als Verbindung); übertragen: Erwartung",
+   "p": "tik-WA",
+   "d": "von H6960 (קָוָה); (vergleiche H6961 (קָוֶה))",
+   "k": "Erwartung, Hoffnung, leben, das, wonach ich mich sehne",
+   "use": "Kommt etwa 34-mal im Alten Testament vor, in 10 Büchern – zuerst in Josua 2:18; am häufigsten: Hiob (13), Sprüche (8) und Psalmen (3).",
+   "senses": [
+    "Wörtlich eine Schnur oder ein Seil, etwas, das verbindet oder festhält.",
+    "Hoffnung oder Erwartung, ein Ausschauen nach dem, was kommt.",
+    "Der Grund oder Anlass zur Hoffnung.",
+    "Das Erhoffte oder der endgültige Ausgang, auf den jemand hinblickt."
+   ],
+   "related": [
+    [
+     "קָוָה",
+     "qâvâh",
+     "H6960",
+     "warten auf, sehnsüchtig ausschauen"
+    ],
+    [
+     "קָוֶה",
+     "qâveh",
+     "H6961",
+     "Messschnur"
+    ]
+   ],
+   "note": "Beim ersten Vorkommen, in Josua 2:18, ist es wörtlich das „rote Seil“, das Rahab ins Fenster band. An anderen Stellen wird dasselbe Wort mit „Hoffnung“ übersetzt; Schnur und Hoffnung teilen sich also ein hebräisches Wort."
+  },
+  "G26": {
+   "s": "Liebe, d. h. Zuneigung oder Wohlwollen; besonders (in der Mehrzahl) ein Liebesmahl",
+   "p": "",
+   "d": "von G25 (ἀγαπάω)",
+   "k": "Liebe, Liebesmahl, lieb, liebevoll",
+   "use": "Kommt etwa 116-mal im Neuen Testament vor, in 24 Büchern – zuerst in Matthäus 24:12; am häufigsten: 1. Johannes (18), 1. Korinther (14) und Epheser (10).",
+   "senses": [
+    "Liebe, Wohlwollen und Wertschätzung unter Menschen, wie in Johannes 13:35.",
+    "Die Liebe der Menschen zu Gott, wie in 1. Johannes 2:5.",
+    "Gottes Liebe zu den Menschen, wie in Römer 5:8, und Christi Liebe zu den Menschen, wie in Römer 8:35.",
+    "In der Mehrzahl „Liebesmahle“: die gemeinsamen Mahlzeiten der ersten Gläubigen, erwähnt in Judas 12."
+   ],
+   "related": [
+    [
+     "ἀγαπάω",
+     "agapáō",
+     "G25",
+     "lieben"
+    ],
+    [
+     "ἀγαπητός",
+     "agapētós",
+     "G27",
+     "geliebt, lieb"
+    ]
+   ],
+   "note": "Außerhalb der Bibel und kirchlicher Schriften finden Gelehrte kaum eindeutige Belege für dieses Substantiv; erst das Neue Testament gab ihm sein besonderes Gewicht. Der 1. Johannesbrief gebraucht es häufiger als jedes andere Buch."
+  },
+  "H160": {
+   "s": "{Zuneigung (im guten oder im schlechten Sinn)}",
+   "p": "a-ha-WA",
+   "d": "weibliche Form von H158 (אַהַב), mit derselben Bedeutung",
+   "k": "Liebe",
+   "use": "Kommt etwa 38-mal im Alten Testament vor, in 14 Büchern – zuerst in 1. Mose 29:20; am häufigsten: Hoheslied (11), Sprüche (5) und Jeremia (3).",
+   "senses": [
+    "Menschliche Liebe eines Menschen zu einem anderen, auch Freundschaft.",
+    "Liebe zwischen Mann und Frau, auch romantisches und sexuelles Verlangen.",
+    "Gottes Liebe zu seinem Volk.",
+    "Nach Strong kann es Zuneigung im schlechten wie im guten Sinn bezeichnen."
+   ],
+   "related": [
+    [
+     "אָהַב",
+     "ʼâhab",
+     "H157",
+     "lieben"
+    ],
+    [
+     "אַהַב",
+     "ʼahab",
+     "H158",
+     "Liebe, Zuneigung"
+    ]
+   ],
+   "note": "Beim ersten Vorkommen, 1. Mose 29:20, kamen Jakob seine sieben Jahre Arbeit um Rahel wie wenige Tage vor, weil er sie so lieb hatte. Das Hohelied gebraucht es häufiger als jedes andere Buch."
+  },
+  "G3982": {
+   "s": "überzeugen (durch Beweise, wahr oder falsch); im übertragenen Sinn: beschwichtigen oder versöhnlich stimmen (durch andere faire Mittel); rückbezüglich oder passiv: zustimmen (Beweisen oder einer Autorität), sich verlassen (aus innerer Gewissheit)",
+   "p": "",
+   "d": "ein Grundverb",
+   "k": "zustimmen, versichern, glauben, Vertrauen haben, zuversichtlich sein, zum Freund machen, gehorchen, überreden, vertrauen, nachgeben",
+   "use": "Kommt etwa 55-mal im Neuen Testament vor, in 14 Büchern – zuerst in Matthäus 27:20; am häufigsten: Apostelgeschichte (17), Philipper (6) und Römer (5).",
+   "senses": [
+    "Jemanden überzeugen, gewinnen oder überreden, wie Paulus es in den Synagogen tat (Apostelgeschichte 18:4).",
+    "Vertrauen oder zuversichtlich sein, wie in „ich bin darin guter Zuversicht“ in Philipper 1:6.",
+    "Überzeugt oder gewiss sein, wie in Römer 8:38: „Denn ich bin gewiss, dass weder Tod noch Leben …“.",
+    "Auf jemanden hören und ihm gehorchen, wie in Hebräer 13:17."
+   ],
+   "related": [
+    [
+     "πίστις",
+     "pístis",
+     "G4102",
+     "Glaube, Vertrauen"
+    ],
+    [
+     "πεποίθησις",
+     "pepoíthēsis",
+     "G4006",
+     "Zuversicht, Verlass"
+    ]
+   ],
+   "note": "Das Wort reicht vom „Überzeugen“ über das „Überzeugtsein“ bis zum „Vertrauen“: Wer ganz überzeugt ist, ist zuversichtlich. Im griechischen Alten Testament übersetzt es hauptsächlich das hebräische batach, „vertrauen“."
+  },
+  "H982": {
+   "s": "übertragen: vertrauen, zuversichtlich oder sicher sein",
+   "p": "ba-TACH",
+   "d": "eine Grundwurzel; eigentlich: sich zur Zuflucht verbergen (aber nicht so überstürzt wie H2620 (חָסָה))",
+   "k": "kühn (zuversichtlich, sicher, gewiss) sein, sorglos (sein), Zuversicht haben, hoffen (lassen), vertrauen (lassen), sich verlassen",
+   "use": "Kommt etwa 120-mal im Alten Testament vor, in 16 Büchern – zuerst in 5. Mose 28:52; am häufigsten: Psalmen (46), Jesaja (20) und Jeremia (16).",
+   "senses": [
+    "Jemandem oder etwas vertrauen, sich darauf verlassen, seine Zuversicht darauf setzen.",
+    "Zuversichtlich, mutig und sicher sein.",
+    "Jemanden zum Vertrauen bringen oder ihm Sicherheit geben.",
+    "Sich auf sorglose oder selbstzufriedene Weise sicher fühlen; die King-James-Bibel übersetzt das manchmal mit „sorglos“."
+   ],
+   "related": [
+    [
+     "בֶּטַח",
+     "beṭach",
+     "H983",
+     "Sicherheit, sicher"
+    ],
+    [
+     "בִּטָּחוֹן",
+     "biṭṭâchôwn",
+     "H986",
+     "Zuversicht, Vertrauen"
+    ]
+   ],
+   "note": "Strong vermutet als Grundbild das Zufluchtsuchen, das Sich-Bergen an einem sicheren Ort. Die Psalmen gebrauchen es häufiger als jedes andere Buch, 46-mal."
+  },
+  "G4336": {
+   "s": "zu Gott beten, d. h. flehen, anbeten",
+   "p": "",
+   "d": "von G4314 (πρός) und G2172 (εὔχομαι)",
+   "k": "beten, inständig beten, beten für, ein Gebet sprechen",
+   "use": "Kommt etwa 87-mal im Neuen Testament vor, in 15 Büchern – zuerst in Matthäus 5:44; am häufigsten: Lukas (19), Apostelgeschichte (16) und Matthäus (16).",
+   "senses": [
+    "Beten – immer im Sinn eines Gebets, das an Gott gerichtet ist.",
+    "Für andere beten, auch für Feinde, wie in Matthäus 5:44.",
+    "Im Gebet um etwas Bestimmtes bitten, wie in Markus 13:18.",
+    "Im Geist beten, wie in Epheser 6:18."
+   ],
+   "related": [
+    [
+     "πρός",
+     "prós",
+     "G4314",
+     "zu, hin zu"
+    ],
+    [
+     "εὔχομαι",
+     "eúchomai",
+     "G2172",
+     "wünschen, beten"
+    ],
+    [
+     "προσευχή",
+     "proseuchḗ",
+     "G4335",
+     "Gebet"
+    ]
+   ],
+   "note": "Lukas gebraucht dieses Wort häufiger als jedes andere Buch und zeigt Jesus oft betend in entscheidenden Momenten, etwa bei seiner Taufe (Lukas 3:21) und bevor er die Zwölf erwählte (Lukas 6:12)."
+  },
+  "H6419": {
+   "s": "richten (amtlich oder gedanklich); im erweiterten Sinn: Fürbitte tun, beten",
+   "p": "pa-LAL",
+   "d": "eine Grundwurzel",
+   "k": "bitten, richten, Gericht, beten, Gebet, flehen",
+   "use": "Kommt etwa 84-mal im Alten Testament vor, in 18 Büchern – zuerst in 1. Mose 20:7; am häufigsten: 2. Chronik (14), 1. Samuel (11) und Jeremia (10).",
+   "senses": [
+    "Dazwischentreten oder zwischen Parteien eingreifen.",
+    "Vermitteln oder als Richter handeln.",
+    "Für einen anderen Fürbitte tun.",
+    "Beten."
+   ],
+   "related": [
+    [
+     "תְּפִלָּה",
+     "tᵉphillâh",
+     "H8605",
+     "Gebet"
+    ]
+   ],
+   "note": "Beim ersten Vorkommen, 1. Mose 20:7, sagt Gott, Abraham sei ein Prophet, der für Abimelech bitten wird. Das gebräuchliche hebräische Wort für „Gebet“, tephillah, kommt von dieser Wurzel."
+  },
+  "G4100": {
+   "s": "Glauben haben (an eine Person oder Sache, auf sie oder in Bezug auf sie), d. h. Glauben schenken; daraus folgend: anvertrauen (besonders das geistliche Wohl Christus)",
+   "p": "",
+   "d": "von G4102 (πίστις)",
+   "k": "glauben, Gläubiger, anvertrauen, betrauen",
+   "use": "Kommt etwa 245-mal im Neuen Testament vor, in 21 Büchern – zuerst in Matthäus 8:13; am häufigsten: Johannes (98), Apostelgeschichte (39) und Römer (21).",
+   "senses": [
+    "Glauben, dass etwas wahr ist, oder dem glauben, was jemand sagt.",
+    "An jemanden glauben – das heißt persönliches Vertrauen und Sich-Verlassen, nicht nur Zustimmung zu Tatsachen.",
+    "Wer glaubt, wird „Gläubiger“ genannt, wie in Apostelgeschichte 2:44.",
+    "Jemandem etwas anvertrauen oder mit etwas betraut sein, wie in Römer 3:2."
+   ],
+   "related": [
+    [
+     "πίστις",
+     "pístis",
+     "G4102",
+     "Glaube, Vertrauen"
+    ],
+    [
+     "πιστός",
+     "pistós",
+     "G4103",
+     "treu, vertrauenswürdig"
+    ]
+   ],
+   "note": "Das Johannesevangelium gebraucht dieses Verb etwa 98-mal, öfter als jedes andere Buch, aber nie das Substantiv „Glaube“ (pistis). Im griechischen Alten Testament übersetzt es hauptsächlich das hebräische aman."
+  },
+  "H539": {
+   "s": "eigentlich: aufbauen oder stützen; als Elternteil oder Amme pflegen; übertragen: fest oder treu machen (oder sein), vertrauen oder glauben, beständig oder ruhig sein; sittlich: wahr oder gewiss sein",
+   "p": "a-MAN",
+   "d": "eine Grundwurzel; (Jesaja 30:21; austauschbar mit H541 (אָמַן), sich nach rechts wenden)",
+   "k": "Gewissheit, glauben, aufziehen, festigen, treu sein (beständig, fest, gewiss, zuverlässig, bestätigt), Amme, Pflegevater, vertrauen, sich nach rechts wenden",
+   "use": "Kommt etwa 106-mal im Alten Testament vor, in 24 Büchern – zuerst in 1. Mose 15:6; am häufigsten: Psalmen (16), Jesaja (15) und Hiob (10).",
+   "senses": [
+    "Stützen oder tragen; als Substantiv ein Pflegevater, eine Amme oder die Pfosten, die eine Tür tragen.",
+    "Fest gemacht werden: gegründet, dauerhaft und sicher sein.",
+    "Zuverlässig, treu und vertrauenswürdig sein.",
+    "Fest stehen, vertrauen und an jemanden glauben."
+   ],
+   "related": [
+    [
+     "אָמֵן",
+     "ʼâmên",
+     "H543",
+     "wahrlich, so sei es"
+    ],
+    [
+     "אֱמוּנָה",
+     "ʼĕmûwnâh",
+     "H530",
+     "Treue, Beständigkeit"
+    ],
+    [
+     "אֱמֶת",
+     "ʼĕmeth",
+     "H571",
+     "Wahrheit, Zuverlässigkeit"
+    ]
+   ],
+   "note": "Beim ersten Vorkommen, 1. Mose 15:6, heißt es von Abraham: Er „glaubte dem HERRN, und das rechnete er ihm zur Gerechtigkeit“. Das Wort „Amen“ kommt von derselben Wurzel."
+  },
+  "G863": {
+   "s": "aussenden, in verschiedenen Anwendungen (wie folgt)",
+   "p": "",
+   "d": "von G575 (ἀπό) und ἵημι (senden; eine verstärkte Form von εἶμι, gehen)",
+   "k": "schreien, vergeben, verlassen, ablegen, zurücklassen, lassen, in Ruhe lassen, gehen lassen, unterlassen, wegschicken, erlassen, zulassen, aufgeben",
+   "use": "Kommt etwa 146-mal im Neuen Testament vor, in 11 Büchern – zuerst in Matthäus 3:15; am häufigsten: Matthäus (47), Markus (36) und Lukas (32).",
+   "senses": [
+    "Wegschicken oder gehen lassen, auch den Geist aufgeben beim Sterben, wie in Matthäus 27:50.",
+    "Jemandem eine Schuld erlassen und besonders Sünden vergeben, wie in 1. Johannes 1:9.",
+    "Zurücklassen, verlassen oder vernachlässigen, wie das Verlassen der „ersten Liebe“ in Offenbarung 2:4.",
+    "Lassen, erlauben oder zulassen, wie in „Lass es jetzt geschehen“ in Matthäus 3:15."
+   ],
+   "related": [
+    [
+     "ἀπό",
+     "apó",
+     "G575",
+     "von, weg"
+    ],
+    [
+     "ἄφεσις",
+     "áphesis",
+     "G859",
+     "Freilassung, Vergebung"
+    ]
+   ],
+   "note": "Das Grundbild ist, etwas von sich loszulassen. Das erklärt, wie ein einziges Verb Vergeben, Verlassen und Zulassen umfassen kann. In Matthäus 18:27 steht es für einen Herrn, der seinem Knecht die Schuld erlässt."
+  },
+  "H5545": {
+   "s": "vergeben",
+   "p": "sa-LACH",
+   "d": "eine Grundwurzel",
+   "k": "vergeben, verzeihen, verschonen",
+   "use": "Kommt etwa 46-mal im Alten Testament vor, in 13 Büchern – zuerst in 2. Mose 34:9; am häufigsten: 3. Mose (10), 4. Mose (8) und Jeremia (6).",
+   "senses": [
+    "Ein Unrecht vergeben oder verzeihen.",
+    "Vergeben werden – eine Form, die in den Opfergesetzen von 3. und 4. Mose oft vorkommt.",
+    "Die King-James-Bibel gibt es auch mit „verschonen“ wieder, das heißt verdiente Strafe zurückhalten."
+   ],
+   "related": [
+    [
+     "סְלִיחָה",
+     "çᵉlîychâh",
+     "H5547",
+     "Vergebung, Verzeihung"
+    ],
+    [
+     "סַלָּח",
+     "çallâch",
+     "H5546",
+     "bereit zu vergeben"
+    ]
+   ],
+   "note": "Im Alten Testament steht dieses Verb nur dafür, dass Gott vergibt, nie dafür, dass Menschen einander vergeben. Das erste Vorkommen ist die Bitte des Mose in 2. Mose 34:9: „vergib uns unsere Missetat und Sünde“."
+  },
+  "G1325": {
+   "s": "geben (in sehr weiter Anwendung, eigentlich oder abgeleitet, wörtlich oder übertragen; stark vom Zusammenhang geprägt)",
+   "p": "",
+   "d": "eine verlängerte Form eines Grundverbs (das in den meisten Zeitformen ersatzweise gebraucht wird)",
+   "k": "wagen, schenken, hervorbringen, anvertrauen, ausliefern, geben, gewähren, hindern, machen, darreichen, zählen, anbieten, Macht haben, setzen, empfangen, legen, zeigen, (mit der Hand) schlagen, zulassen, nehmen, äußern, bringen",
+   "use": "Kommt etwa 417-mal im Neuen Testament vor, in 22 Büchern – zuerst in Matthäus 4:9; am häufigsten: Johannes (77), Lukas (60) und Offenbarung (58).",
+   "senses": [
+    "Jemandem etwas geben, schenken oder gewähren, wie in Johannes 3:16.",
+    "Übergeben, ausliefern oder anvertrauen, wie wenn der Vater in Johannes 5:22 dem Sohn das Gericht übergibt.",
+    "Hervorbringen oder bringen, wie Samen in Markus 4:8 Frucht bringt.",
+    "Sich selbst geben, wie Christus sein Leben gab „als Lösegeld für viele“ in Markus 10:45."
+   ],
+   "related": [
+    [
+     "δῶρον",
+     "dōron",
+     "G1435",
+     "Gabe, Opfergabe"
+    ],
+    [
+     "παραδίδωμι",
+     "paradídōmi",
+     "G3860",
+     "übergeben, ausliefern"
+    ]
+   ],
+   "note": "Es ist eines der häufigsten Verben im Neuen Testament und kommt über 400-mal vor. Paulus zitiert mit diesem Wort Jesu Ausspruch „Geben ist seliger als Nehmen“ in Apostelgeschichte 20:35."
+  },
+  "H5414": {
+   "s": "geben, in denkbar weiter Anwendung gebraucht (setzen, machen usw.)",
+   "p": "na-TAN",
+   "d": "eine Grundwurzel",
+   "k": "hinzufügen, anwenden, bestimmen, zuschreiben, zuweisen, rächen, heilen, schenken, bringen, werfen, bewirken, befehlen, kommen, anvertrauen, bedenken, zählen, schreien, ausliefern, lenken, verteilen, tun, gewiss, befestigen, bilden, bekommen, geben, hingeben, gewähren, aufhängen, haben, legen, auferlegen, lassen, leihen, liegen, erheben, machen, ach dass doch, besetzen, darbringen, verordnen, bezahlen, ausführen, stellen, gießen, einprägen, ziehen, setzen, vergelten, erstatten, zurückgeben, senden, zeigen, hervorsprießen, singen, verleumden, schlagen, unterwerfen, zulassen, nehmen, stoßen, handeln, wenden, äußern, weinen, willig, sich zurückziehen, wollte Gott, hervorbringen",
+   "use": "Kommt etwa 2011-mal im Alten Testament vor, in 38 Büchern – zuerst in 1. Mose 1:17; am häufigsten: Hesekiel (208), 5. Mose (176) und 1. Mose (150).",
+   "senses": [
+    "Jemandem etwas geben, gewähren, bezahlen, leihen oder übergeben.",
+    "Etwas setzen, stellen oder legen, oder jemanden in ein Amt einsetzen.",
+    "Etwas zu etwas anderem machen oder es darin verwandeln.",
+    "Erlauben oder lassen; und in der Wendung „Wer gibt?“ drückt es einen Wunsch aus, im Sinn von „Ach, dass doch …!“"
+   ],
+   "related": [
+    [
+     "מַתָּנָה",
+     "mattânâh",
+     "H4979",
+     "Gabe, Geschenk"
+    ],
+    [
+     "נָתָן",
+     "Nâthân",
+     "H5416",
+     "Nathan („er gab“)"
+    ]
+   ],
+   "note": "Mit über 2000 Vorkommen ist es eines der häufigsten Verben im Alten Testament. Beim ersten Vorkommen, 1. Mose 1:17, „setzte“ Gott die Lichter an den Himmel."
+  },
+  "G2212": {
+   "s": "suchen (wörtlich oder übertragen); besonders (nach hebräischem Sprachgebrauch) Gott verehren, oder (im schlechten Sinn) nachstellen (dem Leben)",
+   "p": "",
+   "d": "von unsicherer Herkunft",
+   "k": "umgehen mit, begehren, sich bemühen, nachfragen, fordern, suchen, trachten nach",
+   "use": "Kommt etwa 119-mal im Neuen Testament vor, in 16 Büchern – zuerst in Matthäus 2:13; am häufigsten: Johannes (35), Lukas (26) und Matthäus (14).",
+   "senses": [
+    "Nach jemandem oder etwas suchen, wie in „suchet, so werdet ihr finden“ in Matthäus 7:7.",
+    "In Gedanken erforschen, nachfragen oder Gott suchen, wie in Apostelgeschichte 17:27.",
+    "Nach etwas streben oder es begehren, wie in „Trachtet zuerst nach dem Reich Gottes“ in Matthäus 6:33.",
+    "Fordern oder verlangen, wie in „die Juden fordern Zeichen“ in 1. Korinther 1:22."
+   ],
+   "related": [
+    [
+     "ἐκζητέω",
+     "ekzētéō",
+     "G1567",
+     "eifrig suchen, erforschen"
+    ],
+    [
+     "ζήτησις",
+     "zḗtēsis",
+     "G2214",
+     "Streitfrage, Erörterung"
+    ]
+   ],
+   "note": "Es kann auch bedeuten, jemandem nach dem Leben zu trachten, wie beim ersten Vorkommen in Matthäus 2:13, wo Herodes das Kindlein sucht, um es umzubringen. Im griechischen Alten Testament übersetzt es hauptsächlich das hebräische baqash."
+  },
+  "H1875": {
+   "s": "eigentlich: betreten oder häufig aufsuchen; meist: folgen (zur Verfolgung oder Suche); daraus folgend: suchen oder fragen; besonders: anbeten",
+   "p": "da-RASCH",
+   "d": "eine Grundwurzel",
+   "k": "fragen, sich kümmern um, sorgfältig, erforschen, nachforschen, Tote befragen, befragen, fordern, durchsuchen, suchen, gewiss",
+   "use": "Kommt etwa 164-mal im Alten Testament vor, in 25 Büchern – zuerst in 1. Mose 9:5; am häufigsten: 2. Chronik (30), Psalmen (24) und Hesekiel (16).",
+   "senses": [
+    "Einen Ort aufsuchen oder häufig besuchen.",
+    "Gott befragen oder um Rat fragen, ihn im Gebet und Gottesdienst suchen.",
+    "Sorgfältig suchen, studieren oder mit Eifer nachgehen.",
+    "Fordern oder verlangen, besonders das „Einfordern“ von Blut, wie in 1. Mose 9:5."
+   ],
+   "related": [
+    [
+     "מִדְרָשׁ",
+     "midrâsh",
+     "H4097",
+     "Studium, schriftlicher Bericht"
+    ]
+   ],
+   "note": "Das zweite Buch der Chronik gebraucht es häufiger als jedes andere Buch, oft mit der Frage, ob ein König „den HERRN suchte“. Das spätere jüdische Wort midrash (Midrasch), das Studium oder Auslegung der Schrift bedeutet, kommt von dieser Wurzel."
+  },
+  "G154": {
+   "s": "bitten (mit Genitiv)",
+   "p": "",
+   "d": "von unsicherer Herkunft",
+   "k": "bitten, betteln, fordern, verlangen, begehren",
+   "use": "Kommt etwa 70-mal im Neuen Testament vor, in 11 Büchern – zuerst in Matthäus 5:42; am häufigsten: Matthäus (14), Lukas (11) und Johannes (11).",
+   "senses": [
+    "Um etwas bitten, es erbitten, wie in „Bittet, so wird euch gegeben“ in Matthäus 7:7.",
+    "Gott im Gebet bitten, wie in Jakobus 1:5-6.",
+    "Betteln, fordern oder verlangen, wie die Menge in Matthäus 27:20 um Barabbas bat."
+   ],
+   "related": [
+    [
+     "αἴτημα",
+     "aítēma",
+     "G155",
+     "Bitte, Anliegen"
+    ]
+   ],
+   "note": "Ältere Gelehrte zogen eine scharfe Grenze zwischen diesem Wort und erōtaō, einem anderen Wort für „bitten“; zur Zeit des Neuen Testaments waren die beiden aber fast austauschbar geworden. Im griechischen Alten Testament übersetzt es hauptsächlich das hebräische sha'al."
+  },
+  "H7592": {
+   "s": "fragen; daraus folgend: bitten; im erweiterten Sinn: fordern",
+   "p": "scha-AL",
+   "d": "oder שָׁאֵל; eine Grundwurzel",
+   "k": "fragen, um Rat fragen, betteln, borgen, zur Last legen, befragen, fordern, begehren, ernstlich, sich erkundigen, grüßen, Erlaubnis erhalten, leihen, beten, bitten, verlangen, streng, gewiss, wünschen",
+   "use": "Kommt etwa 171-mal im Alten Testament vor, in 27 Büchern – zuerst in 1. Mose 24:47; am häufigsten: 1. Samuel (31), 1. Könige (15) und Richter (14).",
+   "senses": [
+    "Fragen oder um etwas bitten, manchmal als Gefallen oder als Leihgabe.",
+    "Sich erkundigen oder eine Frage stellen, auch Gott befragen.",
+    "Betteln.",
+    "Etwas auf Bitten gewähren, also jemanden mit seiner Bitte Erfolg haben lassen."
+   ],
+   "related": [
+    [
+     "שְׁאֵלָה",
+     "shᵉʼêlâh",
+     "H7596",
+     "Bitte, Anliegen"
+    ],
+    [
+     "שָׁאוּל",
+     "Shâʼûwl",
+     "H7586",
+     "Saul („erbeten“)"
+    ]
+   ],
+   "note": "Der Name König Sauls kommt von diesem Verb und bedeutet „erbeten“. Nach jemandes Frieden zu fragen war ein üblicher Gruß; darum gibt die King-James-Bibel es manchmal mit „grüßen“ wieder."
+  },
+  "G2925": {
+   "s": "klopfen",
+   "p": "",
+   "d": "offenbar ein Grundverb",
+   "k": "anklopfen",
+   "use": "Kommt etwa 9-mal im Neuen Testament vor, in 4 Büchern – zuerst in Matthäus 7:7; am häufigsten: Lukas (4), Apostelgeschichte (2) und Matthäus (2).",
+   "senses": [
+    "Klopfen, besonders an eine Tür.",
+    "Als Bild für beharrliches Gebet gebraucht: „klopfet an, so wird euch aufgetan“ in Matthäus 7:7.",
+    "Gebraucht vom Herrn, der anklopft und darauf wartet, eingelassen zu werden, wie in Offenbarung 3:20."
+   ],
+   "related": [],
+   "note": "In Apostelgeschichte 12:13-16 klopft Petrus, aus dem Gefängnis befreit, immer weiter an die Tür, während die Hausgenossen nicht glauben können, dass er es ist. Im griechischen Alten Testament übersetzt es das hebräische dāphaq in Hoheslied 5:2."
+  },
+  "H1849": {
+   "s": "klopfen; im übertragenen Sinn: hart bedrängen",
+   "p": "da-FAK",
+   "d": "eine Grundwurzel",
+   "k": "schlagen, anklopfen, übertreiben",
+   "use": "Kommt etwa 3-mal im Alten Testament vor, in 3 Büchern – zuerst in 1. Mose 33:13; am häufigsten: 1. Mose (1), Hoheslied (1) und Richter (1).",
+   "senses": [
+    "Klopfen, etwa an eine Tür.",
+    "Heftig auf etwas schlagen.",
+    "Hart treiben oder antreiben, etwa eine Herde übertreiben."
+   ],
+   "related": [],
+   "note": "Es kommt nur dreimal vor: Jakobs Herden würden sterben, wenn man sie zu hart triebe (1. Mose 33:13), Männer schlagen an eine Tür (Richter 19:22), und der Geliebte klopft an in Hoheslied 5:2."
+  },
+  "G190": {
+   "s": "eigentlich: mit jemandem auf demselben Weg sein, d. h. begleiten (besonders als Jünger)",
+   "p": "",
+   "d": "von G1 (Α) (als Partikel der Verbindung) und κέλευθος (Weg)",
+   "k": "folgen, nachfolgen, reichen",
+   "use": "Kommt etwa 91-mal im Neuen Testament vor, in 7 Büchern – zuerst in Matthäus 4:20; am häufigsten: Matthäus (25), Markus (19) und Johannes (19).",
+   "senses": [
+    "Jemanden begleiten oder ihm folgen, wie die Menge Jesus folgte in Matthäus 4:25.",
+    "Als Jünger nachfolgen und sich auf den Weg eines Lehrers festlegen, wie in Matthäus 9:9.",
+    "Jemandem „nachkommen“, etwa sein Kreuz auf sich nehmen und nachfolgen, wie in Matthäus 10:38."
+   ],
+   "related": [
+    [
+     "συνακολουθέω",
+     "sunakolouthéō",
+     "G4870",
+     "mitfolgen, mitgehen"
+    ],
+    [
+     "ἐπακολουθέω",
+     "epakolouthéō",
+     "G1872",
+     "nachfolgen"
+    ]
+   ],
+   "note": "Das Wort zeichnet das Bild, mit jemandem „auf demselben Weg“ zu sein. Beim ersten Vorkommen, Matthäus 4:20, lassen die Fischer ihre Netze liegen, um Jesus nachzufolgen; fast alle Vorkommen stehen in den Evangelien."
+  },
+  "H1980": {
+   "s": "gehen (in sehr vielfältiger Anwendung, wörtlich und übertragen)",
+   "p": "ha-LACH",
+   "d": "verwandt mit H3212 (יָלַךְ); eine Grundwurzel",
+   "k": "entlang, eilends, sich verhalten, kommen, beständig, umgehen mit, weggehen, eintreten, sich üben, folgen, hinaus, vorwärts, gehen, umhergehen, fortgehen, wachsen, zu verkehren pflegen, führen, marschieren, immer mehr, sich bewegen, vergehen, laufen, senden, schnell, sich ausbreiten, noch, gewiss, Verleumder, reisen, Reisender, wandeln, umherwandeln, umherirren, zunehmen, Wanderer, schwach sein, wirbeln",
+   "use": "Kommt etwa 1549-mal im Alten Testament vor, in 37 Büchern – zuerst in 1. Mose 2:14; am häufigsten: 1. Samuel (138), 1. Mose (122) und 1. Könige (122).",
+   "senses": [
+    "Gehen, kommen, wandeln, weggehen oder reisen.",
+    "Wandeln als Bild dafür, wie man lebt oder sich verhält.",
+    "Hinter jemandem hergehen, also ihm folgen.",
+    "Jemanden oder etwas führen, bringen oder mitnehmen."
+   ],
+   "related": [
+    [
+     "יָלַךְ",
+     "yâlak",
+     "H3212",
+     "gehen, wandeln"
+    ],
+    [
+     "הֲלִיכָה",
+     "hălîykâh",
+     "H1979",
+     "Gang, Weg, Prozession"
+    ]
+   ],
+   "note": "Mit über 1500 Vorkommen ist es eines der häufigsten Verben im Alten Testament. Der spätere jüdische Begriff halakhah, der „Weg, den man geht“ oder die praktische Lebensordnung, kommt von dieser Wurzel."
+  },
+  "G191": {
+   "s": "hören (in verschiedenen Bedeutungen)",
+   "p": "",
+   "d": "ein Grundverb",
+   "k": "Gehör geben, zu Ohren kommen, hören, Hörer, horchen, ruchbar werden, berichtet werden, verstehen",
+   "use": "Kommt etwa 436-mal im Neuen Testament vor, in 23 Büchern – zuerst in Matthäus 2:3; am häufigsten: Apostelgeschichte (91), Matthäus (66) und Lukas (65).",
+   "senses": [
+    "Hören: Töne mit den Ohren aufnehmen oder einfach die Fähigkeit zu hören haben.",
+    "Zuhören und achtgeben, wie in „Wer Ohren hat, der höre!“ (Matthäus 11:15).",
+    "Etwas berichtet oder gelehrt bekommen und es so erfahren oder verstehen.",
+    "Gebraucht davon, dass Gott Gebet hört und erhört (1. Johannes 5:14-15)."
+   ],
+   "related": [
+    [
+     "ἀκοή",
+     "akoē",
+     "G189",
+     "Gehör, Bericht, Botschaft"
+    ],
+    [
+     "ὑπακούω",
+     "hypakouō",
+     "G5219",
+     "hören auf, gehorchen"
+    ]
+   ],
+   "note": "Im griechischen Alten Testament ist dies das übliche Wort für das hebräische shama, „hören“. Das deutsche Wort „Akustik“ kommt von derselben griechischen Wurzel."
+  },
+  "H8085": {
+   "s": "verständig hören (oft mit dem Nebensinn von Aufmerksamkeit, Gehorsam usw.; veranlassend: erzählen usw.)",
+   "p": "scha-MA",
+   "d": "eine Grundwurzel",
+   "k": "aufmerksam, zusammenrufen, sorgfältig, gewiss, einwilligen, bedenken, zufrieden sein, verkünden, fleißig, unterscheiden, Gehör geben, hören (lassen), erzählen, zuhören, Lärm machen, gehorsam sein, gehorchen, wahrnehmen, ausrufen, bekannt machen, beachten, berichten, zeigen, erschallen lassen, sagen, verstehen, wer es hört, bezeugen",
+   "use": "Kommt etwa 1160-mal im Alten Testament vor, in 39 Büchern – zuerst in 1. Mose 3:8; am häufigsten: Jeremia (184), Jesaja (106) und 5. Mose (92).",
+   "senses": [
+    "Mit den Ohren hören oder Nachricht über jemanden oder etwas hören.",
+    "Genau zuhören und zu Herzen nehmen; oft bedeutet es, einer Bitte zuzustimmen oder etwas zu beachten.",
+    "Sehr oft bedeutet es gehorchen: ein Gebot hören und danach handeln.",
+    "In veranlassendem Sinn heißt es, andere hören lassen: ankündigen, verkünden oder laut erschallen lassen."
+   ],
+   "related": [
+    [
+     "שֵׁמַע",
+     "shema",
+     "H8088",
+     "Bericht, Nachricht, Hören"
+    ],
+    [
+     "שְׁמוּעָה",
+     "shemuah",
+     "H8052",
+     "Bericht, Nachricht"
+    ]
+   ],
+   "note": "Mit diesem Verb beginnt 5. Mose 6:4: „Höre, Israel“; der Vers heißt bis heute nach seinem ersten Wort das Shema. Das Hebräische hat kein eigenes gebräuchliches Wort für „gehorchen“; dieses Verb umfasst Hören und Gehorchen."
+  },
+  "G3421": {
+   "s": "das Gedächtnis üben, d. h. sich erinnern; daraus folgend: bestrafen; auch: wiederholen",
+   "p": "",
+   "d": "von einer Ableitung von G3420 (μνήμη)",
+   "k": "erwähnen, gedenken, sich erinnern",
+   "use": "Kommt etwa 21-mal im Neuen Testament vor, in 13 Büchern – zuerst in Matthäus 16:9; am häufigsten: Hebräer (3), Offenbarung (3) und Johannes (3).",
+   "senses": [
+    "Sich etwas ins Gedächtnis rufen und daran denken, etwa an Menschen, Worte oder vergangene Ereignisse.",
+    "Fürsorglich an jemanden denken, wie Paulus bittet: „Gedenkt meiner Fesseln!“ (Kolosser 4:18).",
+    "Etwas erwähnen oder davon sprechen, wie in Hebräer 11:22."
+   ],
+   "related": [
+    [
+     "μνήμη",
+     "mnēmē",
+     "G3420",
+     "Gedächtnis, Erinnerung"
+    ],
+    [
+     "μνημεῖον",
+     "mnēmeion",
+     "G3419",
+     "Grab, Gedenkstätte"
+    ],
+    [
+     "μιμνῄσκομαι",
+     "mimnēskomai",
+     "G3403",
+     "sich erinnern"
+    ]
+   ],
+   "note": "Es kommt von einem Wort, das „eingedenk“ bedeutet. Jesu kürzeste Warnung gebraucht es: „Gedenkt an Lots Frau!“ (Lukas 17:32)."
+  },
+  "H2142": {
+   "s": "eigentlich: kennzeichnen (sodass etwas erkannt wird), d. h. sich erinnern; daraus folgend: erwähnen; männlich sein",
+   "p": "sa-CHAR",
+   "d": "eine Grundwurzel; auch als Ableitung von H2145 (זָכָר)",
+   "k": "(Weihrauch) verbrennen, ernstlich, männlich sein, erwähnen, eingedenk sein, aufzählen, aufzeichnen, Kanzler, gedenken, in Erinnerung bringen, ins Gedächtnis rufen, noch, denken an, wohl",
+   "use": "Kommt etwa 232-mal im Alten Testament vor, in 32 Büchern – zuerst in 1. Mose 8:1; am häufigsten: Psalmen (53), Jesaja (26) und Hesekiel (21).",
+   "senses": [
+    "Sich erinnern: etwas ins Gedächtnis zurückrufen.",
+    "Erinnert werden: dass man an jemanden denkt, dass er einem wieder in den Sinn kommt.",
+    "Andere erinnern, oder etwas durch Erwähnen oder Aufschreiben im Gedächtnis halten.",
+    "Ein Gedenken stiften, damit etwas nicht vergessen wird."
+   ],
+   "related": [
+    [
+     "זִכָּרוֹן",
+     "zikkaron",
+     "H2146",
+     "Gedenken, Erinnerungszeichen"
+    ],
+    [
+     "זֵכֶר",
+     "zeker",
+     "H2143",
+     "Andenken, Gedächtnis"
+    ]
+   ],
+   "note": "Beim ersten Vorkommen, 1. Mose 8:1, heißt es: „Da gedachte Gott an Noah“, und der Vers erzählt gleich weiter, wie Gott einen Wind schickt, der das Wasser trocknet. Im Hebräischen ist das Gedenken oft der erste Schritt zum Handeln."
+  },
+  "G1586": {
+   "s": "auswählen",
+   "p": "",
+   "d": "Medium von G1537 (ἐκ) und G3004 (λέγω) (in seiner ursprünglichen Bedeutung)",
+   "k": "eine Wahl treffen, erwählen, auserwählen, auserwählt",
+   "use": "Kommt etwa 22-mal im Neuen Testament vor, in 7 Büchern – zuerst in Markus 13:20; am häufigsten: Apostelgeschichte (7), Johannes (5) und Lukas (4).",
+   "senses": [
+    "Etwas für sich aussuchen oder wählen, etwa einen Platz am Tisch (Lukas 14:7).",
+    "Gebraucht davon, dass Menschen andere für eine Aufgabe wählen, wie die Gemeinde in Apostelgeschichte 6:5 die Sieben wählt.",
+    "Gebraucht davon, dass Jesus seine Jünger erwählt (Johannes 15:16).",
+    "Gebraucht von Gottes eigenem Erwählen von Menschen und Dingen (Epheser 1:4)."
+   ],
+   "related": [
+    [
+     "ἐκλεκτός",
+     "eklektos",
+     "G1588",
+     "erwählt, auserwählt"
+    ],
+    [
+     "ἐκλογή",
+     "eklogē",
+     "G1589",
+     "Wahl, Erwählung"
+    ]
+   ],
+   "note": "Es ist aus ek („aus … heraus“) und legō gebildet, dessen ältere Bedeutung „sammeln, auflesen“ ist – daher das Bild vom Auslesen. Im griechischen Alten Testament übersetzt es meist das hebräische bachar, „wählen“."
+  },
+  "H977": {
+   "s": "eigentlich: prüfen, d. h. (daraus folgend) auswählen",
+   "p": "ba-CHAR",
+   "d": "eine Grundwurzel",
+   "k": "angenehm, bestimmen, wählen, erwählen, auserlesen, vortrefflich, sich zugesellen, lieber wollen, verlangen",
+   "use": "Kommt etwa 171-mal im Alten Testament vor, in 22 Büchern – zuerst in 1. Mose 6:2; am häufigsten: 5. Mose (31), Jesaja (20) und 2. Chronik (16).",
+   "senses": [
+    "Wählen, auswählen oder sich für das eine statt des anderen entscheiden.",
+    "Gebraucht davon, dass Gott sich ein Volk, einen Ort oder einen Menschen erwählt.",
+    "Erwählt oder ausgewählt sein, als etwas Auserlesenes und Vortreffliches."
+   ],
+   "related": [
+    [
+     "בָּחִיר",
+     "bachir",
+     "H972",
+     "Erwählter"
+    ],
+    [
+     "מִבְחָר",
+     "mibchar",
+     "H4005",
+     "das Auserlesenste, Beste"
+    ]
+   ],
+   "note": "Nach Strong ist der Grundgedanke prüfen oder erproben und so das auswählen, was sich als das Beste erweist. Das 5. Buch Mose spricht immer wieder von „der Stätte, die der HERR, euer Gott, erwählen wird“ (5. Mose 12:5)."
+  },
+  "G5091": {
+   "s": "schätzen, d. h. einen Wert festsetzen; daraus folgend: verehren",
+   "p": "",
+   "d": "von G5093 (τίμιος)",
+   "k": "ehren, schätzen",
+   "use": "Kommt etwa 21-mal im Neuen Testament vor, in 8 Büchern – zuerst in Matthäus 15:4; am häufigsten: Matthäus (6), Johannes (6) und Markus (3).",
+   "senses": [
+    "Einen Wert oder Preis festsetzen; gebraucht vom Preis, der auf Jesus festgesetzt wurde (Matthäus 27:9).",
+    "Ehren: einem Menschen Achtung und Wertschätzung erweisen.",
+    "Gebraucht im Gebot, Vater und Mutter zu ehren (Matthäus 15:4).",
+    "Gebraucht davon, Gott und den Sohn zu ehren (Johannes 5:23)."
+   ],
+   "related": [
+    [
+     "τιμή",
+     "timē",
+     "G5092",
+     "Ehre, Preis, Wert"
+    ],
+    [
+     "τίμιος",
+     "timios",
+     "G5093",
+     "kostbar, wertvoll"
+    ]
+   ],
+   "note": "Dieselbe Wurzel umfasst „Preis“ und „Ehre“: Jemanden ehren heißt, ihn als wertvoll behandeln. Im griechischen Alten Testament übersetzt es oft das hebräische kabad."
+  },
+  "H3513": {
+   "s": "schwer sein, d. h. im schlechten Sinn (lästig, hart, stumpf) oder im guten Sinn (zahlreich, reich, ehrenvoll); veranlassend: gewichtig machen (in beiden Bedeutungen)",
+   "p": "ka-WAD",
+   "d": "oder כָּבֵד; eine Grundwurzel",
+   "k": "reich sein an, schwer plagen, sich rühmen, zur Last fallen, trübe sein, verherrlichen, herrlich sein (machen), Herrlichkeit, (sehr) groß, schwer sein (machen), schwerer sein, verhärten, schwer auflegen, zu Ehren kommen, ehren, geehrt, beladen, sich vermehren, Edle, überhandnehmen, zu Ehren bringen, reich sein, hart sein, verstopfen",
+   "use": "Kommt etwa 113-mal im Alten Testament vor, in 26 Büchern – zuerst in 1. Mose 18:20; am häufigsten: Jesaja (20), Psalmen (11) und 1. Samuel (11).",
+   "senses": [
+    "Schwer oder gewichtig sein im guten Sinn: reich, geehrt oder herrlich.",
+    "Jemanden ehren oder verherrlichen, ihm Gewicht und Achtung geben.",
+    "Im schlechten Sinn: lästig, hart oder drückend sein.",
+    "Stumpf oder unempfänglich sein, wie schwere Ohren, trübe Augen oder ein verhärtetes Herz."
+   ],
+   "related": [
+    [
+     "כָּבוֹד",
+     "kavod",
+     "H3519",
+     "Herrlichkeit, Ehre, Glanz"
+    ],
+    [
+     "כָּבֵד",
+     "kaved",
+     "H3515",
+     "schwer, gewichtig"
+    ]
+   ],
+   "note": "Das Bild dahinter ist Gewicht. Dasselbe Verb steht für das Ehren von Vater und Mutter (2. Mose 20:12) und dafür, dass das Herz des Pharao schwer gemacht, also verhärtet wurde (2. Mose 8:15)."
+  },
+  "G837": {
+   "s": "wachsen („zunehmen“), d. h. größer werden (wörtlich oder übertragen, aktiv oder passiv)",
+   "p": "",
+   "d": "eine verlängerte Form eines Grundverbs",
+   "k": "wachsen, aufwachsen, Gedeihen geben, zunehmen",
+   "use": "Kommt etwa 23-mal im Neuen Testament vor, in 11 Büchern – zuerst in Matthäus 6:28; am häufigsten: Apostelgeschichte (4), Lukas (4) und Kolosser (3).",
+   "senses": [
+    "Wachsen oder zunehmen; gebraucht von Pflanzen, Kindern und wachsenden Menschenmengen.",
+    "Wachsen lassen, wie in „Gott hat das Gedeihen gegeben“ (1. Korinther 3:6).",
+    "Gebraucht von der Ausbreitung des Evangeliums: „Das Wort Gottes aber wuchs“ (Apostelgeschichte 12:24).",
+    "Gebraucht vom Wachsen in der Gnade und Erkenntnis Gottes (2. Petrus 3:18)."
+   ],
+   "related": [
+    [
+     "αὔξησις",
+     "auxēsis",
+     "G838",
+     "Wachstum, Zunahme"
+    ],
+    [
+     "συναυξάνω",
+     "synauxanō",
+     "G4885",
+     "miteinander wachsen"
+    ]
+   ],
+   "note": "Johannes der Täufer gebraucht es in Johannes 3:30: „Er muss wachsen, ich aber muss abnehmen.“"
+  },
+  "H1431": {
+   "s": "groß sein (veranlassend: groß machen) (in verschiedenen Bedeutungen: an Körper, Geist, Stand oder Ehre, auch im Stolz)",
+   "p": "ga-DAL",
+   "d": "eine Grundwurzel; eigentlich: drehen (vergleiche H1434 (גְּדִל)), d. h.",
+   "k": "voranbringen, sich rühmen, aufziehen, übertreffen, vortrefflich, groß sein (werden, machen), größer werden, zu Ansehen kommen, Großes tun, wachsen, aufwachsen, zunehmen, erheben, rühmen, herrlich, hochgeachtet sein, ernähren, vorübergehen, befördern, stolz reden, hoch aufragen",
+   "use": "Kommt etwa 117-mal im Alten Testament vor, in 31 Büchern – zuerst in 1. Mose 12:2; am häufigsten: Psalmen (16), 1. Mose (14) und Jesaja (9).",
+   "senses": [
+    "Aufwachsen wie ein Kind, oder groß werden.",
+    "Groß oder bedeutend werden, oder jemanden groß und mächtig machen.",
+    "Groß machen oder preisen: verkünden, wie groß jemand ist.",
+    "Im schlechten Sinn sich selbst groß machen: prahlen oder hochmütig handeln."
+   ],
+   "related": [
+    [
+     "גָּדוֹל",
+     "gadol",
+     "H1419",
+     "groß"
+    ],
+    [
+     "גֹּדֶל",
+     "godel",
+     "H1433",
+     "Größe"
+    ],
+    [
+     "מִגְדָּל",
+     "migdal",
+     "H4026",
+     "Turm"
+    ]
+   ],
+   "note": "Beim ersten Vorkommen verheißt Gott Abram: „Ich will dir einen großen Namen machen“ (1. Mose 12:2). Der Ruf „Preiset mit mir den HERRN“ in Psalm 34:3 gebraucht dasselbe Verb."
+  },
+  "G4863": {
+   "s": "zusammenführen, d. h. sammeln oder versammeln; besonders: (gastfreundlich) aufnehmen",
+   "p": "",
+   "d": "von G4862 (σύν) und G71 (ἄγω)",
+   "k": "begleiten, sich versammeln, unterbringen, zusammenkommen, sammeln, einsammeln, hineinführen, sich einfinden, aufnehmen, beherbergen",
+   "use": "Kommt etwa 61-mal im Neuen Testament vor, in 7 Büchern – zuerst in Matthäus 2:4; am häufigsten: Matthäus (24), Apostelgeschichte (11) und Johannes (8).",
+   "senses": [
+    "Dinge sammeln oder zusammenbringen, etwa Korn in die Scheune oder übrig gebliebene Brocken (Johannes 6:12).",
+    "Menschen zusammenrufen, oder dass Menschen zusammenkommen, besonders zu einer Versammlung.",
+    "Jemanden als Gast aufnehmen: „Ich bin ein Fremder gewesen, und ihr habt mich aufgenommen“ (Matthäus 25:35)."
+   ],
+   "related": [
+    [
+     "συναγωγή",
+     "synagōgē",
+     "G4864",
+     "Versammlung, Synagoge"
+    ],
+    [
+     "σύν",
+     "syn",
+     "G4862",
+     "mit, zusammen"
+    ],
+    [
+     "ἄγω",
+     "agō",
+     "G71",
+     "führen, bringen"
+    ]
+   ],
+   "note": "Wörtlich bedeutet es „zusammenführen“. Von seinem Substantiv synagōgē kommt das deutsche Wort „Synagoge“."
+  },
+  "H6908": {
+   "s": "fassen, d. h. sammeln",
+   "p": "ka-WAZ",
+   "d": "eine Grundwurzel",
+   "k": "(sich) versammeln, sammeln, zusammenbringen, aufhäufen, sich einfinden, gewiss, aufnehmen",
+   "use": "Kommt etwa 127-mal im Alten Testament vor, in 25 Büchern – zuerst in 1. Mose 41:35; am häufigsten: Jesaja (20), Hesekiel (16) und 2. Chronik (11).",
+   "senses": [
+    "Dinge sammeln oder einsammeln, etwa das in Ägypten gespeicherte Korn (1. Mose 41:35).",
+    "Menschen versammeln, oder dass Menschen sich versammeln.",
+    "Oft gebraucht davon, dass Gott sein zerstreutes Volk aus den Völkern wieder sammelt."
+   ],
+   "related": [
+    [
+     "קִבּוּץ",
+     "qibbuts",
+     "H6899",
+     "Schar, versammelte Menge"
+    ]
+   ],
+   "note": "Propheten wie Jesaja und Hesekiel gebrauchen es oft für die verheißene Sammlung Israels. Das moderne hebräische Wort „kibbutz“ (Kibbuz) kommt von derselben Wurzel."
+  },
+  "G1209": {
+   "s": "empfangen (in verschiedenen Anwendungen, wörtlich oder übertragen)",
+   "p": "",
+   "d": "Medium eines Grundverbs",
+   "k": "annehmen, empfangen, nehmen",
+   "use": "Kommt etwa 57-mal im Neuen Testament vor, in 15 Büchern – zuerst in Matthäus 10:14; am häufigsten: Lukas (16), Matthäus (10) und Apostelgeschichte (8).",
+   "senses": [
+    "Nehmen oder annehmen, was angeboten wird, etwa einen Kelch oder einen Brief.",
+    "Eine Botschaft innerlich annehmen, etwa das Wort Gottes aufnehmen (1. Thessalonicher 2:13).",
+    "Einen Menschen freundlich als Gast aufnehmen (Matthäus 10:40).",
+    "In die Arme nehmen, wie Simeon das Jesuskind nahm (Lukas 2:28)."
+   ],
+   "related": [
+    [
+     "δεκτός",
+     "dektos",
+     "G1184",
+     "annehmbar, willkommen"
+    ],
+    [
+     "ἀποδέχομαι",
+     "apodechomai",
+     "G588",
+     "gern aufnehmen"
+    ],
+    [
+     "προσδέχομαι",
+     "prosdechomai",
+     "G4327",
+     "aufnehmen, erwarten"
+    ]
+   ],
+   "note": "Stephanus gebraucht es in seinem Gebet im Sterben: „Herr Jesus, nimm meinen Geist auf!“ (Apostelgeschichte 7:59)."
+  },
+  "H7521": {
+   "s": "Gefallen haben an; besonders: eine Schuld begleichen",
+   "p": "ra-ZA",
+   "d": "eine Grundwurzel",
+   "k": "angenehm (sein), annehmen, vollenden, lieb haben, billigen, einwilligen, sich freuen, genießen, gnädig sein, Gunst erweisen, mögen, beachten, vergeben, Gefallen haben, Wohlgefallen haben, sich versöhnen",
+   "use": "Kommt etwa 56-mal im Alten Testament vor, in 20 Büchern – zuerst in 1. Mose 33:10; am häufigsten: Psalmen (13), 3. Mose (11) und Hiob (4).",
+   "senses": [
+    "An jemandem Gefallen haben, ihn mit Wohlwollen ansehen.",
+    "Wohlwollend annehmen, oft davon gebraucht, dass Gott ein Opfer oder einen Menschen annimmt.",
+    "Sich angenehm machen oder um jemandes Gunst werben.",
+    "Das Geschuldete abtragen oder nachholen, so wie das Land seine versäumten Sabbate nachholt."
+   ],
+   "related": [
+    [
+     "רָצוֹן",
+     "ratson",
+     "H7522",
+     "Gunst, Wohlgefallen, Wille"
+    ]
+   ],
+   "note": "Das 3. Buch Mose gebraucht es dafür, dass Opfer von Gott angenommen werden. In 3. Mose 26:34 beschreibt es, wie das Land seine Sabbatruhe „genießt“, also nachholt."
+  },
+  "G1720": {
+   "s": "anblasen oder anhauchen",
+   "p": "",
+   "d": "von G1722 (ἐν) und φυσάω (blasen) (vergleiche G5453 (φύω))",
+   "k": "anhauchen",
+   "use": "Kommt etwa 1-mal im Neuen Testament vor, in 1 Buch – zuerst in Johannes 20:22; am häufigsten: Johannes (1).",
+   "senses": [
+    "Jemanden anhauchen oder anblasen.",
+    "Im Neuen Testament nur einmal gebraucht, als der auferstandene Jesus seine Jünger anhauchte (Johannes 20:22)."
+   ],
+   "related": [
+    [
+     "ἐν",
+     "en",
+     "G1722",
+     "in, an"
+    ]
+   ],
+   "note": "Das griechische Alte Testament gebraucht dasselbe Verb in 1. Mose 2:7, wo Gott dem Menschen den Odem des Lebens in die Nase blies."
+  },
+  "H5397": {
+   "s": "ein Hauch, d. h. Wind, zorniger oder lebendiger Atem, göttliche Eingebung, Verstand; oder (konkret) ein Lebewesen",
+   "p": "ne-scha-MA",
+   "d": "von H5395 (נָשַׁם)",
+   "k": "Schnauben, Odem, was Odem hat, Eingebung, Seele, Geist",
+   "use": "Kommt etwa 24-mal im Alten Testament vor, in 10 Büchern – zuerst in 1. Mose 2:7; am häufigsten: Hiob (7), Jesaja (4) und Josua (3).",
+   "senses": [
+    "Atem, besonders der Lebensatem in Menschen und Geschöpfen.",
+    "Der Atem Gottes, der Leben gibt oder als Schnauben seiner Macht weht.",
+    "Alles, was Odem hat, das heißt alle Lebewesen.",
+    "Der innere Geist eines Menschen."
+   ],
+   "related": [
+    [
+     "נָשַׁם",
+     "nasham",
+     "H5395",
+     "keuchen, schnaufen"
+    ],
+    [
+     "נִשְׁמָא",
+     "nishma",
+     "H5396",
+     "Atem (aramäisch)"
+    ]
+   ],
+   "note": "Beim ersten Vorkommen, 1. Mose 2:7, bläst Gott dem Menschen „den Odem des Lebens“ ein. Sprüche 20:27 nennt den Geist des Menschen (dieses Wort) „eine Leuchte des HERRN“."
+  },
+  "H8055": {
+   "s": "wahrscheinlich: aufleuchten, d. h. (übertragen) fröhlich oder heiter sein (veranlassend: machen)",
+   "p": "sa-MACH",
+   "d": "eine Grundwurzel",
+   "k": "aufheitern, froh sein (machen), sich freuen, fröhlich sein (machen), Freude haben (machen), lustig sein, erfreuen, sehr",
+   "use": "Kommt etwa 155-mal im Alten Testament vor, in 30 Büchern – zuerst in 2. Mose 4:14; am häufigsten: Psalmen (52), Sprüche (17) und 5. Mose (10).",
+   "senses": [
+    "Sich freuen oder froh sein.",
+    "Sich im Gottesdienst freuen, vor Gott feiern.",
+    "Im schlechten Sinn: über das Unglück eines anderen frohlocken oder sich hämisch freuen.",
+    "Andere froh machen oder sie erfreuen."
+   ],
+   "related": [
+    [
+     "שִׂמְחָה",
+     "simchah",
+     "H8057",
+     "Freude, Fröhlichkeit"
+    ],
+    [
+     "שָׂמֵחַ",
+     "sameach",
+     "H8056",
+     "froh, fröhlich"
+    ]
+   ],
+   "note": "Nach Strong ist der Grundgedanke ein Aufleuchten. Beim ersten Vorkommen, 2. Mose 4:14, wird Aaron sich „von Herzen freuen“, wenn er Mose sieht."
+  },
+  "G2198": {
+   "s": "leben (wörtlich oder übertragen)",
+   "p": "",
+   "d": "ein Grundverb",
+   "k": "Leben, Lebenszeit, lebendig, leben",
+   "use": "Kommt etwa 143-mal im Neuen Testament vor, in 20 Büchern – zuerst in Matthäus 4:4; am häufigsten: Römer (23), Johannes (18) und Offenbarung (14).",
+   "senses": [
+    "Am Leben sein, leiblich leben, im Gegensatz zum Totsein.",
+    "Gebraucht von Gott als dem „lebendigen Gott“ (Matthäus 16:16) und vom Wieder-lebendig-Werden.",
+    "Sein Leben auf eine bestimmte Weise führen, etwa „aus Glauben“ oder „für Gott“.",
+    "Gebraucht in Bildern wie „lebendiges Wasser“, das heißt frisches, fließendes Wasser (Johannes 4:10)."
+   ],
+   "related": [
+    [
+     "ζωή",
+     "zōē",
+     "G2222",
+     "Leben"
+    ],
+    [
+     "ζῷον",
+     "zōon",
+     "G2226",
+     "Lebewesen"
+    ],
+    [
+     "ζωοποιέω",
+     "zōopoieō",
+     "G2227",
+     "lebendig machen"
+    ]
+   ],
+   "note": "„Lebendiges Wasser“ war der gewöhnliche Ausdruck für fließendes Quellwasser, im Unterschied zum stehenden Wasser in einer Zisterne. Der Schwur „so wahr ich lebe“ (Römer 14:11) greift einen häufigen Schwur aus dem Alten Testament auf."
+  },
+  "H2421": {
+   "s": "leben, wörtlich oder übertragen; veranlassend: wiederbeleben",
+   "p": "cha-JA",
+   "d": "eine Grundwurzel (vergleiche H2331 (חָוָה), H2421 (חָיָה))",
+   "k": "am Leben erhalten (lassen), gewiss, Leben geben (verheißen), leben (lassen), ernähren, erhalten, lebendig machen, genesen, wiederherstellen, wieder lebendig machen, beleben, retten, am Leben bleiben, gesund werden",
+   "use": "Kommt etwa 282-mal im Alten Testament vor, in 27 Büchern – zuerst in 1. Mose 3:22; am häufigsten: 1. Mose (59), Hesekiel (48) und Psalmen (31).",
+   "senses": [
+    "Leben, Leben haben oder am Leben bleiben.",
+    "Wieder aufleben oder genesen – von Krankheit, Mutlosigkeit oder sogar vom Tod.",
+    "Jemanden am Leben erhalten oder leben lassen.",
+    "Leben geben, wiederherstellen oder erquicken."
+   ],
+   "related": [
+    [
+     "חַי",
+     "chay",
+     "H2416",
+     "lebendig, lebend; Leben"
+    ],
+    [
+     "חַוָּה",
+     "Chavvah",
+     "H2332",
+     "Eva"
+    ]
+   ],
+   "note": "Evas Name hängt mit dem Leben zusammen: „die Mutter aller, die da leben“ (1. Mose 3:20). In Hesekiel 37:3 fragt Gott mit diesem Verb: „Meinst du wohl, dass diese Gebeine wieder lebendig werden?“"
+  },
+  "G103": {
+   "s": "singen",
+   "p": "",
+   "d": "ein Grundverb",
+   "k": "singen",
+   "use": "Kommt etwa 5-mal im Neuen Testament vor, in 3 Büchern – zuerst in Epheser 5:19; am häufigsten: Offenbarung (3), Epheser (1) und Kolosser (1).",
+   "senses": [
+    "Singen, besonders Loblieder für Gott (Epheser 5:19).",
+    "Ein Lied singen, so wie die himmlischen Scharen ein „neues Lied“ singen (Offenbarung 5:9)."
+   ],
+   "related": [
+    [
+     "ᾠδή",
+     "ōdē",
+     "G5603",
+     "Lied, Ode"
+    ]
+   ],
+   "note": "Das verwandte Substantiv ōdē ist der Ursprung des deutschen Wortes „Ode“. Im griechischen Alten Testament übersetzt dieses Verb meist das hebräische shir, „singen“."
+  },
+  "H7891": {
+   "s": "singen",
+   "p": "SCHIR",
+   "d": "oder (die ursprüngliche Form) שׁוּר; (1. Samuel 18:6), eine Grundwurzel (wohl identisch mit H7788 (שׁוּר), über den Gedanken umherziehender Spielleute)",
+   "k": "sehen (irrtümlich für H7789 (שׁוּר)), singen, Sänger, Sängerin",
+   "use": "Kommt etwa 87-mal im Alten Testament vor, in 18 Büchern – zuerst in 2. Mose 15:1; am häufigsten: Psalmen (27), Nehemia (17) und 2. Chronik (9).",
+   "senses": [
+    "Singen.",
+    "In substantivischer Form: ein Sänger oder eine Sängerin, etwa die Tempelsänger.",
+    "Gesungen werden, von einem Lied, das gesungen wird."
+   ],
+   "related": [
+    [
+     "שִׁיר",
+     "shir",
+     "H7892",
+     "Lied"
+    ]
+   ],
+   "note": "Beim ersten Vorkommen, 2. Mose 15:1, singen Mose und Israel nach dem Zug durch das Schilfmeer. Das Hohelied, hebräisch „Lied der Lieder“, hat seinen Namen von dem verwandten Substantiv."
+  },
+  "G1070": {
+   "s": "lachen (als Zeichen von Freude oder Zufriedenheit)",
+   "p": "",
+   "d": "von unsicherer Herkunft",
+   "k": "lachen",
+   "use": "Kommt etwa 2-mal im Neuen Testament vor, in 1 Buch – zuerst in Lukas 6:21; am häufigsten: Lukas (2).",
+   "senses": [
+    "Lachen, als Zeichen von Freude oder Zufriedenheit.",
+    "Jesus gebraucht es in Lukas 6:21 und 6:25 als Verheißung und als Warnung."
+   ],
+   "related": [
+    [
+     "καταγελάω",
+     "katagelaō",
+     "G2606",
+     "auslachen, verspotten"
+    ],
+    [
+     "γέλως",
+     "gelōs",
+     "G1071",
+     "Lachen, Gelächter"
+    ]
+   ],
+   "note": "Es kommt nur zweimal vor, beide Male in der Feldrede bei Lukas: „Selig seid ihr, die ihr jetzt weint; denn ihr werdet lachen“ und „Weh euch, die ihr jetzt lacht“."
+  },
+  "H6711": {
+   "s": "laut lachen (aus Fröhlichkeit oder Spott); daraus folgend: scherzen",
+   "p": "za-CHAK",
+   "d": "eine Grundwurzel",
+   "k": "lachen, spotten, spielen, Mutwillen treiben, scherzen",
+   "use": "Kommt etwa 13-mal im Alten Testament vor, in 3 Büchern – zuerst in 1. Mose 17:17; am häufigsten: 1. Mose (11), 2. Mose (1) und Richter (1).",
+   "senses": [
+    "Lachen, sei es vor Freude, Überraschung oder Unglauben.",
+    "Jemanden verspotten oder sich über ihn lustig machen.",
+    "Spielen, scherzen oder Spaß treiben, manchmal vom Scherzen zwischen Mann und Frau (1. Mose 26:8)."
+   ],
+   "related": [
+    [
+     "יִצְחָק",
+     "Yitschaq",
+     "H3327",
+     "Isaak („er lacht“)"
+    ]
+   ],
+   "note": "Isaaks Name kommt von diesem Verb. Sowohl Abraham (1. Mose 17:17) als auch Sara (1. Mose 18:12) lachten über die Verheißung seiner Geburt."
+  }
+ }
+}

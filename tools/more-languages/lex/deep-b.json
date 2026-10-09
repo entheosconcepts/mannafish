@@ -1,0 +1,513 @@
+{
+ "G191": {
+  "senses": [
+   "To hear: to take in sound with the ears, or simply to have the ability to hear.",
+   "To listen and pay attention, as in \"He who has ears to hear, let him hear\" (Matthew 11:15).",
+   "To hear something reported or taught, and so to learn or understand it.",
+   "Used of God hearing and answering prayer (1 John 5:14-15)."
+  ],
+  "related": [
+   [
+    "ἀκοή",
+    "akoē",
+    "G189",
+    "hearing, report, message"
+   ],
+   [
+    "ὑπακούω",
+    "hypakouō",
+    "G5219",
+    "to listen to, obey"
+   ]
+  ],
+  "note": "In the Greek Old Testament this is the usual word for the Hebrew shama, \"hear.\" English \"acoustic\" comes from the same Greek root."
+ },
+ "H8085": {
+  "senses": [
+   "To hear with the ears, or to hear news about someone or something.",
+   "To listen closely and take to heart, often meaning to agree to a request or give heed.",
+   "Very often it means to obey: to hear a command and act on it.",
+   "In a causing sense it means to make others hear: to announce, proclaim or sound aloud."
+  ],
+  "related": [
+   [
+    "שֵׁמַע",
+    "shema",
+    "H8088",
+    "report, news, hearing"
+   ],
+   [
+    "שְׁמוּעָה",
+    "shemuah",
+    "H8052",
+    "report, news"
+   ]
+  ],
+  "note": "This verb opens Deuteronomy 6:4, \"Hear, O Israel,\" and that verse is still called the Shema after its first word. Hebrew has no separate common word for \"obey\"; this verb covers both hearing and obeying."
+ },
+ "G3421": {
+  "senses": [
+   "To call something to mind and remember it, such as people, words or past events.",
+   "To keep someone in mind with care, as Paul asks, \"Remember my bonds\" (Colossians 4:18).",
+   "To make mention of or speak about something, as in Hebrews 11:22."
+  ],
+  "related": [
+   [
+    "μνήμη",
+    "mnēmē",
+    "G3420",
+    "memory, remembrance"
+   ],
+   [
+    "μνημεῖον",
+    "mnēmeion",
+    "G3419",
+    "tomb, memorial"
+   ],
+   [
+    "μιμνῄσκομαι",
+    "mimnēskomai",
+    "G3403",
+    "to remember"
+   ]
+  ],
+  "note": "It comes from a word meaning \"mindful.\" Jesus' shortest warning uses it: \"Remember Lot's wife\" (Luke 17:32)."
+ },
+ "H2142": {
+  "senses": [
+   "To remember: to recall or call something to mind.",
+   "To be remembered or thought of, to be brought back to someone's mind.",
+   "To remind others, or to keep something in remembrance by mentioning or recording it.",
+   "To make a memorial, so that something is not forgotten."
+  ],
+  "related": [
+   [
+    "זִכָּרוֹן",
+    "zikkaron",
+    "H2146",
+    "memorial, reminder"
+   ],
+   [
+    "זֵכֶר",
+    "zeker",
+    "H2143",
+    "remembrance, memory"
+   ]
+  ],
+  "note": "Its first use is Genesis 8:1, \"God remembered Noah,\" and the verse goes straight on to God sending a wind to dry the waters. In Hebrew, remembering is often the first step toward acting."
+ },
+ "G1586": {
+  "senses": [
+   "To pick out or choose something for oneself, such as a place at table (Luke 14:7).",
+   "Used of people choosing others for a task, like the church choosing the seven in Acts 6:5.",
+   "Used of Jesus choosing his disciples (John 15:16).",
+   "Used of God's own choosing of people and things (Ephesians 1:4)."
+  ],
+  "related": [
+   [
+    "ἐκλεκτός",
+    "eklektos",
+    "G1588",
+    "chosen, elect"
+   ],
+   [
+    "ἐκλογή",
+    "eklogē",
+    "G1589",
+    "choice, election"
+   ]
+  ],
+  "note": "It is built from ek (\"out of\") and legō, whose older meaning is \"to gather or pick,\" giving the picture of picking out. In the Greek Old Testament it mostly translates the Hebrew bachar, \"choose.\""
+ },
+ "H977": {
+  "senses": [
+   "To choose, select or decide for one thing over another.",
+   "Used of God choosing a people, a place or a person for himself.",
+   "To be chosen or selected, as what is choice and excellent."
+  ],
+  "related": [
+   [
+    "בָּחִיר",
+    "bachir",
+    "H972",
+    "chosen one"
+   ],
+   [
+    "מִבְחָר",
+    "mibchar",
+    "H4005",
+    "the choicest, best"
+   ]
+  ],
+  "note": "Strong's notes that its root idea is to test or try, and so to select what proves best. Deuteronomy repeatedly speaks of \"the place the LORD your God will choose\" (Deuteronomy 12:5)."
+ },
+ "G5091": {
+  "senses": [
+   "To set a value or price on something; used of the price set on Jesus (Matthew 27:9).",
+   "To honour: to show respect and value to a person.",
+   "Used in the command to honour father and mother (Matthew 15:4).",
+   "Used of honouring God and the Son (John 5:23)."
+  ],
+  "related": [
+   [
+    "τιμή",
+    "timē",
+    "G5092",
+    "honour, price, value"
+   ],
+   [
+    "τίμιος",
+    "timios",
+    "G5093",
+    "precious, valued"
+   ]
+  ],
+  "note": "The same root covers both \"price\" and \"honour\": to honour someone is to treat them as valuable. In the Greek Old Testament it often translates the Hebrew kabad."
+ },
+ "H3513": {
+  "senses": [
+   "To be heavy or weighty, in a good sense: rich, honoured or glorious.",
+   "To honour or glorify someone, to give them weight and respect.",
+   "In a bad sense: to be burdensome, severe or grievous.",
+   "To be dull or unresponsive, like heavy ears, dim eyes or a hardened heart."
+  ],
+  "related": [
+   [
+    "כָּבוֹד",
+    "kavod",
+    "H3519",
+    "glory, honour, splendour"
+   ],
+   [
+    "כָּבֵד",
+    "kaved",
+    "H3515",
+    "heavy, weighty"
+   ]
+  ],
+  "note": "The picture behind it is weight. The same verb is used for honouring father and mother (Exodus 20:12) and for Pharaoh's heart being made heavy, or hardened (Exodus 8:15)."
+ },
+ "G837": {
+  "senses": [
+   "To grow or increase, used of plants, children and growing crowds.",
+   "To cause to grow, as when \"God gave the growth\" (1 Corinthians 3:6).",
+   "Used of the spread of the gospel: \"the word of God grew\" (Acts 12:24).",
+   "Used of growing in grace and knowledge of God (2 Peter 3:18)."
+  ],
+  "related": [
+   [
+    "αὔξησις",
+    "auxēsis",
+    "G838",
+    "growth, increase"
+   ],
+   [
+    "συναυξάνω",
+    "synauxanō",
+    "G4885",
+    "to grow together"
+   ]
+  ],
+  "note": "John the Baptist uses it in John 3:30: \"He must increase, but I must decrease.\""
+ },
+ "H1431": {
+  "senses": [
+   "To grow up, as a child does, or to become large.",
+   "To become great or important, or to make someone great and powerful.",
+   "To magnify or praise, declaring how great someone is.",
+   "In a bad sense, to make oneself great: to boast or act proudly."
+  ],
+  "related": [
+   [
+    "גָּדוֹל",
+    "gadol",
+    "H1419",
+    "great, large"
+   ],
+   [
+    "גֹּדֶל",
+    "godel",
+    "H1433",
+    "greatness"
+   ],
+   [
+    "מִגְדָּל",
+    "migdal",
+    "H4026",
+    "tower"
+   ]
+  ],
+  "note": "Its first use is God's promise to Abram, \"I will make your name great\" (Genesis 12:2). The call \"O magnify the LORD with me\" in Psalm 34:3 uses the same verb."
+ },
+ "G4863": {
+  "senses": [
+   "To gather or bring things together, like grain into a barn or leftover food (John 6:12).",
+   "To call people together, or for people to come together, especially for a meeting.",
+   "To welcome someone in as a guest: \"I was a stranger and you took me in\" (Matthew 25:35)."
+  ],
+  "related": [
+   [
+    "συναγωγή",
+    "synagōgē",
+    "G4864",
+    "gathering, synagogue"
+   ],
+   [
+    "σύν",
+    "syn",
+    "G4862",
+    "with, together"
+   ],
+   [
+    "ἄγω",
+    "agō",
+    "G71",
+    "to lead, bring"
+   ]
+  ],
+  "note": "It literally means \"to lead together.\" Its noun form, synagōgē, is where the English word \"synagogue\" comes from."
+ },
+ "H6908": {
+  "senses": [
+   "To gather or collect things, such as grain stored up in Egypt (Genesis 41:35).",
+   "To assemble people, or for people to gather together.",
+   "Often used of God gathering his scattered people back from the nations."
+  ],
+  "related": [
+   [
+    "קִבּוּץ",
+    "qibbuts",
+    "H6899",
+    "company, gathered crowd"
+   ]
+  ],
+  "note": "Prophets such as Isaiah and Ezekiel use it often for the promised regathering of Israel. The modern Hebrew word \"kibbutz\" comes from the same root."
+ },
+ "G1209": {
+  "senses": [
+   "To take or accept what is offered, such as a cup or a letter.",
+   "To accept a message in one's mind, such as receiving the word of God (1 Thessalonians 2:13).",
+   "To welcome a person kindly as a guest (Matthew 10:40).",
+   "To take into one's arms, as Simeon took the infant Jesus (Luke 2:28)."
+  ],
+  "related": [
+   [
+    "δεκτός",
+    "dektos",
+    "G1184",
+    "acceptable, welcome"
+   ],
+   [
+    "ἀποδέχομαι",
+    "apodechomai",
+    "G588",
+    "to welcome gladly"
+   ],
+   [
+    "προσδέχομαι",
+    "prosdechomai",
+    "G4327",
+    "to receive, wait for"
+   ]
+  ],
+  "note": "Stephen's dying prayer uses it: \"Lord Jesus, receive my spirit\" (Acts 7:59)."
+ },
+ "H7521": {
+  "senses": [
+   "To be pleased with someone, to look on them with favour.",
+   "To accept favourably, often used of God accepting an offering or a person.",
+   "To make oneself pleasing, or to seek someone's favour.",
+   "To pay off or make up what is owed, as the land making up its missed sabbaths."
+  ],
+  "related": [
+   [
+    "רָצוֹן",
+    "ratson",
+    "H7522",
+    "favour, delight, will"
+   ]
+  ],
+  "note": "Leviticus uses it for offerings being accepted by God. In Leviticus 26:34 it describes the land \"enjoying,\" or making up, its sabbath rests."
+ },
+ "G1720": {
+  "senses": [
+   "To breathe on or blow upon someone.",
+   "Used only once in the New Testament, when the risen Jesus breathed on his disciples (John 20:22)."
+  ],
+  "related": [
+   [
+    "ἐν",
+    "en",
+    "G1722",
+    "in, on"
+   ]
+  ],
+  "note": "The Greek Old Testament uses this same verb in Genesis 2:7, where God breathed into the man's nostrils the breath of life."
+ },
+ "H5397": {
+  "senses": [
+   "Breath, especially the breath of life in people and creatures.",
+   "The breath of God, which gives life or blows as a blast of his power.",
+   "Every breathing thing, meaning all living creatures.",
+   "The inner spirit of a person."
+  ],
+  "related": [
+   [
+    "נָשַׁם",
+    "nasham",
+    "H5395",
+    "to pant, gasp"
+   ],
+   [
+    "נִשְׁמָא",
+    "nishma",
+    "H5396",
+    "breath (Aramaic)"
+   ]
+  ],
+  "note": "Its first use is Genesis 2:7, where God breathes into the man \"the breath of life.\" Proverbs 20:27 calls the human spirit (this word) \"the lamp of the LORD.\""
+ },
+ "H8055": {
+  "senses": [
+   "To rejoice or be glad.",
+   "To rejoice in worship, celebrating before God.",
+   "In a bad sense, to gloat or exult over someone's trouble.",
+   "To make others glad or cause them to rejoice."
+  ],
+  "related": [
+   [
+    "שִׂמְחָה",
+    "simchah",
+    "H8057",
+    "joy, gladness"
+   ],
+   [
+    "שָׂמֵחַ",
+    "sameach",
+    "H8056",
+    "glad, joyful"
+   ]
+  ],
+  "note": "Strong's suggests the root idea is to brighten up. Its first use is Exodus 4:14, where Aaron will be \"glad in his heart\" to see Moses."
+ },
+ "G2198": {
+  "senses": [
+   "To be alive, physically living, as opposed to being dead.",
+   "Used of God as \"the living God\" (Matthew 16:16), and of coming back to life.",
+   "To live one's life in a certain way, such as \"by faith\" or \"to God.\"",
+   "Used in pictures like \"living water,\" meaning fresh flowing water (John 4:10)."
+  ],
+  "related": [
+   [
+    "ζωή",
+    "zōē",
+    "G2222",
+    "life"
+   ],
+   [
+    "ζῷον",
+    "zōon",
+    "G2226",
+    "living creature"
+   ],
+   [
+    "ζωοποιέω",
+    "zōopoieō",
+    "G2227",
+    "to make alive"
+   ]
+  ],
+  "note": "\"Living water\" was the ordinary term for running spring water, as opposed to still water in a cistern. The oath \"as I live\" (Romans 14:11) echoes a common Old Testament oath."
+ },
+ "H2421": {
+  "senses": [
+   "To live, to have life, or to stay alive.",
+   "To revive or recover, from sickness, discouragement or even death.",
+   "To keep someone alive or let them live.",
+   "To give life, restore or refresh."
+  ],
+  "related": [
+   [
+    "חַי",
+    "chay",
+    "H2416",
+    "alive, living; life"
+   ],
+   [
+    "חַוָּה",
+    "Chavvah",
+    "H2332",
+    "Eve"
+   ]
+  ],
+  "note": "Eve's name is linked with life, \"the mother of all living\" (Genesis 3:20). In Ezekiel 37:3 God asks, \"Can these bones live?\" using this verb."
+ },
+ "G103": {
+  "senses": [
+   "To sing, especially songs of praise to God (Ephesians 5:19).",
+   "To sing a song, as the heavenly crowds sing a \"new song\" (Revelation 5:9)."
+  ],
+  "related": [
+   [
+    "ᾠδή",
+    "ōdē",
+    "G5603",
+    "song, ode"
+   ]
+  ],
+  "note": "The related noun ōdē is the source of the English word \"ode.\" In the Greek Old Testament this verb mostly translates the Hebrew shir, \"sing.\""
+ },
+ "H7891": {
+  "senses": [
+   "To sing.",
+   "As a noun-like form, a singer, male or female, such as the temple singers.",
+   "To be sung, of a song being sung."
+  ],
+  "related": [
+   [
+    "שִׁיר",
+    "shir",
+    "H7892",
+    "song"
+   ]
+  ],
+  "note": "Its first use is Exodus 15:1, when Moses and Israel sang after crossing the Red Sea. The book called the Song of Songs takes its name from the related noun."
+ },
+ "G1070": {
+  "senses": [
+   "To laugh, as a sign of joy or satisfaction.",
+   "Jesus uses it both as a promise and a warning in Luke 6:21 and 6:25."
+  ],
+  "related": [
+   [
+    "καταγελάω",
+    "katagelaō",
+    "G2606",
+    "to laugh at, ridicule"
+   ],
+   [
+    "γέλως",
+    "gelōs",
+    "G1071",
+    "laughter"
+   ]
+  ],
+  "note": "It appears only twice, both in Luke's Sermon on the Plain: \"Blessed are you who weep now, for you shall laugh,\" and \"Woe to you who laugh now.\""
+ },
+ "H6711": {
+  "senses": [
+   "To laugh, whether in joy, surprise or disbelief.",
+   "To mock or make fun of someone.",
+   "To play, jest or make sport, sometimes of play between husband and wife (Genesis 26:8)."
+  ],
+  "related": [
+   [
+    "יִצְחָק",
+    "Yitschaq",
+    "H3327",
+    "Isaac (\"he laughs\")"
+   ]
+  ],
+  "note": "Isaac's name comes from this verb. Both Abraham (Genesis 17:17) and Sarah (Genesis 18:12) laughed at the promise of his birth."
+ }
+}
