@@ -57,6 +57,10 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [ ] Bible App (YouVersion) links for the 6 new languages: confirm each one's version number on bible.com, then add the buttons back.
 - [ ] Daily devotional emails and phone notices stay English or Spanish.
 
+### Bible reader speaker (9 Oct, on the test site)
+- [x] In the Bible reader: hear the verse or the whole chapter; pick the language (the passage opens in that language's Bible) and the voice. The verse being read is marked.
+- [x] Spanish chapters now show in the reader from the Reina-Valera 1909 (public domain), with a "Leer en RVR1960" link; the fish still quote the RVR1960.
+
 ### Every Tongue (built 8 Oct; changed 9 Oct, on the test site)
 The Every Tongue button sits with My notes and Sign in. It is a translator first: type or speak, and it is said in the other person's language; "Let them answer" hears them and says it back in yours. The 15 phrases and 4 verses are in a drop-down. "Show them" fills the screen so the other person can read it.
 - [x] Voice choice (9 Oct): 11 natural voices (Sage, Coral, Nova, Shimmer, Alloy, Ash, Ballad, Echo, Fable, Onyx, Verse) or the device's own voice. In Every Tongue and in the language menu; used by every speaker on the site. Each line is recorded once per voice.

@@ -11,14 +11,14 @@ const NAMES = { en: 'English', es: 'Spanish', tl: 'Tagalog (Filipino)', zh: 'Sim
 const MODEL = process.env.MF_TRANSLATE_MODEL || 'gpt-4.1-mini';
 const VOICE = process.env.MF_TTS_VOICE || 'sage';
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];
-const MAX = 300, PER_HOUR = 80;
+const MAX = 300, PER_HOUR = 80, SAY_PER_HOUR = 400;  // the Bible reader reads a chapter verse by verse
 const okOrigin = (o) => /^https:\/\/([a-z0-9-]+\.)?manna-fish\.com$|^https:\/\/([a-z0-9-]+--)?yadamannafishtest\.netlify\.app$|^http:\/\/localhost(:\d+)?$/.test(o || '');
 const bad = (msg, status, error) => Response.json({ error: error || 'bad', msg }, { status });
-async function limited(ip, kind) {
+async function limited(ip, kind, max = PER_HOUR) {
   try {
     const s = getStore('mannafish-limits'), k = `${kind}/${new Date().toISOString().slice(0, 13)}/${ip || 'x'}`;
     const n = Number(await s.get(k)) || 0;
-    if (n >= PER_HOUR) return true;
+    if (n >= max) return true;
     await s.set(k, String(n + 1));
   } catch (e) { /* never block a conversation because the counter failed */ }
   return false;
@@ -37,7 +37,7 @@ export default async (req, context) => {
   const apiKey = process.env.OPENAI_TRANSLATE_KEY || process.env.OPENAI_API_KEY;
   if (!apiKey) return bad('No key yet', 501, 'nokey');
   const say = new URL(req.url).pathname.endsWith('/say');
-  if (await limited(context && context.ip, say ? 'say' : 'tr')) return bad('Please wait a little', 429, 'busy');
+  if (!say && await limited(context && context.ip, 'tr')) return bad('Please wait a little', 429, 'busy');
   const H = { authorization: 'Bearer ' + apiKey, 'content-type': 'application/json' };
 
   if (say) {
@@ -46,6 +46,8 @@ export default async (req, context) => {
     const store = getStore('mannafish-tts'), id = `live/${lang}-${await sha(voice + '|' + text)}.mp3`;
     let audio = await store.get(id, { type: 'arrayBuffer' });
     if (!audio) {
+      // only new recordings count toward the hourly limit; anything said before is simply played again
+      if (await limited(context && context.ip, 'say', SAY_PER_HOUR)) return bad('Please wait a little', 429, 'busy');
       const r = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST', headers: H,
         body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice, input: text, response_format: 'mp3',
           instructions: `Speak warmly, clearly and a little slowly, like a kind friend talking face to face, in ${NAMES[lang]}.` }) });

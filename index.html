@@ -565,6 +565,15 @@ section.section.bundles{display:block;margin-top:0}
 .rstack .rver{margin:0}
 
 .rhint{margin:0 0 -4px;text-align:center;font-family:'Archivo',sans-serif;font-size:.74rem;color:var(--parch-dim)}
+/* the speaker in the Bible reader */
+.rsay{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 24px;border-bottom:1px solid var(--line)}
+.rsay[hidden]{display:none}
+.rsay select{height:34px;border-radius:999px;border:1px solid var(--line);background:var(--ink2,#0b1620);color:var(--foam);font:600 .78rem 'Archivo',sans-serif;padding:0 10px;max-width:100%}
+.rsay .rlang{flex:1 1 180px}.rsay .rvoice{flex:1 1 140px}
+.rsay .rplays{display:flex;gap:8px}
+.rsay .rplay{height:34px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--foam);font:600 .8rem 'Archivo',sans-serif;cursor:pointer;white-space:nowrap}
+.rsay .rplay[aria-pressed="true"]{border-color:var(--brass);background:rgba(42,95,176,.3)}
+.reader .chapter .reading{background:rgba(42,95,176,.35);color:var(--foam);border-radius:3px}
 /* Ken, 9 Oct: the verse reader in the site's own colours (the cream panel looked like a separate Bible app),
    and no Bible App button, so people stay on MannaFish */
 .reader{--parch:var(--ink2,#0b1620);--parch-ink:var(--foam);--parch-dim:var(--foam-dim);background:var(--ink2,#0b1620);color:var(--foam);border-left:1px solid var(--line)}
@@ -1167,6 +1176,7 @@ section.section.bundles{display:block;margin-top:0}
     <div><div class="rk" id="rKicker">Word study</div><div class="rref" id="rRef">Reference</div></div>
     <span class="rtools"><span class="rstack"><button class="rmode" id="rMode" type="button"></button><select class="rver" id="rVer" aria-label="Bible version"></select></span><button class="rclose" id="rClose" aria-label="Close">&#215;</button></span>
   </div>
+  <div class="rsay" id="rSay" hidden><select class="rlang" id="rLang" aria-label="Language"></select><select class="voicesel rvoice" id="rVoice" aria-label="Voice"></select><span class="rplays"><button type="button" class="rplay" id="rPlayV"></button><button type="button" class="rplay" id="rPlayC"></button></span></div>
   <div class="reader-body">
     <div class="pullquote" id="rQuote"></div>
     <div class="chapter" id="rChapter"></div>
@@ -1382,7 +1392,7 @@ window.MF=(function(){
     placeReader(); if(inlineNow()) reader.scrollIntoView({behavior:'smooth',block:'start'});
   });
   window.addEventListener('resize',function(){if(reader.classList.contains('open'))placeReader();});
-  function closeReader(){ if(landing){ landing=false; setTimeout(placeReader,350); } window.MFreader=null; if(window.MFsave) MFsave(); reader.classList.remove('open');scrim.classList.remove('open');reader.setAttribute('aria-hidden','true');}
+  function closeReader(){ rStop(); if(landing){ landing=false; setTimeout(placeReader,350); } window.MFreader=null; if(window.MFsave) MFsave(); reader.classList.remove('open');scrim.classList.remove('open');reader.setAttribute('aria-hidden','true');}
   $('rClose').addEventListener('click',closeReader);
   scrim.addEventListener('click',closeReader);
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closeReader();});
@@ -1393,7 +1403,7 @@ window.MF=(function(){
     else if(!landing) setTimeout(function(){reader.scrollIntoView({behavior:'smooth',block:'start'});},30);
   }
   function openStrongs(k,gk){
-    window.MFreader={kind:'strongs',k:k,gk:!!gk}; if(window.MFsave) setTimeout(MFsave,0);
+    window.MFreader={kind:'strongs',k:k,gk:!!gk}; if(window.MFsave) setTimeout(MFsave,0); RD=null; rStop(); $('rSay').hidden=true;
     var d=DATA[k], sg=STRONGS[k]||['',''], n=gk?sg[0]:sg[1], id=(gk?'G':'H')+n, e=LEX[id];
     $('rKicker').textContent=wordTitle(k)+' \u00b7 Strong '+id;
     $('rRef').innerHTML='<span class="lx-l">'+esc(e.l)+'</span> <span class="lx-t">'+esc(e.t)+'</span>';
@@ -1414,7 +1424,8 @@ window.MF=(function(){
   function openReader(k,i,l){ l=l||MF.lang;
     window.MFreader={kind:'ref',k:k,i:i,l:l}; if(window.MFsave) setTimeout(MFsave,0);
     ['rKicker','rRef','rQuote','rChapter'].forEach(function(id){ $(id).setAttribute('lang',l); });
-    if(l!=='en'&&l!=='es'){ readOther(k,i,l); return; }
+    RD=null; rsayUI(l);
+    if(l!=='en'){ readOther(k,i,l); return; }
     $('rVer').style.display=''; $('rYouV').style.display=''; $('rYouVHint').style.display=''; $('rGate').style.display=''; var g0=$('rGate'); g0.setAttribute('target','_blank'); g0.textContent=MF.t('fullch'); g0.onclick=null; $('rYouV').textContent=MF.t('bibleapp'); $('rYouVHint').textContent=MF.t('hint');
     var d=DATA[k], ref=d.refs[i], p=parseRef(ref[0]);
     $('rKicker').textContent=wordTitle(k)+MF.t('study');
@@ -1442,19 +1453,60 @@ window.MF=(function(){
   }
   // Ken, 9 Oct: a verse from a Korean (or any other) fish opens in that language: the chapter comes from the same
   // Bible as the fish (fish-lang/bible/<lang>/), with the verse marked. The English versions and Bible App links are hidden.
-  function readOther(k,i,l){ var w=studyOf(l,k);
-    if(!w){ loadLang(l).then(function(){ if(studyOf(l,k)) readOther(k,i,l); }).catch(function(){}); return; }
-    var r=w.refs[i], p=parseRef(DATA[k].refs[i][0]);
+  function readOther(k,i,l){ var es=l==='es', w=es?null:studyOf(l,k);
+    if(!es && !w){ loadLang(l).then(function(){ if(studyOf(l,k)) readOther(k,i,l); }).catch(function(){}); return; }
+    var ref=DATA[k].refs[i], r=es?[esRef(ref[0]),'']:w.refs[i], p=parseRef(ref[0]);
     $('rVer').style.display='none'; $('rYouV').style.display='none'; $('rYouVHint').style.display='none'; $('rGate').style.display='none';
     $('rKicker').textContent=titleIn(l,k)+(l!==MF.lang?' \u00b7 '+wordTitle(k):''); $('rKicker').setAttribute('lang',l);
     $('rRef').textContent=r[0]; $('rRef').setAttribute('lang',l);
     $('rQuote').innerHTML=r[1]?esc(r[1]):''; $('rQuote').setAttribute('lang',l); $('rChapter').innerHTML=''; $('rChapter').setAttribute('lang',l); $('rNote').textContent='';
+    // Spanish: the fish quote the RVR1960 (not free to show in full); the chapter here is the Reina-Valera 1909, with a link to the 1960
+    if(es && p){ var g=$('rGate'); g.style.display=''; g.textContent='Leer en RVR1960'; g.onclick=null; g.setAttribute('target','_blank');
+      g.href='https://www.biblegateway.com/passage/?search='+encodeURIComponent(p.book+' '+p.ch)+'&version=RVR1960'; }
     showPanel(); if(!p) return; var want=window.MFreader;
     fetch('/fish-lang/bible/'+l+'/'+p.book.replace(/ /g,'_')+'-'+p.ch+'.json').then(function(x){ if(!x.ok) throw 0; return x.json(); }).then(function(j){
       if(window.MFreader!==want) return; var vs=+p.vs, h='<p>';
-      j.t.forEach(function(t,n){ if(!t) return; h+='<span class="vn">'+(n+1)+'</span><span class="'+(n+1===vs?'hi':'')+'">'+esc(t)+'</span> '; });
+      j.t.forEach(function(t,n){ if(!t) return; h+='<span class="vn">'+(n+1)+'</span><span data-v="'+(n+1)+'" class="'+(n+1===vs?'hi':'')+'">'+esc(t)+'</span> '; });
       $('rChapter').innerHTML=h+'</p>'; if(j.t[vs-1]) $('rQuote').textContent=j.t[vs-1]; $('rNote').textContent=j.v;
+      RD={l:l,t:j.t,vs:vs};
+      var hv=reader.querySelector('.chapter .hi'), bd=reader.querySelector('.reader-body'); if(hv&&bd&&!reader.classList.contains('inline')) bd.scrollTop=Math.max(0,hv.offsetTop-bd.offsetTop-bd.clientHeight/3);
     }).catch(function(){}); }
+  // Ken, 9 Oct: a speaker in the Bible reader -- hear the verse or the whole chapter, in the voice and the language chosen.
+  // Changing the language opens the same passage in that language's Bible (English: the version picked above).
+  var RD=null;
+  var RSAY={en:['Verse','Chapter','Stop'],es:['Versículo','Capítulo','Detener'],tl:['Talata','Kabanata','Ihinto'],zh:['经文','整章','停止'],hi:['पद','अध्याय','रोकें'],
+    el:['Εδάφιο','Κεφάλαιο','Διακοπή'],de:['Vers','Kapitel','Stopp'],ko:['구절','장 전체','멈춤'],he:['פסוק','פרק','עצור']};
+  var RBIB={en:'KJV',es:'RV 1909',tl:'Ang Biblia',zh:'和合本',hi:'IRV',el:'FPB',de:'Elberfelder',ko:'개역',he:'המסורה · דליטש'};
+  function rsayUI(l){ var T=RSAY[MF.lang]||RSAY.en, st=window.MFreader&&window.MFreader.kind==='ref';
+    $('rSay').hidden=!st;
+    $('rLang').innerHTML=CMPL.filter(function(o){ return !o[2]; }).map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===l?' selected':'')+'>'+esc(cmpLabel(o[0]))+' · '+RBIB[o[0]]+'</option>'; }).join('');
+    $('rVoice').innerHTML=voiceOptions();
+    $('rPlayV').innerHTML='🔊 '+esc(T[0]); $('rPlayC').innerHTML='🔊 '+esc(T[1]); $('rPlayV').setAttribute('aria-pressed','false'); $('rPlayC').setAttribute('aria-pressed','false'); }
+  $('rLang').addEventListener('change',function(){ var r=window.MFreader; rStop(); if(r&&r.kind==='ref') openReader(r.k,r.i,this.value); });
+  $('rVoice').addEventListener('change',function(){ setVoice(this.value); });
+  // long verses go to the voice in pieces of up to 300 letters, split where a sentence or clause ends
+  function rChunks(t){ var out=[]; t=String(t||'').trim(); while(t.length>300){ var cut=-1, m, re=/[.!?;:,。！？；：，।׃·]\s*/g;
+      while((m=re.exec(t)) && m.index<300) cut=m.index+m[0].length; if(cut<60) cut=t.lastIndexOf(' ',300); if(cut<1) cut=300; out.push(t.slice(0,cut).trim()); t=t.slice(cut).trim(); }
+    if(t) out.push(t); return out; }
+  function rMark(v){ reader.querySelectorAll('.chapter .reading').forEach(function(e){ e.classList.remove('reading'); });
+    var e=v&&reader.querySelector('.chapter [data-v="'+v+'"]'); if(!e) return; e.classList.add('reading');
+    var bd=reader.querySelector('.reader-body'); if(bd && !reader.classList.contains('inline')) bd.scrollTop=Math.max(0,e.offsetTop-bd.offsetTop-bd.clientHeight/3); else e.scrollIntoView({block:'nearest',behavior:'smooth'}); }
+  function rStop(){ if(typeof sp!=='undefined' && sp && sp.btn && (sp.btn.id==='rPlayV'||sp.btn.id==='rPlayC')) stopSpeak(); rMark(0); }
+  function rRead(from,to,btn){ if(sp.on && sp.btn===btn){ stopSpeak(); rMark(0); return; } if(!RD) return;
+    stopSpeak(); var id=sp.id, L=RD.l, he=L==='he'; sp.on=true; sp.btn=btn; btn.setAttribute('aria-pressed','true');
+    var done=function(){ if(id===sp.id){ stopSpeak(); rMark(0); } };
+    var vv=voiceFor(L);
+    function say(t,next){ if(id!==sp.id) return; if(he) t=t.replace(/ה׳/g,'אדוני');
+      var v=aiVoice(); (v?etPost('/api/say',{text:t,lang:L,voice:v}):Promise.reject()).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){
+        if(id!==sp.id) return; var a=new Audio(URL.createObjectURL(b)); sp.audio=a; a.onended=function(){ if(id===sp.id) next(); }; return a.play(); })
+      .catch(function(){ if(id!==sp.id) return; if(!window.speechSynthesis||(vv.any&&!vv.v)){ done(); return; }
+        var u=new SpeechSynthesisUtterance(t); u.lang=LCODE[L]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.92; u.onend=function(){ if(id===sp.id) next(); }; u.onerror=done; speechSynthesis.speak(u); }); }
+    function verse(v){ if(id!==sp.id) return; if(v>to||!RD.t[v-1]){ if(v>to||v>RD.t.length) done(); else verse(v+1); return; }
+      rMark(v); var parts=rChunks(RD.t[v-1]), k=0; (function nextPart(){ if(k>=parts.length){ verse(v+1); return; } say(parts[k++],nextPart); })(); }
+    verse(from); }
+  $('rPlayV').addEventListener('click',function(){ if(RD) rRead(RD.vs,RD.vs,this); });
+  $('rPlayC').addEventListener('click',function(){ if(RD) rRead(1,RD.t.length,this); });
+  MF.onChange(function(){ var r=window.MFreader; if(r&&r.kind==='ref') rsayUI(r.l||MF.lang); });
   // Ken, 6 Oct: "a little select version button ... so people can change the translation."
   // Only translations that are free to show in full (public domain, served by bible-api.com).
   // NIV, ESV, NKJV and the like are copyrighted; the YouVersion button opens those.
@@ -1484,10 +1536,11 @@ window.MF=(function(){
       var html='<p>';
       j.verses.forEach(function(v){
         var hi=(''+v.verse===''+p.vs);
-        html+='<span class="vn">'+v.verse+'</span><span class="'+(hi?'hi':'')+'">'+esc(v.text.trim())+'</span> ';
+        html+='<span class="vn">'+v.verse+'</span><span data-v="'+v.verse+'" class="'+(hi?'hi':'')+'">'+esc(v.text.trim())+'</span> ';
       });
       html+='</p>';
       $('rChapter').innerHTML=html;
+      RD={l:'en',t:j.verses.map(function(v){ return v.text.trim(); }),vs:+p.vs};
       var h=reader.querySelector('.hi'), bd=reader.querySelector('.reader-body');
       if(h&&bd){bd.scrollTop=Math.max(0,h.offsetTop-bd.offsetTop-bd.clientHeight/3);}
       $('rNote').textContent=ver.n+' · public domain';
