@@ -33,28 +33,31 @@ export function emailFor(m, lang, unsub, opts = {}) {
   const img = SITE() + (es ? '/w/img/es/' + m.key.toLowerCase() + '.jpg' : '/w/img/' + m.key.toLowerCase() + '.png');
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const T = es
-    ? { sub: 'MannaFish de hoy: ' + word, hello: opts.welcome ? '¡Bienvenido! Tu primer MannaFish:' : 'La palabra de hoy', today: 'El versículo de hoy', read: 'Leer el capítulo', fish: 'El versículo del pez', why: 'Recibes esto porque te suscribiste en manna-fish.com.', stop: 'Cancelar suscripción' }
-    : { sub: 'Today’s MannaFish: ' + word, hello: opts.welcome ? 'Welcome! Your first MannaFish:' : 'Today’s word', today: 'Today’s verse', read: 'Read the chapter', fish: 'The verse on the fish', why: 'You are getting this because you signed up at manna-fish.com.', stop: 'Unsubscribe' };
+    ? { sub: 'MannaFish de hoy: ' + word, hello: opts.welcome ? '¡Bienvenido! Tu primer MannaFish:' : 'La palabra de hoy', today: 'El versículo de hoy', read: 'Leer el capítulo', listen: 'Escuchar', fish: 'El versículo del pez', why: 'Recibes esto porque te suscribiste en manna-fish.com.', stop: 'Cancelar suscripción' }
+    : { sub: 'Today’s MannaFish: ' + word, hello: opts.welcome ? 'Welcome! Your first MannaFish:' : 'Today’s word', today: 'Today’s verse', read: 'Read the chapter', listen: 'Listen', fish: 'The verse on the fish', why: 'You are getting this because you signed up at manna-fish.com.', stop: 'Unsubscribe' };
   const snippet = es ? '' : ' — “' + m.snippet + '”';
   // Ken, 9 Oct: the email in the site's own look -- black, white lettering, MannaFish blue, the logo in its own font
   const logo = SITE() + '/w/img/logo-email.png';
   const lab = 'font:bold 12px Arial,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#4a7fd6';
-  const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"></head>
-<body style="margin:0;background:#000;font-family:Georgia,serif;color:#eaf0f0">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000"><tr><td align="center" style="padding:20px 10px">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#000;border:1px solid #1f2a33;border-radius:14px;overflow:hidden">
+  // Ken, 9 Oct: always black, in every mail app and in both light and dark mode (bgcolor for the apps that ignore styles)
+  const listen = `${SITE()}/api/listen?w=${m.key.toLowerCase()}&r=${m.refIndex}&lang=${es ? 'es' : 'en'}`;
+  const btn = 'display:inline-block;color:#ffffff;text-decoration:none;font:bold 16px Arial,sans-serif;padding:13px 26px;border-radius:999px;margin:4px 5px';
+  const html = `<!doctype html><html style="background:#000"><head><meta charset="utf-8"><meta name="color-scheme" content="only dark"><meta name="supported-color-schemes" content="dark">
+<style>:root{color-scheme:only dark}body,table,td{background-color:#000000 !important}u + .body,[data-ogsc] body{background:#000 !important}</style></head>
+<body class="body" bgcolor="#000000" style="margin:0;padding:0;background:#000000;font-family:Georgia,serif;color:#eaf0f0">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#000000" style="background:#000000"><tr><td align="center" bgcolor="#000000" style="padding:20px 10px;background:#000000">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#000000" style="max-width:560px;background:#000000;border:1px solid #1f2a33;border-radius:14px;overflow:hidden">
 <tr><td align="center" style="background:#000;padding:22px 20px 18px;border-bottom:1px solid #1f2a33"><a href="${SITE()}${es ? '/?lang=es' : '/'}" style="text-decoration:none"><img src="${logo}" width="200" alt="MannaFish" style="width:200px;height:auto;display:block;border:0;color:#fff;font:bold 26px Arial,sans-serif"></a></td></tr>
 <tr><td align="center" style="padding:24px 22px 4px;${lab}">${esc(T.hello)}</td></tr>
-<tr><td align="center" style="padding:2px 22px 0;font:bold 40px/1.15 Georgia,serif;color:#ffffff">${esc(word)}</td></tr>
 <tr><td style="padding:16px 18px"><a href="${read}" style="text-decoration:none"><img src="${img}" width="524" alt="${esc(word)}" style="width:100%;max-width:524px;height:auto;border-radius:8px;display:block;background:#000;border:1px solid #1f2a33"></a></td></tr>
 <tr><td align="center" style="padding:6px 22px 0;${lab}">${esc(T.today)}</td></tr>
 <tr><td align="center" style="padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0"><b style="color:#ffffff">${esc(ref)}</b>${esc(snippet)}</td></tr>
-<tr><td align="center" style="padding:20px 22px 22px"><a href="${read}" style="display:inline-block;background:#2a5fb0;color:#ffffff;text-decoration:none;font:bold 16px Arial,sans-serif;padding:13px 30px;border-radius:999px">${esc(T.read)}</a></td></tr>
+<tr><td align="center" style="padding:18px 16px 22px"><a href="${listen}" style="${btn};background:#2a5fb0">&#9654;&#xFE0E;&nbsp; ${esc(T.listen)}</a><a href="${read}" style="${btn};background:#000000;border:1px solid #4a7fd6">${esc(T.read)}</a></td></tr>
 <tr><td align="center" style="padding:16px 22px 0;border-top:1px solid #1f2a33;${lab}">${esc(T.fish)}</td></tr>
 <tr><td align="center" style="padding:8px 26px 22px;font:italic 17px/1.55 Georgia,serif;color:#c6d2d4">“${esc(f.top)} ${esc(f.bottom)}”<br><span style="font:normal 13px Arial,sans-serif;color:#8a9aa0">${esc(f.ref)}</span></td></tr>
 <tr><td align="center" style="padding:16px 22px 22px;border-top:1px solid #1f2a33;font:12px/1.7 Arial,sans-serif;color:#8a9aa0">${esc(T.why)} <a href="${unsub}" style="color:#8a9aa0">${esc(T.stop)}</a> · <a href="${SITE()}/privacy/" style="color:#8a9aa0">${es ? 'Privacidad' : 'Privacy'}</a><br>${esc(ADDRESS())}</td></tr>
 </table></td></tr></table></body></html>`;
-  const text = `${T.hello}: ${word}\n\n${T.today}: ${ref}${snippet}\n${T.read}: ${read}\n\n${T.fish}: “${f.top} ${f.bottom}” ${f.ref}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
+  const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${T.today}: ${ref}${snippet}\n${T.listen}: ${listen}\n${T.read}: ${read}\n\n${T.fish}: “${f.top} ${f.bottom}” ${f.ref}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
   return { subject: T.sub, html, text };
 }
 

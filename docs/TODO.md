@@ -16,6 +16,10 @@ Sign-ups are already being saved; nothing goes out yet except phone push notices
 - [ ] Texts: sign-ups by text are saved and wait for texting to be set up.
 - [ ] Texts: register the number (10DLC or toll-free), then turn texting on.
 
+### Devotional email (9 Oct)
+- [x] Always black in every mail app (light or dark mode); no big word above the fish (the fish shows it).
+- [x] "▶ Listen" button: one tap plays the day's MannaFish aloud in the phone's player (the word, today's verse, the verse on the fish), in English or Spanish, natural voice. Email apps cannot run a player or menus inside the email, so language and voice choices stay on the website.
+
 ### 2. Spanish
 - [ ] A Spanish speaker checks the 24 verse lines and the site text (print proofs: /print/).
 - [ ] Check permission to print RVR1960 on products (Sociedades Bíblicas Unidas / American Bible Society).
