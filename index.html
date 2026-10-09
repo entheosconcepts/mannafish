@@ -732,6 +732,18 @@ section.section.bundles{display:block;margin-top:0}
 .etheard .a{font:1rem system-ui,sans-serif;color:var(--foam-dim)}
 .etheard .b{font:600 1.1rem 'Archivo',sans-serif;margin-top:4px}
 .etfoot{margin-top:14px;font-size:.72rem;color:var(--foam-dim);line-height:1.4}
+.okbox{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.66);animation:okfade .2s ease}
+.okbox[hidden]{display:none}
+.okcard{width:min(440px,100%);max-height:90vh;overflow:auto;background:var(--ink2,#0b1620);color:var(--foam);border:1px solid var(--line);border-radius:18px;padding:28px 24px 24px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6);animation:okpop .28s cubic-bezier(.2,1.4,.4,1)}
+.okcheck{width:72px;height:72px;margin:0 auto 14px;border-radius:50%;background:#2e9d5b;color:#fff;display:flex;align-items:center;justify-content:center}
+.okcheck svg{width:40px;height:40px}
+.okcard h2{margin:0 0 10px;font:600 1.7rem/1.2 'Fraunces',serif;color:var(--foam)}
+.okcard p{margin:8px 0;font:1rem/1.5 'Archivo',sans-serif;color:var(--foam-dim)}
+.okcard .okwhat{font-weight:700;color:var(--foam);font-size:1.05rem}
+.okcard .okto{color:var(--brass-soft,#6f9be0);word-break:break-all}
+.okcard #okDone{display:inline-flex;align-items:center;justify-content:center;margin-top:16px;min-width:180px;height:48px;padding:0 28px;border-radius:999px;border:0;background:var(--brass);color:#fff;font:600 1rem 'Archivo',sans-serif;cursor:pointer}
+@keyframes okfade{from{opacity:0}to{opacity:1}}
+@keyframes okpop{from{transform:scale(.85);opacity:0}to{transform:none;opacity:1}}
 .hearsel{position:fixed;z-index:66;display:flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:var(--brass);color:#fff;font:600 .85rem 'Archivo',sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.45);cursor:pointer}
 .hearsel[hidden],.hearbox[hidden]{display:none}
 .hearbox{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:57;width:min(520px,calc(100vw - 32px));max-height:50vh;overflow:auto;background:var(--ink2,#0b1620);color:var(--foam);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.55);padding:16px 48px 14px 16px;text-align:center}
@@ -1121,6 +1133,7 @@ section.section.bundles{display:block;margin-top:0}
 </section>
 <button class="hearsel" type="button" id="hearSel" hidden><span aria-hidden="true">&#128266;</span> <span id="hearLab">Hear it</span></button>
 <div class="hearbox" id="hearBox" role="status" hidden><button class="etx" type="button" id="hearX" aria-label="Close">&times;</button><div class="etbig" id="hearTxt"></div><div class="etmine" id="hearMine"></div><div class="etrow"><button type="button" id="hearPlay">&#128266;</button></div></div>
+<div class="okbox" id="okBox" role="dialog" aria-modal="true" aria-labelledby="okTitle" hidden><div class="okcard"><div class="okcheck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><h2 id="okTitle"></h2><div id="okBody"></div><button class="btn" type="button" id="okDone">Done</button></div></div>
 <aside class="reader" id="reader" aria-hidden="true">
   <div class="reader-top">
     <div><div class="rk" id="rKicker">Word study</div><div class="rref" id="rRef">Reference</div></div>
@@ -1150,7 +1163,7 @@ window.MF=(function(){
   function detect(){ var n=(navigator.language||'').toLowerCase().split('-')[0]; if(n==='fil') n='tl'; return LL.indexOf(n)>=0?n:'en'; }
   var L='en'; try{var q=(location.search.match(/[?&]lang=(es|en|tl|zh|hi|el|de|ko)\b/)||[])[1], st=localStorage.getItem('mf-lang'); L=q||(LL.indexOf(st)>=0?st:'')||detect();}catch(e){}
   var hooks=[], orig=new WeakMap(), X=window.MFI18N;
-  var SKIP='script,style,#refs,#reader,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
+  var SKIP='script,style,#refs,#reader,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#okBox,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
   function norm(s){return s.replace(/\s+/g,' ').trim();}
   function t(k){var u=X.ui[k]; return u ? (L==='es'?u[1]:u[0]) : k;}
   function applyPage(){
@@ -1943,16 +1956,36 @@ window.MF=(function(){
     var t=document.querySelector('#devoForm input[name=send-by]:checked').value==='Text';
     $('devoEmailL').hidden=t; $('devoEmailL').querySelector('input').required=!t;
     $('devoPhoneL').hidden=!t; $('devoPhoneL').querySelector('input').required=t;});});
+  // Ken, 9 Oct: "After signing up ... there needs to be a larger notification that shows the user they did it successfully."
+  function showOk(id,fd){ var es=MF.lang==='es', T=function(en,sp){ return es?sp:en; }, h='', title, often=fd['how-often']||'Daily', byText=fd['send-by']==='Text';
+    var when={Daily:T('Sunday through Friday, 7am your time','de domingo a viernes, a las 7 a. m. (su hora)'),Weekly:T('every Sunday, 7am your time','cada domingo, a las 7 a. m. (su hora)'),Monthly:T('the first Sunday of each month, 7am your time','el primer domingo de cada mes, a las 7 a. m. (su hora)')}[often];
+    var oft={Daily:T('Daily','Diario'),Weekly:T('Weekly','Semanal'),Monthly:T('Monthly','Mensual')}[often];
+    if(id==='devoForm'||id==='signup'){ title=T('You’re signed up!','¡Ya está inscrito!');
+      h+='<p class="okwhat">'+esc(es?'Devocional '+oft.toLowerCase():oft+' devotional')+' · '+(byText?T('by text','por mensaje de texto'):T('by email','por correo'))+'</p>';
+      h+='<p class="okto">'+esc(byText?(fd.phone||''):(fd.email||''))+'</p>';
+      h+=byText?'<p>'+T('Texting is being switched on now. Your first text arrives as soon as it is ready — you don’t need to sign up again.','Los mensajes de texto se están activando. Su primer mensaje llegará en cuanto esté listo; no necesita inscribirse de nuevo.')+'</p>'
+        :'<p>'+T('Look for a welcome email from <b>MannaFish</b> (2fish@manna-fish.com) in the next few minutes. Not there? Check your spam or promotions folder.','Busque un correo de bienvenida de <b>MannaFish</b> (2fish@manna-fish.com) en los próximos minutos. ¿No llega? Revise la carpeta de spam o promociones.')+'</p>';
+      if(!byText) h+='<p>'+T('Then your devotional arrives ','Después, su devocional llega ')+esc(when)+'.</p>'; }
+    else if(id==='giftForm'){ title=T('Request received!','¡Solicitud recibida!');
+      h+='<p class="okwhat">'+T('2 free decals','2 calcomanías gratis')+(fd.word?' · '+esc(fd.word):'')+(fd['decal-language']?' · '+esc(fd['decal-language']):'')+'</p>';
+      h+='<p class="okto">'+esc([fd.name,fd.street,fd.city,fd['state-zip']].filter(Boolean).join(', '))+'</p>';
+      h+='<p>'+T('We’ll mail them to you. Sign in with this email any time to see your request under “My decal orders.”','Se las enviaremos por correo. Inicie sesión con este correo cuando quiera para ver su solicitud en “Mis pedidos de calcomanías.”')+'</p>'; }
+    else { title=T('Thank you'+(fd.name?', '+fd.name:'')+'!','¡Gracias'+(fd.name?', '+fd.name:'')+'!');
+      h+='<p>'+T('We’ll be in touch soon about your FishNet.','Pronto nos comunicaremos con usted sobre su FishNet.')+'</p>'; }
+    $('okTitle').textContent=title; $('okBody').innerHTML=h; $('okDone').textContent=T('Done','Listo'); $('okBox').hidden=false; $('okDone').focus(); }
+  $('okDone').addEventListener('click',function(){ $('okBox').hidden=true; });
+  $('okBox').addEventListener('click',function(e){ if(e.target===this) this.hidden=true; });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') $('okBox').hidden=true; });
   // Netlify Forms, sent in the background so the page does not jump away
   document.querySelectorAll('form.mf-form').forEach(function(f){
     f.addEventListener('submit',function(e){e.preventDefault();
       var msg=$({signup:'signupMsg',giftForm:'giftFormMsg',devoForm:'devoFormMsg'}[f.id]||'fishnetMsg');
-      var body=new URLSearchParams(new FormData(f)).toString(), H={'Content-Type':'application/x-www-form-urlencoded'};
+      var body=new URLSearchParams(new FormData(f)).toString(), H={'Content-Type':'application/x-www-form-urlencoded'}, fd=Object.fromEntries(new FormData(f));
       fetch('/',{method:'POST',headers:H,body:body})
         .then(function(r){ if(r.ok) return r; return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); },
               function(){ return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); })
-        .then(function(r){if(!r.ok) throw 0; if(f.id==='giftForm') fetch('/api/order-record',{method:'POST',headers:H,body:body}).catch(function(){}); if(f.id==='devoForm'||f.id==='signup') fetch('/api/devo-subscribe',{method:'POST',headers:H,body:body}).catch(function(){}); f.reset();
-          msg.textContent = MF.t({signup:'th_signup',giftForm:'th_gift',devoForm:'th_devo'}[f.id]||'th_net');})
+        .then(function(r){if(!r.ok) throw 0; if(f.id==='giftForm') fetch('/api/order-record',{method:'POST',headers:H,body:body}).catch(function(){}); if(f.id==='devoForm'||f.id==='signup') fetch('/api/devo-subscribe',{method:'POST',headers:H,body:body}).catch(function(){}); f.reset(); f.querySelectorAll('input[name=send-by]:checked').forEach(function(r){ r.dispatchEvent(new Event('change',{bubbles:true})); });
+          msg.textContent = MF.t({signup:'th_signup',giftForm:'th_gift',devoForm:'th_devo'}[f.id]||'th_net'); showOk(f.id,fd);})
         .catch(function(){msg.textContent=MF.t('formfail');});
     });
   });
