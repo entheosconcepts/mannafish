@@ -20,7 +20,7 @@ if __name__ == '__main__':
     for f in glob.glob('fish-es/*.svg'):
         s = open(f, encoding='utf-8').read(); t = fix(s)
         if t != s: open(f, 'w', encoding='utf-8').write(t); n += 1
-    for f in glob.glob('fish-lang/*.json'):
+    for f in glob.glob('fish-lang/[a-z][a-z].json'):  # the fish files, not study-*.json or tongue.json
         d = json.load(open(f, encoding='utf-8')); d = {k: fix(v) for k, v in d.items()}
         json.dump(d, open(f, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')); n += 1
     p = 'index.html'; s = open(p, encoding='utf-8').read()

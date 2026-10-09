@@ -14,7 +14,7 @@ KJV=numbered('KJV.json')
 def get(src,b,c,v):
   ch=src[CAN.index(b)][c-1]
   return ch.get(v) if isinstance(ch,dict) else (ch[v-1] if v<=len(ch) else None)
-SRC={'tl':[numbered('TagAngBiblia.json')],'de':[numbered('GerElb1905.json')],'ko':[numbered('KorRV.json')],
+SRC={'tl':[numbered('TagAngBiblia.json')],'de':[numbered('GerElb1905.json')],'ko':[numbered('KorRV.json')],'he':[numbered('he/HebModern.json')],
  'zh':[indexed('zh_cunpss-shen.json'),numbered('ChiUn.json')],'hi':[indexed('hi_irvhin.json')],'el':[indexed('el_fpb.json'),numbered('GreVamvas.json')]}
 def okchap(src,b,c,primary_indexed):
   if not primary_indexed: return True
@@ -24,6 +24,7 @@ def clean(l,t):
   t=re.sub(r'\s*\((?:[^()]*\d+:\d+[^()]*)\)','',t)  # cross-reference notes
   t=re.sub(r'\[[^\]]*\]','',t)
   if l=='zh': t=re.sub(r'\s+','',t)
+  if l=='he': t=t.replace('\u05c3','.').replace(' .','.')  # sof pasuq -> full stop
   if l=='el': t=re.sub(r'(?<=[^\W\d_]|[,·.;:’])\d+','',t)
   if l=='el': t=t.translate(str.maketrans('ABEZHIKMNOPTYXo','ΑΒΕΖΗΙΚΜΝΟΡΤΥΧο'))
   t=re.sub(r'\s+',' ',t).strip()

@@ -1,5 +1,5 @@
 // Speaks a fish aloud in a natural voice: just the word in the middle, or the verse on the fish,
-// in any of the fish's languages (en, es, tl, zh, hi, el). It only reads the site's own lines, so it
+// in any of the fish's languages (all nine: en, es, tl, zh, hi, el, de, ko, he). It only reads the site's own lines, so it
 // cannot be used as a free reader for anything else. Until a voice key is added in Netlify
 // (OPENAI_API_KEY), it answers 501 and the page uses the phone's or computer's own voice.
 // Each clip is made once and kept in Blobs, so a line costs a fraction of a cent one time only.

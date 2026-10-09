@@ -3,7 +3,7 @@
 import json,sys
 sys.path.insert(0,'.')
 from study_i18n import BOOKS
-L=['en','es','tl','zh','hi','el','de','ko']
+L=['en','es','tl','zh','hi','el','de','ko','he']
 G=[('open','Caring openers','Para empezar'),('ask','Conversation','Conversación'),('gift','Gift and follow-up','Regalo y seguimiento')]
 P=[
 ('open','pray_for',"Can I pray for you?|¿Puedo orar por usted?|Maaari ba kitang ipanalangin?|我可以为你祷告吗？|क्या मैं आपके लिए प्रार्थना करूँ?|Μπορώ να προσευχηθώ για εσάς;|Darf ich für Sie beten?|당신을 위해 기도해 드려도 될까요?"),
@@ -22,6 +22,15 @@ P=[
 ('gift','have_bible',"Do you have a Bible?|¿Tiene una Biblia?|Mayroon ka bang Biblia?|你有圣经吗？|क्या आपके पास बाइबल है?|Έχετε Βίβλο;|Haben Sie eine Bibel?|성경책 있으세요?"),
 ('gift','visit_church',"Would you like to visit a church?|¿Le gustaría visitar una iglesia?|Gusto mo bang dumalaw sa isang simbahan?|你愿意去教会看看吗？|क्या आप किसी चर्च में जाना चाहेंगे?|Θα θέλατε να επισκεφθείτε μια εκκλησία;|Möchten Sie einmal eine Kirche besuchen?|교회에 한번 가 보시겠어요?"),
 ]
+# Hebrew (9 Oct): spoken to one man, the usual form; a fluent reader to check
+HE={'pray_for':'אפשר להתפלל בשבילך?','pray_together':'בוא נתפלל יחד.','want_pray':'תרצה להתפלל?',
+ 'god_loves':'אלוהים אוהב אותך, וגם ישוע.','pray_about':'יש משהו שאפשר להתפלל עליו יחד איתך?',
+ 'beliefs':'יש לך אמונה רוחנית כלשהי?','who_jesus':'מי לדעתך הוא ישוע?',
+ 'heaven':'אם היית מת היום, האם אתה יודע בוודאות שהיית הולך לשמיים?',
+ 'shown_bible':'האם מישהו הראה לך פעם מתוך כתבי הקודש איך להכיר את אלוהים?',
+ 'know_jesus':'תרצה להכיר את ישוע באופן אישי?','receive_jesus':'תרצה לקבל את ישוע כאדון וכמושיע שלך?',
+ 'holy_spirit':'האם קיבלת את רוח הקודש מאז שהאמנת?','gift':'אפשר לתת לך את זה? זו מתנה חינם.',
+ 'have_bible':'יש לך תנ״ך וברית חדשה?','visit_church':'תרצה לבקר בכנסייה או בקהילה?'}
 NOTE={'holy_spirit':'Acts 19:2'}
 V=[('jn316','John',3,16),('ro323','Romans',3,23),('ro623','Romans',6,23),('ro109','Romans',10,9)]
 ES={'jn316':'Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree, no se pierda, mas tenga vida eterna.',
@@ -37,7 +46,7 @@ def full(l,b,c,v):
   return sb.verse(l,b,c,v)
 out={'langs':L,'groups':[{'id':g,'en':a,'es':b} for g,a,b in G],'phrases':[],'verses':[]}
 for g,i,t in P:
-  parts=t.split('|'); assert len(parts)==8,(i,len(parts))
+  parts=t.split('|')+[HE[i]]; assert len(parts)==9,(i,len(parts))
   d={'id':i,'g':g,'t':dict(zip(L,parts))}
   if i in NOTE: d['ref']=NOTE[i]
   out['phrases'].append(d)

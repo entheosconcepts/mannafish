@@ -40,7 +40,11 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [x] **Word study on the back in each language** (8 Oct): tap a fish in the compare view. Its word, the Greek and Hebrew meanings, the book names, and the start of each verse come from that language's own Bible. Tapping a verse still opens the English (or Spanish) reader.
 - [ ] A fluent reader checks the 24 Greek and Hebrew meanings in each language (Claude translated them from the English meanings). Files: fish-lang/study-<lang>.json.
 - [ ] Greek: the New Testament in its original Greek, and a modern Greek Bible for Greek readers. Older texts are free to use; check each one.
-- [ ] Hebrew (shows as "soon" in the menu): the Old Testament in its original Hebrew, and a Hebrew New Testament. Older texts are free to use; check each one. Hebrew reads right to left, so the fish lettering runs the other way.
+- [x] **Hebrew** (9 Oct, on the test site): 24 fish lettered right to left in Fredoka (rounded, bold). Old Testament verses from the Masoretic text, New Testament from Delitzsch (1877); both public domain, no vowel marks. The word in the middle is a command to one man. Word study, Bible reader, speakers and Every Tongue in Hebrew too.
+- [ ] A fluent Hebrew reader checks the 24 fish, the meanings on the back (fish-lang/study-he.json) and the 15 Every Tongue phrases. Words to look at: נוח (rest) can also read as "comfortable" or "Noah"; חיה (live) can also read as "animal". Vowel marks on just those two words would remove the doubt.
+- [ ] Decide about God's name: TRUST (Ps 37:5) and SING (Ps 96:1) print the four-letter name יהוה, as the Bible text has it. Many Hebrew readers prefer ה׳ on things that may be thrown away. Ken's call before printing.
+- [ ] Hebrew verse numbers follow English Bibles (Psalm 42:5); printed Hebrew Bibles count some Psalms one higher (42:6).
+- [ ] Check the Hebrew fish on an iPhone (Safari) before printing.
 
 ## Later
 
