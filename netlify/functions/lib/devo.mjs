@@ -36,19 +36,23 @@ export function emailFor(m, lang, unsub, opts = {}) {
     ? { sub: 'MannaFish de hoy: ' + word, hello: opts.welcome ? '¡Bienvenido! Tu primer MannaFish:' : 'La palabra de hoy', today: 'El versículo de hoy', read: 'Leer el capítulo', fish: 'El versículo del pez', why: 'Recibes esto porque te suscribiste en manna-fish.com.', stop: 'Cancelar suscripción' }
     : { sub: 'Today’s MannaFish: ' + word, hello: opts.welcome ? 'Welcome! Your first MannaFish:' : 'Today’s word', today: 'Today’s verse', read: 'Read the chapter', fish: 'The verse on the fish', why: 'You are getting this because you signed up at manna-fish.com.', stop: 'Unsubscribe' };
   const snippet = es ? '' : ' — “' + m.snippet + '”';
-  const html = `<!doctype html><html><body style="margin:0;background:#f4f1ea;font-family:Georgia,serif;color:#14181d">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:24px 12px">
-<table role="presentation" width="100%" style="max-width:560px;background:#ffffff;border-radius:10px;overflow:hidden">
-<tr><td style="background:#000;padding:14px 20px;font:bold 22px Arial,sans-serif;color:#fff">Manna<span style="color:#2a5fb0">Fish</span></td></tr>
-<tr><td style="padding:20px 22px 6px;font:13px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6b7280">${esc(T.hello)}</td></tr>
-<tr><td style="padding:0 22px;font:bold 34px Georgia,serif">${esc(word)}</td></tr>
-<tr><td style="padding:14px 22px"><img src="${img}" width="516" alt="${esc(word)}" style="width:100%;max-width:516px;height:auto;border-radius:6px;display:block;background:#000"></td></tr>
-<tr><td style="padding:4px 22px 0;font:13px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6b7280">${esc(T.today)}</td></tr>
-<tr><td style="padding:6px 22px 0;font:19px/1.5 Georgia,serif"><b>${esc(ref)}</b>${esc(snippet)}</td></tr>
-<tr><td style="padding:16px 22px"><a href="${read}" style="display:inline-block;background:#2a5fb0;color:#fff;text-decoration:none;font:bold 15px Arial,sans-serif;padding:11px 20px;border-radius:999px">${esc(T.read)}</a></td></tr>
-<tr><td style="padding:6px 22px 0;font:13px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6b7280">${esc(T.fish)}</td></tr>
-<tr><td style="padding:6px 22px 20px;font:italic 17px/1.5 Georgia,serif">“${esc(f.top)} ${esc(f.bottom)}”<br><span style="font-style:normal;font-size:14px;color:#6b7280">${esc(f.ref)}</span></td></tr>
-<tr><td style="padding:14px 22px 20px;border-top:1px solid #eee;font:12px/1.6 Arial,sans-serif;color:#6b7280">${esc(T.why)} <a href="${unsub}" style="color:#6b7280">${esc(T.stop)}</a><br>${esc(ADDRESS())}</td></tr>
+  // Ken, 9 Oct: the email in the site's own look -- black, white lettering, MannaFish blue, the logo in its own font
+  const logo = SITE() + '/w/img/logo-email.png';
+  const lab = 'font:bold 12px Arial,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#4a7fd6';
+  const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"></head>
+<body style="margin:0;background:#000;font-family:Georgia,serif;color:#eaf0f0">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000"><tr><td align="center" style="padding:20px 10px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#000;border:1px solid #1f2a33;border-radius:14px;overflow:hidden">
+<tr><td align="center" style="background:#000;padding:22px 20px 18px;border-bottom:1px solid #1f2a33"><a href="${SITE()}${es ? '/?lang=es' : '/'}" style="text-decoration:none"><img src="${logo}" width="200" alt="MannaFish" style="width:200px;height:auto;display:block;border:0;color:#fff;font:bold 26px Arial,sans-serif"></a></td></tr>
+<tr><td align="center" style="padding:24px 22px 4px;${lab}">${esc(T.hello)}</td></tr>
+<tr><td align="center" style="padding:2px 22px 0;font:bold 40px/1.15 Georgia,serif;color:#ffffff">${esc(word)}</td></tr>
+<tr><td style="padding:16px 18px"><a href="${read}" style="text-decoration:none"><img src="${img}" width="524" alt="${esc(word)}" style="width:100%;max-width:524px;height:auto;border-radius:8px;display:block;background:#000;border:1px solid #1f2a33"></a></td></tr>
+<tr><td align="center" style="padding:6px 22px 0;${lab}">${esc(T.today)}</td></tr>
+<tr><td align="center" style="padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0"><b style="color:#ffffff">${esc(ref)}</b>${esc(snippet)}</td></tr>
+<tr><td align="center" style="padding:20px 22px 22px"><a href="${read}" style="display:inline-block;background:#2a5fb0;color:#ffffff;text-decoration:none;font:bold 16px Arial,sans-serif;padding:13px 30px;border-radius:999px">${esc(T.read)}</a></td></tr>
+<tr><td align="center" style="padding:16px 22px 0;border-top:1px solid #1f2a33;${lab}">${esc(T.fish)}</td></tr>
+<tr><td align="center" style="padding:8px 26px 22px;font:italic 17px/1.55 Georgia,serif;color:#c6d2d4">“${esc(f.top)} ${esc(f.bottom)}”<br><span style="font:normal 13px Arial,sans-serif;color:#8a9aa0">${esc(f.ref)}</span></td></tr>
+<tr><td align="center" style="padding:16px 22px 22px;border-top:1px solid #1f2a33;font:12px/1.7 Arial,sans-serif;color:#8a9aa0">${esc(T.why)} <a href="${unsub}" style="color:#8a9aa0">${esc(T.stop)}</a><br>${esc(ADDRESS())}</td></tr>
 </table></td></tr></table></body></html>`;
   const text = `${T.hello}: ${word}\n\n${T.today}: ${ref}${snippet}\n${T.read}: ${read}\n\n${T.fish}: “${f.top} ${f.bottom}” ${f.ref}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
   return { subject: T.sub, html, text };

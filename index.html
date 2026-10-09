@@ -565,6 +565,16 @@ section.section.bundles{display:block;margin-top:0}
 .rstack .rver{margin:0}
 
 .rhint{margin:0 0 -4px;text-align:center;font-family:'Archivo',sans-serif;font-size:.74rem;color:var(--parch-dim)}
+/* Ken, 9 Oct: the verse reader in the site's own colours (the cream panel looked like a separate Bible app),
+   and no Bible App button, so people stay on MannaFish */
+.reader{--parch:var(--ink2,#0b1620);--parch-ink:var(--foam);--parch-dim:var(--foam-dim);background:var(--ink2,#0b1620);color:var(--foam);border-left:1px solid var(--line)}
+.reader.inline{border:1px solid var(--line);border-radius:12px;margin-top:14px}
+.reader .chapter p{color:var(--foam);opacity:.86}
+.reader .chapter .hi{background:rgba(245,215,110,.2);color:var(--foam)}
+.reader .rbtn.p{background:var(--brass);color:#fff}
+.reader .rbtn.s{border:1px solid var(--line);color:var(--foam)}
+.reader .rver option{background:var(--ink2,#0b1620);color:var(--foam)}
+#rYouV,#rYouVHint{display:none!important}
 
 /* ---- dark / light (Ken, 7 Oct) ---- */
 .nav .wrap.navc{position:relative}
@@ -1339,7 +1349,8 @@ window.MF=(function(){
   var scrim=$('scrim'), reader=$('reader');
   var RKEY='mf-reader-place';
   function placePref(){try{return localStorage.getItem(RKEY)||'side';}catch(e){return 'side';}}
-  function inlineNow(){return window.matchMedia('(max-width:860px)').matches || placePref()==='below';}
+  var landing=false;  // opened from an email link: the verse sits under the fish and the page stays on the fish
+  function inlineNow(){return landing || window.matchMedia('(max-width:860px)').matches || placePref()==='below';}
   function placeReader(){
     var inl=inlineNow(), slot=$('readerSlot');
     if(inl && slot && reader.parentNode!==slot){slot.appendChild(reader);}
@@ -1353,7 +1364,7 @@ window.MF=(function(){
     placeReader(); if(inlineNow()) reader.scrollIntoView({behavior:'smooth',block:'start'});
   });
   window.addEventListener('resize',function(){if(reader.classList.contains('open'))placeReader();});
-  function closeReader(){window.MFreader=null; if(window.MFsave) MFsave(); reader.classList.remove('open');scrim.classList.remove('open');reader.setAttribute('aria-hidden','true');}
+  function closeReader(){ if(landing){ landing=false; setTimeout(placeReader,350); } window.MFreader=null; if(window.MFsave) MFsave(); reader.classList.remove('open');scrim.classList.remove('open');reader.setAttribute('aria-hidden','true');}
   $('rClose').addEventListener('click',closeReader);
   scrim.addEventListener('click',closeReader);
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closeReader();});
@@ -1361,7 +1372,7 @@ window.MF=(function(){
   function showPanel(){
     reader.classList.add('open');reader.setAttribute('aria-hidden','false');
     placeReader(); if(!inlineNow()) scrim.classList.add('open');
-    else setTimeout(function(){reader.scrollIntoView({behavior:'smooth',block:'start'});},30);
+    else if(!landing) setTimeout(function(){reader.scrollIntoView({behavior:'smooth',block:'start'});},30);
   }
   function openStrongs(k,gk){
     window.MFreader={kind:'strongs',k:k,gk:!!gk}; if(window.MFsave) setTimeout(MFsave,0);
@@ -1992,7 +2003,8 @@ window.MF=(function(){
   pick(cur,false);
   restoreReturn();
   if(window.MFresumeInit) MFresumeInit();
-  (function(){var m=location.search.match(/[?&]r=(\d+)/); if(m && DATA[cur].refs[+m[1]]){ $('stage').classList.add('on'); sizeStage(); setTimeout(function(){openReader(cur,+m[1]);},300);} })();
+  // Ken, 9 Oct: from the devotional email, land on the day's fish (as on the site) with the verse open right under it
+  (function(){var m=location.search.match(/[?&]r=(\d+)/); if(m && DATA[cur].refs[+m[1]]){ landing=true; openReader(cur,+m[1]); setTimeout(function(){ window.scrollTo(0,0); },60);} })();
 })();
 
 </script>
