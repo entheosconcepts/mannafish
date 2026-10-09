@@ -827,7 +827,6 @@ section.section.bundles{display:block;margin-top:0}
 @media(min-width:901px){
   .cmp.grid{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:flex-start;max-width:none}
   .cmp.grid figure{max-width:none;width:var(--fw);flex:none}
-  .cmp.grid figure.on{width:var(--bw)}
 }
 @media(max-width:900px){.cmpgrid{justify-content:center}}
 
@@ -847,6 +846,11 @@ section.section.bundles{display:block;margin-top:0}
 .cmp figure.on .cmpf{display:none}
 .cmp figure.on .cmpb{display:block;animation:cmpflip .35s ease}
 @keyframes cmpflip{from{transform:perspective(900px) rotateY(90deg)}to{transform:none}}
+/* Ken, 9 Oct: a turned-over fish keeps its place beside the others and grows taller, laid out like the single fish's
+   word study on a phone (Greek above Hebrew, verses in two columns) */
+.cmp .cmpb .langs{grid-template-columns:1fr;gap:16px}
+.cmp .cmpb .langs .div{display:none}
+.cmp .cmpb .refs{grid-template-columns:repeat(2,minmax(0,1fr))}
 .cmpb .face{position:static;inset:auto;backface-visibility:visible;-webkit-backface-visibility:visible;visibility:visible;border:0;background:none;transform:none;box-shadow:none}
 .face.back:is([lang=zh],[lang=ko],[lang=hi],[lang=he]) :is(.lab,.mean,.trace,.conc,.s){letter-spacing:0;font-style:normal}
 .cmpb .wsub{text-align:center;font:1.15rem 'Spectral',serif;color:var(--foam-dim,#9fb2b6);margin:-4px 0 6px}
@@ -2022,7 +2026,7 @@ window.MF=(function(){
     c=Math.max(1,Math.min(c,n));
     box.classList.add('grid'); box.style.setProperty('--cols',c); box.style.setProperty('--fw',fw+'px'); box.style.setProperty('--bw',pw+'px');
     // the rows are exactly c fish wide, centred on the page (a short last row sits in the middle)
-    var tw=Math.max(c*fw+(c-1)*gap, box.querySelector('figure.on')?pw:0); [box,$('cmpGrid')].forEach(function(e){ e.style.width=tw+'px'; e.style.marginLeft='calc(50% - '+(tw/2)+'px)'; });
+    var tw=c*fw+(c-1)*gap; [box,$('cmpGrid')].forEach(function(e){ e.style.width=tw+'px'; e.style.marginLeft='calc(50% - '+(tw/2)+'px)'; });
     [].forEach.call($('gp').children,function(e){ var x=+e.dataset.c; e.classList.toggle('on',!!want && x<=c); e.classList.toggle('off',x>maxC); e.classList.remove('hov'); });
     $('gpSz').textContent=want?String(c):''; $('gpAuto').setAttribute('aria-pressed',String(!want)); }
   (function(){ var h=''; for(var x=1;x<=5;x++) h+='<i data-c="'+x+'" title="'+x+'"></i>'; $('gp').innerHTML=h;
