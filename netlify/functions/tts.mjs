@@ -34,6 +34,7 @@ export default async (req) => {
     audio = await r.arrayBuffer();
     await store.set(id, audio);
   }
-  return new Response(audio, { headers: { 'content-type': 'audio/mpeg', 'cache-control': 'public, max-age=86400' } });
+  // kept by Netlify's CDN too (Ken, 11 Oct: the delay before a fish is heard); a corrected line is new after a week at most
+  return new Response(audio, { headers: { 'content-type': 'audio/mpeg', 'cache-control': 'public, max-age=86400', 'netlify-cdn-cache-control': 'public, max-age=604800, durable', 'netlify-vary': 'query' } });
 };
 export const config = { path: '/api/tts' };

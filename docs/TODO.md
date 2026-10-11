@@ -231,3 +231,7 @@ Also check the small alternate-language fish and its "English ⇄" label the sam
 - "▶ The vision · Listen · 3 min" under the slogan (11 Oct): opens the vision written out, full screen, and reads it aloud
   straight away (the bottom player pauses, skips, changes speed). Welcome / What is MannaFish? / What is 2 Fish? /
   Always a free gift / How to use this site. All 9 languages -- want a fluent check.
+- Speed (11 Oct): every speaker starts at 1.25x (setting `mf-speed`, also on /translate/).
+- Faster start: voice clips by GET /api/say?t=&l=&v= (and /api/tts), kept by the browser and Netlify's CDN; the fish's
+  Word and Verse, the first lines of the vision, and a reader's heading and first verse are fetched before the tap;
+  a long first verse starts with a short clause.

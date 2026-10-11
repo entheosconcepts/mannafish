@@ -1900,6 +1900,7 @@ window.MF=(function(){
     $('stage').classList.remove('on'); sizeStage();
     if(window.MFword) MFword();
     if(window.MFcmp) MFcmp();
+    if(window.MFfishPrefetch) MFfishPrefetch();
     if(scroll && window.matchMedia('(max-width:860px)').matches){
       $('stage').scrollIntoView({behavior:'smooth',block:'center'});
     }
@@ -1999,10 +2000,10 @@ window.MF=(function(){
   function sayWord(b){ stopSpeak(); var id=sp.id, t=decodeURIComponent(b.dataset.t), pr=decodeURIComponent(b.dataset.p||''), L=b.dataset.l, v=aiVoice(), end=function(){ b.classList.remove('on'); };
     b.classList.add('on');
     (v?etPost('/api/say',{text:t,lang:L,voice:v}):Promise.reject()).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(bl){
-      if(id!==sp.id) return end(); var a=new Audio(URL.createObjectURL(bl)); sp.audio=a; a.onended=end; a.onpause=end; return a.play(); })
+      if(id!==sp.id) return end(); var a=new Audio(URL.createObjectURL(bl)); a.playbackRate=RATE(); sp.audio=a; a.onended=end; a.onpause=end; return a.play(); })
     .catch(function(){ if(id!==sp.id||!window.speechSynthesis) return end(); var vv=voiceFor(L), u;
       if(vv.v){ u=new SpeechSynthesisUtterance(t); u.lang=LCODE[L]; u.voice=vv.v; } else { u=new SpeechSynthesisUtterance(pr.replace(/'/g,'')); u.lang='en-US'; }
-      u.rate=.85; u.onend=end; u.onerror=end; speechSynthesis.speak(u); }); }
+      u.rate=.85*RATE(); u.onend=end; u.onerror=end; speechSynthesis.speak(u); }); }
   // Expand shows only when the entry is longer than the card
   function fitExp(btn,body,big){ if(btn) btn.hidden=!(big || body.scrollHeight>body.clientHeight+2); }
   function frRoom(f,fr,card){ if(innerWidth>640) return; var want=Math.round(innerHeight*0.62); if(want<=card.offsetHeight) return;
@@ -2080,7 +2081,7 @@ window.MF=(function(){
     fetch('/fish-lang/bible/'+l+'/'+p.book.replace(/ /g,'_')+'-'+p.ch+'.json').then(function(x){ if(!x.ok) throw 0; return x.json(); }).then(function(j){
       if(window.MFreader!==want) return; var vs=+p.vs, h='<p>';
       j.t.forEach(function(t,n){ if(!t) return; h+='<span class="vn">'+(n+1)+'</span><span data-v="'+(n+1)+'" class="'+(n+1===vs?'hi':'')+'">'+esc(t)+'</span> '; });
-      $('rChapter').innerHTML=h+'</p>'; setTimeout(readerFit,60); RD={l:l,t:j.t,vs:vs}; if(window.MFhlMarkStage) MFhlMarkStage(); if(j.t[vs-1]) $('rQuote').textContent=j.t[vs-1]; $('rNote').textContent=j.v;
+      $('rChapter').innerHTML=h+'</p>'; setTimeout(readerFit,60); RD={l:l,t:j.t,vs:vs}; rdPrefetch(RD,rIntro(false)); if(window.MFhlMarkStage) MFhlMarkStage(); if(j.t[vs-1]) $('rQuote').textContent=j.t[vs-1]; $('rNote').textContent=j.v;
       RD={l:l,t:j.t,vs:vs};
       var hv=reader.querySelector('.chapter .hi'), bd=reader.querySelector('.reader-body'); if(hv&&bd&&!reader.classList.contains('inline')) bd.scrollTop=Math.max(0,hv.offsetTop-bd.offsetTop-bd.clientHeight/3);
     }).catch(function(){}); }
@@ -2126,10 +2127,15 @@ window.MF=(function(){
   ['touchend','click'].forEach(function(ev){ document.addEventListener(ev,auUnlock,true); });
   var SAYC={}, SAYQ=[];
   function sayUrl(text,L,v){ var k=L+'|'+v+'|'+text; if(SAYC[k]) return SAYC[k];
-    var pr=etPost('/api/say',{text:text,lang:L,voice:v}).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){ return URL.createObjectURL(b); });
+    var pr=fetch('/api/say?t='+encodeURIComponent(text)+'&l='+encodeURIComponent(L)+'&v='+encodeURIComponent(v)).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){ return URL.createObjectURL(b); });
     pr.catch(function(){ delete SAYC[k]; }); SAYC[k]=pr; SAYQ.push(k);
     if(SAYQ.length>16){ var old=SAYQ.shift(), op=SAYC[old]; delete SAYC[old]; if(op) op.then(function(u){ setTimeout(function(){ URL.revokeObjectURL(u); },60000); }).catch(function(){}); }
     return pr; }
+  // the very first piece of a reading is kept short (a clause), so the voice is made and heard sooner
+  function rdPrefetch(d,intro){ var v=aiVoice(); if(!v||!d||!d.t[d.vs-1]) return; setTimeout(function(){ if(intro) sayUrl(spoken(rChunks(intro)[0],d.l),d.l,v).catch(function(){}); sayUrl(spoken(firstPiece(d.t[d.vs-1]),d.l),d.l,v).catch(function(){}); },300); }
+  function firstPiece(t){ return firstChunks(t)[0]; }
+  function firstChunks(t){ var c=rChunks(t), f=c[0]||''; if(f.length<=140) return c; var m=f.slice(60,140).search(/[,;:，；：、।·]\s/);
+    if(m<0) return c; var cut=60+m+1; return [f.slice(0,cut).trim(),f.slice(cut).trim()].concat(c.slice(1)); }
   function spoken(t,L){ return L==='he'?t.replace(/ה׳|י[֑-ׇ]*ה[֑-ׇ]*ו[֑-ׇ]*ה[֑-ׇ]*/g,'אדוני'):t; }
   function readAloud(ctx,from,to,btn){ if(sp.on && sp.btn===btn){ stopSpeak(); rMarkIn(ctx,0); return; } var D=ctx.data; if(!D) return;
     stopSpeak(); var id=sp.id, L=D.l; sp.on=true; sp.btn=btn; btn.setAttribute('aria-pressed','true');
@@ -2151,14 +2157,15 @@ window.MF=(function(){
       if(LN&&LN.t[v-1]) sayUrl(spoken(rChunks(LN.t[v-1])[0],LN.l),LN.l,vo);
       if(n<=to&&D.t[n-1]) sayUrl(spoken(rChunks(D.t[n-1])[0],L),L,vo); }
     function verse(v){ if(id!==sp.id) return; if(v>to||v>D.t.length){ done(); return; } if(!D.t[v-1]){ verse(v+1); return; }
-      var el=rMarkIn(ctx,v), full=D.t[v-1], parts=rChunks(full), k=0, pos=0; if(ctx.onVerse) ctx.onVerse(v); ahead(v);
+      var el=rMarkIn(ctx,v), full=D.t[v-1], parts=v===from?firstChunks(full):rChunks(full), k=0, pos=0; if(ctx.onVerse) ctx.onVerse(v); ahead(v);
       var after=function(){ var n=ctx.next?ctx.next(v):v+1; verse(n); };
       // Learn (Ken, 11 Oct): the same verse again in a second language, shown under the player while it is read
       var learn=function(){ var LN=ctx.learn, x=LN&&LN.t[v-1]; if(!x){ after(); return; } if(ctx.onLearn) ctx.onLearn(x,LN.l);
         var q=rChunks(x); (function nx(){ if(!q.length){ if(ctx.onLearn) ctx.onLearn('',''); after(); return; } say(q.shift(),0,null,nx,LN.l); })(); };
       (function nextPart(){ if(k>=parts.length){ learn(); return; } var part=parts[k++], base=full.indexOf(part,pos); if(base<0) base=pos; pos=base+part.length; say(part,base,el,nextPart); })(); }
     // Ken, 11 Oct: read the heading first -- the reference, or the card's title -- for someone who is only listening
-    var ip=ctx.intro?rChunks(ctx.intro):[];
+    var ip=ctx.intro?rChunks(ctx.intro):[], v0=aiVoice();
+    if(v0&&D.t[from-1]) sayUrl(spoken(firstPiece(D.t[from-1]),L),L,v0).catch(function(){});
     (function intro(){ if(id!==sp.id) return; if(!ip.length){ verse(from); return; } say(ip.shift(),0,null,intro); })(); }
   function chapterOf(ref){ return String(ref||'').replace(/\s*[:：]\s*\d+.*$/,''); }
   function headOf(kick,ref){ return String(kick||'').replace(/\s*·\s*/g,'. ').replace(/\bStrong\b/,'Strong’s')+(ref?'. '+ref:''); }
@@ -2183,7 +2190,8 @@ window.MF=(function(){
   MF.onChange(function(){ listenUI(); }); window.MFlistenUI=function(){ listenUI(); };
   // ── The player (Ken, 11 Oct: "mimic" the Bible App) -- one at the bottom of the screen for whichever card's 🔊 was tapped
   var RATES=[1,1.25,1.5,0.75], PB=$('mpPlay'), PL={ctx:null,n:1,N:1,intro:'',title:'',src:null};
-  function RATE(){ var r=1; try{ r=+localStorage.getItem('mf-rate')||1; }catch(e){} return RATES.indexOf(r)>=0?r:1; }
+  // Ken, 11 Oct: 1.25x is the speed every speaker starts at
+  function RATE(){ var r=1.25; try{ r=+localStorage.getItem('mf-speed')||1.25; }catch(e){} return RATES.indexOf(r)>=0?r:1.25; }
   var PLAYI='<path d="M7 4.5v15l13-7.5z" fill="currentColor"/>', PAUSEI='<path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z" fill="currentColor"/>';
   function plMine(){ return sp.on && sp.btn===PB; }
   function plPaused(){ return plMine() && (sp.audio?sp.audio.paused:!!(window.speechSynthesis&&speechSynthesis.paused)); }
@@ -2223,7 +2231,7 @@ window.MF=(function(){
   $('mpNext').addEventListener('click',function(){ if(PL.n>=PL.N) return; PL.n++; if(plMine()) plStart(PL.n); else plUI(); });
   $('mpRange').addEventListener('input',function(){ $('mpAt').textContent=this.value; });
   $('mpRange').addEventListener('change',function(){ PL.n=+this.value; if(plMine()) plStart(PL.n); else plUI(); });
-  function plRate(){ var r=RATES[(RATES.indexOf(RATE())+1)%RATES.length]; try{ localStorage.setItem('mf-rate',r); }catch(e){} if(sp.audio) sp.audio.playbackRate=r; plUI(); }
+  function plRate(){ var r=RATES[(RATES.indexOf(RATE())+1)%RATES.length]; try{ localStorage.setItem('mf-speed',r); }catch(e){} if(sp.audio) sp.audio.playbackRate=r; plUI(); }
   $('mpRate').addEventListener('click',plRate); $('mpRate2').addEventListener('click',plRate);
   $('mpVoice').addEventListener('change',function(){ var was=plMine(); setVoice(this.value); if(was) plStart(PL.n); });
   $('mpMin').addEventListener('click',function(){ $('mfPlayer').classList.toggle('mini'); });
@@ -2298,8 +2306,8 @@ window.MF=(function(){
   $('wpX').addEventListener('click',closeWord);
   document.addEventListener('click',function(e){ if(!WP||$('wPop').contains(e.target)||e.target.closest('.chapter span[data-v],#mpWord')) return; closeWord(); });
   $('wpSay').addEventListener('click',function(){ if(!WP) return; var w=WP.w, L=WP.L; stopSpeak(); var id=sp.id, vo=aiVoice();
-    (vo?sayUrl(spoken(w,L),L,vo):Promise.reject()).then(function(u){ if(id!==sp.id) return; var a=AU(); a.onended=a.onplaying=a.onpause=a.ontimeupdate=null; a.src=u; a.playbackRate=1; sp.audio=a; return a.play(); })
-      .catch(function(){ if(id!==sp.id||!window.speechSynthesis) return; var u=new SpeechSynthesisUtterance(spoken(w,L)), vv=voiceFor(L); u.lang=LCODE[L]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.85; speechSynthesis.speak(u); }); });
+    (vo?sayUrl(spoken(w,L),L,vo):Promise.reject()).then(function(u){ if(id!==sp.id) return; var a=AU(); a.onended=a.onplaying=a.onpause=a.ontimeupdate=null; a.src=u; a.playbackRate=RATE(); sp.audio=a; return a.play(); })
+      .catch(function(){ if(id!==sp.id||!window.speechSynthesis) return; var u=new SpeechSynthesisUtterance(spoken(w,L)), vv=voiceFor(L); u.lang=LCODE[L]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.85*RATE(); speechSynthesis.speak(u); }); });
   $('wpHl').addEventListener('click',function(){ if(!WP||!WP.toggle) return; var on=WP.toggle(WP.v), T=WPT[MF.lang]||WPT.en; this.textContent='🖍 '+(on?T[2]:T[1]); });
   function wpPlayer(){ var X=WP.X; if(PL.src!==X.src||$('mfPlayer').hidden) X.src.click(); $('mfPlayer').classList.remove('mini'); return PL.src===X.src; }
   $('wpPlay').addEventListener('click',function(){ if(!WP) return; var vn=WP.vn; if(!wpPlayer()) return; closeWord(); PL.fresh=false; plStart(vn); });
@@ -2446,7 +2454,7 @@ window.MF=(function(){
       +'<button type="button" data-m="speed"><span class="mi">⏩</span>'+esc(T.m_speed)+' · '+RATE()+'x</button>';
     m.hidden=!m.hidden; this.setAttribute('aria-expanded',m.hidden?'false':'true'); });
   $('ptMenu').addEventListener('click',function(e){ var b=e.target.closest('[data-m]'); if(!b) return; var m=b.dataset.m;
-    if(m==='speed'){ var r=RATES[(RATES.indexOf(RATE())+1)%RATES.length]; try{ localStorage.setItem('mf-rate',r); }catch(er){} if(sp.audio) sp.audio.playbackRate=r; b.lastChild.textContent=ptT().m_speed+' · '+r+'x'; return; }
+    if(m==='speed'){ var r=RATES[(RATES.indexOf(RATE())+1)%RATES.length]; try{ localStorage.setItem('mf-speed',r); }catch(er){} if(sp.audio) sp.audio.playbackRate=r; b.lastChild.textContent=ptT().m_speed+' · '+r+'x'; return; }
     $('ptMenu').hidden=true; if(m==='remind'){ ptClose(); var d=$('devoBtn'); if(d){ d.scrollIntoView({block:'center',behavior:'smooth'}); if(d.getAttribute('aria-expanded')!=='true') d.click(); } return; }
     ptSheet(m); });
   $('pt').addEventListener('click',function(e){ if(!$('ptMenu').hidden&&!e.target.closest('#ptMenu,#ptMore')) $('ptMenu').hidden=true; });
@@ -2471,7 +2479,7 @@ window.MF=(function(){
   function vis(sel){ var a=document.querySelectorAll(sel); for(var i=0;i<a.length;i++) if(a[i].getClientRects().length&&!a[i].closest('[hidden]')) return a[i]; return null; }
   function trFish(){ return cmpShown()?vis('#cmp figure'):$('stage'); }
   function trEl(i){ if(i===1) return $('ptBtn'); if(i===2||i===3) return trFish();
-    if(i===5){ var b=cmpShown()?vis('#cmp .spk'):vis('#spkMain .spk'); return b?b.parentElement:null; }
+    if(i===5){ var b=cmpShown()?vis('#cmp .spk'):vis('#spkMain .spk'); return b?(b.closest('figcaption')||b.parentElement):null; }
     if(i===6){ var f=cmpShown()&&vis('#cmp .fishlang'); return f?(f.closest('.flwrap')||f):$('langBtn'); }
     return {7:$('notesBtn'),8:$('etBtn'),9:$('acctBtn'),10:$('devoBtn')}[i]||null; }
   function trRing(){ if(!TR.on) return; var el=trEl(TR.i), r=$('tRing'); r.classList.toggle('none',!el); if(!el) { $('tCard').classList.remove('top'); return; }
@@ -2573,7 +2581,7 @@ window.MF=(function(){
       });
       html+='</p>';
       $('rChapter').innerHTML=html; setTimeout(readerFit,60); if(window.MFhlMarkStage) MFhlMarkStage();
-      RD={l:'en',t:j.verses.map(function(v){ return v.text.trim(); }),vs:+p.vs};
+      RD={l:'en',t:j.verses.map(function(v){ return v.text.trim(); }),vs:+p.vs}; rdPrefetch(RD,rIntro(false));
       var h=reader.querySelector('.hi'), bd=reader.querySelector('.reader-body');
       if(h&&bd){bd.scrollTop=Math.max(0,h.offsetTop-bd.offsetTop-bd.clientHeight/3);}
       $('rNote').textContent=ver.n+' · public domain';
@@ -2701,16 +2709,26 @@ window.MF=(function(){
   function voiceOptions(){ var v=curVoice(), dev={es:'Voz de este dispositivo'}[MF.lang]||'This device’s own voice';
     return VOICES.map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===v?' selected':'')+'>'+o[1]+'</option>'; }).join('')+'<option value="device"'+(v==='device'?' selected':'')+'>'+esc(dev)+'</option>'; }
   function setVoice(v){ try{ localStorage.setItem('mf-voice',v); }catch(e){} stopSpeak(); document.querySelectorAll('.voicesel').forEach(function(s){ s.value=v; }); }
+  // Ken, 11 Oct: "a delay" before a fish is heard -- the Word and Verse of each fish on screen are fetched in the background
+  var FISHC={};
+  function fishClip(l,k,part){ var v=aiVoice(), key=l+'|'+k+'|'+part+'|'+v; if(FISHC[key]) return FISHC[key];
+    var pr=fetch('/api/tts?w='+k+'&lang='+l+'&part='+part+'&v='+v).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){ return URL.createObjectURL(b); });
+    pr.catch(function(){ delete FISHC[key]; }); return FISHC[key]=pr; }
+  function fishPrefetch(){ clearTimeout(fishPrefetch.t); fishPrefetch.t=setTimeout(function(){ if(!aiVoice()||!cur) return;
+      var ls=cmpShown()?cmpLangs():[MF.lang]; ls.forEach(function(l){ if(!(SAY[l]||{})[cur]) return; fishClip(l,cur,'verse').catch(function(){}); fishClip(l,cur,'word').catch(function(){}); });
+      // and the first lines of the vision and the devotional, the two buttons people tap first
+      if(!VIS) return; var V=VIS[MF.lang]||VIS.en, vo=aiVoice(), L=VIS[MF.lang]?MF.lang:'en'; [V.p[0],V.p[1]].forEach(function(t){ sayUrl(spoken(t.replace(/^#/,''),L),L,vo).catch(function(){}); }); },1200); }
+  window.MFfishPrefetch=fishPrefetch;
   function speakFish(l,part,btn,box){
     if(sp.on && sp.btn===btn){ stopSpeak(); return; }
     stopSpeak(); var id=sp.id, d=(SAY[l]||{})[cur]; if(!d||!box) return;
     sp.on=true; sp.btn=btn; sp.box=box; btn.setAttribute('aria-pressed','true');
     var fig=btn.closest('figure[data-l]'), fh=fishHi(fig?fig.querySelector('.cmpf svg'):$('fishbox').querySelector('svg'),part,l); sp.fh=fh;
     var verse=part==='verse', shown=verse?d[1]:d[0], spoken=verse?d[1]+(l==='zh'?(/[。！？；：，]$/.test(d[1])?'':'。'):' ')+d[2]:d[0], spans=renderSay(box,shown,l,verse?d[2]:''), mk=function(ci){ mark(spans,ci); fh.mark(ci); };
-    (aiVoice()?fetch('/api/tts?w='+cur+'&lang='+l+'&part='+part+'&v='+aiVoice()):Promise.reject()).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){
-      if(id!==sp.id) return; var a=new Audio(URL.createObjectURL(b)); sp.audio=a;
+    (aiVoice()?fishClip(l,cur,part):Promise.reject()).then(function(url){
+      if(id!==sp.id) return; var a=AU(); a.onplaying=a.onpause=null; sp.audio=a;
       a.ontimeupdate=function(){ if(a.duration) mk(a.currentTime/a.duration*spoken.length); };
-      a.onended=function(){ if(id===sp.id) stopSpeak(); }; return a.play();
+      a.onended=function(){ if(id===sp.id) stopSpeak(); }; a.src=url; a.defaultPlaybackRate=a.playbackRate=RATE(); return a.play();
     }).catch(function(){ if(id!==sp.id) return; deviceSay(l,spoken,mk,id,box); });
   }
   function deviceSay(l,text,mk,id,box){ if(l==='he') text=text.replace(/ה׳/g,'אדוני');  // ה׳ is said aloud as Adonai
@@ -2718,7 +2736,7 @@ window.MF=(function(){
     if(!window.speechSynthesis){ sayNote(box,es?'Este navegador no puede leer en voz alta.':'This browser cannot read aloud.'); sp.on=false; stopSpeak(); return; }
     var vv=voiceFor(l);
     if(vv.any && !vv.v){ sayNote(box,(es?'Este dispositivo aún no tiene voz en ':'This device has no voice for ')+cmpLabel(l)+(es?'. Con la voz natural del sitio sí se podrá.':' yet. The site’s natural voice will cover it once it is turned on.')); sp.on=false; stopSpeak(); return; }
-    var u=new SpeechSynthesisUtterance(text); u.lang=LCODE[l]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.9;
+    var u=new SpeechSynthesisUtterance(text); u.lang=LCODE[l]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.9*RATE();
     var got=false, t0=Date.now(), cps=l==='zh'?4:l==='hi'?11:13;
     u.onboundary=function(e){ got=true; mk(e.charIndex); };
     sp.timer=setInterval(function(){ if(!got) mk((Date.now()-t0)/1000*cps); },150);
@@ -3204,7 +3222,7 @@ window.MF=(function(){
       : fetch('/fish-lang/bible/'+l+'/'+p.book.replace(/ /g,'_')+'-'+p.ch+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); });
     got.then(function(j){ if(!fr.isConnected||fr._ctx!==ctx) return; var h='<p>';
       j.t.forEach(function(t,n){ if(!t) return; h+='<span class="vn">'+(n+1)+'</span><span data-v="'+(n+1)+'" class="'+(n+1===vs?'hi':'')+'">'+esc(t)+'</span> '; });
-      ch.innerHTML=h+'</p>'; fr._rd={l:l,t:j.t,vs:vs}; if(window.MFhlMarkFig) MFhlMarkFig(fr);
+      ch.innerHTML=h+'</p>'; fr._rd={l:l,t:j.t,vs:vs}; rdPrefetch(fr._rd,label); if(window.MFhlMarkFig) MFhlMarkFig(fr);
       var fv=fr.querySelector('.frv'), cv=curVer();
       if(l==='en') fv.innerHTML='<select class="frver" aria-label="Bible version">'+VERS.map(function(v){ return '<option value="'+v.k+'"'+(v.k===cv.k?' selected':'')+'>'+esc(v.s)+'</option>'; }).join('')+'</select>'+esc(cv.n);
       else fv.textContent=j.v;
@@ -3253,7 +3271,7 @@ window.MF=(function(){
     cmpSel=(list||[]).filter(function(l,i,a){return ok.indexOf(l)>=0 && a.indexOf(l)===i;}); cmpLang=cmpSel[0]||null; var on=cmpShown();
     $('cmp').hidden=!on; $('stage').hidden=on; $('spkMain').hidden=on; $('sayMain').hidden=true; $('cmpBtn').setAttribute('aria-pressed',String(on)); buildMenu();
     if(on){ closeReader(); MFcmp(); cmpSel.forEach(function(l){ loadLang(l).then(function(){ MFcmp(); }).catch(function(){}); }); }
-    else sizeStage(); cmpLayout(); if(window.MFsave) MFsave(); }
+    else sizeStage(); cmpLayout(); if(window.MFsave) MFsave(); if(window.MFfishPrefetch) MFfishPrefetch(); }
   window.MFsetCmp=setCmp; window.MFcmpSel=function(){ return cmpSel.slice(); };
   var MENU={en:['Read the site in','Compare the fish in','Just one fish','soon'],es:['Leer el sitio en','Comparar el pez en','Solo un pez','pronto'],
     tl:['Basahin ang site sa','Ihambing ang isda sa','Isang isda lang','malapit na'],zh:['网站语言','对照的鱼','只看一条鱼','即将推出'],

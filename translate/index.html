@@ -148,9 +148,9 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
 
   // speed of the spoken translation (shared with the devotional's read-aloud)
   var RATES=[1,1.25,1.5,0.75];
-  function rate(){ var r=+get('mf-rate',1); return RATES.indexOf(r)>=0?r:1; }
+  function rate(){ var r=+get('mf-speed',1.25); return RATES.indexOf(r)>=0?r:1.25; }   /* Ken, 11 Oct: 1.25x by default */
   function rateUI(){ $('rateBtn').textContent='⏩ '+rate()+'x'; }
-  $('rateBtn').addEventListener('click',function(){ put('mf-rate',RATES[(RATES.indexOf(rate())+1)%RATES.length]); player.playbackRate=rate(); rateUI(); });
+  $('rateBtn').addEventListener('click',function(){ put('mf-speed',RATES[(RATES.indexOf(rate())+1)%RATES.length]); player.playbackRate=rate(); rateUI(); });
   rateUI();
   // ── the conversation
   function addTurn(side){ var e=$('empty'); if(e) e.remove(); var d=document.createElement('div'); d.className='turn '+side+' wait';

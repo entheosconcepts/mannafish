@@ -28,10 +28,20 @@ async function sha(t) {
   const h = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t));
   return [...new Uint8Array(h)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
+// Ken, 11 Oct: "there's a delay" before a recording plays -- the voice can also be asked for by GET
+// (/api/say?t=<text>&l=<lang>&v=<voice>), so the browser and Netlify's CDN keep every clip once it is made.
+const okRef = (r) => { try { return okOrigin(new URL(r).origin); } catch (e) { return false; } };
 export default async (req, context) => {
-  if (req.method !== 'POST') return bad('POST only', 405);
-  if (!okOrigin(req.headers.get('origin'))) return bad('Not allowed', 403);
-  let b; try { b = await req.json(); } catch (e) { return bad('Bad request', 400); }
+  const get = req.method === 'GET';
+  if (get) {
+    if (!new URL(req.url).pathname.endsWith('/say')) return bad('POST only', 405);
+    if (!(okOrigin(req.headers.get('origin')) || req.headers.get('sec-fetch-site') === 'same-origin' || okRef(req.headers.get('referer')))) return bad('Not allowed', 403);
+  } else {
+    if (req.method !== 'POST') return bad('POST only', 405);
+    if (!okOrigin(req.headers.get('origin'))) return bad('Not allowed', 403);
+  }
+  let b; if (get) { const q = new URL(req.url).searchParams; b = { text: q.get('t') || '', lang: q.get('l') || '', voice: q.get('v') || '' }; }
+  else { try { b = await req.json(); } catch (e) { return bad('Bad request', 400); } }
   const text = String(b.text || '').trim();
   if (!text) return bad('Nothing to say', 400);
   if (text.length > MAX) return bad('Too long', 413, 'long');
@@ -84,7 +94,10 @@ export default async (req, context) => {
       audio = await r.arrayBuffer();
       await store.set(id, audio);
     }
-    return new Response(audio, { headers: { 'content-type': 'audio/mpeg', 'cache-control': 'private, max-age=86400' } });
+    // the address holds the exact words and voice, so a clip never changes: keep it everywhere for a year
+    return new Response(audio, { headers: get
+      ? { 'content-type': 'audio/mpeg', 'cache-control': 'public, max-age=31536000, immutable', 'netlify-cdn-cache-control': 'public, max-age=31536000, durable', 'netlify-vary': 'query' }
+      : { 'content-type': 'audio/mpeg', 'cache-control': 'private, max-age=86400' } });
   }
 
   // the Translator's one microphone: the words are in one of two languages; find which, and give the other
