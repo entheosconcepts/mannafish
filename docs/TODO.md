@@ -94,6 +94,11 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [x] In the Bible reader: hear the verse or the whole chapter; pick the language (the passage opens in that language's Bible) and the voice. The verse being read is marked.
 - [x] Spanish chapters now show in the reader from the Reina-Valera 1909 (public domain), with a "Leer en RVR1960" link; the fish still quote the RVR1960.
 
+### Proofreading the fish (11 Oct, on the test site): /proof/  -- delete when proofreading is done
+- All 216 fish numbered 1A–24I (number = word, letter = language: A English, B Spanish, C Tagalog, D Chinese, E Hindi, F Greek, G German, H Korean, I Hebrew), each with its exact wording.
+- "Suggest a fix" under each fish: anyone with the link sends a correction, no sign-in. Each is emailed to 2fish@manna-fish.com (or MF_PROOF_TO) and saved.
+- The whole list: /api/proof-fix?k=<PROOF_KEY> once Ken adds PROOF_KEY (any long secret word) in Netlify.
+
 ### MannaFish Translator page (9 Oct, on the test site): /translate/  (also /translator)
 - Its own page, opened in a new tab from the Translator buttons; "← Devotional" goes back. Can be added to a phone's home screen as its own app.
 - One big microphone: speak in either language; OpenAI speech-to-text (/api/hear) hears it, the translator works out which of the two it was, shows it in the other and says it aloud. Stops by itself after a short pause.
