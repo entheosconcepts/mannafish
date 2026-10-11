@@ -228,3 +228,6 @@ Also check the small alternate-language fish and its "English ⇄" label the sam
   2Fish → What is 2 Fish?), Today's devotional left / TAKE A TOUR right, ONE FISH / TWO FISH pills in the fish card's
   top corners, less padding round the fish, Word | language | Verse under each fish; on a phone a verse or Strong's
   card opened on a fish gets ~62% of the screen.
+- "▶ The vision · Listen · 3 min" under the slogan (11 Oct): opens the vision written out, full screen, and reads it aloud
+  straight away (the bottom player pauses, skips, changes speed). Welcome / What is MannaFish? / What is 2 Fish? /
+  Always a free gift / How to use this site. All 9 languages -- want a fluent check.
