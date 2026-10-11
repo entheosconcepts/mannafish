@@ -200,3 +200,8 @@ Also check the small alternate-language fish and its "English ⇄" label the sam
 - Player: 🔁 Loop (verse → chapter → off) and 🎓 Learn (each verse, then the same verse in a second language shown under the player).
 - "Today's devotional · Pray · Hear · Do" under the headline: welcome, prayer, the day's catch, the fish verse, the 2 Fish
   challenge, a closing prayer -- in all 9 languages. The non-English scripts want a fluent reader's check.
+- Today's devotional is now full screen, one step at a time (like the Bible App's prayer time): welcome, Pray, Hear,
+  my prayer list (one prayer per screen; Mark as answered / Archive; ••• Add prayer, Prayer list, Answered,
+  Daily reminder, Speed), Do (the 2 Fish challenge: "Pray for them" adds that person to the list; Share today's fish), Amen.
+  Prayers are private: localStorage `mf-prayers`, and in the account as `notes` rows with word_key PRAYER:open|answered|archived
+  (no new table). Prayers are never sent to the voice service. Later: background music (needs licensed audio).
