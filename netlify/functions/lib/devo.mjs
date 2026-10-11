@@ -4,7 +4,8 @@
 // Text sign-ups are kept too, and start receiving once texting is set up.
 import { getStore } from '@netlify/blobs';
 import { createHash, createHmac, randomBytes } from 'node:crypto';
-import { localNow, todaysManna, SEND_HOUR, DEFAULT_TZ, validTz } from './manna.mjs';
+import { localNow, todaysManna, welcomeManna, sabbathRest, SEND_HOUR, DEFAULT_TZ, validTz } from './manna.mjs';
+import WORDS from './words.json';
 import { sendMail } from './mail.mjs';
 import FISH from './fishlines.json';
 import ES from './es.json';
@@ -39,8 +40,10 @@ export function emailFor(m, lang, unsub, opts = {}) {
   const img = SITE() + (es ? '/w/img/es/' + m.key.toLowerCase() + '.jpg' : '/w/img/' + m.key.toLowerCase() + '.png');
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const T = es
-    ? { sub: 'MannaFish de hoy: ' + word, hello: opts.welcome ? '¡Bienvenido! Tu primer MannaFish:' : 'La palabra de hoy', today: 'El versículo de hoy', read: 'Leer el capítulo', listen: 'Ver el MannaFish de hoy', fish: 'El versículo del pez', why: 'Recibes esto porque te suscribiste en manna-fish.com.', stop: 'Cancelar suscripción' }
-    : { sub: 'Today’s MannaFish: ' + word, hello: opts.welcome ? 'Welcome! Your first MannaFish:' : 'Today’s word', today: 'Today’s verse', read: 'Read the chapter', listen: 'See today’s MannaFish', fish: 'The verse on the fish', why: 'You are getting this because you signed up at manna-fish.com.', stop: 'Unsubscribe' };
+    ? { dbl: 'Tu porción doble', dblNote: 'En el sexto día recogieron doble porción (Éxodo 16:22). El versículo de hoy, y uno para el día de reposo.', sab: 'Para el día de reposo', sabRead: 'Leerlo', sabSub: ' · porción doble',
+        sub: 'MannaFish de hoy: ' + word, hello: opts.welcome ? '¡Bienvenido! Tu primer MannaFish:' : 'La palabra de hoy', today: 'El versículo de hoy', read: 'Leer el capítulo', listen: 'Ver el MannaFish de hoy', fish: 'El versículo del pez', why: 'Recibes esto porque te suscribiste en manna-fish.com.', stop: 'Cancelar suscripción' }
+    : { dbl: 'Your double portion', dblNote: 'On the sixth day they gathered twice as much (Exodus 16:22). Today’s verse, and one for the Sabbath.', sab: 'For the Sabbath', sabRead: 'Read it', sabSub: ' · a double portion',
+        sub: 'Today’s MannaFish: ' + word, hello: opts.welcome ? 'Welcome! Your first MannaFish:' : 'Today’s word', today: 'Today’s verse', read: 'Read the chapter', listen: 'See today’s MannaFish', fish: 'The verse on the fish', why: 'You are getting this because you signed up at manna-fish.com.', stop: 'Unsubscribe' };
   const snippet = es ? '' : ' — “' + m.snippet + '”';
   // Ken, 9 Oct: the email in the site's own look -- black, white lettering, MannaFish blue, the logo in its own font
   const logo = SITE() + '/w/img/logo-email.png';
@@ -49,6 +52,10 @@ export function emailFor(m, lang, unsub, opts = {}) {
   // Ken, 9 Oct: always black, in every mail app and in both light and dark mode (bgcolor for the apps that ignore styles)
   // Ken, 9 Oct: no audio from the email (it felt invasive) -- this button opens the day's fish on the site
   const listen = SITE() + '/?w=' + m.key.toLowerCase() + (es ? '&lang=es' : '');
+  // Ken, 11 Oct: Friday is a double portion (Exodus 16:22, 29) -- today's verse, and the verse on the fish for the Sabbath
+  const dbl = !!m.friday;
+  const fishIdx = WORDS.words[m.key].refs.findIndex((r) => r[0] === FISH.en[m.key].ref);
+  const sabLink = SITE() + '/?w=' + m.key.toLowerCase() + (fishIdx >= 0 ? '&r=' + fishIdx : '') + (es ? '&lang=es' : '');
   const btn = 'display:inline-block;color:#ffffff;text-decoration:none;font:bold 16px Arial,sans-serif;padding:13px 26px;border-radius:999px;margin:4px 5px';
   const html = `<!doctype html><html style="background:#000"><head><meta charset="utf-8"><meta name="color-scheme" content="only dark"><meta name="supported-color-schemes" content="dark">
 <style>:root{color-scheme:only dark}body,table,td{background-color:#000000 !important}u + .body,[data-ogsc] body{background:#000 !important}</style></head>
@@ -58,16 +65,19 @@ export function emailFor(m, lang, unsub, opts = {}) {
 <tr><td bgcolor="#000000" align="center" style="background:#000;padding:22px 20px 18px;border-bottom:1px solid #1f2a33"><a href="${SITE()}${es ? '/?lang=es' : '/'}" style="text-decoration:none"><img src="${logo}" width="200" alt="MannaFish" style="width:200px;height:auto;display:block;border:0;color:#fff;font:bold 26px Arial,sans-serif"></a></td></tr>
 <tr><td bgcolor="#000000" align="center" style="padding:24px 22px 4px;${lab}">${esc(T.hello)}</td></tr>
 <tr><td bgcolor="#000000" style="padding:16px 18px"><a href="${read}" style="text-decoration:none"><img src="${img}" width="524" alt="${esc(word)}" style="width:100%;max-width:524px;height:auto;border-radius:8px;display:block;background:#000;border:1px solid #1f2a33"></a></td></tr>
+${dbl ? `<tr><td bgcolor="#000000" align="center" style="padding:6px 22px 0;font:900 19px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#2a5fb0">${esc(T.dbl)}</td></tr>
+<tr><td bgcolor="#000000" align="center" style="padding:6px 30px 14px;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4">${esc(T.dblNote)}</td></tr>` : ''}
 <tr><td bgcolor="#000000" align="center" style="padding:6px 22px 0;${lab}">${esc(T.today)}</td></tr>
 <tr><td bgcolor="#000000" align="center" style="padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0"><b style="color:#ffffff">${esc(ref)}</b>${esc(snippet)}</td></tr>
 <tr><td bgcolor="#000000" align="center" style="padding:18px 16px 22px"><a href="${listen}" style="${btn};background:#2a5fb0">${esc(T.listen)}</a><a href="${read}" style="${btn};background:#000000;border:1px solid #2a5fb0">${esc(T.read)}</a></td></tr>
-<tr><td bgcolor="#000000" align="center" style="padding:16px 22px 0;border-top:1px solid #1f2a33;${lab}">${esc(T.fish)}</td></tr>
-<tr><td bgcolor="#000000" align="center" style="padding:8px 26px 22px;font:italic 17px/1.55 Georgia,serif;color:#c6d2d4">“${esc(f.top)} ${esc(f.bottom)}”<br><span style="font:normal 13px Arial,sans-serif;color:#8a9aa0">${esc(f.ref)}</span></td></tr>
+<tr><td bgcolor="#000000" align="center" style="padding:16px 22px 0;border-top:1px solid #1f2a33;${lab}">${esc(dbl ? T.sab : T.fish)}</td></tr>
+<tr><td bgcolor="#000000" align="center" style="padding:8px 26px ${dbl ? '0' : '22px'};font:${dbl ? 'normal 19px/1.55' : 'italic 17px/1.55'} Georgia,serif;color:${dbl ? '#eaf0f0' : '#c6d2d4'}">“${esc(f.top)} ${esc(f.bottom)}”<br><span style="font:${dbl ? 'bold 15px' : 'normal 13px'} Arial,sans-serif;color:${dbl ? '#ffffff' : '#8a9aa0'}">${esc(f.ref)}</span></td></tr>
+${dbl ? `<tr><td bgcolor="#000000" align="center" style="padding:16px 16px 24px"><a href="${sabLink}" style="${btn};background:#000000;border:1px solid #2a5fb0">${esc(T.sabRead)}</a></td></tr>` : ''}
 <tr><td bgcolor="#000000" align="center" style="padding:16px 22px 22px;border-top:1px solid #1f2a33;font:12px/1.7 Arial,sans-serif;color:#8a9aa0">${esc(T.why)} <a href="${unsub}" style="color:#8a9aa0">${esc(T.stop)}</a> · <a href="${SITE()}/privacy/" style="color:#8a9aa0">${es ? 'Privacidad' : 'Privacy'}</a><br>${esc(ADDRESS())}</td></tr>
 </table></td></tr></table></body></html>`;
-  const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${T.today}: ${ref}${snippet}\n${T.listen}: ${listen}\n${T.read}: ${read}\n\n${T.fish}: “${f.top} ${f.bottom}” ${f.ref}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
+  const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${dbl ? T.dbl + ' — ' + T.dblNote + '\n\n' : ''}${T.today}: ${ref}${snippet}\n${T.listen}: ${listen}\n${T.read}: ${read}\n\n${dbl ? T.sab : T.fish}: “${f.top} ${f.bottom}” ${f.ref}${dbl ? '\n' + T.sabRead + ': ' + sabLink : ''}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
   LINK = keep;
-  return { subject: T.sub, html, text };
+  return { subject: T.sub + (dbl ? T.sabSub : ''), html, text };
 }
 
 export async function deliver(rec, m, opts) {
@@ -109,6 +119,10 @@ export async function sendDue(now = new Date()) {
     const rec = await s.get(b.key, { type: 'json' });
     if (!rec || rec.unsub || rec.by !== 'Email') { skipped++; continue; }
     const tz = rec.tz || DEFAULT_TZ, here = localNow(now, tz);
+    if (rec.welcomeDue && !sabbathRest(now, tz)) {
+      try { await deliver(rec, welcomeManna(now, tz), { welcome: true }); rec.welcomeDue = false; await s.setJSON(b.key, rec); sent++; }
+      catch (e) { failed++; console.log('held welcome failed', b.key, String(e).slice(0, 200)); }
+    }
     if (here.hour < SEND_HOUR || rec.lastSent === here.date || !dueToday(rec.freq, here)) { skipped++; continue; }
     const m = todaysManna(now, tz);
     if (!m) { skipped++; continue; }

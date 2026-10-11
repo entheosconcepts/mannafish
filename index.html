@@ -2775,6 +2775,9 @@ window.MF=(function(){
       h+='<p class="okwhat">'+esc(es?'Devocional '+oft.toLowerCase():oft+' devotional')+' · '+(byText?T('by text','por mensaje de texto'):T('by email','por correo'))+'</p>';
       h+='<p class="okto">'+esc(byText?(fd.phone||''):(fd.email||''))+'</p>';
       h+=byText?'<p>'+T('Texting is being switched on now. Your first text arrives as soon as it is ready — you don’t need to sign up again.','Los mensajes de texto se están activando. Su primer mensaje llegará en cuanto esté listo; no necesita inscribirse de nuevo.')+'</p>'
+        // Ken, 11 Oct: welcome emails rest over the Sabbath (6pm Friday to 9pm Saturday, by the visitor's own clock)
+        :(function(){ var d=new Date(), w=d.getDay(), hr=d.getHours(); return (w===5&&hr>=18)||(w===6&&hr<21); })()
+        ?'<p>'+T('We rest on the Sabbath, so your welcome email with your first MannaFish arrives <b>Saturday evening at 9 pm</b>. “The LORD hath given you the sabbath” (Exodus 16:29).','Descansamos en el día de reposo, así que su correo de bienvenida con su primer MannaFish llegará <b>el sábado a las 9 de la noche</b>. “Mirad que Jehová os dio el sábado” (Éxodo 16:29).')+'</p>'
         :'<p>'+T('Look for a welcome email from <b>MannaFish</b> (2fish@manna-fish.com) in the next few minutes. Not there? Check your spam or promotions folder.','Busque un correo de bienvenida de <b>MannaFish</b> (2fish@manna-fish.com) en los próximos minutos. ¿No llega? Revise la carpeta de spam o promociones.')+'</p>';
       if(!byText) h+='<p>'+T('Then your devotional arrives ','Después, su devocional llega ')+esc(when)+'.</p>'; }
     else if(id==='giftForm'){ title=T('Request received!','¡Solicitud recibida!');

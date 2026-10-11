@@ -16,6 +16,11 @@ Sign-ups are already being saved; nothing goes out yet except phone push notices
 - [ ] Texts: sign-ups by text are saved and wait for texting to be set up.
 - [ ] Texts: register the number (10DLC or toll-free), then turn texting on.
 
+### Sabbath rest and the Friday double portion (11 Oct, on the test site)
+- Daily emails: mornings Sunday to Friday (unchanged). Friday's is "Your double portion" (Exodus 16:22): today's verse, and the verse on the fish "For the Sabbath" with its own Read it button. Subject ends "· a double portion".
+- Welcome emails rest from 6pm Friday to 9pm Saturday (the subscriber's time zone); anyone who signs up then sees "We rest on the Sabbath ... Saturday evening at 9 pm" and gets the welcome (with Sunday's word) at 9pm Saturday.
+- Preview Friday's email: /api/devo-preview?friday=1
+
 ### Devotional email (9 Oct)
 - [x] Always black in every mail app (light or dark mode); no big word above the fish (the fish shows it).
 - [x] "▶ Listen" button: one tap plays the day's MannaFish aloud in the phone's player (the word, today's verse, the verse on the fish), in English or Spanish, natural voice. Email apps cannot run a player or menus inside the email, so language and voice choices stay on the website.

@@ -41,19 +41,29 @@ export function todaysManna(now = new Date(), tz = DEFAULT_TZ) {
   };
 }
 
+// Ken, 11 Oct: welcome emails rest over the Sabbath -- from 6pm Friday until 9pm Saturday where the person is;
+// one asked for then is sent at 9pm Saturday, with Sunday's word
+export const REST_FROM = 18, REST_UNTIL = 21;
+export function sabbathRest(now = new Date(), tz = DEFAULT_TZ) {
+  const h = localNow(now, tz); return (h.dow === 5 && h.hour >= REST_FROM) || (h.dow === 6 && h.hour < REST_UNTIL);
+}
+export function welcomeManna(now = new Date(), tz = DEFAULT_TZ) {
+  return todaysManna(now, tz) || todaysManna(new Date(now.getTime() + 86400000), tz);
+}
+
 export function notificationFor(m, lang = 'en') {
   if (lang === 'es') {
     const mm = m.ref.match(/^(.*?)\s+(\d+:\d+.*)$/);
     const ref = mm ? (ES.books[mm[1]] || mm[1]) + ' ' + mm[2] : m.ref;
     return {
       title: 'MannaFish de hoy: ' + (ES.titles[m.key] || m.title).toUpperCase(),
-      body: ref + ' \u2014 toca para leer.' + (m.friday ? '  \u00b7 Doble porci\u00f3n: lee tambi\u00e9n el vers\u00edculo del pez.' : ''),
+      body: ref + ' \u2014 toca para leer.' + (m.friday ? '  \u00b7 Porci\u00f3n doble: el vers\u00edculo de hoy y uno para el d\u00eda de reposo.' : ''),
       url: m.url + '&lang=es'
     };
   }
   return {
     title: 'Today\u2019s MannaFish: ' + m.title.toUpperCase(),
-    body: m.ref + ' \u2014 \u201c' + m.snippet + '\u201d' + (m.friday ? '  \u00b7 A double portion: read the verse on the fish too.' : ''),
+    body: m.ref + ' \u2014 \u201c' + m.snippet + '\u201d' + (m.friday ? '  \u00b7 A double portion: today\u2019s verse and one for the Sabbath.' : ''),
     url: m.url
   };
 }
