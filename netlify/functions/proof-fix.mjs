@@ -34,13 +34,13 @@ export default async (req, context) => {
   if (!/^\d{1,2}[A-I]$/.test(n)) return bad('Which fish?', 400);
   if (!fix) return bad('Please write the correction', 400);
   if (await limited(context && context.ip)) return bad('Please wait a little', 429);
-  const rec = { n, word: String(b.word || '').slice(0, 80), lang: String(b.lang || '').slice(0, 40), fix, name: String(b.name || '').trim().slice(0, 120), at: new Date().toISOString() };
+  const rec = { n, word: String(b.word || '').slice(0, 80), lang: String(b.lang || '').slice(0, 40), fix, name: String(b.name || '').trim().slice(0, 120), via: String(b.via || '').slice(0, 40), at: new Date().toISOString() };
   await store.setJSON(`fix/${rec.at}-${n}-${Math.random().toString(36).slice(2, 7)}`, rec);
   if (hasMail()) {
     try {
-      await sendMail({ to: TO(), name: 'MannaFish', subject: `Fish ${n} correction: ${rec.word} (${rec.lang})`, tag: 'proof',
-        text: `Fish ${n} — ${rec.word} (${rec.lang})\n\n${fix}\n\nFrom: ${rec.name || 'not given'}\n${rec.at}`,
-        html: `<p style="font:16px Arial,sans-serif"><b>Fish ${esc(n)}</b> — ${esc(rec.word)} (${esc(rec.lang)})</p><p style="font:16px/1.5 Georgia,serif;white-space:pre-wrap">${esc(fix)}</p><p style="font:13px Arial,sans-serif;color:#555">From: ${esc(rec.name || 'not given')} · ${esc(rec.at)}</p>` });
+      await sendMail({ to: TO(), name: 'MannaFish', subject: `Fish ${n} correction: ${rec.word} (${rec.lang})${/^native/.test(rec.via) ? ' · native speaker' : ''}`, tag: 'proof',
+        text: `Fish ${n} — ${rec.word} (${rec.lang})\n\n${fix}\n\nFrom: ${rec.name || 'not given'}${rec.via ? ' (' + rec.via + ')' : ''}\n${rec.at}`,
+        html: `<p style="font:16px Arial,sans-serif"><b>Fish ${esc(n)}</b> — ${esc(rec.word)} (${esc(rec.lang)})</p><p style="font:16px/1.5 Georgia,serif;white-space:pre-wrap">${esc(fix)}</p><p style="font:13px Arial,sans-serif;color:#555">From: ${esc(rec.name || 'not given')}${rec.via ? ' (' + esc(rec.via) + ')' : ''} · ${esc(rec.at)}</p>` });
     } catch (e) { console.log('proof email failed', String(e).slice(0, 200)); }
   }
   return Response.json({ ok: true });

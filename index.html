@@ -1690,13 +1690,14 @@ window.MF=(function(){
     function lab(q){ return LB[q]||LE[q]||MF.t(q); }
     var tx=function(q){ return W[q]!=null?W[q]:(l==='en'?(E[q]!=null?E[q]:e[q]):e[q]); };
     var s0=String(tx('s')||''), t=[s0.charAt(0).toUpperCase()+s0.slice(1)], h='<p class="lxq"><span data-v="1">'+esc(t[0])+'</span></p>';
-    function sec(head,body,read){ if(!body) return; if(read) t.push(body);
-      h+='<div class="lx"><div class="lx-h">'+esc(head)+'</div><p>'+(read?'<span data-v="'+t.length+'">'+esc(body)+'</span>':esc(body))+'</p></div>'; }
+    function sec(head,body,read){ if(!body) return; var hv='';
+      if(read){ t.push(head); hv=' data-v="'+t.length+'"'; t.push(body); }
+      h+='<div class="lx"><div class="lx-h"><span'+hv+'>'+esc(head)+'</span></div><p>'+(read?'<span data-v="'+t.length+'">'+esc(body)+'</span>':esc(body))+'</p></div>'; }
     sec(lab('sounds'),tx('p'),1); sec(lab('from'),tx('d'),0); sec(lab('kjvtr'),tx('k'),1);   // the "from H6960" line is shown, not read
     var use=W.use||E.use, sen=W.senses||E.senses||[], rel=W.related||E.related||[], note=W.note||E.note;
-    if(use||sen.length||note){ h+='<div class="lxdeep"><div class="lxdh">'+esc(lab('deeper'))+'</div>';
+    if(use||sen.length||note){ t.push(lab('deeper')); h+='<div class="lxdeep"><div class="lxdh"><span data-v="'+t.length+'">'+esc(lab('deeper'))+'</span></div>';
       sec(lab('used'),use,1);
-      if(sen.length){ h+='<div class="lx"><div class="lx-h">'+esc(lab('senses'))+'</div>'; sen.forEach(function(x){ t.push(x); h+='<p class="lxs"><span data-v="'+t.length+'">'+esc(x)+'</span></p>'; }); h+='</div>'; }
+      if(sen.length){ t.push(lab('senses')); h+='<div class="lx"><div class="lx-h"><span data-v="'+t.length+'">'+esc(lab('senses'))+'</span></div>'; sen.forEach(function(x){ t.push(x); h+='<p class="lxs"><span data-v="'+t.length+'">'+esc(x)+'</span></p>'; }); h+='</div>'; }
       if(rel.length){ h+='<div class="lx"><div class="lx-h">'+esc(lab('related'))+'</div>'+rel.map(function(r){ return '<p class="lxr"><span class="lx-l">'+esc(r[0])+'</span> <span class="lx-t">'+esc(r[1])+'</span> <span class="lxn">'+esc(r[2])+'</span> · '+esc(r[3])+'</p>'; }).join('')+'</div>'; }
       sec(lab('note'),note,1); h+='</div>'; }
     return {id:id,t:t,l:l,credit:lab('credit'),html:'<div class="lexc"'+(l==='he'?' dir="rtl"':'')+'>'+h+'</div>',head:'<span class="lx-l">'+esc(e.l)+'</span> <span class="lx-t">'+esc(e.t)+'</span>'
@@ -1854,7 +1855,11 @@ window.MF=(function(){
     function verse(v){ if(id!==sp.id) return; if(v>to||v>D.t.length){ done(); return; } if(!D.t[v-1]){ verse(v+1); return; }
       var el=rMarkIn(ctx,v), full=D.t[v-1], parts=rChunks(full), k=0, pos=0;
       (function nextPart(){ if(k>=parts.length){ verse(v+1); return; } var part=parts[k++], base=full.indexOf(part,pos); if(base<0) base=pos; pos=base+part.length; say(part,base,el,nextPart); })(); }
-    verse(from); }
+    // Ken, 11 Oct: read the heading first -- the reference, or the card's title -- for someone who is only listening
+    var ip=ctx.intro?rChunks(ctx.intro):[];
+    (function intro(){ if(id!==sp.id) return; if(!ip.length){ verse(from); return; } say(ip.shift(),0,null,intro); })(); }
+  function chapterOf(ref){ return String(ref||'').replace(/\s*[:：]\s*\d+.*$/,''); }
+  function headOf(kick,ref){ return String(kick||'').replace(/\s*·\s*/g,'. ').replace(/\bStrong\b/,'Strong’s')+(ref?'. '+ref:''); }
   // Listen: start the day's verse, pause and carry on, and ask for one tap when the browser will not play by itself
   var LIS={en:['Listen','Pause','Tap to listen'],es:['Escuchar','Pausa','Toca para escuchar'],tl:['Pakinggan','I-pause','Pindutin para makinig'],zh:['收听','暂停','点此收听'],
     hi:['सुनें','रोकें','सुनने के लिए दबाएँ'],el:['Ακούστε','Παύση','Πατήστε για ακρόαση'],de:['Anhören','Pause','Zum Anhören tippen'],ko:['듣기','일시정지','눌러서 듣기'],he:['האזינו','השהיה','הקישו להאזנה']};
@@ -1864,7 +1869,7 @@ window.MF=(function(){
     $('listenIco').innerHTML=play?'&#10074;&#10074;':'&#9654;&#xFE0E;'; $('listenLab').textContent=tap?T[2]:play?T[1]:T[0];
     $('rTap').textContent='▶ '+T[2]; $('rPause').innerHTML=play?'&#10074;&#10074;':'&#9654;&#xFE0E;'; $('rPause').setAttribute('aria-label',play?T[1]:T[0]); }
   function listenBlocked(){ stopSpeak(); rMark(0); listenUI(true); }
-  function startListen(){ if(!RD) return; sp.started=false; readAloud(readerCtx(),RD.vs,RD.vs,$('rPlayV')); listenUI();
+  function startListen(){ if(!RD) return; sp.started=false; var c=readerCtx(); c.intro=rIntro(false); readAloud(c,RD.vs,RD.vs,$('rPlayV')); listenUI();
     var id=sp.id; setTimeout(function(){ if(sp.id===id && sp.on && !sp.started) listenBlocked(); },8000); }
   function listenToggle(){ if(!sp.on || !sp.btn || !reader.contains(sp.btn)){ startListen(); return; }
     if(sp.audio){ if(sp.audio.paused) sp.audio.play(); else sp.audio.pause(); }
@@ -1881,8 +1886,11 @@ window.MF=(function(){
     loadOrig(p).then(function(j){ if(window.MFreader!==r) return; var o=origView(j,p,r.k); RO=true; $('rOrig').setAttribute('aria-pressed','true');
       $('rChapter').innerHTML=o.html; RD={l:o.l,t:o.t,vs:+p.vs}; if(window.MFhlMarkStage) MFhlMarkStage(); $('rNote').textContent=o.credit; $('rVer').style.display='none';
       reader.querySelector('.reader-body').scrollTop=0; setTimeout(readerFit,60); }).catch(function(){}); });
-  $('rPlayV').addEventListener('click',function(){ if(RD) readAloud(readerCtx(),RD.vs,RD.vs,this); });
-  $('rPlayC').addEventListener('click',function(){ if(RD) readAloud(readerCtx(),1,RD.t.length,this); });
+  function rIntro(chapter){ var r=window.MFreader, ref=$('rRef').innerText.replace(/🔊/g,'').trim(); if(RO) return '';   /* the Hebrew/Greek view: the English reference would sound wrong in that voice */
+    if(r&&r.kind==='strongs'){ var tl=$('rRef').querySelector('.lx-t'); return headOf($('rKicker').textContent,tl?tl.textContent:''); }
+    return chapter?chapterOf(ref):ref; }
+  $('rPlayV').addEventListener('click',function(){ if(RD){ var c=readerCtx(); c.intro=rIntro(false); readAloud(c,RD.vs,RD.vs,this); } });
+  $('rPlayC').addEventListener('click',function(){ if(RD){ var c=readerCtx(); c.intro=rIntro(true); readAloud(c,1,RD.t.length,this); } });
   MF.onChange(function(){ var r=window.MFreader; if(r&&r.kind==='ref') rsayUI(r.l||MF.lang); if(r&&r.kind==='strongs') rsayUI(r.l||'en'); });
   // Ken, 6 Oct: "a little select version button ... so people can change the translation."
   // Only translations that are free to show in full (public domain, served by bible-api.com).
@@ -2454,7 +2462,7 @@ window.MF=(function(){
     hi:['आपके लिए','किसी और के लिए'],el:['Για σένα','Για κάποιον άλλο'],de:['Für dich','Für jemand anderen'],ko:['당신을 위해','다른 사람을 위해'],he:['בשבילך','בשביל מישהו אחר']};
   var cmpDefault=false;
   function twoFish(){ return [MF.lang, MF.lang==='en'?'es':'en']; }
-  function oneFish(on){ try{ if(on) localStorage.setItem('mf-one','1'); else localStorage.removeItem('mf-one'); }catch(e){} }
+  function oneFish(on){ try{ if(on) sessionStorage.setItem('mf-one','1'); else sessionStorage.removeItem('mf-one'); localStorage.removeItem('mf-one'); }catch(e){} }
   // Ken, 9 Oct: tap the language under a fish to change it -- "For you" changes your own reading language,
   // "For someone else" changes just that fish
   function fishLang(l){ return '<span class="flwrap"><select class="fishlang" data-l="'+l+'" aria-label="Language">'+CMPL.filter(function(o){ return !o[2]; }).map(function(o){
@@ -2548,6 +2556,9 @@ window.MF=(function(){
     var o=e.target.closest('.rorig'); if(o && fr._ctx){ var c=fr._ctx; if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak(); openFigReader(fr.parentNode,c.k,c.i,c.l,!c.orig); return true; }
     if(e.target.closest('select')) return true;
     var b=e.target.closest('.rplay'); if(b && fr._rd){ var ctx={root:fr.querySelector('.chapter'),data:fr._rd,box:fr.querySelector('.frbody')};
+      var rr=fr.querySelector('.rref'), ref=rr?rr.innerText.replace(/🔊/g,'').trim():'';
+      var lt=fr.querySelector('.rref .lx-t');
+      ctx.intro=(fr._ctx&&fr._ctx.orig)?'':fr.classList.contains('lex')?headOf(fr.querySelector('.rk').textContent,lt?lt.textContent:''):(b.dataset.a==='v'?ref:chapterOf(ref));
       if(b.dataset.a==='v') readAloud(ctx,fr._rd.vs,fr._rd.vs,b); else readAloud(ctx,1,fr._rd.t.length,b); }
     return true; }
   function cmpDeck(f){ if(!f.classList.contains('on')) return; var b=f.querySelector('.cmpb'); b.style.height=deckCardH(f.clientWidth)+'px'; buildDeck(b.querySelector('.face.back')); }
@@ -2699,8 +2710,9 @@ window.MF=(function(){
   restoreReturn();
   if(window.MFresumeInit) MFresumeInit();
   // two fish unless they chose one (or came from an email link, which opens the day's verse under one fish)
-  (function(){ var one=null; try{ one=localStorage.getItem('mf-one'); }catch(e){}
-    if(one==='1' || /[?&]r=\d/.test(location.search) || cmpShown()) return; cmpDefault=true; setCmp(twoFish()); })();
+  // Ken, 11 Oct: two fish every time the site opens, from an email link too; "Just one fish" lasts for this visit
+  (function(){ var one=null; try{ localStorage.removeItem('mf-one'); one=sessionStorage.getItem('mf-one'); }catch(e){}
+    if(one!=='1' && !cmpShown()){ cmpDefault=true; setCmp(twoFish()); } cmpLayout(); })();
   // Ken, 9 Oct: from the devotional email, land on the day's fish (as on the site) with the verse open right under it
   (function(){var m=location.search.match(/[?&]r=(\d+)/); if(m && DATA[cur].refs[+m[1]]){ landing=true;
     if(/[?&]listen=1/.test(location.search)){ sheet=true; listenUI(); var want=null, t0=Date.now();

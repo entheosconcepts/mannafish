@@ -54,6 +54,9 @@ header p{margin:8px 0 0;color:var(--dim);max-width:70ch}
 .fixbox .cancel{font:600 .8rem var(--display);color:var(--dim);background:none;border:0;cursor:pointer}
 .fixbox .msg{font:600 .82rem var(--display);color:var(--blue2)}
 .fixbox .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.fixbtns{display:flex;flex-wrap:wrap;gap:6px}
+.fixbtns[hidden]{display:none}
+.fix.native{border-color:var(--blue2)}
 .sent{font:600 .82rem var(--display);color:#7fd18b}
 </style>
 </head>
@@ -63,7 +66,7 @@ header p{margin:8px 0 0;color:var(--dim);max-width:70ch}
   <h1>Manna<b>Fish</b> proofreading</h1>
   <p>Every MannaFish design in every language. The number is the word, the letter is the language: <b>1A</b> is “Rest” in English, <b>1C</b> is “Rest” in Tagalog. Check the spelling of the word, the two verse lines and the reference on each fish.</p>
   <div class="key" id="key" role="group" aria-label="Show a language"></div>
-  <p class="how" id="how">See a mistake? Tap <b>Suggest a fix</b> under that fish, write the correct wording, and tap <b>Send</b>. It goes straight to the MannaFish team with the fish’s number. No sign-in needed.</p>
+  <p class="how" id="how">See a mistake? Tap <b>Suggest a fix</b> under that fish (in English), or the button in the fish’s own language if that is your first language. Write the correct wording and tap <b>Send</b>. It goes straight to the MannaFish team with the fish’s number. No sign-in needed.</p>
 </header>
 <main id="list"></main>
 </div>
@@ -81,24 +84,41 @@ function render(){ key(); const words={};
       return '<article class="card" id="f'+it.n+'" data-n="'+it.n+'"><div class="hd"><span class="num">'+it.n+'</span><span class="lang">'+esc(L.name)+(L.native!==L.name?' · '+esc(L.native):'')+'</span></div>'
         +'<img src="/proof/img/'+it.n+'.jpg" alt="Fish '+it.n+': '+esc(it.word)+'" width="792" height="398" loading="lazy">'
         +'<div class="txt" lang="'+it.code+'"'+(rtl?' dir="rtl"':'')+'><p class="w">'+esc(it.word)+'</p><p>'+esc(it.top)+'</p>'+(it.bot?'<p>'+esc(it.bot)+'</p>':'')+'<p class="r">'+esc(it.ref)+'</p></div>'
-        +'<button type="button" class="fix">Suggest a fix</button><div class="fixbox" hidden><textarea aria-label="The correction for fish '+it.n+'" placeholder="What should it say? For example: the second line should read …"></textarea><input class="who" aria-label="Your name (optional)" placeholder="Your name (optional)"><input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="row"><button type="button" class="send">Send</button><button type="button" class="cancel">Cancel</button><span class="msg" role="status"></span></div></div></article>'; }).join('')+'</div></section>'; }).join('')||'<p class="empty">Nothing to show.</p>';
+        +'<div class="fixbtns"><button type="button" class="fix" data-via="en">'+FX.en[0]+'</button>'+(it.code!=='en'?'<button type="button" class="fix native" data-via="'+it.code+'" lang="'+it.code+'"'+(rtl?' dir="rtl"':'')+'>'+esc(FX[it.code][0])+'</button>':'')+'</div>'
+        +'<div class="fixbox" hidden><textarea></textarea><input class="who"><input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="row"><button type="button" class="send"></button><button type="button" class="cancel"></button><span class="msg" role="status"></span></div></div></article>'; }).join('')+'</div></section>'; }).join('')||'<p class="empty">Nothing to show.</p>';
   }
 $('key').addEventListener('click',e=>{ const b=e.target.closest('button[data-l]'); if(!b) return; show=b.dataset.l; try{ localStorage.setItem('mf-proof-show',show); }catch(x){} render(); });
 // "Suggest a fix": a small box under the fish; Send emails the correction (with the fish's number) to MannaFish
 let who=''; try{ who=localStorage.getItem('mf-proof-name')||''; }catch(x){}
-$('list').addEventListener('click',async e=>{ const card=e.target.closest('.card'); if(!card) return; const box=card.querySelector('.fixbox'), fix=card.querySelector('.fix');
-  if(e.target.closest('.fix')){ fix.hidden=true; box.hidden=false; box.querySelector('.who').value=who; box.querySelector('textarea').focus(); return; }
-  if(e.target.closest('.cancel')){ box.hidden=true; fix.hidden=false; return; }
+// Ken, 11 Oct: "Suggest a fix" in English for bilingual helpers, and a second button in the fish's own language for native speakers
+// [button, what should it say?, your name, send, cancel, thank you ({n}), write it first, sending]
+const FX={en:['Suggest a fix','What should it say? For example: the second line should read …','Your name (optional)','Send','Cancel','Thank you. Your correction for {n} was sent.','Please write the correction first.','Sending…'],
+ es:['Sugerir una corrección','¿Qué debería decir? Por ejemplo: la segunda línea debería decir …','Tu nombre (opcional)','Enviar','Cancelar','Gracias. Tu corrección para {n} fue enviada.','Escribe primero la corrección.','Enviando…'],
+ tl:['Magmungkahi ng pagwawasto','Ano ang dapat nakasulat? Halimbawa: ang ikalawang linya ay dapat …','Iyong pangalan (opsyonal)','Ipadala','Kanselahin','Salamat. Naipadala ang iyong pagwawasto para sa {n}.','Pakisulat muna ang pagwawasto.','Ipinapadala…'],
+ zh:['建议修改','应该怎么写？例如：第二行应为……','您的名字（可选）','发送','取消','谢谢！您对 {n} 的修改建议已发送。','请先写下修改内容。','正在发送…'],
+ hi:['सुधार सुझाएँ','इसमें क्या लिखा होना चाहिए? उदाहरण: दूसरी पंक्ति ऐसी होनी चाहिए …','आपका नाम (वैकल्पिक)','भेजें','रद्द करें','धन्यवाद। {n} के लिए आपका सुधार भेज दिया गया।','कृपया पहले सुधार लिखें।','भेजा जा रहा है…'],
+ el:['Προτείνετε διόρθωση','Τι πρέπει να γράφει; Για παράδειγμα: η δεύτερη γραμμή πρέπει να είναι …','Το όνομά σας (προαιρετικό)','Αποστολή','Ακύρωση','Ευχαριστούμε. Η διόρθωσή σας για το {n} στάλθηκε.','Γράψτε πρώτα τη διόρθωση.','Αποστολή…'],
+ de:['Korrektur vorschlagen','Wie sollte es lauten? Zum Beispiel: Die zweite Zeile sollte lauten …','Ihr Name (optional)','Senden','Abbrechen','Danke. Ihre Korrektur für {n} wurde gesendet.','Bitte schreiben Sie zuerst die Korrektur.','Wird gesendet…'],
+ ko:['수정 제안하기','어떻게 써야 할까요? 예: 두 번째 줄은 …(으)로 되어야 합니다','이름 (선택)','보내기','취소','감사합니다. {n}에 대한 수정 제안이 전송되었습니다.','먼저 수정 내용을 적어 주세요.','보내는 중…'],
+ he:['הציעו תיקון','מה צריך להיות כתוב? לדוגמה: השורה השנייה צריכה להיות …','השם שלכם (לא חובה)','שליחה','ביטול','תודה. התיקון שלכם עבור {n} נשלח.','נא לכתוב קודם את התיקון.','שולח…']};
+$('list').addEventListener('click',async e=>{ const card=e.target.closest('.card'); if(!card) return; const box=card.querySelector('.fixbox'), btns=card.querySelector('.fixbtns');
+  const open=e.target.closest('.fix');
+  if(open){ const v=open.dataset.via, T=FX[v]||FX.en, rtl=v==='he'; box.dataset.via=v; box.setAttribute('lang',v); box.dir=rtl?'rtl':'ltr';
+    const ta=box.querySelector('textarea'); ta.placeholder=T[1]; ta.setAttribute('aria-label',T[0]+' '+card.dataset.n); const w=box.querySelector('.who'); w.placeholder=T[2]; w.setAttribute('aria-label',T[2]); w.value=who;
+    box.querySelector('.send').textContent=T[3]; box.querySelector('.cancel').textContent=T[4]; box.querySelector('.msg').textContent='';
+    btns.hidden=true; box.hidden=false; ta.focus(); return; }
+  if(e.target.closest('.cancel')){ box.hidden=true; btns.hidden=false; return; }
   if(!e.target.closest('.send')) return;
-  const it=DATA.items.find(x=>x.n===card.dataset.n), L=langOf(it.l), t=box.querySelector('textarea').value.trim(), msg=box.querySelector('.msg'), btn=e.target.closest('.send');
-  if(!t){ msg.textContent='Please write the correction first.'; return; }
+  const it=DATA.items.find(x=>x.n===card.dataset.n), L=langOf(it.l), via=box.dataset.via||'en', T=FX[via]||FX.en, t=box.querySelector('textarea').value.trim(), msg=box.querySelector('.msg'), btn=e.target.closest('.send');
+  if(!t){ msg.textContent=T[6]; return; }
   who=box.querySelector('.who').value.trim(); try{ localStorage.setItem('mf-proof-name',who); }catch(x){}
-  btn.disabled=true; msg.textContent='Sending…';
-  try{ const r=await fetch('/api/proof-fix',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({n:it.n,word:it.word,lang:L.name,fix:t,name:who,website:box.querySelector('.hp').value})});
+  btn.disabled=true; msg.textContent=T[7];
+  try{ const r=await fetch('/api/proof-fix',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({n:it.n,word:it.word,lang:L.name,fix:t,name:who,via:via==='en'?'English':'native '+L.name,website:box.querySelector('.hp').value})});
     if(!r.ok){ const j=await r.json().catch(()=>({})); throw new Error(j.error||'Could not send'); }
-    box.hidden=true; fix.hidden=false; box.querySelector('textarea').value=''; msg.textContent='';
-    fix.insertAdjacentHTML('afterend','<span class="sent">Thank you. Your correction for '+it.n+' was sent.</span>'); }
-  catch(x){ msg.textContent=(x.message||'Could not send')+'. Please try again.'; }
+    box.hidden=true; btns.hidden=false; box.querySelector('textarea').value=''; msg.textContent='';
+    const old=card.querySelector('.sent'); if(old) old.remove();
+    btns.insertAdjacentHTML('afterend','<span class="sent" lang="'+via+'"'+(via==='he'?' dir="rtl"':'')+'>'+esc(T[5].replace('{n}',it.n))+'</span>'); }
+  catch(x){ msg.textContent=(x.message||'Could not send')+' — please try again.'; }
   btn.disabled=false; });
 try{ const s=localStorage.getItem('mf-proof-show'); if(s&&(s==='all'||DATA.langs.some(x=>x.l===s))) show=s; }catch(x){}
 render();
