@@ -1,6 +1,7 @@
 // Every Tongue (Ken, 8 Oct): live help for talking with someone in another language.
 //   POST /api/translate {text, to, from}  -> {text}   typed or spoken words, translated
 //   POST /api/say       {text, lang}      -> mp3      a natural voice for those words
+//   POST /api/translate {gloss:1, ...}    -> {base, meaning, note}   one word of a verse, explained
 // Uses the same OpenAI key as the fish voice (OPENAI_API_KEY), or OPENAI_TRANSLATE_KEY if set. Translating
 // needs the key to allow "Chat completions" (OpenAI → API keys → Permissions); without it this answers 503
 // {error:'key'} and the page says what to change. Only the site's own pages may call it, with short texts and
@@ -37,8 +38,35 @@ export default async (req, context) => {
   const apiKey = process.env.OPENAI_TRANSLATE_KEY || process.env.OPENAI_API_KEY;
   if (!apiKey) return bad('No key yet', 501, 'nokey');
   const say = new URL(req.url).pathname.endsWith('/say');
-  if (!say && await limited(context && context.ip, 'tr')) return bad('Please wait a little', 429, 'busy');
   const H = { authorization: 'Bearer ' + apiKey, 'content-type': 'application/json' };
+
+  // Ken, 11 Oct: tap one word in a passage -> what it means in that verse, in the reader's own language.
+  //   POST /api/translate {gloss:1, text:word, verse, from, to, hint?} -> {base, meaning, note}
+  // Each answer is kept, so a word in a verse is only ever looked up once for each language.
+  if (b.gloss) {
+    const SRC = { ...NAMES, hbo: 'Biblical Hebrew', grc: 'Koine Greek' };
+    const fromN = SRC[b.from] || 'the language of the verse', toL = NAMES[b.to] ? b.to : 'en';
+    const verse = String(b.verse || '').trim().slice(0, 400), hint = String(b.hint || '').slice(0, 80);
+    if (text.length > 60) return bad('Too long', 413, 'long');
+    const store = getStore('mannafish-gloss'), id = `g/${toL}-${await sha((b.from || '') + '|' + text + '|' + verse)}`;
+    try { const hit = await store.get(id, { type: 'json' }); if (hit) return Response.json(hit); } catch (e) { /* look it up */ }
+    if (await limited(context && context.ip, 'gl', 300)) return bad('Please wait a little', 429, 'busy');
+    const r = await fetch('https://api.openai.com/v1/chat/completions', { method: 'POST', headers: H,
+      body: JSON.stringify({ model: MODEL, temperature: 0.2, max_tokens: 220, response_format: { type: 'json_object' }, messages: [
+        { role: 'system', content: `You help an ordinary Christian reader understand one word of the Bible. The word is from the verse given, written in ${fromN}. `
+          + `Explain it simply and faithfully, in ${NAMES[toL]}, as it is used in that verse. Reply with JSON only: `
+          + `{"base":"the word's dictionary form in ${fromN}","meaning":"what it means here, in ${NAMES[toL]}, at most 10 words","note":"one short, plain sentence in ${NAMES[toL]} on how the word is used in this verse"}.` },
+        { role: 'user', content: `Word: ${text}${hint ? `\nA word-by-word gloss gives: ${hint}` : ''}\nVerse: ${verse}` }] }) });
+    if (r.status === 401 || r.status === 403) return bad('Key not allowed', 503, 'key');
+    if (!r.ok) return bad('Translation service error', 502);
+    let o = {}; try { o = JSON.parse((((await r.json()).choices || [])[0] || {}).message.content || '{}'); } catch (e) { o = {}; }
+    const out = { base: String(o.base || '').slice(0, 80), meaning: String(o.meaning || '').slice(0, 160), note: String(o.note || '').slice(0, 300) };
+    if (!out.meaning) return bad('No meaning', 502);
+    try { await store.setJSON(id, out); } catch (e) { /* still answer */ }
+    return Response.json(out);
+  }
+
+  if (!say && await limited(context && context.ip, 'tr')) return bad('Please wait a little', 429, 'busy');
 
   if (say) {
     const lang = NAMES[b.lang] ? b.lang : 'en';

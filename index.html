@@ -899,6 +899,8 @@ section.section.bundles{display:block;margin-top:0}
 .reader.lexmode .rsay{display:none}
 .fr .frtop .frbtns{display:flex;gap:6px;align-items:center;flex:none}
 .fr.lex .frtop .frbtns{position:absolute;top:8px;right:10px}
+.fr.lex .frtop>.frbtns{width:auto}.fr.lex .frtop .frbtns .frx{position:static}   /* Ken, 11 Oct: the 🔊 was pushed off the card on phones */
+.fr.lex .frtop{padding-left:84px;padding-right:84px}
 .fr.lex .frx{position:static}
 .mfplayer{position:fixed;left:0;right:0;bottom:0;margin:0 auto;width:min(600px,100%);z-index:75;background:#1c1c1e;color:#fff;border-radius:18px 18px 0 0;box-shadow:0 -18px 50px -10px #000;padding:6px 18px max(14px,env(safe-area-inset-bottom));font-family:'Archivo',sans-serif;animation:mpup .25s ease}
 @keyframes mpup{from{transform:translateY(100%)}to{transform:none}}
@@ -925,6 +927,42 @@ section.section.bundles{display:block;margin-top:0}
 .mfplayer.mini .mphead{text-align:left}
 .mfplayer.mini .mpmini{display:flex}
 .mpmini{display:none;gap:10px;align-items:center}
+.devorow{display:flex;justify-content:center;margin:4px 0 14px}
+.devobtn{display:inline-flex;align-items:center;gap:12px;border:0;border-radius:999px;background:#2a5fb0;color:#fff;padding:9px 22px 9px 10px;cursor:pointer;font-family:'Archivo',sans-serif;text-align:left;box-shadow:0 8px 24px -10px rgba(42,95,176,.8)}
+.devobtn .devoi{width:36px;height:36px;border-radius:50%;background:#fff;color:#2a5fb0;display:inline-flex;align-items:center;justify-content:center;font-size:.95rem;padding-left:3px}
+.devobtn b{display:block;font-size:1.02rem}.devobtn small{display:block;font-size:.78rem;opacity:.85;letter-spacing:.04em}
+.devocard{position:relative;max-width:620px;margin:0 auto 16px;border:1px solid var(--line);border-radius:16px;padding:16px 44px 10px 18px;background:rgba(255,255,255,.03);max-height:46vh;overflow:auto}
+.devocard[hidden]{display:none}
+.devox{position:absolute;top:8px;right:8px;border:1px solid var(--line);background:none;color:var(--foam);border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:1rem}
+.devotxt p{margin:0 0 10px;font:1.02rem/1.6 Georgia,serif;color:var(--foam);opacity:1}
+.devotxt p.pr{font-style:italic;color:var(--foam);opacity:.9;border-left:3px solid #2a5fb0;padding-left:10px}
+.devotxt p.ct{font-weight:700;font-size:1.15rem}
+.mfplayer.mini .mpmore,.mfplayer.mini .mpsub2,.mfplayer.mini .mpword{display:none}
+.mpmore{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 2px}
+.mpchip{border:1px solid #3a3a3e;background:none;color:#fff;border-radius:999px;padding:6px 12px;font:700 .8rem 'Archivo',sans-serif;cursor:pointer}
+.mpchip[aria-pressed="true"]{background:#2a5fb0;border-color:#2a5fb0}
+.mpsel{height:32px;border-radius:999px;border:1px solid #3a3a3e;background:#2a2a2e;color:#fff;font:600 .8rem 'Archivo',sans-serif;padding:0 8px;max-width:170px}
+.mpsub2{text-align:center;font:italic 1rem/1.45 Georgia,serif;color:#e6e6ea;margin:8px 4px 0;max-height:5.8em;overflow:auto}
+.mpword{display:block;margin:8px auto 0;border:1px solid #f5d76e;background:rgba(245,215,110,.12);color:#fff;border-radius:999px;padding:6px 14px;font:700 .85rem 'Archivo',sans-serif;cursor:pointer}
+.mpword[hidden],.mpsub2[hidden],.mpsel[hidden]{display:none}
+/* Ken, 11 Oct: tap one word -- hear it, what it means here, and highlight, play or loop from that verse */
+.wpop{position:fixed;z-index:80;left:50%;transform:translateX(-50%);width:min(360px,calc(100% - 24px));background:#16181c;color:#fff;border:1px solid #2a5fb0;border-radius:16px;box-shadow:0 18px 50px -12px #000;padding:14px 16px 12px;font-family:'Archivo',sans-serif}
+.wpop[hidden]{display:none}
+.wpx{position:absolute;top:6px;right:8px;border:0;background:none;color:#fff;font-size:1.3rem;cursor:pointer;width:32px;height:32px}
+.wpw{display:flex;align-items:center;justify-content:center;gap:10px;padding:0 30px;font:700 1.5rem Georgia,serif}
+.wpsay{border:1px solid #3a3a3e;background:none;color:#fff;border-radius:50%;width:34px;height:34px;cursor:pointer;flex:none}
+.wpt{text-align:center;color:#b8c4d6;font:italic .95rem Georgia,serif;margin-top:4px}
+.wpm{text-align:center;font:600 1.02rem/1.4 'Archivo',sans-serif;margin-top:8px}
+.wpn{text-align:center;color:#c9ccd2;font:.88rem/1.45 'Archivo',sans-serif;margin-top:6px}
+.wpt:empty,.wpn:empty{display:none}
+.wpb{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:12px}
+.wpb button{border:1px solid #3a3a3e;background:none;color:#fff;border-radius:999px;padding:7px 11px;font:700 .78rem 'Archivo',sans-serif;cursor:pointer}
+.wpb button[hidden]{display:none}
+.wpb #wpLex{border-color:#2a5fb0}
+[data-mode="light"] .wpop{background:#fff;color:#111;border-color:#2a5fb0}
+[data-mode="light"] .wpb button,[data-mode="light"] .wpx,[data-mode="light"] .wpsay{color:#111;border-color:#c9ccd2}
+[data-mode="light"] .wpt{color:#3d5a80}[data-mode="light"] .wpn{color:#444}
+.chapter .wsel{background:#f5d76e;color:#111;border-radius:3px}
 .mpmini .mprate{min-width:0;font-size:.95rem;border:1px solid #3a3a3e;border-radius:999px;padding:6px 10px}
 .mftoast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:90;background:#111;color:#fff;border:1px solid var(--brass);border-radius:999px;padding:9px 16px;font:600 .82rem 'Archivo',sans-serif;box-shadow:0 10px 30px -8px #000}
 .mftoast[hidden]{display:none}
@@ -1107,6 +1145,9 @@ section.section.bundles{display:block;margin-top:0}
     <p class="p1">Give a <b><span class="wm-m">Manna</span><span class="wm-f">Fish</span></b>, feed him a meal.</p>
     <p class="p2">Teach a man <b><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></b>, feed him for life.</p>
   </div>
+  <!-- Ken, 11 Oct: a spoken devotional -- a welcome and a prayer, then the day's catch, then the 2 Fish challenge -->
+  <div class="devorow"><button type="button" class="devobtn" id="devoBtn" aria-pressed="false" translate="no"><span class="devoi" aria-hidden="true">&#9654;&#xFE0E;</span><span><b id="devoLab">Today’s devotional</b><small id="devoSub">Pray · Hear · Do</small></span></button></div>
+  <div class="devocard" id="devoCard" hidden><button type="button" class="devox" id="devoX" aria-label="Close">&times;</button><div class="chapter devotxt" id="devoTxt"></div></div>
   <div class="resumebar" id="resumeBar" hidden><span id="resumeTxt"></span><span class="rbtns"><button type="button" class="toolbtn" id="resumeGo">Pick up where I left off</button><button type="button" class="rx" id="resumeX" aria-label="Dismiss">&#215;</button></span></div>
   <div class="stage-col">
     <div class="cmpgrid onebar" id="oneBar" hidden><button type="button" class="cmpclear" id="twoBtn"></button></div>
@@ -1440,10 +1481,17 @@ section.section.bundles{display:block;margin-top:0}
     <button type="button" class="mpb mpplay" id="mpPlay" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true" id="mpIco"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg></button>
     <button type="button" class="mpb" id="mpNext" aria-label="Forward one verse"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 6l8 6-8 6zM3 6l8 6-8 6z" fill="currentColor"/></svg></button>
   </div>
+  <div class="mpsub2" id="mpSub2" hidden></div>
+  <button type="button" class="mpword" id="mpWord" hidden></button>
   <div class="mpbar"><span id="mpAt">1</span><input type="range" id="mpRange" min="1" max="1" value="1" aria-label="Verse"><span id="mpOf">1</span></div>
+  <div class="mpmore"><button type="button" class="mpchip" id="mpLoop" aria-pressed="false"></button><button type="button" class="mpchip" id="mpLearn" aria-pressed="false"></button><select class="mpsel" id="mpLearnL" aria-label="Second language" hidden></select></div>
   <div class="mpfoot"><button type="button" class="mprate" id="mpRate">1x</button><select class="voicesel" id="mpVoice" aria-label="Voice"></select><button type="button" class="mpx" id="mpX" aria-label="Close">&times;</button></div>
   <div class="mpmini"><button type="button" class="mprate" id="mpRate2" aria-label="Speed">1x</button><button type="button" class="mpb" id="mpPlay2" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true" id="mpIco2"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg></button></div>
 </div>
+<div class="wpop" id="wPop" role="dialog" aria-live="polite" hidden><button type="button" class="wpx" id="wpX" aria-label="Close">&times;</button>
+  <div class="wpw"><span id="wpWord"></span><button type="button" class="wpsay" id="wpSay" aria-label="Hear it">&#128266;</button></div>
+  <div class="wpt" id="wpTr"></div><div class="wpm" id="wpMean"></div><div class="wpn" id="wpNote"></div>
+  <div class="wpb"><button type="button" id="wpLex" hidden></button><button type="button" id="wpHl"></button><button type="button" id="wpPlay"></button><button type="button" id="wpLoop"></button></div></div>
 <button class="hearsel" type="button" id="hearSel" hidden><span aria-hidden="true">&#128266;</span> <span id="hearLab">Hear it</span></button>
 <div class="hearbox" id="hearBox" role="status" hidden><button class="etx" type="button" id="hearX" aria-label="Close">&times;</button><div class="etbig" id="hearTxt"></div><div class="etmine" id="hearMine"></div><div class="etrow"><button type="button" id="hearPlay">&#128266;</button></div></div>
 <div class="okbox" id="okBox" role="dialog" aria-modal="true" aria-labelledby="okTitle" hidden><div class="okcard"><div class="okcheck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><h2 id="okTitle"></h2><div id="okBody"></div><button class="btn" type="button" id="okDone">Done</button></div></div>
@@ -1886,24 +1934,47 @@ window.MF=(function(){
   function rWordAt(e,ci){ if(!e) return; [].forEach.call(e.querySelectorAll('.rw'),function(w){ w.classList.toggle('on', ci>=+w.dataset.s && ci<+w.dataset.e); }); }
   function rMark(v){ rMarkIn({root:reader,data:RD||{l:'en'},box:reader.querySelector('.reader-body')},v); }
   function rStop(){ if(window.MFplSource&&MFplSource()===$('rSpk')) MFplClose(); if(typeof sp!=='undefined' && sp && sp.btn && sp.btn.classList.contains('rplay')) stopSpeak(); document.querySelectorAll('.chapter .reading').forEach(function(e){ e.classList.remove('reading'); }); }
+  // Ken, 11 Oct: on iPhone it stopped after every verse -- Safari only lets a page play sound it was tapped for,
+  // and each verse was a new player. Now one player is unlocked by the first tap and used for every verse, and the
+  // next verse's voice is fetched while this one is read, so it runs straight through like the Bible App.
+  var SILENTW='data:audio/wav;base64,UklGRrQBAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YZABAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA', AUx=null;
+  function AU(){ if(!AUx){ AUx=new Audio(); AUx.preload='auto'; } return AUx; }
+  function auUnlock(){ var a=AU(); if(a.__ok||sp.audio===a) return; a.onended=a.onplaying=a.onpause=a.ontimeupdate=null; a.src=SILENTW;
+    var pr=a.play(); if(pr&&pr.then) pr.then(function(){ a.__ok=true; }).catch(function(){}); }
+  ['touchend','click'].forEach(function(ev){ document.addEventListener(ev,auUnlock,true); });
+  var SAYC={}, SAYQ=[];
+  function sayUrl(text,L,v){ var k=L+'|'+v+'|'+text; if(SAYC[k]) return SAYC[k];
+    var pr=etPost('/api/say',{text:text,lang:L,voice:v}).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){ return URL.createObjectURL(b); });
+    pr.catch(function(){ delete SAYC[k]; }); SAYC[k]=pr; SAYQ.push(k);
+    if(SAYQ.length>16){ var old=SAYQ.shift(), op=SAYC[old]; delete SAYC[old]; if(op) op.then(function(u){ setTimeout(function(){ URL.revokeObjectURL(u); },60000); }).catch(function(){}); }
+    return pr; }
+  function spoken(t,L){ return L==='he'?t.replace(/ה׳|י[֑-ׇ]*ה[֑-ׇ]*ו[֑-ׇ]*ה[֑-ׇ]*/g,'אדוני'):t; }
   function readAloud(ctx,from,to,btn){ if(sp.on && sp.btn===btn){ stopSpeak(); rMarkIn(ctx,0); return; } var D=ctx.data; if(!D) return;
-    stopSpeak(); var id=sp.id, L=D.l, he=L==='he'; sp.on=true; sp.btn=btn; btn.setAttribute('aria-pressed','true');
-    var done=function(){ if(id===sp.id){ stopSpeak(); rMarkIn(ctx,0); } }, vv=voiceFor(L);
-    function say(t,base,el,next){ if(id!==sp.id) return; var spoken=he?t.replace(/ה׳|י[\u0591-\u05C7]*ה[\u0591-\u05C7]*ו[\u0591-\u05C7]*ה[\u0591-\u05C7]*/g,'אדוני'):t;
-      var v=aiVoice(); (v?etPost('/api/say',{text:spoken,lang:L,voice:v}):Promise.reject()).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){
-        if(id!==sp.id) return; var a=new Audio(URL.createObjectURL(b)); sp.audio=a; a.playbackRate=RATE(); a.onplaying=function(){ sp.started=true; listenUI(); }; a.onpause=function(){ listenUI(); };
-        a.ontimeupdate=function(){ if(a.duration) rWordAt(el,base+a.currentTime/a.duration*t.length); };
-        a.onended=function(){ if(id===sp.id) next(); }; return a.play(); })
+    stopSpeak(); var id=sp.id, L=D.l; sp.on=true; sp.btn=btn; btn.setAttribute('aria-pressed','true');
+    var done=function(){ if(id===sp.id){ stopSpeak(); rMarkIn(ctx,0); if(ctx.onDone) ctx.onDone(); } };
+    function say(t,base,el,next,LL){ if(id!==sp.id) return; LL=LL||L; var vv=voiceFor(LL), said=spoken(t,LL);
+      var v=aiVoice(); (v?sayUrl(said,LL,v):Promise.reject()).then(function(url){
+        if(id!==sp.id) return; var a=AU(); a.onplaying=function(){ sp.started=true; listenUI(); if(window.MFplUI) MFplUI(); }; a.onpause=function(){ listenUI(); if(window.MFplUI) MFplUI(); };
+        a.ontimeupdate=function(){ if(a.duration&&el) rWordAt(el,base+a.currentTime/a.duration*t.length); };
+        a.onended=function(){ if(id===sp.id) next(); }; a.src=url; a.defaultPlaybackRate=a.playbackRate=RATE(); sp.audio=a; return a.play(); })
       .catch(function(err){ if(id!==sp.id) return; if(err&&err.name==='NotAllowedError'){ listenBlocked(); return; } if(!window.speechSynthesis||(vv.any&&!vv.v)){ done(); return; }
-        var u=new SpeechSynthesisUtterance(spoken); u.lang=LCODE[L]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.92*RATE();
-        var got=false, t0=Date.now(), cps=L==='zh'?4:L==='hi'?11:13; clearInterval(sp.timer);
-        u.onboundary=function(e){ got=true; rWordAt(el,base+e.charIndex); };
-        sp.timer=setInterval(function(){ if(!got) rWordAt(el,base+(Date.now()-t0)/1000*cps); },150);
+        var u=new SpeechSynthesisUtterance(said); u.lang=LCODE[LL]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.92*RATE();
+        var got=false, t0=Date.now(), cps=LL==='zh'?4:LL==='hi'?11:13; clearInterval(sp.timer);
+        u.onboundary=function(e){ got=true; if(el) rWordAt(el,base+e.charIndex); };
+        sp.timer=setInterval(function(){ if(!got&&el) rWordAt(el,base+(Date.now()-t0)/1000*cps); },150);
         u.onstart=function(){ sp.started=true; listenUI(); };
         u.onend=function(){ clearInterval(sp.timer); if(id===sp.id) next(); }; u.onerror=function(e){ if(e&&e.error==='not-allowed') listenBlocked(); else done(); }; speechSynthesis.speak(u); }); }
+    // fetch the voice for what comes next while this verse is being read
+    function ahead(v){ var vo=aiVoice(); if(!vo) return; var n=ctx.next?ctx.next(v):v+1, LN=ctx.learn;
+      if(LN&&LN.t[v-1]) sayUrl(spoken(rChunks(LN.t[v-1])[0],LN.l),LN.l,vo);
+      if(n<=to&&D.t[n-1]) sayUrl(spoken(rChunks(D.t[n-1])[0],L),L,vo); }
     function verse(v){ if(id!==sp.id) return; if(v>to||v>D.t.length){ done(); return; } if(!D.t[v-1]){ verse(v+1); return; }
-      var el=rMarkIn(ctx,v), full=D.t[v-1], parts=rChunks(full), k=0, pos=0; if(ctx.onVerse) ctx.onVerse(v);
-      (function nextPart(){ if(k>=parts.length){ verse(v+1); return; } var part=parts[k++], base=full.indexOf(part,pos); if(base<0) base=pos; pos=base+part.length; say(part,base,el,nextPart); })(); }
+      var el=rMarkIn(ctx,v), full=D.t[v-1], parts=rChunks(full), k=0, pos=0; if(ctx.onVerse) ctx.onVerse(v); ahead(v);
+      var after=function(){ var n=ctx.next?ctx.next(v):v+1; verse(n); };
+      // Learn (Ken, 11 Oct): the same verse again in a second language, shown under the player while it is read
+      var learn=function(){ var LN=ctx.learn, x=LN&&LN.t[v-1]; if(!x){ after(); return; } if(ctx.onLearn) ctx.onLearn(x,LN.l);
+        var q=rChunks(x); (function nx(){ if(!q.length){ if(ctx.onLearn) ctx.onLearn('',''); after(); return; } say(q.shift(),0,null,nx,LN.l); })(); };
+      (function nextPart(){ if(k>=parts.length){ learn(); return; } var part=parts[k++], base=full.indexOf(part,pos); if(base<0) base=pos; pos=base+part.length; say(part,base,el,nextPart); })(); }
     // Ken, 11 Oct: read the heading first -- the reference, or the card's title -- for someone who is only listening
     var ip=ctx.intro?rChunks(ctx.intro):[];
     (function intro(){ if(id!==sp.id) return; if(!ip.length){ verse(from); return; } say(ip.shift(),0,null,intro); })(); }
@@ -1940,13 +2011,26 @@ window.MF=(function(){
     $('mpTitle').textContent=PL.title; $('mpSub').textContent=(unit?unit+' ':'')+PL.n+' / '+PL.N;
     $('mpRange').max=PL.N; $('mpRange').value=PL.n; $('mpAt').textContent=PL.n; $('mpOf').textContent=PL.N;
     $('mpPrev').disabled=PL.n<=1; $('mpNext').disabled=PL.n>=PL.N; $('mpRate').textContent=$('mpRate2').textContent=RATE()+'x';
+    var LT=LOOPT[MF.lang]||LOOPT.en, Lp=PL.loop, verse=PL.unit==='verse';
+    $('mpLoop').hidden=!verse; $('mpLearn').hidden=!verse||!PL.ref; $('mpLoop').setAttribute('aria-pressed',Lp?'true':'false');
+    $('mpLoop').textContent='🔁 '+(!Lp?LT[0]:Lp.a===Lp.b?LT[1]+' '+Lp.a:(Lp.a===1&&Lp.b===PL.N)?LT[2]:LT[3]+' '+Lp.a+'–'+Lp.b);
+    $('mpLearn').setAttribute('aria-pressed',PL.learnOn?'true':'false'); $('mpLearn').textContent='🎓 '+LT[4]+(PL.learnOn&&PL.learn?' · '+PL.ctx.data.l.toUpperCase()+' → '+PL.learn.l.toUpperCase():'');
+    $('mpLearnL').hidden=!PL.learnOn;
+    // paused on a word: what does it mean?
+    var w=plPaused()&&PL.ctx&&PL.ctx.root.querySelector('.rw.on'); $('mpWord').hidden=!w; if(w) $('mpWord').textContent='“'+w.textContent.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{M}\p{N}]+$/gu,'')+'” · '+(WPT[MF.lang]||WPT.en)[0]+' ›';
     if(PL.src) PL.src.setAttribute('aria-pressed',plMine()?'true':'false'); }
   window.MFplUI=plUI;
   function openPlayer(o){ if(PL.src&&PL.src!==o.src) PL.src.setAttribute('aria-pressed','false'); if(plMine()) stopSpeak();
-    PL={ctx:o.ctx,n:Math.max(1,o.start||1),N:o.ctx.data.t.length,intro:o.intro||'',title:o.title||'',src:o.src,unit:o.unit||'verse',fresh:true};
+    PL={ctx:o.ctx,n:Math.max(1,o.start||1),N:o.ctx.data.t.length,intro:o.intro||'',title:o.title||'',src:o.src,unit:o.unit||'verse',fresh:true,ref:o.ref||null,loop:null,learnOn:false,learn:null};
+    $('mpSub2').hidden=true; $('mpLearnL').hidden=true;
     $('mpVoice').innerHTML=voiceOptions(); $('mfPlayer').hidden=false; $('mfPlayer').classList.remove('mini'); plUI(); }
-  function plStart(v){ stopSpeak(); var c={root:PL.ctx.root,data:PL.ctx.data,box:PL.ctx.box,intro:PL.fresh?PL.intro:'',onVerse:function(x){ PL.n=x; plUI(); }};
-    PL.fresh=false; PL.n=v; readAloud(c,v,PL.N,PB); plUI(); }
+  function plStart(v){ stopSpeak(); var c={root:PL.ctx.root,data:PL.ctx.data,box:PL.ctx.box,intro:PL.fresh?PL.intro:'',onVerse:function(x){ PL.n=x; PL.done=false; plUI(); },
+      onDone:function(){ PL.done=true; plUI(); },
+      onLearn:function(x,l){ var b=$('mpSub2'); b.hidden=!x; b.textContent=x; b.setAttribute('lang',l||''); b.dir=l==='he'?'rtl':'ltr'; },
+      // Ken, 11 Oct: loop one verse, or a stretch of verses
+      next:function(x){ var L=PL.loop; if(L&&(x>=L.b||x<L.a)) return L.a; return x+1; }};
+    Object.defineProperty(c,'learn',{get:function(){ return PL.learnOn&&PL.learn&&PL.learn.t?PL.learn:null; }});
+    PL.fresh=false; PL.n=v; PL.done=false; readAloud(c,v,PL.N,PB); plUI(); }
   function plToggle(){ if(plPaused()){ if(sp.audio) sp.audio.play(); else speechSynthesis.resume(); setTimeout(plUI,60); return; }
     if(plPlaying()){ if(sp.audio) sp.audio.pause(); else speechSynthesis.pause(); setTimeout(plUI,60); return; }
     if(PL.ctx) plStart(PL.n>=PL.N&&PL.done?1:PL.n); }
@@ -1963,18 +2047,112 @@ window.MF=(function(){
   $('mpMin').addEventListener('click',function(){ $('mfPlayer').classList.toggle('mini'); });
   $('mpX').addEventListener('click',plClose);
   MF.onChange(plUI);
+  var LOOPT={en:['Loop','Verse','Chapter','Verses','Learn'],es:['Repetir','Versículo','Capítulo','Versículos','Aprender'],tl:['Ulitin','Talata','Kabanata','Talata','Matuto'],
+    zh:['循环','本节','整章','经文','学习'],hi:['दोहराएँ','पद','अध्याय','पद','सीखें'],el:['Επανάληψη','Εδάφιο','Κεφάλαιο','Εδάφια','Μάθηση'],
+    de:['Wiederholen','Vers','Kapitel','Verse','Lernen'],ko:['반복','구절','장 전체','구절','배우기'],he:['חזרה','פסוק','פרק','פסוקים','לימוד']};
+  $('mpLoop').addEventListener('click',function(){ var L=PL.loop;
+    PL.loop=!L?{a:PL.n,b:PL.n}:(L.a===L.b?{a:1,b:PL.N}:null); plUI(); if(PL.loop&&!plMine()) plStart(PL.loop.a===1&&PL.loop.b===PL.N?PL.n:PL.loop.a); });
+  // Learn (Ken, 11 Oct): "hear it in one language and then the other" -- each verse, then the same verse in a second language
+  function chText(ref,l){ if(l==='en') return fetch('https://bible-api.com/'+encodeURIComponent(ref.book+' '+ref.ch)+'?translation='+curVer().k).then(function(r){ return r.json(); })
+      .then(function(j){ var t=[]; (j.verses||[]).forEach(function(x){ t[x.verse-1]=x.text.trim(); }); return t; });
+    return fetch('/fish-lang/bible/'+l+'/'+ref.book.replace(/ /g,'_')+'-'+ref.ch+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return j.t; }); }
+  function learnDefault(L){ if(MF.lang!==L) return MF.lang; var o=cmpShown()?cmpLangs().filter(function(x){ return x!==L; })[0]:null; return o||(L==='en'?'es':'en'); }
+  function learnLoad(l){ var r=PL.ref, me=PL; if(!r) return; PL.learn={l:l,t:null}; plUI();
+    chText(r,l).then(function(t){ if(PL!==me||!PL.learn||PL.learn.l!==l) return; PL.learn.t=t; plUI(); }).catch(function(){ if(PL===me){ PL.learnOn=false; PL.learn=null; plUI(); } }); }
+  $('mpLearn').addEventListener('click',function(){ PL.learnOn=!PL.learnOn; var L=PL.ctx.data.l, sel=$('mpLearnL');
+    if(PL.learnOn){ var d=PL.learn?PL.learn.l:learnDefault(L);
+      sel.innerHTML=CMPL.filter(function(o){ return !o[2]&&o[0]!==L; }).map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===d?' selected':'')+'>'+esc(cmpLabel(o[0]))+'</option>'; }).join('');
+      if(!PL.learn||PL.learn.l!==d) learnLoad(d); }
+    else $('mpSub2').hidden=true; plUI(); });
+  $('mpLearnL').addEventListener('change',function(){ learnLoad(this.value); });
+  $('mpWord').addEventListener('click',function(){ var w=PL.ctx&&PL.ctx.root.querySelector('.rw.on'), v=w&&w.closest('span[data-v]'); if(!v) return;
+    var r=document.createRange(); r.setStart(v,0); r.setEndBefore(w); openWord(v,r.toString().length+1,PL.ctx.root,w.getBoundingClientRect()); });
+  // ── one word (Ken, 11 Oct): tap a word in a passage -- hear it, see what it means in this verse, then highlight the verse,
+  // play from here, or loop it. In the Hebrew/Greek view the word's own gloss and Strong's number come with it.
+  var WPT={en:['What it means','Highlight verse','Remove highlight','Play from here','Loop this verse','Loop to here','Strong’s','Could not load the meaning.'],
+    es:['Qué significa','Resaltar versículo','Quitar resaltado','Escuchar desde aquí','Repetir este versículo','Repetir hasta aquí','Strong','No se pudo cargar el significado.'],
+    tl:['Ang kahulugan','I-highlight ang talata','Alisin ang highlight','Pakinggan mula rito','Ulitin ang talatang ito','Ulitin hanggang dito','Strong','Hindi ma-load ang kahulugan.'],
+    zh:['意思','标记经文','取消标记','从这里朗读','循环本节','循环到这里','斯特朗','无法加载释义。'],
+    hi:['इसका अर्थ','पद हाइलाइट करें','हाइलाइट हटाएँ','यहाँ से सुनें','इस पद को दोहराएँ','यहाँ तक दोहराएँ','स्ट्रॉन्ग','अर्थ लोड नहीं हो सका।'],
+    el:['Τι σημαίνει','Επισήμανση εδαφίου','Αφαίρεση επισήμανσης','Ακρόαση από εδώ','Επανάληψη εδαφίου','Επανάληψη ως εδώ','Strong','Δεν φορτώθηκε η σημασία.'],
+    de:['Was es bedeutet','Vers markieren','Markierung entfernen','Ab hier anhören','Diesen Vers wiederholen','Bis hier wiederholen','Strong','Bedeutung konnte nicht geladen werden.'],
+    ko:['뜻','구절 표시','표시 지우기','여기서부터 듣기','이 구절 반복','여기까지 반복','스트롱','뜻을 불러오지 못했습니다.'],
+    he:['מה פירוש המילה','סימון הפסוק','הסרת הסימון','האזנה מכאן','חזרה על הפסוק','חזרה עד כאן','סטרונג','לא ניתן לטעון את הפירוש.']};
+  var WP=null, GLC={};
+  function wctx(root){ if(reader.contains(root)){ return {d:RD,orig:RO,src:$('rSpk'),hl:stageCtx(),fr:null}; }
+    var fr=root.closest('.fr'); if(!fr||!fr._ctx) return null; var c=fr._ctx; return {d:fr._rd,orig:c.orig,src:fr.querySelector('.frspk'),hl:hlCtx(c.k,c.i,c.l,c.orig),fr:fr}; }
+  function tokenAt(text,off,L){ if(L==='zh'){ var i=Math.max(0,Math.min(text.length-1,off-1)); if(/[\s\p{P}]/u.test(text[i])&&/\p{L}/u.test(text[i+1]||'')) i++; return /\p{L}/u.test(text[i]||'')?{w:text[i],s:i,e:i+1,n:i}:null; }
+    var s0=off, e0=off; while(s0>0&&!/\s/.test(text[s0-1])) s0--; while(e0<text.length&&!/\s/.test(text[e0])) e0++;
+    if(s0===e0) return null; var raw=text.slice(s0,e0), lead=raw.match(/^[^\p{L}\p{N}]*/u)[0].length, w=raw.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{M}\p{N}]+$/gu,'');
+    if(!w) return null; var before=text.slice(0,s0).trim(); return {w:w,s:s0+lead,e:s0+lead+w.length,n:before?before.split(/\s+/).length:0}; }
+  function caretOff(e,v){ var r=null; if(document.caretRangeFromPoint) r=document.caretRangeFromPoint(e.clientX,e.clientY);
+    else if(document.caretPositionFromPoint){ var q=document.caretPositionFromPoint(e.clientX,e.clientY); if(q){ r=document.createRange(); r.setStart(q.offsetNode,q.offset); } }
+    if(!r||!v.contains(r.startContainer)) return -1; var x=document.createRange(); x.setStart(v,0); x.setEnd(r.startContainer,r.startOffset); return x.toString().length; }
+  function wordTap(e,root,toggle){ var v=e.target.closest('span[data-v]'); if(!v) return false; var off=caretOff(e,v); if(off<0) return false;
+    if(plPlaying()&&PL.ctx&&PL.ctx.root===root) plToggle();   /* "pause and click any word" */
+    openWord(v,off,root,{top:e.clientY,bottom:e.clientY+4},toggle); return true; }
+  function wselClear(){ document.querySelectorAll('.chapter .wsel').forEach(function(x){ var pnt=x.parentNode; while(x.firstChild) pnt.insertBefore(x.firstChild,x); pnt.removeChild(x); pnt.normalize(); }); }
+  function wselMark(v,t){ wselClear(); if(v.querySelector('.rw')){ [].forEach.call(v.querySelectorAll('.rw'),function(w){ if(+w.dataset.s<=t.s&&+w.dataset.e>=t.e) w.classList.add('on'); }); return; }
+    var walk=document.createTreeWalker(v,NodeFilter.SHOW_TEXT), n, at=0; while((n=walk.nextNode())){ var len=n.textContent.length;
+      if(t.s>=at&&t.e<=at+len){ var r=document.createRange(); r.setStart(n,t.s-at); r.setEnd(n,t.e-at); var m=document.createElement('span'); m.className='wsel'; try{ r.surroundContents(m); }catch(er){} return; } at+=len; } }
+  function openWord(v,off,root,rect,toggle){ var X=wctx(root); if(!X||!X.d) return; var L=X.d.l, text=v.textContent, t=tokenAt(text,off,L); if(!t) return;
+    var vn=+v.dataset.v, T=WPT[MF.lang]||WPT.en, pop=$('wPop'), o=null;
+    if(X.orig&&X.d.oj){ var row=(X.d.oj.v[vn]||[])[t.n]; if(row) o={w:row[0],tr:row[1],gl:row[2],sn:row[3]}; }
+    WP={v:v,vn:vn,root:root,X:X,w:o?o.w:t.w,L:L,toggle:toggle||null,o:o}; wselMark(v,t);
+    $('wpWord').textContent=WP.w; $('wpWord').setAttribute('lang',L); $('wpWord').dir=L==='he'?'rtl':'ltr';
+    $('wpTr').textContent=o?[o.tr,o.gl].filter(Boolean).join(' · '):''; $('wpMean').textContent='…'; $('wpNote').textContent='';
+    var lexk=o&&o.sn&&LEX[o.sn]?Object.keys(STRONGS).filter(function(k){ var g=STRONGS[k]; return 'G'+g[0]===o.sn||'H'+g[1]===o.sn; })[0]:null;
+    $('wpLex').hidden=!lexk; $('wpLex').textContent=T[6]+' '+(o?o.sn:'')+' ›'; WP.lexk=lexk;
+    var on=v.classList.contains('mk'); $('wpHl').textContent='🖍 '+(on?T[2]:T[1]); $('wpHl').hidden=!X.hl;
+    $('wpPlay').textContent='▶ '+T[3]; var Lp=PL.loop&&PL.src===X.src?PL.loop:null;
+    $('wpLoop').textContent='🔁 '+(Lp&&vn!==Lp.a?T[5]:T[4]);
+    pop.hidden=false; var h=pop.offsetHeight, top=rect.bottom+10; if(top+h>innerHeight-($('mfPlayer').hidden?10:$('mfPlayer').offsetHeight+10)) top=Math.max(10,rect.top-h-12); pop.style.top=top+'px';
+    var me=WP, from=X.orig?(L==='he'?'hbo':'grc'):L, key=from+'|'+MF.lang+'|'+WP.w+'|'+vn+'|'+text.length;
+    (GLC[key]||(GLC[key]=etPost('/api/translate',{gloss:1,text:WP.w,verse:text.slice(0,400),from:from,to:MF.lang,hint:o?o.gl:''}).then(function(r){ if(!r.ok) throw 0; return r.json(); })))
+      .then(function(j){ if(WP!==me) return; $('wpMean').textContent=j.meaning||''; $('wpNote').textContent=j.note||''; if(!o&&j.base&&j.base.toLowerCase()!==WP.w.toLowerCase()) $('wpTr').textContent=j.base; })
+      .catch(function(){ delete GLC[key]; if(WP!==me) return; $('wpMean').textContent=o?'':T[7]; }); }
+  function closeWord(){ $('wPop').hidden=true; WP=null; wselClear(); }
+  window.MFwordTap=wordTap;
+  $('wpX').addEventListener('click',closeWord);
+  document.addEventListener('click',function(e){ if(!WP||$('wPop').contains(e.target)||e.target.closest('.chapter span[data-v],#mpWord')) return; closeWord(); });
+  $('wpSay').addEventListener('click',function(){ if(!WP) return; var w=WP.w, L=WP.L; stopSpeak(); var id=sp.id, vo=aiVoice();
+    (vo?sayUrl(spoken(w,L),L,vo):Promise.reject()).then(function(u){ if(id!==sp.id) return; var a=AU(); a.onended=a.onplaying=a.onpause=a.ontimeupdate=null; a.src=u; a.playbackRate=1; sp.audio=a; return a.play(); })
+      .catch(function(){ if(id!==sp.id||!window.speechSynthesis) return; var u=new SpeechSynthesisUtterance(spoken(w,L)), vv=voiceFor(L); u.lang=LCODE[L]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.85; speechSynthesis.speak(u); }); });
+  $('wpHl').addEventListener('click',function(){ if(!WP||!WP.toggle) return; var on=WP.toggle(WP.v), T=WPT[MF.lang]||WPT.en; this.textContent='🖍 '+(on?T[2]:T[1]); });
+  function wpPlayer(){ var X=WP.X; if(PL.src!==X.src||$('mfPlayer').hidden) X.src.click(); $('mfPlayer').classList.remove('mini'); return PL.src===X.src; }
+  $('wpPlay').addEventListener('click',function(){ if(!WP) return; var vn=WP.vn; if(!wpPlayer()) return; closeWord(); PL.fresh=false; plStart(vn); });
+  $('wpLoop').addEventListener('click',function(){ if(!WP) return; var vn=WP.vn, Lp=PL.loop&&PL.src===WP.X.src?PL.loop:null; if(!wpPlayer()) return; closeWord();
+    PL.loop=Lp&&vn!==Lp.a?{a:Math.min(Lp.a,vn),b:Math.max(Lp.a,vn)}:{a:vn,b:vn}; PL.fresh=false; plStart(PL.loop.a); });
+  $('wpLex').addEventListener('click',function(){ if(!WP||!WP.lexk) return; var k=WP.lexk, gk=/^G/.test(WP.o.sn), fr=WP.X.fr; closeWord();
+    if(fr) openFigStrongs(fr.parentNode,k,gk); else openStrongs(k,gk); });
+  // ── Today's devotional, spoken (Ken, 11 Oct): "an introduction and prayer before verbally introducing the MannaFish catch
+  // of the day ... that invites the user to pray, hear and do the 2 Fish challenge". The fish and the word are the free gift
+  // of eternal life; the devotional is free to receive and free to give. Parts starting with * are prayers.
+  var DEVO={"en": {"b": ["Today’s devotional", "Pray · Hear · Do"], "p": ["Welcome to MannaFish. Like manna in the wilderness, here is bread from heaven for today: a free gift, to receive freely and to give freely. Today we will pray, hear God’s Word, and do the 2 Fish challenge. Let’s pray.", "*Father, thank you for the free gift of eternal life in Jesus. Quiet my heart, open my ears to your Word, and help me live it today. In Jesus’ name, amen.", "Today’s MannaFish catch is: {w}.", "{r}. {v}", "Now, the 2 Fish challenge. One fish is for you, and one is for someone else. Take this word with you today, and give it to one person: say it, send it, or pray it with them. Freely you have received; freely give.", "*Lord, show me who needs this word today. Amen."]}, "es": {"b": ["Devocional de hoy", "Orar · Escuchar · Hacer"], "p": ["Bienvenido a MannaFish. Como el maná en el desierto, aquí tienes pan del cielo para hoy: un regalo gratis, para recibirlo gratis y darlo gratis. Hoy vamos a orar, escuchar la Palabra de Dios y hacer el reto 2 Fish. Oremos.", "*Padre, gracias por el regalo gratuito de la vida eterna en Jesús. Calma mi corazón, abre mis oídos a tu Palabra y ayúdame a vivirla hoy. En el nombre de Jesús, amén.", "La pesca MannaFish de hoy es: {w}.", "{r}. {v}", "Ahora, el reto 2 Fish. Un pez es para ti, y otro es para alguien más. Lleva esta palabra contigo hoy y dásela a una persona: dísela, envíasela u ora con ella. De gracia recibisteis, dad de gracia.", "*Señor, muéstrame quién necesita esta palabra hoy. Amén."]}, "tl": {"b": ["Debosyon ngayon", "Manalangin · Makinig · Gawin"], "p": ["Maligayang pagdating sa MannaFish. Tulad ng manna sa ilang, narito ang tinapay mula sa langit para sa araw na ito: isang libreng regalo, tanggapin nang libre at ibigay nang libre. Ngayon, tayo ay mananalangin, makikinig sa Salita ng Diyos, at gagawin ang 2 Fish challenge. Manalangin tayo.", "*Ama, salamat po sa libreng regalo ng buhay na walang hanggan kay Jesus. Patahimikin Mo po ang aking puso, buksan ang aking mga tainga sa Iyong Salita, at tulungan Mo akong isabuhay ito ngayon. Sa pangalan ni Jesus, amen.", "Ang huli ng MannaFish ngayon ay: {w}.", "{r}. {v}", "Ngayon, ang 2 Fish challenge. Ang isang isda ay para sa iyo, at ang isa ay para sa iba. Dalhin mo ang salitang ito ngayon at ibigay sa isang tao: sabihin, ipadala, o ipanalangin ito kasama nila. Tinanggap ninyo nang walang bayad, ibigay din nang walang bayad.", "*Panginoon, ipakita Mo po sa akin kung sino ang nangangailangan ng salitang ito ngayon. Amen."]}, "zh": {"b": ["今日灵修", "祷告 · 聆听 · 实行"], "p": ["欢迎来到 MannaFish。就像旷野中的吗哪，这是今天从天上来的粮食：一份白白的礼物，白白地领受，也白白地给予。今天我们要祷告，聆听神的话语，并完成“2 Fish”挑战。我们一起祷告。", "*天父，感谢你在耶稣里赐下永生这白白的礼物。求你使我的心安静，开我的耳朵听你的话语，帮助我今天活出来。奉耶稣的名，阿们。", "今天的 MannaFish 收获是：{w}。", "{r}。{v}", "现在是“2 Fish”挑战。一条鱼给你，一条鱼给别人。今天把这句话带在身边，送给一个人：说给他听，发给他，或与他一起祷告。你们白白地得来，也要白白地舍去。", "*主啊，求你让我看见今天谁需要这句话。阿们。"]}, "hi": {"b": ["आज की भक्ति", "प्रार्थना · सुनें · करें"], "p": ["MannaFish में आपका स्वागत है। जंगल में मन्ना की तरह, यह आज के लिए स्वर्ग की रोटी है: एक मुफ़्त उपहार, जिसे मुफ़्त में पाना है और मुफ़्त में देना है। आज हम प्रार्थना करेंगे, परमेश्वर का वचन सुनेंगे, और 2 Fish चुनौती पूरी करेंगे। आइए प्रार्थना करें।", "*हे पिता, यीशु में अनन्त जीवन के मुफ़्त उपहार के लिए धन्यवाद। मेरे मन को शांत कर, अपने वचन के लिए मेरे कान खोल, और आज उसे जीने में मेरी सहायता कर। यीशु के नाम में, आमीन।", "आज की MannaFish पकड़ है: {w}।", "{r}। {v}", "अब, 2 Fish चुनौती। एक मछली आपके लिए है, और एक किसी और के लिए। आज यह वचन अपने साथ ले जाइए और किसी एक व्यक्ति को दीजिए: उसे बताइए, भेजिए, या उसके साथ प्रार्थना कीजिए। तुम ने सेंतमेंत पाया है, सेंतमेंत दो।", "*हे प्रभु, मुझे दिखा कि आज किसे इस वचन की ज़रूरत है। आमीन।"]}, "el": {"b": ["Η σημερινή μελέτη", "Προσευχή · Ακρόαση · Πράξη"], "p": ["Καλώς ήρθατε στο MannaFish. Όπως το μάννα στην έρημο, εδώ είναι άρτος από τον ουρανό για σήμερα: ένα δώρο, για να το λάβετε δωρεάν και να το δώσετε δωρεάν. Σήμερα θα προσευχηθούμε, θα ακούσουμε τον Λόγο του Θεού και θα κάνουμε την πρόκληση 2 Fish. Ας προσευχηθούμε.", "*Πατέρα, σε ευχαριστώ για το δωρεάν δώρο της αιώνιας ζωής στον Ιησού. Ησύχασε την καρδιά μου, άνοιξε τα αυτιά μου στον Λόγο σου και βοήθησέ με να τον ζήσω σήμερα. Στο όνομα του Ιησού, αμήν.", "Η σημερινή ψαριά του MannaFish είναι: {w}.", "{r}. {v}", "Τώρα, η πρόκληση 2 Fish. Το ένα ψάρι είναι για σένα και το άλλο για κάποιον άλλον. Πάρε αυτόν τον λόγο μαζί σου σήμερα και δώσ’ τον σε ένα άτομο: πες τον, στείλ’ τον ή προσευχήσου μαζί του. Δωρεάν λάβατε, δωρεάν δώστε.", "*Κύριε, δείξε μου ποιος χρειάζεται αυτόν τον λόγο σήμερα. Αμήν."]}, "de": {"b": ["Andacht für heute", "Beten · Hören · Tun"], "p": ["Willkommen bei MannaFish. Wie das Manna in der Wüste ist hier Brot vom Himmel für heute: ein Geschenk, umsonst empfangen und umsonst weitergegeben. Heute beten wir, hören Gottes Wort und machen die 2-Fish-Challenge. Lasst uns beten.", "*Vater, danke für das Geschenk des ewigen Lebens in Jesus. Mach mein Herz still, öffne meine Ohren für dein Wort und hilf mir, es heute zu leben. In Jesu Namen, Amen.", "Der MannaFish-Fang des Tages ist: {w}.", "{r}. {v}", "Jetzt die 2-Fish-Challenge. Ein Fisch ist für dich, und einer ist für jemand anderen. Nimm dieses Wort heute mit und gib es einem Menschen weiter: sag es, schick es oder bete es mit ihm. Umsonst habt ihr es empfangen, umsonst gebt es auch.", "*Herr, zeig mir, wer dieses Wort heute braucht. Amen."]}, "ko": {"b": ["오늘의 묵상", "기도 · 듣기 · 실천"], "p": ["MannaFish에 오신 것을 환영합니다. 광야의 만나처럼, 오늘을 위한 하늘의 양식이 여기 있습니다. 값없이 받고 값없이 나누는 선물입니다. 오늘 우리는 기도하고, 하나님의 말씀을 듣고, 2 Fish 챌린지를 실천할 것입니다. 함께 기도합시다.", "*아버지, 예수님 안에서 값없이 주신 영생의 선물에 감사드립니다. 제 마음을 잠잠하게 하시고, 주의 말씀에 귀를 열어 주시고, 오늘 그 말씀대로 살도록 도와주세요. 예수님의 이름으로 기도합니다. 아멘.", "오늘의 MannaFish 말씀은: {w}.", "{r}. {v}", "이제 2 Fish 챌린지입니다. 물고기 한 마리는 당신을 위한 것이고, 한 마리는 다른 사람을 위한 것입니다. 오늘 이 말씀을 품고 한 사람에게 전하세요. 말해 주거나, 보내 주거나, 함께 기도해 주세요. 너희가 거저 받았으니 거저 주라.", "*주님, 오늘 이 말씀이 필요한 사람이 누구인지 보여 주세요. 아멘."]}, "he": {"b": ["ההגות להיום", "להתפלל · לשמוע · לעשות"], "p": ["ברוכים הבאים ל-MannaFish. כמו המן במדבר, הנה לחם מן השמיים להיום: מתנה חינם, לקבל חינם ולתת חינם. היום נתפלל, נשמע את דבר האלוהים, ונעשה את אתגר 2 Fish. בואו נתפלל.", "*אבא שבשמיים, תודה על מתנת החיים הנצחיים בישוע, שניתנה לנו חינם. השקט את ליבי, פתח את אוזניי לדברך, ועזור לי לחיות אותו היום. בשם ישוע, אמן.", "השלל של MannaFish להיום הוא: {w}.", "{r}. {v}", "ועכשיו, אתגר 2 Fish. דג אחד בשבילך, ודג אחד בשביל מישהו אחר. קח איתך את המילה הזאת היום ותן אותה לאדם אחד: אמור אותה, שלח אותה, או התפלל אותה יחד איתו. חינם קיבלתם, חינם תנו.", "*אדוני, הראה לי מי צריך את המילה הזאת היום. אמן."]}};
+  function devoParts(l){ var D=DEVO[l]?l:'en', k=cur, sy=(SAY[D]&&SAY[D][k])||SAY.en[k];
+    return DEVO[D].p.map(function(x){ return x.replace('{w}',titleIn(D,k)).replace('{r}',sy[2]).replace('{v}',sy[1]); }); }
+  function devoUI(){ var D=DEVO[MF.lang]||DEVO.en; $('devoLab').textContent=D.b[0]; $('devoSub').textContent=D.b[1];
+    var on=PL.src===$('devoBtn')&&!$('mfPlayer').hidden; $('devoBtn').setAttribute('aria-pressed',on?'true':'false'); }
+  $('devoBtn').addEventListener('click',function(){ if(PL.src===this&&!$('mfPlayer').hidden){ plToggle(); return; }
+    var l=DEVO[MF.lang]?MF.lang:'en', ps=devoParts(l), t=ps.map(function(x){ return x.replace(/^\*/,''); });
+    $('devoTxt').innerHTML=ps.map(function(x,n){ var cls=x.charAt(0)==='*'?'pr':n===2?'ct':''; return '<p class="'+cls+'"><span data-v="'+(n+1)+'">'+esc(t[n])+'</span></p>'; }).join('');
+    $('devoTxt').setAttribute('lang',l); $('devoTxt').dir=l==='he'?'rtl':'ltr'; $('devoCard').hidden=false;
+    openPlayer({ctx:{root:$('devoTxt'),data:{l:l,t:t},box:$('devoCard')},src:this,start:1,unit:'part',title:(DEVO[l]).b[0]+' · '+titleIn(l,cur)});
+    plStart(1); devoUI(); });
+  $('devoX').addEventListener('click',function(){ if(PL.src===$('devoBtn')) plClose(); $('devoCard').hidden=true; devoUI(); });
+  MF.onChange(devoUI); devoUI();
   // the big reader's 🔊: the chapter from the day's verse (a Strong's card from the top)
   $('rSpk').addEventListener('click',function(){ var r=window.MFreader; if(!RD||!r) return;
     if(PL.src===this && !$('mfPlayer').hidden){ $('mfPlayer').classList.remove('mini'); return; }
     var lx=r.kind==='strongs', ref=$('rRef').innerText.trim(), l=r.l||MF.lang;
     var ver=RO?(NTC[USFM[(parseRef(DATA[r.k].refs[r.i][0])||{}).book]]?'Greek':'Hebrew'):(l==='en'?curVer().s:(RBIB[l]||''));
-    openPlayer({ctx:readerCtx(),src:this,start:lx?1:RD.vs,unit:lx?'part':'verse',title:lx?$('rKicker').textContent:chapterOf(ref)+(ver?' · '+ver:''),intro:lx?rIntro(true):rIntro(false)}); });
+    openPlayer({ctx:readerCtx(),src:this,ref:lx?null:parseRef(DATA[r.k].refs[r.i][0]),start:lx?1:RD.vs,unit:lx?'part':'verse',title:lx?$('rKicker').textContent:chapterOf(ref)+(ver?' · '+ver:''),intro:lx?rIntro(true):rIntro(false)}); });
   function readerCtx(){ return {root:$('rChapter'),data:RD,box:reader.classList.contains('inline')?null:reader.querySelector('.reader-body')}; }
   $('rOrig').addEventListener('click',function(){ var r=window.MFreader; if(!r||r.kind!=='ref') return; rStop();
     if(RO){ openReader(r.k,r.i,r.l); return; }
     var p=parseRef(DATA[r.k].refs[r.i][0]); if(!p) return;
     loadOrig(p).then(function(j){ if(window.MFreader!==r) return; var o=origView(j,p,r.k); RO=true; $('rOrig').setAttribute('aria-pressed','true');
-      $('rChapter').innerHTML=o.html; RD={l:o.l,t:o.t,vs:+p.vs}; if(window.MFhlMarkStage) MFhlMarkStage(); $('rNote').textContent=o.credit; $('rVer').style.display='none';
+      $('rChapter').innerHTML=o.html; RD={l:o.l,t:o.t,vs:+p.vs,oj:j}; if(window.MFhlMarkStage) MFhlMarkStage(); $('rNote').textContent=o.credit; $('rVer').style.display='none';
       reader.querySelector('.reader-body').scrollTop=0; setTimeout(readerFit,60); }).catch(function(){}); });
   function rIntro(chapter){ var r=window.MFreader, ref=$('rRef').innerText.replace(/🔊/g,'').trim(); if(RO) return '';   /* the Hebrew/Greek view: the English reference would sound wrong in that voice */
     if(r&&r.kind==='strongs'){ var tl=$('rRef').querySelector('.lx-t'); return headOf($('rKicker').textContent,tl?tl.textContent:''); }
@@ -2094,13 +2272,13 @@ window.MF=(function(){
     $('notesLab').textContent=es?'Mis notas':'My notes'; $('micIco').innerHTML=recOn?'&#10074;&#10074;':'&#127908;';
     $('micLab').textContent=recOn?(es?'Pausa':'Pause'):($('notesText').value.trim()?(es?'Seguir dictando':'Keep speaking'):(es?'Dictar una nota':'Speak a note'));
     $('noteSave').textContent=es?'Guardar nota':'Save note'; $('ntabN').textContent=es?'Mis notas':'My notes'; $('ntabH').textContent=es?'Mis resaltados':'My highlights';
-    $('hlHint').textContent=es?'Toca cualquier versículo del lector para resaltarlo; toca otra vez para quitarlo.':'Tap any verse in the reader to highlight it; tap it again to remove it.';
+    $('hlHint').textContent=es?'Toca una palabra en el lector y luego 🖍 Resaltar versículo.':'Tap a word in the reader, then 🖍 Highlight verse.';
     $('notesWhere').textContent=cloudOn()?(es?'Guardado en tu cuenta':'Saved to your account'):(es?'Guardado en este dispositivo':'Saved on this device');
     $('notesText').placeholder=es?'¿Qué te muestra Dios en esta palabra?':'What is God showing you in this word?';
     var SPK={es:['Palabra','Versículo'],tl:['Salita','Talata'],zh:['词','经文'],hi:['शब्द','पद'],el:['Λέξη','Εδάφιο'],de:['Wort','Vers'],ko:['단어','구절'],he:['מילה','פסוק']}, sw=SPK[MF.lang]||['Word','Verse'];
     document.querySelectorAll('.spkw').forEach(function(e){e.textContent=sw[0];});
     document.querySelectorAll('.spkv').forEach(function(e){e.textContent=sw[1];}); }
-  function stopSpeak(){ sp.id++; clearInterval(sp.timer); if(sp.audio){ sp.audio.pause(); sp.audio=null; } if(window.speechSynthesis) speechSynthesis.cancel();
+  function stopSpeak(){ sp.id++; clearInterval(sp.timer); if(sp.audio){ var a0=sp.audio; a0.onended=a0.onpause=a0.onplaying=a0.ontimeupdate=null; a0.pause(); sp.audio=null; } if(window.speechSynthesis) speechSynthesis.cancel();
     if(sp.btn) sp.btn.setAttribute('aria-pressed','false');
     if(sp.fh){ sp.fh.reset(); sp.fh=null; }
     sp.on=false; sp.btn=null; if(window.MFlistenUI) MFlistenUI(); if(window.MFplUI) MFplUI(); }
@@ -2371,8 +2549,10 @@ window.MF=(function(){
   window.MFhlMarkFig=function(fr){ var c=fr&&fr._ctx; if(c) hlMark(fr.querySelector('.chapter'),hlCtx(c.k,c.i,c.l,c.orig)); };
   function verseTap(e,root,c){ var sp=e.target.closest('span[data-v]'); if(!sp||!c||!root.contains(sp)) return false;
     var sel=window.getSelection&&getSelection(); if(sel&&sel.toString().trim().length>1) return false;
-    var v=sp.dataset.v, ref=c.book+' '+c.ch+':'+v, on=hlToggle(hlKey(c,v),{kind:'verse',ref:ref,ver:c.ver,k:c.k,i:c.i,l:c.l,v:+v,text:sp.textContent.slice(0,220)});
-    sp.classList.toggle('mk',on); return true; }
+    var tog=function(x){ var v=x.dataset.v, ref=c.book+' '+c.ch+':'+v, on=hlToggle(hlKey(c,v),{kind:'verse',ref:ref,ver:c.ver,k:c.k,i:c.i,l:c.l,v:+v,text:x.textContent.slice(0,220)});
+      x.classList.toggle('mk',on); return on; };
+    if(window.MFwordTap&&MFwordTap(e,root,tog)) return true;   /* Ken, 11 Oct: a tap picks the one word; highlighting the verse is a button there */
+    tog(sp); return true; }
   $('rChapter').addEventListener('click',function(e){ verseTap(e,this,stageCtx()); });
   document.addEventListener('click',function(e){ var fr=e.target.closest&&e.target.closest('.fr'); if(!fr||!fr._ctx||!e.target.closest('.chapter span[data-v]')) return;
     var c=fr._ctx; verseTap(e,fr.querySelector('.chapter'),hlCtx(c.k,c.i,c.l,c.orig)); },true);
@@ -2611,7 +2791,7 @@ window.MF=(function(){
       +'<div class="frbody"><div class="chapter"><p class="frwait">…</p></div></div><div class="frv"></div>';
     if(!p) return; var vs=+p.vs, ch=fr.querySelector('.chapter'), ctx=fr._ctx;
     var fit=function(){ fitExp(fr.querySelector('.lxexp'),fr.querySelector('.frbody'),fr.classList.contains('big')); };
-    if(orig){ loadOrig(p).then(function(j){ if(!fr.isConnected||fr._ctx!==ctx) return; var o=origView(j,p,k); ch.innerHTML=o.html; fr._rd={l:o.l,t:o.t,vs:vs}; if(window.MFhlMarkFig) MFhlMarkFig(fr);
+    if(orig){ loadOrig(p).then(function(j){ if(!fr.isConnected||fr._ctx!==ctx) return; var o=origView(j,p,k); ch.innerHTML=o.html; fr._rd={l:o.l,t:o.t,vs:vs,oj:j}; if(window.MFhlMarkFig) MFhlMarkFig(fr);
         fr.querySelector('.frv').textContent=o.credit; fit(); })
       .catch(function(){ if(fr.isConnected) ch.innerHTML='<p class="frwait">'+(MF.lang==='es'?'No se pudo abrir este capítulo.':'Could not open this chapter.')+'</p>'; });
       f.scrollIntoView({block:'nearest',behavior:'smooth'}); return; }
@@ -2644,7 +2824,7 @@ window.MF=(function(){
   function figReaderClick(e){ var fr=e.target.closest('.fr'); if(!fr) return false;
     var sk=e.target.closest('.frspk'); if(sk){ if(!fr._rd) return true; var lx=fr.classList.contains('lex'), rr=fr.querySelector('.rref'), ref=rr?rr.innerText.trim():'', lt=fr.querySelector('.rref .lx-t');
       var c=fr._ctx||{}, ver=c.orig?'':(c.l==='en'?curVer().s:(RBIB[c.l]||''));
-      openPlayer({ctx:{root:fr.querySelector('.chapter'),data:fr._rd,box:fr.querySelector('.frbody')},src:sk,start:lx?1:fr._rd.vs,unit:lx?'part':'verse',
+      openPlayer({ctx:{root:fr.querySelector('.chapter'),data:fr._rd,box:fr.querySelector('.frbody')},src:sk,ref:!lx&&c.k&&DATA[c.k]?parseRef(DATA[c.k].refs[c.i][0]):null,start:lx?1:fr._rd.vs,unit:lx?'part':'verse',
         title:lx?fr.querySelector('.rk').textContent:chapterOf(ref)+(ver?' · '+ver:''),intro:c.orig?'':lx?headOf(fr.querySelector('.rk').textContent,lt?lt.textContent:''):ref}); return true; }
     if(e.target.closest('.frx')){ if(window.MFplSource&&MFplSource()&&fr.contains(MFplSource())) MFplClose(); if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak(); fr.hidden=true; fr.innerHTML=''; fr.classList.remove('big'); fr.parentNode.style.paddingBottom=''; return true; }
     var o=e.target.closest('.rorig'); if(o && fr._ctx){ var c=fr._ctx; if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak(); openFigReader(fr.parentNode,c.k,c.i,c.l,!c.orig); return true; }

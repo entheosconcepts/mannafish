@@ -190,3 +190,13 @@ Also check the small alternate-language fish and its "English ⇄" label the sam
 ### Other ideas waiting
 - [ ] Countertop "FishNet" display card print file (PDF).
 - [ ] Ken's cut-off message "Move the…" — still to clarify.
+
+## Read-aloud, one word, loop and learn, spoken devotional (Ken, 11 Oct)
+- iPhone: one sound player, unlocked by the first tap, reads every verse; the next verse's voice is fetched while one is read.
+- Tap a word in any passage: hear it, what it means in that verse (in the site's language, /api/translate gloss mode, kept in
+  the `mannafish-gloss` store), then Highlight verse / Play from here / Loop this verse (a second tap elsewhere: Loop to here).
+  In the Hebrew/Greek view the word's transliteration, gloss and Strong's number come from fish-lang/orig.
+- Paused on a word: the player offers "“word” · What it means".
+- Player: 🔁 Loop (verse → chapter → off) and 🎓 Learn (each verse, then the same verse in a second language shown under the player).
+- "Today's devotional · Pray · Hear · Do" under the headline: welcome, prayer, the day's catch, the fish verse, the 2 Fish
+  challenge, a closing prayer -- in all 9 languages. The non-English scripts want a fluent reader's check.
