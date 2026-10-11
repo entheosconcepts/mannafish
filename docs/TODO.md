@@ -205,3 +205,10 @@ Also check the small alternate-language fish and its "English ⇄" label the sam
   Daily reminder, Speed), Do (the 2 Fish challenge: "Pray for them" adds that person to the list; Share today's fish), Amen.
   Prayers are private: localStorage `mf-prayers`, and in the account as `notes` rows with word_key PRAYER:open|answered|archived
   (no new table). Prayers are never sent to the voice service. Later: background music (needs licensed audio).
+- Devotional, longer (Ken, 11 Oct): after Hear it goes "into the fish" (the fish turns), the word in Greek and Hebrew,
+  "Here are N Scripture references for this One Word", then each reference (reference, verse, then the verses around it
+  "In context", from bible-api for English and fish-lang/bible for the others), the prayer list, "Give it in their language"
+  (the second fish, any language; See it in … opens two fish), the 2 Fish challenge, Amen. Starts with a choice:
+  Guide me (audio, moves on by itself) or my own pace (written 👉 prompt on each step).
+- Guided tour ("How it works · Take a tour" under the devotional button): 12 steps, a ring around each part of the page and
+  a card that says it (or reads it aloud and moves on). Ends with "Start today's devotional". All 9 languages, want a fluent check.
