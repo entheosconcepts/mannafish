@@ -9,6 +9,7 @@ import WORDS from './words.json';
 import { sendMail } from './mail.mjs';
 import FISH from './fishlines.json';
 import ES from './es.json';
+import IMG from './email-img.json';
 
 export const store = () => getStore('mannafish-devo');
 export const idFor = (email) => 'sub/' + createHash('sha256').update(String(email).trim().toLowerCase()).digest('hex').slice(0, 40);
@@ -47,33 +48,45 @@ export function emailFor(m, lang, unsub, opts = {}) {
   const snippet = es ? '' : ' — “' + m.snippet + '”';
   // Ken, 9 Oct: the email in the site's own look -- black, white lettering, MannaFish blue, the logo in its own font
   const logo = SITE() + '/w/img/logo-email.png';
-  // Ken, 9 Oct: black, blue and white only; the headings in the MannaFish blue (the "Fish" of the logo), bold
-  const lab = 'font:900 15px Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#2a5fb0';
-  // Ken, 9 Oct: always black, in every mail app and in both light and dark mode (bgcolor for the apps that ignore styles)
   // Ken, 9 Oct: no audio from the email (it felt invasive) -- this button opens the day's fish on the site
   const listen = SITE() + '/?w=' + m.key.toLowerCase() + (es ? '&lang=es' : '');
   // Ken, 11 Oct: Friday is a double portion (Exodus 16:22, 29) -- today's verse, and the verse on the fish for the Sabbath
   const dbl = !!m.friday;
   const fishIdx = WORDS.words[m.key].refs.findIndex((r) => r[0] === FISH.en[m.key].ref);
   const sabLink = SITE() + '/?w=' + m.key.toLowerCase() + (fishIdx >= 0 ? '&r=' + fishIdx : '') + (es ? '&lang=es' : '');
-  const btn = 'display:inline-block;color:#ffffff;text-decoration:none;font:bold 16px Arial,sans-serif;padding:13px 26px;border-radius:999px;margin:4px 5px';
-  const html = `<!doctype html><html style="background:#000"><head><meta charset="utf-8"><meta name="color-scheme" content="only dark"><meta name="supported-color-schemes" content="dark">
-<style>:root{color-scheme:only dark}body,table,td{background-color:#000000 !important}u + .body,[data-ogsc] body{background:#000 !important}</style></head>
-<body class="body" bgcolor="#000000" style="margin:0;padding:0;background:#000000;font-family:Georgia,serif;color:#eaf0f0">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#000000" style="background:#000000"><tr><td align="center" bgcolor="#000000" style="padding:20px 10px;background:#000000">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#000000" style="max-width:560px;background:#000000;border:1px solid #1f2a33;border-radius:14px;overflow:hidden">
-<tr><td bgcolor="#000000" align="center" style="background:#000;padding:22px 20px 18px;border-bottom:1px solid #1f2a33"><a href="${SITE()}${es ? '/?lang=es' : '/'}" style="text-decoration:none"><img src="${logo}" width="200" alt="MannaFish" style="width:200px;height:auto;display:block;border:0;color:#fff;font:bold 26px Arial,sans-serif"></a></td></tr>
-<tr><td bgcolor="#000000" align="center" style="padding:24px 22px 4px;${lab}">${esc(T.hello)}</td></tr>
-<tr><td bgcolor="#000000" style="padding:16px 18px"><a href="${read}" style="text-decoration:none"><img src="${img}" width="524" alt="${esc(word)}" style="width:100%;max-width:524px;height:auto;border-radius:8px;display:block;background:#000;border:1px solid #1f2a33"></a></td></tr>
-${dbl ? `<tr><td bgcolor="#000000" align="center" style="padding:6px 22px 0;font:900 19px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#2a5fb0">${esc(T.dbl)}</td></tr>
-<tr><td bgcolor="#000000" align="center" style="padding:6px 30px 14px;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4">${esc(T.dblNote)}</td></tr>` : ''}
-<tr><td bgcolor="#000000" align="center" style="padding:6px 22px 0;${lab}">${esc(T.today)}</td></tr>
-<tr><td bgcolor="#000000" align="center" style="padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0"><b style="color:#ffffff">${esc(ref)}</b>${esc(snippet)}</td></tr>
-<tr><td bgcolor="#000000" align="center" style="padding:18px 16px 22px"><a href="${listen}" style="${btn};background:#2a5fb0">${esc(T.listen)}</a><a href="${read}" style="${btn};background:#000000;border:1px solid #2a5fb0">${esc(T.read)}</a></td></tr>
-<tr><td bgcolor="#000000" align="center" style="padding:16px 22px 0;border-top:1px solid #1f2a33;${lab}">${esc(dbl ? T.sab : T.fish)}</td></tr>
-<tr><td bgcolor="#000000" align="center" style="padding:8px 26px ${dbl ? '0' : '22px'};font:${dbl ? 'normal 19px/1.55' : 'italic 17px/1.55'} Georgia,serif;color:${dbl ? '#eaf0f0' : '#c6d2d4'}">“${esc(f.top)} ${esc(f.bottom)}”<br><span style="font:${dbl ? 'bold 15px' : 'normal 13px'} Arial,sans-serif;color:${dbl ? '#ffffff' : '#8a9aa0'}">${esc(f.ref)}</span></td></tr>
-${dbl ? `<tr><td bgcolor="#000000" align="center" style="padding:16px 16px 24px"><a href="${sabLink}" style="${btn};background:#000000;border:1px solid #2a5fb0">${esc(T.sabRead)}</a></td></tr>` : ''}
-<tr><td bgcolor="#000000" align="center" style="padding:16px 22px 22px;border-top:1px solid #1f2a33;font:12px/1.7 Arial,sans-serif;color:#8a9aa0">${esc(T.why)} <a href="${unsub}" style="color:#8a9aa0">${esc(T.stop)}</a> · <a href="${SITE()}/privacy/" style="color:#8a9aa0">${es ? 'Privacidad' : 'Privacy'}</a><br>${esc(ADDRESS())}</td></tr>
+  // Ken, 11 Oct: Gmail on iPhone (dark mode) flips an email's colours -- black turned white. It leaves pictures alone,
+  // so the black is a background picture, the blue headings and the buttons are pictures (tools/email-img), the
+  // white lettering goes through Gmail's blend-mode fix (gw), and the grey borders are gone.
+  const P = SITE() + '/w/img/email/', L = es ? 'es' : 'en';
+  const BG = `background-color:#000000;background-image:url(${P}bk.png);`;
+  const td = (style, inner, align = 'center') => `<tr><td bgcolor="#000000" align="${align}" style="${BG}${style}">${inner}</td></tr>`;
+  const gw = (t) => `<div class="gmail-screen"><div class="gmail-diff">${t}</div></div>`;
+  const pic = (k, alt, css) => { const [w, h] = IMG[L + '-' + k] || [200, 18];
+    return `<img src="${P}${L}-${k}.png" width="${w}" height="${h}" alt="${esc(alt)}" style="border:0;${css}">`; };
+  const head = (k, alt) => pic(k, alt, 'display:block;margin:0 auto;color:#2a5fb0;font:900 15px Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase');
+  const button = (href, k, alt) => `<a href="${href}" style="display:inline-block;margin:5px;text-decoration:none">${pic(k, alt, 'display:inline-block;vertical-align:middle;color:#ffffff;font:bold 16px Arial,sans-serif')}</a>`;
+  const rule = td('padding:0 22px;font-size:0;line-height:0', `<img src="${P}rule.png" width="516" height="1" alt="" style="display:block;width:100%;height:1px;border:0">`);
+  const html = `<!doctype html><html style="background:#000"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="only dark"><meta name="supported-color-schemes" content="dark">
+<style>:root{color-scheme:only dark}body,table,td{background-color:#000000 !important}u + .body .gmail-screen{background:#000;mix-blend-mode:screen}u + .body .gmail-diff{background:#000;mix-blend-mode:difference}</style></head>
+<body class="body" bgcolor="#000000" style="margin:0;padding:0;${BG}font-family:Georgia,serif;color:#eaf0f0">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#000000" style="${BG}"><tr><td align="center" bgcolor="#000000" style="padding:20px 10px;${BG}">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#000000" style="max-width:560px;${BG}">
+${td('padding:22px 20px 18px', `<a href="${SITE()}${es ? '/?lang=es' : '/'}" style="text-decoration:none"><img src="${logo}" width="200" alt="MannaFish" style="width:200px;height:auto;display:block;border:0;color:#fff;font:bold 26px Arial,sans-serif"></a>`)}
+${rule}
+${td('padding:24px 22px 4px', head(opts.welcome ? 'welcome' : 'word', T.hello))}
+${td('padding:16px 18px', `<a href="${read}" style="text-decoration:none"><img src="${img}" width="524" alt="${esc(word)}" style="width:100%;max-width:524px;height:auto;border-radius:8px;display:block;border:0"></a>`, 'left')}
+${dbl ? td('padding:6px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;color:#2a5fb0;font:900 19px Arial,sans-serif')) + '\n'
+  + td('padding:6px 30px 14px;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(T.dblNote))) : ''}
+${td('padding:6px 22px 0', head('today', T.today))}
+${td('padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0', gw(`<b style="color:#ffffff">${esc(ref)}</b>${esc(snippet)}`))}
+${td('padding:16px 12px 20px;font-size:0', button(listen, 'listen', T.listen) + button(read, 'read', T.read))}
+${rule}
+${td('padding:16px 22px 0', head(dbl ? 'sab' : 'fish', dbl ? T.sab : T.fish))}
+${td(`padding:8px 26px ${dbl ? '0' : '22px'};font:${dbl ? 'normal 19px/1.55' : 'italic 17px/1.55'} Georgia,serif;color:${dbl ? '#eaf0f0' : '#c6d2d4'}`,
+  gw(`“${esc(f.top)} ${esc(f.bottom)}”<br><span style="font:${dbl ? 'bold 15px' : 'normal 13px'} Arial,sans-serif;color:${dbl ? '#ffffff' : '#8a9aa0'}">${esc(f.ref)}</span>`))}
+${dbl ? td('padding:16px 12px 24px;font-size:0', button(sabLink, 'sabread', T.sabRead)) : ''}
+${rule}
+${td('padding:16px 22px 22px;font:12px/1.7 Arial,sans-serif;color:#8a9aa0', gw(`${esc(T.why)} <a href="${unsub}" style="color:#8a9aa0">${esc(T.stop)}</a> · <a href="${SITE()}/privacy/" style="color:#8a9aa0">${es ? 'Privacidad' : 'Privacy'}</a><br>${esc(ADDRESS())}`))}
 </table></td></tr></table></body></html>`;
   const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${dbl ? T.dbl + ' — ' + T.dblNote + '\n\n' : ''}${T.today}: ${ref}${snippet}\n${T.listen}: ${listen}\n${T.read}: ${read}\n\n${dbl ? T.sab : T.fish}: “${f.top} ${f.bottom}” ${f.ref}${dbl ? '\n' + T.sabRead + ': ' + sabLink : ''}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
   LINK = keep;
