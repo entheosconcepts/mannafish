@@ -57,6 +57,7 @@ export function emailFor(m, lang, unsub, opts = {}) {
   // Ken, 11 Oct: Gmail on iPhone (dark mode) flips an email's colours -- black turned white. It leaves pictures alone,
   // so the black is a background picture, the blue headings and the buttons are pictures (tools/email-img), the
   // white lettering goes through Gmail's blend-mode fix (gw), and the grey borders are gone.
+  // Ken, 11 Oct: no "Today's word" or "Today's verse" headings -- the fish, then the verse
   const P = SITE() + '/w/img/email/', L = es ? 'es' : 'en';
   const BG = `background-color:#000000;background-image:url(${P}bk.png);`;
   const td = (style, inner, align = 'center') => `<tr><td bgcolor="#000000" align="${align}" style="${BG}${style}">${inner}</td></tr>`;
@@ -73,11 +74,10 @@ export function emailFor(m, lang, unsub, opts = {}) {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#000000" style="max-width:560px;${BG}">
 ${td('padding:22px 20px 18px', `<a href="${SITE()}${es ? '/?lang=es' : '/'}" style="text-decoration:none"><img src="${logo}" width="200" alt="MannaFish" style="width:200px;height:auto;display:block;border:0;color:#fff;font:bold 26px Arial,sans-serif"></a>`)}
 ${rule}
-${td('padding:24px 22px 4px', head(opts.welcome ? 'welcome' : 'word', T.hello))}
+${opts.welcome ? td('padding:24px 22px 4px', head('welcome', T.hello)) : ''}
 ${td('padding:16px 18px', `<a href="${read}" style="text-decoration:none"><img src="${img}" width="524" alt="${esc(word)}" style="width:100%;max-width:524px;height:auto;border-radius:8px;display:block;border:0"></a>`, 'left')}
 ${dbl ? td('padding:6px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;color:#2a5fb0;font:900 19px Arial,sans-serif')) + '\n'
   + td('padding:6px 30px 14px;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(T.dblNote))) : ''}
-${td('padding:6px 22px 0', head('today', T.today))}
 ${td('padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0', gw(`<b style="color:#ffffff">${esc(ref)}</b>${esc(snippet)}`))}
 ${td('padding:16px 12px 20px;font-size:0', button(listen, 'listen', T.listen) + button(read, 'read', T.read))}
 ${rule}

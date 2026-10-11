@@ -212,3 +212,15 @@ Also check the small alternate-language fish and its "English ⇄" label the sam
   Guide me (audio, moves on by itself) or my own pace (written 👉 prompt on each step).
 - Guided tour ("How it works · Take a tour" under the devotional button): 12 steps, a ring around each part of the page and
   a card that says it (or reads it aloud and moves on). Ends with "Start today's devotional". All 9 languages, want a fluent check.
+
+## 11 Oct (later)
+- The fish's verse in the reader: light blue (was brown), sitting on the words.
+- Email: no "Today's word" / "Today's verse" headings (the welcome email keeps its "Welcome!" line).
+- "🐟 Just one fish" (left) and "Two fish 🐟🐟" (right, the tail side) under the fish; the buttons above the fish are gone.
+- Both fish can be the same language (a twin fish "For someone else").
+- The vision, at the top of the "Choose who it reaches" section: Why give? / A free gift is never free / Receive first,
+  then give / The 2 Fish challenge / Who pays the price / Why gather? (English and Spanish). Sponsor examples are kept
+  generic until real sponsors agree to be named.
+- Notes dictation keeps going until Pause (iPhone stops listening by itself) and keeps the words heard so far.
+- Next to discuss: a page for each sponsor (the QR on every gift: who gave it, their invitation); the shop page prices
+  decals at $2.99 -- make sure it reads as sponsoring decals to give away, never resale.
