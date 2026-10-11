@@ -891,6 +891,40 @@ section.section.bundles{display:block;margin-top:0}
 .hlhint{font:.8rem 'Archivo',sans-serif;color:var(--foam-dim,#aaa);margin:0 0 8px}
 .chapter span.mk{background:linear-gradient(transparent 50%,rgba(245,215,110,.55) 50%);border-radius:2px}
 .chapter span[data-v]{cursor:pointer}
+.rspk,.frspk{flex:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--foam);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.rspk svg,.frspk svg{width:20px;height:20px}
+.rspk[aria-pressed="true"],.frspk[aria-pressed="true"]{border-color:var(--brass);background:rgba(42,95,176,.3)}
+.reader.stacked .rspk,.fr .frspk{width:30px;height:30px}
+.rsay .rplays>:not(.rorig),.rsay .rvlab,.rsay .rvoice,.frsay [data-a],.frsay .rvlab,.frsay .voicesel{display:none!important}
+.reader.lexmode .rsay{display:none}
+.fr .frtop .frbtns{display:flex;gap:6px;align-items:center;flex:none}
+.fr.lex .frtop .frbtns{position:absolute;top:8px;right:10px}
+.fr.lex .frx{position:static}
+.mfplayer{position:fixed;left:0;right:0;bottom:0;margin:0 auto;width:min(600px,100%);z-index:75;background:#1c1c1e;color:#fff;border-radius:18px 18px 0 0;box-shadow:0 -18px 50px -10px #000;padding:6px 18px max(14px,env(safe-area-inset-bottom));font-family:'Archivo',sans-serif;animation:mpup .25s ease}
+@keyframes mpup{from{transform:translateY(100%)}to{transform:none}}
+.mfplayer[hidden]{display:none}
+.mpgrab{display:block;margin:0 auto 4px;width:60px;height:22px;border:0;background:none;cursor:pointer;padding:0}
+.mpgrab span{display:block;width:44px;height:5px;border-radius:3px;background:#5a5a5e;margin:0 auto}
+.mphead{text-align:center}
+.mpt{font:800 1.05rem 'Archivo',sans-serif}
+.mps{font:600 .8rem 'Archivo',sans-serif;color:#b8b8bd;margin-top:2px}
+.mpctl{display:flex;justify-content:center;align-items:center;gap:34px;margin:12px 0 8px}
+.mpb{border:0;background:none;color:#fff;cursor:pointer;width:46px;height:46px;padding:0;display:flex;align-items:center;justify-content:center}
+.mpb svg{width:34px;height:34px}
+.mpplay{width:64px;height:64px}.mpplay svg{width:52px;height:52px}
+.mpb:disabled{opacity:.35;cursor:default}
+.mpbar{display:flex;align-items:center;gap:10px;font:600 .74rem 'Archivo',sans-serif;color:#b8b8bd;font-variant-numeric:tabular-nums}
+.mpbar input{flex:1;accent-color:#fff}
+.mpfoot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px}
+.mprate{border:0;background:none;color:#fff;font:800 1.05rem 'Archivo',sans-serif;cursor:pointer;min-width:52px;text-align:left}
+.mpfoot select{flex:0 1 210px;min-width:0;height:34px;border-radius:999px;border:1px solid #3a3a3e;background:#2a2a2e;color:#fff;font:600 .8rem 'Archivo',sans-serif;padding:0 10px}
+.mpx{border:1px solid #3a3a3e;background:none;color:#fff;border-radius:50%;width:34px;height:34px;font-size:1.1rem;cursor:pointer}
+.mfplayer.mini .mpctl,.mfplayer.mini .mpbar,.mfplayer.mini .mpfoot{display:none}
+.mfplayer.mini{display:grid;grid-template-columns:1fr auto;align-items:center;padding-top:4px}
+.mfplayer.mini .mpgrab{grid-column:1/-1}
+.mfplayer.mini .mphead{text-align:left}
+.mfplayer.mini .mpmini{display:flex}
+.mpmini{display:none;gap:6px;align-items:center}
 .mftoast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:90;background:#111;color:#fff;border:1px solid var(--brass);border-radius:999px;padding:9px 16px;font:600 .82rem 'Archivo',sans-serif;box-shadow:0 10px 30px -8px #000}
 .mftoast[hidden]{display:none}
 
@@ -1395,13 +1429,27 @@ section.section.bundles{display:block;margin-top:0}
 <!-- verse reader -->
 <div class="reader-scrim" id="scrim"></div>
 <div class="mftoast" id="mfToast" role="status" hidden></div>
+<!-- Ken, 11 Oct: read aloud the way the Bible App does it -- a speaker at the top of the reader opens a player at the
+     bottom of the screen: play / pause, a verse back or forward, a bar to move through the chapter, speed and voice. -->
+<div class="mfplayer" id="mfPlayer" hidden role="region" aria-label="Read aloud">
+  <button type="button" class="mpgrab" id="mpMin" aria-label="Make smaller"><span></span></button>
+  <div class="mphead"><div class="mpt" id="mpTitle"></div><div class="mps" id="mpSub"></div></div>
+  <div class="mpctl">
+    <button type="button" class="mpb" id="mpPrev" aria-label="Back one verse"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6 3 12l8 6zM21 6l-8 6 8 6z" fill="currentColor"/></svg></button>
+    <button type="button" class="mpb mpplay" id="mpPlay" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true" id="mpIco"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg></button>
+    <button type="button" class="mpb" id="mpNext" aria-label="Forward one verse"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 6l8 6-8 6zM3 6l8 6-8 6z" fill="currentColor"/></svg></button>
+  </div>
+  <div class="mpbar"><span id="mpAt">1</span><input type="range" id="mpRange" min="1" max="1" value="1" aria-label="Verse"><span id="mpOf">1</span></div>
+  <div class="mpfoot"><button type="button" class="mprate" id="mpRate">1x</button><select class="voicesel" id="mpVoice" aria-label="Voice"></select><button type="button" class="mpx" id="mpX" aria-label="Close">&times;</button></div>
+  <div class="mpmini"><button type="button" class="mpb" id="mpPlay2" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true" id="mpIco2"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg></button></div>
+</div>
 <button class="hearsel" type="button" id="hearSel" hidden><span aria-hidden="true">&#128266;</span> <span id="hearLab">Hear it</span></button>
 <div class="hearbox" id="hearBox" role="status" hidden><button class="etx" type="button" id="hearX" aria-label="Close">&times;</button><div class="etbig" id="hearTxt"></div><div class="etmine" id="hearMine"></div><div class="etrow"><button type="button" id="hearPlay">&#128266;</button></div></div>
 <div class="okbox" id="okBox" role="dialog" aria-modal="true" aria-labelledby="okTitle" hidden><div class="okcard"><div class="okcheck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><h2 id="okTitle"></h2><div id="okBody"></div><button class="btn" type="button" id="okDone">Done</button></div></div>
 <aside class="reader" id="reader" aria-hidden="true">
   <div class="reader-top">
     <div><div class="rk" id="rKicker">Word study</div><div class="rref" id="rRef">Reference</div></div>
-    <span class="rtools"><span class="rstack"><button class="rmode" id="rMode" type="button"></button></span><span class="rsheet"><button class="rsb" id="rPause" type="button" aria-label="Pause">&#10074;&#10074;</button><button class="rsb" id="rMin" type="button" aria-label="Minimize">&#9662;</button><button class="rsb" id="rFull" type="button" aria-label="Expand">&#9652;</button></span><button class="rclose" id="rClose" aria-label="Close">&#215;</button></span>
+    <span class="rtools"><span class="rstack"><button class="rmode" id="rMode" type="button"></button></span><span class="rsheet"><button class="rsb" id="rPause" type="button" aria-label="Pause">&#10074;&#10074;</button><button class="rsb" id="rMin" type="button" aria-label="Minimize">&#9662;</button><button class="rsb" id="rFull" type="button" aria-label="Expand">&#9652;</button></span><button class="rspk" id="rSpk" type="button" aria-label="Listen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button><button class="rclose" id="rClose" aria-label="Close">&#215;</button></span>
   </div>
   <button type="button" class="rtap" id="rTap"></button>
   <div class="rsay" id="rSay" hidden><select class="rlang" id="rLang" aria-label="Language"></select><span class="rvlab" id="rVLab"></span><select class="voicesel rvoice" id="rVoice" aria-label="Voice"></select><span class="rplays"><button type="button" class="rplay" id="rPlayV"></button><button type="button" class="rplay" id="rPlayC"></button><button type="button" class="rplay rorig" id="rOrig" hidden></button></span><button type="button" class="rplay lxexp" id="rExp" hidden></button></div>
@@ -1429,7 +1477,7 @@ window.MF=(function(){
   function detect(){ var n=(navigator.language||'').toLowerCase().split('-')[0]; if(n==='fil') n='tl'; if(n==='iw') n='he'; return LL.indexOf(n)>=0?n:'en'; }
   var L='en'; try{var q=(location.search.match(/[?&]lang=(es|en|tl|zh|hi|el|de|ko|he)\b/)||[])[1], st=localStorage.getItem('mf-lang'); L=q||(LL.indexOf(st)>=0?st:'')||detect();}catch(e){}
   var hooks=[], orig=new WeakMap(), X=window.MFI18N;
-  var SKIP='script,style,#refs,#reader,#notesBox,#mfToast,#listenBtn,#trnBtn,#modeDark,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#okBox,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
+  var SKIP='script,style,#refs,#reader,#mfPlayer,#notesBox,#mfToast,#listenBtn,#trnBtn,#modeDark,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#okBox,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
   function norm(s){return s.replace(/\s+/g,' ').trim();}
   function t(k){var u=X.ui[k]; return u ? (L==='es'?u[1]:u[0]) : k;}
   function applyPage(){
@@ -1664,7 +1712,7 @@ window.MF=(function(){
     placeReader(); if(inlineNow()) reader.scrollIntoView({behavior:'smooth',block:'start'});
   });
   window.addEventListener('resize',function(){if(reader.classList.contains('open'))placeReader();});
-  function closeReader(){ rStop(); unbig(); if(sheet){ sheet=false; listenUI(); setTimeout(placeReader,350); } if(landing){ landing=false; setTimeout(placeReader,350); } window.MFreader=null; if(window.MFsave) MFsave(); reader.classList.remove('open');scrim.classList.remove('open');reader.setAttribute('aria-hidden','true');}
+  function closeReader(){ rStop(); unbig(); if(window.MFplSource&&MFplSource()===$('rSpk')) MFplClose(); if(sheet){ sheet=false; listenUI(); setTimeout(placeReader,350); } if(landing){ landing=false; setTimeout(placeReader,350); } window.MFreader=null; if(window.MFsave) MFsave(); reader.classList.remove('open');scrim.classList.remove('open');reader.setAttribute('aria-hidden','true');}
   $('rClose').addEventListener('click',closeReader);
   scrim.addEventListener('click',closeReader);
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closeReader();});
@@ -1836,24 +1884,24 @@ window.MF=(function(){
     return e; }
   function rWordAt(e,ci){ if(!e) return; [].forEach.call(e.querySelectorAll('.rw'),function(w){ w.classList.toggle('on', ci>=+w.dataset.s && ci<+w.dataset.e); }); }
   function rMark(v){ rMarkIn({root:reader,data:RD||{l:'en'},box:reader.querySelector('.reader-body')},v); }
-  function rStop(){ if(typeof sp!=='undefined' && sp && sp.btn && sp.btn.classList.contains('rplay')) stopSpeak(); document.querySelectorAll('.chapter .reading').forEach(function(e){ e.classList.remove('reading'); }); }
+  function rStop(){ if(window.MFplSource&&MFplSource()===$('rSpk')) MFplClose(); if(typeof sp!=='undefined' && sp && sp.btn && sp.btn.classList.contains('rplay')) stopSpeak(); document.querySelectorAll('.chapter .reading').forEach(function(e){ e.classList.remove('reading'); }); }
   function readAloud(ctx,from,to,btn){ if(sp.on && sp.btn===btn){ stopSpeak(); rMarkIn(ctx,0); return; } var D=ctx.data; if(!D) return;
     stopSpeak(); var id=sp.id, L=D.l, he=L==='he'; sp.on=true; sp.btn=btn; btn.setAttribute('aria-pressed','true');
     var done=function(){ if(id===sp.id){ stopSpeak(); rMarkIn(ctx,0); } }, vv=voiceFor(L);
     function say(t,base,el,next){ if(id!==sp.id) return; var spoken=he?t.replace(/ה׳|י[\u0591-\u05C7]*ה[\u0591-\u05C7]*ו[\u0591-\u05C7]*ה[\u0591-\u05C7]*/g,'אדוני'):t;
       var v=aiVoice(); (v?etPost('/api/say',{text:spoken,lang:L,voice:v}):Promise.reject()).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){
-        if(id!==sp.id) return; var a=new Audio(URL.createObjectURL(b)); sp.audio=a; a.onplaying=function(){ sp.started=true; listenUI(); }; a.onpause=function(){ listenUI(); };
+        if(id!==sp.id) return; var a=new Audio(URL.createObjectURL(b)); sp.audio=a; a.playbackRate=RATE(); a.onplaying=function(){ sp.started=true; listenUI(); }; a.onpause=function(){ listenUI(); };
         a.ontimeupdate=function(){ if(a.duration) rWordAt(el,base+a.currentTime/a.duration*t.length); };
         a.onended=function(){ if(id===sp.id) next(); }; return a.play(); })
       .catch(function(err){ if(id!==sp.id) return; if(err&&err.name==='NotAllowedError'){ listenBlocked(); return; } if(!window.speechSynthesis||(vv.any&&!vv.v)){ done(); return; }
-        var u=new SpeechSynthesisUtterance(spoken); u.lang=LCODE[L]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.92;
+        var u=new SpeechSynthesisUtterance(spoken); u.lang=LCODE[L]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.92*RATE();
         var got=false, t0=Date.now(), cps=L==='zh'?4:L==='hi'?11:13; clearInterval(sp.timer);
         u.onboundary=function(e){ got=true; rWordAt(el,base+e.charIndex); };
         sp.timer=setInterval(function(){ if(!got) rWordAt(el,base+(Date.now()-t0)/1000*cps); },150);
         u.onstart=function(){ sp.started=true; listenUI(); };
         u.onend=function(){ clearInterval(sp.timer); if(id===sp.id) next(); }; u.onerror=function(e){ if(e&&e.error==='not-allowed') listenBlocked(); else done(); }; speechSynthesis.speak(u); }); }
     function verse(v){ if(id!==sp.id) return; if(v>to||v>D.t.length){ done(); return; } if(!D.t[v-1]){ verse(v+1); return; }
-      var el=rMarkIn(ctx,v), full=D.t[v-1], parts=rChunks(full), k=0, pos=0;
+      var el=rMarkIn(ctx,v), full=D.t[v-1], parts=rChunks(full), k=0, pos=0; if(ctx.onVerse) ctx.onVerse(v);
       (function nextPart(){ if(k>=parts.length){ verse(v+1); return; } var part=parts[k++], base=full.indexOf(part,pos); if(base<0) base=pos; pos=base+part.length; say(part,base,el,nextPart); })(); }
     // Ken, 11 Oct: read the heading first -- the reference, or the card's title -- for someone who is only listening
     var ip=ctx.intro?rChunks(ctx.intro):[];
@@ -1879,6 +1927,46 @@ window.MF=(function(){
   $('rMin').addEventListener('click',function(){ var m=reader.classList.toggle('mini'); reader.classList.remove('full'); this.innerHTML=m?'&#9652;':'&#9662;'; $('rFull').hidden=m; });
   $('rFull').addEventListener('click',function(){ var f=reader.classList.toggle('full'); this.innerHTML=f?'&#9662;':'&#9652;'; this.setAttribute('aria-pressed',f?'true':'false'); });
   MF.onChange(function(){ listenUI(); }); window.MFlistenUI=function(){ listenUI(); };
+  // ── The player (Ken, 11 Oct: "mimic" the Bible App) -- one at the bottom of the screen for whichever card's 🔊 was tapped
+  var RATES=[1,1.25,1.5,0.75], PB=$('mpPlay'), PL={ctx:null,n:1,N:1,intro:'',title:'',src:null};
+  function RATE(){ var r=1; try{ r=+localStorage.getItem('mf-rate')||1; }catch(e){} return RATES.indexOf(r)>=0?r:1; }
+  var PLAYI='<path d="M7 4.5v15l13-7.5z" fill="currentColor"/>', PAUSEI='<path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z" fill="currentColor"/>';
+  function plMine(){ return sp.on && sp.btn===PB; }
+  function plPaused(){ return plMine() && (sp.audio?sp.audio.paused:!!(window.speechSynthesis&&speechSynthesis.paused)); }
+  function plPlaying(){ return plMine() && !plPaused(); }
+  function plUI(){ if($('mfPlayer').hidden) return; var on=plPlaying(), T=RSAY[MF.lang]||RSAY.en, unit=PL.unit==='verse'?T[0]:'';
+    $('mpIco').innerHTML=$('mpIco2').innerHTML=on?PAUSEI:PLAYI; var LB=LIS[MF.lang]||LIS.en; PB.setAttribute('aria-label',on?LB[1]:LB[0]); $('mpPlay2').setAttribute('aria-label',on?LB[1]:LB[0]);
+    $('mpTitle').textContent=PL.title; $('mpSub').textContent=(unit?unit+' ':'')+PL.n+' / '+PL.N;
+    $('mpRange').max=PL.N; $('mpRange').value=PL.n; $('mpAt').textContent=PL.n; $('mpOf').textContent=PL.N;
+    $('mpPrev').disabled=PL.n<=1; $('mpNext').disabled=PL.n>=PL.N; $('mpRate').textContent=RATE()+'x';
+    if(PL.src) PL.src.setAttribute('aria-pressed',plMine()?'true':'false'); }
+  window.MFplUI=plUI;
+  function openPlayer(o){ if(PL.src&&PL.src!==o.src) PL.src.setAttribute('aria-pressed','false'); if(plMine()) stopSpeak();
+    PL={ctx:o.ctx,n:Math.max(1,o.start||1),N:o.ctx.data.t.length,intro:o.intro||'',title:o.title||'',src:o.src,unit:o.unit||'verse',fresh:true};
+    $('mpVoice').innerHTML=voiceOptions(); $('mfPlayer').hidden=false; $('mfPlayer').classList.remove('mini'); plUI(); }
+  function plStart(v){ stopSpeak(); var c={root:PL.ctx.root,data:PL.ctx.data,box:PL.ctx.box,intro:PL.fresh?PL.intro:'',onVerse:function(x){ PL.n=x; plUI(); }};
+    PL.fresh=false; PL.n=v; readAloud(c,v,PL.N,PB); plUI(); }
+  function plToggle(){ if(plPaused()){ if(sp.audio) sp.audio.play(); else speechSynthesis.resume(); setTimeout(plUI,60); return; }
+    if(plPlaying()){ if(sp.audio) sp.audio.pause(); else speechSynthesis.pause(); setTimeout(plUI,60); return; }
+    if(PL.ctx) plStart(PL.n>=PL.N&&PL.done?1:PL.n); }
+  function plClose(){ if(plMine()) stopSpeak(); rMarkIn(PL.ctx||{root:document.body,data:{l:'en'}},0); if(PL.src) PL.src.setAttribute('aria-pressed','false'); $('mfPlayer').hidden=true; PL.src=null; }
+  window.MFplClose=plClose; window.MFplSource=function(){ return PL.src; };
+  PB.addEventListener('click',plToggle); $('mpPlay2').addEventListener('click',plToggle);
+  $('mpPrev').addEventListener('click',function(){ if(PL.n<=1) return; PL.n--; if(plMine()) plStart(PL.n); else plUI(); });
+  $('mpNext').addEventListener('click',function(){ if(PL.n>=PL.N) return; PL.n++; if(plMine()) plStart(PL.n); else plUI(); });
+  $('mpRange').addEventListener('input',function(){ $('mpAt').textContent=this.value; });
+  $('mpRange').addEventListener('change',function(){ PL.n=+this.value; if(plMine()) plStart(PL.n); else plUI(); });
+  $('mpRate').addEventListener('click',function(){ var r=RATES[(RATES.indexOf(RATE())+1)%RATES.length]; try{ localStorage.setItem('mf-rate',r); }catch(e){} if(sp.audio) sp.audio.playbackRate=r; plUI(); });
+  $('mpVoice').addEventListener('change',function(){ var was=plMine(); setVoice(this.value); if(was) plStart(PL.n); });
+  $('mpMin').addEventListener('click',function(){ $('mfPlayer').classList.toggle('mini'); });
+  $('mpX').addEventListener('click',plClose);
+  MF.onChange(plUI);
+  // the big reader's 🔊: the chapter from the day's verse (a Strong's card from the top)
+  $('rSpk').addEventListener('click',function(){ var r=window.MFreader; if(!RD||!r) return;
+    if(PL.src===this && !$('mfPlayer').hidden){ $('mfPlayer').classList.remove('mini'); return; }
+    var lx=r.kind==='strongs', ref=$('rRef').innerText.trim(), l=r.l||MF.lang;
+    var ver=RO?(NTC[USFM[(parseRef(DATA[r.k].refs[r.i][0])||{}).book]]?'Greek':'Hebrew'):(l==='en'?curVer().s:(RBIB[l]||''));
+    openPlayer({ctx:readerCtx(),src:this,start:lx?1:RD.vs,unit:lx?'part':'verse',title:lx?$('rKicker').textContent:chapterOf(ref)+(ver?' · '+ver:''),intro:lx?rIntro(true):rIntro(false)}); });
   function readerCtx(){ return {root:$('rChapter'),data:RD,box:reader.classList.contains('inline')?null:reader.querySelector('.reader-body')}; }
   $('rOrig').addEventListener('click',function(){ var r=window.MFreader; if(!r||r.kind!=='ref') return; rStop();
     if(RO){ openReader(r.k,r.i,r.l); return; }
@@ -2013,7 +2101,7 @@ window.MF=(function(){
   function stopSpeak(){ sp.id++; clearInterval(sp.timer); if(sp.audio){ sp.audio.pause(); sp.audio=null; } if(window.speechSynthesis) speechSynthesis.cancel();
     if(sp.btn) sp.btn.setAttribute('aria-pressed','false');
     if(sp.fh){ sp.fh.reset(); sp.fh=null; }
-    sp.on=false; sp.btn=null; if(window.MFlistenUI) MFlistenUI(); }
+    sp.on=false; sp.btn=null; if(window.MFlistenUI) MFlistenUI(); if(window.MFplUI) MFplUI(); }
   function voiceFor(l){ var vs=(window.speechSynthesis&&speechSynthesis.getVoices())||[];
     var m=vs.filter(function(v){ var c=(v.lang||'').toLowerCase().replace('_','-'); return LPRE[l].some(function(p){return c.indexOf(p)===0;}); });
     m.sort(function(a,b){ var q=function(v){return /natural|neural|premium|enhanced|siri|google/i.test(v.name)?0:1;}; return q(a)-q(b); });
@@ -2510,11 +2598,11 @@ window.MF=(function(){
   // (or more) passages can be open at once, each with its own Verse / Chapter speaker.
   function openFigReader(f,k,i,l,orig){ var fr=f.querySelector('.fr'); if(!fr){ fr=document.createElement('div'); fr.className='fr'; f.appendChild(fr); }
     var card=f.classList.contains('on')?f.querySelector('.cmpb'):f.querySelector('.cmpf'); fr.style.top=card.offsetTop+'px'; fr.style.height=card.offsetHeight+'px';
-    if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak();
+    if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak(); if(window.MFplSource&&MFplSource()&&fr.contains(MFplSource())) MFplClose();
     var ref=DATA[k].refs[i], p=parseRef(ref[0]), w=(l!=='en'&&l!=='es')?studyOf(l,k):null, T=RSAY[MF.lang]||RSAY.en;
     var label=l==='en'?ref[0]:l==='es'?esRef(ref[0]):(w?w.refs[i][0]:ref[0]);
     fr.setAttribute('lang',l); fr.hidden=false; fr._rd=null; fr._ctx={k:k,i:i,l:l,orig:!!orig}; fr.classList.remove('lex','big'); fr.style.minHeight=''; f.style.paddingBottom='';
-    fr.innerHTML='<div class="frtop"><div><div class="rk">'+esc(titleIn(l,k))+'</div><div class="rref">'+esc(label)+'</div></div><button type="button" class="frx" aria-label="Close">&times;</button></div>'
+    fr.innerHTML='<div class="frtop"><div><div class="rk">'+esc(titleIn(l,k))+'</div><div class="rref">'+esc(label)+'</div></div><div class="frbtns"><button type="button" class="frspk" aria-label="Listen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button><button type="button" class="frx" aria-label="Close">&times;</button></div></div>'
       +'<div class="frsay"><button type="button" class="rplay" data-a="v">🔊 '+esc(T[0])+'</button><button type="button" class="rplay" data-a="c">🔊 '+esc(T[1])+'</button>'
       +(p?'<button type="button" class="rplay rorig" aria-pressed="'+(orig?'true':'false')+'">'+esc(origLab(p))+'</button>':'')
       +'<span class="rvlab">'+esc(VOICEL[MF.lang]||VOICEL.en)+'</span><select class="voicesel" aria-label="Voice">'+voiceOptions()+'</select><button type="button" class="rplay lxexp" hidden>'+expLab(false)+'</button></div>'
@@ -2543,16 +2631,20 @@ window.MF=(function(){
     if(!LEXP['x'+l] && (!LEXI.en || (l!=='en' && !LEXI[l]))){ LEXP['x'+l]=1; withLex(l,function(){ openFigStrongs(f,k,gk); }); }
     var x=lexBody(k,gk,l); if(!x) return; var fr=f.querySelector('.fr'); if(!fr){ fr=document.createElement('div'); fr.className='fr'; f.appendChild(fr); }
     var card=f.classList.contains('on')?f.querySelector('.cmpb'):f.querySelector('.cmpf'); fr.style.top=card.offsetTop+'px'; fr.style.height=card.offsetHeight+'px';
-    if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak();
+    if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak(); if(window.MFplSource&&MFplSource()&&fr.contains(MFplSource())) MFplClose();
     fr.setAttribute('lang',x.l); fr.hidden=false; fr._rd={l:x.l,t:x.t,vs:1}; fr.classList.add('lex'); fr.classList.remove('big'); fr.style.minHeight=''; f.style.paddingBottom='';
-    fr.innerHTML='<div class="frtop"><div><div class="rk">'+esc(titleIn(f.dataset.l,k))+' \u00b7 Strong '+x.id+'</div><div class="rref">'+x.head+'</div></div><button type="button" class="frx" aria-label="Close">&times;</button></div>'
+    fr.innerHTML='<div class="frtop"><div><div class="rk">'+esc(titleIn(f.dataset.l,k))+' \u00b7 Strong '+x.id+'</div><div class="rref">'+x.head+'</div></div><div class="frbtns"><button type="button" class="frspk" aria-label="Listen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button><button type="button" class="frx" aria-label="Close">&times;</button></div></div>'
       +'<div class="frsay"><button type="button" class="rplay" data-a="c">🔊 '+esc(HEARIT[MF.lang]||HEARIT.en)+'</button><span class="rvlab">'+esc(VOICEL[MF.lang]||VOICEL.en)+'</span><select class="voicesel" aria-label="Voice">'+voiceOptions()+'</select><button type="button" class="rplay lxexp" hidden>'+expLab(false)+'</button></div>'
       +'<div class="frbody"><div class="chapter">'+x.html+'</div></div>'
       +'<div class="frv">'+esc(x.credit)+'</div>';
     fitExp(fr.querySelector('.lxexp'),fr.querySelector('.frbody'),false);
     f.scrollIntoView({block:'nearest',behavior:'smooth'}); }
   function figReaderClick(e){ var fr=e.target.closest('.fr'); if(!fr) return false;
-    if(e.target.closest('.frx')){ if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak(); fr.hidden=true; fr.innerHTML=''; fr.classList.remove('big'); fr.parentNode.style.paddingBottom=''; return true; }
+    var sk=e.target.closest('.frspk'); if(sk){ if(!fr._rd) return true; var lx=fr.classList.contains('lex'), rr=fr.querySelector('.rref'), ref=rr?rr.innerText.trim():'', lt=fr.querySelector('.rref .lx-t');
+      var c=fr._ctx||{}, ver=c.orig?'':(c.l==='en'?curVer().s:(RBIB[c.l]||''));
+      openPlayer({ctx:{root:fr.querySelector('.chapter'),data:fr._rd,box:fr.querySelector('.frbody')},src:sk,start:lx?1:fr._rd.vs,unit:lx?'part':'verse',
+        title:lx?fr.querySelector('.rk').textContent:chapterOf(ref)+(ver?' · '+ver:''),intro:c.orig?'':lx?headOf(fr.querySelector('.rk').textContent,lt?lt.textContent:''):ref}); return true; }
+    if(e.target.closest('.frx')){ if(window.MFplSource&&MFplSource()&&fr.contains(MFplSource())) MFplClose(); if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak(); fr.hidden=true; fr.innerHTML=''; fr.classList.remove('big'); fr.parentNode.style.paddingBottom=''; return true; }
     var o=e.target.closest('.rorig'); if(o && fr._ctx){ var c=fr._ctx; if(sp.on && sp.btn && fr.contains(sp.btn)) stopSpeak(); openFigReader(fr.parentNode,c.k,c.i,c.l,!c.orig); return true; }
     if(e.target.closest('select')) return true;
     var b=e.target.closest('.rplay'); if(b && fr._rd){ var ctx={root:fr.querySelector('.chapter'),data:fr._rd,box:fr.querySelector('.frbody')};
