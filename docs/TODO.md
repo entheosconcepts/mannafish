@@ -224,3 +224,7 @@ Also check the small alternate-language fish and its "English ⇄" label the sam
 - Notes dictation keeps going until Pause (iPhone stops listening by itself) and keeps the words heard so far.
 - Next to discuss: a page for each sponsor (the QR on every gift: who gave it, their invitation); the shop page prices
   decals at $2.99 -- make sure it reads as sponsoring decals to give away, never resale.
+- Header per Ken's mock-up (11 Oct): one-line slogan (“Give MannaFish … Teach man 2Fish …”; MannaFish → the vision,
+  2Fish → What is 2 Fish?), Today's devotional left / TAKE A TOUR right, ONE FISH / TWO FISH pills in the fish card's
+  top corners, less padding round the fish, Word | language | Verse under each fish; on a phone a verse or Strong's
+  card opened on a fish gets ~62% of the screen.
