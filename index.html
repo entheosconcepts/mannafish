@@ -1035,6 +1035,14 @@ section.section.bundles{display:block;margin-top:0}
 .psrow button{border:1px solid rgba(255,255,255,.25);background:none;color:#fff;border-radius:999px;padding:6px 10px;font:600 .8rem 'Archivo',sans-serif;cursor:pointer;margin:2px 0 2px 4px}
 .psnote{opacity:.65;font-size:.88rem;margin:12px 2px 0}
 .pt[dir="rtl"] .ptq{border-left:0;border-right:4px solid #fff;padding:2px 18px 2px 0}
+.herobtns{display:flex;justify-content:center;gap:8px;width:100%;max-width:640px}
+.hbtn{flex:1 1 0;min-width:0;max-width:210px;display:inline-flex;align-items:center;gap:7px;border:1px solid #2a5fb0;background:transparent;color:var(--foam);border-radius:999px;padding:5px 10px 5px 5px;cursor:pointer;font-family:'Archivo',sans-serif;text-align:left}
+.hbtn .hbi{flex:none;width:26px;height:26px;border-radius:50%;background:#2a5fb0;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.62rem;padding-left:1px}
+.hbtn .hbt{display:flex;flex-direction:column;min-width:0;line-height:1.15}
+.hbtn b{font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbtn small{font-size:.66rem;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbtn:hover{background:rgba(42,95,176,.18)}.hbtn[aria-pressed="true"]{background:#2a5fb0;color:#fff}
+@media(max-width:400px){ .herobtns{gap:5px} .hbtn{gap:5px;padding-right:7px} .hbtn .hbi{width:22px;height:22px} .hbtn b{font-size:.76rem} .hbtn small{font-size:.6rem} }
 .visrow{display:flex;justify-content:center;margin:-4px 0 0}
 .visbtn{display:inline-flex;align-items:center;gap:8px;border:1px solid #2a5fb0;background:transparent;color:var(--foam);border-radius:999px;padding:5px 14px 5px 6px;cursor:pointer;font-family:'Archivo',sans-serif}
 .visbtn .visi{width:24px;height:24px;border-radius:50%;background:#2a5fb0;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.62rem;padding-left:2px}
@@ -1277,9 +1285,12 @@ section.section.bundles{display:block;margin-top:0}
   <!-- Ken, 11 Oct (mock-up): the slogan on one line; "MannaFish" opens the vision, "2Fish" opens "What is 2 Fish?" -->
   <div class="purpose"><p class="slogan" id="slogan">“Give <a class="slink" href="#reach"><b><span class="wm-m">Manna</span><span class="wm-f">Fish</span></b></a>, feed him a meal, Teach man <a class="slink" href="#story"><b><span class="wm-m">2</span><span class="wm-f">Fish</span></b></a>, feed him for Life!”</p></div>
   <!-- Ken, 11 Oct: "The vision" -- what MannaFish is all about, written and read aloud (for someone driving: one tap and it plays) -->
-  <div class="visrow"><button type="button" class="visbtn" id="vsBtn" translate="no"><span class="visi" aria-hidden="true">&#9654;&#xFE0E;</span><b id="vsLab">The vision</b><small id="vsSub">Listen · 3 min</small></button></div>
-  <!-- Ken, 11 Oct: a spoken devotional -- a welcome and a prayer, then the day's catch, then the 2 Fish challenge -->
-  <div class="devorow herorow"><button type="button" class="devobtn" id="ptBtn" translate="no"><span class="devoi" aria-hidden="true">&#9654;&#xFE0E;</span><span><b id="ptLab">Today’s devotional</b><small id="ptSub">Pray · Hear · Do</small></span></button><button type="button" class="tourbtn" id="tourBtn" translate="no"><span id="tourLab">Take a tour</span></button></div>
+  <!-- Ken, 11 Oct: three buttons in one row, all the same size (the size of "The vision") -->
+  <div class="herobtns">
+    <button type="button" class="hbtn" id="ptBtn" translate="no"><span class="hbi" aria-hidden="true">&#9654;&#xFE0E;</span><span class="hbt"><b id="ptLab">Devotional</b><small id="ptSub">Pray · Hear · Do</small></span></button>
+    <button type="button" class="hbtn" id="vsBtn" translate="no"><span class="hbi" aria-hidden="true">&#9654;&#xFE0E;</span><span class="hbt"><b id="vsLab">The vision</b><small id="vsSub">Listen · 3 min</small></span></button>
+    <button type="button" class="hbtn" id="tourBtn" translate="no"><span class="hbi" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M15.5 8.5 13.4 13.4 8.5 15.5 10.6 10.6z" fill="currentColor"></path></svg></span><span class="hbt"><b id="tourLab">Take a tour</b><small id="tourSub">How it works</small></span></button>
+  </div>
   <div class="resumebar" id="resumeBar" hidden><span id="resumeTxt"></span><span class="rbtns"><button type="button" class="toolbtn" id="resumeGo">Pick up where I left off</button><button type="button" class="rx" id="resumeX" aria-label="Dismiss">&#215;</button></span></div>
   <div class="stage-col">
     <!-- Ken, 11 Oct (mock-up): "One fish" and "Two fish" in the top corners of the fish card -->
@@ -2331,7 +2342,7 @@ window.MF=(function(){
     while(el.scrollWidth>w-6 && fs>11){ fs-=0.5; el.style.fontSize=fs+'px'; } if(el.scrollWidth>w-2) el.classList.add('slwrap'); }
   window.addEventListener('resize',function(){ clearTimeout(window.__slT); window.__slT=setTimeout(fitSlogan,120); });
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitSlogan);
-  function ptUI(){ var D=DEVO[MF.lang]||DEVO.en, TT=TOUR[MF.lang]||TOUR.en; $('ptLab').textContent=D.b[0]; $('ptSub').textContent=D.b[1]; $('tourLab').textContent=({en:'Take a tour',es:'Haz el recorrido',tl:'Mag-tour',zh:'导览',hi:'टूर लें',el:'Ξενάγηση',de:'Rundgang',ko:'둘러보기',he:'סיור'})[MF.lang]||'Take a tour'; $('tourBtn').title=TT.btn; setTimeout(fitSlogan,30); }
+  function ptUI(){ var D=DEVO[MF.lang]||DEVO.en, TT=TOUR[MF.lang]||TOUR.en; $('ptLab').textContent=({en:'Devotional',es:'Devocional',tl:'Debosyon',zh:'今日灵修',hi:'आज की भक्ति',el:'Μελέτη',de:'Andacht',ko:'오늘의 묵상',he:'ההגות'})[MF.lang]||'Devotional'; $('ptBtn').title=D.b[0]; $('tourSub').textContent=({en:'How it works',es:'Cómo funciona',tl:'Paano ito',zh:'使用说明',hi:'कैसे काम करता है',el:'Πώς λειτουργεί',de:'So geht’s',ko:'사용 방법',he:'איך זה עובד'})[MF.lang]||'How it works'; $('ptSub').textContent=D.b[1]; $('tourLab').textContent=({en:'Take a tour',es:'Recorrido',tl:'Mag-tour',zh:'导览',hi:'टूर लें',el:'Ξενάγηση',de:'Rundgang',ko:'둘러보기',he:'סיור'})[MF.lang]||'Take a tour'; $('tourBtn').title=TT.btn; setTimeout(fitSlogan,30); }
   function sp1(n,t){ return '<span data-v="'+n+'">'+esc(t)+'</span>'; }
   var CHC={};
   function chGet(p,l){ var key=l+'|'+p.book+'|'+p.ch; return CHC[key]||(CHC[key]=chText(p,l).catch(function(e){ delete CHC[key]; throw e; })); }
