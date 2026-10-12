@@ -6,6 +6,7 @@ Last updated 9 Oct 2026. Newest decisions go at the top of each section.
 
 ### 1. Daily devotional by email and text
 Sign-ups are already being saved; nothing goes out yet except phone push notices.
+- [x] 12 Oct (Ken: "too busy"): front page is the logo, then one Devotional button. Sun and moon are one button on the left; a ••• menu on the right holds The vision, Take a tour and Pick up where you left off (a small gold dot on ••• when there is a place to go back to). The slogan moved to the top of The vision.
 - [x] **Ken:** picked **Brevo** for email (7 Oct). Notes: Brevo for email now (free up to 300 emails a day).
       Text messages through Brevo or RingCentral both need US carrier registration (10DLC or toll-free verification), which takes days to weeks.
 - [x] **Ken:** made the Brevo account with kenny@manna-fish.com (7 Oct).

@@ -759,7 +759,7 @@ section.section.bundles{display:block;margin-top:0}
   border:1px solid var(--line);background:transparent;color:var(--foam);font-size:1.1rem;cursor:pointer;line-height:1}
 .modebtn:hover{border-color:var(--brass)}
 .modebtn.mlight{right:auto;left:16px}
-.modebtn[aria-pressed="true"]{border-color:var(--brass);background:rgba(42,95,176,.25)}
+.modebtn[aria-pressed="true"],.modebtn[aria-expanded="true"]{border-color:var(--brass);background:rgba(42,95,176,.25)}
 .nav .cmpbtn{left:62px!important}
 .trnbtn{position:absolute;right:62px;top:50%;transform:translateY(-50%);height:38px;padding:0 13px;border-radius:999px;border:1px solid var(--brass);background:transparent;color:var(--foam);font:600 .82rem 'Archivo',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
 .trnbtn:hover,.trnbtn[aria-expanded="true"]{background:rgba(42,95,176,.25)}
@@ -1054,6 +1054,24 @@ section.section.bundles{display:block;margin-top:0}
 .psnote{opacity:.65;font-size:.88rem;margin:12px 2px 0}
 .pt[dir="rtl"] .ptq{border-left:0;border-right:4px solid #fff;padding:2px 18px 2px 0}
 .herobtns{display:flex;justify-content:center;gap:8px;width:100%;max-width:640px}
+/* Ken, 12 Oct: one Devotional button under the logo */
+.hbtn.hbig{flex:0 1 auto;max-width:none;min-width:230px;gap:12px;padding:7px 24px 7px 7px;background:#2a5fb0;color:#fff;border-color:#2a5fb0}
+.hbtn.hbig .hbi{width:40px;height:40px;background:#fff;color:#2a5fb0;font-size:.95rem;padding-left:3px}
+.hbtn.hbig b{font-size:1.15rem}.hbtn.hbig small{font-size:.8rem;opacity:.85}
+.hbtn.hbig:hover{background:#2253a0}
+#resumeBar{display:none!important}
+.nav .smore{font-size:.8rem;letter-spacing:1px;padding:0}
+.smdot{position:absolute;top:2px;right:2px;width:9px;height:9px;border-radius:50%;background:#f5d76e}
+.smdot[hidden]{display:none}
+.sitemenu{position:absolute;top:calc(100% + 6px);right:10px;z-index:60;display:flex;flex-direction:column;gap:6px;background:var(--ink2,#0b1620);border:1px solid var(--line,#333);border-radius:20px;padding:8px;min-width:240px;max-width:calc(100vw - 20px);box-shadow:0 20px 50px -12px rgba(0,0,0,.7)}
+.sitemenu[hidden]{display:none}
+.sitemenu .smi{max-width:none;width:100%;border-color:transparent;padding:7px 12px 7px 7px;border-radius:14px;text-align:left}
+.sitemenu .smi:hover{background:rgba(42,95,176,.18)}
+.sitemenu .smi[hidden]{display:none}
+.sitemenu .smi b{font-size:.95rem}.sitemenu .smi small{font-size:.74rem;white-space:normal}
+.sitemenu .smi .hbi{width:30px;height:30px}
+.vsslogan{text-align:center;margin:6px 0 18px}
+.vs .slogan{color:#fff;white-space:normal!important;font-size:clamp(1.25rem,5.4vw,1.6rem)!important;max-width:560px}
 .hbtn{flex:1 1 0;min-width:0;max-width:210px;display:inline-flex;align-items:center;gap:7px;border:1px solid #2a5fb0;background:transparent;color:var(--foam);border-radius:999px;padding:5px 10px 5px 5px;cursor:pointer;font-family:'Archivo',sans-serif;text-align:left}
 .hbtn .hbi{flex:none;width:26px;height:26px;border-radius:50%;background:#2a5fb0;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.62rem;padding-left:1px}
 .hbtn .hbt{display:flex;flex-direction:column;min-width:0;line-height:1.15}
@@ -1291,24 +1309,24 @@ section.section.bundles{display:block;margin-top:0}
   <a class="brand" href="#today" style="text-decoration:none"><span class="wm-m">Manna</span><span class="wm-f">Fish</span></a>
   <button class="langbtn" type="button" id="langBtn" hidden aria-label="English / Español">Español</button>
   <span class="cmpcap" id="cmpCap" hidden>Select<br>language</span><button class="cmpbtn" type="button" id="cmpBtn" aria-pressed="false" aria-haspopup="true" aria-expanded="false" aria-label="Language"><svg viewBox="0 0 64 32" aria-hidden="true"><path d="M4 16 C16 2 36 2 48 16 L60 4 M4 16 C16 30 36 30 48 16 L60 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="cmpLab">English</span><span id="cmpLabS">EN</span><span class="caret" aria-hidden="true">&#9662;</span></button><div class="cmpmenu" id="cmpMenu" role="menu" hidden></div>
-  <!-- Ken, 9 Oct: balanced top bar -- sun (light) and language on the left; MannaFish Translator and moon (dark) on the right -->
-  <button class="modebtn mlight" type="button" id="modeBtn" aria-label="Light mode" aria-pressed="false">&#9728;&#xFE0E;</button>
+  <!-- Ken, 12 Oct: "too busy" -- the sun and moon are one button on the left; the ••• menu (the vision, the tour,
+       pick up where you left off) on the right, where the moon was -->
+  <button class="modebtn mlight" type="button" id="modeBtn" aria-label="Light mode">&#9728;&#xFE0E;</button>
   <button class="trnbtn" type="button" id="trnBtn" aria-label="MannaFish Translator"><span aria-hidden="true">&#128172;</span><span class="trnlab" id="trnLab">Translator</span></button>
-  <button class="modebtn mdark" type="button" id="modeDark" aria-label="Dark mode" aria-pressed="true">&#9790;&#xFE0E;</button>
+  <button class="modebtn mdark smore" type="button" id="siteMore" aria-label="More" aria-haspopup="true" aria-expanded="false">&bull;&bull;&bull;<span class="smdot" id="smDot" hidden></span></button>
+  <div class="sitemenu" id="siteMenu" role="menu" hidden translate="no">
+    <button type="button" class="hbtn smi" id="vsBtn" role="menuitem"><span class="hbi" aria-hidden="true">&#9654;&#xFE0E;</span><span class="hbt"><b id="vsLab">The vision</b><small id="vsSub">Listen · 3 min</small></span></button>
+    <button type="button" class="hbtn smi" id="tourBtn" role="menuitem"><span class="hbi" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M15.5 8.5 13.4 13.4 8.5 15.5 10.6 10.6z" fill="currentColor"></path></svg></span><span class="hbt"><b id="tourLab">Take a tour</b><small id="tourSub">How it works</small></span></button>
+    <button type="button" class="hbtn smi" id="smResume" role="menuitem" hidden><span class="hbi" aria-hidden="true">&#8634;&#xFE0E;</span><span class="hbt"><b id="smResLab">Pick up where you left off</b><small id="smResSub"></small></span></button>
+  </div>
 </div></header>
 
 <section class="hero" id="today"><div class="wrap today">
   <!-- Ken, 2 Oct: "There's a lot of padding up top that we could fill in with the purpose of MannaFish."
        The headline and the "Open the free devotional" button are gone: the fish IS the devotional. -->
-  <!-- Ken, 11 Oct (mock-up): the slogan on one line; "MannaFish" opens the vision, "2Fish" opens "What is 2 Fish?" -->
-  <div class="purpose"><p class="slogan" id="slogan">“Give <a class="slink" href="#reach"><b><span class="wm-m">Manna</span><span class="wm-f">Fish</span></b></a>, feed him a meal, Teach man <a class="slink" href="#story"><b><span class="wm-m">2</span><span class="wm-f">Fish</span></b></a>, feed him for Life!”</p></div>
-  <!-- Ken, 11 Oct: "The vision" -- what MannaFish is all about, written and read aloud (for someone driving: one tap and it plays) -->
-  <!-- Ken, 11 Oct: three buttons in one row, all the same size (the size of "The vision") -->
-  <div class="herobtns">
-    <button type="button" class="hbtn" id="ptBtn" translate="no"><span class="hbi" aria-hidden="true">&#9654;&#xFE0E;</span><span class="hbt"><b id="ptLab">Devotional</b><small id="ptSub">Pray · Hear · Do</small></span></button>
-    <button type="button" class="hbtn" id="vsBtn" translate="no"><span class="hbi" aria-hidden="true">&#9654;&#xFE0E;</span><span class="hbt"><b id="vsLab">The vision</b><small id="vsSub">Listen · 3 min</small></span></button>
-    <button type="button" class="hbtn" id="tourBtn" translate="no"><span class="hbi" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M15.5 8.5 13.4 13.4 8.5 15.5 10.6 10.6z" fill="currentColor"></path></svg></span><span class="hbt"><b id="tourLab">Take a tour</b><small id="tourSub">How it works</small></span></button>
-  </div>
+  <!-- Ken, 12 Oct: the front page is MannaFish up top, then the Devotional play button. The slogan now opens the vision;
+       the vision, the tour and "pick up where you left off" are in the ••• menu -->
+  <div class="herobtns"><button type="button" class="hbtn hbig" id="ptBtn" translate="no"><span class="hbi" aria-hidden="true">&#9654;&#xFE0E;</span><span class="hbt"><b id="ptLab">Devotional</b><small id="ptSub">Pray · Hear · Do</small></span></button></div>
   <div class="resumebar" id="resumeBar" hidden><span id="resumeTxt"></span><span class="rbtns"><button type="button" class="toolbtn" id="resumeGo">Pick up where I left off</button><button type="button" class="rx" id="resumeX" aria-label="Dismiss">&#215;</button></span></div>
   <div class="stage-col">
     <!-- Ken, 11 Oct (mock-up): "One fish" and "Two fish" in the top corners of the fish card -->
@@ -1670,7 +1688,7 @@ section.section.bundles{display:block;margin-top:0}
      MannaFish's own steps: Pray, Hear (the day's catch), my prayer list, Do (the 2 Fish challenge), Amen -->
 <div class="vs" id="vs" role="dialog" aria-modal="true" aria-labelledby="vsTitle" hidden translate="no">
   <div class="vsbar"><span class="vsk" id="vsTitle"></span><button type="button" class="ptc" id="vsX" aria-label="Close">&times;</button></div>
-  <div class="vsbody" id="vsBody"><div class="vstxt chapter" id="vsTxt"></div></div>
+  <div class="vsbody" id="vsBody"><div class="vsslogan"><p class="slogan" id="slogan">“Give <a class="slink" href="#reach"><b><span class="wm-m">Manna</span><span class="wm-f">Fish</span></b></a>, feed him a meal, Teach man <a class="slink" href="#story"><b><span class="wm-m">2</span><span class="wm-f">Fish</span></b></a>, feed him for Life!”</p></div><div class="vstxt chapter" id="vsTxt"></div></div>
 </div>
 <div class="pt" id="pt" role="dialog" aria-modal="true" aria-labelledby="ptTitle" hidden translate="no">
   <div class="ptbar"><button type="button" class="ptc" id="ptX" aria-label="Close">&times;</button><span class="ptttl" id="ptTitle"></span>
@@ -1722,7 +1740,7 @@ window.MF=(function(){
   function detect(){ var n=(navigator.language||'').toLowerCase().split('-')[0]; if(n==='fil') n='tl'; if(n==='iw') n='he'; return LL.indexOf(n)>=0?n:'en'; }
   var L='en'; try{var q=(location.search.match(/[?&]lang=(es|en|tl|zh|hi|el|de|ko|he)\b/)||[])[1], st=localStorage.getItem('mf-lang'); L=q||(LL.indexOf(st)>=0?st:'')||detect();}catch(e){}
   var hooks=[], orig=new WeakMap(), X=window.MFI18N;
-  var SKIP='script,style,#refs,#reader,#mfPlayer,#notesBox,#mfToast,#listenBtn,#trnBtn,#modeDark,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#okBox,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
+  var SKIP='script,style,#refs,#reader,#mfPlayer,#notesBox,#mfToast,#listenBtn,#trnBtn,#siteMore,#siteMenu,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#okBox,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
   function norm(s){return s.replace(/\s+/g,' ').trim();}
   function t(k){var u=X.ui[k]; return u ? (L==='es'?u[1]:u[0]) : k;}
   function applyPage(){
@@ -2377,6 +2395,12 @@ window.MF=(function(){
     while(el.scrollWidth>w-6 && fs>11){ fs-=0.5; el.style.fontSize=fs+'px'; } if(el.scrollWidth>w-2) el.classList.add('slwrap'); }
   window.addEventListener('resize',function(){ clearTimeout(window.__slT); window.__slT=setTimeout(fitSlogan,120); });
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitSlogan);
+  // the ••• menu at the top (Ken, 12 Oct)
+  function smOpen(on){ $('siteMenu').hidden=!on; $('siteMore').setAttribute('aria-expanded',on?'true':'false'); if(on&&window.MFresumeMenu) MFresumeMenu(); }
+  $('siteMore').addEventListener('click',function(e){ e.stopPropagation(); smOpen($('siteMenu').hidden); });
+  $('siteMenu').addEventListener('click',function(e){ if(e.target.closest('.smi')) smOpen(false); });
+  document.addEventListener('click',function(e){ if(!$('siteMenu').hidden&&!e.target.closest('#siteMenu,#siteMore')) smOpen(false); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('siteMenu').hidden) smOpen(false); });
   function ptUI(){ var D=DEVO[MF.lang]||DEVO.en, TT=TOUR[MF.lang]||TOUR.en; $('ptLab').textContent=({en:'Devotional',es:'Devocional',tl:'Debosyon',zh:'今日灵修',hi:'आज की भक्ति',el:'Μελέτη',de:'Andacht',ko:'오늘의 묵상',he:'ההגות'})[MF.lang]||'Devotional'; $('ptBtn').title=D.b[0]; $('tourSub').textContent=({en:'How it works',es:'Cómo funciona',tl:'Paano ito',zh:'使用说明',hi:'कैसे काम करता है',el:'Πώς λειτουργεί',de:'So geht’s',ko:'사용 방법',he:'איך זה עובד'})[MF.lang]||'How it works'; $('ptSub').textContent=D.b[1]; $('tourLab').textContent=({en:'Take a tour',es:'Recorrido',tl:'Mag-tour',zh:'导览',hi:'टूर लें',el:'Ξενάγηση',de:'Rundgang',ko:'둘러보기',he:'סיור'})[MF.lang]||'Take a tour'; $('tourBtn').title=TT.btn; setTimeout(fitSlogan,30); }
   function sp1(n,t){ return '<span data-v="'+n+'">'+esc(t)+'</span>'; }
   var CHC={};
@@ -2568,6 +2592,7 @@ window.MF=(function(){
     openPlayer({ctx:{root:$('vsTxt'),data:{l:l,t:t},box:$('vsBody')},src:$('vsBtn'),start:1,unit:'part',title:'MannaFish · '+V.b[0]}); plStart(1); vsUI(); }
   function vsClose(){ if(PL.src===$('vsBtn')) plClose(); $('vs').hidden=true; document.documentElement.style.overflow=''; vsUI(); }
   $('vsBtn').addEventListener('click',function(){ if(!$('vs').hidden) return; vsOpen(); });
+  $('vs').addEventListener('click',function(e){ if(e.target.closest('.slink')) vsClose(); });
   $('vsX').addEventListener('click',vsClose);
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('vs').hidden) vsClose(); });
   MF.onChange(vsUI); vsUI();
@@ -2680,12 +2705,13 @@ window.MF=(function(){
   document.querySelectorAll('.tzfield').forEach(function(i){try{i.value=Intl.DateTimeFormat().resolvedOptions().timeZone||'';}catch(e){}});
 
   // Ken, 7 Oct: dark / light, for contrast. Remembered on this device.
-  (function(){var root=document.documentElement,sun=$('modeBtn'),moon=$('modeDark');
-    function show(){var light=root.getAttribute('data-mode')==='light'; sun.setAttribute('aria-pressed',light?'true':'false'); moon.setAttribute('aria-pressed',light?'false':'true');
+  // Ken, 12 Oct: one button -- it shows where a tap takes you (the sun in dark mode, the moon in light mode)
+  (function(){var root=document.documentElement,btn=$('modeBtn');
+    function show(){var light=root.getAttribute('data-mode')==='light'; btn.innerHTML=light?'&#9790;&#xFE0E;':'&#9728;&#xFE0E;'; btn.setAttribute('aria-label',light?'Dark mode':'Light mode');
       var m=document.querySelector('meta[name=theme-color]'); if(m) m.setAttribute('content', light ? '#f7f5ef' : '#000000');}
     function set(light){ if(light) root.setAttribute('data-mode','light'); else root.removeAttribute('data-mode');
       try{localStorage.setItem('mf-mode',light?'light':'dark');}catch(e){} show(); }
-    sun.addEventListener('click',function(){ set(true); }); moon.addEventListener('click',function(){ set(false); });
+    btn.addEventListener('click',function(){ set(root.getAttribute('data-mode')!=='light'); });
     show();})();
   var gsel=$('giftWord'); ORDER.forEach(function(k){var o=document.createElement('option');o.value=DATA[k].title;o.textContent=titleIn(MF.lang==='es'?'es':'en',k);o.dataset.k=k;gsel.appendChild(o);});
   MF.onChange(function(){
@@ -3381,15 +3407,21 @@ window.MF=(function(){
     else if(st.flipped){ $('stage').classList.add('on'); sizeStage(); }
     if(st.reader&&st.reader.kind==='ref') openReader(st.w,st.reader.i,st.reader.l);
     else if(st.reader&&st.reader.kind==='strongs') openStrongs(st.w,st.reader.gk,st.reader.l);
-    $('resumeBar').hidden=true; saveReady=true; lastSaved=''; MFsave();
+    $('resumeBar').hidden=true; if(window.MFresumeMenu) MFresumeMenu(); saveReady=true; lastSaved=''; MFsave();
     setTimeout(function(){ var t=(st.reader&&reader.classList.contains('inline'))?reader:(st.cmp&&st.cmp.length?$('cmp'):$('stage')); t.scrollIntoView({behavior:'smooth',block:'start'}); },250); }
   function resumeLabels(){ var es=MF.lang==='es'; $('resumeGo').textContent=es?'Continuar donde lo dejé':'Pick up where I left off';
-    if(resumeState && !$('resumeBar').hidden) $('resumeTxt').textContent=(es?'Bienvenido de nuevo — ':'Welcome back — ')+describe(resumeState); fillResumeLink(); }
+    if(resumeState && !$('resumeBar').hidden) $('resumeTxt').textContent=(es?'Bienvenido de nuevo — ':'Welcome back — ')+describe(resumeState); fillResumeLink(); if(window.MFresumeMenu) MFresumeMenu(); }
   function fillResumeLink(){ var box=$('acctResume'); if(!box) return; var st=resumeState||readResume();
     if(!st||!DATA[st.w]){ box.hidden=true; return; } var es=MF.lang==='es';
     box.innerHTML='<span class="mu">'+(es?'Donde lo dejaste: ':'Where you left off: ')+esc2(describe(st))+'</span><button type="button" class="toolbtn" id="acctResumeGo">'+(es?'Continuar donde lo dejé':'Pick up where I left off')+'</button>';
     box.hidden=false; }
   function offer(st){ if(!worthIt(st)) return; resumeState=st; $('resumeBar').hidden=false; resumeLabels(); }
+  // Ken, 12 Oct: "pick up where you left off" lives in the ••• menu (a small dot on ••• when there is somewhere to go back to)
+  var RESL={en:'Pick up where you left off',es:'Continuar donde lo dejé',tl:'Ituloy kung saan huminto',zh:'从上次停下的地方继续',hi:'जहाँ छोड़ा था वहीं से शुरू करें',el:'Συνέχεια από εκεί που σταμάτησες',de:'Dort weitermachen, wo du aufgehört hast',ko:'멈춘 곳에서 계속하기',he:'להמשיך מהמקום שעצרת'};
+  window.MFresumeMenu=function(){ var on=!!(resumeState&&!$('resumeBar').hidden&&DATA[resumeState.w]);
+    $('smResume').hidden=!on; $('smDot').hidden=!on; if(!on) return;
+    $('smResLab').textContent=RESL[MF.lang]||RESL.en; $('smResSub').textContent=describe(resumeState); };
+  $('smResume').addEventListener('click',function(){ resumeTo(resumeState); });
   $('resumeGo').addEventListener('click',function(){ resumeTo(resumeState); });
   $('resumeX').addEventListener('click',function(){ $('resumeBar').hidden=true; });
   $('acctResume').addEventListener('click',function(e){ if(e.target.closest('#acctResumeGo')) resumeTo(resumeState||readResume()); });
