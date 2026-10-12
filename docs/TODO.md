@@ -236,4 +236,4 @@ Also check the small alternate-language fish and its "English ⇄" label the sam
   Word and Verse, the first lines of the vision, and a reader's heading and first verse are fetched before the tap;
   a long first verse starts with a short clause.
 - 12 Oct: the page opens with one fish; "Two fish" lasts for the visit (sessionStorage `mf-two`). In the devotional,
-  "Into the fish" keeps turning (its back: the word, Greek and Hebrew) until Next; the word study then turns in.
+  "Into the fish" wobbles (turns most of the way, back again, repeats) until Next; the word study then turns in.
