@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>MannaFish · Shared</title>
+<link rel="icon" href="/icon-192.png">
+<style>
+/* A note or prayer someone chose to share (Ken, 12 Oct). Only people given the link can open it. */
+@font-face{font-family:'MFHobo';src:url(/fish-lang/hobo.woff2) format('woff2');font-display:swap}
+:root{--bg:#05080c;--card:#0b1620;--fg:#eef3f5;--dim:#9fb2b6;--line:#22303b;--blue:#2A5FB0;--fish:#3370FF;--manna:#fff}
+@media(prefers-color-scheme:light){:root:not([data-mode=dark]){--bg:#f4f1ea;--card:#fff;--fg:#14202a;--dim:#55656c;--line:#d9d2c4;--fish:#0038B8;--manna:#14202a}}
+:root[data-mode=light]{--bg:#f4f1ea;--card:#fff;--fg:#14202a;--dim:#55656c;--line:#d9d2c4;--fish:#0038B8;--manna:#14202a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 1.08rem/1.6 'Archivo',system-ui,-apple-system,Segoe UI,sans-serif;text-align:center}
+main{max-width:640px;margin:0 auto;padding:28px 16px 60px}
+.wm{font-family:'MFHobo',system-ui,sans-serif;font-size:2.4rem;line-height:1;text-decoration:none}
+.wm .m{color:var(--manna)}.wm .f{color:var(--fish)}
+.kind{margin-top:22px;font:800 .72rem system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.card{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px 20px}
+h1{margin:0 0 10px;font-size:1.35rem;line-height:1.3}
+.word{display:inline-block;margin-bottom:10px;padding:3px 12px;border-radius:999px;border:1px solid var(--line);font-size:.85rem;color:var(--dim)}
+.text{white-space:pre-wrap;word-wrap:break-word;font-size:1.12rem}
+.when{margin-top:14px;font-size:.82rem;color:var(--dim)}
+.go{display:inline-block;margin-top:26px;padding:12px 22px;border-radius:999px;background:var(--blue);color:#fff;text-decoration:none;font-weight:700}
+.msg{margin-top:30px;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="wm" href="/"><span class="m">Manna</span><span class="f">Fish</span></a>
+  <div id="out"><p class="msg">Loading…</p></div>
+  <a class="go" href="/">Today’s MannaFish devotional</a>
+</main>
+<script>
+(function(){
+  try{ var m=localStorage.getItem('mf-mode'); if(m==='light'||m==='dark') document.documentElement.setAttribute('data-mode',m); }catch(e){}
+  var id=(location.search.match(/[?&]id=([0-9a-f]{16})\b/)||[])[1], out=document.getElementById('out');
+  function esc(t){ return String(t).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function when(t){ try{ return new Date(t).toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'}); }catch(e){ return ''; } }
+  if(!id){ out.innerHTML='<p class="msg">This link is not complete.</p>'; return; }
+  fetch('/api/share?id='+id).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){
+    var k=j.kind==='prayer'?'A prayer':'A note from God’s Word';
+    document.title='MannaFish · '+(j.title||k);
+    out.innerHTML='<div class="kind">'+k+'</div><div class="card">'+(j.word?'<div class="word">'+esc(j.word)+'</div>':'')+(j.title?'<h1>'+esc(j.title)+'</h1>':'')
+      +'<div class="text" dir="auto">'+esc(j.text||'')+'</div><div class="when">'+esc(when(j.at))+(j.ed?' · edited '+esc(when(j.ed)):'')+'</div></div>';
+  }).catch(function(){ out.innerHTML='<p class="msg">This was made private, or the link is no longer here.</p>'; });
+})();
+</script>
+</body>
+</html>
