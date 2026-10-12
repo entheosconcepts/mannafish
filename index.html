@@ -983,6 +983,16 @@ section.section.bundles{display:block;margin-top:0}
 .ptof{white-space:nowrap}
 .pt[dir="ltr"] .ptow{text-align:left;direction:ltr}
 .ptfish2{max-width:280px;animation:none}
+.ptcoin{position:relative;max-width:360px;width:100%;aspect-ratio:2/1;margin:0 auto 18px;transform-style:preserve-3d;animation:ptspin 5s linear infinite}
+.ptcf,.ptcb{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.ptcf svg{position:absolute!important;inset:0;width:100%!important;height:100%!important}
+.ptcb{transform:rotateY(180deg)}.ptcb svg{position:absolute;inset:0;width:100%;height:100%}
+.ptct{position:absolute;left:8%;width:66%;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.ptcb b{font:400 clamp(1.4rem,6vw,2.1rem)/1 'MFHobo',cursive;color:#fff}.ptcb span{font:700 clamp(1rem,4.4vw,1.4rem)/1.1 'MFGkHb','Spectral',Georgia,serif;color:#cfe0ff}
+@keyframes ptspin{0%{transform:perspective(900px) rotateY(0)}40%{transform:perspective(900px) rotateY(180deg)}50%{transform:perspective(900px) rotateY(180deg)}90%{transform:perspective(900px) rotateY(360deg)}100%{transform:perspective(900px) rotateY(360deg)}}
+.ptreveal{animation:ptturnin .8s cubic-bezier(.2,.7,.2,1) both;transform-origin:50% 0}
+@keyframes ptturnin{from{transform:perspective(900px) rotateY(-90deg);opacity:0}to{transform:perspective(900px) rotateY(0);opacity:1}}
+@media(prefers-reduced-motion:reduce){.ptcoin,.ptreveal{animation:none}}
 @keyframes ptflip{0%{transform:perspective(800px) rotateY(0)}50%{transform:perspective(800px) rotateY(80deg)}100%{transform:perspective(800px) rotateY(0)}}
 .ptorig{border-top:1px solid rgba(255,255,255,.15);padding:14px 0 4px}
 .ptol{font:800 .78rem 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#8fb3ff}
@@ -2367,11 +2377,13 @@ window.MF=(function(){
     else if(s.k==='hear'){ t=[P[2],sy[2],sy[1],T.sink,T.think];
       h=kick(T.k_hear+' · '+w)+'<p class="ptp ptsoft">'+sp1(1,P[2])+'</p><blockquote class="ptq">'+sp1(3,sy[1])+'<cite>'+sp1(2,sy[2])+'</cite></blockquote>'
         +'<p class="ptp">'+sp1(4,T.sink)+'</p><p class="ptp">'+sp1(5,T.think)+'</p><div class="ptrow"><button type="button" class="ptbtn" data-a="note">✎ '+esc(T.note)+'</button></div>'+prm('p_hear'); }
-    else if(s.k==='fish'){ var fl=T.fish_line.replace('{w}',w); t=[fl]; h=kick(T.k_fish)+'<div class="ptfish">'+(fishFor(l,k)||FISH[k]||'')+'</div><p class="ptp">'+sp1(1,fl)+'</p>'+prm('p_fish'); }
+    else if(s.k==='fish'){ var fl=T.fish_line.replace('{w}',w), dd=DATA[k]; t=[fl];
+      // Ken, 12 Oct: "make it continue to turn until the word study shows up"
+      h=kick(T.k_fish)+'<div class="ptcoin" aria-hidden="true"><div class="ptcf">'+(fishFor(l,k)||FISH[k]||'')+'</div><div class="ptcb"><svg viewBox="0 0 400 200"><path d="M14 100 C105 -14 255 -14 322 100 C255 214 105 214 14 100 Z" fill="#0b0f14" stroke="#fff" stroke-width="8" stroke-linejoin="round"></path><path d="M322 100 L388 26 M322 100 L388 174" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"></path></svg><div class="ptct"><b>'+esc(w)+'</b><span lang="el">'+esc(dd.gkw)+'</span><span lang="he">'+esc(dd.hbw)+'</span></div></div></div><p class="ptp">'+sp1(1,fl)+'</p>'+prm('p_fish'); }
     else if(s.k==='orig'){ var L=studyLabels(l), m=meansIn(l,k), d=DATA[k];
       var g=T.orig_line.replace('{lang}',L.gk).replace('{s}',d.gks).replace('{m}',m[0]), hb=T.orig_line.replace('{lang}',L.hb).replace('{s}',d.hbs).replace('{m}',m[1]); t=[g,hb];
       var blk=function(lab,wd,lg,snd,n,line){ return '<div class="ptorig"><div class="ptol">'+esc(lab)+'</div><div class="ptow" lang="'+lg+'">'+esc(wd)+'</div><div class="ptos">'+esc(snd)+'</div><p class="ptp">'+sp1(n,line)+'</p></div>'; };
-      h=kick(w+' · '+L.gk+' · '+L.hb)+blk(L.gk,d.gkw,'el',d.gks,1,g)+blk(L.hb,d.hbw,'he',d.hbs,2,hb)+prm('p_orig'); }
+      h=kick(w+' · '+L.gk+' · '+L.hb)+'<div class="ptreveal">'+blk(L.gk,d.gkw,'el',d.gks,1,g)+blk(L.hb,d.hbw,'he',d.hbs,2,hb)+'</div>'+prm('p_orig'); }
     else if(s.k==='count'){ var n=DATA[k].refs.length, cl=T.count_line.replace('{n}',n).replace('{w}',w); t=[cl];
       h=kick(T.k_trace)+'<h2 class="pth">'+sp1(1,cl)+'</h2><div class="ptchips">'+DATA[k].refs.map(function(r,i){ return '<button type="button" data-a="goref" data-i="'+i+'">'+esc(refLab(l,k,i))+'</button>'; }).join('')+'</div>'+prm('p_orig'); }
     else if(s.k==='ref'){ var lab=refLab(l,k,s.i), pr=parseRef(DATA[k].refs[s.i][0]);
@@ -2438,7 +2450,7 @@ window.MF=(function(){
     if(a==='guide'){ PT.listen=true; ptSay(); return; }
     if(a==='ownpace'){ PT.listen=false; ptGo(PT.i+1); return; }
     if(a==='goref'){ var j=PT.steps.findIndex(function(x){ return x.k==='ref'&&x.i===+b.dataset.i; }); if(j>=0) ptGo(j); return; }
-    if(a==='seein'){ var l2=$('ptL2').value; ptClose(); try{ sessionStorage.removeItem('mf-one'); }catch(er){} setCmp([MF.lang,l2]); cmpLayout(); if(window.MFsave) MFsave();
+    if(a==='seein'){ var l2=$('ptL2').value; ptClose(); try{ sessionStorage.setItem('mf-two','1'); }catch(er){} setCmp([MF.lang,l2]); cmpLayout(); if(window.MFsave) MFsave();
       setTimeout(function(){ var f=document.querySelector('#cmp figure[data-l="'+l2+'"]')||$('cmp'); f.scrollIntoView({block:'center',behavior:'smooth'}); },200); return; }
     if(a==='note'){ ptClose(); if($('notesBox').hidden) $('notesBtn').click(); setTimeout(function(){ $('notesText').focus(); },150); }
     else if(a==='answered'||a==='archive'){ prSet(s.x,a==='answered'?'answered':'archived'); toast(a==='answered'?'✓ '+T.answered_on:T.archive); ptRebuild('prayer'); ptSay(); }
@@ -3142,7 +3154,7 @@ window.MF=(function(){
     hi:['आपके लिए','किसी और के लिए'],el:['Για σένα','Για κάποιον άλλο'],de:['Für dich','Für jemand anderen'],ko:['당신을 위해','다른 사람을 위해'],he:['בשבילך','בשביל מישהו אחר']};
   var cmpDefault=false;
   function twoFish(){ return [MF.lang, MF.lang==='en'?'es':'en']; }
-  function oneFish(on){ try{ if(on) sessionStorage.setItem('mf-one','1'); else sessionStorage.removeItem('mf-one'); localStorage.removeItem('mf-one'); }catch(e){} }
+  function oneFish(on){ try{ if(on) sessionStorage.removeItem('mf-two'); else sessionStorage.setItem('mf-two','1'); sessionStorage.removeItem('mf-one'); localStorage.removeItem('mf-one'); }catch(e){} }
   // Ken, 9 Oct: tap the language under a fish to change it -- "For you" changes your own reading language,
   // "For someone else" changes just that fish
   function fishLang(l,twin){ return '<span class="flwrap"><select class="fishlang" data-l="'+l+'"'+(twin?' data-twin="1"':'')+' aria-label="Language">'+CMPL.filter(function(o){ return !o[2]; }).map(function(o){
@@ -3411,8 +3423,9 @@ window.MF=(function(){
   if(window.MFresumeInit) MFresumeInit();
   // two fish unless they chose one (or came from an email link, which opens the day's verse under one fish)
   // Ken, 11 Oct: two fish every time the site opens, from an email link too; "Just one fish" lasts for this visit
-  (function(){ var one=null; try{ localStorage.removeItem('mf-one'); one=sessionStorage.getItem('mf-one'); }catch(e){}
-    if(one!=='1' && !cmpShown()){ cmpDefault=true; setCmp(twoFish()); } cmpLayout(); })();
+  // Ken, 12 Oct: "start with one word when the page opens, let the user choose 2 fish" -- once chosen, two fish for the visit
+  (function(){ var two=null; try{ localStorage.removeItem('mf-one'); sessionStorage.removeItem('mf-one'); two=sessionStorage.getItem('mf-two'); }catch(e){}
+    if(two==='1' && !cmpShown()){ cmpDefault=true; setCmp(twoFish()); } cmpLayout(); })();
   // Ken, 9 Oct: from the devotional email, land on the day's fish (as on the site) with the verse open right under it
   (function(){var m=location.search.match(/[?&]r=(\d+)/); if(m && DATA[cur].refs[+m[1]]){ landing=true;
     if(/[?&]listen=1/.test(location.search)){ sheet=true; listenUI(); var want=null, t0=Date.now();

@@ -235,3 +235,5 @@ Also check the small alternate-language fish and its "English ⇄" label the sam
 - Faster start: voice clips by GET /api/say?t=&l=&v= (and /api/tts), kept by the browser and Netlify's CDN; the fish's
   Word and Verse, the first lines of the vision, and a reader's heading and first verse are fetched before the tap;
   a long first verse starts with a short clause.
+- 12 Oct: the page opens with one fish; "Two fish" lasts for the visit (sessionStorage `mf-two`). In the devotional,
+  "Into the fish" keeps turning (its back: the word, Greek and Hebrew) until Next; the word study then turns in.
