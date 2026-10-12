@@ -1175,6 +1175,21 @@ section.section.bundles{display:block;margin-top:0}
 .vs{position:fixed;inset:0;z-index:70;color:#fff;display:flex;flex-direction:column;font-family:'Archivo',sans-serif;
   background:radial-gradient(130% 60% at 50% 78%,rgba(42,95,176,.5),rgba(42,95,176,0) 62%),linear-gradient(#10161f,#06080b 72%)}
 .vs[hidden]{display:none}
+/* recording Ken's voice (/?record) */
+.rec .recbody{padding:4px 20px 80px}
+.recp{opacity:.85;line-height:1.55;margin:0 0 14px}
+.reckey{display:flex;gap:8px;margin:0 0 14px}.reckey input{flex:1;min-width:0;font:1rem 'Archivo',sans-serif;color:#fff;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:10px 12px}
+.reckey[hidden]{display:none}
+.rectop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;font:600 .95rem 'Archivo',sans-serif}
+.rectop select{font:600 .95rem 'Archivo',sans-serif;color:#fff;background:#0b1620;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:6px 10px;margin-left:6px}
+.recg{margin:20px 0 8px;font:800 .78rem 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75}
+.recl{border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:12px 14px;margin:0 0 10px;background:rgba(0,0,0,.25)}
+.recl.done{border-color:rgba(111,211,154,.6)}
+.recl p{margin:0 0 10px;font:1.06rem/1.55 'Spectral',Georgia,serif}
+.recl .rb{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.recl button{border:1px solid rgba(255,255,255,.4);background:none;color:#fff;border-radius:999px;padding:7px 14px;font:700 .88rem 'Archivo',sans-serif;cursor:pointer}
+.recl button.on{background:#c8423c;border-color:#c8423c}.recl .rs{font:600 .82rem 'Archivo',sans-serif;opacity:.8}
+.recl .ok{color:#6fd39a}
 .devogo{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;max-width:720px;margin:18px auto 0}
 .devogok{font:800 .7rem 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--foam-dim,#9fb2b6)}
 .devogor{display:flex;gap:12px;width:100%;justify-content:center}
@@ -1907,6 +1922,16 @@ select option{background:#0b1620;color:#eaf0f0}
   <div class="vsbar"><span class="vsk" id="vsTitle"></span><button type="button" class="ptc" id="vsX" aria-label="Close">&times;</button></div>
   <div class="vsbody" id="vsBody"><div class="vsslogan"><p class="slogan" id="slogan">“Give <a class="slink" href="#reach"><b><span class="wm-m">Manna</span><span class="wm-f">Fish</span></b></a>, feed him a meal, Teach man <a class="slink" href="#story"><b><span class="wm-m">2</span><span class="wm-f">Fish</span></b></a>, feed him for Life!”</p></div><div class="vstxt chapter" id="vsTxt"></div></div>
 </div>
+<div class="vs rec" id="rec" role="dialog" aria-modal="true" aria-labelledby="recTitle" hidden translate="no">
+  <div class="vsbar"><span class="vsk" id="recTitle">MannaFish · Record your voice</span><button type="button" class="ptc" id="recX" aria-label="Close">&times;</button></div>
+  <div class="vsbody recbody">
+    <h2 class="fsh2">Your voice, on the words that stay the same</h2>
+    <p class="recp">Record each line below. Wherever the site reads that exact line aloud (the devotional, the vision, the tour), it plays your recording instead of the computer voice. Lines you have not recorded keep the computer voice. Record in a quiet room, about a hand’s width from the phone.</p>
+    <div class="reckey" id="recKeyBox"><input id="recKey" type="password" placeholder="Review password (MF_ADMIN_KEY)" autocomplete="current-password"><button type="button" class="ptbtn ptmain" id="recKeyGo">Open</button></div>
+    <div class="rectop"><label>Language <select id="recLang"></select></label><span id="recCount"></span></div>
+    <div id="recList"></div>
+  </div>
+</div>
 <div class="vs fs" id="fs" role="dialog" aria-modal="true" aria-labelledby="fsTitle" hidden translate="no">
   <div class="vsbar"><span class="vsk" id="fsTitle"></span><button type="button" class="ptc" id="fsX" aria-label="Close">&times;</button></div>
   <div class="vsbody fsbody">
@@ -2439,10 +2464,16 @@ window.MF=(function(){
       // Learn (Ken, 11 Oct): the same verse again in a second language, shown under the player while it is read
       var learn=function(){ var LN=ctx.learn, x=LN&&LN.t[v-1]; if(!x){ after(); return; } if(ctx.onLearn) ctx.onLearn(x,LN.l);
         var q=rChunks(x); (function nx(){ if(!q.length){ if(ctx.onLearn) ctx.onLearn('',''); after(); return; } say(q.shift(),0,null,nx,LN.l); })(); };
+      // Ken, 12 Oct: a line recorded in Ken's own voice plays instead of the computer voice
+      var hv=window.MFvoiceUrl&&MFvoiceUrl(L,full);
+      if(hv){ var a=AU(); a.onplaying=function(){ sp.started=true; listenUI(); if(window.MFplUI) MFplUI(); }; a.onpause=function(){ listenUI(); if(window.MFplUI) MFplUI(); };
+        a.ontimeupdate=function(){ if(a.duration&&el) rWordAt(el,a.currentTime/a.duration*full.length); }; a.onended=function(){ if(id===sp.id) learn(); };
+        a.src=hv; a.defaultPlaybackRate=a.playbackRate=Math.max(.5,RATE()/1.25); sp.audio=a; var pr=a.play();
+        if(pr&&pr.catch) pr.catch(function(err){ if(id!==sp.id) return; if(err&&err.name==='NotAllowedError') listenBlocked(); else learn(); }); return; }
       (function nextPart(){ if(k>=parts.length){ learn(); return; } var part=parts[k++], base=full.indexOf(part,pos); if(base<0) base=pos; pos=base+part.length; say(part,base,el,nextPart); })(); }
     // Ken, 11 Oct: read the heading first -- the reference, or the card's title -- for someone who is only listening
     var ip=ctx.intro?rChunks(ctx.intro):[], v0=aiVoice();
-    if(v0&&D.t[from-1]) sayUrl(spoken(firstPiece(D.t[from-1]),L),L,v0).catch(function(){});
+    if(v0&&D.t[from-1]&&!(window.MFvoiceUrl&&MFvoiceUrl(L,D.t[from-1]))) sayUrl(spoken(firstPiece(D.t[from-1]),L),L,v0).catch(function(){});
     (function intro(){ if(id!==sp.id) return; if(!ip.length){ verse(from); return; } say(ip.shift(),0,null,intro); })(); }
   function chapterOf(ref){ return String(ref||'').replace(/\s*[:：]\s*\d+.*$/,''); }
   function headOf(kick,ref){ return String(kick||'').replace(/\s*·\s*/g,'. ').replace(/\bStrong\b/,'Strong’s')+(ref?'. '+ref:''); }
@@ -2998,6 +3029,56 @@ window.MF=(function(){
       if(r.ok){ m.textContent=pw(12).replace('{n}',to.name.trim()); f.querySelectorAll('input:not([type=checkbox])').forEach(function(i){ if(i.name!=='from') i.value=''; }); f.ok.checked=false; var ls=$('ptStage').querySelector('.ptgift .pgs'); if(ls&&POND) ls.textContent=pw(1).replace('{n}',POND.left); }
       else m.textContent=r.err==='already'?pw(13):r.err==='empty'?pw(14):pw(15); }); });
   window.MFpondUI=pondUI; MF.onChange(pondUI); pondLoad();
+  // ── Ken's own voice (Ken, 12 Oct). Recordings are keyed by a short hash of the exact line; /?record opens the recorder.
+  function vhash(t){ t=String(t||'').replace(/\s+/g,' ').trim(); var h=0x811c9dc5; for(var i=0;i<t.length;i++){ h^=t.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0; } return h.toString(16)+'-'+t.length; }
+  var VOICE={};
+  function voiceLoad(){ return fetch('/api/voice').then(function(r){ return r.ok?r.json():{v:{}}; }).then(function(j){ VOICE=j.v||{}; return VOICE; }).catch(function(){ VOICE={}; return VOICE; }); }
+  window.MFvoiceUrl=function(L,t){ var h=vhash(t), m=VOICE[L]; return m&&m[h]?'/api/voice/clip?l='+L+'&h='+h+'&t='+m[h]:null; };
+  voiceLoad();
+  // the lines that stay the same, in the order they are heard
+  function vrecLines(l){ var D=DEVO[l]||DEVO.en, T=PTS[l]||PTS.en, C=CASTT[l]||CASTT.en, DP=DOP[l]||DOP.en, V=VIS[l]||VIS.en, TT=TOUR[l]||TOUR.en, out=[];
+    var add=function(g,t){ t=String(t||'').replace(/^[*#]/,''); if(t&&t.indexOf('{')<0&&!out.some(function(x){ return x.t===t; })) out.push({g:g,t:t}); };
+    var dv='Devotional'; add(dv,D.p[0]); add(dv,T.breathe); add(dv,D.p[1]);
+    ['cast_line','cast_sub','swim_line','swim_hint','wait_line','pray_line','bite','early','away','what','manna'].forEach(function(k){ add(dv,C[k]); });
+    add(dv,T.sink); add(dv,T.think); add(dv,T.in_context); add(dv,T.list_intro); add(dv,T.empty); add(dv,T.feed_line);
+    add(dv,T.h_do); add(dv,D.p[4]); add(dv,DP[0]); add(dv,DP[1]); add(dv,D.p[5]); add(dv,T.done);
+    V.p.forEach(function(x){ add('The vision',x); }); TT.s.forEach(function(x){ add('The tour',x); });
+    return out; }
+  var REC={k:'',l:'en',rec:null,stream:null,line:-1,lines:[]};
+  function vrecMime(){ var c=['audio/mp4','audio/webm;codecs=opus','audio/webm']; for(var i=0;i<c.length;i++) if(window.MediaRecorder&&MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(c[i])) return c[i]; return ''; }
+  function vrecRender(){ var L=REC.lines, m=VOICE[REC.l]||{}, done=0, g='', h='';
+    L.forEach(function(x,i){ var hv=vhash(x.t), have=!!m[hv]; if(have) done++;
+      if(x.g!==g){ g=x.g; h+='<div class="recg">'+esc(g)+'</div>'; }
+      h+='<div class="recl'+(have?' done':'')+'" data-i="'+i+'" dir="auto"><p lang="'+REC.l+'">'+esc(x.t)+'</p><div class="rb">'
+        +'<button type="button" data-r="rec"'+(REC.line===i?' class="on"':'')+'>'+(REC.line===i?'■ Stop and save':have?'● Record again':'● Record')+'</button>'
+        +(have?'<button type="button" data-r="play">▶ Mine</button><button type="button" data-r="del">🗑</button>':'')
+        +'<span class="rs">'+(have?'<span class="ok">✓ Your voice</span>':'Computer voice for now')+'</span></div></div>'; });
+    $('recList').innerHTML=h; $('recCount').textContent=done+' of '+L.length+' recorded'; }
+  function vrecOpen(){ $('rec').hidden=false; document.documentElement.style.overflow='hidden'; try{ REC.k=localStorage.getItem('mf-admin-k')||''; }catch(e){}
+    $('recKeyBox').hidden=!!REC.k; $('recLang').innerHTML=CMPL.filter(function(o){ return !o[2]; }).map(function(o){ return '<option value="'+o[0]+'">'+esc(o[1])+'</option>'; }).join('');
+    $('recLang').value=REC.l; REC.lines=vrecLines(REC.l); voiceLoad().then(vrecRender); vrecRender(); }
+  function vrecStopAll(){ if(REC.rec&&REC.rec.state!=='inactive'){ REC.rec._drop=true; REC.rec.stop(); } }
+  function vrecStart(i){ if(!navigator.mediaDevices||!window.MediaRecorder){ toast('This browser cannot record'); return; } stopSpeak();
+    navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}}).then(function(st){ var m=vrecMime(), parts=[], r;
+      try{ r=m?new MediaRecorder(st,{mimeType:m,audioBitsPerSecond:96000}):new MediaRecorder(st); }catch(e){ r=new MediaRecorder(st); }
+      r.ondataavailable=function(e){ if(e.data&&e.data.size) parts.push(e.data); };
+      r.onstop=function(){ st.getTracks().forEach(function(t){ t.stop(); }); REC.rec=null; var line=REC.lines[i]; REC.line=-1;
+        if(r._drop||!parts.length){ vrecRender(); return; } var type=(r.mimeType||m||'audio/webm').split(';')[0], blob=new Blob(parts,{type:type});
+        $('recCount').textContent='Saving…';
+        fetch('/api/voice/clip?k='+encodeURIComponent(REC.k)+'&l='+REC.l+'&h='+vhash(line.t),{method:'PUT',headers:{'content-type':type},body:blob})
+          .then(function(x){ if(x.status===403){ REC.k=''; $('recKeyBox').hidden=false; throw 'key'; } if(!x.ok) throw 0; return x.json(); })
+          .then(function(j){ (VOICE[REC.l]=VOICE[REC.l]||{})[vhash(line.t)]=j.t; vrecRender(); toast('Saved in your voice'); })
+          .catch(function(e){ vrecRender(); toast(e==='key'?'That password did not work':'Could not save; please try again'); }); };
+      REC.rec=r; REC.line=i; r.start(); vrecRender(); })
+    .catch(function(){ toast('Please allow the microphone'); }); }
+  $('recList').addEventListener('click',function(e){ var b=e.target.closest('[data-r]'); if(!b) return; var i=+b.closest('.recl').dataset.i, line=REC.lines[i], a=b.dataset.r;
+    if(a==='rec'){ if(REC.line===i){ REC.rec.stop(); return; } if(!REC.k){ $('recKey').focus(); toast('Enter the password first'); return; } vrecStopAll(); vrecStart(i); return; }
+    if(a==='play'){ var u=MFvoiceUrl(REC.l,line.t); if(u){ stopSpeak(); var au=AU(); au.onended=au.onplaying=au.onpause=au.ontimeupdate=null; au.src=u; au.playbackRate=1; au.play().catch(function(){}); } return; }
+    if(a==='del'){ fetch('/api/voice/clip?k='+encodeURIComponent(REC.k)+'&l='+REC.l+'&h='+vhash(line.t),{method:'DELETE'}).then(function(x){ if(!x.ok) throw 0; if(VOICE[REC.l]) delete VOICE[REC.l][vhash(line.t)]; vrecRender(); }).catch(function(){ toast('Could not remove it'); }); } });
+  $('recKeyGo').addEventListener('click',function(){ REC.k=$('recKey').value.trim(); if(!REC.k) return; try{ localStorage.setItem('mf-admin-k',REC.k); }catch(e){} $('recKeyBox').hidden=true; });
+  $('recLang').addEventListener('change',function(){ vrecStopAll(); REC.l=this.value; if(REC.l!=='en'&&REC.l!=='es') loadLang(REC.l).catch(function(){}); REC.lines=vrecLines(REC.l); vrecRender(); });
+  $('recX').addEventListener('click',function(){ vrecStopAll(); stopSpeak(); $('rec').hidden=true; document.documentElement.style.overflow=''; });
+  if(/[?&]record\b/.test(location.search)) setTimeout(vrecOpen,300);
   // ── Manna… Fish Stories (Ken, 12 Oct): "a section where people can share their catch -- video, audio or written".
   // Stories go to MannaFish first (/api/stories); only approved ones are shown. The site's own words are in English and
   // Spanish; the devotional's link and the ••• menu are in all nine languages.
