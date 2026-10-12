@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MannaFish Translator</title>
-<meta name="description" content="A translator for sharing Jesus with anyone in their own language. Tap the microphone, speak, and hear it in the other language.">
+<meta name="description" content="A translator for sharing Jesus with anyone in their own language. Just talk: it hears either language and says it out loud in the other.">
 <meta name="theme-color" content="#000000">
 <link rel="manifest" href="/translate/manifest.webmanifest">
 <link rel="icon" href="/icon-192.png">
@@ -52,7 +52,14 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
 .mic svg{width:34px;height:34px}
 .mic span{font:800 .7rem 'Archivo',sans-serif;letter-spacing:.04em}
 .mic.on{background:var(--red);box-shadow:0 0 0 0 rgba(200,66,60,.6);animation:pulse 1.2s infinite}
-.mic.busy{opacity:.6}
+.mic.busy{background:#1d3f75}
+.mic span{max-width:84px;text-align:center;line-height:1.15}
+/* the banner, in both languages (Ken, 12 Oct) */
+.cv{margin:0 14px 6px;border-radius:16px;padding:10px 14px;text-align:center;background:#0e2244;border:1px solid rgba(42,95,176,.55)}
+.cv[hidden]{display:none}
+.cv b{display:block;font-size:1.25rem}.cv span{display:block;color:var(--dim);font-size:1rem}
+.cv.now{background:#123a1f;border-color:#2f8a4a}
+.cv.wait,.cv.again{background:#4a1714;border-color:var(--red)}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(200,66,60,.6)}70%{box-shadow:0 0 0 18px rgba(200,66,60,0)}100%{box-shadow:0 0 0 0 rgba(200,66,60,0)}}
 .tools{display:flex;justify-content:center;gap:8px;padding:8px 14px 0;flex-wrap:wrap}
 .tools button{border:1px solid var(--line);background:transparent;border-radius:999px;padding:7px 12px;font-size:.8rem;font-weight:600;cursor:pointer}
@@ -87,13 +94,14 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
   <select id="lb" aria-label="Their language"></select>
 </div>
 <p class="sub" id="sub">A translator for sharing Jesus with anyone in their own language</p>
-<main id="convo" aria-live="polite"><div class="empty" id="empty"><b id="emptyH">Tap the microphone and speak.</b><span id="emptyT"></span></div></main>
+<main id="convo" aria-live="polite"><div class="empty" id="empty"><b id="emptyH">Tap Start, then just talk.</b><span id="emptyT"></span></div></main>
+<div class="cv" id="cv" hidden aria-live="assertive"><b id="cvA"></b><span id="cvB"></span></div>
 <div class="status" id="status"></div>
 <div class="tools"><button type="button" id="phBtn"></button><button type="button" id="rateBtn" aria-label="Speed">1x</button><button type="button" id="kbBtn"></button><button type="button" id="clrBtn"></button></div>
 <div class="typebox" id="typebox" hidden><input id="typeIn" autocomplete="off"><button type="button" id="typeGo">&#10148;</button></div>
 <div class="controls">
   <button type="button" class="side" id="micA"></button>
-  <button type="button" class="mic" id="mic" aria-label="Tap to talk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg><span id="micLab">Tap to talk</span></button>
+  <button type="button" class="mic" id="mic" aria-label="Tap to talk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg><span id="micLab">Start talking</span></button>
   <button type="button" class="side" id="micB"></button>
 </div>
 <div class="sheet" id="sheet" hidden><button type="button" class="x" id="sheetX" aria-label="Close">&times;</button><div id="sheetBody"></div></div>
@@ -105,14 +113,14 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
   var CODE={en:'en-US',es:'es-US',tl:'fil-PH',zh:'zh-CN',hi:'hi-IN',el:'el-GR',de:'de-DE',ko:'ko-KR',he:'he-IL'};
   var VOICES=[['sage','Sage'],['nova','Nova'],['coral','Coral'],['shimmer','Shimmer'],['alloy','Alloy'],['ash','Ash'],['ballad','Ballad'],['echo','Echo'],['fable','Fable'],['onyx','Onyx'],['verse','Verse'],['device','Device voice']];
   var UI={en:{back:'Devotional',sub:'A translator for sharing Jesus with anyone in their own language',brand:'Translator',talk:'Tap to talk',stop:'Tap to stop',
-      eh:'Tap the microphone and speak.',et:'Speak in either language. It hears which one, shows the words in the other, and says them out loud. Use the side buttons to say which language you will speak.',
+      eh:'Tap Start, then just talk.',et:'Take turns speaking in either language. It hears which one, says it out loud in the other, then listens again. No buttons to push. If it gets a language wrong, tap that language at the side before you speak.',
       ph:'💬 Phrases',kb:'⌨ Type',clr:'Clear',listen:'Listening… tap when you are done',hearing:'Hearing…',trans:'Translating…',again:'🔊 Again',show:'Show them',
-      none:'Didn’t catch that. Tap and try again.',mic:'Please allow the microphone to talk.',fail:'Could not translate right now. Please try again.',busy:'Many requests just now; wait a minute.',
+      none:'Didn’t catch that. Tap and try again.',mic:'Please allow the microphone. On iPhone: Settings › Safari › Microphone › Allow.',fail:'Could not translate right now. Please try again.',busy:'Many requests just now; wait a minute.',
       key:'Live translation is not turned on yet.',ready:'Ready-made phrases',verses:'Verses',typ:'Type in either language…',flip:'Turn',close:'Close',voice:'Voice'},
     es:{back:'Devocional',sub:'Un traductor para compartir a Jesús con cualquiera en su propio idioma',brand:'Traductor',talk:'Toca para hablar',stop:'Toca para parar',
-      eh:'Toca el micrófono y habla.',et:'Habla en cualquiera de los dos idiomas. Reconoce cuál es, muestra las palabras en el otro y las dice en voz alta. Usa los botones de los lados para elegir el idioma.',
+      eh:'Toca Empezar y habla.',et:'Hablen por turnos en cualquiera de los dos idiomas. Reconoce cuál es, lo dice en voz alta en el otro y vuelve a escuchar. Sin tocar botones. Si se equivoca de idioma, toca ese idioma al lado antes de hablar.',
       ph:'💬 Frases',kb:'⌨ Escribir',clr:'Borrar',listen:'Escuchando… toca al terminar',hearing:'Oyendo…',trans:'Traduciendo…',again:'🔊 Otra vez',show:'Mostrarle',
-      none:'No se oyó bien. Toca y vuelve a intentarlo.',mic:'Permite el micrófono para hablar.',fail:'No se pudo traducir ahora. Inténtalo otra vez.',busy:'Muchas solicitudes; espera un minuto.',
+      none:'No se oyó bien. Toca y vuelve a intentarlo.',mic:'Permite el micrófono. En iPhone: Ajustes › Safari › Micrófono › Permitir.',fail:'No se pudo traducir ahora. Inténtalo otra vez.',busy:'Muchas solicitudes; espera un minuto.',
       key:'La traducción en vivo aún no está activada.',ready:'Frases listas',verses:'Versículos',typ:'Escribe en cualquiera de los dos idiomas…',flip:'Girar',close:'Cerrar',voice:'Voz'}};
   function get(k,d){ try{ return localStorage.getItem(k)||d; }catch(e){ return d; } }
   function put(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
@@ -123,7 +131,7 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
   function labels(){ T=UI[pair[0]]||UI.en; document.documentElement.lang=pair[0];
     $('backLab').textContent=T.back; $('brandSub').textContent=T.brand; $('sub').textContent=T.sub; if($('emptyH')){ $('emptyH').textContent=T.eh; $('emptyT').textContent=T.et; }
     $('phBtn').textContent=T.ph; $('kbBtn').textContent=T.kb; $('clrBtn').textContent=T.clr; $('typeIn').placeholder=T.typ; $('voice').setAttribute('aria-label',T.voice);
-    $('micA').textContent='🎤 '+L[pair[0]]; $('micB').textContent='🎤 '+L[pair[1]]; if(!rec) $('micLab').textContent=T.talk; }
+    $('micA').textContent='🎤 '+L[pair[0]]; $('micB').textContent='🎤 '+L[pair[1]]; if(typeof CV!=='undefined'){ uiRec(); if(CV.on&&!$('cv').hidden&&CV.state==='listen') banner('now','🎤 '); } else $('micLab').textContent=T.talk; }
   fill($('la'),pair[0]); fill($('lb'),pair[1]);
   $('voice').innerHTML=VOICES.map(function(v){ return '<option value="'+v[0]+'">'+v[1]+'</option>'; }).join(''); $('voice').value=get('mf-voice','sage');
   $('voice').addEventListener('change',function(){ put('mf-voice',this.value); });
@@ -139,13 +147,15 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
   // ── speaking: one audio player, unlocked by the first tap, so phones let it play the answers
   var player=new Audio(), unlocked=false, SILENT='data:audio/wav;base64,UklGRrQBAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YZABAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA';
   function unlock(){ if(unlocked) return; unlocked=true; try{ player.src=SILENT; var p=player.play(); if(p&&p.catch) p.catch(function(){}); }catch(e){} }
-  function say(text,lang,btn){ var v=get('mf-voice','sage'); if(btn) btn.disabled=true; var done=function(){ if(btn) btn.disabled=false; };
+  function say(text,lang,btn,cb){ var v=get('mf-voice','sage'), fin=false; if(btn) btn.disabled=true;
+    var done=function(){ if(fin) return; fin=true; if(btn) btn.disabled=false; if(cb) cb(); };
     var dev=function(){ if(!window.speechSynthesis){ done(); return; } speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(text); u.lang=CODE[lang]||lang; u.rate=.95*rate();
       var vs=speechSynthesis.getVoices().filter(function(x){ return (x.lang||'').toLowerCase().indexOf(lang==='tl'?'fil':lang)===0; }); if(vs[0]) u.voice=vs[0]; u.onend=done; u.onerror=done; speechSynthesis.speak(u); };
     if(v==='device'){ dev(); return; }
-    post('/api/say',{text:text,lang:lang,voice:v}).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){
-      player.pause(); player.src=URL.createObjectURL(b); player.playbackRate=rate(); player.onended=done; var p=player.play(); if(p&&p.catch) p.catch(function(){ done(); dev(); }); }).catch(function(){ done(); dev(); }); }
-
+    // the same words always make the same clip, so phones and the CDN keep it (the "Speak now" prompts come back at once)
+    fetch('/api/say?t='+encodeURIComponent(text)+'&l='+encodeURIComponent(lang)+'&v='+encodeURIComponent(v)).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){
+      player.pause(); player.src=URL.createObjectURL(b); player.playbackRate=rate(); player.onended=done; player.onerror=function(){ if(!fin) dev(); };
+      var p=player.play(); if(p&&p.catch) p.catch(function(){ dev(); }); }).catch(function(){ dev(); }); }
   // speed of the spoken translation (shared with the devotional's read-aloud)
   var RATES=[1,1.25,1.5,0.75];
   function rate(){ var r=+get('mf-speed',1.25); return RATES.indexOf(r)>=0?r:1.25; }   /* Ken, 11 Oct: 1.25x by default */
@@ -159,52 +169,106 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
     d.querySelector('.said').innerHTML='<i>'+esc(L[saidLang]||'')+'</i>'+esc(said); d.querySelector('.said').setAttribute('lang',saidLang);
     var t=d.querySelector('.tr'); t.textContent=tr; t.setAttribute('lang',trLang); t.dir=trLang==='he'?'rtl':'auto';
     var a=d.querySelector('.acts'); a.hidden=false; a.innerHTML='<button type="button" data-a="say">'+T.again+'</button><button type="button" data-a="show">'+T.show+'</button>';
-    d._tr=tr; d._lang=trLang; d.scrollIntoView({block:'end',behavior:'smooth'}); say(tr,trLang,a.querySelector('[data-a=say]')); }
+    d._tr=tr; d._lang=trLang; d.scrollIntoView({block:'end',behavior:'smooth'}); sayOut(tr,trLang,a.querySelector('[data-a=say]')); }
   function failTurn(d,msg){ d.classList.remove('wait'); d.classList.add('err'); d.querySelector('.tr').textContent=msg; }
   $('convo').addEventListener('click',function(e){ var b=e.target.closest('button[data-a]'), d=e.target.closest('.turn'); if(!b||!d) return; unlock();
-    if(b.dataset.a==='say') say(d._tr,d._lang,b); else showThem(d._tr,d._lang); });
+    if(b.dataset.a==='say') sayOut(d._tr,d._lang,b); else showThem(d._tr,d._lang); });
   // words in one of the two languages (or a chosen one) -> the other, shown and said
   function translate(text,from,d){ status(T.trans);
     var body=from?{text:text,from:from,to:from===pair[0]?pair[1]:pair[0]}:{text:text,pair:pair};
     post('/api/translate',body).then(function(r){ if(!r.ok) return errMsg(r).then(function(m){ throw m; }); return r.json(); })
       .then(function(j){ status(''); var fr=j.from||from, to=j.to||body.to; fillTurn(d,text,fr,j.text,to); })
-      .catch(function(m){ status(''); failTurn(d,typeof m==='string'?m:T.fail); }); }
+      .catch(function(m){ status(''); failTurn(d,typeof m==='string'?m:T.fail); cvNext(); }); }
 
-  // ── the microphone: tap, speak, and it stops by itself after a short pause (or tap again)
-  var rec=null, stream=null, chunks=[], force=null, vad=null, ctx=null;
+  // ── Ken, 12 Oct: a hands-free conversation. "If I say something in English, it automatically translates it to Spanish
+  // and speaks it out loud. If the other person responds in Spanish, it translates it and reads it in English, without
+  // me pushing buttons." One tap starts it; the microphone is asked for once and kept until it is stopped. It listens,
+  // hears which language, says it in the other, then listens again. If someone talks while it is still working, it shows
+  // "Please wait" in both languages and, once the translation has been said, asks them (in both) to say it again.
+  var MSG={en:['Speak now','Please wait…','Please say that again.','One moment…','Start talking','Tap to stop','Paused. Tap to talk again.'],
+    es:['Hable ahora','Por favor, espere…','Por favor, repítalo.','Un momento…','Empezar a hablar','Toca para parar','En pausa. Toca para seguir.'],
+    tl:['Magsalita na po','Sandali lang po…','Pakiulit po.','Sandali…','Magsimulang mag-usap','I-tap para huminto','Naka-pause. I-tap para magpatuloy.'],
+    zh:['请说话','请稍等…','请再说一遍。','请稍候…','开始对话','点按停止','已暂停。点按继续。'],
+    hi:['अब बोलिए','कृपया रुकिए…','कृपया फिर से कहिए।','एक पल…','बातचीत शुरू करें','रोकने के लिए टैप करें','रुका हुआ है। फिर से बोलने के लिए टैप करें।'],
+    el:['Μιλήστε τώρα','Παρακαλώ περιμένετε…','Παρακαλώ πείτε το ξανά.','Μια στιγμή…','Ξεκινήστε τη συζήτηση','Πατήστε για διακοπή','Σε παύση. Πατήστε για να συνεχίσετε.'],
+    de:['Jetzt sprechen','Bitte warten…','Bitte noch einmal sagen.','Einen Moment…','Gespräch starten','Zum Stoppen tippen','Pausiert. Zum Weitersprechen tippen.'],
+    ko:['지금 말씀하세요','잠시만 기다려 주세요…','다시 한 번 말씀해 주세요.','잠시만요…','대화 시작','눌러서 멈추기','일시 정지됨. 눌러서 계속하기.'],
+    he:['דברו עכשיו','נא להמתין…','נא לחזור על זה.','רק רגע…','להתחיל שיחה','הקישו כדי לעצור','מושהה. הקישו כדי להמשיך.']};
+  var K={now:0,wait:1,again:2,work:3,start:4,stop:5,paused:6};
+  function msg(l,k){ return (MSG[l]||MSG.en)[K[k]]; }
+  var CV={on:false,state:'off',stream:null,rec:null,force:null,hurry:false,ctx:null,an:null,buf:null,tick:null,floor:0.01,heardAt:0};
+  // the banner says the same thing in both languages
+  function banner(k,icon){ var c=$('cv'); c.hidden=false; c.className='cv '+k; $('cvA').textContent=(icon||'')+msg(pair[0],k); $('cvB').textContent=msg(pair[1],k);
+    $('cvA').setAttribute('lang',pair[0]); $('cvB').setAttribute('lang',pair[1]); $('cvB').dir=pair[1]==='he'?'rtl':'auto'; }
+  function uiRec(){ var on=CV.on; $('mic').classList.toggle('on',on&&CV.state==='listen'); $('mic').classList.toggle('busy',on&&CV.state!=='listen');
+    $('micA').classList.toggle('on',on&&CV.force===pair[0]); $('micB').classList.toggle('on',on&&CV.force===pair[1]);
+    $('micLab').textContent=on?msg(pair[0],'stop'):msg(pair[0],'start'); }
   function mime(){ var c=['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg;codecs=opus']; for(var i=0;i<c.length;i++) if(window.MediaRecorder&&MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(c[i])) return c[i]; return ''; }
-  function uiRec(on){ $('mic').classList.toggle('on',on&&!force); $('micA').classList.toggle('on',on&&force===pair[0]); $('micB').classList.toggle('on',on&&force===pair[1]);
-    $('micLab').textContent=on?T.stop:T.talk; }
-  function stopRec(){ if(rec&&rec.state!=='inactive') rec.stop(); }
-  function start(lang){ unlock(); if(rec){ stopRec(); return; }
+  function live(){ return CV.stream&&CV.stream.getAudioTracks().some(function(t){ return t.readyState==='live'; }); }
+  // the microphone, once
+  function getMic(){ if(live()) return Promise.resolve(CV.stream);
+    return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}}).then(function(st){ CV.stream=st;
+      try{ CV.ctx=CV.ctx||new (window.AudioContext||window.webkitAudioContext)(); var src=CV.ctx.createMediaStreamSource(st); CV.an=CV.ctx.createAnalyser(); CV.an.fftSize=1024; src.connect(CV.an); CV.buf=new Uint8Array(CV.an.fftSize); }catch(e){ CV.an=null; }
+      return st; }); }
+  function level(){ if(!CV.an) return 0; if(CV.ctx.state==='suspended') CV.ctx.resume(); CV.an.getByteTimeDomainData(CV.buf); var sum=0; for(var i=0;i<CV.buf.length;i++){ var x=(CV.buf[i]-128)/128; sum+=x*x; } return Math.sqrt(sum/CV.buf.length); }
+  // one recording per thing said
+  function recStart(){ var m=mime(), r, parts=[]; try{ r=m?new MediaRecorder(CV.stream,{mimeType:m}):new MediaRecorder(CV.stream); }catch(e){ r=new MediaRecorder(CV.stream); }
+    var type=(r.mimeType||m||'audio/webm').split(';')[0];
+    r.ondataavailable=function(e){ if(e.data&&e.data.size) parts.push(e.data); };
+    r.onstop=function(){ if(r._send) send(new Blob(parts,{type:type}),type,r._send.force,r._send.ms); };
+    CV.rec=r; r.start(); }
+  function recStop(keep,ms){ var r=CV.rec; if(!r) return; CV.rec=null; r._send=keep?{force:CV.force,ms:ms}:null; if(r.state!=='inactive') r.stop(); }
+  var L0={t:0,spoke:0,quiet:0,loud:0,idle:0};
+  function listen(){ if(!CV.on) return; CV.state='listen'; L0={t:Date.now(),spoke:0,quiet:0,loud:0}; recStart(); banner('now','🎤 '); status(''); uiRec(); }
+  // every tenth of a second: is someone speaking?
+  function tick(){ if(!CV.on) return; var v=level(), th=Math.max(0.03,CV.floor*3), loud=v>th;
+    if(!loud) CV.floor=CV.floor*0.97+v*0.03;
+    if(CV.state==='listen'){
+      if(loud){ L0.spoke+=100; L0.quiet=0; CV.heardAt=Date.now(); } else L0.quiet+=100;
+      var held=Date.now()-L0.t;
+      if(L0.spoke>=300&&(L0.quiet>=1100||held>40000)){ CV.state='work'; CV.hurry=false; banner('work','… '); uiRec(); recStop(true,L0.spoke); return; }
+      // nothing said: start a fresh recording now and then, and rest after two quiet minutes
+      if(!L0.spoke&&held>12000){ recStop(false); if(Date.now()-CV.heardAt>120000){ cvStop(true); return; } L0={t:Date.now(),spoke:0,quiet:0,loud:0}; recStart(); }
+      if(L0.spoke&&L0.spoke<300&&L0.quiet>=1500){ L0.spoke=0; }
+    } else if(CV.state==='work'){
+      // someone talking over it while it is still translating
+      if(loud){ L0.loud+=100; if(L0.loud>=500&&!CV.hurry){ CV.hurry=true; banner('wait','✋ '); } } else L0.loud=Math.max(0,L0.loud-50);
+    } }
+  function cvStart(lang){ unlock(); if(lang) CV.force=lang;
+    if(CV.on){ if(!lang) cvStop(); else uiRec(); return; }
     if(!navigator.mediaDevices||!window.MediaRecorder){ status(T.mic); return; }
-    force=lang||null;
-    navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}}).then(function(s){ stream=s; chunks=[];
-      var m=mime(); rec=m?new MediaRecorder(s,{mimeType:m}):new MediaRecorder(s);
-      rec.ondataavailable=function(e){ if(e.data&&e.data.size) chunks.push(e.data); };
-      rec.onstop=function(){ var type=(rec.mimeType||m||'audio/webm').split(';')[0], blob=new Blob(chunks,{type:type}); clearInterval(vad); if(ctx){ try{ ctx.close(); }catch(e){} ctx=null; }
-        stream.getTracks().forEach(function(t){ t.stop(); }); rec=null; uiRec(false); send(blob,type,force); };
-      rec.start(); uiRec(true); status(T.listen); listenForPause(s); })
-    .catch(function(){ status(T.mic); }); }
-  // stop after about 1.3 seconds of quiet once someone has spoken (or 8 seconds of nothing, or 45 seconds in all)
-  function listenForPause(s){ try{ ctx=new (window.AudioContext||window.webkitAudioContext)(); var src=ctx.createMediaStreamSource(s), an=ctx.createAnalyser(); an.fftSize=1024; src.connect(an);
-      var buf=new Uint8Array(an.fftSize), t0=Date.now(), spoke=false, quiet=0;
-      vad=setInterval(function(){ an.getByteTimeDomainData(buf); var sum=0; for(var i=0;i<buf.length;i++){ var x=(buf[i]-128)/128; sum+=x*x; } var rms=Math.sqrt(sum/buf.length);
-        if(rms>0.035){ spoke=true; quiet=0; } else quiet+=100;
-        if((spoke&&quiet>1300) || (!spoke&&Date.now()-t0>8000) || Date.now()-t0>45000) stopRec(); },100); }catch(e){} }
-  function send(blob,type,lang){ if(!blob.size){ status(T.none); return; } status(T.hearing);
+    CV.on=true; CV.state='start'; uiRec(); CV.heardAt=Date.now();
+    getMic().then(function(){ if(!CV.on) return; clearInterval(CV.tick); CV.tick=setInterval(tick,100); listen(); })
+      .catch(function(){ CV.on=false; uiRec(); $('cv').hidden=true; status(T.mic); }); }
+  // stop: the microphone is let go (the phone's mic light goes off)
+  function cvStop(rest){ CV.on=false; CV.state='off'; clearInterval(CV.tick); recStop(false); CV.force=null;
+    if(CV.stream){ CV.stream.getTracks().forEach(function(t){ t.stop(); }); CV.stream=null; }
+    if(rest) banner('paused','⏸ '); else $('cv').hidden=true; uiRec(); }
+  // after a translation has been said (or nothing came of it): listen again, first asking them to say it again if they were cut off
+  function cvNext(){ if(!CV.on) return; if(CV.state==='speak'||CV.state==='work'){ if(CV.hurry){ CV.hurry=false; CV.state='speak'; banner('again','🔁 ');
+      say(msg(pair[0],'again'),pair[0],null,function(){ say(msg(pair[1],'again'),pair[1],null,function(){ setTimeout(listen,250); }); }); return; }
+    setTimeout(listen,300); } }
+  // anything said out loud stops the listening first (so it does not hear itself), then the conversation carries on
+  function sayOut(text,lang,btn){ if(CV.on){ recStop(false); CV.state='speak'; banner('work','🔊 '); $('cvA').textContent='🔊 '+L[lang]; $('cvB').textContent=''; uiRec(); }
+    say(text,lang,btn,function(){ if(CV.on) cvNext(); }); }
+  function send(blob,type,lang,ms){ if(!blob.size){ cvNext(); return; } status(T.hearing);
     var d=addTurn(lang&&lang!==pair[0]?'b':'a');
     fetch('/api/hear'+(lang?'?lang='+lang:''),{method:'POST',headers:{'content-type':type},body:blob})
       .then(function(r){ if(!r.ok) return errMsg(r).then(function(m){ throw m; }); return r.json(); })
-      .then(function(j){ if(!j.text){ d.remove(); status(T.none); return; } d.querySelector('.said').textContent=j.text; translate(j.text,lang,d); })
-      .catch(function(m){ status(''); failTurn(d,typeof m==='string'?m:T.fail); }); }
-  $('mic').addEventListener('click',function(){ start(null); });
-  $('micA').addEventListener('click',function(){ start(pair[0]); });
-  $('micB').addEventListener('click',function(){ start(pair[1]); });
+      .then(function(j){ var t=String(j.text||'').trim(); CV.force=null; uiRec();
+        // a cough or a door: speech-to-text sometimes "hears" a stock phrase in a short noise
+        if(!t||(ms<1200&&/^(thanks for watching!?|you\.?|\.+)$/i.test(t))){ d.remove(); status(''); cvNext(); return; }
+        d.querySelector('.said').textContent=t; translate(t,lang,d); })
+      .catch(function(m){ status(''); failTurn(d,typeof m==='string'?m:T.fail); cvNext(); }); }
+  $('mic').addEventListener('click',function(){ cvStart(null); });
+  $('micA').addEventListener('click',function(){ cvStart(pair[0]); });
+  $('micB').addEventListener('click',function(){ cvStart(pair[1]); });
+  // leaving the page lets the microphone go
+  document.addEventListener('visibilitychange',function(){ if(document.hidden&&CV.on) cvStop(true); });
 
   // ── typing instead of speaking
   $('kbBtn').addEventListener('click',function(){ var tb=$('typebox'); tb.hidden=!tb.hidden; if(!tb.hidden) $('typeIn').focus(); });
-  function typed(){ var t=$('typeIn').value.trim(); if(!t) return; unlock(); $('typeIn').value=''; translate(t,null,addTurn('a')); }
+  function typed(){ var t=$('typeIn').value.trim(); if(!t) return; unlock(); $('typeIn').value=''; if(CV.on){ recStop(false); CV.state='work'; } translate(t,null,addTurn('a')); }
   $('typeGo').addEventListener('click',typed); $('typeIn').addEventListener('keydown',function(e){ if(e.key==='Enter') typed(); });
   $('clrBtn').addEventListener('click',function(){ $('convo').innerHTML='<div class="empty" id="empty"><b id="emptyH"></b><span id="emptyT"></span></div>'; labels(); });
 
@@ -224,7 +288,7 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
   var showing=null;
   function showThem(t,l){ showing={t:t,l:l}; $('showT').textContent=t; $('showT').setAttribute('lang',l); $('showT').dir=l==='he'?'rtl':'auto'; $('showT').classList.remove('flip'); $('show').hidden=false; }
   $('showFlip').addEventListener('click',function(){ $('showT').classList.toggle('flip'); });
-  $('showPlay').addEventListener('click',function(){ if(showing) say(showing.t,showing.l,this); });
+  $('showPlay').addEventListener('click',function(){ if(showing) sayOut(showing.t,showing.l,this); });
   $('showX').addEventListener('click',function(){ $('show').hidden=true; });
   labels();
 })();
