@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MannaFish Memory Match</title>
+<meta name="description" content="A memory matching game with the 24 MannaFish words in ten languages. Flip two fish: the same word, in any language, is a match.">
+<meta name="theme-color" content="#05080c">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<script>
+// light or dark like the rest of the site: dark unless the reader chose light ('mf-mode')
+(function(){ var m=''; try{ m=localStorage.getItem('mf-mode')||''; }catch(e){}
+  if(m==='light') document.documentElement.setAttribute('data-mode','light'); })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap">
+<!-- Ken, 12 Oct: "a matching game ... on one side of the fish, it's just a fish, and it says MannaFish in the middle, with
+     the white Manna and blue Fish ... If you flip 2 over and they're the same word, even if it's a different language, it's
+     a match. 24 words, so 12 matches on one screen. When somebody clicks on the word, I'd like them to still hear it.
+     They can pick the language on the memory game screen." No scores kept, no rewards: just the game. -->
+<style>
+@font-face{font-family:'MFHobo';src:url(/fish-lang/hobo.woff2) format('woff2');font-display:swap}
+/* each language's lettering: the same small trimmed fonts the fish are drawn with */
+@font-face{font-family:'ZCOOL KuaiLe';src:url(/fish-lang/zh.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Baloo 2';src:url(/fish-lang/hi.woff2) format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Ubuntu';src:url(/fish-lang/el.woff2) format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Jua';src:url(/fish-lang/ko.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Fredoka';src:url(/fish-lang/he.woff2) format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Cairo';src:url(/fish-lang/ar.woff2) format('woff2');font-weight:100 900;font-display:swap}
+
+:root{
+  --bg:#05080c; --bg2:#0b0f14; --text:#eef3f5; --dim:#9fb2b6; --line:rgba(200,215,218,.16);
+  --btn:#2A5FB0; --btn-text:#fff; --wm-manna:#ffffff; --wm-fish:#3370FF;
+  --face:#101820; --face-line:rgba(200,215,218,.18); --glow:#3370FF; --miss:#c8423c;
+  --cardback1:#10203a; --cardback2:#08111d; --cardback-line:rgba(51,112,255,.45);
+  color-scheme:dark;
+}
+:root[data-mode="light"]{
+  --bg:#f7f5ef; --bg2:#ffffff; --text:#14181d; --dim:#4b5560; --line:rgba(20,24,29,.16);
+  --btn:#0038B8; --wm-manna:#14181d; --wm-fish:#0038B8;
+  --face:#ffffff; --face-line:rgba(20,24,29,.18); --glow:#0038B8;
+  --cardback1:#122848; --cardback2:#0a1526; --cardback-line:rgba(0,56,184,.6);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font:1rem/1.4 'Archivo',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;min-height:100vh;min-height:100dvh;
+  display:flex;flex-direction:column;align-items:center;text-align:center;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button,select,input{font:inherit;color:inherit}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrapw{width:100%;max-width:900px;padding:0 12px}
+
+/* ── top bar: Home · wordmark · New game ── */
+.top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding-top:max(8px,env(safe-area-inset-top));padding-bottom:4px}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:5px;border-radius:999px;border:1px solid var(--line);
+  background:transparent;padding:7px 12px;font-weight:600;font-size:.8rem;text-decoration:none;color:var(--text);cursor:pointer;white-space:nowrap}
+.pill.blue{background:var(--btn);border-color:var(--btn);color:var(--btn-text)}
+.top .home{justify-self:start}
+.top #newBtn{justify-self:end}
+.wm{margin:0;font:400 1.55rem/1 'MFHobo','Archivo',sans-serif;letter-spacing:.01em;white-space:nowrap}
+.wm .m{color:var(--wm-manna)} .wm .f{color:var(--wm-fish)}
+.wm small{display:block;font:700 .56rem/1 'Archivo',sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-top:4px}
+
+/* ── language pickers ── */
+.opts{display:flex;justify-content:center;gap:8px;padding-top:4px}
+.pick{flex:1 1 0;min-width:0;max-width:260px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.pick span{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.pick select{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:6px 10px;
+  font-weight:700;font-size:.88rem;text-align:center;text-align-last:center;cursor:pointer}
+select option{background:var(--bg2);color:var(--text)}
+.bar{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:4px 14px;padding:6px 0 8px;font-size:.78rem;color:var(--dim)}
+.bar #stat{font-weight:600;color:var(--text)}
+.say{display:inline-flex;align-items:center;gap:5px;cursor:pointer;user-select:none}
+.say input{accent-color:var(--btn);width:15px;height:15px;margin:0}
+
+/* ── the board ── */
+main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(safe-area-inset-bottom));position:relative}
+.board{display:grid;gap:var(--gap,6px);grid-template-columns:repeat(4,1fr);width:100%;max-width:900px;justify-content:center}
+.card{position:relative;border:0;padding:0;margin:0;background:none;cursor:pointer;perspective:700px;
+  width:var(--cw,auto);height:var(--ch,96px);-webkit-tap-highlight-color:transparent;border-radius:10px}
+.card:focus-visible{outline:3px solid var(--glow);outline-offset:2px}
+.inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.3,.7,.3,1)}
+.card.up .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:10px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center}
+.back{background:radial-gradient(120% 90% at 50% 35%,var(--cardback1),var(--cardback2));border:1px solid var(--cardback-line)}
+.back svg{width:100%;height:100%;display:block}
+.front{transform:rotateY(180deg);background:var(--face);border:1px solid var(--face-line);padding:14% 5% 5%;gap:2px}
+.front .w{flex:1 1 auto;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;
+  line-height:1.2;word-break:keep-all;overflow-wrap:normal;hyphens:none;color:var(--text);overflow:hidden}
+.front .w b{font-weight:inherit;display:block;max-width:100%}
+.front .mean{font-size:.68rem;font-style:italic;color:var(--dim);line-height:1.1;min-height:0}
+.front .mean:empty{display:none}
+.front .ln{font-size:.6rem;font-weight:600;letter-spacing:.04em;color:var(--dim);line-height:1.1;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;flex:none}
+.front .spk{position:absolute;top:4px;right:5px;font-size:.62rem;line-height:1;opacity:.55;transition:opacity .2s}
+.card.talk .spk{opacity:1;animation:mfTalk .7s ease-in-out infinite alternate}
+@keyframes mfTalk{from{transform:scale(1)}to{transform:scale(1.25)}}
+.card.miss .front{border-color:var(--miss)}
+.card.got .front{border-color:var(--glow);box-shadow:inset 0 0 0 1px var(--glow),0 0 14px 1px color-mix(in srgb,var(--glow) 55%,transparent)}
+/* the glow swells once on the face itself: a filter on the turning card would flatten it and show the back mirrored */
+.card.got .front{animation:mfGot .9s ease-out}
+@keyframes mfGot{0%{box-shadow:inset 0 0 0 1px var(--glow),0 0 0 0 color-mix(in srgb,var(--glow) 80%,transparent)}
+  45%{box-shadow:inset 0 0 0 2px var(--glow),0 0 22px 4px color-mix(in srgb,var(--glow) 70%,transparent)}
+  100%{box-shadow:inset 0 0 0 1px var(--glow),0 0 14px 1px color-mix(in srgb,var(--glow) 55%,transparent)}}
+@media (prefers-reduced-motion:reduce){
+  .inner{transition:none}
+  .card.got .front,.card.talk .spk{animation:none}
+}
+
+/* ── all found ── */
+.win{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;background:color-mix(in srgb,var(--bg) 55%,transparent)}
+.win[hidden]{display:none}
+.win .box{background:var(--bg2);border:1px solid var(--glow);border-radius:16px;padding:22px 22px 18px;max-width:320px;width:100%;
+  box-shadow:0 18px 50px -12px rgba(0,0,0,.6)}
+.win h2{margin:0 0 4px;font:400 1.45rem/1.2 'MFHobo','Archivo',sans-serif;color:var(--text)}
+.win p{margin:0 0 14px;color:var(--dim);font-size:.86rem}
+.win .row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.win .pill{font-size:.9rem;padding:9px 16px}
+@media (min-width:700px){
+  .wm{font-size:2rem}
+  .pill{font-size:.88rem;padding:8px 14px}
+  .front .ln{font-size:.72rem}
+  .front .mean{font-size:.8rem}
+  .front .spk{font-size:.8rem;top:7px;right:8px}
+  .bar{font-size:.86rem}
+  .pick{max-width:340px}
+}
+</style>
+</head>
+<body>
+<header class="wrapw top">
+  <a class="pill home" href="/">⌂ <span data-t="home">Home</span></a>
+  <h1 class="wm"><span class="m">Manna</span><span class="f">Fish</span><small data-t="sub">Memory match</small></h1>
+  <button class="pill blue" id="newBtn" type="button" data-t="new">New game</button>
+</header>
+<div class="wrapw opts">
+  <label class="pick"><span data-t="first">First language</span><select id="l1"></select></label>
+  <label class="pick"><span data-t="second">Second language</span><select id="l2"></select></label>
+</div>
+<div class="wrapw bar">
+  <span id="stat" aria-live="off"></span>
+  <label class="say"><input type="checkbox" id="sayChk" checked> <span>🔊 <span data-t="say">Say words when flipped</span></span></label>
+</div>
+<main>
+  <div class="board" id="board" aria-label="Cards"></div>
+  <div class="win" id="win" hidden>
+    <div class="box" role="dialog" aria-modal="false" aria-labelledby="winMsg">
+      <h2 id="winMsg"></h2>
+      <p data-t="winsub">Tap any card to hear its word.</p>
+      <div class="row">
+        <button class="pill blue" id="againBtn" type="button" data-t="again">Play again</button>
+        <button class="pill" id="lookBtn" type="button" data-t="look">See the cards</button>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="sr" id="live" aria-live="polite"></div>
+
+<script>
+(function(){
+  'use strict';
+  var LANGS=['en','es','tl','zh','hi','el','de','ko','he','ar'];
+  var NAME={en:'English',es:'Español',tl:'Tagalog',zh:'中文',hi:'हिन्दी',el:'Ελληνικά',de:'Deutsch',ko:'한국어',he:'עברית',ar:'العربية'};
+  var RTL={he:1,ar:1};
+  // the language's own name in its lettering where that small font holds all its letters
+  var LNFONT={hi:1,el:1,he:1,ar:1};
+  // the word on each card in the lettering its fish is drawn with; Latin languages in the MannaFish font
+  var FONT={en:'MFHobo',es:'MFHobo',tl:'MFHobo',de:'MFHobo',zh:'ZCOOL KuaiLe',hi:'Baloo 2',el:'Ubuntu',ko:'Jua',he:'Fredoka',ar:'Cairo'};
+  var FALL={zh:"'PingFang SC','Noto Sans SC','Microsoft YaHei',",hi:"'Noto Sans Devanagari','Nirmala UI',",ko:"'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',",
+    he:"'Noto Sans Hebrew','Arial Hebrew',",ar:"'Noto Sans Arabic','Geeza Pro','Segoe UI',"};
+  var LCODE={en:'en-US',es:'es-US',tl:'fil-PH',zh:'zh-CN',hi:'hi-IN',el:'el-GR',de:'de-DE',ko:'ko-KR',he:'he-IL',ar:'ar-SA'};
+  var LPRE={en:['en'],es:['es'],tl:['fil','tl'],zh:['zh','cmn'],hi:['hi'],el:['el'],de:['de'],ko:['ko'],he:['he','iw'],ar:['ar']};
+  var VOICES=['alloy','ash','ballad','coral','echo','fable','nova','onyx','sage','shimmer','verse'];
+  var PAIRS=12;
+  var T={
+    en:{home:'Home',sub:'Memory match',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',
+      say:'Say words when flipped',moves:'Moves',pairs:'pairs',won:'All 12 found in {n} moves',winsub:'Tap any card to hear its word.',
+      again:'Play again',look:'See the cards',down:'Card {i}, face down',matched:'matched',match:'Match',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
+    es:{home:'Inicio',sub:'Juego de memoria',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',
+      say:'Decirlas al voltear',moves:'Jugadas',pairs:'pares',won:'Las 12 encontradas en {n} jugadas',winsub:'Toca cualquier carta para oír su palabra.',
+      again:'Jugar otra vez',look:'Ver las cartas',down:'Carta {i}, boca abajo',matched:'encontrada',match:'Pareja',nomatch:'No son pareja',cards:'Cartas',loading:'Cargando…',oops:'No se pudieron cargar las palabras. Inténtalo otra vez.'}
+  };
+  function $(id){ return document.getElementById(id); }
+  function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
+  function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+
+  var W=null, l1, l2, ui='en', cards=[], open=[], moves=0, found=0, backTimer=null, sayOn=store('mf-match-say')!=='off';
+  function t(k){ return (T[ui]||T.en)[k]||T.en[k]; }
+
+  // ── languages ──
+  var site=store('mf-lang'); l1=LANGS.indexOf(site)>=0?site:'en'; l2=l1==='es'?'en':'es';
+  function fillPickers(){
+    $('l1').innerHTML=LANGS.map(function(l){ return '<option value="'+l+'"'+(l===l1?' selected':'')+'>'+NAME[l]+'</option>'; }).join('');
+    $('l2').innerHTML=LANGS.map(function(l){ return '<option value="'+l+'"'+(l===l2?' selected':'')+(l===l1?' disabled':'')+'>'+NAME[l]+'</option>'; }).join('')+
+      '<option value="mix" title="'+esc(t('mix'))+'"'+(l2==='mix'?' selected':'')+'>'+esc(narrow()?t('mixs'):t('mix'))+'</option>';
+  }
+  // a phone's picker is too narrow for the whole Mix label, so it shows the short one
+  function narrow(){ return document.documentElement.clientWidth<600; }
+  function applyUI(){
+    ui=l1==='es'?'es':'en'; document.documentElement.lang=ui;
+    document.querySelectorAll('[data-t]').forEach(function(el){ el.textContent=t(el.getAttribute('data-t')); });
+    $('board').setAttribute('aria-label',t('cards'));
+    fillPickers(); status();
+  }
+  $('l1').addEventListener('change',function(){ l1=this.value; if(l2===l1) l2=l1==='es'?'en':'es'; applyUI(); deal(); });
+  $('l2').addEventListener('change',function(){ l2=this.value; deal(); });
+  $('sayChk').checked=sayOn;
+  $('sayChk').addEventListener('change',function(){ sayOn=this.checked; store('mf-match-say',sayOn?'on':'off'); });
+
+  // ── the card back: a fish, and MannaFish across the middle ──
+  var BACK='<svg viewBox="2 2 96 96" aria-hidden="true" focusable="false">'+
+    '<path d="M5 76 Q48 4 95 50 Q48 96 5 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'+
+    '<text x="60" y="54.6" text-anchor="middle" font-family="MFHobo,Archivo,sans-serif" font-size="13" textLength="58" lengthAdjust="spacingAndGlyphs"'+
+    ' stroke="#0b1525" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan fill="#fff">Manna</tspan><tspan fill="#3370FF">Fish</tspan></text></svg>';
+
+  function fontOf(l){ return "'"+FONT[l]+"',"+(FALL[l]||'')+"system-ui,sans-serif"; }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  // ── a new game: 12 random words, each once in the first language and once in the second (or a mixed one) ──
+  function deal(){
+    if(!W) return;
+    clearTimeout(backTimer); stopSpeak(); open=[]; moves=0; found=0; $('win').hidden=true;
+    var keys=shuffle(Object.keys(W.en)).slice(0,PAIRS), others=LANGS.filter(function(l){ return l!==l1; }), pool=[];
+    while(pool.length<PAIRS) pool=pool.concat(shuffle(others));
+    var list=[];
+    keys.forEach(function(k,i){ list.push({k:k,l:l1}); list.push({k:k,l:l2==='mix'?pool[i]:l2}); });
+    cards=shuffle(list).map(function(c,i){ c.i=i; c.up=false; c.got=false; return c; });
+    var b=$('board'); b.innerHTML='';
+    cards.forEach(function(c){
+      var w=W[c.l][c.k], el=document.createElement('button');
+      el.type='button'; el.className='card';
+      el.innerHTML='<span class="inner"><span class="face back">'+BACK+'</span>'+
+        '<span class="face front" aria-hidden="true" lang="'+c.l+'"'+(RTL[c.l]?' dir="rtl"':'')+'><span class="spk">🔊</span>'+
+        '<span class="w" style="font-family:'+esc(fontOf(c.l))+'"><b>'+esc(w)+'</b></span><span class="mean" dir="ltr"></span><span class="ln"'+(LNFONT[c.l]?' style="font-family:'+esc(fontOf(c.l))+'"':'')+'>'+esc(NAME[c.l])+'</span></span></span>';
+      el.addEventListener('click',function(){ tap(c); });
+      c.el=el; label(c); b.appendChild(el);
+    });
+    status(); layout();
+    // the fonts for this deal, then size each word to its card
+    var fams={}; cards.forEach(function(c){ fams[c.l]=(fams[c.l]||'')+W[c.l][c.k]; });
+    if(document.fonts&&document.fonts.load){
+      Promise.all(Object.keys(fams).map(function(l){ return document.fonts.load("40px '"+FONT[l]+"'",fams[l]).catch(function(){}); }))
+        .then(fitAll,fitAll);
+    }
+  }
+  function label(c){
+    var s=c.up?W[c.l][c.k]+', '+NAME[c.l]+(c.got?', '+t('matched'):''):t('down').replace('{i}',c.i+1);
+    c.el.setAttribute('aria-label',s);
+  }
+  function status(){ var bar=$('stat').parentNode, h=bar.offsetHeight;
+    $('stat').textContent=t('moves')+' '+moves+' · '+found+'/'+PAIRS+' '+t('pairs');
+    if(cards.length&&bar.offsetHeight!==h) layout(); }   // a narrow phone may wrap the line: keep the cards on one screen
+  function announce(s){ var l=$('live'); l.textContent=''; setTimeout(function(){ l.textContent=s; },30); }
+
+  function flip(c,up){ c.up=up; c.el.classList.toggle('up',up); if(!up) c.el.classList.remove('miss'); label(c); }
+  function tap(c){
+    if(c.up){ say(c,false); return; }            // a face-up card says its word again
+    if(open.length===2){ clearTimeout(backTimer); turnBack(); }
+    flip(c,true); open.push(c);
+    if(sayOn) say(c,true);
+    if(open.length<2) return;
+    moves++;
+    var a=open[0], b=open[1];
+    if(a.k===b.k){
+      open=[]; found++;
+      var mean=(a.l!=='en'&&b.l!=='en')?W.en[a.k]:'';
+      [a,b].forEach(function(x){ x.got=true; x.el.classList.add('got'); x.el.querySelector('.mean').textContent=mean; label(x); fit(x); });
+      announce(t('match')+': '+W[a.l][a.k]+' · '+W[b.l][b.k]);
+      status();
+      if(found===PAIRS) setTimeout(won,700);
+    } else {
+      a.el.classList.add('miss'); b.el.classList.add('miss');
+      announce(t('nomatch')); status();
+      backTimer=setTimeout(turnBack,1100);
+    }
+  }
+  function turnBack(){ open.forEach(function(x){ flip(x,false); }); open=[]; }
+  function won(){
+    $('winMsg').textContent=t('won').replace('{n}',moves);
+    $('win').hidden=false; announce($('winMsg').textContent); $('againBtn').focus();
+  }
+  $('newBtn').addEventListener('click',deal);
+  $('againBtn').addEventListener('click',deal);
+  $('lookBtn').addEventListener('click',function(){ $('win').hidden=true; $('newBtn').focus(); });
+
+  // ── hearing a word: the site's natural voice (/api/tts), else this device's own voice ──
+  var CLIP={}, apiOff=false, sp={id:0,audio:null,card:null,next:null,busy:false};
+  function aiVoice(){ var v=store('mf-voice')||''; if(v==='device') return ''; return VOICES.indexOf(v)>=0?v:'sage'; }
+  function clip(l,k){
+    var v=aiVoice(); if(!v||apiOff) return Promise.reject(new Error('device'));
+    var key=l+'|'+k+'|'+v; if(CLIP[key]) return CLIP[key];
+    var p=fetch('/api/tts?lang='+l+'&w='+k+'&part=word&v='+v).then(function(r){
+      if(r.status===501) apiOff=true;
+      if(!r.ok) throw new Error('tts '+r.status); return r.blob(); }).then(function(b){ return URL.createObjectURL(b); });
+    p.catch(function(){ delete CLIP[key]; });
+    return CLIP[key]=p;
+  }
+  function voiceFor(l){
+    if(!window.speechSynthesis) return null;
+    var vs=speechSynthesis.getVoices()||[], pre=LPRE[l], best=null;
+    for(var i=0;i<vs.length;i++){ var n=(vs[i].lang||'').toLowerCase().replace('_','-');
+      if(n===LCODE[l].toLowerCase()) return vs[i];
+      if(!best&&pre.some(function(p){ return n===p||n.indexOf(p+'-')===0; })) best=vs[i]; }
+    return best;
+  }
+  if(window.speechSynthesis&&speechSynthesis.getVoices) speechSynthesis.getVoices();
+  function stopSpeak(){
+    sp.id++; sp.next=null; sp.busy=false;
+    if(sp.audio){ try{ sp.audio.pause(); }catch(e){} sp.audio=null; }
+    if(window.speechSynthesis) try{ speechSynthesis.cancel(); }catch(e){}
+    if(sp.card) sp.card.el.classList.remove('talk'); sp.card=null;
+  }
+  // queue=true (a card just flipped): wait for the word being said; otherwise (a tap) say it now
+  function say(c,queue){
+    if(queue&&sp.busy){ sp.next=c; return; }
+    stopSpeak();
+    var id=sp.id, l=c.l, k=c.k, word=W[l][k];
+    sp.busy=true; sp.card=c; c.el.classList.add('talk');
+    function done(){ if(id!==sp.id) return; sp.busy=false; c.el.classList.remove('talk'); sp.card=null;
+      var n=sp.next; sp.next=null; if(n) say(n,false); }
+    function device(){
+      if(id!==sp.id) return;
+      if(!window.speechSynthesis||typeof SpeechSynthesisUtterance==='undefined') return done();
+      var u=new SpeechSynthesisUtterance(l==='he'?word.replace(/ה׳/g,'אדוני'):word), v=voiceFor(l);
+      u.lang=LCODE[l]; if(v) u.voice=v; u.rate=.85;
+      var safety=setTimeout(done,4000); u.onend=u.onerror=function(){ clearTimeout(safety); done(); };
+      try{ speechSynthesis.speak(u); }catch(e){ clearTimeout(safety); done(); }
+    }
+    clip(l,k).then(function(url){
+      if(id!==sp.id) return;
+      var a=new Audio(url); sp.audio=a; a.onended=done; a.onerror=device;
+      return a.play();
+    }).catch(function(err){ if(id!==sp.id) return; if(err&&err.name==='NotAllowedError') return done(); device(); });
+  }
+
+  // ── fitting 24 cards on one screen ──
+  function layout(){
+    var b=$('board'); if(!b) return;
+    var vw=document.documentElement.clientWidth, vh=window.innerHeight;
+    var cols=vw>=700?(vh<560?8:6):4, rows=Math.ceil(cards.length/cols)||6, gap=vw>=700?10:6;
+    var availW=Math.min(b.parentNode.clientWidth-24,900);
+    var top=b.getBoundingClientRect().top+window.scrollY, bottom=Math.max(10,parseFloat(getComputedStyle(b.parentNode).paddingBottom)||10);
+    var availH=vh-top-bottom;
+    var cw=(availW-gap*(cols-1))/cols, ch=(availH-gap*(rows-1))/rows;
+    ch=Math.min(ch,cw*1.4);
+    if(ch<cw*.8) cw=ch/.8;                 // a short, wide screen: narrower cards, still on one screen
+    ch=Math.max(ch,58); cw=Math.max(cw,52);
+    b.style.setProperty('--gap',gap+'px');
+    b.style.gridTemplateColumns='repeat('+cols+','+Math.floor(cw)+'px)';
+    b.style.setProperty('--cw',Math.floor(cw)+'px'); b.style.setProperty('--ch',Math.floor(ch)+'px');
+    fitAll();
+  }
+  // each word as large as its card allows, on one line where it can, breaking only between words
+  function fit(c){
+    var box=c.el.querySelector('.w'), w=box.firstChild, ch=c.el.clientHeight, cw=c.el.clientWidth; if(!ch) return;
+    var size=Math.min(ch*.3,cw*.3,46);
+    if(c.l==='zh'||c.l==='ko') size=Math.min(ch*.32,cw*.34,48);
+    w.style.fontSize=size+'px';
+    var n=0;
+    while(n++<40&&size>8&&(w.scrollWidth>box.clientWidth+.5||w.offsetHeight>box.clientHeight+.5)){ size*=.93; w.style.fontSize=size+'px'; }
+  }
+  function fitAll(){ cards.forEach(fit); }
+  var rz; window.addEventListener('resize',function(){ clearTimeout(rz); rz=setTimeout(function(){ fillPickers(); layout(); },80); });
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ layout(); });
+
+  // ── start ──
+  applyUI();
+  $('stat').textContent=t('loading');
+  fetch('/match/words.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(d){ W=d; deal(); })
+    .catch(function(){ $('stat').textContent=t('oops'); });
+})();
+</script>
+</body>
+</html>

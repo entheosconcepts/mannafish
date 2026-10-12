@@ -255,3 +255,15 @@ Also check the small alternate-language fish and its "English ⇄" label the sam
 - 12 Oct: devotional length choice on its first screen -- 3 min Quick (word, Greek/Hebrew, one reference in context,
   the challenge), 6 min Standard (five references), 10 min Deep dive (all twelve). Remembered (`mf-devlen`); Quick and
   Standard end with "Go deeper into <word>". Measured speech at 1.25x: ~1.7 / ~4.8 / ~10 min plus pauses.
+
+## 12 Oct (evening)
+- [x] Vision page: Listen / Pause at the top, no longer starts by itself; centered; MannaFish and 2 Fish in the Hobo lettering. Read-aloud fetches ahead so there are no waits between sentences.
+- [x] On the page: "Why is MannaFish free?", "Will you pay the price?" (YADAH no longer named as the hub; it is the featured ministry under the sponsor choices), the 4 x 2 card shown front and back, Listen chips on the vision and the heart of it.
+- [x] My notes: search, sort, all my notes, edited dates (the note keeps its place), Pause/Stop while reading, Public with a share link (/s/?id=...).
+- [ ] Set MF_IMPORTERS in Netlify to the email address(es) allowed to import notes (comma separated). Nobody sees Import until it is set.
+- [x] Prayers: Public / private checkbox with a share link.
+- [x] Translator: history in the account when signed in (play again, show, delete one, delete all).
+- [x] Memory match (/match/): 12 pairs, any two languages or Mix, tap a card to hear it. In ••• menu.
+- [x] Stock the pond: a form asking how many gifts someone would like to stock (Netlify form "stock-the-pond"). No money is taken on the site.
+- [ ] Giving: decide how gifts are received (Stripe or PayPal link), and whether to form a 501(c)(3) or use a fiscal sponsor so gifts can be tax-deductible. Until then the page says gifts are not tax-deductible.
+- [ ] Invitations with every gift: think through how a Gift Giver adds their own invitation (name, QR link) to the back of the card.

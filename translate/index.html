@@ -82,6 +82,10 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
 .show .row{position:absolute;bottom:max(20px,env(safe-area-inset-bottom));display:flex;gap:10px}
 .show .row button{border:1px solid var(--line);background:transparent;border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer}
 [dir=rtl]{text-align:right}
+.hnote{color:var(--dim);font-size:.85rem;margin:4px 0 10px}
+.hrow{display:flex;gap:6px;align-items:stretch;margin-bottom:6px}.hrow .hph{flex:1;margin:0;display:block;text-align:start;border:1px solid var(--line);background:transparent;border-radius:12px;padding:10px 12px;cursor:pointer}.hrow .hph small{display:block;color:var(--dim)}
+.hacts{display:flex;flex-direction:column;gap:4px}.hacts button,.hall{border:1px solid var(--line);background:transparent;border-radius:999px;padding:6px 10px;font-size:.78rem;font-weight:600;cursor:pointer}
+.hall{display:block;margin:12px auto 0}
 </style>
 </head>
 <body>
@@ -99,7 +103,7 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
 <main id="convo" aria-live="polite"><div class="empty" id="empty"><b id="emptyH">Tap Start, then just talk.</b><span id="emptyT"></span></div></main>
 <div class="cv" id="cv" hidden aria-live="assertive"><b id="cvA"></b><span id="cvB"></span></div>
 <div class="status" id="status"></div>
-<div class="tools"><button type="button" id="phBtn"></button><button type="button" id="rateBtn" aria-label="Speed">1x</button><button type="button" id="kbBtn"></button><button type="button" id="clrBtn"></button></div>
+<div class="tools"><button type="button" id="phBtn"></button><button type="button" id="rateBtn" aria-label="Speed">1x</button><button type="button" id="kbBtn"></button><button type="button" id="histBtn"></button><button type="button" id="clrBtn"></button></div>
 <div class="typebox" id="typebox" hidden><input id="typeIn" autocomplete="off"><button type="button" id="typeGo">&#10148;</button></div>
 <div class="controls">
   <button type="button" class="side" id="micA"></button>
@@ -124,12 +128,12 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
       eh:'Tap Start, then just talk.',et:'Take turns speaking in either language. It hears which one, says it out loud in the other, then listens again. No buttons to push. If it gets a language wrong, tap that language at the side before you speak.',
       ph:'💬 Phrases',kb:'⌨ Type',clr:'Clear',listen:'Listening… tap when you are done',hearing:'Hearing…',trans:'Translating…',again:'🔊 Again',show:'Show them',
       none:'Didn’t catch that. Tap and try again.',mic:'Please allow the microphone. On iPhone: Settings › Safari › Microphone › Allow.',fail:'Could not translate right now. Please try again.',busy:'Many requests just now; wait a minute.',
-      key:'Live translation is not turned on yet.',ready:'Ready-made phrases',verses:'Verses',typ:'Type in either language…',flip:'Turn',close:'Close',voice:'Voice'},
+      key:'Live translation is not turned on yet.',ready:'Ready-made phrases',verses:'Verses',typ:'Type in either language…',flip:'Turn',close:'Close',voice:'Voice',hist:'🕘 History',histT:'Translation history',histNone:'Nothing yet.',histSign:'Sign in on the MannaFish home page (••• › Sign in) to keep your translation history in your account.',delAll:'Delete all history',delQ:'Delete all translation history?',inAcct:'Saved in your account'},
     es:{back:'Devocional',sub:'Un traductor para compartir a Jesús con cualquiera en su propio idioma',brand:'Traductor',talk:'Toca para hablar',stop:'Toca para parar',
       eh:'Toca Empezar y habla.',et:'Hablen por turnos en cualquiera de los dos idiomas. Reconoce cuál es, lo dice en voz alta en el otro y vuelve a escuchar. Sin tocar botones. Si se equivoca de idioma, toca ese idioma al lado antes de hablar.',
       ph:'💬 Frases',kb:'⌨ Escribir',clr:'Borrar',listen:'Escuchando… toca al terminar',hearing:'Oyendo…',trans:'Traduciendo…',again:'🔊 Otra vez',show:'Mostrarle',
       none:'No se oyó bien. Toca y vuelve a intentarlo.',mic:'Permite el micrófono. En iPhone: Ajustes › Safari › Micrófono › Permitir.',fail:'No se pudo traducir ahora. Inténtalo otra vez.',busy:'Muchas solicitudes; espera un minuto.',
-      key:'La traducción en vivo aún no está activada.',ready:'Frases listas',verses:'Versículos',typ:'Escribe en cualquiera de los dos idiomas…',flip:'Girar',close:'Cerrar',voice:'Voz'}};
+      key:'La traducción en vivo aún no está activada.',ready:'Frases listas',verses:'Versículos',typ:'Escribe en cualquiera de los dos idiomas…',flip:'Girar',close:'Cerrar',voice:'Voz',hist:'🕘 Historial',histT:'Historial de traducciones',histNone:'Nada todavía.',histSign:'Inicia sesión en la página principal de MannaFish (••• › Iniciar sesión) para guardar tu historial en tu cuenta.',delAll:'Borrar todo el historial',delQ:'¿Borrar todo el historial de traducciones?',inAcct:'Guardado en tu cuenta'}};
   function get(k,d){ try{ return localStorage.getItem(k)||d; }catch(e){ return d; } }
   function put(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
   var site=get('mf-lang','en'); if(!L[site]) site='en';
@@ -138,7 +142,7 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
   function fill(sel,v){ sel.innerHTML=Object.keys(L).map(function(c){ return '<option value="'+c+'"'+(c===v?' selected':'')+'>'+esc(full(c))+'</option>'; }).join(''); }
   function labels(){ T=UI[pair[0]]||UI.en; document.documentElement.lang=pair[0];
     $('backLab').textContent=T.back; $('brandSub').textContent=T.brand; $('sub').textContent=T.sub; if($('emptyH')){ $('emptyH').textContent=T.eh; $('emptyT').textContent=T.et; }
-    $('phBtn').textContent=T.ph; $('kbBtn').textContent=T.kb; $('clrBtn').textContent=T.clr; $('typeIn').placeholder=T.typ; $('voice').setAttribute('aria-label',T.voice);
+    $('phBtn').textContent=T.ph; $('histBtn').textContent=T.hist; $('kbBtn').textContent=T.kb; $('clrBtn').textContent=T.clr; $('typeIn').placeholder=T.typ; $('voice').setAttribute('aria-label',T.voice);
     [['micA',pair[0]],['micB',pair[1]]].forEach(function(x){ var n=nm(x[1]); $(x[0]).innerHTML='<b>🎤 '+esc(L[x[1]])+'</b>'+(n?'<small>'+esc(n)+'</small>':''); }); if(typeof CV!=='undefined'){ uiRec(); if(CV.on&&!$('cv').hidden&&CV.state==='listen') banner('now','🎤 '); } else $('micLab').textContent=T.talk; }
   fill($('la'),pair[0]); fill($('lb'),pair[1]);
   $('voice').innerHTML=VOICES.map(function(v){ return '<option value="'+v[0]+'">'+v[1]+'</option>'; }).join(''); $('voice').value=get('mf-voice','sage');
@@ -177,7 +181,7 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
     d.querySelector('.said').innerHTML='<i>'+esc(L[saidLang]||'')+'</i>'+esc(said); d.querySelector('.said').setAttribute('lang',saidLang);
     var t=d.querySelector('.tr'); t.textContent=tr; t.setAttribute('lang',trLang); t.dir=/^(he|ar)$/.test(trLang)?'rtl':'auto';
     var a=d.querySelector('.acts'); a.hidden=false; a.innerHTML='<button type="button" data-a="say">'+T.again+'</button><button type="button" data-a="show">'+T.show+'</button>';
-    d._tr=tr; d._lang=trLang; d.scrollIntoView({block:'end',behavior:'smooth'}); sayOut(tr,trLang,a.querySelector('[data-a=say]')); }
+    d._tr=tr; d._lang=trLang; d.scrollIntoView({block:'end',behavior:'smooth'}); sayOut(tr,trLang,a.querySelector('[data-a=say]')); histAdd(said,saidLang,tr,trLang); }
   function failTurn(d,msg){ d.classList.remove('wait'); d.classList.add('err'); d.querySelector('.tr').textContent=msg; }
   $('convo').addEventListener('click',function(e){ var b=e.target.closest('button[data-a]'), d=e.target.closest('.turn'); if(!b||!d) return; unlock();
     if(b.dataset.a==='say') sayOut(d._tr,d._lang,b); else showThem(d._tr,d._lang); });
@@ -281,6 +285,31 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
   $('typeGo').addEventListener('click',typed); $('typeIn').addEventListener('keydown',function(e){ if(e.key==='Enter') typed(); });
   $('clrBtn').addEventListener('click',function(){ $('convo').innerHTML='<div class="empty" id="empty"><b id="emptyH"></b><span id="emptyT"></span></div>'; labels(); });
 
+  // ── Ken, 12 Oct: "if we're signed in, we need to be able to save history, click on one and play it again in their language,
+  // or delete history." Kept in the MannaFish account (the same sign-in as the home page), newest first.
+  var SBURL='https://oblttpxqjvaglwfdszdg.supabase.co', SBKEY='sb_publishable_Nl4EDkBHlrnEqFVcL_oGvQ_J-X-t3Wc', sbc=null, sbReady=null, HIST=null;
+  function signedIn(){ try{ for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i); if(/^sb-.*-auth-token$/.test(k)) return true; } }catch(e){} return false; }
+  function sbGet(){ if(sbReady) return sbReady; if(!signedIn()) return Promise.resolve(null);
+    sbReady=new Promise(function(ok,no){ if(window.supabase&&window.supabase.createClient) return ok(); var sc=document.createElement('script'); sc.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2'; sc.onload=ok; sc.onerror=no; document.head.appendChild(sc); })
+      .then(function(){ sbc=window.supabase.createClient(SBURL,SBKEY,{auth:{persistSession:true}}); return sbc.auth.getSession(); })
+      .then(function(r){ return r&&r.data&&r.data.session?sbc:null; }).catch(function(){ return null; });
+    return sbReady; }
+  function histAdd(said,sl,tr,tl){ sbGet().then(function(c){ if(!c) return; var row={s:said,sl:sl,t:tr,tl:tl};
+    c.from('notes').insert({site:'mannafish',word_key:'TR',body:JSON.stringify(row)}).select('id,created_at').then(function(r){ var x=r.data&&r.data[0]; if(x&&HIST) HIST.unshift({id:x.id,at:Date.parse(x.created_at),s:said,sl:sl,t:tr,tl:tl}); }); }); }
+  function histLoad(){ return sbGet().then(function(c){ if(!c) return null; return c.from('notes').select('id,body,created_at').eq('site','mannafish').eq('word_key','TR').order('created_at',{ascending:false}).limit(300)
+      .then(function(r){ HIST=(r.data||[]).map(function(x){ var j={}; try{ j=JSON.parse(x.body||'{}'); }catch(e){} return {id:x.id,at:Date.parse(x.created_at),s:j.s,sl:j.sl,t:j.t,tl:j.tl}; }).filter(function(x){ return x.t; }); return HIST; }); }); }
+  function histShow(){ var b=$('sheetBody'); b.innerHTML='<h3>'+esc(T.histT)+'</h3><p class="hnote">…</p>'; $('sheet').hidden=false;
+    histLoad().then(function(h){ if(!h){ b.innerHTML='<h3>'+esc(T.histT)+'</h3><p class="hnote">'+esc(T.histSign)+'</p>'; return; }
+      var when=function(t){ try{ return new Date(t).toLocaleString(pair[0],{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}); }catch(e){ return ''; } };
+      b.innerHTML='<h3>'+esc(T.histT)+'</h3><p class="hnote">🔒 '+esc(T.inAcct)+'</p>'+(h.length?h.map(function(x){ return '<div class="hrow" data-id="'+esc(x.id)+'"><button type="button" class="hph" data-h="say"><span lang="'+esc(x.tl)+'" dir="auto">'+esc(x.t)+'</span><small>'+esc(L[x.sl]||'')+' · '+esc(x.s||'')+'</small><small>'+esc(when(x.at))+' · 🔊 '+esc(L[x.tl]||'')+'</small></button>'
+        +'<div class="hacts"><button type="button" data-h="show">'+esc(T.show)+'</button><button type="button" data-h="del" aria-label="Delete">🗑</button></div></div>'; }).join('')+'<button type="button" class="hall" data-h="all">'+esc(T.delAll)+'</button>':'<p class="hnote">'+esc(T.histNone)+'</p>'); }); }
+  $('histBtn').addEventListener('click',function(){ unlock(); histShow(); });
+  $('sheetBody').addEventListener('click',function(e){ var b=e.target.closest('[data-h]'); if(!b) return; var row=b.closest('.hrow'), x=row&&HIST&&HIST.filter(function(y){ return String(y.id)===row.dataset.id; })[0];
+    if(b.dataset.h==='all'){ if(!confirm(T.delQ)) return; sbGet().then(function(c){ if(c) c.from('notes').delete().eq('site','mannafish').eq('word_key','TR').then(histShow); }); return; }
+    if(!x) return; unlock();
+    if(b.dataset.h==='say') say(x.t,x.tl,null);
+    else if(b.dataset.h==='show') showThem(x.t,x.tl);
+    else if(b.dataset.h==='del') sbGet().then(function(c){ if(c) c.from('notes').delete().eq('id',x.id).then(function(){ HIST=HIST.filter(function(y){ return y!==x; }); row.remove(); }); }); });
   // ── ready-made phrases and verses (already translated, so they work even offline from the translation service)
   var TONGUE=null;
   function phrases(){ var b=$('sheetBody'), a=pair[0], z=pair[1];
