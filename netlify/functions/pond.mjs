@@ -71,7 +71,7 @@ export default async (req, context) => {
     }
     if (['ship', 'unship', 'forget'].includes(b.action)) {
       const key = 'c/' + clean(b.claim, 80), c = await s.get(key, { type: 'json' }); if (!c) return bad('Not found', 404);
-      if (b.action === 'forget') { await s.delete(key); await s.delete('a/' + c.addr); return Response.json({ ok: true }); }
+      if (b.action === 'forget') { await s.delete(key); await s.delete(c.akey || 'a/' + c.addr); return Response.json({ ok: true }); }
       c.shipped = b.action === 'ship' ? new Date().toISOString() : null; await s.setJSON(key, c); return Response.json({ ok: true, claim: c });
     }
     return bad('Unknown action', 400);
@@ -84,26 +84,29 @@ export default async (req, context) => {
     const to = b.to || {}, t = { name: clean(to.name, 80), street: clean(to.street, 160), city: clean(to.city, 80), region: clean(to.region, 60),
       country: clean(to.country, 60) || 'USA', email: /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(to.email || '').trim()) ? clean(to.email, 160) : '' };
     if (!t.name || !t.street || !t.city || !t.region) return bad('Name and full address, please', 400);
-    const p = await active(); if (!p || p.id !== clean(b.pond, 40)) return bad('empty', 410, { left: 0 });
+    // a gift unlocked on the MannaFish journey (Ken, 12 Oct): 7 days -> decals, 30 days -> a T-shirt; one of each per home.
+    // It comes from the pond when one is stocked; otherwise it waits for the next restocking.
+    const tier = ['t7', 't30'].includes(b.tier) ? b.tier : '';
+    const p = await active(); if (!tier && (!p || p.id !== clean(b.pond, 40))) return bad('empty', 410, { left: 0 });
     if (await limited(context && context.ip)) return bad('busy', 429);
-    const addr = await hash(addrKey(t.street, t.region));
-    if (await s.get('a/' + addr)) return bad('already', 409);
-    const fresh = await s.get('p/' + p.id, { type: 'json' });
-    if (!fresh || !fresh.active || fresh.stocked - fresh.given < PER) return bad('empty', 410, { left: 0 });
-    fresh.given += PER; await s.setJSON('p/' + p.id, fresh);
-    const c = { id: rid(), pond: p.id, sponsor: p.sponsor, at: new Date().toISOString(), to: t, from: clean(b.from, 80), self: !!b.self,
-      word: clean(b.word, 40), lang: clean(b.lang, 8), addr, shipped: null };
-    await s.setJSON('a/' + addr, { claim: c.id, at: c.at }); await s.setJSON('c/' + c.id, c);
+    const addr = await hash(addrKey(t.street, t.region)), akey = 'a/' + addr + (tier ? '/' + tier : '');
+    if (await s.get(akey)) return bad('already', 409);
+    const fresh = p ? await s.get('p/' + p.id, { type: 'json' }) : null, stocked = !!(fresh && fresh.active && fresh.stocked - fresh.given >= PER);
+    if (!tier && !stocked) return bad('empty', 410, { left: 0 });
+    if (stocked) { fresh.given += PER; await s.setJSON('p/' + p.id, fresh); }
+    const c = { id: rid(), pond: stocked ? p.id : '', sponsor: stocked ? p.sponsor : '', at: new Date().toISOString(), to: t, from: clean(b.from, 80), self: !!b.self,
+      word: clean(b.word, 40), lang: clean(b.lang, 8), addr, akey, tier, waiting: !stocked, shipped: null };
+    await s.setJSON(akey, { claim: c.id, at: c.at }); await s.setJSON('c/' + c.id, c);
     if (hasMail()) {
       try {
-        const site = process.env.URL || 'https://manna-fish.com', who = c.self ? 'for themselves' : `from ${c.from || 'someone'}`;
-        await sendMail({ to: TO(), name: 'MannaFish', tag: 'pond', subject: `Free gift to send: ${t.name} (${p.sponsor})`,
-          text: `A free MannaFish gift (two: one to keep, one to give) ${who}.\n\n${t.name}\n${t.street}\n${t.city}, ${t.region}\n${t.country}\n${t.email}\n\nWord: ${c.word}\nExcursion: ${p.name}, sponsored by ${p.sponsor}. ${fresh.stocked - fresh.given} fish left.\n\nMark it sent: ${site}/pond/admin/`,
+        const site = process.env.URL || 'https://manna-fish.com', who = (c.self ? 'for themselves' : `from ${c.from || 'someone'}`) + (tier ? ` (journey gift: ${tier === 't7' ? '7 days, decals' : '30 days, T-shirt'})` : '') + (c.waiting ? ' -- waiting for the pond to be restocked' : '');
+        await sendMail({ to: TO(), name: 'MannaFish', tag: 'pond', subject: `Free gift to send: ${t.name}${tier ? ' · ' + (tier === 't7' ? '7-day decals' : '30-day T-shirt') : ''}${stocked ? ' (' + p.sponsor + ')' : ''}`,
+          text: `A free MannaFish gift (two: one to keep, one to give) ${who}.\n\n${t.name}\n${t.street}\n${t.city}, ${t.region}\n${t.country}\n${t.email}\n\nWord: ${c.word}\n${stocked ? `Excursion: ${p.name}, sponsored by ${p.sponsor}. ${fresh.stocked - fresh.given} fish left.` : 'No pond stocked right now.'}\n\nMark it sent: ${site}/pond/admin/`,
           html: `<p style="font:16px Arial,sans-serif">A free MannaFish gift (two: one to keep, one to give) ${esc(who)}.</p><p style="font:16px/1.5 Arial,sans-serif">${esc(t.name)}<br>${esc(t.street)}<br>${esc(t.city)}, ${esc(t.region)}<br>${esc(t.country)}${t.email ? '<br>' + esc(t.email) : ''}</p>`
-            + `<p style="font:14px Arial,sans-serif;color:#555">Word: ${esc(c.word)} · ${esc(p.name)}, sponsored by ${esc(p.sponsor)} · ${fresh.stocked - fresh.given} fish left</p><p style="font:16px Arial,sans-serif"><a href="${site}/pond/admin/">Mark it sent</a></p>` });
+            + `<p style="font:14px Arial,sans-serif;color:#555">Word: ${esc(c.word)} · ${stocked ? esc(p.name) + ', sponsored by ' + esc(p.sponsor) + ' · ' + (fresh.stocked - fresh.given) + ' fish left' : 'no pond stocked right now'}</p><p style="font:16px Arial,sans-serif"><a href="${site}/pond/admin/">Mark it sent</a></p>` });
       } catch (e) { console.log('pond email failed', String(e).slice(0, 200)); }
     }
-    return Response.json({ ok: true, left: Math.max(0, fresh.stocked - fresh.given) });
+    return Response.json({ ok: true, waiting: !stocked, left: stocked ? Math.max(0, fresh.stocked - fresh.given) : 0 });
   }
   return bad('Not found', 404);
 };

@@ -1174,6 +1174,20 @@ section.section.bundles{display:block;margin-top:0}
 .vs{position:fixed;inset:0;z-index:70;color:#fff;display:flex;flex-direction:column;font-family:'Archivo',sans-serif;
   background:radial-gradient(130% 60% at 50% 78%,rgba(42,95,176,.5),rgba(42,95,176,0) 62%),linear-gradient(#10161f,#06080b 72%)}
 .vs[hidden]{display:none}
+/* the MannaFish journey */
+.ptjour{border:1px solid rgba(245,215,110,.5);border-radius:18px;padding:12px 16px;margin:6px auto 12px;max-width:520px;text-align:center}
+.ptjour p{margin:4px 0}.ptjour .pj1{font:800 1.05rem 'Archivo',sans-serif}.ptjour .pj3{opacity:.7;font-size:.85rem}
+.pjfish{display:flex;justify-content:center;gap:4px;font-size:1.35rem;margin:6px 0}.pjfish i{font-style:normal;opacity:.25;filter:grayscale(1)}.pjfish i.on{opacity:1;filter:none}
+.pjbar,.jbar{height:10px;border-radius:99px;background:rgba(255,255,255,.15);overflow:hidden;margin:8px auto 2px;max-width:360px}.pjbar i,.jbar i{display:block;height:100%;background:#f5d76e}
+.pjn{font:700 .85rem 'Archivo',sans-serif;opacity:.85}
+.jbox{border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:6px auto 10px;max-width:620px;text-align:center}
+.jbox .jt{font:800 1rem 'Archivo',sans-serif}.jbox .js{margin:4px 0 10px;color:var(--foam-dim);font-size:.92rem}
+.jrow{display:grid;grid-template-columns:1fr 120px auto;gap:10px;align-items:center;text-align:left;margin:6px 0;font-size:.92rem}
+.jrow .jbar{margin:0;max-width:none}.jrow .jn{font-weight:700;white-space:nowrap}
+@media(max-width:560px){.jrow{grid-template-columns:1fr auto}.jrow .jbar{grid-column:1/-1;grid-row:2}}
+.jlocked{text-align:center;margin:8px auto 4px;max-width:620px}.jlocked[hidden]{display:none}.jlocked p{font:600 1.05rem 'Archivo',sans-serif}
+.jlocked .cta-row{justify-content:center;gap:10px;flex-wrap:wrap}
+#giftForm[hidden]{display:none}.jrew select{font-weight:700}.jrew select[hidden]{display:none}
 .devogo{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;max-width:720px;margin:18px auto 0}
 .devogok{font:800 .7rem 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--foam-dim,#9fb2b6)}
 .devogor{display:flex;gap:12px;width:100%;justify-content:center}
@@ -1629,11 +1643,14 @@ select option{background:#0b1620;color:#eaf0f0}
     </ol>
     <p class="gsub mfgg"><b>Want to become a Gift Giver?</b> <span>Someone must sponsor you.</span> <a href="#beneficiaries">Sponsor a Gift Giver near you ›</a></p>
     <h3 class="mfreq">Request yours</h3>
+    <div class="jbox" id="jBox" translate="no"></div>
     <p class="pondline" id="pondLine" hidden></p>
+    <div class="jlocked" id="jLocked" hidden translate="no"><p id="jLockedT"></p><div class="cta-row"><button type="button" class="btn btn-primary" id="jListen"></button><button type="button" class="btn btn-devo" id="jRead"></button></div></div>
     <p class="gsub">Free decals now. Shirts, hats, mugs and more as Gift Givers are sponsored near you. Keep one. Give one.</p>
     <form class="netform mf-form" name="free-gift" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="giftForm">
       <input type="hidden" name="form-name" value="free-gift"><input type="hidden" name="language" class="langfield" value="en"><input type="hidden" name="time-zone" class="tzfield">
       <p style="display:none"><label>Leave this empty <input name="bot-field"></label></p>
+      <label class="wide jrew"><select name="reward" id="jReward"></select></label>
       <label>Your name<input name="name" required autocomplete="name"></label>
       <label>Email<input name="email" type="email" required autocomplete="email"></label>
       <label class="wide">Street address<input name="street" required autocomplete="street-address"></label>
@@ -2738,7 +2755,7 @@ window.MF=(function(){
   function refLab(l,k,i){ var r=DATA[k].refs[i][0], w=studyOf(l,k); return l==='en'?r:l==='es'?esRef(r):(w&&w.refs[i]?w.refs[i][0]:r); }
   function refSnip(l,k,i){ var w=studyOf(l,k); return l==='en'||l==='es'?DATA[k].refs[i][1]:(w&&w.refs[i]?String(w.refs[i][1]||'').replace(/…$/,''):DATA[k].refs[i][1]); }
   function lang2(){ return PT.l2||(PT.l==='es'?'en':'es'); }
-  function ptRender(){ caStop(); var T=ptT(), D=DEVO[PT.l]||DEVO.en, l=PT.l, k=cur, sy=(SAY[l]&&SAY[l][k])||SAY.en[k], s=PT.steps[PT.i], h='', t=[], w=titleIn(l,k), ready=null;
+  function ptRender(){ caStop(); PT.seen=PT.seen||{}; PT.seen[PT.i]=1; var T=ptT(), D=DEVO[PT.l]||DEVO.en, l=PT.l, k=cur, sy=(SAY[l]&&SAY[l][k])||SAY.en[k], s=PT.steps[PT.i], h='', t=[], w=titleIn(l,k), ready=null;
     var P=D.p.map(function(x){ return x.replace(/^\*/,'').replace('{w}',w).replace('{r}',sy[2]).replace('{v}',sy[1]); });
     var kick=function(a,b){ return '<div class="ptk"><span>'+esc(a)+'</span>'+(b?'<span class="ptof">'+b+'</span>':'')+'</div>'; };
     var prm=function(key){ return '<p class="ptprompt">👉 '+esc(T[key])+'</p>'; };
@@ -2791,7 +2808,8 @@ window.MF=(function(){
         +'<label class="ptwho">'+esc(T.who)+'<input id="ptWho" type="text" maxlength="60" autocomplete="off"></label>'
         +'<label class="ptwho">'+esc(DP[2])+'<input id="ptTo" type="text" maxlength="80" autocomplete="off" inputmode="email"></label>'
         +'<div class="ptrow"><button type="button" class="ptbtn" data-a="prayfor">🙏 '+esc(T.prayfor)+'</button><button type="button" class="ptbtn ptmain" data-a="share">↗ '+esc(DP[3])+'</button></div>'+pondGiftHTML()+prm('p_do'); }
-    else if(s.k==='amen'){ t=[P[5]]; h=kick(T.k_amen)+'<h2 class="pth ptpr">'+sp1(1,P[5])+'</h2><div class="ptrow"><button type="button" class="ptbtn ptmain" data-a="amen">'+esc(T.amen_btn)+'</button>'
+    else if(s.k==='amen'){ t=[P[5]]; if(Object.keys(PT.seen).length>=Math.ceil(PT.steps.length*0.7)) jMark();
+      h=kick(T.k_amen)+'<h2 class="pth ptpr">'+sp1(1,P[5])+'</h2>'+jHTML(l)+'<div class="ptrow"><button type="button" class="ptbtn ptmain" data-a="amen">'+esc(T.amen_btn)+'</button>'
         +((PT.len||dLen())!=='full'?'<button type="button" class="ptbtn" data-a="deeper">'+esc((DLEN[l]||DLEN.en).deeper.replace('{w}',w))+' ›</button>':'')+'</div>'
         +'<div class="ptrow"><button type="button" class="ptlink" data-fs="1">🐟 '+esc((FSL[l]||FSL.en)[0])+'</button></div>'+prm('p_amen'); }
     var st=$('ptStage'); st.style.animation='none'; void st.offsetWidth; st.style.animation=''; st.innerHTML=h; st.scrollTop=0; PT.t=t; PT.ready=ready||Promise.resolve();
@@ -2821,7 +2839,7 @@ window.MF=(function(){
   function ptGo(i){ PT.i=Math.max(0,Math.min(PT.steps.length-1,i)); $('ptMenu').hidden=true; ptRender(); ptSay(); }
   function ptOpen(){ if(window.MFplClose&&!$('mfPlayer').hidden) MFplClose(); stopSpeak(); PT.l=DEVO[MF.lang]?MF.lang:'en'; PT.on=true; PT.listen=false;
     var pt=$('pt'); pt.dir=PT.l==='he'?'rtl':'ltr'; pt.setAttribute('lang',PT.l); PR=prLocal().filter(function(x){ return prCloud()||!x.c; });
-    PT.l2=null; CA.done=false; PT.len=dLen(); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; document.documentElement.style.overflow='hidden'; ptRender();
+    PT.l2=null; CA.done=false; PT.seen={}; PT.len=dLen(); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; document.documentElement.style.overflow='hidden'; ptRender();
     prLoad().then(function(){ if(!PT.on) return; var at=PT.steps[PT.i]&&PT.steps[PT.i].k; PT.steps=ptSteps(); if(at==='welcome'||at==='pray'||at==='hear') ptRender(); }); }
   function ptClose(){ caStop(); PT.on=false; PT.listen=false; stopSpeak(); $('pt').hidden=true; $('ptSheet').hidden=true; $('ptMenu').hidden=true; document.documentElement.style.overflow=''; }
   function ptRebuild(keep){ PT.steps=ptSteps(); var j=PT.steps.findIndex(function(s){ return s.k===keep; }); if(j>=0&&keep!=='prayer') PT.i=j; PT.i=Math.min(PT.i,PT.steps.length-1); ptRender(); }
@@ -2942,7 +2960,7 @@ window.MF=(function(){
   MF.onChange(vsUI); vsUI();
   // ── Listen / Read under the fish (Ken, 12 Oct): opens today's devotional, read aloud or at your own pace
   var DG={"en": ["Today’s devotional", "🎧 Listen", " to the devotional", "📖 Read", " the devotional"], "es": ["El devocional de hoy", "🎧 Escuchar", " el devocional", "📖 Leer", " el devocional"], "tl": ["Ang debosyon ngayon", "🎧 Pakinggan", " ang debosyon", "📖 Basahin", " ang debosyon"], "zh": ["今日灵修", "🎧 收听", "今日灵修", "📖 阅读", "今日灵修"], "hi": ["आज की भक्ति", "🎧 सुनें", "", "📖 पढ़ें", ""], "el": ["Η σημερινή μελέτη", "🎧 Άκουσε", " τη μελέτη", "📖 Διάβασε", " τη μελέτη"], "de": ["Die Andacht für heute", "🎧 Anhören", "", "📖 Lesen", ""], "ko": ["오늘의 묵상", "🎧 듣기", "", "📖 읽기", ""], "he": ["ההגות של היום", "🎧 להאזין", " להגות", "📖 לקרוא", " את ההגות"]};
-  function dgUI(){ var d=DG[MF.lang]||DG.en; $('dgK').textContent=d[0]; $('dgListen').innerHTML=esc(d[1])+'<span class="dgs">'+esc(d[2])+'</span>'; $('dgRead').innerHTML=esc(d[3])+'<span class="dgs">'+esc(d[4])+'</span>'; }
+  function dgUI(){ var d=DG[MF.lang]||DG.en; $('dgK').textContent=d[0]; if($('jListen')){ $('jListen').textContent=d[1]+d[2]; $('jRead').textContent=d[3]+d[4]; } $('dgListen').innerHTML=esc(d[1])+'<span class="dgs">'+esc(d[2])+'</span>'; $('dgRead').innerHTML=esc(d[3])+'<span class="dgs">'+esc(d[4])+'</span>'; }
   MF.onChange(dgUI); dgUI();
   $('dgListen').addEventListener('click',function(){ ptOpen(); var b=$('ptStage').querySelector('[data-a="guide"]'); if(b) b.click(); });
   $('dgRead').addEventListener('click',function(){ ptOpen(); var b=$('ptStage').querySelector('[data-a="ownpace"]'); if(b) b.click(); });
@@ -2979,6 +2997,49 @@ window.MF=(function(){
       if(r.ok){ m.textContent=pw(12).replace('{n}',to.name.trim()); f.querySelectorAll('input:not([type=checkbox])').forEach(function(i){ if(i.name!=='from') i.value=''; }); f.ok.checked=false; var ls=$('ptStage').querySelector('.ptgift .pgs'); if(ls&&POND) ls.textContent=pw(1).replace('{n}',POND.left); }
       else m.textContent=r.err==='already'?pw(13):r.err==='empty'?pw(14):pw(15); }); });
   window.MFpondUI=pondUI; MF.onChange(pondUI); pondLoad();
+  // ── The MannaFish journey (Ken, 12 Oct): "before someone can receive a free T-shirt or decals, they need to have gone
+  // through the devotional ... 7 days, decals; a month, decals and a T-shirt." Days need not be in a row. Kept on this
+  // device and in the account (notes rows 'DEVO:yyyy-mm-dd'). Framed as a gift that celebrates time in the Word, not a prize.
+  var JT={"en": {"day": "Day {n} in the Word", "more": "{k} more days to unlock {r}.", "unl": "You’ve unlocked {r}!", "claim": "🎁 Claim your free gift", "why": "Not a prize to earn: a gift to celebrate your time in the Word.", "r7": "free MannaFish decals", "r30": "a free MannaFish T-shirt", "all": "You’ve unlocked every gift. Keep fishing!"}, "es": {"day": "Día {n} en la Palabra", "more": "Faltan {k} días para desbloquear {r}.", "unl": "¡Desbloqueaste {r}!", "claim": "🎁 Reclama tu regalo gratis", "why": "No es un premio que se gana: es un regalo para celebrar tu tiempo en la Palabra.", "r7": "calcomanías MannaFish gratis", "r30": "una camiseta MannaFish gratis", "all": "Desbloqueaste todos los regalos. ¡Sigue pescando!"}, "tl": {"day": "Ika-{n} araw sa Salita", "more": "{k} araw pa bago mabuksan ang {r}.", "unl": "Nabuksan mo ang {r}!", "claim": "🎁 Kunin ang iyong libreng regalo", "why": "Hindi ito gantimpalang pinaghihirapan: regalo ito para ipagdiwang ang iyong oras sa Salita.", "r7": "libreng MannaFish decals", "r30": "isang libreng MannaFish T-shirt", "all": "Nabuksan mo na ang lahat ng regalo. Ituloy ang pangingisda!"}, "zh": {"day": "在话语中的第 {n} 天", "more": "再 {k} 天即可解锁{r}。", "unl": "你已解锁{r}！", "claim": "🎁 领取你的免费礼物", "why": "这不是靠努力赢得的奖品，而是庆祝你亲近神话语的礼物。", "r7": "免费 MannaFish 贴纸", "r30": "一件免费 MannaFish T 恤", "all": "所有礼物都已解锁。继续钓鱼吧！"}, "hi": {"day": "वचन में दिन {n}", "more": "{r} पाने के लिए {k} दिन और।", "unl": "आपने {r} पा लिया!", "claim": "🎁 अपना मुफ़्त उपहार लें", "why": "यह कमाया हुआ इनाम नहीं है: यह वचन में बिताए आपके समय का उत्सव मनाने वाला उपहार है।", "r7": "मुफ़्त MannaFish डेकल", "r30": "एक मुफ़्त MannaFish टी-शर्ट", "all": "आपने सभी उपहार पा लिए हैं। मछली पकड़ते रहिए!"}, "el": {"day": "Μέρα {n} στον Λόγο", "more": "Ακόμα {k} μέρες για να ξεκλειδώσεις {r}.", "unl": "Ξεκλείδωσες {r}!", "claim": "🎁 Πάρε το δωρεάν δώρο σου", "why": "Δεν είναι βραβείο που κερδίζεις: είναι δώρο για να γιορτάσουμε τον χρόνο σου στον Λόγο.", "r7": "δωρεάν αυτοκόλλητα MannaFish", "r30": "ένα δωρεάν μπλουζάκι MannaFish", "all": "Ξεκλείδωσες όλα τα δώρα. Συνέχισε το ψάρεμα!"}, "de": {"day": "Tag {n} im Wort", "more": "Noch {k} Tage bis {r}.", "unl": "Du hast {r} freigeschaltet!", "claim": "🎁 Hol dir dein Geschenk", "why": "Kein Preis, den man verdient: ein Geschenk, um deine Zeit im Wort zu feiern.", "r7": "kostenlose MannaFish-Aufkleber", "r30": "ein kostenloses MannaFish-T-Shirt", "all": "Du hast alle Geschenke freigeschaltet. Fisch weiter!"}, "ko": {"day": "말씀 안에서 {n}일째", "more": "{r}까지 {k}일 남았어요.", "unl": "{r}을(를) 받을 수 있어요!", "claim": "🎁 무료 선물 받기", "why": "애써 얻는 상이 아니라, 말씀 안에서 보낸 시간을 축하하는 선물입니다.", "r7": "무료 MannaFish 스티커", "r30": "무료 MannaFish 티셔츠", "all": "모든 선물을 받았어요. 계속 낚시하세요!"}, "he": {"day": "יום {n} בדבר", "more": "עוד {k} ימים עד {r}.", "unl": "פתחת את {r}!", "claim": "🎁 קבלו את המתנה החינמית", "why": "זה לא פרס שמרוויחים: זו מתנה לחגוג את הזמן שלכם בדבר.", "r7": "מדבקות MannaFish חינם", "r30": "חולצת MannaFish חינם", "all": "פתחת את כל המתנות. המשיכו לדוג!"}};
+  var TIERS=[{id:'t7',days:7,r:'r7'},{id:'t30',days:30,r:'r30'}], JDK='mf-devodays', JCK='mf-devoclaimed';
+  function jDays(){ try{ var a=JSON.parse(localStorage.getItem(JDK)||'[]'); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+  function jSave(a){ try{ localStorage.setItem(JDK,JSON.stringify(a)); }catch(e){} }
+  function jClaimed(){ try{ return JSON.parse(localStorage.getItem(JCK)||'{}')||{}; }catch(e){ return {}; } }
+  function jSetClaimed(id){ var c=jClaimed(); c[id]=Date.now(); try{ localStorage.setItem(JCK,JSON.stringify(c)); }catch(e){} }
+  function jToday(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  function jCloud(){ return !!(window.MFcloudDevo&&MFcloudDevo.on()); }
+  function jMark(){ var a=jDays(), t=jToday(); if(a.indexOf(t)<0){ a.push(t); jSave(a); if(jCloud()) MFcloudDevo.add(t,cur).catch(function(){}); jUI(); } return a.length; }
+  function jSync(){ if(!jCloud()) return; MFcloudDevo.list().then(function(rows){ var a=jDays(), seen={};
+      a.forEach(function(x){ seen[x]=1; }); rows.forEach(function(r){ if(!seen[r]){ a.push(r); seen[r]=1; } });
+      a.forEach(function(x){ if(rows.indexOf(x)<0) MFcloudDevo.add(x,'').catch(function(){}); }); jSave(a); jUI(); }).catch(function(){}); }
+  function jUnlocked(){ var n=jDays().length, c=jClaimed(); return TIERS.filter(function(t){ return n>=t.days&&!c[t.id]; }); }
+  function jNext(){ var n=jDays().length; return TIERS.filter(function(t){ return n<t.days; })[0]||null; }
+  // at Amen: today's fish, and how far to the next gift
+  function jHTML(l){ var J=JT[l]||JT.en, n=jDays().length, nx=jNext(), un=jUnlocked(), tier=nx||TIERS[TIERS.length-1], bar='';
+    if(tier.days<=10){ for(var i=0;i<tier.days;i++) bar+='<i class="'+(i<n?'on':'')+'">🐟</i>'; bar='<div class="pjfish">'+bar+'</div>'; }
+    else bar='<div class="pjbar"><i style="width:'+Math.min(100,Math.round(n/tier.days*100))+'%"></i></div><div class="pjn">'+Math.min(n,tier.days)+' / '+tier.days+'</div>';
+    return '<div class="ptjour"><p class="pj1">🐟 '+esc(J.day.replace('{n}',n))+'</p>'+bar
+      +(un.length?'<p class="pj2">🎉 '+esc(J.unl.replace('{r}',J[un[0].r]))+'</p><div class="ptrow"><button type="button" class="ptbtn ptmain" data-j="claim">'+esc(J.claim)+'</button></div>'
+        :nx?'<p class="pj2">'+esc(J.more.replace('{k}',nx.days-n).replace('{r}',J[nx.r]))+'</p>':'<p class="pj2">'+esc(J.all)+'</p>')
+      +'<p class="pj3">'+esc(J.why)+'</p></div>'; }
+  $('ptStage').addEventListener('click',function(e){ if(!e.target.closest('[data-j="claim"]')) return; ptClose();
+    setTimeout(function(){ if($('giftBox').hidden) $('giftBtn').click(); $('giftBox').scrollIntoView({behavior:'smooth',block:'start'}); },80); });
+  // on the Free MannaFish panel: the journey, and the request form only once a gift is unlocked
+  var JW={en:{t:'Your MannaFish journey',s:'Spend time in the Word, and we’ll celebrate with a gift. The days don’t have to be in a row.',d:'{d} days',r7:'two MannaFish decals (keep one, give one)',r30:'a MannaFish T-shirt',got:'✓ received',ready:'🎉 ready for you',
+      lock:'Do the devotional {k} more days to unlock {r}.',all:'You’ve received every gift. Keep fishing!',your:'Your gift: {r}',already:'This home has already received this gift.',wait:'Thank you! We’ll send it as soon as the pond is restocked.'},
+    es:{t:'Tu viaje MannaFish',s:'Pasa tiempo en la Palabra y lo celebraremos con un regalo. Los días no tienen que ser seguidos.',d:'{d} días',r7:'dos calcomanías MannaFish (una para ti, otra para regalar)',r30:'una camiseta MannaFish',got:'✓ recibido',ready:'🎉 listo para ti',
+      lock:'Haz el devocional {k} días más para desbloquear {r}.',all:'Ya recibiste todos los regalos. ¡Sigue pescando!',your:'Tu regalo: {r}',already:'Este hogar ya recibió este regalo.',wait:'¡Gracias! Lo enviaremos en cuanto se vuelva a llenar el estanque.'}};
+  function jw(){ return JW[MF.lang]||JW.en; }
+  function jUI(){ var box=$('jBox'); if(!box) return; var W=jw(), n=jDays().length, c=jClaimed(), un=jUnlocked(), nx=jNext();
+    box.innerHTML='<b class="jt">'+esc(W.t)+'</b><p class="js">'+esc(W.s)+'</p>'+TIERS.map(function(t){ var pct=Math.min(100,Math.round(n/t.days*100));
+      return '<div class="jrow"><span class="jl">'+esc(W.d.replace('{d}',t.days))+': '+esc(W[t.r])+'</span><span class="jbar"><i style="width:'+pct+'%"></i></span><span class="jn">'+(c[t.id]?esc(W.got):n>=t.days?esc(W.ready):Math.min(n,t.days)+' / '+t.days)+'</span></div>'; }).join('');
+    var open=un.length>0; $('giftForm').hidden=!open; $('jLocked').hidden=open;
+    $('jLockedT').textContent=nx?W.lock.replace('{k}',nx.days-n).replace('{r}',W[nx.r]):W.all;
+    var sel=$('jReward'); sel.innerHTML=un.map(function(t){ return '<option value="'+t.id+'">'+esc(W.your.replace('{r}',W[t.r]))+'</option>'; }).join(''); sel.hidden=un.length<1; }
+  $('jListen').addEventListener('click',function(){ $('dgListen').click(); }); $('jRead').addEventListener('click',function(){ $('dgRead').click(); });
+  $('giftBtn').addEventListener('click',function(){ jSync(); jUI(); });
+  window.MFjw=jw; window.MFjClaimed=function(id){ jSetClaimed(id); setTimeout(jUI,1500); };
+  MF.onChange(jUI); jUI(); setTimeout(jSync,4000);
   // ── Manna… Fish Stories (Ken, 12 Oct): "a section where people can share their catch -- video, audio or written".
   // Stories go to MannaFish first (/api/stories); only approved ones are shown. The site's own words are in English and
   // Spanish; the devotional's link and the ••• menu are in all nine languages.
@@ -3620,6 +3681,9 @@ window.MF=(function(){
     add:function(k,text,spoken){ return sb.from('notes').insert({site:SITE,word_key:k,body:text,spoken:!!spoken}).select('id,created_at').then(function(r){ if(r.error) throw r.error; var x=(r.data||[])[0]||{}; return {id:x.id,at:Date.parse(x.created_at)}; }); },
     upd:function(id,text){ return sb.from('notes').update({body:text,updated_at:new Date().toISOString()}).eq('id',id).then(function(r){ if(r.error) throw r.error; }); },
     del:function(id){ return sb.from('notes').delete().eq('id',id); } };
+  window.MFcloudDevo={ on:function(){ return !!(me&&sb); },
+    list:function(){ return sb.from('notes').select('word_key').eq('site',SITE).like('word_key','DEVO:%').then(function(r){ if(r.error) throw r.error; return (r.data||[]).map(function(x){ return x.word_key.slice(5); }); }); },
+    add:function(d,k){ return sb.from('notes').insert({site:SITE,word_key:'DEVO:'+d,body:k||'-'}).then(function(r){ if(r.error) throw r.error; }); } };
   window.MFcloudPrayers={ on:function(){ return !!(me&&sb); },
     list:function(){ return sb.from('notes').select('id,body,word_key,created_at,updated_at').eq('site',SITE).like('word_key','PRAYER:%').order('created_at',{ascending:false}).then(function(r){
       if(r.error) throw r.error; return (r.data||[]).map(function(x){ var b=x.body||'', i=b.indexOf('\n'); return {id:x.id,title:i<0?b:b.slice(0,i),body:i<0?'':b.slice(i+1),status:x.word_key.slice(7),at:Date.parse(x.created_at),done:Date.parse(x.updated_at)}; }); }); },
@@ -3991,10 +4055,11 @@ window.MF=(function(){
       var body=new URLSearchParams(new FormData(f)).toString(), H={'Content-Type':'application/x-www-form-urlencoded'}, fd=Object.fromEntries(new FormData(f));
       // Ken, 12 Oct: when a sponsor has stocked the pond, a request for yourself is one gift from it (one per home)
       var P=window.MFpond&&MFpond(), es=MF.lang==='es';
-      if(f.id==='giftForm'&&P&&!f.__pond){ msg.textContent='…'; fetch('/api/pond/claim',{method:'POST',headers:{'content-type':'application/json'},
-          body:JSON.stringify({pond:P.id,self:true,to:{name:fd.name,street:fd.street,city:fd.city,region:fd['state-zip'],email:fd.email},word:(fd.word||''),lang:MF.lang})})
-        .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(r.status===409){ msg.textContent=es?'Este hogar ya recibió su regalo MannaFish.':'This home has already received its MannaFish gift.'; return; }
-          if(typeof j.left==='number'){ P.left=j.left; if(window.MFpondUI) MFpondUI(); } f.__pond=true; f.requestSubmit?f.requestSubmit():f.dispatchEvent(new Event('submit',{cancelable:true})); }); })
+      if(f.id==='giftForm'&&!f.__pond){ var tier=fd.reward||''; msg.textContent='…'; fetch('/api/pond/claim',{method:'POST',headers:{'content-type':'application/json'},
+          body:JSON.stringify({pond:P?P.id:'',tier:tier,self:true,to:{name:fd.name,street:fd.street,city:fd.city,region:fd['state-zip'],email:fd.email},word:(fd.word||''),lang:MF.lang})})
+        .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(r.status===409){ msg.textContent=window.MFjw?MFjw().already:(es?'Este hogar ya recibió su regalo MannaFish.':'This home has already received its MannaFish gift.'); if(tier&&window.MFjClaimed) MFjClaimed(tier); return; }
+          if(typeof j.left==='number'&&P){ P.left=j.left; if(window.MFpondUI) MFpondUI(); } if(tier&&r.ok&&window.MFjClaimed) MFjClaimed(tier,j.waiting); f.__wait=!!(r.ok&&j.waiting);
+          f.__pond=true; f.requestSubmit?f.requestSubmit():f.dispatchEvent(new Event('submit',{cancelable:true})); }); })
         .catch(function(){ f.__pond=true; f.requestSubmit?f.requestSubmit():f.dispatchEvent(new Event('submit',{cancelable:true})); });
         return; }
       f.__pond=false;
@@ -4002,7 +4067,7 @@ window.MF=(function(){
         .then(function(r){ if(r.ok) return r; return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); },
               function(){ return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); })
         .then(function(r){if(!r.ok) throw 0; if(f.id==='giftForm') fetch('/api/order-record',{method:'POST',headers:H,body:body}).catch(function(){}); if(f.id==='devoForm'||f.id==='signup') fetch('/api/devo-subscribe',{method:'POST',headers:H,body:body}).catch(function(){}); f.reset(); f.querySelectorAll('input[name=send-by]:checked').forEach(function(r){ r.dispatchEvent(new Event('change',{bubbles:true})); });
-          msg.textContent = MF.t({signup:'th_signup',giftForm:'th_gift',devoForm:'th_devo'}[f.id]||'th_net'); showOk(f.id,fd);})
+          msg.textContent = MF.t({signup:'th_signup',giftForm:'th_gift',devoForm:'th_devo'}[f.id]||'th_net'); if(f.id==='giftForm'&&f.__wait&&window.MFjw) msg.textContent=MFjw().wait; showOk(f.id,fd);})
         .catch(function(){msg.textContent=MF.t('formfail');});
     });
   });

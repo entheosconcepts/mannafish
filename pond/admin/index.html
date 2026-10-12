@@ -76,7 +76,7 @@ table{width:100%;border-collapse:collapse;font-size:.9rem}td,th{text-align:left;
     var waiting=D.claims.filter(function(c){ return !c.shipped; }).length; $('cnt').textContent='('+waiting+' to send, '+(D.claims.length-waiting)+' sent)';
     $('claims').innerHTML=D.claims.length?'<table><thead><tr><th>For</th><th>Address</th><th>From</th><th>Word</th><th></th></tr></thead><tbody>'+D.claims.map(function(c){ var t=c.to||{};
       return '<tr data-c="'+esc(c.id)+'"><td><b>'+esc(t.name)+'</b><div class="meta">'+esc(new Date(c.at).toLocaleString())+'</div>'+(t.email?'<div class="meta">'+esc(t.email)+'</div>':'')+'</td>'
-        +'<td>'+esc(t.street)+'<br>'+esc(t.city)+', '+esc(t.region)+'<br>'+esc(t.country)+'</td><td>'+(c.self?'(for themselves)':esc(c.from||'—'))+'<div class="meta">'+esc(c.sponsor||'')+'</div></td><td>'+esc(c.word||'')+'</td>'
+        +'<td>'+esc(t.street)+'<br>'+esc(t.city)+', '+esc(t.region)+'<br>'+esc(t.country)+'</td><td>'+(c.self?'(for themselves)':esc(c.from||'—'))+(c.tier?'<div><b>🎁 '+(c.tier==='t7'?'7 days: decals':'30 days: T-shirt')+'</b></div>':'')+'<div class="meta">'+esc(c.sponsor||'')+(c.waiting?' waiting for stock':'')+'</div></td><td>'+esc(c.word||'')+'</td>'
         +'<td>'+(c.shipped?'<span class="sent">✓ Sent '+esc(new Date(c.shipped).toLocaleDateString())+'</span> <button data-a="unship">Undo</button>':'<button class="ok" data-a="ship">Mark sent</button>')
         +' <button class="no" data-a="forget" title="Lets this home ask again">Remove</button></td></tr>'; }).join('')+'</tbody></table>':'<p class="msg">No gifts requested yet.</p>'; }
   document.addEventListener('click',function(e){ var b=e.target.closest('button[data-a]'); if(!b) return; var a=b.dataset.a, card=b.closest('[data-id]'), row=b.closest('[data-c]'); b.disabled=true;
@@ -87,7 +87,7 @@ table{width:100%;border-collapse:collapse;font-size:.9rem}td,th{text-align:left;
   $('newF').addEventListener('submit',function(e){ e.preventDefault(); var f=e.target; api({action:'create',sponsor:f.sponsor.value,stocked:+f.stocked.value,name:f.name.value,url:f.url.value,msg:f.msg.value})
     .then(function(){ f.reset(); load(); }).catch(function(j){ alert((j&&j.error)||'That did not work.'); }); });
   $('csv').addEventListener('click',function(){ var q=function(v){ return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'; };
-    var rows=[['Name','Street','City','State and ZIP','Country','Email','From','Word','Sponsor','Requested','Sent']].concat(D.claims.map(function(c){ var t=c.to||{}; return [t.name,t.street,t.city,t.region,t.country,t.email,c.self?'(self)':c.from,c.word,c.sponsor,c.at,c.shipped||'']; }));
+    var rows=[['Name','Street','City','State and ZIP','Country','Email','From','Gift','Word','Sponsor','Requested','Sent']].concat(D.claims.map(function(c){ var t=c.to||{}; return [t.name,t.street,t.city,t.region,t.country,t.email,c.self?'(self)':c.from,c.tier==='t7'?'7-day decals':c.tier==='t30'?'30-day T-shirt':'2 MannaFish',c.word,c.sponsor,c.at,c.shipped||'']; }));
     var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([rows.map(function(r){ return r.map(q).join(','); }).join('\n')],{type:'text/csv'})); a.download='mannafish-gifts.csv'; a.click(); });
   $('reload').addEventListener('click',load);
   $('keyGo').addEventListener('click',function(){ K=$('key').value.trim(); load(); });
