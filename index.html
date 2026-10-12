@@ -1007,6 +1007,12 @@ section.section.bundles{display:block;margin-top:0}
 .ptctx[hidden]{display:none}
 .ptctxh{font:800 .75rem 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.75;margin-bottom:6px}
 .ptctx .ptp{font:1.02rem/1.6 'Spectral',Georgia,serif;opacity:.88}
+.ptlenq{font:700 .8rem 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.8;margin:6px 0 8px}
+.pt.guided .ptlenq,.pt.guided .ptlen{display:none}
+.ptlen{display:flex;gap:8px;margin-bottom:14px}
+.ptlen button{flex:1 1 0;border:1.5px solid rgba(255,255,255,.4);background:rgba(0,0,0,.3);color:#fff;border-radius:14px;padding:9px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:'Archivo',sans-serif}
+.ptlen button b{font-size:1.05rem}.ptlen button small{font-size:.72rem;opacity:.8}
+.ptlen button[aria-checked="true"]{background:#fff;color:#0b0f14;border-color:#fff}
 .ptsel{height:44px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.4);color:#fff;font:600 .95rem 'Archivo',sans-serif;padding:0 12px;max-width:100%}
 .devorow{flex-direction:column;align-items:center;gap:8px}
 .slogan{display:inline-block;margin:0;font:italic 600 1.9rem/1.25 'Archivo',sans-serif;color:var(--foam);white-space:nowrap;text-align:center}
@@ -2353,10 +2359,19 @@ window.MF=(function(){
   // Ken, 11 Oct: after the catch, "go into the fish" -- the word in Greek and Hebrew, how many places in Scripture
   // carry this One Word, then each one (the reference, the verse, the verse in its context); then "give it in their
   // language": feed yourself first, give a MannaFish to someone else, and in time teach them to do the same.
-  function ptSteps(){ var st=[{k:'welcome'},{k:'pray'},{k:'hear'},{k:'fish'},{k:'orig'},{k:'count'}], op=prOpen(), n=DATA[cur].refs.length;
+  // Ken, 12 Oct: let the listener choose how long -- Quick (about 3 min: the word, its Greek and Hebrew, the challenge),
+  // Quick (about 3 min: the word, its Greek and Hebrew, one reference in context, the challenge), Standard (about 6: five
+  // references) or Deep dive (about 10: every reference).
+  // The choice is remembered; Quick and Standard end with "Go deeper".
+  var DLEN={"en": {"q": "Quick", "s": "Standard", "d": "Deep dive", "how": "How long do you have?", "min": "{n} min", "deeper": "Go deeper into {w}"}, "es": {"q": "Rápido", "s": "Estándar", "d": "A fondo", "how": "¿Cuánto tiempo tienes?", "min": "{n} min", "deeper": "Profundiza en {w}"}, "tl": {"q": "Mabilis", "s": "Karaniwan", "d": "Malalim", "how": "Gaano katagal ang oras mo?", "min": "{n} min", "deeper": "Palalimin ang {w}"}, "zh": {"q": "简短", "s": "标准", "d": "深入", "how": "你有多少时间？", "min": "{n} 分钟", "deeper": "更深入认识“{w}”"}, "hi": {"q": "संक्षिप्त", "s": "सामान्य", "d": "गहराई से", "how": "आपके पास कितना समय है?", "min": "{n} मिनट", "deeper": "{w} में और गहराई से"}, "el": {"q": "Σύντομο", "s": "Κανονικό", "d": "Σε βάθος", "how": "Πόσο χρόνο έχεις;", "min": "{n} λεπτά", "deeper": "Πιο βαθιά στο {w}"}, "de": {"q": "Kurz", "s": "Normal", "d": "Vertieft", "how": "Wie viel Zeit hast du?", "min": "{n} Min.", "deeper": "Tiefer in {w}"}, "ko": {"q": "짧게", "s": "보통", "d": "깊이", "how": "시간이 얼마나 있나요?", "min": "{n}분", "deeper": "{w} 더 깊이"}, "he": {"q": "קצר", "s": "רגיל", "d": "לעומק", "how": "כמה זמן יש לכם?", "min": "{n} דק׳", "deeper": "להעמיק ב{w}"}}, DMIN={quick:3,std:6,full:10};
+  function dLen(){ var v=''; try{ v=localStorage.getItem('mf-devlen')||''; }catch(e){} return DMIN[v]?v:'quick'; }
+  function ptSteps(){ var len=PT.len||dLen(), st=[{k:'welcome'},{k:'pray'},{k:'hear'},{k:'fish'},{k:'orig'}], op=prOpen(), all=DATA[cur].refs.length;
+    var n=len==='full'?all:len==='std'?Math.min(5,all):1;
+    if(len==='full') st.push({k:'count'});
     for(var r=0;r<n;r++) st.push({k:'ref',i:r,n:n});
     if(op.length) op.forEach(function(x,i){ st.push({k:'prayer',x:x,i:i,n:op.length}); }); else st.push({k:'prayer0'});
-    st.push({k:'share'},{k:'do'},{k:'amen'}); return st; }
+    if(len!=='quick') st.push({k:'share'});
+    st.push({k:'do'},{k:'amen'}); return st; }
   // the slogan stays on one line, as large as the screen allows (on a very narrow screen it wraps)
   function fitSlogan(){ var el=$('slogan'); if(!el) return; el.classList.remove('slwrap'); el.style.fontSize=''; var fs=parseFloat(getComputedStyle(el).fontSize)||30, w=el.parentElement.clientWidth; if(!w||w<120) return;
     while(el.scrollWidth>w-6 && fs>11){ fs-=0.5; el.style.fontSize=fs+'px'; } if(el.scrollWidth>w-2) el.classList.add('slwrap'); }
@@ -2374,6 +2389,8 @@ window.MF=(function(){
     var kick=function(a,b){ return '<div class="ptk"><span>'+esc(a)+'</span>'+(b?'<span class="ptof">'+b+'</span>':'')+'</div>'; };
     var prm=function(key){ return '<p class="ptprompt">👉 '+esc(T[key])+'</p>'; };
     if(s.k==='welcome'){ t=[P[0]]; h=kick(T.k_welcome)+'<h2 class="pth">'+esc(D.b[1])+'</h2><p class="ptp">'+sp1(1,P[0])+'</p>'
+        +'<div class="ptlenq">'+esc((DLEN[l]||DLEN.en).how)+'</div><div class="ptlen" role="radiogroup">'+['quick','std','full'].map(function(x){ var D2=DLEN[l]||DLEN.en;
+          return '<button type="button" role="radio" data-a="len" data-len="'+x+'" aria-checked="'+((PT.len||dLen())===x)+'"><b>'+esc(D2.min.replace('{n}',DMIN[x]))+'</b><small>'+esc(D2[x==='quick'?'q':x==='std'?'s':'d'])+'</small></button>'; }).join('')+'</div>'
         +'<div class="ptrow ptchoose"><button type="button" class="ptbtn ptmain" data-a="guide">'+esc(T.guide_me)+'</button><button type="button" class="ptbtn" data-a="ownpace">'+esc(T.own_pace)+'</button></div>'+prm('p_welcome'); }
     else if(s.k==='pray'){ t=[T.breathe,P[1]]; h=kick(T.k_pray)+'<p class="ptp ptsoft">'+sp1(1,T.breathe)+'</p><h2 class="pth ptpr">'+sp1(2,P[1])+'</h2>'+prm('p_pray'); }
     else if(s.k==='hear'){ t=[P[2],sy[2],sy[1],T.sink,T.think];
@@ -2411,7 +2428,8 @@ window.MF=(function(){
     else if(s.k==='do'){ t=[T.h_do,P[4]]; h=kick(T.k_do)+'<h2 class="pth">'+sp1(1,T.h_do)+'</h2><p class="ptp">'+sp1(2,P[4])+'</p>'
         +'<label class="ptwho">'+esc(T.who)+'<input id="ptWho" type="text" maxlength="60" autocomplete="off"></label>'
         +'<div class="ptrow"><button type="button" class="ptbtn" data-a="prayfor">🙏 '+esc(T.prayfor)+'</button><button type="button" class="ptbtn" data-a="share">↗ '+esc(T.share)+'</button></div>'+prm('p_do'); }
-    else if(s.k==='amen'){ t=[P[5]]; h=kick(T.k_amen)+'<h2 class="pth ptpr">'+sp1(1,P[5])+'</h2><div class="ptrow"><button type="button" class="ptbtn ptmain" data-a="amen">'+esc(T.amen_btn)+'</button></div>'+prm('p_amen'); }
+    else if(s.k==='amen'){ t=[P[5]]; h=kick(T.k_amen)+'<h2 class="pth ptpr">'+sp1(1,P[5])+'</h2><div class="ptrow"><button type="button" class="ptbtn ptmain" data-a="amen">'+esc(T.amen_btn)+'</button>'
+        +((PT.len||dLen())!=='full'?'<button type="button" class="ptbtn" data-a="deeper">'+esc((DLEN[l]||DLEN.en).deeper.replace('{w}',w))+' ›</button>':'')+'</div>'+prm('p_amen'); }
     var st=$('ptStage'); st.style.animation='none'; void st.offsetWidth; st.style.animation=''; st.innerHTML=h; st.scrollTop=0; PT.t=t; PT.ready=ready||Promise.resolve();
     $('ptDots').innerHTML='<i style="width:'+Math.round((PT.i+1)/PT.steps.length*100)+'%"></i>';
     $('pt').classList.toggle('guided',!!PT.listen);
@@ -2438,7 +2456,7 @@ window.MF=(function(){
   function ptGo(i){ PT.i=Math.max(0,Math.min(PT.steps.length-1,i)); $('ptMenu').hidden=true; ptRender(); ptSay(); }
   function ptOpen(){ if(window.MFplClose&&!$('mfPlayer').hidden) MFplClose(); stopSpeak(); PT.l=DEVO[MF.lang]?MF.lang:'en'; PT.on=true; PT.listen=false;
     var pt=$('pt'); pt.dir=PT.l==='he'?'rtl':'ltr'; pt.setAttribute('lang',PT.l); PR=prLocal().filter(function(x){ return prCloud()||!x.c; });
-    PT.l2=null; if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; document.documentElement.style.overflow='hidden'; ptRender();
+    PT.l2=null; PT.len=dLen(); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; document.documentElement.style.overflow='hidden'; ptRender();
     prLoad().then(function(){ if(!PT.on) return; var at=PT.steps[PT.i]&&PT.steps[PT.i].k; PT.steps=ptSteps(); if(at==='welcome'||at==='pray'||at==='hear') ptRender(); }); }
   function ptClose(){ PT.on=false; PT.listen=false; stopSpeak(); $('pt').hidden=true; $('ptSheet').hidden=true; $('ptMenu').hidden=true; document.documentElement.style.overflow=''; }
   function ptRebuild(keep){ PT.steps=ptSteps(); var j=PT.steps.findIndex(function(s){ return s.k===keep; }); if(j>=0&&keep!=='prayer') PT.i=j; PT.i=Math.min(PT.i,PT.steps.length-1); ptRender(); }
@@ -2457,6 +2475,9 @@ window.MF=(function(){
     var sl=T.share_line.replace('{w}',titleIn(PT.l,cur)).replace('{lang2}',nm), s1=$('ptStage').querySelector('[data-v="1"]'); if(s1){ s1.textContent=sl; s1.removeAttribute('data-w'); } if(PT.t) PT.t[0]=sl;
     var f=$('ptStage').querySelector('.ptfish2'), l2=PT.l2; if(f){ f.innerHTML=fishFor(l2,cur)||''; if(l2!=='en'&&l2!=='es'&&!LFISH[l2]) loadLang(l2).then(function(){ if(PT.l2===l2) f.innerHTML=fishFor(l2,cur)||''; }).catch(function(){}); } });
   $('ptStage').addEventListener('click',function(e){ var b=e.target.closest('[data-a]'); if(!b) return; var a=b.dataset.a, T=ptT(), s=PT.steps[PT.i];
+    if(a==='len'){ PT.len=b.dataset.len; try{ localStorage.setItem('mf-devlen',PT.len); }catch(er){} PT.steps=ptSteps(); ptRender(); return; }
+    if(a==='deeper'){ var was=PT.len||dLen(); PT.len=was==='quick'?'std':'full'; PT.steps=ptSteps();
+      var j=PT.steps.findIndex(function(x){ return x.k==='ref'&&x.i===(was==='quick'?1:5); }); if(j<0) j=PT.steps.findIndex(function(x){ return x.k==='ref'; }); ptGo(j<0?0:j); return; }
     if(a==='guide'){ PT.listen=true; ptSay(); return; }
     if(a==='ownpace'){ PT.listen=false; ptGo(PT.i+1); return; }
     if(a==='goref'){ var j=PT.steps.findIndex(function(x){ return x.k==='ref'&&x.i===+b.dataset.i; }); if(j>=0) ptGo(j); return; }

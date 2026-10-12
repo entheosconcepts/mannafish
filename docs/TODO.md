@@ -237,3 +237,6 @@ Also check the small alternate-language fish and its "English ⇄" label the sam
   a long first verse starts with a short clause.
 - 12 Oct: the page opens with one fish; "Two fish" lasts for the visit (sessionStorage `mf-two`). In the devotional,
   "Into the fish" wobbles once, slowly (one way, across to the other, back to face you); the word study then turns in on Next.
+- 12 Oct: devotional length choice on its first screen -- 3 min Quick (word, Greek/Hebrew, one reference in context,
+  the challenge), 6 min Standard (five references), 10 min Deep dive (all twelve). Remembered (`mf-devlen`); Quick and
+  Standard end with "Go deeper into <word>". Measured speech at 1.25x: ~1.7 / ~4.8 / ~10 min plus pauses.
