@@ -1174,6 +1174,29 @@ section.section.bundles{display:block;margin-top:0}
 .vs{position:fixed;inset:0;z-index:70;color:#fff;display:flex;flex-direction:column;font-family:'Archivo',sans-serif;
   background:radial-gradient(130% 60% at 50% 78%,rgba(42,95,176,.5),rgba(42,95,176,0) 62%),linear-gradient(#10161f,#06080b 72%)}
 .vs[hidden]{display:none}
+.devogo{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;max-width:720px;margin:18px auto 0}
+.devogok{font:800 .7rem 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--foam-dim,#9fb2b6)}
+.devogor{display:flex;gap:12px;width:100%;justify-content:center}
+.dgbtn{flex:1 1 0;min-width:0;max-width:330px;border:1.5px solid #2a5fb0;background:#2a5fb0;color:#fff;border-radius:999px;padding:11px 14px;font:700 clamp(.9rem,3.8vw,1.05rem) 'Archivo',sans-serif;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dgbtn:hover{background:#2253a0}
+.dgbtn .dgs{font-weight:600;opacity:.9}
+@media(max-width:520px){.dgbtn .dgs{display:none}}
+.offerrow{margin-top:56px!important}
+/* the pond: how many fish, and who stocked it */
+.cpond{position:absolute;left:8px;bottom:8px;z-index:2;max-width:calc(100% - 16px);background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:5px 12px;font:700 .72rem 'Archivo',sans-serif;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+.ptgift{border:1px solid rgba(245,215,110,.55);border-radius:18px;padding:14px 16px;margin:14px auto 0;max-width:520px;text-align:center}
+.ptgift p{margin:4px 0}.ptgift .pgs{opacity:.85;font-size:.95rem}
+.ptgift form{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;text-align:left}
+.ptgift form[hidden]{display:none}
+.ptgift label{display:flex;flex-direction:column;gap:4px;font:600 .82rem 'Archivo',sans-serif;opacity:.95}
+.ptgift form{text-align:center}.ptgift label{text-align:center}.ptgift .ok{justify-content:center;text-align:left}
+.ptgift label.w{grid-column:1/-1}
+.ptgift input{font:1rem 'Archivo',sans-serif;color:#fff;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.3);border-radius:10px;padding:9px 10px;width:100%;box-sizing:border-box}
+.ptgift .ok{flex-direction:row;align-items:flex-start;gap:8px;font-weight:500}.ptgift .ok input{width:20px;height:20px;flex:none}
+.ptgift .pgmsg{grid-column:1/-1;text-align:center;font-weight:700;min-height:1.2em}
+.ptgift .pgsend{grid-column:1/-1;justify-self:center}
+.pondline{margin:10px auto 0;max-width:620px;border:1px solid rgba(245,215,110,.5);border-radius:14px;padding:10px 14px;font:600 .95rem/1.5 'Archivo',sans-serif;color:var(--foam);text-align:center}
+.pondline[hidden]{display:none}
 /* Ken, 12 Oct: My notes and Sign in open on their own screen (no page sections behind them), everything centred */
 #notesBox:not([hidden]),#acctBox:not([hidden]){position:fixed;inset:0;z-index:85;max-width:none;margin:0;border:0;border-radius:0;overflow:auto;background:var(--ink,#000);padding:max(14px,env(safe-area-inset-top)) 18px 60px;text-align:center;box-sizing:border-box}
 #notesBox>*,#acctBox>*{max-width:720px;margin-left:auto;margin-right:auto}
@@ -1520,6 +1543,8 @@ select option{background:#0b1620;color:#eaf0f0}
   </div>
 
   <div class="fishspk" id="spkMain"><button class="spk" type="button" data-part="word"><span aria-hidden="true">&#128266;</span> <span class="spkw">Word</span></button><span class="spklang" id="spkLang"></span><button class="spk" type="button" data-part="verse"><span aria-hidden="true">&#128266;</span> <span class="spkv">Verse</span></button></div>
+  <!-- Ken, 12 Oct: "the main impression is that this is a devotional": under the fish, listen or read it; the free offers move down -->
+  <div class="devogo" translate="no"><span class="devogok" id="dgK">Today’s devotional</span><div class="devogor"><button type="button" class="dgbtn" id="dgListen"></button><button type="button" class="dgbtn" id="dgRead"></button></div></div>
   <div class="saybox" id="sayMain" hidden></div>
   <div class="sharerow"><span class="rnote" id="shareMsg"></span></div>
   <!-- Ken, 7 Oct: hear the verse, and keep notes (typed or spoken). Notes stay on this device until accounts come. -->
@@ -1604,6 +1629,7 @@ select option{background:#0b1620;color:#eaf0f0}
     </ol>
     <p class="gsub mfgg"><b>Want to become a Gift Giver?</b> <span>Someone must sponsor you.</span> <a href="#beneficiaries">Sponsor a Gift Giver near you ›</a></p>
     <h3 class="mfreq">Request yours</h3>
+    <p class="pondline" id="pondLine" hidden></p>
     <p class="gsub">Free decals now. Shirts, hats, mugs and more as Gift Givers are sponsored near you. Keep one. Give one.</p>
     <form class="netform mf-form" name="free-gift" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="giftForm">
       <input type="hidden" name="form-name" value="free-gift"><input type="hidden" name="language" class="langfield" value="en"><input type="hidden" name="time-zone" class="tzfield">
@@ -1944,7 +1970,7 @@ window.MF=(function(){
   function detect(){ var n=(navigator.language||'').toLowerCase().split('-')[0]; if(n==='fil') n='tl'; if(n==='iw') n='he'; return LL.indexOf(n)>=0?n:'en'; }
   var L='en'; try{var q=(location.search.match(/[?&]lang=(es|en|tl|zh|hi|el|de|ko|he)\b/)||[])[1], st=localStorage.getItem('mf-lang'); L=q||(LL.indexOf(st)>=0?st:'')||detect();}catch(e){}
   var hooks=[], orig=new WeakMap(), X=window.MFI18N;
-  var SKIP='script,style,#refs,#reader,#mfPlayer,#notesBox,#mfToast,#listenBtn,#trnBtn,#ptBtn,#siteMore,#siteMenu,#stories,#fs,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#okBox,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
+  var SKIP='script,style,#refs,#reader,#mfPlayer,#notesBox,#mfToast,#listenBtn,#trnBtn,#ptBtn,.devogo,#pondLine,#siteMore,#siteMenu,#stories,#fs,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#okBox,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
   function norm(s){return s.replace(/\s+/g,' ').trim();}
   function t(k){var u=X.ui[k]; return u ? (L==='es'?u[1]:u[0]) : k;}
   function applyPage(){
@@ -2722,7 +2748,7 @@ window.MF=(function(){
         +'<div class="ptrow ptchoose"><button type="button" class="ptbtn ptmain" data-a="guide">'+esc(T.guide_me)+'</button><button type="button" class="ptbtn" data-a="ownpace">'+esc(T.own_pace)+'</button></div>'+prm('p_welcome'); }
     else if(s.k==='pray'){ t=[T.breathe,P[1]]; h=kick(T.k_pray)+'<p class="ptp ptsoft">'+sp1(1,T.breathe)+'</p><h2 class="pth ptpr">'+sp1(2,P[1])+'</h2>'+prm('p_pray'); }
     else if(s.k==='cast'){ var C=caT(); t=[C.cast_line,C.cast_sub]; CA.ph='idle'; CA.early=false; CA.k=null;
-      h=kick(C.k_cast)+'<div class="ptcast idle">'+CASTSVG+'<div class="cswim">'+caFish()+'</div><div class="chook" aria-hidden="true"></div><button type="button" class="cpause"></button></div>'
+      h=kick(C.k_cast)+'<div class="ptcast idle">'+CASTSVG+'<div class="cswim">'+caFish()+'</div><div class="chook" aria-hidden="true"></div><button type="button" class="cpause"></button><div class="cpond"'+(POND?'':' hidden')+'>'+(POND?'🎣 '+esc(pondTxt()):'')+'</div></div>'
         +'<p class="ptp ptcmsg">'+sp1(1,C.cast_line)+'</p><p class="ptp ptsoft ptcsub">'+sp1(2,C.cast_sub)+'</p>'
         +'<div class="ptrow"><button type="button" class="ptbtn ptmain ptcbtn" data-c="cast">🎣 '+esc(C.cast_btn)+'</button><button type="button" class="ptbtn ptcback" data-c="back" hidden></button></div>'
         +'<div class="ptcnote" hidden><label for="ptCNote">'+esc(C.note_q)+'</label><textarea id="ptCNote" rows="3"></textarea><small></small></div>'
@@ -2764,7 +2790,7 @@ window.MF=(function(){
         +'<div class="ptpraybox"><p class="ptp ptpr">🙏 '+sp1(3,DP[0])+'</p><p class="ptp ptsoft">'+sp1(4,DP[1])+'</p></div>'
         +'<label class="ptwho">'+esc(T.who)+'<input id="ptWho" type="text" maxlength="60" autocomplete="off"></label>'
         +'<label class="ptwho">'+esc(DP[2])+'<input id="ptTo" type="text" maxlength="80" autocomplete="off" inputmode="email"></label>'
-        +'<div class="ptrow"><button type="button" class="ptbtn" data-a="prayfor">🙏 '+esc(T.prayfor)+'</button><button type="button" class="ptbtn ptmain" data-a="share">↗ '+esc(DP[3])+'</button></div>'+prm('p_do'); }
+        +'<div class="ptrow"><button type="button" class="ptbtn" data-a="prayfor">🙏 '+esc(T.prayfor)+'</button><button type="button" class="ptbtn ptmain" data-a="share">↗ '+esc(DP[3])+'</button></div>'+pondGiftHTML()+prm('p_do'); }
     else if(s.k==='amen'){ t=[P[5]]; h=kick(T.k_amen)+'<h2 class="pth ptpr">'+sp1(1,P[5])+'</h2><div class="ptrow"><button type="button" class="ptbtn ptmain" data-a="amen">'+esc(T.amen_btn)+'</button>'
         +((PT.len||dLen())!=='full'?'<button type="button" class="ptbtn" data-a="deeper">'+esc((DLEN[l]||DLEN.en).deeper.replace('{w}',w))+' ›</button>':'')+'</div>'
         +'<div class="ptrow"><button type="button" class="ptlink" data-fs="1">🐟 '+esc((FSL[l]||FSL.en)[0])+'</button></div>'+prm('p_amen'); }
@@ -2914,6 +2940,45 @@ window.MF=(function(){
   $('vsX').addEventListener('click',vsClose);
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('vs').hidden) vsClose(); });
   MF.onChange(vsUI); vsUI();
+  // ── Listen / Read under the fish (Ken, 12 Oct): opens today's devotional, read aloud or at your own pace
+  var DG={"en": ["Today’s devotional", "🎧 Listen", " to the devotional", "📖 Read", " the devotional"], "es": ["El devocional de hoy", "🎧 Escuchar", " el devocional", "📖 Leer", " el devocional"], "tl": ["Ang debosyon ngayon", "🎧 Pakinggan", " ang debosyon", "📖 Basahin", " ang debosyon"], "zh": ["今日灵修", "🎧 收听", "今日灵修", "📖 阅读", "今日灵修"], "hi": ["आज की भक्ति", "🎧 सुनें", "", "📖 पढ़ें", ""], "el": ["Η σημερινή μελέτη", "🎧 Άκουσε", " τη μελέτη", "📖 Διάβασε", " τη μελέτη"], "de": ["Die Andacht für heute", "🎧 Anhören", "", "📖 Lesen", ""], "ko": ["오늘의 묵상", "🎧 듣기", "", "📖 읽기", ""], "he": ["ההגות של היום", "🎧 להאזין", " להגות", "📖 לקרוא", " את ההגות"]};
+  function dgUI(){ var d=DG[MF.lang]||DG.en; $('dgK').textContent=d[0]; $('dgListen').innerHTML=esc(d[1])+'<span class="dgs">'+esc(d[2])+'</span>'; $('dgRead').innerHTML=esc(d[3])+'<span class="dgs">'+esc(d[4])+'</span>'; }
+  MF.onChange(dgUI); dgUI();
+  $('dgListen').addEventListener('click',function(){ ptOpen(); var b=$('ptStage').querySelector('[data-a="guide"]'); if(b) b.click(); });
+  $('dgRead').addEventListener('click',function(){ ptOpen(); var b=$('ptStage').querySelector('[data-a="ownpace"]'); if(b) b.click(); });
+  // ── The fishing excursion (Ken, 12 Oct): a sponsor stocks the pond; each gift takes two fish; one gift per home
+  var PW={"en": ["This fishing trip is sponsored by {s}", "{n} fish left in the pond", "🎁 Send them a free gift", "Two MannaFish: one to keep and one to give away. Free to them, postage too. One gift per home.", "Their name", "Street address", "City", "State and ZIP", "Their email (optional)", "Your name", "I know them, and they would welcome a gift.", "Send the gift", "Sent! Two MannaFish are on their way to {n}.", "This home has already received its MannaFish gift.", "The pond is empty for now. It will be restocked soon.", "Could not send just now. Please try again.", "Please fill in their name and full address, and tick the box."], "es": ["Este viaje de pesca lo patrocina {s}", "Quedan {n} peces en el estanque", "🎁 Envíale un regalo gratis", "Dos MannaFish: uno para quedarse y otro para regalar. Gratis para esa persona, también el envío. Un regalo por hogar.", "Su nombre", "Dirección", "Ciudad", "Estado y código postal", "Su correo (opcional)", "Tu nombre", "La conozco y le gustaría recibir un regalo.", "Enviar el regalo", "¡Enviado! Dos MannaFish van en camino para {n}.", "Este hogar ya recibió su regalo MannaFish.", "El estanque está vacío por ahora. Pronto se volverá a llenar.", "No se pudo enviar ahora. Inténtalo otra vez.", "Escribe su nombre y la dirección completa, y marca la casilla."], "tl": ["Ang pangingisdang ito ay itinataguyod ng {s}", "{n} isda pa ang natitira sa lawa", "🎁 Padalhan sila ng libreng regalo", "Dalawang MannaFish: isa para sa kanila at isa para ibigay. Libre sa kanila, pati padala. Isang regalo bawat tahanan.", "Kanilang pangalan", "Address", "Lungsod", "Estado at ZIP", "Kanilang email (opsyonal)", "Iyong pangalan", "Kilala ko sila, at matutuwa sila sa regalo.", "Ipadala ang regalo", "Naipadala na! Dalawang MannaFish ang papunta kay {n}.", "Nakatanggap na ng regalong MannaFish ang tahanang ito.", "Wala pang laman ang lawa sa ngayon. Malapit na itong mapunan muli.", "Hindi maipadala ngayon. Pakisubukang muli.", "Pakilagay ang kanilang pangalan at buong address, at i-tsek ang kahon."], "zh": ["这次垂钓由 {s} 赞助", "池塘里还剩 {n} 条鱼", "🎁 送他一份免费礼物", "两条 MannaFish：一条自己留着，一条送人。对方免费，邮费也免。每户一份。", "对方姓名", "街道地址", "城市", "州和邮编", "对方电子邮件（可选）", "你的名字", "我认识他，他会乐意收到礼物。", "寄出礼物", "已寄出！两条 MannaFish 正寄往 {n}。", "这个地址已经收到过 MannaFish 礼物。", "池塘暂时空了，很快会再放鱼。", "暂时无法寄出，请再试一次。", "请填写对方姓名和完整地址，并勾选方框。"], "hi": ["यह मछली पकड़ने की यात्रा {s} द्वारा प्रायोजित है", "तालाब में {n} मछलियाँ बाकी हैं", "🎁 उन्हें एक मुफ़्त उपहार भेजें", "दो MannaFish: एक रखने के लिए और एक आगे देने के लिए। उनके लिए मुफ़्त, डाक भी। हर घर को एक उपहार।", "उनका नाम", "पता", "शहर", "राज्य और पिन/ZIP", "उनका ईमेल (वैकल्पिक)", "आपका नाम", "मैं उन्हें जानता/जानती हूँ, उन्हें उपहार अच्छा लगेगा।", "उपहार भेजें", "भेज दिया! दो MannaFish {n} के पास जा रही हैं।", "इस घर को पहले ही MannaFish उपहार मिल चुका है।", "तालाब अभी खाली है। जल्द ही फिर से भरा जाएगा।", "अभी नहीं भेज सके। कृपया फिर कोशिश करें।", "कृपया उनका नाम और पूरा पता भरें, और बॉक्स पर टिक करें।"], "el": ["Αυτή την ψαριά τη χορηγεί ο/η {s}", "Μένουν {n} ψάρια στη λίμνη", "🎁 Στείλε του ένα δωρεάν δώρο", "Δύο MannaFish: ένα να το κρατήσει και ένα να το δώσει. Δωρεάν γι’ αυτόν, και τα ταχυδρομικά. Ένα δώρο ανά σπίτι.", "Το όνομά του", "Διεύθυνση", "Πόλη", "Νομός και Τ.Κ.", "Το email του (προαιρετικά)", "Το όνομά σου", "Τον γνωρίζω και θα χαρεί ένα δώρο.", "Στείλε το δώρο", "Στάλθηκε! Δύο MannaFish έρχονται στον/στην {n}.", "Αυτό το σπίτι έχει ήδη λάβει το δώρο MannaFish.", "Η λίμνη είναι άδεια προς το παρόν. Σύντομα θα ξαναγεμίσει.", "Δεν στάλθηκε τώρα. Δοκίμασε ξανά.", "Συμπλήρωσε όνομα και πλήρη διεύθυνση, και τσέκαρε το κουτί."], "de": ["Dieser Angelausflug wird gesponsert von {s}", "Noch {n} Fische im Teich", "🎁 Schick ein Geschenk", "Zwei MannaFish: einen zum Behalten, einen zum Weitergeben. Kostenlos, auch der Versand. Ein Geschenk pro Haushalt.", "Name", "Straße und Hausnummer", "Ort", "Bundesland und PLZ", "E-Mail (optional)", "Dein Name", "Ich kenne die Person, sie freut sich über ein Geschenk.", "Geschenk senden", "Gesendet! Zwei MannaFish sind unterwegs zu {n}.", "Dieser Haushalt hat sein MannaFish-Geschenk schon bekommen.", "Der Teich ist gerade leer. Er wird bald neu besetzt.", "Gerade nicht möglich. Bitte versuch es noch einmal.", "Bitte Name und vollständige Adresse angeben und das Kästchen ankreuzen."], "ko": ["이번 낚시 여행은 {s}의 후원입니다", "연못에 물고기 {n}마리가 남았어요", "🎁 무료 선물 보내기", "MannaFish 두 개: 하나는 간직하고 하나는 선물하세요. 받는 분은 무료, 배송비도 무료. 한 가정에 한 번.", "받는 분 이름", "주소", "도시", "주와 우편번호", "받는 분 이메일 (선택)", "내 이름", "아는 분이고, 선물을 반가워할 거예요.", "선물 보내기", "보냈어요! MannaFish 두 개가 {n}님께 가고 있어요.", "이 주소는 이미 MannaFish 선물을 받았어요.", "지금은 연못이 비었어요. 곧 다시 채워집니다.", "지금은 보낼 수 없어요. 다시 시도해 주세요.", "이름과 전체 주소를 입력하고 확인란에 표시해 주세요."], "he": ["את מסע הדייג הזה נותן בחסות {s}", "נשארו {n} דגים בבריכה", "🎁 שלחו מתנה חינם", "שני MannaFish: אחד לשמור ואחד לתת. חינם, כולל משלוח. מתנה אחת לכל בית.", "שם", "כתובת", "עיר", "מדינה ומיקוד", "אימייל (לא חובה)", "השם שלכם", "אני מכיר/ה, והמתנה תשמח אותו/ה.", "שלחו את המתנה", "נשלח! שני MannaFish בדרך אל {n}.", "הבית הזה כבר קיבל את מתנת ה‑MannaFish.", "הבריכה ריקה כרגע. היא תתמלא שוב בקרוב.", "לא ניתן לשלוח כרגע. נסו שוב.", "מלאו שם וכתובת מלאה, וסמנו את התיבה."]}, POND=null;
+  function pw(i){ return (PW[PT.on?PT.l:MF.lang]||PW.en)[i]; }
+  function pondLoad(){ return fetch('/api/pond').then(function(r){ return r.ok?r.json():{pond:null}; }).then(function(j){ POND=j.pond||null; pondUI(); return POND; }).catch(function(){ POND=null; pondUI(); }); }
+  window.MFpond=function(){ return POND; };
+  function pondTxt(){ return POND?pw(0).replace('{s}',POND.sponsor)+' · '+pw(1).replace('{n}',POND.left):''; }
+  function pondUI(){ var es=MF.lang==='es', pl=$('pondLine'); if(pl){ pl.hidden=!POND;
+      if(POND) pl.innerHTML='🎣 '+esc(es?'Excursión actual: patrocinada por '+POND.sponsor+'. Quedan '+POND.left+' peces en el estanque.':'Current excursion: sponsored by '+POND.sponsor+'. '+POND.left+' fish left in the pond.')
+        +(POND.msg?'<br><i>“'+esc(POND.msg)+'”</i>':'')+'<br><small>'+esc(es?'Un regalo por hogar: dos MannaFish, uno para ti y otro para regalar.':'One gift per home: two MannaFish, one to keep and one to give away.')+'</small>'; }
+    var cp=$('ptStage')&&$('ptStage').querySelector('.cpond'); if(cp){ cp.hidden=!POND; cp.textContent=POND?'🎣 '+pondTxt():''; } }
+  function pondClaim(to,from,self){ if(!POND) return Promise.resolve({err:'none'});
+    return fetch('/api/pond/claim',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({pond:POND.id,to:to,from:from,self:!!self,word:cur,lang:PT.on?PT.l:MF.lang})})
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(typeof j.left==='number'&&POND){ POND.left=j.left; pondUI(); } return r.ok?{ok:true}:{err:j.error||'fail'}; }); })
+      .catch(function(){ return {err:'fail'}; }); }
+  // the gift form in the 2 Fish step
+  function pondGiftHTML(){ if(!POND||POND.left<POND.per) return '';
+    return '<div class="ptgift"><p>🎣 '+esc(pw(0).replace('{s}',POND.sponsor))+'</p><p class="pgs">'+esc(pw(1).replace('{n}',POND.left))+'</p>'
+      +'<div class="ptrow"><button type="button" class="ptbtn" data-pg="open">'+esc(pw(2))+'</button></div><p class="pgs">'+esc(pw(3))+'</p>'
+      +'<form class="pgform" hidden><label class="w">'+esc(pw(4))+'<input name="name" maxlength="80" autocomplete="off"></label><label class="w">'+esc(pw(5))+'<input name="street" maxlength="160" autocomplete="off"></label>'
+      +'<label>'+esc(pw(6))+'<input name="city" maxlength="80" autocomplete="off"></label><label>'+esc(pw(7))+'<input name="region" maxlength="60" autocomplete="off"></label>'
+      +'<label class="w">'+esc(pw(8))+'<input name="email" type="email" maxlength="160" autocomplete="off"></label><label class="w">'+esc(pw(9))+'<input name="from" maxlength="80" autocomplete="name"></label>'
+      +'<input name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"><label class="w ok"><input type="checkbox" name="ok"><span>'+esc(pw(10))+'</span></label>'
+      +'<button type="submit" class="ptbtn ptmain pgsend">'+esc(pw(11))+'</button><p class="pgmsg"></p></form></div>'; }
+  $('ptStage').addEventListener('click',function(e){ var b=e.target.closest('[data-pg="open"]'); if(!b) return; var f=$('ptStage').querySelector('.pgform'); f.hidden=!f.hidden;
+    if(!f.hidden){ var w=$('ptWho'); if(w&&w.value.trim()&&!f.name.value) f.name.value=w.value.trim(); f.querySelector(f.name.value?'[name=street]':'[name=name]').focus(); } });
+  $('ptStage').addEventListener('submit',function(e){ var f=e.target.closest('.pgform'); if(!f) return; e.preventDefault(); var m=f.querySelector('.pgmsg');
+    var to={name:f.name.value,street:f.street.value,city:f.city.value,region:f.region.value,email:f.email.value};
+    if(!to.name.trim()||!to.street.trim()||!to.city.trim()||!to.region.trim()||!f.ok.checked){ m.textContent=pw(16); return; }
+    if(f.website.value) return; var bt=f.querySelector('.pgsend'); bt.disabled=true; m.textContent='…';
+    pondClaim(to,f.from.value,false).then(function(r){ bt.disabled=false;
+      if(r.ok){ m.textContent=pw(12).replace('{n}',to.name.trim()); f.querySelectorAll('input:not([type=checkbox])').forEach(function(i){ if(i.name!=='from') i.value=''; }); f.ok.checked=false; var ls=$('ptStage').querySelector('.ptgift .pgs'); if(ls&&POND) ls.textContent=pw(1).replace('{n}',POND.left); }
+      else m.textContent=r.err==='already'?pw(13):r.err==='empty'?pw(14):pw(15); }); });
+  window.MFpondUI=pondUI; MF.onChange(pondUI); pondLoad();
   // ── Manna… Fish Stories (Ken, 12 Oct): "a section where people can share their catch -- video, audio or written".
   // Stories go to MannaFish first (/api/stories); only approved ones are shown. The site's own words are in English and
   // Spanish; the devotional's link and the ••• menu are in all nine languages.
@@ -3924,6 +3989,15 @@ window.MF=(function(){
     f.addEventListener('submit',function(e){e.preventDefault();
       var msg=$({signup:'signupMsg',giftForm:'giftFormMsg',devoForm:'devoFormMsg'}[f.id]||'fishnetMsg');
       var body=new URLSearchParams(new FormData(f)).toString(), H={'Content-Type':'application/x-www-form-urlencoded'}, fd=Object.fromEntries(new FormData(f));
+      // Ken, 12 Oct: when a sponsor has stocked the pond, a request for yourself is one gift from it (one per home)
+      var P=window.MFpond&&MFpond(), es=MF.lang==='es';
+      if(f.id==='giftForm'&&P&&!f.__pond){ msg.textContent='…'; fetch('/api/pond/claim',{method:'POST',headers:{'content-type':'application/json'},
+          body:JSON.stringify({pond:P.id,self:true,to:{name:fd.name,street:fd.street,city:fd.city,region:fd['state-zip'],email:fd.email},word:(fd.word||''),lang:MF.lang})})
+        .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(r.status===409){ msg.textContent=es?'Este hogar ya recibió su regalo MannaFish.':'This home has already received its MannaFish gift.'; return; }
+          if(typeof j.left==='number'){ P.left=j.left; if(window.MFpondUI) MFpondUI(); } f.__pond=true; f.requestSubmit?f.requestSubmit():f.dispatchEvent(new Event('submit',{cancelable:true})); }); })
+        .catch(function(){ f.__pond=true; f.requestSubmit?f.requestSubmit():f.dispatchEvent(new Event('submit',{cancelable:true})); });
+        return; }
+      f.__pond=false;
       fetch('/',{method:'POST',headers:H,body:body})
         .then(function(r){ if(r.ok) return r; return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); },
               function(){ return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); })
