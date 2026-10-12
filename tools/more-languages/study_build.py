@@ -14,7 +14,7 @@ KJV=numbered('KJV.json')
 def get(src,b,c,v):
   ch=src[CAN.index(b)][c-1]
   return ch.get(v) if isinstance(ch,dict) else (ch[v-1] if v<=len(ch) else None)
-SRC={'tl':[numbered('TagAngBiblia.json')],'de':[numbered('GerElb1905.json')],'ko':[numbered('KorRV.json')],'he':[numbered('he/HebModern.json')],
+SRC={'tl':[numbered('TagAngBiblia.json')],'de':[numbered('GerElb1905.json')],'ko':[numbered('KorRV.json')],'he':[numbered('he/HebModern.json')],'ar':[numbered('ArSVD.json')],
  'zh':[indexed('zh_cunpss-shen.json'),numbered('ChiUn.json')],'hi':[indexed('hi_irvhin.json')],'el':[indexed('el_fpb.json'),numbered('GreVamvas.json')]}
 def okchap(src,b,c,primary_indexed):
   if not primary_indexed: return True
@@ -39,7 +39,7 @@ def snip(l,t):
   if l=='zh':
     s=t[:n]; return s.rstrip('，。；：、「」')+'…'
   s=t[:n]; s=s[:s.rfind(' ')] if ' ' in s else s
-  return s.rstrip(',;:·.।') + '…'
+  return s.rstrip(',;:·.।،؛') + '…'
 FIX={'el':[('ΧΑΙΡΟΜΑΙ','Χαίρομαι'),('ΜΑΚΑΡΙΟΣ','Μακάριος'),('ΠΑΙΔΙΑ','Παιδιά'),('ΣΑΣ','Σας'),('ΤΟΤΕ','Τότε'),('ΨΑΛΤΕ','Ψάλτε'),('ΝΑ ΨΑΛΕΤΕ','Να ψάλετε'),('ΝΑ ΕΠΙΜΕΝΕΤΕ','Να επιμένετε'),('ΝΑ ΤΙΜΑΣ','Να τιμάς')],
  'de':[('Von David. Ein Maskil. ',''),('Ein Psalm. ','')],'ko':[('다윗의 마스길 ',''),('시 새 노래로','새 노래로')]}
 log=[]

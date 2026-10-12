@@ -3,7 +3,7 @@
 import json,sys
 sys.path.insert(0,'.')
 from study_i18n import BOOKS
-L=['en','es','tl','zh','hi','el','de','ko','he']
+L=['en','es','tl','zh','hi','el','de','ko','he','ar']
 G=[('open','Caring openers','Para empezar'),('ask','Conversation','Conversación'),('gift','Gift and follow-up','Regalo y seguimiento')]
 P=[
 ('open','pray_for',"Can I pray for you?|¿Puedo orar por usted?|Maaari ba kitang ipanalangin?|我可以为你祷告吗？|क्या मैं आपके लिए प्रार्थना करूँ?|Μπορώ να προσευχηθώ για εσάς;|Darf ich für Sie beten?|당신을 위해 기도해 드려도 될까요?"),
@@ -31,6 +31,15 @@ HE={'pray_for':'אפשר להתפלל בשבילך?','pray_together':'בוא נ�
  'know_jesus':'תרצה להכיר את ישוע באופן אישי?','receive_jesus':'תרצה לקבל את ישוע כאדון וכמושיע שלך?',
  'holy_spirit':'האם קיבלת את רוח הקודש מאז שהאמנת?','gift':'אפשר לתת לך את זה? זו מתנה חינם.',
  'have_bible':'יש לך תנ״ך וברית חדשה?','visit_church':'תרצה לבקר בכנסייה או בקהילה?'}
+# Arabic (12 Oct): spoken to one man, the usual form, in plain church Arabic; a fluent reader to check
+AR={'pray_for':'هل يمكنني أن أصلّي لأجلك؟','pray_together':'لنصلِّ معًا.','want_pray':'هل تودّ أن تصلّي؟',
+ 'god_loves':'الله يحبك، ويسوع أيضًا يحبك.','pray_about':'هل هناك أمر يمكنني أن أصلّي معك من أجله؟',
+ 'beliefs':'هل لديك إيمان روحي معيّن؟','who_jesus':'من هو يسوع في رأيك؟',
+ 'heaven':'لو متَّ اليوم، هل تعرف يقينًا أنك ستذهب إلى السماء؟',
+ 'shown_bible':'هل أراك أحد من قبل من الكتاب المقدس كيف تعرف الله؟',
+ 'know_jesus':'هل تودّ أن تعرف يسوع معرفة شخصية؟','receive_jesus':'هل تودّ أن تقبل يسوع ربًّا ومخلّصًا لك؟',
+ 'holy_spirit':'هل قبلت الروح القدس لما آمنت؟','gift':'هل يمكنني أن أعطيك هذا؟ إنه هدية مجانية.',
+ 'have_bible':'هل لديك كتاب مقدس؟','visit_church':'هل تودّ أن تزور كنيسة؟'}
 NOTE={'holy_spirit':'Acts 19:2'}
 V=[('jn316','John',3,16),('ro323','Romans',3,23),('ro623','Romans',6,23),('ro109','Romans',10,9)]
 ES={'jn316':'Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree, no se pierda, mas tenga vida eterna.',
@@ -46,14 +55,14 @@ def full(l,b,c,v):
   return sb.verse(l,b,c,v)
 out={'langs':L,'groups':[{'id':g,'en':a,'es':b} for g,a,b in G],'phrases':[],'verses':[]}
 for g,i,t in P:
-  parts=t.split('|')+[HE[i]]; assert len(parts)==9,(i,len(parts))
+  parts=t.split('|')+[HE[i],AR[i]]; assert len(parts)==10,(i,len(parts))
   d={'id':i,'g':g,'t':dict(zip(L,parts))}
   if i in NOTE: d['ref']=NOTE[i]
   out['phrases'].append(d)
 for i,b,c,v in V:
   t={l:(ES[i] if l=='es' else full(l,b,c,v)) for l in L}
-  t={l:x.strip().lstrip('"“「').replace('」','') for l,x in t.items()}
-  t={l:x.rstrip(',;，；·\u0387:').rstrip()+('' if x.rstrip()[-1] in '.。!?।' else ('。' if l=='zh' else '…' if x.rstrip()[-1] in ',;，；' else '.' if x.rstrip()[-1] in '·\u0387:' else '')) for l,x in t.items()}
+  t={l:x.strip().lstrip('"“「«').replace('」','').replace('»','') for l,x in t.items()}
+  t={l:x.rstrip(',;，；·\u0387:،؛').rstrip()+('' if x.rstrip()[-1] in '.。!?।؟' else ('。' if l=='zh' else '…' if x.rstrip()[-1] in ',;，；،؛' else '.' if x.rstrip()[-1] in '·\u0387:' else '')) for l,x in t.items()}
   t={l:x[0].upper()+x[1:] for l,x in t.items()}
   if i=='ro323': t['de']='Denn alle haben gesündigt und erreichen nicht die Herrlichkeit Gottes…'  # Elberfelder joins the end of 3:22 to this verse
   r={l:(f'{BOOKS[l][b]} {c},{v}' if l=='de' else f'{BOOKS[l][b]} {c}:{v}') for l in BOOKS}; r['en']=f'{b} {c}:{v}'; r['es']=f'{ESB[b]} {c}:{v}'

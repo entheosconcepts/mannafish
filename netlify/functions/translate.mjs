@@ -8,7 +8,7 @@
 // an hourly limit per visitor, so it cannot be used as a free translator by others.
 import { getStore } from '@netlify/blobs';
 const NAMES = { en: 'English', es: 'Spanish', tl: 'Tagalog (Filipino)', zh: 'Simplified Chinese (Mandarin)', hi: 'Hindi',
-  el: 'Modern Greek', de: 'German', ko: 'Korean', he: 'Modern Hebrew' };
+  el: 'Modern Greek', de: 'German', ko: 'Korean', he: 'Modern Hebrew', ar: 'Modern Standard Arabic' };
 const MODEL = process.env.MF_TRANSLATE_MODEL || 'gpt-4.1-mini';
 const VOICE = process.env.MF_TTS_VOICE || 'sage';
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];

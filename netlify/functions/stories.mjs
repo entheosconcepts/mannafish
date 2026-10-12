@@ -19,7 +19,7 @@ const TO = () => process.env.MF_STORIES_TO || process.env.MF_PROOF_TO || FROM.em
 const PART = 3 * 1024 * 1024, MAXPARTS = { audio: 8, video: 20 };          // audio up to 24 MB, video up to 60 MB
 const MIMES = { audio: ['audio/webm', 'audio/mp4', 'audio/mpeg', 'audio/ogg', 'audio/aac', 'audio/x-m4a', 'audio/wav'],
   video: ['video/mp4', 'video/webm', 'video/quicktime'] };
-const LANGS = ['en', 'es', 'tl', 'zh', 'hi', 'el', 'de', 'ko', 'he'];
+const LANGS = ['en', 'es', 'tl', 'zh', 'hi', 'el', 'de', 'ko', 'he', 'ar'];
 const db = () => getStore({ name: 'mannafish-stories', consistency: 'strong' });
 const media = () => getStore({ name: 'mannafish-stories-media', consistency: 'strong' });
 const rid = (n) => Array.from(crypto.getRandomValues(new Uint8Array(n)), (b) => b.toString(16).padStart(2, '0')).join('');

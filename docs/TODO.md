@@ -65,6 +65,10 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [x] God's name (Ken, 9 Oct): the fish show ה׳ instead of the four-letter name (TRUST, SING). Spoken aloud as "Adonai". The Bible reader and word study still show the Bible text as written.
 - [ ] Hebrew verse numbers follow English Bibles (Psalm 42:5); printed Hebrew Bibles count some Psalms one higher (42:6).
 - [ ] Check the Hebrew fish on an iPhone (Safari) before printing.
+- [x] **Arabic** (12 Oct, on the test site): the tenth language. 24 fish lettered right to left in Cairo (bold); the verse lines from the Smith & Van Dyke Bible (1865) without vowel marks, the word in the middle with its vowel marks so it reads one way only (a command to one man, except GATHER, which is to all). Word study, Strong's cards, Bible reader (full Van Dyke text with vowel marks), speakers, Every Tongue, translator, and the devotional, tour and vision read in Arabic.
+- [ ] The Van Dyke text comes from STEPBible.org (with Arabic Bible Outreach Ministry), licensed CC BY-SA 4.0: keep their names on the reader (they are there), and say we removed the Strong's tags if anyone asks. Chapter files: fish-lang/bible/ar/.
+- [ ] A fluent Arabic reader checks the 24 fish words, the meanings on the back (fish-lang/study-ar.json), the Strong's cards (fish-lang/lex-ar.json), the Every Tongue phrases and the devotional text. Claude translated them. Words to look at: اِرْتَجِ (HOPE, from "ارتجي الله" in Ps 42:5), تَمَتَّعْ (ENJOY), عِشْ (LIVE).
+- [ ] Check the Arabic fish on an iPhone (Safari) before printing: the letters must join along the curve.
 
 ## Later
 

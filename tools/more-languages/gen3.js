@@ -6,10 +6,10 @@
 // Sizes: never larger than on the English HOPE fish; smaller only when a line is longer.
 const { chromium } = require('playwright'); const fs=require('fs');
 const LG=process.argv[2]; const ALL=JSON.parse(fs.readFileSync(__dirname+'/lines.json','utf8')); const V=ALL[LG].fish, TAG=ALL[LG].tag;
-const FONTS={tl:{fam:'MFHobo',w:'normal',file:null}, zh:{fam:'ZCOOL KuaiLe',w:'normal',file:'ZCOOLKuaiLe-Regular.ttf'}, hi:{fam:'Baloo 2',w:'800',file:'Baloo2[wght].ttf'}, el:{fam:'Ubuntu',w:'700',file:'Ubuntu-Bold.ttf'}, de:{fam:'MFHobo',w:'normal',file:null}, ko:{fam:'Jua',w:'normal',file:'Jua-Regular.ttf'}, he:{fam:'Fredoka',w:'700',file:'Fredoka-Bold.ttf'}};
-// Hebrew reads right to left: each line is wrapped in a right-to-left embedding, so the letters run the right way
+const FONTS={tl:{fam:'MFHobo',w:'normal',file:null}, zh:{fam:'ZCOOL KuaiLe',w:'normal',file:'ZCOOLKuaiLe-Regular.ttf'}, hi:{fam:'Baloo 2',w:'800',file:'Baloo2[wght].ttf'}, el:{fam:'Ubuntu',w:'700',file:'Ubuntu-Bold.ttf'}, de:{fam:'MFHobo',w:'normal',file:null}, ko:{fam:'Jua',w:'normal',file:'Jua-Regular.ttf'}, he:{fam:'Fredoka',w:'700',file:'Fredoka-Bold.ttf'}, ar:{fam:'Cairo',w:'800',file:'Cairo-ExtraBold.ttf',dy:-0.1,k:0.84}  /* Arabic letters reach well below the line (the dots under ي): lift them into the white band */};
+// Hebrew and Arabic read right to left: each line is wrapped in a right-to-left embedding, so the letters run the right way
 // along the curve and the full stop and "..." land on the left, while sizing and centring stay as for every other language.
-if(LG==='he') V.forEach(v=>['word','top','bottom','ref','refShort'].forEach(k=>{ v[k]='\u202B'+v[k]+'\u202C'; }));
+if(LG==='he'||LG==='ar') V.forEach(v=>['word','top','bottom','ref','refShort'].forEach(k=>{ v[k]='\u202B'+v[k]+'\u202C'; }));
 const F=FONTS[LG]; const OUT=__dirname+'/out-'+LG;
 // Ken, 9 Oct: a long word keeps the letter height of a 9-letter English word ("Surrender") and is narrowed to fit,
 // instead of shrinking. Only for the fish named:  node gen3.js tl REST
@@ -31,7 +31,7 @@ const TALL=(process.argv[3]||'').split(',').filter(Boolean); V.forEach(v=>{ v.ta
    els[1].setAttribute('id','g_top'); els[1].setAttribute('style','fill:none'); els[2].setAttribute('id','g_bot');
    const L={top:els[1].getTotalLength(), bot:els[2].getTotalLength(), ref:rp.getTotalLength()};
    function onPath(id,txt,size,fill){const t=document.createElementNS(NS,'text'); t.setAttribute('font-family',"'"+F.fam+"'"); t.setAttribute('font-weight',F.w); t.setAttribute('font-size',size.toFixed(1)); t.setAttribute('fill',fill);
-     const tp=document.createElementNS(NS,'textPath'); tp.setAttribute('href','#'+id); tp.setAttribute('startOffset','50%'); tp.setAttribute('text-anchor','middle'); tp.textContent=txt; t.appendChild(tp); g.appendChild(t); return t;}
+     const tp=document.createElementNS(NS,'textPath'); tp.setAttribute('href','#'+id); tp.setAttribute('startOffset','50%'); if(F.dy) t.setAttribute('dy',(F.dy*size).toFixed(1)); tp.setAttribute('text-anchor','middle'); tp.textContent=txt; t.appendChild(tp); g.appendChild(t); return t;}
    function plain(txt,size){const t=document.createElementNS(NS,'text'); t.setAttribute('font-family',"'"+F.fam+"'"); t.setAttribute('font-weight',F.w); t.setAttribute('font-size',size.toFixed(1)); t.setAttribute('fill','#fff');
      t.setAttribute('x',wordBox.cx); t.setAttribute('y',wordBox.cy); t.setAttribute('text-anchor','middle'); t.setAttribute('dominant-baseline','central'); t.textContent=txt; g.appendChild(t); return t;}
    function fit(make,max,cap,measure){let lo=10,hi=cap,el; for(let k=0;k<28;k++){const m=(lo+hi)/2; el=make(m); const v=measure(el); el.remove(); if(v>max) hi=m; else lo=m;} return lo;}
@@ -40,7 +40,7 @@ const TALL=(process.argv[3]||'').split(',').filter(Boolean); V.forEach(v=>{ v.ta
    // Ken, 7 Oct: "keep the heights of each word the same and uniform, and just adjust the
    // width to make it fit" -- verse lines and the tail reference are one height on every fish;
    // a long line is narrowed (textLength + spacingAndGlyphs), never made shorter.
-   const H={top:220, bot:220, ref:129};
+   const H={top:220*(F.k||1), bot:220*(F.k||1), ref:129};
    let sWord=fit(s=>plain(v.word,s), 1900, 867, wid);
    if(v.tall) sWord=Math.max(sWord, v.tallSize);   // the long word's letter size; the width is narrowed below to fit
    // tall scripts (accents above, hooks below): keep the word's real letter height within the English word's
