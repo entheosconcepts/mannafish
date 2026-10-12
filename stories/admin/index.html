@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Fish stories · review</title>
+<link rel="icon" href="/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Spectral:wght@400;600&display=swap" rel="stylesheet">
+<!-- Ken, 12 Oct: Manna…Fish Stories. Every story waits here until MannaFish approves it; only then is it shown on the site.
+     The key is MF_ADMIN_KEY in Netlify (or PROOF_KEY if that is not set). It is kept on this device after the first time. -->
+<style>
+:root{--ink:#000;--ink2:#0b1620;--foam:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--line:rgba(200,215,218,.18);--red:#c8423c;--gold:#f5d76e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--foam);font:1rem/1.5 'Archivo',system-ui,sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+header b{font-size:1.1rem}header a{color:var(--foam);font-size:.9rem}
+main{max-width:860px;margin:0 auto;padding:16px}
+.key{display:flex;gap:8px;margin:20px 0}.key input{flex:1;min-width:0}
+input,textarea{font:inherit;color:var(--foam);background:var(--ink2);border:1px solid var(--line);border-radius:10px;padding:9px 11px;width:100%}
+textarea{min-height:90px;font-family:'Spectral',Georgia,serif;font-size:1.05rem}
+button{font:700 .92rem 'Archivo',sans-serif;border-radius:999px;padding:9px 16px;cursor:pointer;border:1px solid var(--line);background:none;color:var(--foam)}
+button.ok{background:var(--blue);border-color:var(--blue);color:#fff}button.no{border-color:var(--red);color:#ffb3ae}
+.tabs{display:flex;gap:8px;margin:6px 0 16px;flex-wrap:wrap}.tabs button[aria-pressed="true"]{background:#fff;color:#000}
+.card{border:1px solid var(--line);border-radius:16px;padding:14px;margin:0 0 14px;background:var(--ink2);display:flex;flex-direction:column;gap:8px}
+.meta{font-size:.82rem;color:var(--dim)}.meta b{color:var(--gold);text-transform:uppercase;letter-spacing:.1em;font-size:.72rem}
+video{width:100%;max-height:420px;border-radius:10px;background:#000}audio{width:100%}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.empty,.msg{color:var(--dim);text-align:center;padding:20px}
+label{font-size:.8rem;color:var(--dim);display:flex;flex-direction:column;gap:4px}
+</style>
+</head>
+<body>
+<header><b>🐟 Fish stories · review</b><a href="/#stories">See them on the site</a></header>
+<main>
+  <div class="key" id="keyBox" hidden><input id="key" type="password" placeholder="Review key (MF_ADMIN_KEY)" autocomplete="current-password"><button class="ok" id="keyGo">Open</button></div>
+  <div class="tabs" id="tabs" hidden><button data-t="pending" aria-pressed="true">Waiting</button><button data-t="approved" aria-pressed="false">Shown on the site</button><button data-t="hidden" aria-pressed="false">Hidden</button><button id="reload">↻</button></div>
+  <div id="list"></div>
+</main>
+<script>
+(function(){
+  var $=function(id){ return document.getElementById(id); }, K='', tab='pending', ALL=[];
+  function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  try{ K=localStorage.getItem('mf-admin-k')||''; }catch(e){}
+  function load(){ $('list').innerHTML='<p class="msg">Loading…</p>';
+    fetch('/api/stories/admin?k='+encodeURIComponent(K)).then(function(r){ if(r.status===403) throw 403; return r.json(); })
+      .then(function(j){ ALL=j.stories||[]; $('keyBox').hidden=true; $('tabs').hidden=false; try{ localStorage.setItem('mf-admin-k',K); }catch(e){} draw(); })
+      .catch(function(e){ $('keyBox').hidden=false; $('tabs').hidden=true; $('list').innerHTML='<p class="msg">'+(e===403?(K?'That key did not work.':'Enter the review key.'):'Could not load the stories.')+'</p>'; }); }
+  function draw(){ var L=ALL.filter(function(x){ return x.status===tab; }), n={pending:0,approved:0,hidden:0};
+    ALL.forEach(function(x){ if(n[x.status]!=null) n[x.status]++; });
+    Array.prototype.forEach.call(document.querySelectorAll('#tabs [data-t]'),function(b){ b.setAttribute('aria-pressed',b.dataset.t===tab?'true':'false'); b.textContent=({pending:'Waiting',approved:'Shown on the site',hidden:'Hidden'})[b.dataset.t]+' ('+n[b.dataset.t]+')'; });
+    if(!L.length){ $('list').innerHTML='<p class="empty">Nothing here.</p>'; return; }
+    $('list').innerHTML=L.map(function(x){ var src='/api/stories/media?id='+encodeURIComponent(x.id)+'&k='+encodeURIComponent(K);
+      return '<div class="card" data-id="'+esc(x.id)+'"><div class="meta"><b>'+esc(x.kind==='text'?'written':x.kind)+'</b> · '+esc(new Date(x.at).toLocaleString())+' · '+esc(x.lang)+(x.word?' · '+esc(x.word):'')
+        +(x.email?' · <a style="color:inherit" href="mailto:'+esc(x.email)+'">'+esc(x.email)+'</a>':'')+(x.dur?' · '+Math.round(x.dur)+' s':'')+(x.size?' · '+(x.size/1048576).toFixed(1)+' MB':'')+'</div>'
+        +(x.kind==='video'?'<video controls playsinline preload="metadata" src="'+src+'"></video>':x.kind==='audio'?'<audio controls preload="metadata" src="'+src+'"></audio>':'')
+        +'<label>Title<input data-f="title" value="'+esc(x.title)+'"></label><label>Story<textarea data-f="text">'+esc(x.text)+'</textarea></label><label>Name shown<input data-f="name" value="'+esc(x.name)+'"></label>'
+        +'<div class="row">'+(x.status!=='approved'?'<button class="ok" data-a="approve">✓ Show on the site</button>':'<button data-a="approve">Save changes</button>')
+        +(x.status!=='hidden'?'<button data-a="hide">Hide</button>':'')+'<button class="no" data-a="delete">Delete</button></div></div>'; }).join(''); }
+  $('list').addEventListener('click',function(e){ var b=e.target.closest('[data-a]'); if(!b) return; var c=b.closest('.card'), id=c.dataset.id, a=b.dataset.a;
+    if(a==='delete'&&!confirm('Delete this story for good?')) return;
+    var body={k:K,id:id,action:a}; Array.prototype.forEach.call(c.querySelectorAll('[data-f]'),function(f){ body[f.dataset.f]=f.value; });
+    b.disabled=true; fetch('/api/stories/admin',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}).then(function(r){ if(!r.ok) throw 0; load(); }).catch(function(){ b.disabled=false; alert('That did not work. Please try again.'); }); });
+  $('tabs').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; if(b.id==='reload'){ load(); return; } tab=b.dataset.t; draw(); });
+  $('keyGo').addEventListener('click',function(){ K=$('key').value.trim(); load(); });
+  $('key').addEventListener('keydown',function(e){ if(e.key==='Enter') $('keyGo').click(); });
+  load();
+})();
+</script>
+</body>
+</html>

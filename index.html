@@ -1119,6 +1119,44 @@ section.section.bundles{display:block;margin-top:0}
 .vs{position:fixed;inset:0;z-index:70;color:#fff;display:flex;flex-direction:column;font-family:'Archivo',sans-serif;
   background:radial-gradient(130% 60% at 50% 78%,rgba(42,95,176,.5),rgba(42,95,176,0) 62%),linear-gradient(#10161f,#06080b 72%)}
 .vs[hidden]{display:none}
+/* ── Manna… Fish Stories (Ken, 12 Oct) */
+.fslist{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;margin-top:26px}
+.fscard{border:1px solid var(--line);border-radius:18px;padding:16px 18px;background:var(--ink2,#0b1620);display:flex;flex-direction:column;gap:8px;min-width:0}
+.fscard .fsk{font:700 .72rem 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#6f9be0}
+.fscard h3{margin:0;font:700 1.15rem/1.3 'Archivo',sans-serif;color:var(--foam)}
+.fscard video{width:100%;border-radius:12px;background:#000;max-height:420px}
+.fscard audio{width:100%}
+.fscard .fstx{margin:0;font:1rem/1.6 'Spectral',Georgia,serif;color:var(--foam);white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}
+.fscard .fstx.open{display:block}
+.fscard .fsrm{align-self:flex-start;border:0;background:none;color:#6f9be0;font:600 .9rem 'Archivo',sans-serif;cursor:pointer;padding:0}
+.fscard .fsby{font:600 .85rem 'Archivo',sans-serif;color:var(--foam-dim,#9fb2b6)}
+.fsempty{grid-column:1/-1;text-align:center;color:var(--foam-dim,#9fb2b6);font-size:1.05rem}
+.fs .fsbody{padding:4px 22px 60px}
+.fsh2{margin:6px 0 14px;font:800 clamp(1.5rem,6vw,2rem)/1.15 'Archivo',sans-serif}
+.fstabs{display:flex;gap:8px;margin:0 0 16px}
+.fstabs button{flex:1;border:1.5px solid rgba(255,255,255,.4);background:none;color:#fff;border-radius:14px;padding:12px 6px;font:700 1rem 'Archivo',sans-serif;cursor:pointer}
+.fstabs button[aria-selected="true"]{background:#2a5fb0;border-color:#2a5fb0}
+.fsmedia{border:1px dashed rgba(255,255,255,.3);border-radius:16px;padding:14px;margin-bottom:14px;display:flex;flex-direction:column;gap:12px;align-items:center}
+.fsmedia[hidden]{display:none}
+.fsmedia video{width:100%;max-height:46vh;border-radius:12px;background:#000}
+.fsmedia audio{width:100%}
+.fsrecrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center}
+#fsRec.on{background:#c8423c!important;border-color:#c8423c!important}
+.fstime{font:700 1rem 'Archivo',sans-serif;font-variant-numeric:tabular-nums;opacity:.85}
+.fsfile{font:600 .92rem 'Archivo',sans-serif;opacity:.85;cursor:pointer;text-decoration:underline}
+.fsfile input{position:absolute;width:1px;height:1px;opacity:0}
+.fsl{display:flex;flex-direction:column;gap:5px;margin:0 0 12px;font:600 .9rem 'Archivo',sans-serif;opacity:.95;min-width:0}
+.fsl input,.fsl textarea,.fsl select{font:400 1.05rem 'Archivo',sans-serif;color:#fff;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:11px 12px;width:100%;box-sizing:border-box}
+.fsl select option{background:#0b1620}
+.fsrow2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fsok{display:flex;gap:10px;align-items:flex-start;font:500 .95rem/1.45 'Archivo',sans-serif;margin:4px 0 8px;cursor:pointer}
+.fsok input{width:22px;height:22px;flex:none;margin-top:1px}
+.fsnote{font-size:.86rem;opacity:.7;margin:0 0 14px}
+.fsprog{height:8px;border-radius:99px;background:rgba(255,255,255,.15);overflow:hidden;margin-top:14px}.fsprog[hidden]{display:none}
+.fsprog i{display:block;height:100%;width:0;background:#f5d76e;transition:width .3s}
+.fsmsg{font:600 1rem/1.5 'Archivo',sans-serif;margin-top:12px;min-height:1.5em}
+.fsmsg.err{color:#ff9d97}
+.hp{position:absolute;left:-9999px;width:1px;height:1px}
 .vsbar{display:flex;align-items:center;gap:10px;padding:max(14px,env(safe-area-inset-top)) 16px 6px;max-width:680px;width:100%;margin:0 auto;box-sizing:border-box}
 .vsk{flex:1;font:800 .8rem 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;opacity:.85}
 .vsbody{flex:1;overflow:auto;padding:4px 26px 320px;max-width:680px;width:100%;margin:0 auto;box-sizing:border-box}
@@ -1349,6 +1387,7 @@ section.section.bundles{display:block;margin-top:0}
   <div class="sitemenu" id="siteMenu" role="menu" hidden translate="no">
     <button type="button" class="hbtn smi" id="vsBtn" role="menuitem"><span class="hbi" aria-hidden="true">&#9654;&#xFE0E;</span><span class="hbt"><b id="vsLab">The vision</b><small id="vsSub">Listen · 3 min</small></span></button>
     <button type="button" class="hbtn smi" id="tourBtn" role="menuitem"><span class="hbi" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M15.5 8.5 13.4 13.4 8.5 15.5 10.6 10.6z" fill="currentColor"></path></svg></span><span class="hbt"><b id="tourLab">Take a tour</b><small id="tourSub">How it works</small></span></button>
+    <button type="button" class="hbtn smi" id="smStories" role="menuitem"><span class="hbi" aria-hidden="true">&#128031;&#xFE0E;</span><span class="hbt"><b id="smStLab">Fish stories</b><small id="smStSub">Share your catch</small></span></button>
     <button type="button" class="hbtn smi" id="smResume" role="menuitem" hidden><span class="hbi" aria-hidden="true">&#8634;&#xFE0E;</span><span class="hbt"><b id="smResLab">Pick up where you left off</b><small id="smResSub"></small></span></button>
   </div>
 </div></header>
@@ -1562,6 +1601,14 @@ section.section.bundles{display:block;margin-top:0}
   </div>
 </div></section>
 
+<!-- Ken, 12 Oct: "Manna…Fish Stories -- a section where people can share their catch. Video, audio or written fish stories."
+     Every story is looked at by MannaFish before it shows here. -->
+<section class="section fstories" id="stories" translate="no"><div class="wrap">
+  <div class="section-head"><span class="eyebrow" id="fsEy">Share your catch</span><h2 id="fsH">Manna… Fish Stories</h2><p id="fsP"></p></div>
+  <div class="cta-row"><button type="button" class="btn btn-primary" id="fsShare"></button></div>
+  <div class="fslist" id="fsList"></div><div class="cta-row"><button type="button" class="btn" id="fsMore" hidden></button></div>
+</div></section>
+
 <section class="section bundles" id="bundles"><div class="wrap">
   <div class="section-head">
     <span class="eyebrow">Bundles &amp; bulk orders</span>
@@ -1722,6 +1769,30 @@ section.section.bundles{display:block;margin-top:0}
   <div class="vsbar"><span class="vsk" id="vsTitle"></span><button type="button" class="ptc" id="vsX" aria-label="Close">&times;</button></div>
   <div class="vsbody" id="vsBody"><div class="vsslogan"><p class="slogan" id="slogan">“Give <a class="slink" href="#reach"><b><span class="wm-m">Manna</span><span class="wm-f">Fish</span></b></a>, feed him a meal, Teach man <a class="slink" href="#story"><b><span class="wm-m">2</span><span class="wm-f">Fish</span></b></a>, feed him for Life!”</p></div><div class="vstxt chapter" id="vsTxt"></div></div>
 </div>
+<div class="vs fs" id="fs" role="dialog" aria-modal="true" aria-labelledby="fsTitle" hidden translate="no">
+  <div class="vsbar"><span class="vsk" id="fsTitle"></span><button type="button" class="ptc" id="fsX" aria-label="Close">&times;</button></div>
+  <div class="vsbody fsbody">
+    <h2 class="fsh2" id="fsH2"></h2>
+    <div class="fstabs" role="tablist"><button type="button" role="tab" data-k="text"></button><button type="button" role="tab" data-k="audio"></button><button type="button" role="tab" data-k="video"></button></div>
+    <div class="fsmedia" id="fsMedia" hidden>
+      <video id="fsLive" playsinline muted autoplay hidden></video>
+      <div class="fsrecrow"><button type="button" class="ptbtn ptmain" id="fsRec"></button><span class="fstime" id="fsTime"></span></div>
+      <div id="fsPrev"></div>
+      <label class="fsfile"><span id="fsFileLab"></span><input type="file" id="fsFile"></label>
+    </div>
+    <label class="fsl"><span id="fsLTitle"></span><input id="fsTitleIn" maxlength="140" autocomplete="off"></label>
+    <label class="fsl"><span id="fsLText"></span><textarea id="fsText" maxlength="4000" rows="6"></textarea></label>
+    <div class="fsrow2"><label class="fsl"><span id="fsLName"></span><input id="fsName" maxlength="60" autocomplete="given-name"></label>
+      <label class="fsl"><span id="fsLWord"></span><select id="fsWord"></select></label></div>
+    <label class="fsl"><span id="fsLEmail"></span><input id="fsEmail" type="email" maxlength="160" autocomplete="email"></label>
+    <input id="fsWeb" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <label class="fsok"><input type="checkbox" id="fsOk"><span id="fsLOk"></span></label>
+    <p class="fsnote" id="fsNote"></p>
+    <div class="ptrow"><button type="button" class="ptbtn ptmain" id="fsSend"></button></div>
+    <div class="fsprog" id="fsProg" hidden><i></i></div>
+    <p class="fsmsg" id="fsMsg" aria-live="polite"></p>
+  </div>
+</div>
 <div class="pt" id="pt" role="dialog" aria-modal="true" aria-labelledby="ptTitle" hidden translate="no">
   <div class="ptbar"><button type="button" class="ptc" id="ptX" aria-label="Close">&times;</button><span class="ptttl" id="ptTitle"></span>
     <button type="button" class="ptc" id="ptSpk" aria-pressed="false" aria-label="Listen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button><button type="button" class="ptc ptpause" id="ptPause" aria-label="Pause" hidden></button>
@@ -1772,7 +1843,7 @@ window.MF=(function(){
   function detect(){ var n=(navigator.language||'').toLowerCase().split('-')[0]; if(n==='fil') n='tl'; if(n==='iw') n='he'; return LL.indexOf(n)>=0?n:'en'; }
   var L='en'; try{var q=(location.search.match(/[?&]lang=(es|en|tl|zh|hi|el|de|ko|he)\b/)||[])[1], st=localStorage.getItem('mf-lang'); L=q||(LL.indexOf(st)>=0?st:'')||detect();}catch(e){}
   var hooks=[], orig=new WeakMap(), X=window.MFI18N;
-  var SKIP='script,style,#refs,#reader,#mfPlayer,#notesBox,#mfToast,#listenBtn,#trnBtn,#siteMore,#siteMenu,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#okBox,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
+  var SKIP='script,style,#refs,#reader,#mfPlayer,#notesBox,#mfToast,#listenBtn,#trnBtn,#siteMore,#siteMenu,#stories,#fs,.fishbox,select,#wTitle,#gkM,#hbM,#gkC,#hbC,#dailyBtn,#dailyMsg,.pick,#reachChosen,#signupMsg,#giftFormMsg,#devoFormMsg,#fishnetMsg,#shareMsg,#langBtn,#modeBtn,#cmpBtn,#cmpCap,#cmpMenu,.cmp,#okBox,#gkLab,#hbLab,#traceLab,#hearSel,#hearBox,.toolrow,#notesBox,#acctBox,.fishspk,.saybox,#resumeBar';
   function norm(s){return s.replace(/\s+/g,' ').trim();}
   function t(k){var u=X.ui[k]; return u ? (L==='es'?u[1]:u[0]) : k;}
   function applyPage(){
@@ -2545,7 +2616,8 @@ window.MF=(function(){
         +'<label class="ptwho">'+esc(T.who)+'<input id="ptWho" type="text" maxlength="60" autocomplete="off"></label>'
         +'<div class="ptrow"><button type="button" class="ptbtn" data-a="prayfor">🙏 '+esc(T.prayfor)+'</button><button type="button" class="ptbtn" data-a="share">↗ '+esc(T.share)+'</button></div>'+prm('p_do'); }
     else if(s.k==='amen'){ t=[P[5]]; h=kick(T.k_amen)+'<h2 class="pth ptpr">'+sp1(1,P[5])+'</h2><div class="ptrow"><button type="button" class="ptbtn ptmain" data-a="amen">'+esc(T.amen_btn)+'</button>'
-        +((PT.len||dLen())!=='full'?'<button type="button" class="ptbtn" data-a="deeper">'+esc((DLEN[l]||DLEN.en).deeper.replace('{w}',w))+' ›</button>':'')+'</div>'+prm('p_amen'); }
+        +((PT.len||dLen())!=='full'?'<button type="button" class="ptbtn" data-a="deeper">'+esc((DLEN[l]||DLEN.en).deeper.replace('{w}',w))+' ›</button>':'')+'</div>'
+        +'<div class="ptrow"><button type="button" class="ptlink" data-fs="1">🐟 '+esc((FSL[l]||FSL.en)[0])+'</button></div>'+prm('p_amen'); }
     var st=$('ptStage'); st.style.animation='none'; void st.offsetWidth; st.style.animation=''; st.innerHTML=h; st.scrollTop=0; PT.t=t; PT.ready=ready||Promise.resolve();
     $('ptDots').innerHTML='<i style="width:'+Math.round((PT.i+1)/PT.steps.length*100)+'%"></i>';
     $('pt').classList.toggle('guided',!!PT.listen);
@@ -2689,6 +2761,96 @@ window.MF=(function(){
   $('vsX').addEventListener('click',vsClose);
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('vs').hidden) vsClose(); });
   MF.onChange(vsUI); vsUI();
+  // ── Manna… Fish Stories (Ken, 12 Oct): "a section where people can share their catch -- video, audio or written".
+  // Stories go to MannaFish first (/api/stories); only approved ones are shown. The site's own words are in English and
+  // Spanish; the devotional's link and the ••• menu are in all nine languages.
+  var FSL={"en": ["Share your fish story", "Fish stories", "Share your catch"], "es": ["Comparte tu historia de pesca", "Historias de pesca", "Comparte tu pesca"], "tl": ["Ibahagi ang iyong kuwento ng huli", "Mga kuwento ng huli", "Ibahagi ang iyong huli"], "zh": ["分享你的得鱼见证", "得鱼见证", "分享你的收获"], "hi": ["अपनी मछली की कहानी बताएँ", "मछली की कहानियाँ", "अपनी पकड़ साझा करें"], "el": ["Μοιράσου την ιστορία ψαρέματός σου", "Ιστορίες ψαρέματος", "Μοιράσου την ψαριά σου"], "de": ["Erzähl deine Fischgeschichte", "Fischgeschichten", "Teile deinen Fang"], "ko": ["물고기 이야기 나누기", "물고기 이야기", "당신의 수확을 나눠 주세요"], "he": ["שתפו את סיפור הדייג שלכם", "סיפורי דייג", "שתפו את השלל שלכם"]}, ST={"en": {"ey": "Share your catch", "h": "Manna… Fish Stories", "p": "Every fisherman has a story. What has God done with His Word in your life, or through a MannaFish you gave away? Tell it in writing, a voice recording or a short video.", "share": "🐟 Share your fish story", "more": "Show more stories", "empty": "No fish stories yet. Be the first to share your catch!", "title": "MannaFish · Fish stories", "h2": "Share your fish story", "text": "✍ Write", "audio": "🎙 Audio", "video": "🎥 Video", "rec": "● Record", "stop": "■ Stop", "again": "● Record again", "pick_a": "or choose a recording from your phone", "pick_v": "or choose a video from your phone", "lt": "Title", "ltext": "Your story", "ltext_m": "A few words about it (optional)", "lname": "Your first name (shown)", "lword": "Which MannaFish word? (optional)", "none": "—", "lemail": "Your email (optional, never shown; only so we can thank you)", "ok": "I agree that MannaFish may share my story on this site and with others, to encourage them.", "note": "Every story is read, heard or watched by the MannaFish team before it appears here.", "send": "Send my story", "sending": "Sending…", "up": "Uploading… {p}%", "thanks": "Thank you! Your fish story will appear here after it has been reviewed.", "need_text": "Please write your story.", "need_media": "Please record or choose your {k} first.", "need_ok": "Please tick the box to agree to share your story.", "big": "That file is too large (up to {n} MB). Try recording a shorter one here.", "fail": "Sorry, it could not be sent. Please try again.", "busy": "Many stories just now. Please try again in a little while.", "nocam": "Please allow the camera and microphone. On iPhone: Settings › Safari › Camera and Microphone › Allow.", "nomic": "Please allow the microphone. On iPhone: Settings › Safari › Microphone › Allow.", "max": "up to {n}", "by": "— {n}", "anon": "— a fellow fisher", "rm": "Read more", "less": "Show less", "kt": "Written", "ka": "Audio", "kv": "Video"}, "es": {"ey": "Comparte tu pesca", "h": "Historias de pesca de MannaFish", "p": "Todo pescador tiene una historia. ¿Qué ha hecho Dios con Su Palabra en tu vida, o por medio de un MannaFish que regalaste? Cuéntala por escrito, con una grabación de voz o con un video corto.", "share": "🐟 Comparte tu historia", "more": "Ver más historias", "empty": "Aún no hay historias. ¡Sé el primero en compartir tu pesca!", "title": "MannaFish · Historias de pesca", "h2": "Comparte tu historia de pesca", "text": "✍ Escribir", "audio": "🎙 Audio", "video": "🎥 Video", "rec": "● Grabar", "stop": "■ Parar", "again": "● Grabar otra vez", "pick_a": "o elige una grabación de tu teléfono", "pick_v": "o elige un video de tu teléfono", "lt": "Título", "ltext": "Tu historia", "ltext_m": "Unas palabras sobre ella (opcional)", "lname": "Tu nombre (se muestra)", "lword": "¿Qué palabra de MannaFish? (opcional)", "none": "—", "lemail": "Tu correo (opcional, nunca se muestra; solo para darte las gracias)", "ok": "Acepto que MannaFish comparta mi historia en este sitio y con otros, para animarlos.", "note": "El equipo de MannaFish lee, escucha o ve cada historia antes de que aparezca aquí.", "send": "Enviar mi historia", "sending": "Enviando…", "up": "Subiendo… {p}%", "thanks": "¡Gracias! Tu historia aparecerá aquí después de ser revisada.", "need_text": "Por favor, escribe tu historia.", "need_media": "Primero graba o elige tu {k}.", "need_ok": "Marca la casilla para aceptar compartir tu historia.", "big": "El archivo es muy grande (hasta {n} MB). Prueba grabar uno más corto aquí.", "fail": "No se pudo enviar. Inténtalo otra vez.", "busy": "Muchas historias ahora. Inténtalo en un rato.", "nocam": "Permite la cámara y el micrófono. En iPhone: Ajustes › Safari › Cámara y Micrófono › Permitir.", "nomic": "Permite el micrófono. En iPhone: Ajustes › Safari › Micrófono › Permitir.", "max": "hasta {n}", "by": "— {n}", "anon": "— un pescador", "rm": "Leer más", "less": "Ver menos", "kt": "Escrita", "ka": "Audio", "kv": "Video"}};
+  function stT(){ return ST[MF.lang]||ST.en; }
+  var FS={kind:'text',blob:null,mime:'',dur:0,rec:null,stream:null,t0:0,timer:null,url:'',list:[],shown:12};
+  var FSMAX={audio:{sec:180,mb:24},video:{sec:60,mb:60}};
+  function mmss(n){ n=Math.max(0,Math.round(n)); return Math.floor(n/60)+':'+('0'+n%60).slice(-2); }
+  function fsUI(){ var T=stT(), F=FSL[MF.lang]||FSL.en; $('fsEy').textContent=T.ey; $('fsH').textContent=T.h; $('fsP').textContent=T.p; $('fsShare').textContent=T.share; $('fsMore').textContent=T.more;
+    $('smStLab').textContent=F[1]; $('smStSub').textContent=F[2];
+    $('fsTitle').textContent=T.title; $('fsH2').textContent=T.h2;
+    Array.prototype.forEach.call(document.querySelectorAll('.fstabs button'),function(b){ b.textContent=T[b.dataset.k]; b.setAttribute('aria-selected',b.dataset.k===FS.kind?'true':'false'); });
+    $('fsLTitle').textContent=T.lt; $('fsLText').textContent=FS.kind==='text'?T.ltext:T.ltext_m; $('fsLName').textContent=T.lname; $('fsLWord').textContent=T.lword; $('fsLEmail').textContent=T.lemail;
+    $('fsLOk').textContent=T.ok; $('fsNote').textContent=T.note; $('fsSend').textContent=T.send;
+    $('fsFileLab').textContent=FS.kind==='video'?T.pick_v:T.pick_a; $('fsFile').accept=FS.kind==='video'?'video/*':'audio/*';
+    var ws=$('fsWord'), v=ws.value; ws.innerHTML='<option value="">'+T.none+'</option>'+ORDER.map(function(k){ return '<option value="'+k+'">'+esc(titleIn(MF.lang,k))+'</option>'; }).join(''); ws.value=v;
+    fsRecUI(); fsRender(); }
+  // the stories on the page
+  function fsLoad(){ fetch('/api/stories').then(function(r){ return r.ok?r.json():{stories:[]}; }).then(function(j){ FS.list=j.stories||[]; fsRender(); }).catch(function(){ FS.list=[]; fsRender(); }); }
+  function fsRender(){ var T=stT(), box=$('fsList'); if(!box) return; var L=FS.list.slice(0,FS.shown);
+    if(!FS.list.length){ box.innerHTML='<p class="fsempty">'+esc(T.empty)+'</p>'; $('fsMore').hidden=true; return; }
+    box.innerHTML=L.map(function(x){ var src='/api/stories/media?id='+encodeURIComponent(x.id), w=x.word&&DATA[x.word]?titleIn(MF.lang,x.word):'';
+      var d=''; try{ d=new Date(x.at).toLocaleDateString(MF.lang,{month:'short',day:'numeric',year:'numeric'}); }catch(e){}
+      return '<article class="fscard" lang="'+esc(x.lang)+'"><div class="fsk">'+(x.kind==='video'?'🎥 '+T.kv:x.kind==='audio'?'🎙 '+T.ka:'✍ '+T.kt)+(w?' · '+esc(w):'')+'</div>'
+        +(x.title?'<h3>'+esc(x.title)+'</h3>':'')
+        +(x.kind==='video'?'<video controls playsinline preload="metadata" src="'+src+'#t=0.1"></video>':x.kind==='audio'?'<audio controls preload="none" src="'+src+'"></audio>':'')
+        +(x.text?'<p class="fstx">'+esc(x.text)+'</p>'+(x.text.length>380?'<button type="button" class="fsrm">'+esc(T.rm)+'</button>':''):'')
+        +'<div class="fsby">'+esc(x.name?T.by.replace('{n}',x.name):T.anon)+(d?' · '+esc(d):'')+'</div></article>'; }).join('');
+    $('fsMore').hidden=FS.list.length<=FS.shown; }
+  $('fsList').addEventListener('click',function(e){ var b=e.target.closest('.fsrm'); if(!b) return; var p=b.previousElementSibling, T=stT(); p.classList.toggle('open'); b.textContent=p.classList.contains('open')?T.less:T.rm; });
+  $('fsMore').addEventListener('click',function(){ FS.shown+=12; fsRender(); });
+  // the share form
+  function fsOpen(){ if(PT.on) ptClose(); if(TR&&TR.on) trClose(); if(!$('vs').hidden) vsClose(); stopSpeak();
+    $('fs').hidden=false; $('fs').dir=MF.lang==='he'?'rtl':'ltr'; document.documentElement.style.overflow='hidden'; $('fsMsg').textContent=''; $('fsMsg').className='fsmsg'; fsUI(); }
+  function fsClose(){ fsRecStop(true); $('fs').hidden=true; document.documentElement.style.overflow=''; }
+  function fsKind(k){ if(FS.rec) fsRecStop(true); FS.kind=k; fsClear(); $('fsMedia').hidden=k==='text'; fsUI(); }
+  function fsClear(){ FS.blob=null; FS.mime=''; FS.dur=0; if(FS.url){ URL.revokeObjectURL(FS.url); FS.url=''; } $('fsPrev').innerHTML=''; $('fsTime').textContent=''; }
+  function fsRecUI(){ var T=stT(), b=$('fsRec'), on=!!FS.rec, mx=FSMAX[FS.kind]; if(!mx) return; b.classList.toggle('on',on); b.textContent=on?T.stop:FS.blob?T.again:T.rec;
+    $('fsTime').textContent=on?mmss((Date.now()-FS.t0)/1000)+' / '+mmss(mx.sec):(FS.blob?mmss(FS.dur):T.max.replace('{n}',mmss(mx.sec))); }
+  function fsPickMime(k){ var c=k==='video'?['video/mp4;codecs=avc1,mp4a','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm']:['audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus'];
+    for(var i=0;i<c.length;i++) if(window.MediaRecorder&&MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(c[i])) return c[i]; return ''; }
+  function fsShowPrev(blob,mime){ fsClear(); FS.blob=blob; FS.mime=(mime||blob.type||'').split(';')[0]; FS.url=URL.createObjectURL(blob);
+    var v=FS.kind==='video', el=document.createElement(v?'video':'audio'); el.controls=true; if(v) el.setAttribute('playsinline',''); el.src=FS.url;
+    el.addEventListener('loadedmetadata',function(){ if(isFinite(el.duration)&&el.duration>0&&!FS.dur){ FS.dur=el.duration; fsRecUI(); } }); $('fsPrev').appendChild(el); }
+  function fsRecStart(){ var T=stT(), k=FS.kind, mx=FSMAX[k];
+    if(!navigator.mediaDevices||!window.MediaRecorder){ fsMsg(k==='video'?T.nocam:T.nomic,true); return; }
+    var c=k==='video'?{video:{facingMode:'user',width:{ideal:640},height:{ideal:480}},audio:{echoCancellation:true,noiseSuppression:true}}:{audio:{echoCancellation:true,noiseSuppression:true}};
+    navigator.mediaDevices.getUserMedia(c).then(function(st){ if(FS.kind!==k||$('fs').hidden){ st.getTracks().forEach(function(t){ t.stop(); }); return; }
+      fsClear(); FS.stream=st; var m=fsPickMime(k), o={}; if(m) o.mimeType=m; if(k==='video'){ o.videoBitsPerSecond=900000; o.audioBitsPerSecond=64000; } else o.audioBitsPerSecond=64000;
+      var r; try{ r=new MediaRecorder(st,o); }catch(e){ r=new MediaRecorder(st); } var parts=[];
+      if(k==='video'){ var lv=$('fsLive'); lv.srcObject=st; lv.hidden=false; var pp=lv.play(); if(pp&&pp.catch) pp.catch(function(){}); }
+      r.ondataavailable=function(e){ if(e.data&&e.data.size) parts.push(e.data); };
+      r.onstop=function(){ var secs=(Date.now()-FS.t0)/1000, type=(r.mimeType||m||(k==='video'?'video/webm':'audio/webm')); st.getTracks().forEach(function(t){ t.stop(); }); $('fsLive').srcObject=null; $('fsLive').hidden=true;
+        FS.rec=null; FS.stream=null; clearInterval(FS.timer); if(r._drop||!parts.length){ fsRecUI(); return; } fsShowPrev(new Blob(parts,{type:type}),type); FS.dur=secs; fsRecUI(); };
+      FS.rec=r; FS.t0=Date.now(); r.start(1000); fsMsg(''); fsRecUI();
+      FS.timer=setInterval(function(){ fsRecUI(); if((Date.now()-FS.t0)/1000>=mx.sec) fsRecStop(false); },250); })
+    .catch(function(){ fsMsg(k==='video'?T.nocam:T.nomic,true); }); }
+  function fsRecStop(drop){ var r=FS.rec; if(!r) return; r._drop=!!drop; if(r.state!=='inactive') r.stop(); else { FS.rec=null; } }
+  $('fsRec').addEventListener('click',function(){ if(FS.rec) fsRecStop(false); else fsRecStart(); });
+  $('fsFile').addEventListener('change',function(){ var f=this.files&&this.files[0], T=stT(), mx=FSMAX[FS.kind]; this.value=''; if(!f||!mx) return;
+    if(f.size>mx.mb*1024*1024){ fsMsg(T.big.replace('{n}',mx.mb),true); return; }
+    var t=f.type||(/\.mov$/i.test(f.name)?'video/quicktime':/\.mp4$/i.test(f.name)?'video/mp4':/\.m4a$/i.test(f.name)?'audio/mp4':/\.mp3$/i.test(f.name)?'audio/mpeg':'');
+    fsMsg(''); fsShowPrev(f,t); fsRecUI(); });
+  Array.prototype.forEach.call(document.querySelectorAll('.fstabs button'),function(b){ b.addEventListener('click',function(){ fsKind(b.dataset.k); }); });
+  function fsMsg(t,err){ var m=$('fsMsg'); m.textContent=t||''; m.className='fsmsg'+(err?' err':''); }
+  function fsProg(p){ var b=$('fsProg'); b.hidden=p==null; if(p!=null) b.firstChild.style.width=Math.round(p*100)+'%'; }
+  function jpost(u,b){ return fetch(u,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)}).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(!r.ok){ var e=new Error(j.error||'fail'); e.status=r.status; throw e; } return j; }); }); }
+  $('fsSend').addEventListener('click',function(){ var T=stT(), k=FS.kind, text=$('fsText').value.trim(), btn=this;
+    if(FS.rec) fsRecStop(false);
+    if(k==='text'&&text.length<10){ fsMsg(T.need_text,true); $('fsText').focus(); return; }
+    if(k!=='text'&&!FS.blob){ fsMsg(T.need_media.replace('{k}',k==='video'?T.kv.toLowerCase():T.ka.toLowerCase()),true); return; }
+    if(!$('fsOk').checked){ fsMsg(T.need_ok,true); return; }
+    btn.disabled=true; fsMsg(T.sending);
+    var body={kind:k,title:$('fsTitleIn').value,text:text,name:$('fsName').value,word:$('fsWord').value,email:$('fsEmail').value,lang:MF.lang,consent:true,website:$('fsWeb').value};
+    jpost('/api/stories',body).then(function(j){ if(k==='text') return;
+      var PART=3*1024*1024, b=FS.blob, n=Math.ceil(b.size/PART), i=0; fsProg(0);
+      var next=function(){ if(i>=n) return jpost('/api/stories/done',{id:j.id,tok:j.tok,parts:n,mime:FS.mime||b.type,dur:FS.dur});
+        fsMsg(T.up.replace('{p}',Math.round(i/n*100)));
+        return fetch('/api/stories/part?id='+encodeURIComponent(j.id)+'&tok='+encodeURIComponent(j.tok)+'&n='+i,{method:'PUT',body:b.slice(i*PART,(i+1)*PART)})
+          .then(function(r){ if(!r.ok){ var e=new Error('part'); e.status=r.status; throw e; } i++; fsProg(i/n); return next(); }); };
+      return next(); })
+    .then(function(){ fsProg(null); btn.disabled=false; fsMsg(T.thanks); $('fsText').value=''; $('fsTitleIn').value=''; $('fsOk').checked=false; fsClear(); fsRecUI(); })
+    .catch(function(e){ fsProg(null); btn.disabled=false; fsMsg(e&&e.status===429?T.busy:e&&e.status===415?T.big.replace('{n}',(FSMAX[k]||{}).mb):T.fail,true); }); });
+  $('fsShare').addEventListener('click',fsOpen);
+  $('fsX').addEventListener('click',fsClose);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('fs').hidden) fsClose(); });
+  $('smStories').addEventListener('click',function(){ $('stories').scrollIntoView({behavior:'smooth',block:'start'}); });
+  $('ptStage').addEventListener('click',function(e){ if(e.target.closest('[data-fs]')) fsOpen(); });
+  MF.onChange(fsUI); fsUI();
+  if('IntersectionObserver' in window){ var fio=new IntersectionObserver(function(es){ if(es.some(function(x){ return x.isIntersecting; })){ fio.disconnect(); fsLoad(); } },{rootMargin:'600px'}); fio.observe($('stories')); } else fsLoad();
   MF.onChange(ptUI); ptUI();
   // the big reader's 🔊: the chapter from the day's verse (a Strong's card from the top)
   $('rSpk').addEventListener('click',function(){ var r=window.MFreader; if(!RD||!r) return;
