@@ -1,6 +1,7 @@
 // Email devotional subscribers, kept in this site's own Netlify Blobs store (like the phone
-// notifications). Daily = every gathering day (Sunday–Friday, Saturday is rest);
-// Weekly = Sundays; Monthly = the first Sunday of the month. All at 7am where the person is.
+// notifications). Daily = every gathering day (Sunday–Friday, Saturday is rest): the same fish all week,
+// the next two verses from the back of the decal each day; Weekly = Sundays (the week's fish; the devotional
+// on the site picks up where the person left off); Monthly = the first Sunday of the month. All at 7am where the person is.
 // Text sign-ups are kept too, and start receiving once texting is set up.
 import { getStore } from '@netlify/blobs';
 import { createHash, createHmac, randomBytes } from 'node:crypto';
@@ -35,8 +36,9 @@ export function emailFor(m, lang, unsub, opts = {}) {
   const keep = LINK; if (opts.site) LINK = opts.site;
   const es = lang === 'es', f = FISH[es ? 'es' : 'en'][m.key];
   const word = es ? (ES.titles[m.key] || m.title) : m.title;
-  const mm = m.ref.match(/^(.*?)\s+(\d+:\d+.*)$/);
-  const ref = es && mm ? (ES.books[mm[1]] || mm[1]) + ' ' + mm[2] : m.ref;
+  const refEs = (r) => { const mm = r.match(/^(.*?)\s+(\d+:\d+.*)$/); return es && mm ? (ES.books[mm[1]] || mm[1]) + ' ' + mm[2] : r; };
+  const ref = refEs(m.ref);
+  const refs = (m.refs || [{ ref: m.ref, snippet: m.snippet, url: m.url }]).map((x) => ({ ref: refEs(x.ref), snip: es ? '' : ' — “' + x.snippet + '”', url: SITE() + x.url + (es ? '&lang=es' : '') }));
   const read = SITE() + m.url + (es ? '&lang=es' : '');
   const img = SITE() + (es ? '/w/img/es/' + m.key.toLowerCase() + '.jpg' : '/w/img/' + m.key.toLowerCase() + '.png');
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -46,6 +48,9 @@ export function emailFor(m, lang, unsub, opts = {}) {
     : { dbl: 'Your double portion', dblNote: 'On the sixth day they gathered twice as much (Exodus 16:22). Today’s verse, and one for the Sabbath.', sab: 'For the Sabbath', sabRead: 'Read it', sabSub: ' · a double portion',
         sub: 'Today’s MannaFish: ' + word, hello: opts.welcome ? 'Welcome! Your first MannaFish:' : 'Today’s word', today: 'Today’s verse', read: 'Read the chapter', listen: 'See today’s MannaFish', fish: 'The verse on the fish', why: 'You are getting this because you signed up at manna-fish.com.', stop: 'Unsubscribe' };
   const snippet = es ? '' : ' — “' + m.snippet + '”';
+  // Ken, 13 Oct: one fish a week -- which day of the week's fish this is; the weekly email says the site picks up where they left off
+  const dayLine = m.day ? (es ? `Día ${m.day} de ${m.days} con ${word}` : `Day ${m.day} of ${m.days} with ${word}`) : '';
+  const weekNote = opts.weekly ? (es ? 'Tu pez para esta semana. Abre el devocional cualquier día: continúa donde lo dejaste.' : 'Your fish for this week. Open the devotional any day: it picks up where you left off.') : '';
   // Ken, 9 Oct: the email in the site's own look -- black, white lettering, MannaFish blue, the logo in its own font
   const logo = SITE() + '/w/img/logo-email.png';
   // Ken, 9 Oct: no audio from the email (it felt invasive) -- this button opens the day's fish on the site
@@ -78,7 +83,9 @@ ${opts.welcome ? td('padding:24px 22px 4px', head('welcome', T.hello)) : ''}
 ${td('padding:16px 18px', `<a href="${read}" style="text-decoration:none"><img src="${img}" width="524" alt="${esc(word)}" style="width:100%;max-width:524px;height:auto;border-radius:8px;display:block;border:0"></a>`, 'left')}
 ${dbl ? td('padding:6px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;color:#2a5fb0;font:900 19px Arial,sans-serif')) + '\n'
   + td('padding:6px 30px 14px;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(T.dblNote))) : ''}
-${td('padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0', gw(`<b style="color:#ffffff">${esc(ref)}</b>${esc(snippet)}`))}
+${dayLine ? td('padding:4px 26px 0;font:bold 13px/1.5 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#8fb3e8', gw(esc(dayLine))) : ''}
+${weekNote ? td('padding:4px 26px 0;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(weekNote))) : ''}
+${refs.map((x) => td('padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0', gw(`<a href="${x.url}" style="color:#ffffff;text-decoration:none"><b style="color:#ffffff">${esc(x.ref)}</b></a>${esc(x.snip)}`))).join('\n')}
 ${td('padding:16px 12px 20px;font-size:0', button(listen, 'listen', T.listen) + button(read, 'read', T.read))}
 ${rule}
 ${td('padding:16px 22px 0', head(dbl ? 'sab' : 'fish', dbl ? T.sab : T.fish))}
@@ -88,7 +95,7 @@ ${dbl ? td('padding:16px 12px 24px;font-size:0', button(sabLink, 'sabread', T.sa
 ${rule}
 ${td('padding:16px 22px 22px;font:12px/1.7 Arial,sans-serif;color:#8a9aa0', gw(`${esc(T.why)} <a href="${unsub}" style="color:#8a9aa0">${esc(T.stop)}</a> · <a href="${SITE()}/privacy/" style="color:#8a9aa0">${es ? 'Privacidad' : 'Privacy'}</a><br>${esc(ADDRESS())}`))}
 </table></td></tr></table></body></html>`;
-  const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${dbl ? T.dbl + ' — ' + T.dblNote + '\n\n' : ''}${T.today}: ${ref}${snippet}\n${T.listen}: ${listen}\n${T.read}: ${read}\n\n${dbl ? T.sab : T.fish}: “${f.top} ${f.bottom}” ${f.ref}${dbl ? '\n' + T.sabRead + ': ' + sabLink : ''}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
+  const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${dbl ? T.dbl + ' — ' + T.dblNote + '\n\n' : ''}${dayLine ? dayLine + '\n' : ''}${weekNote ? weekNote + '\n' : ''}${refs.map((x) => T.today + ': ' + x.ref + x.snip + '\n' + x.url).join('\n')}\n${T.listen}: ${listen}\n${T.read}: ${read}\n\n${dbl ? T.sab : T.fish}: “${f.top} ${f.bottom}” ${f.ref}${dbl ? '\n' + T.sabRead + ': ' + sabLink : ''}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
   LINK = keep;
   return { subject: T.sub + (dbl ? T.sabSub : ''), html, text };
 }
@@ -139,7 +146,7 @@ export async function sendDue(now = new Date()) {
     if (here.hour < SEND_HOUR || rec.lastSent === here.date || !dueToday(rec.freq, here)) { skipped++; continue; }
     const m = todaysManna(now, tz);
     if (!m) { skipped++; continue; }
-    try { await deliver(rec, m); sent++; await s.setJSON(b.key, { ...rec, lastSent: here.date }); }
+    try { await deliver(rec, m, { weekly: rec.freq === 'Weekly' }); sent++; await s.setJSON(b.key, { ...rec, lastSent: here.date }); }
     catch (e) { failed++; console.log('devo email failed', b.key, String(e).slice(0, 200)); }
   }
   return { sent, failed, skipped, total: blobs.length };

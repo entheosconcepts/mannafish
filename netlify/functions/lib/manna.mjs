@@ -1,10 +1,12 @@
-// The manna rhythm (MANNAFISH brief, section 5): each word lasts two weeks; one verse a
-// day Sunday to Friday; nothing on Saturday, the Sabbath. Twelve verses per word = two
-// weeks of six gathering days. The cycle starts on START (a Sunday) with the first word.
+// The manna rhythm. Ken, 13 Oct: one fish a week -- the same word Sunday to Friday, going through
+// the verses on the back of the decal in order, two a day (twelve verses over six gathering days);
+// nothing on Saturday, the Sabbath. (It was one verse a day over two weeks.) The cycle starts on
+// START (a Sunday) with the first word.
 import WORDS from './words.json';
 import ES from './es.json';
 
-export const START = Date.UTC(2026, 9, 4); // Sunday 4 Oct 2026
+export const START = Date.UTC(2026, 9, 11); // Sunday 11 Oct 2026 (Rest)
+export const DAYS = 6;   // gathering days in a week
 
 export const DEFAULT_TZ = 'America/New_York';
 export const SEND_HOUR = 7;   // 7am in each person's own time zone (Ken, 6 Oct)
@@ -27,19 +29,21 @@ export function localNow(now = new Date(), tz = DEFAULT_TZ) {
 export function todaysManna(now = new Date(), tz = DEFAULT_TZ) {
   const { t, dow } = localNow(now, tz);
   if (dow === 6) return null;
-  const days = Math.floor((t - START) / 86400000);
-  const week = Math.floor(days / 7);
+  const week = Math.floor(Math.floor((t - START) / 86400000) / 7);
   const n = WORDS.order.length;
-  const key = WORDS.order[((Math.floor(week / 2) % n) + n) % n];
+  const key = WORDS.order[((week % n) + n) % n];
   const w = WORDS.words[key];
-  const i = (((week % 2) + 2) % 2) * 6 + dow;   // 0..11
-  const r = w.refs[i % w.refs.length];
+  const refs = dayRefs(w.refs.length, dow).map((i) => ({ i, ref: w.refs[i][0], snippet: w.refs[i][1], url: '/?w=' + key.toLowerCase() + '&r=' + i }));
   return {
-    key, title: w.title, refIndex: i % w.refs.length, ref: r[0], snippet: r[1],
+    key, title: w.title, day: dow + 1, days: DAYS, refs,
+    refIndex: refs[0].i, ref: refs[0].ref, snippet: refs[0].snippet,
     friday: dow === 5,
-    url: '/?w=' + key.toLowerCase() + '&r=' + (i % w.refs.length)
+    url: refs[0].url
   };
 }
+
+// the verses for day d (0 = Sunday) of a word with c verses, in order: twelve make two a day
+export function dayRefs(c, d) { const a = Math.floor(d * c / DAYS), z = Math.floor((d + 1) * c / DAYS), r = []; for (let i = a; i < z; i++) r.push(i); return r; }
 
 // Ken, 11 Oct: welcome emails rest over the Sabbath -- from 6pm Friday until 9pm Saturday where the person is;
 // one asked for then is sent at 9pm Saturday, with Sunday's word
@@ -53,8 +57,7 @@ export function welcomeManna(now = new Date(), tz = DEFAULT_TZ) {
 
 export function notificationFor(m, lang = 'en') {
   if (lang === 'es') {
-    const mm = m.ref.match(/^(.*?)\s+(\d+:\d+.*)$/);
-    const ref = mm ? (ES.books[mm[1]] || mm[1]) + ' ' + mm[2] : m.ref;
+    const ref = (m.refs || [m]).map((x) => { const mm = x.ref.match(/^(.*?)\s+(\d+:\d+.*)$/); return mm ? (ES.books[mm[1]] || mm[1]) + ' ' + mm[2] : x.ref; }).join(' · ');
     return {
       title: 'MannaFish de hoy: ' + (ES.titles[m.key] || m.title).toUpperCase(),
       body: ref + ' \u2014 toca para leer.' + (m.friday ? '  \u00b7 Porci\u00f3n doble: el vers\u00edculo de hoy y uno para el d\u00eda de reposo.' : ''),
@@ -63,7 +66,7 @@ export function notificationFor(m, lang = 'en') {
   }
   return {
     title: 'Today\u2019s MannaFish: ' + m.title.toUpperCase(),
-    body: m.ref + ' \u2014 \u201c' + m.snippet + '\u201d' + (m.friday ? '  \u00b7 A double portion: today\u2019s verse and one for the Sabbath.' : ''),
+    body: (m.refs || [m]).map((x) => x.ref).join(' \u00b7 ') + ' \u2014 \u201c' + m.snippet + '\u201d' + (m.friday ? '  \u00b7 A double portion: today\u2019s verse and one for the Sabbath.' : ''),
     url: m.url
   };
 }
