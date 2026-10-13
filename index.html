@@ -1079,6 +1079,7 @@ section.section.bundles{display:block;margin-top:0}
 .cfsh b.sm{font-size:clamp(.6rem,2.6vw,.85rem)}
 .cfsh:hover .cfi,.cfsh:focus-visible .cfi{filter:drop-shadow(0 0 6px rgba(245,215,110,.9))}
 .cfsh img,.chook img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.cfsh.myst img{opacity:.95}
 .cfsh.today{z-index:3}.cfsh.today img{filter:drop-shadow(0 0 5px rgba(245,215,110,.95))}
 .cfsh i{position:absolute;left:3%;width:72%;top:-22%;z-index:2;font:700 .55rem 'Archivo',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#f5d76e;text-align:center;font-style:normal}
 .ptcast.paused .cfsh,.ptcast.paused .cfi,.ptcast.paused .cbob,.ptcast.paused .chook{animation-play-state:paused!important}
@@ -2770,7 +2771,8 @@ window.MF=(function(){
       +'<rect x="'+n[0]+'" y="'+n[1]+'" width="'+n[2]+'" height="'+n[3]+'" fill="#fff" mask="url(#ko)"/></svg>'; }
   function caImg(k){ var l=PT.l, svg=fishFor(l,k)||FISH[k]||'', key=(svg===FISH[k]?'en':l)+'|'+k; if(CAIMG[key]) return CAIMG[key];
     try{ CAIMG[key]=URL.createObjectURL(new Blob([knockOut(svg)],{type:'image/svg+xml'})); }catch(e){ CAIMG[key]=''; } return CAIMG[key]; }
-  var CA={ph:'idle',t:[],done:false,mo:false,ac:null,k:null,paused:false,early:false};
+  var MYSTSRC='/match/back-pond.svg';   // the MannaFish side of the memory cards (dark inside, so it reads over the water)
+  var CA={myst:{},ph:'idle',t:[],done:false,mo:false,ac:null,k:null,paused:false,early:false};
   function caLater(f,ms){ CA.t.push(setTimeout(f,ms)); }
   function caStop(){ CA.t.forEach(clearTimeout); CA.t=[]; CA.paused=false; window.removeEventListener('devicemotion',caMotion); }
   function caEl(){ return $('ptStage').querySelector('.ptcast'); }
@@ -2792,10 +2794,13 @@ window.MF=(function(){
   function caFish(){ var ks=[cur], o=ORDER.filter(function(k){ return k!==cur; });
     while(ks.length<6&&o.length) ks.push(o.splice(Math.floor(Math.random()*o.length),1)[0]);
     ks.sort(function(){ return Math.random()-.5; }); var C=caT();
+    // Ken, 13 Oct: some are mystery fish -- they show only the MannaFish side (like the memory cards) until they are reeled in
+    var others=ks.filter(function(k){ return k!==cur; }).sort(function(){ return Math.random()-.5; }); CA.myst={}; others.slice(0,3).forEach(function(k){ CA.myst[k]=1; });
     // three lanes, two fish in each, half a lap apart and at the same speed, so no fish swims over another
     return ks.map(function(k,i){ var w=titleIn(PT.l,k), lane=i%3, dur=[30,36,33][lane], top=[1,35,69][lane], off=(i<3?0:dur/2)+lane*4;
-      return '<button type="button" class="cfsh'+(k===cur?' today':'')+'" data-k="'+k+'" style="top:'+top+'%;animation-duration:'+dur+'s;animation-delay:-'+off.toFixed(1)+'s" aria-label="'+esc(w)+'">'
-        +'<span class="cfi" style="animation-delay:-'+(i*0.4).toFixed(1)+'s"><img src="'+caImg(k)+'" alt="">'+(k===cur?'<i>'+esc(C.today)+'</i>':'')+'</span></button>'; }).join(''); }
+      var my=CA.myst[k];
+      return '<button type="button" class="cfsh'+(k===cur?' today':'')+(my?' myst':'')+'" data-k="'+k+'" style="top:'+top+'%;animation-duration:'+dur+'s;animation-delay:-'+off.toFixed(1)+'s" aria-label="'+esc(my?'MannaFish ?':w)+'">'
+        +'<span class="cfi" style="animation-delay:-'+(i*0.4).toFixed(1)+'s"><img src="'+(my?MYSTSRC:caImg(k))+'" alt="">'+(k===cur?'<i>'+esc(C.today)+'</i>':'')+'</span></button>'; }).join(''); }
   // a soft "plop" and a splash, made on the spot (no files to load)
   function caSound(kind){ try{ var ac=CA.ac||(CA.ac=new (window.AudioContext||window.webkitAudioContext)()); if(ac.state==='suspended') ac.resume(); var t=ac.currentTime;
       if(kind==='splash'){ var n=ac.createBuffer(1,ac.sampleRate*0.5,ac.sampleRate), d=n.getChannelData(0); for(var i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);
@@ -2817,7 +2822,7 @@ window.MF=(function(){
     if(guided) caSay([C.swim_line,C.swim_hint],function(){ caWhen(function(){ if(CA.ph==='swim') caChoose(cur); },9000); }); }
   // 2. a fish is chosen: it takes the hook -- now wait, be still, pray
   function caChoose(k){ if(CA.ph!=='swim'||!DATA[k]) return; var C=caT(); CA.k=k; caSound('plop');
-    var h=caEl().querySelector('.chook'); h.innerHTML='<img src="'+caImg(k)+'" alt="">'; caSet('hook',C.wait_line,C.pray_line);
+    var h=caEl().querySelector('.chook'); h.innerHTML='<img src="'+(CA.myst[k]?MYSTSRC:caImg(k))+'" alt="">'; caSet('hook',C.wait_line,C.pray_line);
     if(PT.listen) caSay([C.wait_line,C.pray_line],function(){ caWhen(caBite,2500+Math.random()*2000); });
     else caWhen(caBite,9000+Math.random()*3000); }
   // 3. the bite
