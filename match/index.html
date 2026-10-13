@@ -86,13 +86,13 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
 .face{position:absolute;inset:0;border-radius:8px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;background:#000;border:1px solid var(--cardback-line)}
 .face svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 .front{transform:rotateY(180deg)}
-/* once a card is turned over: a small speaker in its top-left corner and the language in the bottom-left, both on the
-   black outside the fish, so the cards need no extra room */
-.front .spk{position:absolute;top:4%;left:2%;width:max(16px,13%);aspect-ratio:1;border-radius:50%;background:var(--btn);color:#fff;display:flex;align-items:center;justify-content:center;z-index:2}
+/* Ken, 13 Oct: once a card is turned over -- the speaker for the word on the tip of the tail, the language on the other
+   tip of the tail, and the verse reader on the tip of the mouth */
+.front .spk{position:absolute;top:2%;right:1%;width:max(16px,13%);aspect-ratio:1;border-radius:50%;background:var(--btn);color:#fff;display:flex;align-items:center;justify-content:center;z-index:2}
 .front .spk svg{position:static;width:60%;height:60%}
 .front .vrs{position:absolute;left:.5%;top:50%;transform:translateY(-50%);width:max(16px,11%);aspect-ratio:1;border-radius:50%;background:#fff;color:#0b1620;border:2px solid var(--btn);display:flex;align-items:center;justify-content:center;z-index:2;box-sizing:border-box}
 .front .vrs svg{position:static;width:62%;height:62%}
-.front .ln{position:absolute;left:2.5%;bottom:3%;max-width:28%;font-size:clamp(7px,2.1vw,12px);font-weight:700;line-height:1.1;color:#fff;background:rgba(0,0,0,.65);border-radius:4px;padding:0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}
+.front .ln{position:absolute;right:1%;bottom:2%;max-width:24%;letter-spacing:.06em;font-size:clamp(7px,2.1vw,12px);font-weight:700;line-height:1.1;color:#fff;background:rgba(0,0,0,.65);border-radius:4px;padding:0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}
 .cell.talk .spk{animation:mfTalk .7s ease-in-out infinite alternate}
 @keyframes mfTalk{from{transform:scale(1)}to{transform:scale(1.15)}}
 .cell.miss .front{border-color:var(--miss);box-shadow:inset 0 0 0 2px var(--miss)}
@@ -242,7 +242,7 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
       var w=W[c.l][c.k], el=document.createElement('div');
       el.className='cell';
       el.innerHTML='<button type="button" class="card"><span class="inner"><span class="face back">'+BACK+'</span>'+
-        '<span class="face front" aria-hidden="true" lang="'+c.l+'">'+own(FISH[c.l][c.k]||'',c.i)+'<span class="spk">'+SPK+'</span><span class="vrs" title="'+esc(t('verse'))+'">'+BOOK+'</span><span class="ln">'+esc(NAME[c.l])+'</span></span></span></button>';
+        '<span class="face front" aria-hidden="true" lang="'+c.l+'">'+own(FISH[c.l][c.k]||'',c.i)+'<span class="spk">'+SPK+'</span><span class="vrs" title="'+esc(t('verse'))+'">'+BOOK+'</span><span class="ln" title="'+esc(NAME[c.l])+'">'+c.l.toUpperCase()+'</span></span></span></button>';
       c.el=el; c.btn=el.querySelector('.card');
       c.btn.addEventListener('click',function(e){
         if(c.up&&e.target.closest('.vrs')){ say(c,false,'verse'); return; }   // the tip of the nose: the verse
@@ -268,7 +268,7 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
   function announce(s){ var l=$('live'); l.textContent=''; setTimeout(function(){ l.textContent=s; },30); }
 
   function flip(c,up){ if(!up&&c.shown&&c.shown!==c.l){ c.shown=c.l; var f=c.el.querySelector('.front'), keep=[].slice.call(f.querySelectorAll('.spk,.vrs,.ln'));
-      f.innerHTML=own(FISH[c.l][c.k],c.i); keep.forEach(function(x){ f.appendChild(x); }); f.querySelector('.ln').textContent=NAME[c.l]; }
+      f.innerHTML=own(FISH[c.l][c.k],c.i); keep.forEach(function(x){ f.appendChild(x); }); f.querySelector('.ln').textContent=c.l.toUpperCase(); f.querySelector('.ln').title=NAME[c.l]; }
     c.up=up; c.el.classList.toggle('up',up); if(!up) c.el.classList.remove('miss'); label(c); }
   function tap(c){
     if(c.up){ swap(c); return; }                  // Ken, 13 Oct: tap again -- the same word in the other language
@@ -294,7 +294,7 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
   function other(c){ var p=c.l===l1?partner(c):l1; return p===c.l?(c.l===l1?l2:l1):p; }
   function swap(c){ var to=(c.shown||c.l)===c.l?other(c):c.l; if(!FISH[to]||!FISH[to][c.k]) return;
     c.shown=to; var f=c.el.querySelector('.front'), keep=[].slice.call(f.querySelectorAll('.spk,.vrs,.ln'));
-    f.innerHTML=own(FISH[to][c.k],c.i+'s'+to); keep.forEach(function(x){ f.appendChild(x); }); f.querySelector('.ln').textContent=NAME[to]; f.setAttribute('lang',to);
+    f.innerHTML=own(FISH[to][c.k],c.i+'s'+to); keep.forEach(function(x){ f.appendChild(x); }); f.querySelector('.ln').textContent=to.toUpperCase(); f.querySelector('.ln').title=NAME[to]; f.setAttribute('lang',to);
     say(c,false); }
   function turnBack(){ open.forEach(function(x){ flip(x,false); }); open=[]; }
   function won(){

@@ -1035,6 +1035,23 @@ section.section.bundles{display:block;margin-top:0}
 .ptcast.swim .cbob,.ptcast.hook .cbob{transform:none;animation:cabob 2.6s ease-in-out infinite}
 .ptcast.bite .cbob{transform:none;animation:cabite .55s ease-in-out infinite}
 .ptcast.catch .cbob,.ptcast.caught .cbob{animation:capull .7s ease-in both}
+.ptcast .clure,.ptcast .cbait{display:none}
+.ptcast.tk-lure .clure,.ptcast.tk-bait .cbait{display:inline}
+.ptcast.tk-lure .cbob,.ptcast.tk-bait .cbob,.ptcast.tk-lure .chl,.ptcast.tk-bait .chl{display:none}
+.ptcast:is(.tk-lure,.tk-bait) :is(.clure,.cbait){transform:translateY(-300px)}
+.ptcast.cast:is(.tk-lure,.tk-bait) :is(.clure,.cbait){animation:cacast .9s cubic-bezier(.3,.1,.5,1.4) both}
+.ptcast:is(.swim,.hook,.bite):is(.tk-lure,.tk-bait) :is(.clure,.cbait){transform:none}
+.ptcast:is(.catch,.caught):is(.tk-lure,.tk-bait) :is(.clure,.cbait){animation:capull .7s ease-in both}
+.ptcast .cjig{transform-box:fill-box;transform-origin:50% 0;animation:cajig .7s ease-in-out infinite alternate}
+.ptcast.bite .cjig{animation-duration:.25s}
+.ptcast .cworm{animation:cawig2 .45s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+.ptcast.paused .cjig,.ptcast.paused .cworm{animation-play-state:paused}
+@keyframes cajig{0%{transform:translate(-2px,0) rotate(-7deg)}100%{transform:translate(3px,3px) rotate(7deg)}}
+@keyframes cawig2{0%{transform:scaleY(1) skewX(-8deg)}100%{transform:scaleY(.8) skewX(10deg)}}
+.ctackle{position:absolute;right:8px;top:8px;z-index:2;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.ctackle button{border:1px solid rgba(255,255,255,.45);background:rgba(0,0,0,.55);color:#fff;border-radius:999px;padding:5px 10px;font:700 .78rem 'Archivo',sans-serif;cursor:pointer}
+.ctackle button[aria-pressed=true]{background:#fff;color:#0b0f14;border-color:#fff}
+.ptcast:not(.idle) .ctackle{display:none}
 .ptcast .chl{opacity:0}.ptcast.hook .chl,.ptcast.bite .chl{opacity:1}
 .ptcast .crip{opacity:0;transform-box:fill-box;transform-origin:center}
 .ptcast.cast .crip,.ptcast.bite .crip{animation:carip 1.1s ease-out infinite}
@@ -2731,6 +2748,15 @@ window.MF=(function(){
     +'<ellipse class="crip" cx="160" cy="99" rx="26" ry="5" fill="none" stroke="#9fc0f0" stroke-width="1.5"/><ellipse class="crip crip2" cx="160" cy="99" rx="26" ry="5" fill="none" stroke="#9fc0f0" stroke-width="1.5"/>'
     +'<path class="chl" d="M160 100 L160 158" stroke="#dfe6ee" stroke-width="1" stroke-dasharray="2 2"/>'
     +'<g class="cbob"><path d="M330 -170 Q240 -20 160 86" fill="none" stroke="#dfe6ee" stroke-width="1.3"/><circle cx="160" cy="92" r="8" fill="#fff"/><path d="M152 92 a8 8 0 0 1 16 0 z" fill="#d33a2c"/><rect x="159" y="78" width="2" height="7" fill="#fff"/></g>'
+    // Ken, 13 Oct: "an option to use a lure and maybe some live bait that jiggles in front of the fish's mouth"
+    +'<g class="clure"><path d="M330 -170 Q190 30 104 180" fill="none" stroke="#dfe6ee" stroke-width="1.1"/><g class="cjig">'
+    +'<path d="M76 180 C80 171 98 171 104 180 C98 189 80 189 76 180 Z" fill="#f5d76e" stroke="#fff" stroke-width="1.2"/><path d="M86 176 L94 176 L92 184 L84 184 Z" fill="#d33a2c" opacity=".85"/>'
+    +'<circle cx="81" cy="179" r="1.8" fill="#111"/><path d="M104 180 L110 175 M104 180 L110 185" stroke="#f5d76e" stroke-width="2" stroke-linecap="round"/>'
+    +'<path d="M90 185 L90 192 Q90 197 85 196 M90 192 Q90 197 95 196" fill="none" stroke="#cfd6de" stroke-width="1.3" stroke-linecap="round"/></g></g>'
+    +'<g class="cbait"><path d="M330 -170 Q190 30 86 168" fill="none" stroke="#dfe6ee" stroke-width="1.1"/><g class="cjig">'
+    +'<path d="M86 168 L86 186 Q86 194 78 192 L76 188" fill="none" stroke="#cfd6de" stroke-width="1.6" stroke-linecap="round"/>'
+    +'<path class="cworm" d="M68 172 Q74 166 80 174 T90 178 T96 186" fill="none" stroke="#e98aa0" stroke-width="4.5" stroke-linecap="round"/>'
+    +'<path d="M70 188 Q77 197 86 189" fill="none" stroke="#e98aa0" stroke-width="4.5" stroke-linecap="round"/></g></g>'
     +'<g class="csplash" fill="#cfe0f7"><circle cx="140" cy="84" r="3"/><circle cx="182" cy="78" r="2.5"/><circle cx="160" cy="72" r="3.5"/><circle cx="128" cy="76" r="2"/><circle cx="194" cy="88" r="2"/></g>'
     +'<g transform="translate(0,62)"><g class="cfish"><path d="M44 120 C110 38 214 38 262 120 C214 202 110 202 44 120 Z" fill="#05080d" stroke="#fff" stroke-width="6" stroke-linejoin="round"/><path d="M262 120 L304 72 M262 120 L304 168" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>'
     +'<text class="cq" x="152" y="140" text-anchor="middle" font-family="MFHobo,cursive" font-size="58" fill="#fff">?</text>'
@@ -2748,9 +2774,14 @@ window.MF=(function(){
   function caLater(f,ms){ CA.t.push(setTimeout(f,ms)); }
   function caStop(){ CA.t.forEach(clearTimeout); CA.t=[]; CA.paused=false; window.removeEventListener('devicemotion',caMotion); }
   function caEl(){ return $('ptStage').querySelector('.ptcast'); }
+  // the tackle: a bobber, a lure or live bait (remembered)
+  var TACKLE={en:['Bobber','Lure','Live bait'],es:['Corcho','Señuelo','Carnada viva'],tl:['Boya','Pang-akit','Buhay na pain'],zh:['浮漂','假饵','活饵'],hi:['बॉबर','नकली चारा','जीवित चारा'],
+    el:['Φελλός','Τεχνητό δόλωμα','Ζωντανό δόλωμα'],de:['Pose','Kunstköder','Lebendköder'],ko:['찌','루어','생미끼'],he:['מצוף','פיתיון מלאכותי','פיתיון חי'],ar:['عوّامة','طُعم صناعي','طُعم حي']}, TKS=['bob','lure','bait'];
+  function caTackle(){ var v='bob'; try{ v=localStorage.getItem('mf-tackle')||'bob'; }catch(e){} return TKS.indexOf(v)>=0?v:'bob'; }
+  function caTackleBtns(){ var L=TACKLE[PT.l]||TACKLE.en, t=caTackle(); return TKS.map(function(k,i){ return '<button type="button" data-tk="'+k+'" aria-pressed="'+(k===t)+'">'+esc(L[i])+'</button>'; }).join(''); }
   function caOn(){ return PT.on&&PT.steps[PT.i]&&PT.steps[PT.i].k==='cast'; }
   function caTxt(n,t){ var m=$('ptStage').querySelector('[data-v="'+n+'"]'); if(m&&t!=null){ m.textContent=t; m.removeAttribute('data-w'); } }
-  function caSet(ph,msg,sub){ CA.ph=ph; var c=caEl(); if(!c) return; c.className='ptcast '+ph+(CA.paused?' paused':''); var C=caT();
+  function caSet(ph,msg,sub){ CA.ph=ph; var c=caEl(); if(!c) return; c.className='ptcast '+ph+' tk-'+caTackle()+(CA.paused?' paused':''); var C=caT();
     caTxt(1,msg); caTxt(2,sub);
     var b=$('ptStage').querySelector('.ptcbtn'); b.hidden=ph==='catch'||ph==='caught'||ph==='swim'||ph==='cast'; b.dataset.c=ph==='idle'?'cast':'pull';
     var bk=$('ptStage').querySelector('.ptcback'); bk.hidden=!(ph==='hook'||ph==='bite'); bk.textContent='↩ '+C.back;
@@ -2814,6 +2845,8 @@ window.MF=(function(){
     else if(CA.ph==='swim') caSay([C.swim_line,C.swim_hint]); else if(CA.ph==='hook') caSay([C.wait_line,C.pray_line]); }
   $('ptStage').addEventListener('click',function(e){ if(!caOn()) return; var f=e.target.closest('.cfsh'); if(f){ caChoose(f.dataset.k); return; }
     if(e.target.closest('.cpause')){ caPause(); return; }
+    var tk=e.target.closest('[data-tk]'); if(tk){ try{ localStorage.setItem('mf-tackle',tk.dataset.tk); }catch(er){} var c=caEl(); c.className='ptcast '+CA.ph+' tk-'+caTackle();
+      c.querySelectorAll('[data-tk]').forEach(function(x){ x.setAttribute('aria-pressed',String(x===tk)); }); return; }
     var b=e.target.closest('[data-c]'); if(!b) return; if(b.dataset.c==='cast') caCast(false); else if(b.dataset.c==='back') caBack(); else caPull(); });
   // the note after the catch is saved as the person writes (into My notes, under the word caught)
   (function(){ var st={}, tm=null; $('ptStage').addEventListener('input',function(e){ if(e.target.id!=='ptCNote') return; var ta=e.target; clearTimeout(tm);
@@ -2886,7 +2919,7 @@ window.MF=(function(){
         +'<div class="ptrow ptchoose"><button type="button" class="ptbtn ptmain" data-a="guide">'+esc(T.guide_me)+'</button><button type="button" class="ptbtn" data-a="ownpace">'+esc(T.own_pace)+'</button></div>'+prm('p_welcome'); }
     else if(s.k==='pray'){ t=[T.breathe,P[1]]; h=kick(T.k_pray)+'<p class="ptp ptsoft">'+sp1(1,T.breathe)+'</p><h2 class="pth ptpr">'+sp1(2,P[1])+'</h2>'+prm('p_pray'); }
     else if(s.k==='cast'){ var C=caT(); t=[C.cast_line,C.cast_sub]; CA.ph='idle'; CA.early=false; CA.k=null;
-      h=kick(C.k_cast)+'<div class="ptcast idle">'+CASTSVG+'<div class="cswim">'+caFish()+'</div><div class="chook" aria-hidden="true"></div><button type="button" class="cpause"></button><div class="cpond"'+(POND?'':' hidden')+'>'+(POND?'🎣 '+esc(pondTxt()):'')+'</div></div>'
+      h=kick(C.k_cast)+'<div class="ptcast idle tk-'+caTackle()+'">'+CASTSVG+'<div class="cswim">'+caFish()+'</div><div class="chook" aria-hidden="true"></div><div class="ctackle" role="group">'+caTackleBtns()+'</div><button type="button" class="cpause"></button><div class="cpond"'+(POND?'':' hidden')+'>'+(POND?'🎣 '+esc(pondTxt()):'')+'</div></div>'
         +'<p class="ptp ptcmsg">'+sp1(1,C.cast_line)+'</p><p class="ptp ptsoft ptcsub">'+sp1(2,C.cast_sub)+'</p>'
         +'<div class="ptrow"><button type="button" class="ptbtn ptmain ptcbtn" data-c="cast">🎣 '+esc(C.cast_btn)+'</button><button type="button" class="ptbtn ptcback" data-c="back" hidden></button></div>'
         +'<div class="ptcnote" hidden><label for="ptCNote">'+esc(C.note_q)+'</label><textarea id="ptCNote" rows="3"></textarea><small></small></div>'
