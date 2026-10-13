@@ -90,6 +90,8 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
    black outside the fish, so the cards need no extra room */
 .front .spk{position:absolute;top:4%;left:2%;width:max(16px,13%);aspect-ratio:1;border-radius:50%;background:var(--btn);color:#fff;display:flex;align-items:center;justify-content:center;z-index:2}
 .front .spk svg{position:static;width:60%;height:60%}
+.front .vrs{position:absolute;left:.5%;top:50%;transform:translateY(-50%);width:max(16px,11%);aspect-ratio:1;border-radius:50%;background:#fff;color:#0b1620;border:2px solid var(--btn);display:flex;align-items:center;justify-content:center;z-index:2;box-sizing:border-box}
+.front .vrs svg{position:static;width:62%;height:62%}
 .front .ln{position:absolute;left:2.5%;bottom:3%;max-width:28%;font-size:clamp(7px,2.1vw,12px);font-weight:700;line-height:1.1;color:#fff;background:rgba(0,0,0,.65);border-radius:4px;padding:0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}
 .cell.talk .spk{animation:mfTalk .7s ease-in-out infinite alternate}
 @keyframes mfTalk{from{transform:scale(1)}to{transform:scale(1.15)}}
@@ -175,10 +177,10 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
   var T={
     en:{home:'Home',sub:'Memory match',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',
       say:'Say words when flipped',moves:'Moves',pairs:'pairs',won:'All 12 found in {n} moves',winsub:'Tap any card to hear its word.',
-      again:'Play again',look:'See the cards',down:'Card {i}, face down',matched:'matched',match:'Match',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
+      again:'Play again',look:'See the cards',down:'Card {i}, face down',matched:'matched',match:'Match',verse:'Hear the verse',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
     es:{home:'Inicio',sub:'Juego de memoria',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',
       say:'Decirlas al voltear',moves:'Jugadas',pairs:'pares',won:'Las 12 encontradas en {n} jugadas',winsub:'Toca cualquier carta para oír su palabra.',
-      again:'Jugar otra vez',look:'Ver las cartas',down:'Carta {i}, boca abajo',matched:'encontrada',match:'Pareja',nomatch:'No son pareja',cards:'Cartas',loading:'Cargando…',oops:'No se pudieron cargar las palabras. Inténtalo otra vez.'}
+      again:'Jugar otra vez',look:'Ver las cartas',down:'Carta {i}, boca abajo',matched:'encontrada',match:'Pareja',verse:'Escuchar el versículo',nomatch:'No son pareja',cards:'Cartas',loading:'Cargando…',oops:'No se pudieron cargar las palabras. Inténtalo otra vez.'}
   };
   function $(id){ return document.getElementById(id); }
   function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
@@ -210,7 +212,7 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
   $('sayChk').addEventListener('change',function(){ sayOn=this.checked; store('mf-match-say',sayOn?'on':'off'); });
 
   // ── the card back: a fish, and MannaFish across the middle ──
-  var BACK='', FISH={}, SPK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+  var BOOK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 6.5C10.3 5.2 7.9 4.5 5 4.5c-.9 0-1.7.1-2.5.2v14.5c.8-.1 1.6-.2 2.5-.2 2.9 0 5.3.7 7 2 1.7-1.3 4.1-2 7-2 .9 0 1.7.1 2.5.2V4.7c-.8-.1-1.6-.2-2.5-.2-2.9 0-5.3.7-7 2zm-1 12.3c-1.7-.8-3.7-1.3-6-1.3H4.5V6.6h.5c2.4 0 4.4.6 6 1.6zm8.5-1.3H19c-2.3 0-4.3.5-6 1.3V8.2c1.6-1 3.6-1.6 6-1.6h.5z"/></svg>', V={}, BACK='', FISH={}, SPK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
   // the decals: English and Spanish from /match, the other eight from the site's own fish files
   function need(l){ if(FISH[l]) return FISH[l]; var u=(l==='en'||l==='es')?'/match/fish-'+l+'.json':'/fish-lang/'+l+'.json';
     return FISH[l]=fetch(u).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(d){ FISH[l]=d; return d; },function(e){ delete FISH[l]; throw e; }); }
@@ -240,9 +242,12 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
       var w=W[c.l][c.k], el=document.createElement('div');
       el.className='cell';
       el.innerHTML='<button type="button" class="card"><span class="inner"><span class="face back">'+BACK+'</span>'+
-        '<span class="face front" aria-hidden="true" lang="'+c.l+'">'+own(FISH[c.l][c.k]||'',c.i)+'<span class="spk">'+SPK+'</span><span class="ln">'+esc(NAME[c.l])+'</span></span></span></button>';
+        '<span class="face front" aria-hidden="true" lang="'+c.l+'">'+own(FISH[c.l][c.k]||'',c.i)+'<span class="spk">'+SPK+'</span><span class="vrs" title="'+esc(t('verse'))+'">'+BOOK+'</span><span class="ln">'+esc(NAME[c.l])+'</span></span></span></button>';
       c.el=el; c.btn=el.querySelector('.card');
-      c.btn.addEventListener('click',function(){ tap(c); });   // a turned-over card (or its speaker) says its word
+      c.btn.addEventListener('click',function(e){
+        if(c.up&&e.target.closest('.vrs')){ say(c,false,'verse'); return; }   // the tip of the nose: the verse
+        if(c.up&&e.target.closest('.spk')){ say(c,false,true); return; }      // the speaker: first language, then second
+        tap(c); });
       label(c); b.appendChild(el);
     });
     status(); layout();
@@ -262,9 +267,11 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
   function status(){ $('stat').textContent=t('moves')+' '+moves+' · '+found+'/'+PAIRS+' '+t('pairs'); }
   function announce(s){ var l=$('live'); l.textContent=''; setTimeout(function(){ l.textContent=s; },30); }
 
-  function flip(c,up){ c.up=up; c.el.classList.toggle('up',up); if(!up) c.el.classList.remove('miss'); label(c); }
+  function flip(c,up){ if(!up&&c.shown&&c.shown!==c.l){ c.shown=c.l; var f=c.el.querySelector('.front'), keep=[].slice.call(f.querySelectorAll('.spk,.vrs,.ln'));
+      f.innerHTML=own(FISH[c.l][c.k],c.i); keep.forEach(function(x){ f.appendChild(x); }); f.querySelector('.ln').textContent=NAME[c.l]; }
+    c.up=up; c.el.classList.toggle('up',up); if(!up) c.el.classList.remove('miss'); label(c); }
   function tap(c){
-    if(c.up){ say(c,false,true); return; }       // a face-up card (its speaker): the word in the first language, then the second
+    if(c.up){ swap(c); return; }                  // Ken, 13 Oct: tap again -- the same word in the other language
     if(open.length===2){ clearTimeout(backTimer); turnBack(); }
     flip(c,true); open.push(c);
     if(sayOn) say(c,true);
@@ -283,6 +290,12 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
       backTimer=setTimeout(turnBack,1100);
     }
   }
+  // a turned card shows its own language first; each tap switches it to the same word in the other language and says it
+  function other(c){ var p=c.l===l1?partner(c):l1; return p===c.l?(c.l===l1?l2:l1):p; }
+  function swap(c){ var to=(c.shown||c.l)===c.l?other(c):c.l; if(!FISH[to]||!FISH[to][c.k]) return;
+    c.shown=to; var f=c.el.querySelector('.front'), keep=[].slice.call(f.querySelectorAll('.spk,.vrs,.ln'));
+    f.innerHTML=own(FISH[to][c.k],c.i+'s'+to); keep.forEach(function(x){ f.appendChild(x); }); f.querySelector('.ln').textContent=NAME[to]; f.setAttribute('lang',to);
+    say(c,false); }
   function turnBack(){ open.forEach(function(x){ flip(x,false); }); open=[]; }
   function won(){
     $('winMsg').textContent=t('won').replace('{n}',moves);
@@ -295,10 +308,10 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
   // ── hearing a word: the site's natural voice (/api/tts), else this device's own voice ──
   var CLIP={}, apiOff=false, sp={id:0,audio:null,card:null,next:null,busy:false};
   function aiVoice(){ var v=store('mf-voice')||''; if(v==='device') return ''; return VOICES.indexOf(v)>=0?v:'sage'; }
-  function clip(l,k){
+  function clip(l,k,part){ part=part||'word';
     var v=aiVoice(); if(!v||apiOff) return Promise.reject(new Error('device'));
-    var key=l+'|'+k+'|'+v; if(CLIP[key]) return CLIP[key];
-    var p=fetch('/api/tts?lang='+l+'&w='+k+'&part=word&v='+v).then(function(r){
+    var key=l+'|'+k+'|'+v+'|'+part; if(CLIP[key]) return CLIP[key];
+    var p=fetch('/api/tts?lang='+l+'&w='+k+'&part='+part+'&v='+v).then(function(r){
       if(r.status===501) apiOff=true;
       if(!r.ok) throw new Error('tts '+r.status); return r.blob(); }).then(function(b){ return URL.createObjectURL(b); });
     p.catch(function(){ delete CLIP[key]; });
@@ -325,23 +338,23 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
   function say(c,queue,both){
     if(queue&&sp.busy){ sp.next=c; return; }
     stopSpeak();
-    var id=sp.id, k=c.k, list;
-    if(both){ var other=c.l===l1?partner(c):c.l; list=[l1,other===l1?(l2==='mix'?partner(c):l2):other]; } else list=[c.l];
+    var id=sp.id, k=c.k, list, part=both==='verse'?'verse':'word', cur=c.shown||c.l;
+    if(both===true){ var other=c.l===l1?partner(c):c.l; list=[l1,other===l1?(l2==='mix'?partner(c):l2):other]; } else list=[cur];
     sp.busy=true; sp.card=c; c.el.classList.add('talk');
     function done(){ if(id!==sp.id) return; list.shift(); if(list.length){ setTimeout(function(){ if(id===sp.id) one(); },250); return; }
       sp.busy=false; c.el.classList.remove('talk'); sp.card=null;
       var n=sp.next; sp.next=null; if(n) say(n,false); }
     one();
-    function one(){ var l=list[0], word=W[l][k];
+    function one(){ var l=list[0], word=part==='verse'?((V[l]||{})[k]||W[l][k]):W[l][k];
     function device(){
       if(id!==sp.id) return;
       if(!window.speechSynthesis||typeof SpeechSynthesisUtterance==='undefined') return done();
       var u=new SpeechSynthesisUtterance(l==='he'?word.replace(/ה׳/g,'אדוני'):word), v=voiceFor(l);
-      u.lang=LCODE[l]; if(v) u.voice=v; u.rate=.85;
-      var safety=setTimeout(done,4000); u.onend=u.onerror=function(){ clearTimeout(safety); done(); };
+      u.lang=LCODE[l]; if(v) u.voice=v; u.rate=part==='verse'?.95:.85;
+      var safety=setTimeout(done,part==='verse'?20000:4000); u.onend=u.onerror=function(){ clearTimeout(safety); done(); };
       try{ speechSynthesis.speak(u); }catch(e){ clearTimeout(safety); done(); }
     }
-    clip(l,k).then(function(url){
+    clip(l,k,part).then(function(url){
       if(id!==sp.id) return;
       var a=new Audio(url); sp.audio=a; a.onended=done; a.onerror=device;
       return a.play();
@@ -357,7 +370,7 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
   applyUI();
   $('stat').textContent=t('loading');
   Promise.all([fetch('/match/words.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }),fetch('/match/back.svg').then(function(r){ if(!r.ok) throw 0; return r.text(); })])
-    .then(function(x){ W=x[0]; BACK=x[1]; deal(); })
+    .then(function(x){ W=x[0]; BACK=x[1]; deal(); fetch('/match/verses.json').then(function(r){ return r.json(); }).then(function(v){ V=v; }).catch(function(){}); })
     .catch(function(){ $('stat').textContent=t('oops'); });
 })();
 </script>
