@@ -1042,6 +1042,11 @@ section.section.bundles{display:block;margin-top:0}
 .ptpickk{font:600 .8rem 'Archivo',sans-serif;opacity:.75;margin:8px 0 0}
 .ptplanend{margin:8px 0 6px}.ptplanok{font-weight:700}.ptplanend .ptbtn[aria-pressed=true]{background:#fff;color:#0b0f14;border-color:#fff}
 .ptchips button.today{background:#fff;color:#0b0f14}.ptchips button.was{opacity:.7}.ptchips button.later{opacity:.4}
+.pthl{margin:-6px 0 14px;align-items:center}.pthl .ptbtn{font-size:.95rem;padding:8px 16px}.pthl .ptbtn[aria-pressed=true]{background:#f5d76e;color:#111;border-color:#f5d76e}
+.ptver{border:0;background:none;color:inherit;font:800 .78rem 'Archivo',sans-serif;letter-spacing:.12em;opacity:.7;cursor:pointer;padding:6px}
+.pt .ptq.mk [data-v]{background:linear-gradient(transparent 58%,rgba(245,215,110,.42) 58%);border-radius:2px}
+.ptvers{border-top:1px solid rgba(255,255,255,.14);margin-top:4px;padding-top:4px}.ptvers[hidden]{display:none}.ptvers button{font-size:1rem;padding:9px 16px}.ptvers small{opacity:.65;font-weight:700}
+.ptvnote{margin:4px 16px 8px;font:500 .85rem/1.4 'Archivo',sans-serif;opacity:.75}
 .ptcast{flex:none}   /* never squeezed by the note under it (Ken, 13 Oct: "it only shows half a fish") */
 /* Ken, 13 Oct: a fishing pole that bends on a bite, a line that hangs like a real line, and bait you choose (drawn by caAnim) */
 .ptcast .cjig{transform-box:fill-box;transform-origin:50% 0;animation:cajig .7s ease-in-out infinite alternate}
@@ -3008,10 +3013,21 @@ window.MF=(function(){
   function ptUI(){ var D=DEVO[MF.lang]||DEVO.en, TT=TOUR[MF.lang]||TOUR.en; $('ptLab').textContent=({en:'Devotional',es:'Devocional',tl:'Debosyon',zh:'今日灵修',hi:'आज की भक्ति',el:'Μελέτη',de:'Andacht',ko:'오늘의 묵상',he:'ההגות',ar:'التأمل'})[MF.lang]||'Devotional'; $('ptBtn').title=D.b[0]; $('tourSub').textContent=({en:'How it works',es:'Cómo funciona',tl:'Paano ito',zh:'使用说明',hi:'कैसे काम करता है',el:'Πώς λειτουργεί',de:'So geht’s',ko:'사용 방법',he:'איך זה עובד',ar:'كيف يعمل'})[MF.lang]||'How it works'; $('ptSub').textContent=D.b[1]; $('tourLab').textContent=({en:'Take a tour',es:'Recorrido',tl:'Mag-tour',zh:'导览',hi:'टूर लें',el:'Ξενάγηση',de:'Rundgang',ko:'둘러보기',he:'סיור',ar:'جولة'})[MF.lang]||'Take a tour'; $('tourBtn').title=TT.btn; setTimeout(fitSlogan,30); }
   function sp1(n,t){ return '<span data-v="'+n+'">'+esc(t)+'</span>'; }
   var CHC={};
-  function chGet(p,l){ var key=l+'|'+p.book+'|'+p.ch; return CHC[key]||(CHC[key]=chText(p,l).catch(function(e){ delete CHC[key]; throw e; })); }
+  function chGet(p,l){ var key=(l==='en'?'en:'+curVer().k:l)+'|'+p.book+'|'+p.ch; return CHC[key]||(CHC[key]=chText(p,l).catch(function(e){ delete CHC[key]; throw e; })); }
   function refLab(l,k,i){ var r=DATA[k].refs[i][0], w=studyOf(l,k); return l==='en'?r:l==='es'?esRef(r):(w&&w.refs[i]?w.refs[i][0]:r); }
   function refSnip(l,k,i){ var w=studyOf(l,k); return l==='en'||l==='es'?DATA[k].refs[i][1]:(w&&w.refs[i]?String(w.refs[i][1]||'').replace(/…$/,''):DATA[k].refs[i][1]); }
   function lang2(){ return PT.l2||(PT.l==='es'?'en':'es'); }
+  // Ken, 13 Oct: "give me ability to highlight scripture from here so that it saves" -- the verse on a devotional step
+  // goes into My highlights (and the account when signed in), the same as a verse highlighted in the reader
+  function ptHlRow(){ return '<div class="ptrow pthl"><button type="button" class="ptbtn" data-a="hl" aria-pressed="false" hidden></button>'+(PT.l==='en'?'<button type="button" class="ptver" data-a="vers">'+esc(curVer().s)+'</button>':'')+'</div>'; }
+  function ptHlSet(pr,k,i,l,text){ var st=$('ptStage'), b=st.querySelector('[data-a="hl"]'); if(!b||!pr) return;
+    var ver=verCode(l,false), info={kind:'verse',ref:pr.book+' '+pr.ch+':'+pr.vs,ver:ver,k:k,i:i,l:l,v:+pr.vs,text:String(text||'').slice(0,220)};
+    PT.hlc={key:hlKey({book:pr.book,ch:pr.ch,ver:ver},pr.vs),info:info}; ptHlUI(!!hls()[PT.hlc.key]); b.hidden=false; }
+  function ptHlUI(on){ var st=$('ptStage'), b=st.querySelector('[data-a="hl"]'), W=WPT[PT.l]||WPT.en, q=st.querySelector('.ptq'); if(!b) return;
+    b.setAttribute('aria-pressed',String(on)); b.textContent='🖍 '+(on?W[2]:W[1]); if(q) q.classList.toggle('mk',on); }
+  var BVL={en:['Bible version','Other languages use their own Bible.'],es:['Versión de la Biblia','Las versiones son para el inglés; el español usa la RVR1960.'],tl:['Bersyon ng Biblia','Para sa Ingles ang mga bersyon; may sariling Biblia ang ibang wika.'],zh:['圣经译本','译本适用于英文；其他语言使用各自的圣经。'],
+    hi:['बाइबल संस्करण','संस्करण अंग्रेज़ी के लिए हैं; अन्य भाषाएँ अपनी बाइबल का उपयोग करती हैं।'],el:['Μετάφραση της Βίβλου','Οι μεταφράσεις αφορούν τα αγγλικά· οι άλλες γλώσσες έχουν τη δική τους Βίβλο.'],de:['Bibelübersetzung','Die Übersetzungen gelten für Englisch; andere Sprachen nutzen ihre eigene Bibel.'],
+    ko:['성경 번역본','번역본은 영어용입니다. 다른 언어는 각 언어의 성경을 사용합니다.'],he:['תרגום התנ״ך','התרגומים הם לאנגלית; שפות אחרות משתמשות בתנ״ך שלהן.'],ar:['ترجمة الكتاب المقدس','الترجمات للإنجليزية؛ اللغات الأخرى تستخدم كتابها المقدس.']};
   function ptRender(){ caStop(); var T=ptT(), D=DEVO[PT.l]||DEVO.en, l=PT.l, k=cur, sy=(SAY[l]&&SAY[l][k])||SAY.en[k], s=PT.steps[PT.i], h='', t=[], w=titleIn(l,k), ready=null;
     var P=D.p.map(function(x){ return x.replace(/^\*/,'').replace('{w}',w).replace('{r}',sy[2]).replace('{v}',sy[1]); });
     var kick=function(a,b){ return '<div class="ptk"><span>'+esc(a)+'</span>'+(b?'<span class="ptof">'+b+'</span>':'')+'</div>'; };
@@ -3030,8 +3046,12 @@ window.MF=(function(){
         +'<div class="ptcnote" hidden><label for="ptCNote">'+esc(C.note_q)+'</label><textarea id="ptCNote" rows="3"></textarea><small></small></div>'
         +'<p class="ptprompt ptcp">👉 '+esc(C.p_cast)+'</p>'; if(window.MFcastNoteReset) MFcastNoteReset(); }
     else if(s.k==='hear'){ t=[P[2],sy[2],sy[1],T.sink,T.think];
-      h=kick(T.k_hear+' · '+w)+'<p class="ptp ptsoft">'+sp1(1,P[2])+'</p><blockquote class="ptq">'+sp1(3,sy[1])+'<cite>'+sp1(2,sy[2])+'</cite></blockquote>'
+      h=kick(T.k_hear+' · '+w)+'<p class="ptp ptsoft">'+sp1(1,P[2])+'</p><blockquote class="ptq">'+sp1(3,sy[1])+'<cite>'+sp1(2,sy[2])+'</cite></blockquote>'+ptHlRow()
         +'<p class="ptp">'+sp1(4,T.sink)+'</p><p class="ptp">'+sp1(5,T.think)+'</p><div class="ptrow"><button type="button" class="ptbtn" data-a="note">✎ '+esc(T.note)+'</button></div>'+prm('p_hear'); }
+    if(s.k==='hear'){ var hp=parseRef(SAY.en[k][2]), hi=hp?DATA[k].refs.findIndex(function(r){ return r[0]===SAY.en[k][2]; }):-1, me2=PT.i;
+      if(hp) setTimeout(function(){ if(PT.i!==me2) return;
+        if(l==='en'&&curVer().k!=='kjv') chGet(hp,'en').then(function(ct){ var v=ct[+hp.vs-1]; if(PT.i!==me2||!v) return; var sv=$('ptStage').querySelector('.ptq [data-v="3"]'); if(sv) sv.textContent=v; if(PT.t) PT.t[2]=v; ptHlSet(hp,k,hi,l,v); }).catch(function(){ ptHlSet(hp,k,hi,l,sy[1]); });
+        else ptHlSet(hp,k,hi,l,sy[1]); },0); }
     else if(s.k==='fish'){ var fl=T.fish_line.replace('{w}',w), dd=DATA[k]; t=[fl];
       // Ken, 12 Oct: "make it continue to turn until the word study shows up"
       h=kick(T.k_fish)+'<div class="ptcoin" aria-hidden="true"><div class="ptcf">'+(fishFor(l,k)||FISH[k]||'')+'</div><div class="ptcb"><svg viewBox="0 0 400 200"><path d="M14 100 C105 -14 255 -14 322 100 C255 214 105 214 14 100 Z" fill="#0b0f14" stroke="#fff" stroke-width="8" stroke-linejoin="round"></path><path d="M322 100 L388 26 M322 100 L388 174" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"></path></svg><div class="ptct"><b>'+esc(w)+'</b><span lang="el">'+esc(dd.gkw)+'</span><span lang="he">'+esc(dd.hbw)+'</span></div></div></div><p class="ptp">'+sp1(1,fl)+'</p>'+prm('p_fish'); }
@@ -3043,13 +3063,13 @@ window.MF=(function(){
       h=kick(T.k_trace)+'<h2 class="pth">'+sp1(1,cl)+'</h2><div class="ptchips">'+DATA[k].refs.map(function(r,i){ var td=planRefs(k,planDay(k)), dn=planDone(k), at=td.indexOf(i)>=0, was=i<td[0]||dn>=PLAN_DAYS;
         return at?'<button type="button" data-a="goref" data-i="'+i+'" class="today">'+esc(refLab(l,k,i))+'</button>':'<button type="button" disabled class="'+(was?'was':'later')+'">'+(was?'✓ ':'')+esc(refLab(l,k,i))+'</button>'; }).join('')+'</div>'+prm('p_orig'); }
     else if(s.k==='ref'){ var lab=refLab(l,k,s.i), pr=parseRef(DATA[k].refs[s.i][0]);
-      h=kick(T.k_trace+' · '+w,esc(plF(plT().day,{d:planDay(k)+1,n:PLAN_DAYS}))+' · '+(s.j+1)+' / '+s.n)+'<h2 class="pth ptref">'+sp1(1,lab)+'</h2><blockquote class="ptq"><span data-v="2">…</span></blockquote>'
+      h=kick(T.k_trace+' · '+w,esc(plF(plT().day,{d:planDay(k)+1,n:PLAN_DAYS}))+' · '+(s.j+1)+' / '+s.n)+'<h2 class="pth ptref">'+sp1(1,lab)+'</h2><blockquote class="ptq"><span data-v="2">…</span></blockquote>'+ptHlRow()
         +'<div class="ptctx" hidden><div class="ptctxh">'+sp1(3,T.in_context)+'</div><p class="ptp">'+sp1(4,'')+'</p></div>'+prm('p_ref');
       t=null; var me=PT.i;
       ready=(pr?chGet(pr,l):Promise.reject()).then(function(ct){ var v=+pr.vs, a=Math.max(1,v-2), z=Math.min(ct.length,v+2), cx=[];
           for(var x=a;x<=z;x++) if(ct[x-1]) cx.push(ct[x-1]); return {v:ct[v-1]||refSnip(l,k,s.i),cx:cx.length>1?cx.join(' '):''}; })
         .catch(function(){ return {v:refSnip(l,k,s.i),cx:''}; })
-        .then(function(o){ if(PT.i!==me) return; var st=$('ptStage'); st.querySelector('.ptq [data-v="2"]').textContent=o.v;
+        .then(function(o){ if(PT.i!==me) return; var st=$('ptStage'); st.querySelector('.ptq [data-v="2"]').textContent=o.v; ptHlSet(pr,k,s.i,l,o.v);
           if(o.cx){ st.querySelector('.ptctx').hidden=false; st.querySelector('.ptctx [data-v="4"]').textContent=o.cx; PT.t=[lab,o.v,T.in_context,o.cx]; } else PT.t=[lab,o.v]; });
       var ns=PT.steps[PT.i+1]; if(ns&&ns.k==='ref'){ var nx=parseRef(DATA[k].refs[ns.i][0]); if(nx) chGet(nx,l).catch(function(){}); } }
     else if(s.k==='prayer'){ if(s.i===0) t=[T.list_intro];
@@ -3120,6 +3140,8 @@ window.MF=(function(){
     if(a==='len'){ PT.len=b.dataset.len; try{ localStorage.setItem('mf-devlen',PT.len); }catch(er){} PT.steps=ptSteps(); ptRender(); return; }
     if(a==='deeper'){ var was=PT.len||dLen(), sig=function(x){ return x.k+'|'+(x.i!=null?x.i:''); }, old=PT.steps.map(sig); PT.len=was==='quick'?'std':'full'; PT.steps=ptSteps();
       var j=PT.steps.findIndex(function(x){ return x.k!=='amen'&&old.indexOf(sig(x))<0; }); if(j<0) j=PT.steps.findIndex(function(x){ return x.k==='ref'; }); ptGo(j<0?0:j); return; }
+    if(a==='hl'){ var c=PT.hlc; if(!c) return; ptHlUI(hlToggle(c.key,JSON.parse(JSON.stringify(c.info)))); return; }
+    if(a==='vers'){ e.stopPropagation(); $('ptMore').click(); setTimeout(function(){ var v=$('ptMenu').querySelector('.ptvers'); if(v){ v.hidden=false; var f=v.querySelector('[aria-checked=true]'); if(f) f.focus(); } },0); return; }
     if(a==='planpick'){ var pk=$('ptStage').querySelector('.ptpick'); pk.hidden=!pk.hidden; b.setAttribute('aria-expanded',String(!pk.hidden)); return; }
     if(a==='planset'){ var nk=b.dataset.k; if(!DATA[nk]) return; planSet(nk); if(nk!==cur) pick(nk,false); PT.steps=ptSteps(); PT.i=0; ptRender(); return; }
     if(a==='planstay'||a==='plannext'||a==='planagain'){ var P2=plT(), w2=titleIn(PT.l,cur), msg=$('ptStage').querySelector('.ptplanmsg');
@@ -3147,9 +3169,15 @@ window.MF=(function(){
   $('ptMore').addEventListener('click',function(e){ e.stopPropagation(); var m=$('ptMenu'), T=ptT(); m.style.top=(this.getBoundingClientRect().bottom+8)+'px';
     m.innerHTML='<button type="button" data-m="add"><span class="mi">⊕</span>'+esc(T.add)+'</button><button type="button" data-m="list"><span class="mi">☰</span>'+esc(T.m_list)+'</button>'
       +'<button type="button" data-m="answered"><span class="mi">✓</span>'+esc(T.m_answered)+'</button><button type="button" data-m="remind"><span class="mi">🔔</span>'+esc(T.m_remind)+'</button><hr>'
-      +'<button type="button" data-m="speed"><span class="mi">⏩</span>'+esc(T.m_speed)+' · '+RATE()+'x</button>';
+      +'<button type="button" data-m="speed"><span class="mi">⏩</span>'+esc(T.m_speed)+' · '+RATE()+'x</button>'
+      +'<button type="button" data-m="ver" aria-expanded="false"><span class="mi">📖</span>'+esc((BVL[PT.l]||BVL.en)[0])+' · '+esc(curVer().s)+'</button>'
+      +'<div class="ptvers" hidden>'+VERS.map(function(v){ return '<button type="button" role="menuitemradio" data-m="setver" data-ver="'+v.k+'" aria-checked="'+(v.k===curVer().k)+'"><span class="mi">'+(v.k===curVer().k?'✓':'')+'</span><span>'+esc(v.n)+' <small>'+esc(v.s)+'</small></span></button>'; }).join('')
+      +(PT.l!=='en'?'<p class="ptvnote">'+esc((BVL[PT.l]||BVL.en)[1])+'</p>':'')+'</div>';
     m.hidden=!m.hidden; this.setAttribute('aria-expanded',m.hidden?'false':'true'); });
   $('ptMenu').addEventListener('click',function(e){ var b=e.target.closest('[data-m]'); if(!b) return; var m=b.dataset.m;
+    if(m==='ver'){ var vl=$('ptMenu').querySelector('.ptvers'); vl.hidden=!vl.hidden; b.setAttribute('aria-expanded',String(!vl.hidden)); return; }
+    if(m==='setver'){ try{ localStorage.setItem(VKEY,b.dataset.ver); }catch(er){} if($('rVer')) $('rVer').value=b.dataset.ver; $('ptMenu').hidden=true;
+      toast('📖 '+curVer().n); var sk=PT.steps[PT.i]&&PT.steps[PT.i].k; if(sk==='ref'||sk==='hear'){ stopSpeak(); ptRender(); } return; }
     if(m==='speed'){ var r=RATES[(RATES.indexOf(RATE())+1)%RATES.length]; try{ localStorage.setItem('mf-speed',r); }catch(er){} if(sp.audio) sp.audio.playbackRate=r; b.lastChild.textContent=ptT().m_speed+' · '+r+'x'; return; }
     $('ptMenu').hidden=true; if(m==='remind'){ ptClose(); var d=$('devoBtn'); if(d){ d.scrollIntoView({block:'center',behavior:'smooth'}); if(d.getAttribute('aria-expanded')!=='true') d.click(); } return; }
     ptSheet(m); });
@@ -3995,7 +4023,7 @@ window.MF=(function(){
       return '<div class="nb mk" data-hk="'+esc(key)+'"><button type="button" class="nref" data-open="'+esc(key)+'">'+esc(x.ref)+' · '+esc(verLabel(x.ver||''))+' ›</button>'+(x.text?'<div class="nt">'+esc(x.text)+'</div>':'')+'<div class="nm"><span>'+esc(stamp(x.at))+'</span><button type="button" data-a="unhl">🖍 '+(es?'Quitar':'Unhighlight')+'</button></div></div>';
     }).join(''):'<p class="hlhint">'+(es?'Aún no hay resaltados.':'No highlights yet.')+'</p>'; }
   // open a highlighted verse: the word's reader for that chapter, scrolled to the verse
-  function openHl(x){ if(!x||!DATA[x.k]) return; pick(x.k,false); var l=x.ver&&x.ver.indexOf('en:')===0?'en':(x.ver==='orig'?'en':x.l||'en');
+  function openHl(x){ if(!x||!DATA[x.k]) return; pick(x.k,false); if(!DATA[x.k].refs[x.i]){ var fb=$('fishbox'); if(fb) fb.scrollIntoView({block:'center',behavior:'smooth'}); return; } var l=x.ver&&x.ver.indexOf('en:')===0?'en':(x.ver==='orig'?'en':x.l||'en');
     if(x.ver&&x.ver.indexOf('en:')===0){ try{ localStorage.setItem(VKEY,x.ver.slice(3)); }catch(e){} if($('rVer')) $('rVer').value=x.ver.slice(3); }
     openReader(x.k,x.i,l);
     var t0=Date.now(); (function find(){ var sp=$('rChapter').querySelector('span[data-v="'+x.v+'"]'); if(sp&&RD){ (x.ver==='orig'&&!RO)?$('rOrig').click():0; setTimeout(function(){ var s2=$('rChapter').querySelector('span[data-v="'+x.v+'"]'); if(s2) s2.scrollIntoView({block:'center',behavior:'smooth'}); },x.ver==='orig'?700:50); return; } if(Date.now()-t0<8000) setTimeout(find,150); })(); }
