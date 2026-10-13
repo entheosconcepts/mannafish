@@ -4483,7 +4483,9 @@ window.MF=(function(){
       fetch('/',{method:'POST',headers:H,body:body})
         .then(function(r){ if(r.ok) return r; return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); },
               function(){ return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); })
-        .then(function(r){if(!r.ok) throw 0; if(f.id==='giftForm') fetch('/api/order-record',{method:'POST',headers:H,body:body}).catch(function(){}); if(f.id==='devoForm'||f.id==='signup') fetch('/api/devo-subscribe',{method:'POST',headers:H,body:body}).catch(function(){}); f.reset(); f.querySelectorAll('input[name=send-by]:checked').forEach(function(r){ r.dispatchEvent(new Event('change',{bubbles:true})); });
+        .then(function(r){if(!r.ok) throw 0; if(f.id==='giftForm') fetch('/api/order-record',{method:'POST',headers:H,body:body}).catch(function(){}); if(f.id==='devoForm'||f.id==='signup') fetch('/api/devo-subscribe',{method:'POST',headers:H,body:body}).then(function(r){ return r.json(); }).then(function(j){
+            if(!j||!j.already) return; var FQ={Daily:es?'diario':'Daily',Weekly:es?'semanal':'Weekly',Monthly:es?'mensual':'Monthly'};
+            msg.textContent=es?'Ya estabas suscrito, así que lo actualizamos: '+(FQ[j.freq]||j.freq)+'. Recibirás un solo correo, no dos.':'You were already signed up, so we updated it to '+(FQ[j.freq]||j.freq)+'. You will get one email, not two.'; }).catch(function(){}); f.reset(); f.querySelectorAll('input[name=send-by]:checked').forEach(function(r){ r.dispatchEvent(new Event('change',{bubbles:true})); });
           if(f.id==='stockForm'){ msg.textContent=es?'¡Gracias! Le escribiremos pronto con cómo dar.':'Thank you! We will write to you soon with how to give.'; return; } msg.textContent = MF.t({signup:'th_signup',giftForm:'th_gift',devoForm:'th_devo'}[f.id]||'th_net'); showOk(f.id,fd);})
         .catch(function(){msg.textContent=MF.t('formfail');});
     });
@@ -4496,6 +4498,10 @@ window.MF=(function(){
   // Ken, 12 Oct: "start with one word when the page opens, let the user choose 2 fish" -- once chosen, two fish for the visit
   (function(){ var two=null; try{ localStorage.removeItem('mf-one'); sessionStorage.removeItem('mf-one'); two=sessionStorage.getItem('mf-two'); }catch(e){}
     if(two==='1' && !cmpShown()){ cmpDefault=true; setCmp(twoFish()); } cmpLayout(); })();
+  // Ken, 14 Oct: from the email -- "Pick up where you left off" opens the devotional on your fish and day;
+  // "Want to catch another fish?" opens it at the pond
+  (function(){ var m=location.search.match(/[?&]devo=(1|cast)\b/); if(!m) return; setTimeout(function(){ ptOpen();
+    if(m[1]==='cast'){ var j=PT.steps.findIndex(function(x){ return x.k==='cast'; }); if(j>0) ptGo(j); } },400); })();
   // Ken, 9 Oct: from the devotional email, land on the day's fish (as on the site) with the verse open right under it
   (function(){var m=location.search.match(/[?&]r=(\d+)/); if(m && DATA[cur].refs[+m[1]]){ landing=true;
     if(/[?&]listen=1/.test(location.search)){ sheet=true; listenUI(); var want=null, t0=Date.now();

@@ -13,7 +13,17 @@ import ES from './es.json';
 import IMG from './email-img.json';
 
 export const store = () => getStore('mannafish-devo');
-export const idFor = (email) => 'sub/' + createHash('sha256').update(String(email).trim().toLowerCase()).digest('hex').slice(0, 40);
+// Ken, 14 Oct: three of the same email in one morning. One person, one email: an address is reduced to the inbox it
+// reaches -- lower case, no "+tag", and for Gmail no dots (ken.b+test@gmail.com and kenb@gmail.com are one inbox).
+export function canon(email) {
+  let [u, d] = String(email || '').trim().toLowerCase().split('@'); if (!d) return u || '';
+  u = u.replace(/\+.*$/, ''); if (d === 'googlemail.com') d = 'gmail.com'; if (d === 'gmail.com') u = u.replace(/\./g, '');
+  return u + '@' + d;
+}
+const hashKey = (x) => 'sub/' + createHash('sha256').update(x).digest('hex').slice(0, 40);
+export const idFor = (email) => hashKey(canon(email));
+// where a sign-up was kept before 14 Oct (the address as typed)
+export const legacyIdFor = (email) => hashKey(String(email).trim().toLowerCase());
 // Ken, 9 Oct: the links in an email go back to the site the person signed up on (the test site while testing,
 // manna-fish.com once live). MF_LINK_URL in Netlify overrides it for everyone.
 let LINK = null;
@@ -50,6 +60,9 @@ export function emailFor(m, lang, unsub, opts = {}) {
   const snippet = es ? '' : ' — “' + m.snippet + '”';
   // Ken, 13 Oct: one fish a week -- which day of the week's fish this is; the weekly email says the site picks up where they left off
   const dayLine = m.day ? (es ? `Día ${m.day} de ${m.days} con ${word}` : `Day ${m.day} of ${m.days} with ${word}`) : '';
+  // Ken, 14 Oct: "something in the email says pick up where you left off? Or want to catch another fish?"
+  const resume = SITE() + '/?devo=1' + (es ? '&lang=es' : ''), another = SITE() + '/?devo=cast' + (es ? '&lang=es' : '');
+  const RL = es ? ['Continúa donde lo dejaste', '¿Quieres pescar otro pez?'] : ['Pick up where you left off', 'Want to catch another fish?'];
   const weekNote = opts.weekly ? (es ? 'Tu pez para esta semana. Abre el devocional cualquier día: continúa donde lo dejaste.' : 'Your fish for this week. Open the devotional any day: it picks up where you left off.') : '';
   // Ken, 9 Oct: the email in the site's own look -- black, white lettering, MannaFish blue, the logo in its own font
   const logo = SITE() + '/w/img/logo-email.png';
@@ -86,7 +99,8 @@ ${dbl ? td('padding:6px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;
 ${dayLine ? td('padding:4px 26px 0;font:bold 13px/1.5 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#8fb3e8', gw(esc(dayLine))) : ''}
 ${weekNote ? td('padding:4px 26px 0;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(weekNote))) : ''}
 ${refs.map((x) => td('padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0', gw(`<a href="${x.url}" style="color:#ffffff;text-decoration:none"><b style="color:#ffffff">${esc(x.ref)}</b></a>${esc(x.snip)}`))).join('\n')}
-${td('padding:16px 12px 20px;font-size:0', button(listen, 'listen', T.listen) + button(read, 'read', T.read))}
+${td('padding:16px 12px 6px;font-size:0', button(listen, 'listen', T.listen) + button(read, 'read', T.read))}
+${td('padding:4px 22px 20px;font:bold 16px/1.9 Arial,sans-serif', gw(`<a href="${resume}" style="color:#ffffff;text-decoration:underline">${esc(RL[0])} ›</a><br><a href="${another}" style="color:#ffffff;text-decoration:underline">🎣 ${esc(RL[1])} ›</a>`))}
 ${rule}
 ${td('padding:16px 22px 0', head(dbl ? 'sab' : 'fish', dbl ? T.sab : T.fish))}
 ${td(`padding:8px 26px ${dbl ? '0' : '22px'};font:${dbl ? 'normal 19px/1.55' : 'italic 17px/1.55'} Georgia,serif;color:${dbl ? '#eaf0f0' : '#c6d2d4'}`,
@@ -95,7 +109,7 @@ ${dbl ? td('padding:16px 12px 24px;font-size:0', button(sabLink, 'sabread', T.sa
 ${rule}
 ${td('padding:16px 22px 22px;font:12px/1.7 Arial,sans-serif;color:#8a9aa0', gw(`${esc(T.why)} <a href="${unsub}" style="color:#8a9aa0">${esc(T.stop)}</a> · <a href="${SITE()}/privacy/" style="color:#8a9aa0">${es ? 'Privacidad' : 'Privacy'}</a><br>${esc(ADDRESS())}`))}
 </table></td></tr></table></body></html>`;
-  const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${dbl ? T.dbl + ' — ' + T.dblNote + '\n\n' : ''}${dayLine ? dayLine + '\n' : ''}${weekNote ? weekNote + '\n' : ''}${refs.map((x) => T.today + ': ' + x.ref + x.snip + '\n' + x.url).join('\n')}\n${T.listen}: ${listen}\n${T.read}: ${read}\n\n${dbl ? T.sab : T.fish}: “${f.top} ${f.bottom}” ${f.ref}${dbl ? '\n' + T.sabRead + ': ' + sabLink : ''}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
+  const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${dbl ? T.dbl + ' — ' + T.dblNote + '\n\n' : ''}${dayLine ? dayLine + '\n' : ''}${weekNote ? weekNote + '\n' : ''}${refs.map((x) => T.today + ': ' + x.ref + x.snip + '\n' + x.url).join('\n')}\n${T.listen}: ${listen}\n${T.read}: ${read}\n${RL[0]}: ${resume}\n${RL[1]} ${another}\n\n${dbl ? T.sab : T.fish}: “${f.top} ${f.bottom}” ${f.ref}${dbl ? '\n' + T.sabRead + ': ' + sabLink : ''}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
   LINK = keep;
   return { subject: T.sub + (dbl ? T.sabSub : ''), html, text };
 }
@@ -115,13 +129,22 @@ export async function subscribe(f, now = new Date(), site = null) {
   if (by === 'Email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) throw new Error('email');
   if (by === 'Text' && phone.replace(/\D/g, '').length < 10) throw new Error('phone');
   const key = by === 'Email' ? idFor(email) : 'text/' + createHash('sha256').update(phone).digest('hex').slice(0, 40);
-  const s = store(), old = await s.get(key, { type: 'json' });
+  const s = store(); let old = await s.get(key, { type: 'json' });
+  // signed up before under the address as typed: carry it over, and retire the old record so only one email goes out
+  if (by === 'Email') { const lk = legacyIdFor(email); if (lk !== key) { const lo = await s.get(lk, { type: 'json' });
+    if (lo && (!old || (old.unsub && !lo.unsub))) old = lo;
+    if (lo && !lo.unsub) await s.setJSON(lk, { ...lo, unsub: true, merged: key, updated: now.toISOString() }); } }
+  // a sign-up the daily send folded into another one (the same inbox): that one is this person's
+  for (let hop = 0; hop < 3 && old && old.unsub && old.merged && old.merged !== key; hop++) {
+    const mk = old.merged, mo = await s.get(mk, { type: 'json' }); if (!mo) break; old = mo;
+    if (!mo.unsub) { await s.setJSON(mk, { ...mo, unsub: true, merged: key, updated: now.toISOString() }); break; } }
   const rec = { ...(old || {}), by, email, phone, name: String(f.name || '').slice(0, 120),
     freq: FREQS.includes(f['how-often']) ? f['how-often'] : 'Daily',
     tz: validTz(f['time-zone']) ? f['time-zone'] : DEFAULT_TZ, lang: f.language === 'es' ? 'es' : 'en',
     form: f['form-name'] || '', site: site || (old && old.site) || null, unsub: false, at: (old && old.at) || now.toISOString(), updated: now.toISOString() };
   await s.setJSON(key, rec);
-  return { rec, key, isNew: !old || old.unsub };
+  // already signed up: this sign-up replaces the old one (the newest choice of Daily, Weekly or Monthly wins)
+  return { rec, key, isNew: !old || old.unsub, was: old && !old.unsub ? old.freq : null };
 }
 
 // is today one of this person's days?
@@ -134,10 +157,27 @@ export function dueToday(freq, here) {
 // run every hour: email everyone for whom it is now 7am or later today and who has not had today's yet
 export async function sendDue(now = new Date()) {
   const s = store(); const { blobs } = await s.list({ prefix: 'sub/' });
-  let sent = 0, failed = 0, skipped = 0;
-  for (const b of blobs) {
-    const rec = await s.get(b.key, { type: 'json' });
-    if (!rec || rec.unsub || rec.by !== 'Email') { skipped++; continue; }
+  let sent = 0, failed = 0, skipped = 0, merged = 0;
+  // one person signed up more than once (the same inbox under different spellings): keep the newest sign-up,
+  // stop the others, and remember whether today's email already went to that inbox
+  const recs = [];
+  for (const b of blobs) { const rec = await s.get(b.key, { type: 'json' }); if (rec && !rec.unsub && rec.by === 'Email') recs.push({ key: b.key, rec }); }
+  const byInbox = new Map();
+  for (const x of recs) { const c = canon(x.rec.email); if (!byInbox.has(c)) byInbox.set(c, []); byInbox.get(c).push(x); }
+  const keep = [];
+  for (const group of byInbox.values()) {
+    group.sort((a, b) => String(b.rec.updated || b.rec.at || '').localeCompare(String(a.rec.updated || a.rec.at || '')));
+    const k = group[0];
+    for (const o of group.slice(1)) {
+      if (o.rec.lastSent && (!k.rec.lastSent || o.rec.lastSent > k.rec.lastSent)) k.rec.lastSent = o.rec.lastSent;
+      await s.setJSON(o.key, { ...o.rec, unsub: true, merged: k.key }); merged++;
+    }
+    if (group.length > 1) await s.setJSON(k.key, k.rec);
+    keep.push(k);
+  }
+  skipped += blobs.length - recs.length;
+  for (const { key, rec } of keep) {
+    const b = { key };
     const tz = rec.tz || DEFAULT_TZ, here = localNow(now, tz);
     if (rec.welcomeDue && !sabbathRest(now, tz)) {
       try { await deliver(rec, welcomeManna(now, tz), { welcome: true }); rec.welcomeDue = false; await s.setJSON(b.key, rec); sent++; }
@@ -149,5 +189,5 @@ export async function sendDue(now = new Date()) {
     try { await deliver(rec, m, { weekly: rec.freq === 'Weekly' }); sent++; await s.setJSON(b.key, { ...rec, lastSent: here.date }); }
     catch (e) { failed++; console.log('devo email failed', b.key, String(e).slice(0, 200)); }
   }
-  return { sent, failed, skipped, total: blobs.length };
+  return { sent, failed, skipped, merged, total: blobs.length };
 }

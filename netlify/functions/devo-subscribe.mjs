@@ -16,6 +16,6 @@ export default async (req) => {
     if (sabbathRest(now, r.rec.tz)) { held = true; await store().setJSON(r.key, { ...r.rec, welcomeDue: true }); }
     else { try { await deliver(r.rec, welcomeManna(now, r.rec.tz), { welcome: true }); welcomed = true; } catch (e) { console.log('welcome failed', String(e).slice(0, 200)); } }
   }
-  return Response.json({ ok: true, welcomed, held });
+  return Response.json({ ok: true, welcomed, held, already: !r.isNew, was: r.was, freq: r.rec.freq });
 };
 export const config = { path: '/api/devo-subscribe' };
