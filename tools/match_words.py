@@ -3,7 +3,8 @@
 
 Writes match/words.json as {lang: {KEY: word}}. The word in each language comes from
 SAY[lang][KEY][0]; Spanish comes from window.MFI18N.es.titles when SAY has no Spanish.
-Also writes fish-lang/hobo.woff2 (the brand font, decoded from the @font-face in index.html).
+Also writes match/fish-en.json and match/fish-es.json (the English and Spanish decals)
+and fish-lang/hobo.woff2 (the brand font, decoded from the @font-face in index.html).
 Run from anywhere:  python3 tools/match_words.py
 """
 import base64, json, os, re, sys
@@ -47,7 +48,14 @@ def main():
         sys.exit('MFHobo font not found in index.html')
     with open(os.path.join(ROOT, 'fish-lang', 'hobo.woff2'), 'wb') as f:
         f.write(base64.b64decode(m.group(1)))
-    print('wrote match/words.json (%d languages x %d words) and fish-lang/hobo.woff2' % (len(LANGS), len(KEYS)))
+    # Ken, 13 Oct: the cards turn over to the real decals; English and Spanish ones live inside index.html, so copy them out
+    fish_en = obj_after(src, 'FISH=')
+    fish_es = i18n.get('fish') or {}
+    for l, d in (('en', fish_en), ('es', fish_es)):
+        assert all(k in d for k in KEYS), l
+        with open(os.path.join(ROOT, 'match', 'fish-%s.json' % l), 'w', encoding='utf-8') as f:
+            json.dump({k: d[k] for k in KEYS}, f, ensure_ascii=False, separators=(',', ':'))
+    print('wrote match/words.json (%d languages x %d words), match/fish-en.json, match/fish-es.json and fish-lang/hobo.woff2' % (len(LANGS), len(KEYS)))
 
 
 if __name__ == '__main__':

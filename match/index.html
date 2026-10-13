@@ -76,36 +76,34 @@ select option{background:var(--bg2);color:var(--text)}
 
 /* ── the board ── */
 main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(safe-area-inset-bottom));position:relative}
-.board{display:grid;gap:var(--gap,6px);grid-template-columns:repeat(4,1fr);width:100%;max-width:900px;justify-content:center}
-.card{position:relative;border:0;padding:0;margin:0;background:none;cursor:pointer;perspective:700px;
-  width:var(--cw,auto);height:var(--ch,96px);-webkit-tap-highlight-color:transparent;border-radius:10px}
+.board{display:grid;gap:12px 8px;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;max-width:1100px}
+@media (min-width:700px){.board{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 12px}}
+@media (min-width:1100px){.board{grid-template-columns:repeat(6,minmax(0,1fr))}}
+/* Ken, 13 Oct: the cards are his decals -- his fish with MannaFish inside on the back; tap, and it turns over to the real decal */
+.cell{display:flex;flex-direction:column;gap:3px;min-width:0}
+.card{position:relative;display:block;width:100%;aspect-ratio:2/1;max-width:100%;border:0;padding:0;margin:0;background:none;cursor:pointer;perspective:700px;-webkit-tap-highlight-color:transparent;border-radius:8px}
 .card:focus-visible{outline:3px solid var(--glow);outline-offset:2px}
 .inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.3,.7,.3,1)}
-.card.up .inner{transform:rotateY(180deg)}
-.face{position:absolute;inset:0;border-radius:10px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;
-  display:flex;flex-direction:column;align-items:center;justify-content:center}
-.back{background:radial-gradient(120% 90% at 50% 35%,var(--cardback1),var(--cardback2));border:1px solid var(--cardback-line)}
-.back svg{width:100%;height:100%;display:block}
-.front{transform:rotateY(180deg);background:var(--face);border:1px solid var(--face-line);padding:14% 5% 5%;gap:2px}
-.front .w{flex:1 1 auto;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;
-  line-height:1.2;word-break:keep-all;overflow-wrap:normal;hyphens:none;color:var(--text);overflow:hidden}
-.front .w b{font-weight:inherit;display:block;max-width:100%}
-.front .mean{font-size:.68rem;font-style:italic;color:var(--dim);line-height:1.1;min-height:0}
-.front .mean:empty{display:none}
-.front .ln{font-size:.6rem;font-weight:600;letter-spacing:.04em;color:var(--dim);line-height:1.1;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;flex:none}
-.front .spk{position:absolute;top:4px;right:5px;font-size:.62rem;line-height:1;opacity:.55;transition:opacity .2s}
-.card.talk .spk{opacity:1;animation:mfTalk .7s ease-in-out infinite alternate}
-@keyframes mfTalk{from{transform:scale(1)}to{transform:scale(1.25)}}
-.card.miss .front{border-color:var(--miss)}
-.card.got .front{border-color:var(--glow);box-shadow:inset 0 0 0 1px var(--glow),0 0 14px 1px color-mix(in srgb,var(--glow) 55%,transparent)}
-/* the glow swells once on the face itself: a filter on the turning card would flatten it and show the back mirrored */
-.card.got .front{animation:mfGot .9s ease-out}
+.cell.up .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:8px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;background:#000;border:1px solid var(--cardback-line)}
+.face svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.front{transform:rotateY(180deg)}
+.cap{display:flex;align-items:center;justify-content:space-between;gap:4px;min-height:26px;visibility:hidden;min-width:0}
+.cell.up .cap{visibility:visible}
+.cap .ln{font-size:.66rem;font-weight:600;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;text-align:start}
+.cap .spk{flex:none;width:26px;height:26px;border-radius:50%;border:0;background:var(--btn);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.cap .spk svg{width:14px;height:14px}
+.cell.talk .spk{animation:mfTalk .7s ease-in-out infinite alternate}
+@keyframes mfTalk{from{transform:scale(1)}to{transform:scale(1.15)}}
+.cell.miss .front{border-color:var(--miss);box-shadow:inset 0 0 0 2px var(--miss)}
+.cell.got .front{border-color:var(--glow);box-shadow:inset 0 0 0 1px var(--glow),0 0 14px 1px color-mix(in srgb,var(--glow) 55%,transparent);animation:mfGot .9s ease-out}
 @keyframes mfGot{0%{box-shadow:inset 0 0 0 1px var(--glow),0 0 0 0 color-mix(in srgb,var(--glow) 80%,transparent)}
   45%{box-shadow:inset 0 0 0 2px var(--glow),0 0 22px 4px color-mix(in srgb,var(--glow) 70%,transparent)}
   100%{box-shadow:inset 0 0 0 1px var(--glow),0 0 14px 1px color-mix(in srgb,var(--glow) 55%,transparent)}}
+@media (min-width:700px){.cap .ln{font-size:.78rem}.cap .spk{width:30px;height:30px}.cap .spk svg{width:16px;height:16px}}
 @media (prefers-reduced-motion:reduce){
   .inner{transition:none}
-  .card.got .front,.card.talk .spk{animation:none}
+  .cell.got .front,.cell.talk .spk{animation:none}
 }
 
 /* ── all found ── */
@@ -120,9 +118,6 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
 @media (min-width:700px){
   .wm{font-size:2rem}
   .pill{font-size:.88rem;padding:8px 14px}
-  .front .ln{font-size:.72rem}
-  .front .mean{font-size:.8rem}
-  .front .spk{font-size:.8rem;top:7px;right:8px}
   .bar{font-size:.86rem}
   .pick{max-width:340px}
 }
@@ -209,48 +204,50 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
   $('sayChk').addEventListener('change',function(){ sayOn=this.checked; store('mf-match-say',sayOn?'on':'off'); });
 
   // ── the card back: a fish, and MannaFish across the middle ──
-  var BACK='<svg viewBox="2 2 96 96" aria-hidden="true" focusable="false">'+
-    '<path d="M5 76 Q48 4 95 50 Q48 96 5 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'+
-    '<text x="60" y="54.6" text-anchor="middle" font-family="MFHobo,Archivo,sans-serif" font-size="13" textLength="58" lengthAdjust="spacingAndGlyphs"'+
-    ' stroke="#0b1525" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan fill="#fff">Manna</tspan><tspan fill="#3370FF">Fish</tspan></text></svg>';
+  var BACK='', FISH={}, SPK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+  // the decals: English and Spanish from /match, the other eight from the site's own fish files
+  function need(l){ if(FISH[l]) return FISH[l]; var u=(l==='en'||l==='es')?'/match/fish-'+l+'.json':'/fish-lang/'+l+'.json';
+    return FISH[l]=fetch(u).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(d){ FISH[l]=d; return d; },function(e){ delete FISH[l]; throw e; }); }
+  // each decal names its lettering guides (g_top, g_bot...); give every card its own names so 24 decals never mix them up
+  function own(svg,i){ return svg.replace(/id="(g_[a-z]+)"/g,'id="c'+i+'$1"').replace(/href="#(g_[a-z]+)"/g,'href="#c'+i+'$1"'); }
 
   function fontOf(l){ return "'"+FONT[l]+"',"+(FALL[l]||'')+"system-ui,sans-serif"; }
   function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
   // ── a new game: 12 random words, each once in the first language and once in the second (or a mixed one) ──
   function deal(){
-    if(!W) return;
+    if(!W||!BACK) return;
     clearTimeout(backTimer); stopSpeak(); open=[]; moves=0; found=0; $('win').hidden=true;
     var keys=shuffle(Object.keys(W.en)).slice(0,PAIRS), others=LANGS.filter(function(l){ return l!==l1; }), pool=[];
     while(pool.length<PAIRS) pool=pool.concat(shuffle(others));
     var list=[];
     keys.forEach(function(k,i){ list.push({k:k,l:l1}); list.push({k:k,l:l2==='mix'?pool[i]:l2}); });
-    cards=shuffle(list).map(function(c,i){ c.i=i; c.up=false; c.got=false; return c; });
+    var deck=shuffle(list).map(function(c,i){ c.i=i; c.up=false; c.got=false; return c; }), langs={};
+    deck.forEach(function(c){ langs[c.l]=1; });
+    $('stat').textContent=t('loading'); var my=++dealId;
+    Promise.all(Object.keys(langs).map(need)).then(function(){ if(my!==dealId) return; cards=deck; draw(); },function(){ if(my===dealId) $('stat').textContent=t('oops'); });
+  }
+  var dealId=0;
+  function draw(){
     var b=$('board'); b.innerHTML='';
     cards.forEach(function(c){
-      var w=W[c.l][c.k], el=document.createElement('button');
-      el.type='button'; el.className='card';
-      el.innerHTML='<span class="inner"><span class="face back">'+BACK+'</span>'+
-        '<span class="face front" aria-hidden="true" lang="'+c.l+'"'+(RTL[c.l]?' dir="rtl"':'')+'><span class="spk">🔊</span>'+
-        '<span class="w" style="font-family:'+esc(fontOf(c.l))+'"><b>'+esc(w)+'</b></span><span class="mean" dir="ltr"></span><span class="ln"'+(LNFONT[c.l]?' style="font-family:'+esc(fontOf(c.l))+'"':'')+'>'+esc(NAME[c.l])+'</span></span></span>';
-      el.addEventListener('click',function(){ tap(c); });
-      c.el=el; label(c); b.appendChild(el);
+      var w=W[c.l][c.k], el=document.createElement('div');
+      el.className='cell';
+      el.innerHTML='<button type="button" class="card"><span class="inner"><span class="face back">'+BACK+'</span>'+
+        '<span class="face front" aria-hidden="true" lang="'+c.l+'">'+own(FISH[c.l][c.k]||'',c.i)+'</span></span></button>'+
+        '<div class="cap"><span class="ln"'+(RTL[c.l]?' dir="auto"':'')+'>'+esc(NAME[c.l])+' · '+esc(w)+'</span><button type="button" class="spk" aria-label="🔊 '+esc(w)+'">'+SPK+'</button></div>';
+      c.el=el; c.btn=el.querySelector('.card');
+      c.btn.addEventListener('click',function(){ tap(c); });
+      el.querySelector('.spk').addEventListener('click',function(){ say(c,false); });
+      label(c); b.appendChild(el);
     });
-    status(); layout();
-    // the fonts for this deal, then size each word to its card
-    var fams={}; cards.forEach(function(c){ fams[c.l]=(fams[c.l]||'')+W[c.l][c.k]; });
-    if(document.fonts&&document.fonts.load){
-      Promise.all(Object.keys(fams).map(function(l){ return document.fonts.load("40px '"+FONT[l]+"'",fams[l]).catch(function(){}); }))
-        .then(fitAll,fitAll);
-    }
+    status();
   }
   function label(c){
     var s=c.up?W[c.l][c.k]+', '+NAME[c.l]+(c.got?', '+t('matched'):''):t('down').replace('{i}',c.i+1);
-    c.el.setAttribute('aria-label',s);
+    c.btn.setAttribute('aria-label',s);
   }
-  function status(){ var bar=$('stat').parentNode, h=bar.offsetHeight;
-    $('stat').textContent=t('moves')+' '+moves+' · '+found+'/'+PAIRS+' '+t('pairs');
-    if(cards.length&&bar.offsetHeight!==h) layout(); }   // a narrow phone may wrap the line: keep the cards on one screen
+  function status(){ $('stat').textContent=t('moves')+' '+moves+' · '+found+'/'+PAIRS+' '+t('pairs'); }
   function announce(s){ var l=$('live'); l.textContent=''; setTimeout(function(){ l.textContent=s; },30); }
 
   function flip(c,up){ c.up=up; c.el.classList.toggle('up',up); if(!up) c.el.classList.remove('miss'); label(c); }
@@ -264,8 +261,7 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
     var a=open[0], b=open[1];
     if(a.k===b.k){
       open=[]; found++;
-      var mean=(a.l!=='en'&&b.l!=='en')?W.en[a.k]:'';
-      [a,b].forEach(function(x){ x.got=true; x.el.classList.add('got'); x.el.querySelector('.mean').textContent=mean; label(x); fit(x); });
+      [a,b].forEach(function(x){ x.got=true; x.el.classList.add('got'); label(x); });
       announce(t('match')+': '+W[a.l][a.k]+' · '+W[b.l][b.k]);
       status();
       if(found===PAIRS) setTimeout(won,700);
@@ -334,40 +330,13 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
     }).catch(function(err){ if(id!==sp.id) return; if(err&&err.name==='NotAllowedError') return done(); device(); });
   }
 
-  // ── fitting 24 cards on one screen ──
-  function layout(){
-    var b=$('board'); if(!b) return;
-    var vw=document.documentElement.clientWidth, vh=window.innerHeight;
-    var cols=vw>=700?(vh<560?8:6):4, rows=Math.ceil(cards.length/cols)||6, gap=vw>=700?10:6;
-    var availW=Math.min(b.parentNode.clientWidth-24,900);
-    var top=b.getBoundingClientRect().top+window.scrollY, bottom=Math.max(10,parseFloat(getComputedStyle(b.parentNode).paddingBottom)||10);
-    var availH=vh-top-bottom;
-    var cw=(availW-gap*(cols-1))/cols, ch=(availH-gap*(rows-1))/rows;
-    ch=Math.min(ch,cw*1.4);
-    if(ch<cw*.8) cw=ch/.8;                 // a short, wide screen: narrower cards, still on one screen
-    ch=Math.max(ch,58); cw=Math.max(cw,52);
-    b.style.setProperty('--gap',gap+'px');
-    b.style.gridTemplateColumns='repeat('+cols+','+Math.floor(cw)+'px)';
-    b.style.setProperty('--cw',Math.floor(cw)+'px'); b.style.setProperty('--ch',Math.floor(ch)+'px');
-    fitAll();
-  }
-  // each word as large as its card allows, on one line where it can, breaking only between words
-  function fit(c){
-    var box=c.el.querySelector('.w'), w=box.firstChild, ch=c.el.clientHeight, cw=c.el.clientWidth; if(!ch) return;
-    var size=Math.min(ch*.3,cw*.3,46);
-    if(c.l==='zh'||c.l==='ko') size=Math.min(ch*.32,cw*.34,48);
-    w.style.fontSize=size+'px';
-    var n=0;
-    while(n++<40&&size>8&&(w.scrollWidth>box.clientWidth+.5||w.offsetHeight>box.clientHeight+.5)){ size*=.93; w.style.fontSize=size+'px'; }
-  }
-  function fitAll(){ cards.forEach(fit); }
-  var rz; window.addEventListener('resize',function(){ clearTimeout(rz); rz=setTimeout(function(){ fillPickers(); layout(); },80); });
-  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ layout(); });
+  var rz; window.addEventListener('resize',function(){ clearTimeout(rz); rz=setTimeout(fillPickers,80); });
 
   // ── start ──
   applyUI();
   $('stat').textContent=t('loading');
-  fetch('/match/words.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(d){ W=d; deal(); })
+  Promise.all([fetch('/match/words.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }),fetch('/match/back.svg').then(function(r){ if(!r.ok) throw 0; return r.text(); })])
+    .then(function(x){ W=x[0]; BACK=x[1]; deal(); })
     .catch(function(){ $('stat').textContent=t('oops'); });
 })();
 </script>
