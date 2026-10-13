@@ -76,11 +76,9 @@ select option{background:var(--bg2);color:var(--text)}
 
 /* ── the board ── */
 main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(safe-area-inset-bottom));position:relative}
-.board{display:grid;gap:12px 8px;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;max-width:1100px}
-@media (min-width:700px){.board{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 12px}}
-@media (min-width:1100px){.board{grid-template-columns:repeat(6,minmax(0,1fr))}}
-/* Ken, 13 Oct: the cards are his decals -- his fish with MannaFish inside on the back; tap, and it turns over to the real decal */
-.cell{display:flex;flex-direction:column;gap:3px;min-width:0}
+/* Ken, 13 Oct: all 24 on one screen -- the script sizes the cards to the screen (see layout) */
+.board{display:grid;gap:var(--gap,6px);grid-template-columns:repeat(3,minmax(0,1fr));width:100%;max-width:1400px;justify-content:center}
+.cell{position:relative;min-width:0}
 .card{position:relative;display:block;width:100%;aspect-ratio:2/1;max-width:100%;border:0;padding:0;margin:0;background:none;cursor:pointer;perspective:700px;-webkit-tap-highlight-color:transparent;border-radius:8px}
 .card:focus-visible{outline:3px solid var(--glow);outline-offset:2px}
 .inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.3,.7,.3,1)}
@@ -88,11 +86,11 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
 .face{position:absolute;inset:0;border-radius:8px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;background:#000;border:1px solid var(--cardback-line)}
 .face svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 .front{transform:rotateY(180deg)}
-.cap{display:flex;align-items:center;justify-content:space-between;gap:4px;min-height:26px;visibility:hidden;min-width:0}
-.cell.up .cap{visibility:visible}
-.cap .ln{font-size:.66rem;font-weight:600;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;text-align:start}
-.cap .spk{flex:none;width:26px;height:26px;border-radius:50%;border:0;background:var(--btn);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
-.cap .spk svg{width:14px;height:14px}
+/* once a card is turned over: a small speaker in its top-left corner and the language in the bottom-left, both on the
+   black outside the fish, so the cards need no extra room */
+.front .spk{position:absolute;top:4%;left:2%;width:max(16px,13%);aspect-ratio:1;border-radius:50%;background:var(--btn);color:#fff;display:flex;align-items:center;justify-content:center;z-index:2}
+.front .spk svg{position:static;width:60%;height:60%}
+.front .ln{position:absolute;left:2.5%;bottom:3%;max-width:28%;font-size:clamp(7px,2.1vw,12px);font-weight:700;line-height:1.1;color:#fff;background:rgba(0,0,0,.65);border-radius:4px;padding:0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}
 .cell.talk .spk{animation:mfTalk .7s ease-in-out infinite alternate}
 @keyframes mfTalk{from{transform:scale(1)}to{transform:scale(1.15)}}
 .cell.miss .front{border-color:var(--miss);box-shadow:inset 0 0 0 2px var(--miss)}
@@ -100,7 +98,6 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
 @keyframes mfGot{0%{box-shadow:inset 0 0 0 1px var(--glow),0 0 0 0 color-mix(in srgb,var(--glow) 80%,transparent)}
   45%{box-shadow:inset 0 0 0 2px var(--glow),0 0 22px 4px color-mix(in srgb,var(--glow) 70%,transparent)}
   100%{box-shadow:inset 0 0 0 1px var(--glow),0 0 14px 1px color-mix(in srgb,var(--glow) 55%,transparent)}}
-@media (min-width:700px){.cap .ln{font-size:.78rem}.cap .spk{width:30px;height:30px}.cap .spk svg{width:16px;height:16px}}
 @media (prefers-reduced-motion:reduce){
   .inner{transition:none}
   .cell.got .front,.cell.talk .spk{animation:none}
@@ -234,15 +231,21 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
       var w=W[c.l][c.k], el=document.createElement('div');
       el.className='cell';
       el.innerHTML='<button type="button" class="card"><span class="inner"><span class="face back">'+BACK+'</span>'+
-        '<span class="face front" aria-hidden="true" lang="'+c.l+'">'+own(FISH[c.l][c.k]||'',c.i)+'</span></span></button>'+
-        '<div class="cap"><span class="ln"'+(RTL[c.l]?' dir="auto"':'')+'>'+esc(NAME[c.l])+' · '+esc(w)+'</span><button type="button" class="spk" aria-label="🔊 '+esc(w)+'">'+SPK+'</button></div>';
+        '<span class="face front" aria-hidden="true" lang="'+c.l+'">'+own(FISH[c.l][c.k]||'',c.i)+'<span class="spk">'+SPK+'</span><span class="ln">'+esc(NAME[c.l])+'</span></span></span></button>';
       c.el=el; c.btn=el.querySelector('.card');
-      c.btn.addEventListener('click',function(){ tap(c); });
-      el.querySelector('.spk').addEventListener('click',function(){ say(c,false); });
+      c.btn.addEventListener('click',function(){ tap(c); });   // a turned-over card (or its speaker) says its word
       label(c); b.appendChild(el);
     });
-    status();
+    status(); layout();
   }
+  // as many columns as make the cards biggest while all 24 stay on the screen
+  function layout(){ var b=$('board'); if(!b||!cards.length) return;
+    var vw=b.parentNode.clientWidth-24, top=b.getBoundingClientRect().top+window.scrollY, avH=window.innerHeight-top-12, gap=vw<700?5:10, best=null;
+    [2,3,4,6,8].forEach(function(cols){ var w=(vw-gap*(cols-1))/cols, rows=Math.ceil(cards.length/cols), h=rows*w/2+gap*(rows-1);
+      if(h<=avH&&(!best||w>best.w)) best={cols:cols,w:w}; if(!best&&cols===8) best={cols:8,w:w}; });
+    if(!best){ var c8=8, rows8=Math.ceil(cards.length/c8); best={cols:c8,w:Math.max(40,((avH-gap*(rows8-1))/rows8)*2)}; }
+    var w=Math.min(best.w,(avH-gap*(Math.ceil(cards.length/best.cols)-1))/Math.ceil(cards.length/best.cols)*2);
+    b.style.setProperty('--gap',gap+'px'); b.style.gridTemplateColumns='repeat('+best.cols+','+Math.floor(w)+'px)'; }
   function label(c){
     var s=c.up?W[c.l][c.k]+', '+NAME[c.l]+(c.got?', '+t('matched'):''):t('down').replace('{i}',c.i+1);
     c.btn.setAttribute('aria-label',s);
@@ -330,7 +333,7 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
     }).catch(function(err){ if(id!==sp.id) return; if(err&&err.name==='NotAllowedError') return done(); device(); });
   }
 
-  var rz; window.addEventListener('resize',function(){ clearTimeout(rz); rz=setTimeout(fillPickers,80); });
+  var rz; window.addEventListener('resize',function(){ clearTimeout(rz); rz=setTimeout(function(){ fillPickers(); layout(); },80); });
 
   // ── start ──
   applyUI();
