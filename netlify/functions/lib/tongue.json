@@ -9,7 +9,8 @@
   "de",
   "ko",
   "he",
-  "ar"
+  "ar",
+  "tr"
  ],
  "groups": [
   {
@@ -42,7 +43,8 @@
     "de": "Darf ich für Sie beten?",
     "ko": "당신을 위해 기도해 드려도 될까요?",
     "he": "אפשר להתפלל בשבילך?",
-    "ar": "هل يمكنني أن أصلّي لأجلك؟"
+    "ar": "هل يمكنني أن أصلّي لأجلك؟",
+    "tr": "Sizin için dua edebilir miyim?"
    }
   },
   {
@@ -58,7 +60,8 @@
     "de": "Lassen Sie uns zusammen beten.",
     "ko": "함께 기도합시다.",
     "he": "בוא נתפלל יחד.",
-    "ar": "لنصلِّ معًا."
+    "ar": "لنصلِّ معًا.",
+    "tr": "Birlikte dua edelim."
    }
   },
   {
@@ -74,7 +77,8 @@
     "de": "Möchten Sie beten?",
     "ko": "기도하시겠어요?",
     "he": "תרצה להתפלל?",
-    "ar": "هل تودّ أن تصلّي؟"
+    "ar": "هل تودّ أن تصلّي؟",
+    "tr": "Dua etmek ister misiniz?"
    }
   },
   {
@@ -90,7 +94,8 @@
     "de": "Gott liebt Sie, und Jesus auch.",
     "ko": "하나님은 당신을 사랑하십니다. 예수님도 당신을 사랑하십니다.",
     "he": "אלוהים אוהב אותך, וגם ישוע.",
-    "ar": "الله يحبك، ويسوع أيضًا يحبك."
+    "ar": "الله يحبك، ويسوع أيضًا يحبك.",
+    "tr": "Tanrı sizi seviyor, İsa da sizi seviyor."
    }
   },
   {
@@ -106,7 +111,8 @@
     "de": "Gibt es etwas, wofür ich mit Ihnen beten darf?",
     "ko": "함께 기도해 드릴 일이 있을까요?",
     "he": "יש משהו שאפשר להתפלל עליו יחד איתך?",
-    "ar": "هل هناك أمر يمكنني أن أصلّي معك من أجله؟"
+    "ar": "هل هناك أمر يمكنني أن أصلّي معك من أجله؟",
+    "tr": "Sizinle birlikte dua edebileceğim bir konu var mı?"
    }
   },
   {
@@ -122,7 +128,8 @@
     "de": "Haben Sie geistliche Überzeugungen?",
     "ko": "믿고 계신 신앙이 있으신가요?",
     "he": "יש לך אמונה רוחנית כלשהי?",
-    "ar": "هل لديك إيمان روحي معيّن؟"
+    "ar": "هل لديك إيمان روحي معيّن؟",
+    "tr": "Herhangi bir ruhsal inancınız var mı?"
    }
   },
   {
@@ -138,7 +145,8 @@
     "de": "Was meinen Sie, wer ist Jesus?",
     "ko": "예수님이 누구라고 생각하세요?",
     "he": "מי לדעתך הוא ישוע?",
-    "ar": "من هو يسوع في رأيك؟"
+    "ar": "من هو يسوع في رأيك؟",
+    "tr": "Sizce İsa kimdir?"
    }
   },
   {
@@ -154,7 +162,8 @@
     "de": "Wenn Sie heute sterben würden, wissen Sie sicher, dass Sie in den Himmel kommen?",
     "ko": "오늘 세상을 떠난다면, 천국에 간다는 확신이 있으신가요?",
     "he": "אם היית מת היום, האם אתה יודע בוודאות שהיית הולך לשמיים?",
-    "ar": "لو متَّ اليوم، هل تعرف يقينًا أنك ستذهب إلى السماء؟"
+    "ar": "لو متَّ اليوم، هل تعرف يقينًا أنك ستذهب إلى السماء؟",
+    "tr": "Bugün ölseydiniz, cennete gideceğinizden emin misiniz?"
    }
   },
   {
@@ -170,7 +179,8 @@
     "de": "Hat Ihnen schon einmal jemand aus der Bibel gezeigt, wie man Gott kennenlernen kann?",
     "ko": "누군가 성경으로 하나님을 아는 방법을 보여 준 적이 있나요?",
     "he": "האם מישהו הראה לך פעם מתוך כתבי הקודש איך להכיר את אלוהים?",
-    "ar": "هل أراك أحد من قبل من الكتاب المقدس كيف تعرف الله؟"
+    "ar": "هل أراك أحد من قبل من الكتاب المقدس كيف تعرف الله؟",
+    "tr": "Hiç kimse size Kutsal Kitap’tan Tanrı’yı nasıl tanıyabileceğinizi gösterdi mi?"
    }
   },
   {
@@ -186,7 +196,8 @@
     "de": "Möchten Sie Jesus persönlich kennenlernen?",
     "ko": "예수님을 인격적으로 알고 싶으신가요?",
     "he": "תרצה להכיר את ישוע באופן אישי?",
-    "ar": "هل تودّ أن تعرف يسوع معرفة شخصية؟"
+    "ar": "هل تودّ أن تعرف يسوع معرفة شخصية؟",
+    "tr": "İsa’yı kişisel olarak tanımak ister misiniz?"
    }
   },
   {
@@ -202,7 +213,8 @@
     "de": "Möchten Sie Jesus als Ihren Herrn und Retter annehmen?",
     "ko": "예수님을 당신의 주님과 구원자로 영접하시겠어요?",
     "he": "תרצה לקבל את ישוע כאדון וכמושיע שלך?",
-    "ar": "هل تودّ أن تقبل يسوع ربًّا ومخلّصًا لك؟"
+    "ar": "هل تودّ أن تقبل يسوع ربًّا ومخلّصًا لك؟",
+    "tr": "İsa’yı Rabbiniz ve Kurtarıcınız olarak kabul etmek ister misiniz?"
    }
   },
   {
@@ -218,7 +230,8 @@
     "de": "Haben Sie den Heiligen Geist empfangen, seit Sie gläubig geworden sind?",
     "ko": "믿은 후에 성령을 받으셨나요?",
     "he": "האם קיבלת את רוח הקודש מאז שהאמנת?",
-    "ar": "هل قبلت الروح القدس لما آمنت؟"
+    "ar": "هل قبلت الروح القدس لما آمنت؟",
+    "tr": "İman ettiğinizden beri Kutsal Ruh’u aldınız mı?"
    },
    "ref": "Acts 19:2"
   },
@@ -235,7 +248,8 @@
     "de": "Darf ich Ihnen das schenken? Es ist ein kostenloses Geschenk.",
     "ko": "이것을 드려도 될까요? 무료 선물입니다.",
     "he": "אפשר לתת לך את זה? זו מתנה חינם.",
-    "ar": "هل يمكنني أن أعطيك هذا؟ إنه هدية مجانية."
+    "ar": "هل يمكنني أن أعطيك هذا؟ إنه هدية مجانية.",
+    "tr": "Bunu size verebilir miyim? Ücretsiz bir hediye."
    }
   },
   {
@@ -251,7 +265,8 @@
     "de": "Haben Sie eine Bibel?",
     "ko": "성경책 있으세요?",
     "he": "יש לך תנ״ך וברית חדשה?",
-    "ar": "هل لديك كتاب مقدس؟"
+    "ar": "هل لديك كتاب مقدس؟",
+    "tr": "Kutsal Kitap’ınız var mı?"
    }
   },
   {
@@ -267,7 +282,8 @@
     "de": "Möchten Sie einmal eine Kirche besuchen?",
     "ko": "교회에 한번 가 보시겠어요?",
     "he": "תרצה לבקר בכנסייה או בקהילה?",
-    "ar": "هل تودّ أن تزور كنيسة؟"
+    "ar": "هل تودّ أن تزور كنيسة؟",
+    "tr": "Bir kiliseyi ziyaret etmek ister misiniz?"
    }
   }
  ],
@@ -284,7 +300,8 @@
     "de": "Denn also hat Gott die Welt geliebt, daß er seinen eingeborenen Sohn gab, auf daß jeder, der an ihn glaubt, nicht verloren gehe, sondern ewiges Leben habe.",
     "ko": "하나님이 세상을 이처럼 사랑하사 독생자를 주셨으니 이는 저를 믿는 자마다 멸망치 않고 영생을 얻게 하려 하심이니라",
     "he": "כי ככה אהב האלהים את העולם עד אשר נתן את בנו את יחידו למען לא יאבד כל המאמין בו כי אם יחיה חיי עולמים.",
-    "ar": "لأَنَّهُ هكَذَا أَحَبَّ اللهُ الْعَالَمَ حَتَّى بَذَلَ ابْنَهُ الْوَحِيدَ، لِكَيْ لاَ يَهْلِكَ كُلُّ مَنْ يُؤْمِنُ بِهِ، بَلْ تَكُونُ لَهُ الْحَيَاةُ الأَبَدِيَّةُ."
+    "ar": "لأَنَّهُ هكَذَا أَحَبَّ اللهُ الْعَالَمَ حَتَّى بَذَلَ ابْنَهُ الْوَحِيدَ، لِكَيْ لاَ يَهْلِكَ كُلُّ مَنْ يُؤْمِنُ بِهِ، بَلْ تَكُونُ لَهُ الْحَيَاةُ الأَبَدِيَّةُ.",
+    "tr": "Çünkü Tanrı dünyayı o kadar çok sevdi ki, biricik Oğlu’nu verdi; öyle ki O’na iman edenlerin hiçbiri yok olmasın, hepsi sonsuz yaşama kavuşsun."
    },
    "r": {
     "tl": "Juan 3:16",
@@ -296,7 +313,8 @@
     "he": "יוחנן 3:16",
     "en": "John 3:16",
     "es": "Juan 3:16",
-    "ar": "يوحنا 3:16"
+    "ar": "يوحنا 3:16",
+    "tr": "Yuhanna 3:16"
    }
   },
   {
@@ -311,7 +329,8 @@
     "de": "Denn alle haben gesündigt und erreichen nicht die Herrlichkeit Gottes…",
     "ko": "모든 사람이 죄를 범하였으매 하나님의 영광에 이르지 못하더니",
     "he": "כי כלם חטאו וחסרי כבוד אלהים המה.",
-    "ar": "إِذِ الْجَمِيعُ أَخْطَأُوا وَأَعْوَزَهُمْ مَجْدُ اللهِ…"
+    "ar": "إِذِ الْجَمِيعُ أَخْطَأُوا وَأَعْوَزَهُمْ مَجْدُ اللهِ…",
+    "tr": "Çünkü herkes günah işledi ve Tanrı’nın yüceliğinden yoksun kaldı…"
    },
    "r": {
     "tl": "Mga Taga-Roma 3:23",
@@ -323,7 +342,8 @@
     "he": "רומים 3:23",
     "en": "Romans 3:23",
     "es": "Romanos 3:23",
-    "ar": "رومية 3:23"
+    "ar": "رومية 3:23",
+    "tr": "Romalılar 3:23"
    }
   },
   {
@@ -338,7 +358,8 @@
     "de": "Denn der Lohn der Sünde ist der Tod, die Gnadengabe Gottes aber ewiges Leben in Christo Jesu, unserem Herrn.",
     "ko": "죄의 삯은 사망이요 하나님의 은사는 그리스도 예수 우리 주 안에 있는 영생이니라",
     "he": "כי שכר החטא הוא המות ומתנת חסד אלהים היא חיי העולם במשיח ישוע אדנינו.",
-    "ar": "لأَنَّ أُجْرَةَ الْخَطِيَّةِ هِيَ مَوْتٌ، وَأَمَّا هِبَةُ اللهِ فَهِيَ حَيَاةٌ أَبَدِيَّةٌ بِالْمَسِيحِ يَسُوعَ رَبِّنَا."
+    "ar": "لأَنَّ أُجْرَةَ الْخَطِيَّةِ هِيَ مَوْتٌ، وَأَمَّا هِبَةُ اللهِ فَهِيَ حَيَاةٌ أَبَدِيَّةٌ بِالْمَسِيحِ يَسُوعَ رَبِّنَا.",
+    "tr": "Çünkü günahın ücreti ölümdür; ama Tanrı’nın armağanı, Rabbimiz Mesih İsa’da sonsuz yaşamdır."
    },
    "r": {
     "tl": "Mga Taga-Roma 6:23",
@@ -350,7 +371,8 @@
     "he": "רומים 6:23",
     "en": "Romans 6:23",
     "es": "Romanos 6:23",
-    "ar": "رومية 6:23"
+    "ar": "رومية 6:23",
+    "tr": "Romalılar 6:23"
    }
   },
   {
@@ -365,7 +387,8 @@
     "de": "Wenn du mit deinem Munde Jesum als Herrn bekennen und in deinem Herzen glauben wirst, daß Gott ihn aus den Toten auferweckt hat, du errettet werden wirst.",
     "ko": "네가 만일 네 입으로 예수를 주로 시인하며 또 하나님께서 그를 죽은 자 가운데서 살리신 것을 네 마음에 믿으면 구원을 얻으리니",
     "he": "כי אם תודה בפיך אשר ישוע הוא האדון ותאמין בלבבך אשר האלהים העירו מן המתים אז תושע.",
-    "ar": "لأَنَّكَ إِنِ اعْتَرَفْتَ بِفَمِكَ بِالرَّبِّ يَسُوعَ، وَآمَنْتَ بِقَلْبِكَ أَنَّ اللهَ أَقَامَهُ مِنَ الأَمْوَاتِ، خَلَصْتَ."
+    "ar": "لأَنَّكَ إِنِ اعْتَرَفْتَ بِفَمِكَ بِالرَّبِّ يَسُوعَ، وَآمَنْتَ بِقَلْبِكَ أَنَّ اللهَ أَقَامَهُ مِنَ الأَمْوَاتِ، خَلَصْتَ.",
+    "tr": "Eğer İsa’nın Rab olduğunu ağzınla açıkça söyler ve Tanrı’nın O’nu ölümden dirilttiğine yüreğinle iman edersen, kurtulacaksın."
    },
    "r": {
     "tl": "Mga Taga-Roma 10:9",
@@ -377,7 +400,8 @@
     "he": "רומים 10:9",
     "en": "Romans 10:9",
     "es": "Romanos 10:9",
-    "ar": "رومية 10:9"
+    "ar": "رومية 10:9",
+    "tr": "Romalılar 10:9"
    }
   }
  ]
