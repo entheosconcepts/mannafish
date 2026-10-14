@@ -928,7 +928,7 @@ section.section.bundles{display:block;margin-top:0}
 .nb.mk{background:rgba(245,215,110,.16);border-color:rgba(245,215,110,.6);box-shadow:inset 4px 0 0 #f5d76e}
 .nb .nref{display:block;font:700 .74rem 'Archivo',sans-serif;letter-spacing:.04em;color:var(--brass-soft,#6f9be0);margin-bottom:2px;background:none;border:0;padding:0;cursor:pointer;text-align:left}
 .hlhint{font:.8rem 'Archivo',sans-serif;color:var(--foam-dim,#aaa);margin:0 0 8px}
-.chapter span.mk{background:linear-gradient(transparent 50%,rgba(245,215,110,.55) 50%);border-radius:2px}
+.chapter span.mk{background:linear-gradient(transparent 50%,var(--hl,rgba(245,215,110,.55)) 50%);border-radius:2px}
 .chapter span[data-v]{cursor:pointer}
 .rspk,.frspk{flex:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--foam);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
 .rspk svg,.frspk svg{width:20px;height:20px}
@@ -1044,7 +1044,11 @@ section.section.bundles{display:block;margin-top:0}
 .ptchips button.today{background:#fff;color:#0b0f14}.ptchips button.was{opacity:.7}.ptchips button.later{opacity:.4}
 .pthl{margin:-6px 0 14px;align-items:center}.pthl .ptbtn{font-size:.95rem;padding:8px 16px}.pthl .ptbtn[aria-pressed=true]{background:#f5d76e;color:#111;border-color:#f5d76e}
 .ptver{border:0;background:none;color:inherit;font:800 .78rem 'Archivo',sans-serif;letter-spacing:.12em;opacity:.7;cursor:pointer;padding:6px}
-.pt .ptq.mk [data-v]{background:linear-gradient(transparent 58%,rgba(245,215,110,.42) 58%);border-radius:2px}
+.pt .ptq.mk [data-v]{background:linear-gradient(transparent 58%,var(--hl,rgba(245,215,110,.42)) 58%);border-radius:2px}
+.pthl .hlc{display:inline-flex;gap:6px;align-items:center}.pthl .hlc button{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.35);cursor:pointer;padding:0}
+.pthl .hlc button[aria-pressed=true]{border-color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.35)}
+.ptversel{appearance:none;-webkit-appearance:none;border:1px solid rgba(255,255,255,.4);background:rgba(0,0,0,.3);color:#fff;border-radius:999px;padding:7px 28px 7px 12px;font:800 .82rem 'Archivo',sans-serif;letter-spacing:.06em;cursor:pointer;background-image:linear-gradient(45deg,transparent 50%,#fff 50%),linear-gradient(135deg,#fff 50%,transparent 50%);background-position:calc(100% - 15px) 52%,calc(100% - 10px) 52%;background-size:5px 5px;background-repeat:no-repeat}
+.ptversel option{color:#111}
 .ptvers{border-top:1px solid rgba(255,255,255,.14);margin-top:4px;padding-top:4px}.ptvers[hidden]{display:none}.ptvers button{font-size:1rem;padding:9px 16px}.ptvers small{opacity:.65;font-weight:700}
 .ptvnote{margin:4px 16px 8px;font:500 .85rem/1.4 'Archivo',sans-serif;opacity:.75}
 .ptcast{flex:none}   /* never squeezed by the note under it (Ken, 13 Oct: "it only shows half a fish") */
@@ -2552,13 +2556,22 @@ window.MF=(function(){
   function firstChunks(t){ var c=rChunks(t), f=c[0]||''; if(f.length<=140) return c; var m=f.slice(60,140).search(/[,;:，；：、।·]\s/);
     if(m<0) return c; var cut=60+m+1; return [f.slice(0,cut).trim(),f.slice(cut).trim()].concat(c.slice(1)); }
   function spoken(t,L){ return L==='he'?t.replace(/ה׳|י[֑-ׇ]*ה[֑-ׇ]*ו[֑-ׇ]*ה[֑-ׇ]*/g,'אדוני'):t; }
+  // Ken, 14 Oct: "highlight is still off." Timing the words evenly by letters runs ahead of the voice: it pauses at
+  // commas and full stops and has a breath of silence at each end, and timeupdate only fires about four times a second.
+  // So the place in the text is read off a map that gives each pause its length, and checked every frame while playing.
+  var TTSM={};
+  function ttsMap(t){ if(TTSM[t]) return TTSM[t]; var c=[0], n=0; for(var i=0;i<t.length;i++){ var ch=t.charAt(i); n+=1; if(/[,;:\u060C\u061B\uFF0C\u3001\uFF1B\uFF1A\u2014\u2013]/.test(ch)) n+=4; else if(/[.!?\u3002\uFF01\uFF1F\u0964\u061F]/.test(ch)) n+=8; c.push(n); } return (TTSM[t]={c:c,n:n}); }
+  function ttsAt(t,a){ var m=ttsMap(t), lead=.12, tail=.3, d=a.duration-lead-tail; if(!(d>.3)) return a.currentTime/a.duration*t.length;
+    var want=Math.max(0,Math.min(1,(a.currentTime-lead)/d))*m.n, lo=0, hi=t.length; while(lo<hi){ var mid=(lo+hi)>>1; if(m.c[mid+1]<=want) lo=mid+1; else hi=mid; } return lo; }
+  function ttsFollow(a,t,cb){ var h=function(){ if(a.duration) cb(ttsAt(t,a)); }; a.ontimeupdate=h;
+    (function tick(){ if(a.ontimeupdate!==h) return; if(a.duration&&!a.paused) h(); requestAnimationFrame(tick); })(); }
   function readAloud(ctx,from,to,btn){ if(sp.on && sp.btn===btn){ stopSpeak(); rMarkIn(ctx,0); return; } var D=ctx.data; if(!D) return;
     stopSpeak(); var id=sp.id, L=D.l; sp.on=true; sp.btn=btn; btn.setAttribute('aria-pressed','true');
     var done=function(){ if(id===sp.id){ stopSpeak(); rMarkIn(ctx,0); if(ctx.onDone) ctx.onDone(); } };
     function say(t,base,el,next,LL){ if(id!==sp.id) return; LL=LL||L; var vv=voiceFor(LL), said=spoken(t,LL);
       var v=aiVoice(); (v?sayUrl(said,LL,v):Promise.reject()).then(function(url){
         if(id!==sp.id) return; var a=AU(); a.onplaying=function(){ sp.started=true; listenUI(); if(window.MFplUI) MFplUI(); }; a.onpause=function(){ listenUI(); if(window.MFplUI) MFplUI(); };
-        a.ontimeupdate=function(){ if(a.duration&&el) rWordAt(el,base+a.currentTime/a.duration*t.length); };
+        if(el) ttsFollow(a,t,function(ci){ rWordAt(el,base+ci); }); else a.ontimeupdate=null;
         a.onended=function(){ if(id===sp.id) next(); }; a.src=url; a.defaultPlaybackRate=a.playbackRate=RATE(); sp.audio=a; return a.play(); })
       .catch(function(err){ if(id!==sp.id) return; if(err&&err.name==='NotAllowedError'){ listenBlocked(); return; } if(!window.speechSynthesis||(vv.any&&!vv.v)){ done(); return; }
         var u=new SpeechSynthesisUtterance(said); u.lang=LCODE[LL]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.92*RATE();
@@ -2582,7 +2595,7 @@ window.MF=(function(){
       // Ken, 12 Oct: a line recorded in Ken's own voice plays instead of the computer voice
       var hv=window.MFvoiceUrl&&MFvoiceUrl(L,full);
       if(hv){ var a=AU(); a.onplaying=function(){ sp.started=true; listenUI(); if(window.MFplUI) MFplUI(); }; a.onpause=function(){ listenUI(); if(window.MFplUI) MFplUI(); };
-        a.ontimeupdate=function(){ if(a.duration&&el) rWordAt(el,a.currentTime/a.duration*full.length); }; a.onended=function(){ if(id===sp.id) learn(); };
+        if(el) ttsFollow(a,full,function(ci){ rWordAt(el,ci); }); else a.ontimeupdate=null; a.onended=function(){ if(id===sp.id) learn(); };
         a.src=hv; a.defaultPlaybackRate=a.playbackRate=Math.max(.5,RATE()/1.25); sp.audio=a; var pr=a.play();
         if(pr&&pr.catch) pr.catch(function(err){ if(id!==sp.id) return; if(err&&err.name==='NotAllowedError') listenBlocked(); else learn(); }); return; }
       (function nextPart(){ if(k>=parts.length){ learn(); return; } var part=parts[k++], base=full.indexOf(part,pos); if(base<0) base=pos; pos=base+part.length; say(part,base,el,nextPart); })(); }
@@ -2915,6 +2928,8 @@ window.MF=(function(){
       var j=caEl().querySelector('.cbt .cjig'); if(j) j.innerHTML=BAITS[t]; return; }
     if(mn&&!mn.hidden&&!e.target.closest('.cbmenu')){ mn.hidden=true; $('ptStage').querySelector('.cbcur').setAttribute('aria-expanded','false'); }
     var b=e.target.closest('[data-c]'); if(!b) return; if(b.dataset.c==='cast') caCast(false); else if(b.dataset.c==='back') caBack(); else caPull(); });
+  $('ptStage').addEventListener('change',function(e){ if(!e.target.classList||!e.target.classList.contains('ptversel')) return;
+    try{ localStorage.setItem(VKEY,e.target.value); }catch(er){} if($('rVer')) $('rVer').value=e.target.value; toast('📖 '+curVer().n); stopSpeak(); ptRender(); });
   // the note after the catch is saved as the person writes (into My notes, under the word caught)
   (function(){ var st={}, tm=null; $('ptStage').addEventListener('input',function(e){ if(e.target.id!=='ptCNote') return; var ta=e.target; clearTimeout(tm);
     tm=setTimeout(function(){ if(window.MFnoteUpsert){ MFnoteUpsert(cur,ta.value,st); var m=$('ptStage').querySelector('.ptcnote small'); if(m) m.textContent='✓ '+caT().note_saved; } },900); });
@@ -3019,12 +3034,19 @@ window.MF=(function(){
   function lang2(){ return PT.l2||(PT.l==='es'?'en':'es'); }
   // Ken, 13 Oct: "give me ability to highlight scripture from here so that it saves" -- the verse on a devotional step
   // goes into My highlights (and the account when signed in), the same as a verse highlighted in the reader
-  function ptHlRow(){ return '<div class="ptrow pthl"><button type="button" class="ptbtn" data-a="hl" aria-pressed="false" hidden></button>'+(PT.l==='en'?'<button type="button" class="ptver" data-a="vers">'+esc(curVer().s)+'</button>':'')+'</div>'; }
+  // Ken, 14 Oct: "I would like to be able to change bible versions not just KJV here" -- the version is a picker under the verse
+  function ptHlRow(){ var cv=curVer().k, col=hlColor();
+    return '<div class="ptrow pthl"><button type="button" class="ptbtn" data-a="hl" aria-pressed="false" hidden></button>'
+      +'<span class="hlc" role="group" aria-label="Highlight colour">'+Object.keys(HLC).map(function(c){ return '<button type="button" data-a="hlc" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('')+'</span>'
+      +(PT.l==='en'?'<select class="ptversel" aria-label="'+esc((BVL[PT.l]||BVL.en)[0])+'">'+VERS.map(function(v){ return '<option value="'+v.k+'"'+(v.k===cv?' selected':'')+'>'+esc(v.s)+' \u00b7 '+esc(v.n)+'</option>'; }).join('')+'</select>':'')+'</div>'; }
   function ptHlSet(pr,k,i,l,text){ var st=$('ptStage'), b=st.querySelector('[data-a="hl"]'); if(!b||!pr) return;
     var ver=verCode(l,false), info={kind:'verse',ref:pr.book+' '+pr.ch+':'+pr.vs,ver:ver,k:k,i:i,l:l,v:+pr.vs,text:String(text||'').slice(0,220)};
     PT.hlc={key:hlKey({book:pr.book,ch:pr.ch,ver:ver},pr.vs),info:info}; ptHlUI(!!hls()[PT.hlc.key]); b.hidden=false; }
   function ptHlUI(on){ var st=$('ptStage'), b=st.querySelector('[data-a="hl"]'), W=WPT[PT.l]||WPT.en, q=st.querySelector('.ptq'); if(!b) return;
-    b.setAttribute('aria-pressed',String(on)); b.textContent='🖍 '+(on?W[2]:W[1]); if(q) q.classList.toggle('mk',on); }
+    var x=on&&PT.hlc?hls()[PT.hlc.key]:null, col=(x&&HLC[x.c])?x.c:hlColor();
+    b.setAttribute('aria-pressed',String(on)); b.textContent='🖍 '+(on?W[2]:W[1]); b.style.background=on?HLC[col].replace(/,[.\d]+\)$/,',1)'):''; b.style.borderColor=on?b.style.background:'';
+    if(q){ q.classList.toggle('mk',on); q.style.setProperty('--hl',HLC[col]); }
+    st.querySelectorAll('.hlc [data-c]').forEach(function(d){ d.setAttribute('aria-pressed',String(d.dataset.c===col)); }); }
   var BVL={en:['Bible version','Other languages use their own Bible.'],es:['Versión de la Biblia','Las versiones son para el inglés; el español usa la RVR1960.'],tl:['Bersyon ng Biblia','Para sa Ingles ang mga bersyon; may sariling Biblia ang ibang wika.'],zh:['圣经译本','译本适用于英文；其他语言使用各自的圣经。'],
     hi:['बाइबल संस्करण','संस्करण अंग्रेज़ी के लिए हैं; अन्य भाषाएँ अपनी बाइबल का उपयोग करती हैं।'],el:['Μετάφραση της Βίβλου','Οι μεταφράσεις αφορούν τα αγγλικά· οι άλλες γλώσσες έχουν τη δική τους Βίβλο.'],de:['Bibelübersetzung','Die Übersetzungen gelten für Englisch; andere Sprachen nutzen ihre eigene Bibel.'],
     ko:['성경 번역본','번역본은 영어용입니다. 다른 언어는 각 언어의 성경을 사용합니다.'],he:['תרגום התנ״ך','התרגומים הם לאנגלית; שפות אחרות משתמשות בתנ״ך שלהן.'],ar:['ترجمة الكتاب المقدس','الترجمات للإنجليزية؛ اللغات الأخرى تستخدم كتابها المقدس.']};
@@ -3140,7 +3162,11 @@ window.MF=(function(){
     if(a==='len'){ PT.len=b.dataset.len; try{ localStorage.setItem('mf-devlen',PT.len); }catch(er){} PT.steps=ptSteps(); ptRender(); return; }
     if(a==='deeper'){ var was=PT.len||dLen(), sig=function(x){ return x.k+'|'+(x.i!=null?x.i:''); }, old=PT.steps.map(sig); PT.len=was==='quick'?'std':'full'; PT.steps=ptSteps();
       var j=PT.steps.findIndex(function(x){ return x.k!=='amen'&&old.indexOf(sig(x))<0; }); if(j<0) j=PT.steps.findIndex(function(x){ return x.k==='ref'; }); ptGo(j<0?0:j); return; }
-    if(a==='hl'){ var c=PT.hlc; if(!c) return; ptHlUI(hlToggle(c.key,JSON.parse(JSON.stringify(c.info)))); return; }
+    if(a==='hl'){ var c=PT.hlc; if(!c) return; var inf=JSON.parse(JSON.stringify(c.info)); inf.c=hlColor(); ptHlUI(hlToggle(c.key,inf)); return; }
+    // a colour: it becomes the one used from now on; the verse is highlighted in it (or re-coloured if it already is)
+    if(a==='hlc'){ try{ localStorage.setItem('mf-hl-color',b.dataset.c); }catch(er){} var c2=PT.hlc; if(!c2){ ptHlUI(false); return; }
+      var h2=hls(); if(h2[c2.key]){ h2[c2.key].c=b.dataset.c; saveHls(h2); ptHlUI(true); }
+      else { var inf2=JSON.parse(JSON.stringify(c2.info)); inf2.c=b.dataset.c; ptHlUI(hlToggle(c2.key,inf2)); } return; }
     if(a==='vers'){ e.stopPropagation(); $('ptMore').click(); setTimeout(function(){ var v=$('ptMenu').querySelector('.ptvers'); if(v){ v.hidden=false; var f=v.querySelector('[aria-checked=true]'); if(f) f.focus(); } },0); return; }
     if(a==='planpick'){ var pk=$('ptStage').querySelector('.ptpick'); pk.hidden=!pk.hidden; b.setAttribute('aria-expanded',String(!pk.hidden)); return; }
     if(a==='planset'){ var nk=b.dataset.k; if(!DATA[nk]) return; planSet(nk); if(nk!==cur) pick(nk,false); PT.steps=ptSteps(); PT.i=0; ptRender(); return; }
@@ -3689,7 +3715,7 @@ window.MF=(function(){
     var verse=part==='verse', shown=verse?d[1]:d[0], spoken=verse?d[1]+(l==='zh'?(/[。！？；：，]$/.test(d[1])?'':'。'):' ')+d[2]:d[0], spans=renderSay(box,shown,l,verse?d[2]:''), mk=function(ci){ mark(spans,ci); fh.mark(ci); };
     (aiVoice()?fishClip(l,cur,part):Promise.reject()).then(function(url){
       if(id!==sp.id) return; var a=AU(); a.onplaying=a.onpause=null; sp.audio=a;
-      a.ontimeupdate=function(){ if(a.duration) mk(a.currentTime/a.duration*spoken.length); };
+      ttsFollow(a,spoken,mk);
       a.onended=function(){ if(id===sp.id) stopSpeak(); }; a.src=url; a.defaultPlaybackRate=a.playbackRate=RATE(); return a.play();
     }).catch(function(){ if(id!==sp.id) return; deviceSay(l,spoken,mk,id,box); });
   }
@@ -3759,7 +3785,7 @@ window.MF=(function(){
   function sayBox(box,l,text,ref,get,btn){ stopSpeak(); var id=sp.id; sp.on=true; sp.btn=btn||null; if(btn) btn.setAttribute('aria-pressed','true');
     box.setAttribute('lang',l); var spans=renderSay(box,text,l,ref), mk=function(ci){ mark(spans,ci); };
     (aiVoice()?get():Promise.reject()).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){ if(id!==sp.id) return; var a=new Audio(URL.createObjectURL(b)); sp.audio=a;
-      a.ontimeupdate=function(){ if(a.duration) mk(a.currentTime/a.duration*text.length); }; a.onended=function(){ if(id===sp.id){ stopSpeak(); mark(spans,-1); } }; return a.play();
+      ttsFollow(a,text,mk); a.onended=function(){ if(id===sp.id){ stopSpeak(); mark(spans,-1); } }; return a.play();
     }).catch(function(){ if(id!==sp.id) return; deviceSay(l,text,mk,id,box); }); }
   function etPost(path,body){ return fetch(path,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}); }
   function sayLive(text,lang){ return function(){ return etPost('/api/say',{text:text,lang:lang,voice:aiVoice()}); }; }
@@ -3991,6 +4017,10 @@ window.MF=(function(){
     recWant=true; recOn=true; $('micBtn').setAttribute('aria-pressed','true'); ui(); recStart(); });
   // ── Highlights: a verse in any reader, or a note. Kept in this browser, and in the account when signed in.
   var HKEY='mf-hl';
+  // Ken, 14 Oct: "can we have options to what color we use to highlight"
+  var HLC={gold:'rgba(245,215,110,.6)',green:'rgba(110,214,140,.55)',blue:'rgba(110,170,245,.6)',pink:'rgba(245,140,190,.6)',orange:'rgba(250,160,80,.6)'};
+  function hlColor(){ var c='gold'; try{ c=localStorage.getItem('mf-hl-color')||'gold'; }catch(e){} return HLC[c]?c:'gold'; }
+  window.MFhlColors=HLC; window.MFhlColor=hlColor;
   function hls(){ try{ return JSON.parse(localStorage.getItem(HKEY)||'{}')||{}; }catch(e){ return {}; } }
   function saveHls(h){ try{ localStorage.setItem(HKEY,JSON.stringify(h)); }catch(e){} }
   window.MFhls=hls; window.MFsaveHls=saveHls;
@@ -4003,14 +4033,14 @@ window.MF=(function(){
   function verCode(l,orig){ return orig?'orig':l==='en'?'en:'+curVer().k:l; }
   function hlCtx(k,i,l,orig){ var p=parseRef(DATA[k].refs[i][0]); return p?{k:k,i:i,l:l,book:p.book,ch:p.ch,ver:verCode(l,orig)}:null; }
   function hlKey(c,v){ return c.book+' '+c.ch+':'+v+'|'+c.ver; }
-  function hlMark(root,c){ if(!root||!c) return; var h=hls(); [].forEach.call(root.querySelectorAll('span[data-v]'),function(sp){ sp.classList.toggle('mk',!!h[hlKey(c,sp.dataset.v)]); }); }
+  function hlMark(root,c){ if(!root||!c) return; var h=hls(); [].forEach.call(root.querySelectorAll('span[data-v]'),function(sp){ var x=h[hlKey(c,sp.dataset.v)]; sp.classList.toggle('mk',!!x); if(x&&HLC[x.c]) sp.style.setProperty('--hl',HLC[x.c]); else sp.style.removeProperty('--hl'); }); }
   function stageCtx(){ var r=window.MFreader; return r&&r.kind==='ref'?hlCtx(r.k,r.i,r.l||MF.lang,RO):null; }
   window.MFhlMarkStage=function(){ hlMark($('rChapter'),stageCtx()); };
   window.MFhlMarkFig=function(fr){ var c=fr&&fr._ctx; if(c) hlMark(fr.querySelector('.chapter'),hlCtx(c.k,c.i,c.l,c.orig)); };
   function verseTap(e,root,c){ var sp=e.target.closest('span[data-v]'); if(!sp||!c||!root.contains(sp)) return false;
     var sel=window.getSelection&&getSelection(); if(sel&&sel.toString().trim().length>1) return false;
-    var tog=function(x){ var v=x.dataset.v, ref=c.book+' '+c.ch+':'+v, on=hlToggle(hlKey(c,v),{kind:'verse',ref:ref,ver:c.ver,k:c.k,i:c.i,l:c.l,v:+v,text:x.textContent.slice(0,220)});
-      x.classList.toggle('mk',on); return on; };
+    var tog=function(x){ var v=x.dataset.v, ref=c.book+' '+c.ch+':'+v, col=hlColor(), on=hlToggle(hlKey(c,v),{kind:'verse',ref:ref,ver:c.ver,k:c.k,i:c.i,l:c.l,v:+v,c:col,text:x.textContent.slice(0,220)});
+      x.classList.toggle('mk',on); if(on) x.style.setProperty('--hl',HLC[col]); return on; };
     if(window.MFwordTap&&MFwordTap(e,root,tog)) return true;   /* Ken, 11 Oct: a tap picks the one word; highlighting the verse is a button there */
     tog(sp); return true; }
   $('rChapter').addEventListener('click',function(e){ verseTap(e,this,stageCtx()); });
