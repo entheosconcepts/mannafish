@@ -934,6 +934,12 @@ section.section.bundles{display:block;margin-top:0}
 .chapter.pen{touch-action:none;-webkit-user-select:none;user-select:none;cursor:crosshair}
 .rpen{border:1px solid rgba(255,255,255,.35);background:none;color:inherit;border-radius:999px;padding:5px 12px;font:700 .8rem 'Archivo',sans-serif;cursor:pointer;white-space:nowrap}
 .rpen[aria-pressed=true]{background:#f5d76e;color:#111;border-color:#f5d76e}
+.penbar{position:sticky;top:0;z-index:3;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin:0 0 10px;padding:9px 12px;border-radius:12px;background:#f5d76e;color:#111;font:700 .86rem/1.35 'Archivo',sans-serif;text-align:center}
+.penbar[hidden]{display:none}.penbar .pbt{flex:1 1 200px}.penbar .pbc{display:flex;gap:6px}
+.penbar .pbc button{width:24px;height:24px;border-radius:50%;border:2px solid rgba(0,0,0,.25);padding:0;cursor:pointer}.penbar .pbc button[aria-pressed=true]{border-color:#111;box-shadow:0 0 0 2px #fff}
+.penbar .pbd{border:0;background:#111;color:#fff;border-radius:999px;padding:7px 14px;font:800 .82rem 'Archivo',sans-serif;cursor:pointer}
+.pt .ptq.pen{touch-action:none;-webkit-user-select:none;user-select:none;cursor:crosshair;outline:2px dashed rgba(245,215,110,.7);outline-offset:6px;border-radius:6px}
+.mpver{max-width:96px}
 .wpin{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:10px;font:600 .8rem 'Archivo',sans-serif;flex-wrap:wrap}
 .wpin select{border:1px solid #3a3a3e;background:#0f1114;color:#fff;border-radius:999px;padding:6px 10px;font:700 .8rem 'Archivo',sans-serif;max-width:60%}
 .wpinr{width:100%;text-align:center;font:400 1.15rem 'Spectral',Georgia,serif;min-height:1.2em}.wpinr small{display:block;font:600 .78rem 'Archivo',sans-serif;opacity:.75}
@@ -2042,7 +2048,7 @@ select option{background:#0b1620;color:#eaf0f0}
   <button type="button" class="mpword" id="mpWord" hidden></button>
   <div class="mpbar"><span id="mpAt">1</span><input type="range" id="mpRange" min="1" max="1" value="1" aria-label="Verse"><span id="mpOf">1</span></div>
   <div class="mpmore"><button type="button" class="mpchip" id="mpLoop" aria-pressed="false"></button><button type="button" class="mpchip" id="mpLearn" aria-pressed="false"></button><select class="mpsel" id="mpLearnL" aria-label="Second language" hidden></select></div>
-  <div class="mpfoot"><button type="button" class="mprate" id="mpRate">1x</button><select class="voicesel" id="mpVoice" aria-label="Voice"></select><button type="button" class="mpx" id="mpX" aria-label="Close">&times;</button></div>
+  <div class="mpfoot"><button type="button" class="mprate" id="mpRate">1x</button><select class="voicesel mpver" id="mpVer" aria-label="Bible version" hidden></select><select class="voicesel" id="mpVoice" aria-label="Voice"></select><button type="button" class="mpx" id="mpX" aria-label="Close">&times;</button></div>
   <div class="mpmini"><button type="button" class="mprate" id="mpRate2" aria-label="Speed">1x</button><button type="button" class="mpb" id="mpPlay2" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true" id="mpIco2"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg></button></div>
 </div>
 <!-- Ken, 11 Oct: today's devotional, full screen, one step at a time -- familiar from the Bible App's prayer time,
@@ -2102,7 +2108,7 @@ select option{background:#0b1620;color:#eaf0f0}
   <div class="wpt" id="wpTr"></div><div class="wpm" id="wpMean"></div><div class="wpn" id="wpNote"></div>
   <div class="wpb"><button type="button" id="wpLex" hidden></button><button type="button" id="wpHlw"></button><button type="button" id="wpHl"></button><button type="button" id="wpPlay"></button><button type="button" id="wpLoop"></button></div>
   <div class="wpc" id="wpC" role="group" aria-label="Highlight colour"></div>
-  <div class="wpin"><label for="wpIn" id="wpInL">See it in</label><select id="wpIn"></select><div class="wpinr" id="wpInR" aria-live="polite"></div></div></div>
+  <div class="wpin"><label for="wpIn" id="wpInL">See it in</label><select id="wpIn"></select><div class="wpinr" id="wpInR" aria-live="polite"></div><button type="button" class="wpsay" id="wpInSay" aria-label="Hear it" hidden>&#128266;</button></div></div>
 <button class="hearsel hlsel" type="button" id="hlSel" hidden><span aria-hidden="true">&#128397;</span> <span id="hlSelLab">Highlight</span></button>
 <button class="hearsel" type="button" id="hearSel" hidden><span aria-hidden="true">&#128266;</span> <span id="hearLab">Hear it</span></button>
 <div class="hearbox" id="hearBox" role="status" hidden><button class="etx" type="button" id="hearX" aria-label="Close">&times;</button><div class="etbig" id="hearTxt"></div><div class="etmine" id="hearMine"></div><div class="etrow"><button type="button" id="hearPlay">&#128266;</button></div></div>
@@ -2116,13 +2122,14 @@ select option{background:#0b1620;color:#eaf0f0}
   <div class="rsay" id="rSay" hidden><select class="rlang" id="rLang" aria-label="Language"></select><span class="rvlab" id="rVLab"></span><select class="voicesel rvoice" id="rVoice" aria-label="Voice"></select><span class="rplays"><button type="button" class="rplay" id="rPlayV"></button><button type="button" class="rplay" id="rPlayC"></button><button type="button" class="rplay rorig" id="rOrig" hidden></button></span><button type="button" class="rplay lxexp" id="rExp" hidden></button></div>
   <div class="reader-body">
     <div class="pullquote" id="rQuote"></div>
+    <div class="penbar" id="rPenBar" hidden></div>
     <div class="chapter" id="rChapter"></div>
   </div>
   <div class="reader-actions">
     <p class="rhint" id="rYouVHint">Click on the Bible App button for more versions</p>
     <a class="rbtn p" id="rYouV" target="_blank" rel="noopener">Bible App</a>
     <a class="rbtn s" id="rGate" target="_blank" rel="noopener">Read the full chapter</a>
-    <div class="rfoot"><select class="rver" id="rVer" aria-label="Bible version"></select><button type="button" class="rpen" id="rPen" aria-pressed="false">&#128397; Pen</button><div class="rnote" id="rNote"></div></div>
+    <div class="rfoot"><select class="rver" id="rVer" aria-label="Bible version"></select><button type="button" class="rpen" id="rPen" aria-pressed="false"></button><div class="rnote" id="rNote"></div></div>
   </div>
 </aside>
 
@@ -2530,7 +2537,7 @@ window.MF=(function(){
     $('rExp').textContent=expLab(reader.classList.contains('lexbig')); if(!st) $('rExp').hidden=true;
     var R0=window.MFreader, p0=kd==='ref'&&R0&&DATA[R0.k]&&DATA[R0.k].refs[R0.i]?parseRef(DATA[R0.k].refs[R0.i][0]):null;
     $('rOrig').hidden=!p0; if(p0){ $('rOrig').textContent=origLab(p0); $('rOrig').setAttribute('aria-pressed',RO?'true':'false'); }
-    $('rLang').innerHTML=CMPL.filter(function(o){ return !o[2]; }).map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===l?' selected':'')+'>'+esc(cmpLabel(o[0]))+' · '+RBIB[o[0]]+'</option>'; }).join('');
+    $('rLang').innerHTML=CMPL.filter(function(o){ return !o[2]; }).map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===l?' selected':'')+'>'+esc(cmpLabel(o[0]))+' · '+(o[0]==='en'?curVer().s:RBIB[o[0]])+'</option>'; }).join('');
     $('rVoice').innerHTML=voiceOptions();
     $('rPlayV').innerHTML='🔊 '+esc(T[0]); $('rPlayC').innerHTML='🔊 '+esc(lx?(HEARIT[MF.lang]||HEARIT.en):T[1]); $('rPlayV').setAttribute('aria-pressed','false'); $('rPlayC').setAttribute('aria-pressed','false'); }
   $('rLang').addEventListener('change',function(){ var r=window.MFreader; rStop(); if(r&&r.kind==='ref') openReader(r.k,r.i,this.value); });
@@ -2664,7 +2671,11 @@ window.MF=(function(){
   function openPlayer(o){ if(PL.src&&PL.src!==o.src) PL.src.setAttribute('aria-pressed','false'); if(plMine()) stopSpeak();
     PL={ctx:o.ctx,n:Math.max(1,o.start||1),N:o.ctx.data.t.length,intro:o.intro||'',title:o.title||'',src:o.src,unit:o.unit||'verse',fresh:true,ref:o.ref||null,loop:null,learnOn:false,learn:null};
     $('mpSub2').hidden=true; $('mpLearnL').hidden=true;
-    $('mpVoice').innerHTML=voiceOptions(); $('mfPlayer').hidden=false; $('mfPlayer').classList.remove('mini'); plUI(); }
+    $('mpVoice').innerHTML=voiceOptions();
+    // the version sits with the voice, for an English chapter in the reader
+    var isRd=o.ctx.root===$('rChapter')&&o.ctx.data&&o.ctx.data.l==='en'&&o.unit==='verse'&&!RO;
+    $('mpVer').hidden=!isRd; if(isRd){ $('mpVer').innerHTML=VERS.map(function(v){ return '<option value="'+v.k+'"'+(v.k===curVer().k?' selected':'')+'>'+esc(v.s)+'</option>'; }).join(''); }
+    $('mfPlayer').hidden=false; $('mfPlayer').classList.remove('mini'); plUI(); }
   function plStart(v){ stopSpeak(); var c={root:PL.ctx.root,data:PL.ctx.data,box:PL.ctx.box,intro:PL.fresh?PL.intro:'',onVerse:function(x){ PL.n=x; PL.done=false; plUI(); },
       onDone:function(){ PL.done=true; plUI(); },
       onLearn:function(x,l){ var b=$('mpSub2'); b.hidden=!x; b.textContent=x; b.setAttribute('lang',l||''); b.dir=/^(he|ar)$/.test(l)?'rtl':'ltr'; },
@@ -2684,6 +2695,7 @@ window.MF=(function(){
   $('mpRange').addEventListener('change',function(){ PL.n=+this.value; if(plMine()) plStart(PL.n); else plUI(); });
   function plRate(){ var r=RATES[(RATES.indexOf(RATE())+1)%RATES.length]; try{ localStorage.setItem('mf-speed',r); }catch(e){} if(sp.audio) sp.audio.playbackRate=r; plUI(); }
   $('mpRate').addEventListener('click',plRate); $('mpRate2').addEventListener('click',plRate);
+  $('mpVer').addEventListener('change',function(){ if(window.MFverSwitch) MFverSwitch(this.value); });
   $('mpVoice').addEventListener('change',function(){ var was=plMine(); setVoice(this.value); if(was) plStart(PL.n); });
   $('mpMin').addEventListener('click',function(){ $('mfPlayer').classList.toggle('mini'); });
   $('mpX').addEventListener('click',plClose);
@@ -2694,8 +2706,7 @@ window.MF=(function(){
   $('mpLoop').addEventListener('click',function(){ var L=PL.loop;
     PL.loop=!L?{a:PL.n,b:PL.n}:(L.a===L.b?{a:1,b:PL.N}:null); plUI(); if(PL.loop&&!plMine()) plStart(PL.loop.a===1&&PL.loop.b===PL.N?PL.n:PL.loop.a); });
   // Learn (Ken, 11 Oct): "hear it in one language and then the other" -- each verse, then the same verse in a second language
-  function chText(ref,l){ if(l==='en') return fetch('https://bible-api.com/'+encodeURIComponent(ref.book+' '+ref.ch)+'?translation='+curVer().k).then(function(r){ return r.json(); })
-      .then(function(j){ var t=[]; (j.verses||[]).forEach(function(x){ t[x.verse-1]=x.text.trim(); }); return t; });
+  function chText(ref,l){ if(l==='en') return enText(ref).then(function(o){ return o.t; });
     return fetch('/fish-lang/bible/'+l+'/'+ref.book.replace(/ /g,'_')+'-'+ref.ch+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return j.t; }); }
   function learnDefault(L){ if(MF.lang!==L) return MF.lang; var o=cmpShown()?cmpLangs().filter(function(x){ return x!==L; })[0]:null; return o||(L==='en'?'es':'en'); }
   function learnLoad(l){ var r=PL.ref, me=PL; if(!r) return; PL.learn={l:l,t:null}; plUI();
@@ -2774,6 +2785,9 @@ window.MF=(function(){
       .catch(function(){ delete GLC[key]; if(WP!==me) return; $('wpMean').textContent=o?'':T[7]; }); }
   function closeWord(){ $('wPop').hidden=true; WP=null; wselClear(); }
   window.MFcloseWord=function(){ if(WP) closeWord(); };
+  $('wpInSay').addEventListener('click',function(){ if(!WP||!WP.inSay) return; var t=WP.inSay.t, L=WP.inSay.l; stopSpeak(); var id=sp.id, vo=aiVoice();
+    (vo?sayUrl(t,L,vo):Promise.reject()).then(function(u){ if(id!==sp.id) return; var a=AU(); a.onended=a.onplaying=a.onpause=a.ontimeupdate=null; a.src=u; a.playbackRate=RATE(); sp.audio=a; return a.play(); })
+      .catch(function(){ if(id!==sp.id||!window.speechSynthesis) return; var u=new SpeechSynthesisUtterance(t), vv=voiceFor(L); u.lang=LCODE[L]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.85*RATE(); speechSynthesis.speak(u); }); });
   // just this word
   $('wpHlw').addEventListener('click',function(){ if(!WP||!WP.X.hl) return; var root=WP.root, vn=WP.vn, t=WP.t, c=WP.X.hl;
     wselClear(); var sp=root.querySelector('span[data-v="'+vn+'"]'); hlPhrase(sp,c,t.s,t.e); wpExtras(); });
@@ -2783,7 +2797,9 @@ window.MF=(function(){
   var WIC={};
   $('wpIn').addEventListener('change',function(){ if(!WP) return; var to=this.value, me=WP, X2=wpX(), out=$('wpInR'); out.textContent=to?'…':''; if(!to) return;
     var c=WP.X.hl, p=c?{book:c.book,ch:c.ch}:null, key=to+'|'+WP.L+'|'+WP.w+'|'+WP.vn+'|'+(p?p.book+p.ch:'');
-    var show=function(main,sub){ if(WP!==me) return; out.innerHTML=esc(main)+(sub?'<small>'+esc(sub)+'</small>':''); };
+    $('wpInSay').hidden=true;
+    // Ken, 15 Oct: "add speaker to hear highlighted word in other language" -- Greek is read in a Greek voice, Hebrew in a Hebrew one
+    var show=function(main,sub,sayL){ if(WP!==me) return; out.innerHTML=esc(main)+(sub?'<small>'+esc(sub)+'</small>':''); WP.inSay={t:main,l:sayL||to}; $('wpInSay').hidden=!main; };
     if(to==='orig'){
       if(!p){ out.textContent=X2[7]; return; }
       (WIC[key]||(WIC[key]=loadOrig(p).then(function(j){ var row=(j.v||{})[WP.vn]||[]; if(!row.length) throw 'none';
@@ -2793,7 +2809,7 @@ window.MF=(function(){
           // not by its gloss: ask which of the original words it translates (only these words can be the answer)
           return etPost('/api/translate',{pick:1,text:WP.w,verse:WP.text.slice(0,400),cands:row.map(function(x){ return x[2]; }).slice(0,80)}).then(function(r){ if(!r.ok) throw 0; return r.json(); })
             .then(function(o){ var x=row[+o.i]; if(!x) throw 'none'; return {j:j,x:x}; }); })))
-        .then(function(z){ var x=z.x; show(String(x[0]).replace(/[¶,.;:·]+$/,''),[x[1],x[2],x[3],(z.j.l==='hbo'?X2[6]:X2[5])].filter(Boolean).join(' · ')); })
+        .then(function(z){ var x=z.x; show(String(x[0]).replace(/[¶,.;:·]+$/,''),[x[1],x[2],x[3],(z.j.l==='hbo'?X2[6]:X2[5])].filter(Boolean).join(' · '),z.j.l==='hbo'?'he':'el'); })
         .catch(function(er){ delete WIC[key]; if(WP!==me) return; out.textContent=er==='none'||er===0?X2[7]:X2[8]; });
       return; }
     (WIC[key]||(WIC[key]=etPost('/api/translate',{equiv:1,text:WP.w,verse:WP.text.slice(0,400),from:WP.L,to:to}).then(function(r){ if(!r.ok) throw 0; return r.json(); })))
@@ -3096,12 +3112,17 @@ window.MF=(function(){
   // goes into My highlights (and the account when signed in), the same as a verse highlighted in the reader
   // Ken, 14 Oct: "I would like to be able to change bible versions not just KJV here" -- the version is a picker under the verse
   function ptHlRow(){ var cv=curVer().k, col=hlColor();
-    return '<div class="ptrow pthl"><button type="button" class="ptbtn" data-a="hl" aria-pressed="false" hidden></button>'
+    return '<div class="penbar ptpenbar" hidden></div><div class="ptrow pthl"><button type="button" class="ptbtn" data-a="hl" aria-pressed="false" hidden></button><button type="button" class="ptbtn" data-a="hlpen" aria-pressed="false" hidden></button>'
       +'<span class="hlc" role="group" aria-label="Highlight colour">'+Object.keys(HLC).map(function(c){ return '<button type="button" data-a="hlc" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('')+'</span>'
       +(PT.l==='en'?'<select class="ptversel" aria-label="'+esc((BVL[PT.l]||BVL.en)[0])+'">'+VERS.map(function(v){ return '<option value="'+v.k+'"'+(v.k===cv?' selected':'')+'>'+esc(v.s)+' \u00b7 '+esc(v.n)+'</option>'; }).join('')+'</select>':'')+'</div>'; }
   function ptHlSet(pr,k,i,l,text){ var st=$('ptStage'), b=st.querySelector('[data-a="hl"]'); if(!b||!pr) return;
     var ver=verCode(l,false), info={kind:'verse',ref:pr.book+' '+pr.ch+':'+pr.vs,ver:ver,k:k,i:i,l:l,v:+pr.vs,text:String(text||'').slice(0,220)};
-    PT.hlc={key:hlKey({book:pr.book,ch:pr.ch,ver:ver},pr.vs),info:info}; ptHlUI(!!hls()[PT.hlc.key]); b.hidden=false; }
+    PT.hlc={key:hlKey({book:pr.book,ch:pr.ch,ver:ver},pr.vs),info:info}; ptHlUI(!!hls()[PT.hlc.key]); b.hidden=false;
+    // the words of the verse can be highlighted one by one, like in the reader
+    var q=st.querySelector('.ptq [data-v]'), pb=st.querySelector('[data-a="hlpen"]');
+    if(q&&pb){ q.dataset.hv=pr.vs; q.dataset.hlref=pr.book+' '+pr.ch+':'+pr.vs; q.dataset.hlver=ver; pb.hidden=false; pb.textContent=MFpenL()[0];
+      var qb=q.closest('.ptq'); if(qb&&!qb._pen){ qb._pen=1; MFpenBind(qb,function(){ return PT.hlc?{book:pr.book,ch:pr.ch,ver:ver,k:k,i:i,l:l}:null; },'[data-hv]'); } }
+    hlPaint(); }
   function ptHlUI(on){ var st=$('ptStage'), b=st.querySelector('[data-a="hl"]'), W=WPT[PT.l]||WPT.en, q=st.querySelector('.ptq'); if(!b) return;
     var x=on&&PT.hlc?hls()[PT.hlc.key]:null, col=(x&&HLC[x.c])?x.c:hlColor();
     b.setAttribute('aria-pressed',String(on)); b.textContent='🖍 '+(on?W[2]:W[1]); b.style.background=on?HLC[col].replace(/,[.\d]+\)$/,',1)'):''; b.style.borderColor=on?b.style.background:'';
@@ -3222,6 +3243,9 @@ window.MF=(function(){
     if(a==='len'){ PT.len=b.dataset.len; try{ localStorage.setItem('mf-devlen',PT.len); }catch(er){} PT.steps=ptSteps(); ptRender(); return; }
     if(a==='deeper'){ var was=PT.len||dLen(), sig=function(x){ return x.k+'|'+(x.i!=null?x.i:''); }, old=PT.steps.map(sig); PT.len=was==='quick'?'std':'full'; PT.steps=ptSteps();
       var j=PT.steps.findIndex(function(x){ return x.k!=='amen'&&old.indexOf(sig(x))<0; }); if(j<0) j=PT.steps.findIndex(function(x){ return x.k==='ref'; }); ptGo(j<0?0:j); return; }
+    if(a==='hlpen'){ var q=$('ptStage').querySelector('.ptq'), bar=$('ptStage').querySelector('.ptpenbar'); if(!q||!q.querySelector('[data-hv]')) return;
+      var on=!q.classList.contains('pen'), off=function(){ q.classList.remove('pen'); bar.hidden=true; b.setAttribute('aria-pressed','false'); b.textContent=MFpenL()[0]; };
+      if(!on){ off(); return; } stopSpeak(); q.classList.add('pen'); bar.hidden=false; MFpenBar(bar,off); b.setAttribute('aria-pressed','true'); b.textContent=MFpenL()[2]; return; }
     if(a==='hl'){ var c=PT.hlc; if(!c) return; var inf=JSON.parse(JSON.stringify(c.info)); inf.c=hlColor(); ptHlUI(hlToggle(c.key,inf)); return; }
     // a colour: it becomes the one used from now on; the verse is highlighted in it (or re-coloured if it already is)
     if(a==='hlc'){ try{ localStorage.setItem('mf-hl-color',b.dataset.c); }catch(er){} var c2=PT.hlc; if(!c2){ ptHlUI(false); return; }
@@ -3604,34 +3628,52 @@ window.MF=(function(){
     {k:'ylt',n:'Young\u2019s Literal Translation',s:'YLT',yv:1,bg:'YLT'},
     {k:'darby',n:'Darby Translation',s:'Darby',yv:1,bg:'DARBY'},
     {k:'bbe',n:'Bible in Basic English',s:'BBE',yv:1,bg:'KJV'},
-    {k:'dra',n:'Douay-Rheims',s:'Douay-Rheims',yv:1,bg:'DRA'}];
+    {k:'dra',n:'Douay-Rheims',s:'Douay-Rheims',yv:1,bg:'DRA'},
+    // Ken, 15 Oct: "kjv, nkjv, niv, nlt, net or whatever versions are available". NET comes through /api/bible (its publisher
+    // allows it, with its copyright line); ESV too once a free ESV key is in Netlify. NIV, NKJV and NLT need a licence.
+    {k:'net',n:'New English Translation',s:'NET',yv:107,bg:'NET',api:1}];
+  fetch('/api/bible?list=1').then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(!j||!(j.versions||[]).includes('esv')||VERS.some(function(v){ return v.k==='esv'; })) return;
+    VERS.push({k:'esv',n:'English Standard Version',s:'ESV',yv:59,bg:'ESV',api:1}); var o=document.createElement('option'); o.value='esv'; o.textContent='ESV'; o.title='English Standard Version'; $('rVer').appendChild(o);
+    if(curVer().k!==$('rVer').value) $('rVer').value=curVer().k; }).catch(function(){});
+  // an English chapter in the chosen version: {t:[verses], note}
+  function enText(p){ var v=curVer();
+    if(v.api) return fetch('/api/bible?v='+v.k+'&b='+encodeURIComponent(p.book)+'&c='+p.ch).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return {t:j.t||[],note:j.note||v.n}; });
+    return fetch('https://bible-api.com/'+encodeURIComponent(p.book+' '+p.ch)+'?translation='+v.k).then(function(r){ return r.json(); })
+      .then(function(j){ var t=[]; (j.verses||[]).forEach(function(x){ t[x.verse-1]=x.text.trim(); }); return {t:t,note:v.n+' · public domain'}; }); }
   var VKEY='mf-bible-version', lastP=null;
   function curVer(){var k='kjv';try{k=localStorage.getItem(VKEY)||'kjv';}catch(e){} return VERS.filter(function(v){return v.k===k;})[0]||VERS[0];}
   (function(){var sel=$('rVer'); VERS.forEach(function(v){var o=document.createElement('option');o.value=v.k;o.textContent=v.s;o.title=v.n;sel.appendChild(o);});
     sel.value=curVer().k;
-    sel.addEventListener('change',function(){try{localStorage.setItem(VKEY,sel.value);}catch(e){} if(lastP) loadChapter(lastP);});})();
+    sel.addEventListener('change',function(){ verSwitch(sel.value); });})();
+  // Ken, 15 Oct: "switch version while it's still speaking" -- the chapter reloads and the reading goes on from the same verse
+  function verSwitch(k){ try{ localStorage.setItem(VKEY,k); }catch(e){} if($('rVer').value!==k) $('rVer').value=k;
+    var mine=PL&&PL.ctx&&PL.ctx.root===$('rChapter'), was=mine&&plMine(), n=mine?PL.n:1; if(was) stopSpeak();
+    if(!lastP) return; loadChapter(lastP).then(function(){
+      var eo=$('rLang')&&$('rLang').querySelector('option[value="en"]'); if(eo) eo.textContent=eo.textContent.replace(/·\s*[^·]*$/,'· '+curVer().s);
+      if(!(PL&&PL.ctx&&PL.ctx.root===$('rChapter'))) return;
+      PL.ctx=readerCtx(); PL.N=RD.t.length; PL.title=String(PL.title||'').replace(/\s·\s[^·]*$/,'')+' · '+curVer().s; if($('mpVer')) $('mpVer').value=curVer().k;
+      if(was) plStart(Math.min(n,PL.N)); else plUI(); }).catch(function(){}); }
+  window.MFverSwitch=verSwitch;
   function setLinks(p){var v=curVer(), code=USFM[p.book]||'';
     $('rYouV').href = code ? ('https://www.bible.com/bible/'+v.yv+'/'+code+'.'+p.ch+'.'+p.vs) : '#';
     $('rGate').href = 'https://www.biblegateway.com/passage/?search='+encodeURIComponent(p.book+' '+p.ch)+'&version='+v.bg;}
   function loadChapter(p){
     lastP=p; setLinks(p); var ver=curVer();
-    var url='https://bible-api.com/'+encodeURIComponent(p.book+' '+p.ch)+'?translation='+ver.k;
     var done=false;
     var t=setTimeout(function(){if(!done){$('rNote').textContent='Full chapter opens on the live site — use the buttons below to read it now.';}},1400);
-    fetch(url).then(function(r){return r.json();}).then(function(j){
+    return enText(p).then(function(o){
       done=true;clearTimeout(t);
-      if(!j||!j.verses||!j.verses.length){throw 0;}
-      var html='<p>';
-      j.verses.forEach(function(v){
-        var hi=(''+v.verse===''+p.vs);
-        html+='<span class="vn">'+v.verse+'</span><span data-v="'+v.verse+'" class="'+(hi?'hi':'')+'">'+esc(v.text.trim())+'</span> ';
+      if(!o||!o.t.length){throw 0;}
+      var html='<p>', vt=[];
+      o.t.forEach(function(x,i){ if(x==null) return; var n=i+1, hi=(''+n===''+p.vs); vt[i]=x;
+        html+='<span class="vn">'+n+'</span><span data-v="'+n+'" class="'+(hi?'hi':'')+'">'+esc(x)+'</span> ';
       });
       html+='</p>';
       $('rChapter').innerHTML=html; setTimeout(readerFit,60); if(window.MFhlMarkStage) MFhlMarkStage();
-      RD={l:'en',t:j.verses.map(function(v){ return v.text.trim(); }),vs:+p.vs}; rdPrefetch(RD,rIntro(false));
+      RD={l:'en',t:vt,vs:+p.vs}; rdPrefetch(RD,rIntro(false));
       var h=reader.querySelector('.hi'), bd=reader.querySelector('.reader-body');
       if(h&&bd){bd.scrollTop=Math.max(0,h.offsetTop-bd.offsetTop-bd.clientHeight/3);}
-      $('rNote').textContent=ver.n+' · public domain';
+      $('rNote').textContent=o.note;
     }).catch(function(){
       done=true;clearTimeout(t);
       $('rNote').textContent='Full chapter opens on the live site — use the buttons below to read it now.';
@@ -4117,13 +4159,18 @@ window.MF=(function(){
     document.querySelectorAll('.chapter').forEach(function(root){ var c=ctxOfRoot(root); if(!c) return;
       Object.keys(h).forEach(function(k){ var x=h[k]; if(x.kind!=='phrase'||x.ver!==c.ver) return; var m=PHR.exec(x.ref); if(!m||m[1]!==c.book||m[2]!==String(c.ch)) return;
         var sp=root.querySelector('span[data-v="'+m[3]+'"]'); if(!sp) return; var r=rangeIn(sp,+m[4],+m[5]); if(r) g[HLC[x.c]?x.c:'gold'].push(r); }); });
+    // a verse shown outside a chapter (the devotional) carries its own reference
+    document.querySelectorAll('[data-hlref]').forEach(function(el){ var ref=el.dataset.hlref, ver=el.dataset.hlver;
+      Object.keys(h).forEach(function(k){ var x=h[k]; if(x.kind!=='phrase'||x.ver!==ver) return; var m=PHR.exec(x.ref); if(!m||m[1]+' '+m[2]+':'+m[3]!==ref) return;
+        var r=rangeIn(el,+m[4],+m[5]); if(r) g[HLC[x.c]?x.c:'gold'].push(r); }); });
     Object.keys(g).forEach(function(c){ CSS.highlights.set('mfh-'+c,new Highlight(...g[c])); });
     if(extra) CSS.highlights.set('mfh-pen',new Highlight(...extra)); else CSS.highlights.delete('mfh-pen'); }
   window.MFhlPaint=hlPaint;
   window.MFhlRangeOk=function(root){ return !!ctxOfRoot(root); };
   window.MFhlRange=function(range,root){ var c=ctxOfRoot(root); if(!c) return; versesIn(range,root).forEach(function(z){ hlPhrase(z[0],c,z[1],z[2]); }); hlPaint(); };
   // a word or phrase on or off; what it overlaps in the same verse is replaced, so dragging over a mark redraws it
-  function hlPhrase(sp,c,s,e,col){ if(!sp||!c||e<=s) return false; var v=sp.dataset.v, ref=c.book+' '+c.ch+':'+v+'#'+s+'-'+e, key=ref+'|'+c.ver, h=hls(), same=false;
+  function vOf(sp){ return sp.dataset.hv||sp.dataset.v; }
+  function hlPhrase(sp,c,s,e,col){ if(!sp||!c||e<=s) return false; var v=vOf(sp), ref=c.book+' '+c.ch+':'+v+'#'+s+'-'+e, key=ref+'|'+c.ver, h=hls(), same=false;
     Object.keys(h).forEach(function(k){ var x=h[k]; if(x.kind!=='phrase'||x.ver!==c.ver) return; var m=PHR.exec(x.ref); if(!m||m[1]!==c.book||m[2]!==String(c.ch)||m[3]!==String(v)) return;
       if(+m[4]<e&&+m[5]>s){ if(k===key) same=true; hlToggle(k,x); } });
     var on=false; if(!same) on=hlToggle(key,{kind:'phrase',ref:ref,ver:c.ver,k:c.k,i:c.i,l:c.l,v:+v,s:s,e:e,c:col||hlColor(),text:sp.textContent.slice(s,e).slice(0,220)});
@@ -4132,33 +4179,53 @@ window.MF=(function(){
   function toWords(t,s,e){ while(s>0&&/[\p{L}\p{M}\p{N}'’]/u.test(t[s-1])) s--; while(e<t.length&&/[\p{L}\p{M}\p{N}'’]/u.test(t[e])) e++;
     while(s<e&&/[\s\p{P}]/u.test(t[s])&&!/['’]/.test(t[s])) s++; while(e>s&&/\s/.test(t[e-1])) e--; return [s,e]; }
   // the letters of each verse a range covers: [[span,s,e],...]
-  function versesIn(range,root){ var out=[]; root.querySelectorAll('span[data-v]').forEach(function(sp){ if(!range.intersectsNode(sp)) return;
+  function versesIn(range,root,sel){ var out=[]; root.querySelectorAll(sel||'span[data-v]').forEach(function(sp){ if(!range.intersectsNode(sp)) return;
       var r0=document.createRange(); r0.selectNodeContents(sp); var s=0, e=sp.textContent.length;
       if(range.compareBoundaryPoints(Range.START_TO_START,r0)>0){ var x=document.createRange(); x.setStart(sp,0); x.setEnd(range.startContainer,range.startOffset); s=x.toString().length; }
       if(range.compareBoundaryPoints(Range.END_TO_END,r0)<0){ var y=document.createRange(); y.setStart(sp,0); y.setEnd(range.endContainer,range.endOffset); e=y.toString().length; }
       var w=toWords(sp.textContent,s,e); if(w[1]>w[0]) out.push([sp,w[0],w[1]]); }); return out; }
   window.MFhlMarkStage=function(){ hlMark($('rChapter'),stageCtx()); hlPaint(); };
   window.MFhlMarkFig=function(fr){ var c=fr&&fr._ctx; if(c) hlMark(fr.querySelector('.chapter'),hlCtx(c.k,c.i,c.l,c.orig)); hlPaint(); };
-  // ── the Pen: drag across the words like a highlighter on paper; a tap marks one word; a tap on a mark takes it off ──
-  var PEN=null;
-  function penOn(on){ $('rChapter').classList.toggle('pen',on); $('rPen').setAttribute('aria-pressed',String(on)); if(on){ closeWordIf(); } }
-  function closeWordIf(){ if(window.MFcloseWord) MFcloseWord(); }
+  // ── Highlight words: drag across the words like a highlighter on paper; a tap marks one word; a tap on a mark takes it off.
+  // Ken, 15 Oct: "I don't know what 'pen' is for" -- so it says what it does, and while it is on a yellow bar says how.
+  var PENL={en:['🖍 Highlight words','Drag your finger across the words to highlight them. Tap a highlight to remove it.','✓ Done'],
+    es:['🖍 Resaltar palabras','Pasa el dedo sobre las palabras para resaltarlas. Toca un resaltado para quitarlo.','✓ Listo'],
+    tl:['🖍 I-highlight ang mga salita','Idaan ang daliri sa mga salita para i-highlight. I-tap ang highlight para alisin.','✓ Tapos'],
+    zh:['🖍 标记文字','用手指划过文字即可标记。点按标记可取消。','✓ 完成'],
+    hi:['🖍 शब्द हाइलाइट करें','शब्दों पर उँगली घुमाएँ। हटाने के लिए हाइलाइट पर टैप करें।','✓ हो गया'],
+    el:['🖍 Επισήμανση λέξεων','Σύρετε το δάχτυλο πάνω στις λέξεις. Πατήστε μια επισήμανση για να φύγει.','✓ Τέλος'],
+    de:['🖍 Wörter markieren','Mit dem Finger über die Wörter fahren. Eine Markierung antippen, um sie zu entfernen.','✓ Fertig'],
+    ko:['🖍 단어 표시','손가락으로 단어 위를 그어 표시하세요. 표시를 누르면 지워집니다.','✓ 완료'],
+    he:['🖍 סימון מילים','העבירו את האצבע על המילים. הקישו על סימון כדי להסיר אותו.','✓ סיום'],
+    ar:['🖍 تمييز الكلمات','مرّروا الإصبع على الكلمات لتمييزها. اضغطوا على التمييز لإزالته.','✓ تم']};
+  function penL(){ return PENL[MF.lang]||PENL.en; }
+  function penBar(bar,off){ var L=penL(), col=hlColor();
+    bar.innerHTML='<span class="pbt">'+esc(L[1])+'</span><span class="pbc">'+Object.keys(HLC).map(function(c){ return '<button type="button" data-pc="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('')+'</span><button type="button" class="pbd">'+esc(L[2])+'</button>';
+    bar.onclick=function(e){ var c=e.target.closest('[data-pc]'); if(c){ try{ localStorage.setItem('mf-hl-color',c.dataset.pc); }catch(er){} penBar(bar,off); return; } if(e.target.closest('.pbd')) off(); }; }
   function caretAt(x,y){ var r=null; if(document.caretRangeFromPoint) r=document.caretRangeFromPoint(x,y); else if(document.caretPositionFromPoint){ var q=document.caretPositionFromPoint(x,y); if(q){ r=document.createRange(); r.setStart(q.offsetNode,q.offset); } } return r; }
-  $('rPen').addEventListener('click',function(){ penOn(!$('rChapter').classList.contains('pen')); });
-  $('rChapter').addEventListener('pointerdown',function(e){ if(!this.classList.contains('pen')) return; var r=caretAt(e.clientX,e.clientY); if(!r||!this.contains(r.startContainer)) return;
-    e.preventDefault(); PEN={a:r,b:r,moved:false,x:e.clientX,y:e.clientY}; try{ this.setPointerCapture(e.pointerId); }catch(er){} });
-  $('rChapter').addEventListener('pointermove',function(e){ if(!PEN) return; var r=caretAt(e.clientX,e.clientY); if(!r||!this.contains(r.startContainer)) return;
-    if(Math.abs(e.clientX-PEN.x)+Math.abs(e.clientY-PEN.y)>6) PEN.moved=true; PEN.b=r; var rg=penRange(); if(rg) hlPaint([rg]); });
-  function penRange(){ var rg=document.createRange(), a=PEN.a, b=PEN.b; rg.setStart(a.startContainer,a.startOffset); rg.setEnd(a.startContainer,a.startOffset);
-    try{ if(rg.comparePoint(b.startContainer,b.startOffset)>=0) rg.setEnd(b.startContainer,b.startOffset); else { rg.setStart(b.startContainer,b.startOffset); rg.setEnd(a.startContainer,a.startOffset); } }catch(er){ return null; } return rg; }
-  $('rChapter').addEventListener('pointerup',function(e){ if(!PEN) return; var c=stageCtx(), root=this, rg=penRange(), moved=PEN.moved; PEN=null; if(!c||!rg){ hlPaint(); return; }
-    if(!moved){ var sp=(rg.startContainer.nodeType===1?rg.startContainer:rg.startContainer.parentElement).closest('span[data-v]'); if(!sp){ hlPaint(); return; }
-      var x=document.createRange(); x.setStart(sp,0); x.setEnd(rg.startContainer,rg.startOffset); var off=x.toString().length, t=sp.textContent, w=toWords(t,off,off); if(w[1]<=w[0]){ hlPaint(); return; }
-      // a tap on a mark takes the mark off; a tap on a plain word marks that word
-      var h=hls(), hit=null; Object.keys(h).forEach(function(k){ var y=h[k], m=PHR.exec(y.ref||''); if(y.kind==='phrase'&&y.ver===c.ver&&m&&m[1]===c.book&&m[2]===String(c.ch)&&m[3]===sp.dataset.v&&+m[4]<=off&&+m[5]>=off) hit=[k,y]; });
-      if(hit){ hlToggle(hit[0],hit[1]); hlPaint(); } else hlPhrase(sp,c,w[0],w[1]); return; }
-    versesIn(rg,root).forEach(function(z){ hlPhrase(z[0],c,z[1],z[2]); }); hlPaint(); });
-  $('rChapter').addEventListener('pointercancel',function(){ PEN=null; hlPaint(); });
+  // root: where the words are; ctxFn: their book, chapter and version; sel: what one verse is
+  function penBind(root,ctxFn,sel){ var P=null;
+    function range(){ var rg=document.createRange(), a=P.a, b=P.b; rg.setStart(a.startContainer,a.startOffset); rg.setEnd(a.startContainer,a.startOffset);
+      try{ if(rg.comparePoint(b.startContainer,b.startOffset)>=0) rg.setEnd(b.startContainer,b.startOffset); else { rg.setStart(b.startContainer,b.startOffset); rg.setEnd(a.startContainer,a.startOffset); } }catch(er){ return null; } return rg; }
+    root.addEventListener('pointerdown',function(e){ if(!root.classList.contains('pen')) return; var r=caretAt(e.clientX,e.clientY); if(!r||!root.contains(r.startContainer)) return;
+      e.preventDefault(); P={a:r,b:r,moved:false,x:e.clientX,y:e.clientY}; try{ root.setPointerCapture(e.pointerId); }catch(er){} });
+    root.addEventListener('pointermove',function(e){ if(!P) return; var r=caretAt(e.clientX,e.clientY); if(!r||!root.contains(r.startContainer)) return;
+      if(Math.abs(e.clientX-P.x)+Math.abs(e.clientY-P.y)>6) P.moved=true; P.b=r; var rg=range(); if(rg) hlPaint([rg]); });
+    root.addEventListener('pointerup',function(){ if(!P) return; var c=ctxFn(), rg=range(), moved=P.moved; P=null; if(!c||!rg){ hlPaint(); return; }
+      if(!moved){ var nd=rg.startContainer.nodeType===1?rg.startContainer:rg.startContainer.parentElement, sp=nd.closest(sel); if(!sp||!root.contains(sp)){ hlPaint(); return; }
+        var x=document.createRange(); x.setStart(sp,0); x.setEnd(rg.startContainer,rg.startOffset); var off=x.toString().length, w=toWords(sp.textContent,off,off); if(w[1]<=w[0]){ hlPaint(); return; }
+        var h=hls(), hit=null; Object.keys(h).forEach(function(k){ var y=h[k], m=PHR.exec(y.ref||''); if(y.kind==='phrase'&&y.ver===c.ver&&m&&m[1]===c.book&&m[2]===String(c.ch)&&m[3]===String(vOf(sp))&&+m[4]<=off&&+m[5]>=off) hit=[k,y]; });
+        if(hit){ hlToggle(hit[0],hit[1]); hlPaint(); } else hlPhrase(sp,c,w[0],w[1]); return; }
+      versesIn(rg,root,sel).forEach(function(z){ hlPhrase(z[0],c,z[1],z[2]); }); hlPaint(); });
+    root.addEventListener('pointercancel',function(){ P=null; hlPaint(); }); }
+  // the reader
+  function rPenOn(on){ $('rChapter').classList.toggle('pen',on); $('rPen').setAttribute('aria-pressed',String(on)); $('rPen').textContent=on?penL()[2]:penL()[0];
+    $('rPenBar').hidden=!on; if(on){ if(window.MFcloseWord) MFcloseWord(); penBar($('rPenBar'),function(){ rPenOn(false); }); } }
+  $('rPen').addEventListener('click',function(){ rPenOn(!$('rChapter').classList.contains('pen')); });
+  rPenOn(false); MF.onChange(function(){ rPenOn($('rChapter').classList.contains('pen')); });
+  penBind($('rChapter'),stageCtx,'span[data-v]');
+  // the devotional's verse
+  window.MFpenBind=penBind; window.MFpenBar=penBar; window.MFpenL=penL;
   function verseTap(e,root,c){ var sp=e.target.closest('span[data-v]'); if(!sp||!c||!root.contains(sp)) return false;
     var sel=window.getSelection&&getSelection(); if(sel&&sel.toString().trim().length>1) return false;
     var tog=function(x){ var v=x.dataset.v, ref=c.book+' '+c.ch+':'+v, col=hlColor(), on=hlToggle(hlKey(c,v),{kind:'verse',ref:ref,ver:c.ver,k:c.k,i:c.i,l:c.l,v:+v,c:col,text:x.textContent.slice(0,220)});
