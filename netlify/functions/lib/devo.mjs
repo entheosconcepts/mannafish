@@ -63,6 +63,11 @@ export function emailFor(m, lang, unsub, opts = {}) {
   // Ken, 14 Oct: "something in the email says pick up where you left off? Or want to catch another fish?"
   const resume = SITE() + '/?devo=1' + (es ? '&lang=es' : ''), another = SITE() + '/?devo=cast' + (es ? '&lang=es' : '');
   const RL = es ? ['Continúa donde lo dejaste', '¿Quieres pescar otro pez?'] : ['Pick up where you left off', 'Want to catch another fish?'];
+  // the week: each day's date and verses; the days before today ticked, today marked
+  const fmtDay = (ms) => new Date(ms).toLocaleDateString(es ? 'es-US' : 'en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
+  const weekRows = (m.week || []).map((d) => ({ past: d.day < m.day, today: d.day === m.day, label: (es ? 'Día ' : 'Day ') + d.day + ' · ' + fmtDay(d.t),
+    refs: d.refs.map((x) => ({ ref: refEs(x.ref), url: SITE() + x.url + (es ? '&lang=es' : '') })) }));
+  const TODAY = es ? 'hoy' : 'today';
   const weekNote = opts.weekly ? (es ? 'Tu pez para esta semana. Abre el devocional cualquier día: continúa donde lo dejaste.' : 'Your fish for this week. Open the devotional any day: it picks up where you left off.') : '';
   // Ken, 9 Oct: the email in the site's own look -- black, white lettering, MannaFish blue, the logo in its own font
   const logo = SITE() + '/w/img/logo-email.png';
@@ -93,6 +98,7 @@ export function emailFor(m, lang, unsub, opts = {}) {
 ${td('padding:22px 20px 18px', `<a href="${SITE()}${es ? '/?lang=es' : '/'}" style="text-decoration:none"><img src="${logo}" width="200" alt="MannaFish" style="width:200px;height:auto;display:block;border:0;color:#fff;font:bold 26px Arial,sans-serif"></a>`)}
 ${rule}
 ${opts.welcome ? td('padding:24px 22px 4px', head('welcome', T.hello)) : ''}
+${td('padding:14px 22px 0;font:bold 18px/1.5 Arial,sans-serif', gw(`<a href="${resume}" style="color:#ffffff;text-decoration:underline">▶ ${esc(RL[0])} ›</a>`))}
 ${td('padding:16px 18px', `<a href="${read}" style="text-decoration:none"><img src="${img}" width="524" alt="${esc(word)}" style="width:100%;max-width:524px;height:auto;border-radius:8px;display:block;border:0"></a>`, 'left')}
 ${dbl ? td('padding:6px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;color:#2a5fb0;font:900 19px Arial,sans-serif')) + '\n'
   + td('padding:6px 30px 14px;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(T.dblNote))) : ''}
@@ -100,7 +106,10 @@ ${dayLine ? td('padding:4px 26px 0;font:bold 13px/1.5 Arial,sans-serif;letter-sp
 ${weekNote ? td('padding:4px 26px 0;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(weekNote))) : ''}
 ${refs.map((x) => td('padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0', gw(`<a href="${x.url}" style="color:#ffffff;text-decoration:none"><b style="color:#ffffff">${esc(x.ref)}</b></a>${esc(x.snip)}`))).join('\n')}
 ${td('padding:16px 12px 6px;font-size:0', button(listen, 'listen', T.listen) + button(read, 'read', T.read))}
-${td('padding:4px 22px 20px;font:bold 16px/1.9 Arial,sans-serif', gw(`<a href="${resume}" style="color:#ffffff;text-decoration:underline">${esc(RL[0])} ›</a><br><a href="${another}" style="color:#ffffff;text-decoration:underline">🎣 ${esc(RL[1])} ›</a>`))}
+${weekRows.length ? td('padding:14px 22px 4px', gw(`<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;font:14px/1.5 Arial,sans-serif">${weekRows.map((r) =>
+  `<tr><td style="padding:4px 10px 4px 0;white-space:nowrap;vertical-align:top;color:${r.today ? '#f5d76e' : (r.past ? '#9fb2b6' : '#c6d2d4')};font-weight:${r.today ? 'bold' : 'normal'}">${r.past ? '✓ ' : (r.today ? '▶ ' : '○ ')}${esc(r.label)}</td>`
+  + `<td style="padding:4px 0;vertical-align:top;text-align:left">${r.refs.map((x) => `<a href="${x.url}" style="color:${r.today ? '#ffffff' : '#c6d2d4'};text-decoration:${r.today ? 'none' : 'underline'};font-weight:${r.today ? 'bold' : 'normal'}">${esc(x.ref)}</a>`).join(' · ')}${r.today ? ` <span style="color:#f5d76e">· ${TODAY}</span>` : ''}</td></tr>`).join('')}</table>`)) : ''}
+${td('padding:8px 22px 20px;font:bold 16px/1.9 Arial,sans-serif', gw(`<a href="${another}" style="color:#ffffff;text-decoration:underline">🎣 ${esc(RL[1])} ›</a>`))}
 ${rule}
 ${td('padding:16px 22px 0', head(dbl ? 'sab' : 'fish', dbl ? T.sab : T.fish))}
 ${td(`padding:8px 26px ${dbl ? '0' : '22px'};font:${dbl ? 'normal 19px/1.55' : 'italic 17px/1.55'} Georgia,serif;color:${dbl ? '#eaf0f0' : '#c6d2d4'}`,
@@ -109,7 +118,7 @@ ${dbl ? td('padding:16px 12px 24px;font-size:0', button(sabLink, 'sabread', T.sa
 ${rule}
 ${td('padding:16px 22px 22px;font:12px/1.7 Arial,sans-serif;color:#8a9aa0', gw(`${esc(T.why)} <a href="${unsub}" style="color:#8a9aa0">${esc(T.stop)}</a> · <a href="${SITE()}/privacy/" style="color:#8a9aa0">${es ? 'Privacidad' : 'Privacy'}</a><br>${esc(ADDRESS())}`))}
 </table></td></tr></table></body></html>`;
-  const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${dbl ? T.dbl + ' — ' + T.dblNote + '\n\n' : ''}${dayLine ? dayLine + '\n' : ''}${weekNote ? weekNote + '\n' : ''}${refs.map((x) => T.today + ': ' + x.ref + x.snip + '\n' + x.url).join('\n')}\n${T.listen}: ${listen}\n${T.read}: ${read}\n${RL[0]}: ${resume}\n${RL[1]} ${another}\n\n${dbl ? T.sab : T.fish}: “${f.top} ${f.bottom}” ${f.ref}${dbl ? '\n' + T.sabRead + ': ' + sabLink : ''}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
+  const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${dbl ? T.dbl + ' — ' + T.dblNote + '\n\n' : ''}${dayLine ? dayLine + '\n' : ''}${weekNote ? weekNote + '\n' : ''}${refs.map((x) => T.today + ': ' + x.ref + x.snip + '\n' + x.url).join('\n')}\n${T.listen}: ${listen}\n${T.read}: ${read}\n${RL[0]}: ${resume}\n${RL[1]} ${another}\n\n${weekRows.map((r) => (r.past ? '✓ ' : r.today ? '▶ ' : '○ ') + r.label + ' — ' + r.refs.map((x) => x.ref).join(', ') + (r.today ? ' (' + TODAY + ')' : '')).join('\n')}\n\n${dbl ? T.sab : T.fish}: “${f.top} ${f.bottom}” ${f.ref}${dbl ? '\n' + T.sabRead + ': ' + sabLink : ''}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
   LINK = keep;
   return { subject: T.sub + (dbl ? T.sabSub : ''), html, text };
 }

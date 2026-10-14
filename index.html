@@ -1069,6 +1069,10 @@ section.section.bundles{display:block;margin-top:0}
 .ptversel option{color:#111}
 .ptvers{border-top:1px solid rgba(255,255,255,.14);margin-top:4px;padding-top:4px}.ptvers[hidden]{display:none}.ptvers button{font-size:1rem;padding:9px 16px}.ptvers small{opacity:.65;font-weight:700}
 .ptvnote{margin:4px 16px 8px;font:500 .85rem/1.4 'Archivo',sans-serif;opacity:.75}
+.ptweek{display:flex;flex-direction:column;gap:4px;max-width:440px;margin:0 auto 14px;text-align:start}
+.ptwk{display:grid;grid-template-columns:22px auto 1fr auto;gap:8px;align-items:baseline;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.25);color:#fff;border-radius:10px;padding:7px 10px;font:600 .84rem/1.35 'Archivo',sans-serif;cursor:pointer;text-align:inherit}
+.ptwk:disabled{opacity:.5;cursor:default}.ptwk.done .wkm{color:#6ed68c}.ptwk.at{border-color:#f5d76e;background:rgba(245,215,110,.12)}.ptwk.at .wkm,.ptwk.at .wkt{color:#f5d76e}
+.ptwk .wkd{white-space:nowrap;opacity:.85}.ptwk .wkr{font-weight:700}.ptwk .wkt{font-size:.76rem;opacity:.8;white-space:nowrap}
 .ptcast{flex:none}   /* never squeezed by the note under it (Ken, 13 Oct: "it only shows half a fish") */
 /* Ken, 13 Oct: a fishing pole that bends on a bite, a line that hangs like a real line, and bait you choose (drawn by caAnim) */
 .ptcast .cjig{transform-box:fill-box;transform-origin:50% 0;animation:cajig .7s ease-in-out infinite alternate}
@@ -3038,16 +3042,16 @@ window.MF=(function(){
   // in order (two a day over six days). The devotional picks up where you left off, and you can stay with a fish or change it.
   // Kept on this device (mf-plan) and, when signed in, with the account.
   var PLAN_START=Date.UTC(2026,9,11), PLAN_DAYS=6, PLAN_LINK=((location.search+location.hash).match(/[?&#]w=([a-z]+)/i)||[])[1];
-  var PLT={en:{day:'Day {d} of {n}',change:'Change fish',pick:'Choose your fish',week:'This week’s fish',did:'✓ Day {d} of {n} with {w}',next_time:'Next time: Day {d}, {refs}',stay:'Stay with {w}',next:'Next fish: {w}',done:'You finished {w}: every verse on the back of the fish.',again:'Start {w} again',next_set:'Next time: {w}, Day {d}',left:'MannaFish picks up where you left off.'},
-    es:{day:'Día {d} de {n}',change:'Cambiar de pez',pick:'Elige tu pez',week:'El pez de esta semana',did:'✓ Día {d} de {n} con {w}',next_time:'La próxima vez: Día {d}, {refs}',stay:'Quedarme con {w}',next:'Siguiente pez: {w}',done:'Terminaste {w}: todos los versículos del reverso del pez.',again:'Empezar {w} de nuevo',next_set:'La próxima vez: {w}, Día {d}',left:'MannaFish continúa donde lo dejaste.'},
-    tl:{day:'Araw {d} ng {n}',change:'Palitan ang isda',pick:'Piliin ang iyong isda',week:'Isda ngayong linggo',did:'✓ Araw {d} ng {n} sa {w}',next_time:'Sa susunod: Araw {d}, {refs}',stay:'Manatili sa {w}',next:'Susunod na isda: {w}',done:'Natapos mo ang {w}: lahat ng talata sa likod ng isda.',again:'Simulan muli ang {w}',next_set:'Sa susunod: {w}, Araw {d}',left:'Itutuloy ng MannaFish kung saan ka huminto.'},
-    zh:{day:'第 {d} 天，共 {n} 天',change:'换一条鱼',pick:'选择你的鱼',week:'本周的鱼',did:'✓ “{w}”第 {d} 天（共 {n} 天）',next_time:'下次：第 {d} 天，{refs}',stay:'继续“{w}”',next:'下一条鱼：{w}',done:'你已完成“{w}”：鱼背面的每一节经文。',again:'重新开始“{w}”',next_set:'下次：{w}，第 {d} 天',left:'MannaFish 会从你上次停下的地方继续。'},
-    hi:{day:'दिन {d} / {n}',change:'मछली बदलें',pick:'अपनी मछली चुनें',week:'इस सप्ताह की मछली',did:'✓ {w} के साथ दिन {d} / {n}',next_time:'अगली बार: दिन {d}, {refs}',stay:'{w} के साथ रहें',next:'अगली मछली: {w}',done:'आपने {w} पूरा किया: मछली के पीछे का हर पद।',again:'{w} फिर से शुरू करें',next_set:'अगली बार: {w}, दिन {d}',left:'MannaFish वहीं से शुरू करता है जहाँ आपने छोड़ा था।'},
-    el:{day:'Ημέρα {d} από {n}',change:'Άλλαξε ψάρι',pick:'Διάλεξε το ψάρι σου',week:'Το ψάρι της εβδομάδας',did:'✓ Ημέρα {d} από {n} με το {w}',next_time:'Την επόμενη φορά: Ημέρα {d}, {refs}',stay:'Μείνε με το {w}',next:'Επόμενο ψάρι: {w}',done:'Ολοκλήρωσες το {w}: κάθε εδάφιο στην πίσω πλευρά του ψαριού.',again:'Ξεκίνα πάλι το {w}',next_set:'Την επόμενη φορά: {w}, Ημέρα {d}',left:'Το MannaFish συνεχίζει από εκεί που σταμάτησες.'},
-    de:{day:'Tag {d} von {n}',change:'Fisch wechseln',pick:'Wähle deinen Fisch',week:'Fisch dieser Woche',did:'✓ Tag {d} von {n} mit {w}',next_time:'Nächstes Mal: Tag {d}, {refs}',stay:'Bei {w} bleiben',next:'Nächster Fisch: {w}',done:'Du hast {w} abgeschlossen: jeden Vers auf der Rückseite des Fisches.',again:'{w} neu beginnen',next_set:'Nächstes Mal: {w}, Tag {d}',left:'MannaFish macht dort weiter, wo du aufgehört hast.'},
-    ko:{day:'{n}일 중 {d}일째',change:'물고기 바꾸기',pick:'물고기를 고르세요',week:'이번 주 물고기',did:'✓ {w}: {n}일 중 {d}일째',next_time:'다음에: {d}일째, {refs}',stay:'{w} 계속하기',next:'다음 물고기: {w}',done:'{w}을(를) 마쳤어요: 물고기 뒷면의 모든 구절.',again:'{w} 다시 시작',next_set:'다음에: {w}, {d}일째',left:'MannaFish는 멈춘 곳에서 이어집니다.'},
-    he:{day:'יום {d} מתוך {n}',change:'החלפת דג',pick:'בחרו את הדג שלכם',week:'הדג של השבוע',did:'✓ יום {d} מתוך {n} עם {w}',next_time:'בפעם הבאה: יום {d}, {refs}',stay:'להישאר עם {w}',next:'הדג הבא: {w}',done:'סיימתם את {w}: כל הפסוקים שבגב הדג.',again:'להתחיל את {w} מחדש',next_set:'בפעם הבאה: {w}, יום {d}',left:'MannaFish ממשיך מהמקום שבו עצרתם.'},
-    ar:{day:'اليوم {d} من {n}',change:'غيّر السمكة',pick:'اختر سمكتك',week:'سمكة هذا الأسبوع',did:'✓ اليوم {d} من {n} مع {w}',next_time:'في المرة القادمة: اليوم {d}، {refs}',stay:'ابقَ مع {w}',next:'السمكة التالية: {w}',done:'أنهيت {w}: كل الآيات على ظهر السمكة.',again:'ابدأ {w} من جديد',next_set:'في المرة القادمة: {w}، اليوم {d}',left:'يتابع MannaFish من حيث توقفت.'}};
+  var PLT={en:{today:'today',day:'Day {d} of {n}',change:'Change fish',pick:'Choose your fish',week:'This week’s fish',did:'✓ Day {d} of {n} with {w}',next_time:'Next time: Day {d}, {refs}',stay:'Stay with {w}',next:'Next fish: {w}',done:'You finished {w}: every verse on the back of the fish.',again:'Start {w} again',next_set:'Next time: {w}, Day {d}',left:'MannaFish picks up where you left off.'},
+    es:{today:'hoy',day:'Día {d} de {n}',change:'Cambiar de pez',pick:'Elige tu pez',week:'El pez de esta semana',did:'✓ Día {d} de {n} con {w}',next_time:'La próxima vez: Día {d}, {refs}',stay:'Quedarme con {w}',next:'Siguiente pez: {w}',done:'Terminaste {w}: todos los versículos del reverso del pez.',again:'Empezar {w} de nuevo',next_set:'La próxima vez: {w}, Día {d}',left:'MannaFish continúa donde lo dejaste.'},
+    tl:{today:'ngayon',day:'Araw {d} ng {n}',change:'Palitan ang isda',pick:'Piliin ang iyong isda',week:'Isda ngayong linggo',did:'✓ Araw {d} ng {n} sa {w}',next_time:'Sa susunod: Araw {d}, {refs}',stay:'Manatili sa {w}',next:'Susunod na isda: {w}',done:'Natapos mo ang {w}: lahat ng talata sa likod ng isda.',again:'Simulan muli ang {w}',next_set:'Sa susunod: {w}, Araw {d}',left:'Itutuloy ng MannaFish kung saan ka huminto.'},
+    zh:{today:'今天',day:'第 {d} 天，共 {n} 天',change:'换一条鱼',pick:'选择你的鱼',week:'本周的鱼',did:'✓ “{w}”第 {d} 天（共 {n} 天）',next_time:'下次：第 {d} 天，{refs}',stay:'继续“{w}”',next:'下一条鱼：{w}',done:'你已完成“{w}”：鱼背面的每一节经文。',again:'重新开始“{w}”',next_set:'下次：{w}，第 {d} 天',left:'MannaFish 会从你上次停下的地方继续。'},
+    hi:{today:'आज',day:'दिन {d} / {n}',change:'मछली बदलें',pick:'अपनी मछली चुनें',week:'इस सप्ताह की मछली',did:'✓ {w} के साथ दिन {d} / {n}',next_time:'अगली बार: दिन {d}, {refs}',stay:'{w} के साथ रहें',next:'अगली मछली: {w}',done:'आपने {w} पूरा किया: मछली के पीछे का हर पद।',again:'{w} फिर से शुरू करें',next_set:'अगली बार: {w}, दिन {d}',left:'MannaFish वहीं से शुरू करता है जहाँ आपने छोड़ा था।'},
+    el:{today:'σήμερα',day:'Ημέρα {d} από {n}',change:'Άλλαξε ψάρι',pick:'Διάλεξε το ψάρι σου',week:'Το ψάρι της εβδομάδας',did:'✓ Ημέρα {d} από {n} με το {w}',next_time:'Την επόμενη φορά: Ημέρα {d}, {refs}',stay:'Μείνε με το {w}',next:'Επόμενο ψάρι: {w}',done:'Ολοκλήρωσες το {w}: κάθε εδάφιο στην πίσω πλευρά του ψαριού.',again:'Ξεκίνα πάλι το {w}',next_set:'Την επόμενη φορά: {w}, Ημέρα {d}',left:'Το MannaFish συνεχίζει από εκεί που σταμάτησες.'},
+    de:{today:'heute',day:'Tag {d} von {n}',change:'Fisch wechseln',pick:'Wähle deinen Fisch',week:'Fisch dieser Woche',did:'✓ Tag {d} von {n} mit {w}',next_time:'Nächstes Mal: Tag {d}, {refs}',stay:'Bei {w} bleiben',next:'Nächster Fisch: {w}',done:'Du hast {w} abgeschlossen: jeden Vers auf der Rückseite des Fisches.',again:'{w} neu beginnen',next_set:'Nächstes Mal: {w}, Tag {d}',left:'MannaFish macht dort weiter, wo du aufgehört hast.'},
+    ko:{today:'오늘',day:'{n}일 중 {d}일째',change:'물고기 바꾸기',pick:'물고기를 고르세요',week:'이번 주 물고기',did:'✓ {w}: {n}일 중 {d}일째',next_time:'다음에: {d}일째, {refs}',stay:'{w} 계속하기',next:'다음 물고기: {w}',done:'{w}을(를) 마쳤어요: 물고기 뒷면의 모든 구절.',again:'{w} 다시 시작',next_set:'다음에: {w}, {d}일째',left:'MannaFish는 멈춘 곳에서 이어집니다.'},
+    he:{today:'היום',day:'יום {d} מתוך {n}',change:'החלפת דג',pick:'בחרו את הדג שלכם',week:'הדג של השבוע',did:'✓ יום {d} מתוך {n} עם {w}',next_time:'בפעם הבאה: יום {d}, {refs}',stay:'להישאר עם {w}',next:'הדג הבא: {w}',done:'סיימתם את {w}: כל הפסוקים שבגב הדג.',again:'להתחיל את {w} מחדש',next_set:'בפעם הבאה: {w}, יום {d}',left:'MannaFish ממשיך מהמקום שבו עצרתם.'},
+    ar:{today:'اليوم',day:'اليوم {d} من {n}',change:'غيّر السمكة',pick:'اختر سمكتك',week:'سمكة هذا الأسبوع',did:'✓ اليوم {d} من {n} مع {w}',next_time:'في المرة القادمة: اليوم {d}، {refs}',stay:'ابقَ مع {w}',next:'السمكة التالية: {w}',done:'أنهيت {w}: كل الآيات على ظهر السمكة.',again:'ابدأ {w} من جديد',next_set:'في المرة القادمة: {w}، اليوم {d}',left:'يتابع MannaFish من حيث توقفت.'}};
   function plT(){ return PLT[PT.l]||PLT.en; }
   function plF(t,o){ return t.replace(/\{(\w+)\}/g,function(m,x){ return o[x]!=null?o[x]:m; }); }
   function planWeek(){ var d=new Date(), t=Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()), wk=Math.floor(Math.floor((t-PLAN_START)/864e5)/7), n=ORDER.length; return ORDER[((wk%n)+n)%n]; }
@@ -3055,6 +3059,18 @@ window.MF=(function(){
   function planPut(p){ p.at=Date.now(); try{ localStorage.setItem('mf-plan',JSON.stringify(p)); }catch(e){} if(window.MFplanSave) MFplanSave(p); }
   function planDone(k){ return Math.max(0,Math.min(PLAN_DAYS,+(planGet().p[k])||0)); }
   function planDay(k){ return Math.min(planDone(k),PLAN_DAYS-1); }
+  // Ken, 15 Oct: a finished day can be read again from the week list -- that does not move the plan
+  function ptDay(k){ return (PT.dayOv&&PT.dayOv.k===k)?PT.dayOv.d:planDay(k); }
+  function planDates(k){ var p=planGet(); return (p.dd&&p.dd[k])||{}; }
+  function ymd(d){ d=d||new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  function dayLab(iso){ try{ var a=iso.split('-'); return new Date(+a[0],+a[1]-1,+a[2]).toLocaleDateString(PT.l==='zh'?'zh-CN':PT.l,{month:'short',day:'numeric'}); }catch(e){ return iso; } }
+  // the week of this fish: each day's verses, ticked when read (with the date), today's marked
+  function planWeekList(k,l){ var P=plT(), dn=planDone(k), cd=ptDay(k), dates=planDates(k), h='';
+    for(var d=0;d<PLAN_DAYS;d++){ var done=d<dn, at=d===cd, refs=planRefs(k,d).map(function(i){ return refLab(l,k,i); }).join(' · ');
+      h+='<button type="button" class="ptwk'+(done?' done':'')+(at?' at':'')+'" data-a="planday" data-d="'+d+'"'+(done||at||d===dn?'':' disabled')+'>'
+        +'<span class="wkm">'+(done?'✓':(at?'▶':'○'))+'</span><span class="wkd">'+esc(plF(P.day,{d:d+1,n:PLAN_DAYS}))+'</span><span class="wkr">'+esc(refs)+'</span>'
+        +'<span class="wkt">'+(done&&dates[d]?esc(dayLab(dates[d])):(at?esc(P.today):''))+'</span></button>'; }
+    return '<div class="ptweek">'+h+'</div>'; }
   function planRefs(k,d){ var n=DATA[k].refs.length, a=Math.floor(d*n/PLAN_DAYS), z=Math.floor((d+1)*n/PLAN_DAYS), r=[]; for(var i=a;i<z;i++) r.push(i); return r; }
   function planNext(k){ var i=ORDER.indexOf(k); for(var j=1;j<ORDER.length;j++){ var x=ORDER[(i+j)%ORDER.length]; if(planDone(x)<PLAN_DAYS) return x; } return ORDER[(i+1)%ORDER.length]; }
   function planFish(){ var p=planGet(); if(PLAN_LINK){ var lk=PLAN_LINK.toUpperCase(); PLAN_LINK=null; if(DATA[lk]&&planDone(lk)<PLAN_DAYS){ if(p.k!==lk){ p.k=lk; planPut(p); } return lk; } }
@@ -3063,19 +3079,20 @@ window.MF=(function(){
   // when signed in: the account's progress joins this device's (the furthest day for each fish; the latest choice of fish)
   window.MFplanCloud=function(c){ if(!c||typeof c!=='object'||!c.p) return; var p=planGet();
     for(var k in c.p) if(DATA[k]) p.p[k]=Math.max(+(p.p[k])||0,Math.min(PLAN_DAYS,+c.p[k]||0));
+    if(c.dd) { p.dd=p.dd||{}; for(var k2 in c.dd) if(DATA[k2]){ p.dd[k2]=p.dd[k2]||{}; for(var d2 in c.dd[k2]) if(!p.dd[k2][d2]) p.dd[k2][d2]=c.dd[k2][d2]; } }
     if((c.at||0)>(p.at||0)&&c.k&&DATA[c.k]) p.k=c.k; p.at=Math.max(p.at||0,c.at||0); try{ localStorage.setItem('mf-plan',JSON.stringify(p)); }catch(e){} };
   function planPicker(){ var l=PT.l, wk=planWeek(), P=plT();
     return '<div class="ptpick" role="group" aria-label="'+esc(P.pick)+'" hidden><div class="ptpickh">'+esc(P.pick)+'</div><div class="ptpickg">'+ORDER.map(function(k){ var dn=planDone(k);
       return '<button type="button" data-a="planset" data-k="'+k+'" aria-pressed="'+(k===cur)+'"><b>'+esc(titleIn(l,k))+'</b><small>'+(dn>=PLAN_DAYS?'✓':dn?dn+' / '+PLAN_DAYS:'')+(k===wk?' ★':'')+'</small></button>'; }).join('')
       +'</div><p class="ptpickk">★ '+esc(P.week)+'</p></div>'; }
   // the end of the day's devotional: mark the day, then stay with this fish or change it
-  function planEnd(){ var l=PT.l, P=plT(), k=cur, w=titleIn(l,k), d=PT.marked[k]; if(d==null){ d=planDay(k); var p=planGet(); p.p[k]=Math.max(+(p.p[k])||0,d+1); p.k=k; planPut(p); PT.marked[k]=d; }
+  function planEnd(){ var l=PT.l, P=plT(), k=cur, w=titleIn(l,k), d=PT.marked[k]; if(d==null){ d=ptDay(k); var p=planGet(); p.p[k]=Math.max(+(p.p[k])||0,d+1); p.k=k; p.dd=p.dd||{}; p.dd[k]=p.dd[k]||{}; if(!p.dd[k][d]) p.dd[k][d]=ymd(); planPut(p); PT.marked[k]=d; }
     var dn=planDone(k), nx=planNext(k), h='<div class="ptplanend"><p class="ptp ptplanok">'+esc(plF(P.did,{d:d+1,n:PLAN_DAYS,w:w}))+'</p>';
     if(dn<PLAN_DAYS) h+='<p class="ptp ptsoft">'+esc(plF(P.next_time,{d:dn+1,refs:planRefs(k,dn).map(function(i){ return refLab(l,k,i); }).join(' · ')}))+'</p>'
       +'<div class="ptrow"><button type="button" class="ptbtn" data-a="planstay" aria-pressed="true">'+esc(plF(P.stay,{w:w}))+'</button><button type="button" class="ptbtn" data-a="plannext" data-k="'+nx+'" aria-pressed="false">'+esc(plF(P.next,{w:titleIn(l,nx)}))+' ›</button></div>';
     else h+='<p class="ptp ptsoft">'+esc(plF(P.done,{w:w}))+'</p><div class="ptrow"><button type="button" class="ptbtn" data-a="plannext" data-k="'+nx+'" aria-pressed="true">'+esc(plF(P.next,{w:titleIn(l,nx)}))+' ›</button><button type="button" class="ptbtn" data-a="planagain" aria-pressed="false">'+esc(plF(P.again,{w:w}))+'</button></div>';
     return h+'<p class="ptp ptsoft ptplanmsg" aria-live="polite">'+esc(P.left)+'</p></div>'; }
-  function ptSteps(){ var len=PT.len||dLen(), st=[{k:'welcome'},{k:'pray'},{k:'cast'},{k:'hear'}], op=prOpen(), d=planDay(cur), pr=planRefs(cur,d);
+  function ptSteps(){ var len=PT.len||dLen(), st=[{k:'welcome'},{k:'pray'},{k:'cast'},{k:'hear'}], op=prOpen(), d=ptDay(cur), pr=planRefs(cur,d);
     if(d===0||len==='full') st.push({k:'fish'},{k:'orig'});
     if(len==='full') st.push({k:'count'});
     pr.forEach(function(i,j){ st.push({k:'ref',i:i,n:pr.length,j:j}); });
@@ -3136,7 +3153,7 @@ window.MF=(function(){
     var kick=function(a,b){ return '<div class="ptk"><span>'+esc(a)+'</span>'+(b?'<span class="ptof">'+b+'</span>':'')+'</div>'; };
     var prm=function(key){ return '<p class="ptprompt">👉 '+esc(T[key])+'</p>'; };
     if(s.k==='welcome'){ t=[P[0]]; var PL=plT(); h=kick(T.k_welcome)+'<h2 class="pth">'+esc(D.b[1])+'</h2>'
-        +'<div class="ptplan"><span><b>'+esc(w)+'</b> · '+esc(plF(PL.day,{d:planDay(k)+1,n:PLAN_DAYS}))+'</span><button type="button" class="ptlink" data-a="planpick" aria-expanded="false">'+esc(PL.change)+' ⋯</button></div>'+planPicker()
+        +'<div class="ptplan"><span><b>'+esc(w)+'</b> · '+esc(plF(PL.day,{d:ptDay(k)+1,n:PLAN_DAYS}))+'</span><button type="button" class="ptlink" data-a="planpick" aria-expanded="false">'+esc(PL.change)+' ⋯</button></div>'+planWeekList(k,l)+planPicker()
         +'<p class="ptp">'+sp1(1,P[0])+'</p>'
         +'<div class="ptlenq">'+esc((DLEN[l]||DLEN.en).how)+'</div><div class="ptlen" role="radiogroup">'+['quick','std','full'].map(function(x){ var D2=DLEN[l]||DLEN.en;
           return '<button type="button" role="radio" data-a="len" data-len="'+x+'" aria-checked="'+((PT.len||dLen())===x)+'"><b>'+esc(D2.min.replace('{n}',DMIN[x]))+'</b><small>'+esc(D2[x==='quick'?'q':x==='std'?'s':'d'])+'</small></button>'; }).join('')+'</div>'
@@ -3163,10 +3180,10 @@ window.MF=(function(){
       var blk=function(lab,wd,lg,snd,n,line){ return '<div class="ptorig"><div class="ptol">'+esc(lab)+'</div><div class="ptow" lang="'+lg+'">'+esc(wd)+'</div><div class="ptos">'+esc(snd)+'</div><p class="ptp">'+sp1(n,line)+'</p></div>'; };
       h=kick(w+' · '+L.gk+' · '+L.hb)+'<div class="ptreveal">'+blk(L.gk,d.gkw,'el',d.gks,1,g)+blk(L.hb,d.hbw,'he',d.hbs,2,hb)+'</div>'+prm('p_orig'); }
     else if(s.k==='count'){ var n=DATA[k].refs.length, cl=T.count_line.replace('{n}',n).replace('{w}',w); t=[cl];
-      h=kick(T.k_trace)+'<h2 class="pth">'+sp1(1,cl)+'</h2><div class="ptchips">'+DATA[k].refs.map(function(r,i){ var td=planRefs(k,planDay(k)), dn=planDone(k), at=td.indexOf(i)>=0, was=i<td[0]||dn>=PLAN_DAYS;
+      h=kick(T.k_trace)+'<h2 class="pth">'+sp1(1,cl)+'</h2><div class="ptchips">'+DATA[k].refs.map(function(r,i){ var td=planRefs(k,ptDay(k)), dn=planDone(k), at=td.indexOf(i)>=0, was=i<td[0]||dn>=PLAN_DAYS;
         return at?'<button type="button" data-a="goref" data-i="'+i+'" class="today">'+esc(refLab(l,k,i))+'</button>':'<button type="button" disabled class="'+(was?'was':'later')+'">'+(was?'✓ ':'')+esc(refLab(l,k,i))+'</button>'; }).join('')+'</div>'+prm('p_orig'); }
     else if(s.k==='ref'){ var lab=refLab(l,k,s.i), pr=parseRef(DATA[k].refs[s.i][0]);
-      h=kick(T.k_trace+' · '+w,esc(plF(plT().day,{d:planDay(k)+1,n:PLAN_DAYS}))+' · '+(s.j+1)+' / '+s.n)+'<h2 class="pth ptref">'+sp1(1,lab)+'</h2><blockquote class="ptq"><span data-v="2">…</span></blockquote>'+ptHlRow()
+      h=kick(T.k_trace+' · '+w,esc(plF(plT().day,{d:ptDay(k)+1,n:PLAN_DAYS}))+' · '+(s.j+1)+' / '+s.n)+'<h2 class="pth ptref">'+sp1(1,lab)+'</h2><blockquote class="ptq"><span data-v="2">…</span></blockquote>'+ptHlRow()
         +'<div class="ptctx" hidden><div class="ptctxh">'+sp1(3,T.in_context)+'</div><p class="ptp">'+sp1(4,'')+'</p></div>'+prm('p_ref');
       t=null; var me=PT.i;
       ready=(pr?chGet(pr,l):Promise.reject()).then(function(ct){ var v=+pr.vs, a=Math.max(1,v-2), z=Math.min(ct.length,v+2), cx=[];
@@ -3221,7 +3238,7 @@ window.MF=(function(){
   function ptGo(i){ PT.i=Math.max(0,Math.min(PT.steps.length-1,i)); $('ptMenu').hidden=true; ptRender(); ptSay(); }
   function ptOpen(){ if(window.MFplClose&&!$('mfPlayer').hidden) MFplClose(); stopSpeak(); PT.l=DEVO[MF.lang]?MF.lang:'en'; PT.on=true; PT.listen=false;
     var pt=$('pt'); pt.dir=/^(he|ar)$/.test(PT.l)?'rtl':'ltr'; pt.setAttribute('lang',PT.l); PR=prLocal().filter(function(x){ return prCloud()||!x.c; });
-    PT.l2=null; CA.done=false; PT.len=dLen(); PT.marked={}; var pf=planFish(); if(pf!==cur) pick(pf,false); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; document.documentElement.style.overflow='hidden'; ptRender();
+    PT.l2=null; CA.done=false; PT.len=dLen(); PT.marked={}; PT.dayOv=null; var pf=planFish(); if(pf!==cur) pick(pf,false); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; document.documentElement.style.overflow='hidden'; ptRender();
     prLoad().then(function(){ if(!PT.on) return; var at=PT.steps[PT.i]&&PT.steps[PT.i].k; PT.steps=ptSteps(); if(at==='welcome'||at==='pray'||at==='hear') ptRender(); }); }
   function ptClose(){ caStop(); PT.on=false; PT.listen=false; stopSpeak(); $('pt').hidden=true; $('ptSheet').hidden=true; $('ptMenu').hidden=true; document.documentElement.style.overflow=''; }
   function ptRebuild(keep){ PT.steps=ptSteps(); var j=PT.steps.findIndex(function(s){ return s.k===keep; }); if(j>=0&&keep!=='prayer') PT.i=j; PT.i=Math.min(PT.i,PT.steps.length-1); ptRender(); }
@@ -3252,8 +3269,9 @@ window.MF=(function(){
       var h2=hls(); if(h2[c2.key]){ h2[c2.key].c=b.dataset.c; saveHls(h2); ptHlUI(true); }
       else { var inf2=JSON.parse(JSON.stringify(c2.info)); inf2.c=b.dataset.c; ptHlUI(hlToggle(c2.key,inf2)); } return; }
     if(a==='vers'){ e.stopPropagation(); $('ptMore').click(); setTimeout(function(){ var v=$('ptMenu').querySelector('.ptvers'); if(v){ v.hidden=false; var f=v.querySelector('[aria-checked=true]'); if(f) f.focus(); } },0); return; }
+    if(a==='planday'){ var dd=+b.dataset.d; PT.dayOv=(dd===planDay(cur))?null:{k:cur,d:dd}; PT.marked={}; PT.steps=ptSteps(); PT.i=0; ptRender(); return; }
     if(a==='planpick'){ var pk=$('ptStage').querySelector('.ptpick'); pk.hidden=!pk.hidden; b.setAttribute('aria-expanded',String(!pk.hidden)); return; }
-    if(a==='planset'){ var nk=b.dataset.k; if(!DATA[nk]) return; planSet(nk); if(nk!==cur) pick(nk,false); PT.steps=ptSteps(); PT.i=0; ptRender(); return; }
+    if(a==='planset'){ var nk=b.dataset.k; if(!DATA[nk]) return; PT.dayOv=null; planSet(nk); if(nk!==cur) pick(nk,false); PT.steps=ptSteps(); PT.i=0; ptRender(); return; }
     if(a==='planstay'||a==='plannext'||a==='planagain'){ var P2=plT(), w2=titleIn(PT.l,cur), msg=$('ptStage').querySelector('.ptplanmsg');
       $('ptStage').querySelectorAll('.ptplanend [aria-pressed]').forEach(function(x){ x.setAttribute('aria-pressed',String(x===b)); });
       if(a==='planstay'){ planSet(cur); msg.textContent=plF(P2.next_time,{d:planDone(cur)+1,refs:planRefs(cur,planDone(cur)).map(function(i){ return refLab(PT.l,cur,i); }).join(' · ')}); }

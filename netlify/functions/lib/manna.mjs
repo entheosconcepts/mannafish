@@ -29,13 +29,17 @@ export function localNow(now = new Date(), tz = DEFAULT_TZ) {
 export function todaysManna(now = new Date(), tz = DEFAULT_TZ) {
   const { t, dow } = localNow(now, tz);
   if (dow === 6) return null;
-  const week = Math.floor(Math.floor((t - START) / 86400000) / 7);
+  const wk = Math.floor(Math.floor((t - START) / 86400000) / 7);
   const n = WORDS.order.length;
-  const key = WORDS.order[((week % n) + n) % n];
+  const key = WORDS.order[((wk % n) + n) % n];
   const w = WORDS.words[key];
   const refs = dayRefs(w.refs.length, dow).map((i) => ({ i, ref: w.refs[i][0], snippet: w.refs[i][1], url: '/?w=' + key.toLowerCase() + '&r=' + i }));
+  // Ken, 15 Oct: the whole week in the email -- each day's date and verses, so "Day 4" makes sense
+  const week = [];
+  for (let d = 0; d < DAYS; d++) week.push({ day: d + 1, t: t + (d - dow) * 86400000,
+    refs: dayRefs(w.refs.length, d).map((i) => ({ i, ref: w.refs[i][0], url: '/?w=' + key.toLowerCase() + '&r=' + i })) });
   return {
-    key, title: w.title, day: dow + 1, days: DAYS, refs,
+    key, title: w.title, day: dow + 1, days: DAYS, refs, week,
     refIndex: refs[0].i, ref: refs[0].ref, snippet: refs[0].snippet,
     friday: dow === 5,
     url: refs[0].url
