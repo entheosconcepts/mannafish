@@ -50,6 +50,39 @@ export default async (req, context) => {
   const say = new URL(req.url).pathname.endsWith('/say');
   const H = { authorization: 'Bearer ' + apiKey, 'content-type': 'application/json' };
 
+  // Ken, 15 Oct: "see that word in Hebrew or Greek or any other language from a little drop down".
+  //   POST /api/translate {pick:1, text:word, verse, cands:[gloss,...]} -> {i}  which original word this English word translates.
+  //     Only the verse's own original words can be the answer, so nothing is made up; each answer is kept.
+  //   POST /api/translate {equiv:1, text:word, verse, from, to} -> {word, translit}  the word as that language would say it here.
+  if (b.pick || b.equiv) {
+    const verse = String(b.verse || '').trim().slice(0, 400);
+    if (text.length > 60) return bad('Too long', 413, 'long');
+    const cands = b.pick && Array.isArray(b.cands) ? b.cands.slice(0, 80).map((x) => String(x || '').slice(0, 40)) : null;
+    const toL = NAMES[b.to] ? b.to : null, fromN = NAMES[b.from] || 'English';
+    if (b.pick && !(cands && cands.length)) return bad('No words', 400);
+    if (b.equiv && !toL) return bad('Which language?', 400);
+    const store = getStore('mannafish-gloss'), id = (b.pick ? 'p/' : `e/${toL}-`) + await sha((b.from || '') + '|' + text + '|' + verse + '|' + (cands || []).join('~'));
+    try { const hit = await store.get(id, { type: 'json' }); if (hit) return Response.json(hit); } catch (e) { /* look it up */ }
+    if (await limited(context && context.ip, 'gl', 300)) return bad('Please wait a little', 429, 'busy');
+    const sys = b.pick
+      ? 'You align one word of an English Bible verse with the original-language text. You are given the English word, the English verse, and a numbered list of the '
+        + 'English glosses of the original words, in order. Reply with JSON only: {"i": <the number of the gloss that this English word translates>}. '
+        + 'If none fits, give the closest.'
+      : `You help a Bible reader. Give the word that ${NAMES[toL]} would use for this ${fromN} word as it is used in this verse, the way a faithful ${NAMES[toL]} Bible would put it. `
+        + `Reply with JSON only: {"word":"<the word in ${NAMES[toL]}>","translit":"<how it sounds in Latin letters, only if ${NAMES[toL]} is not written in Latin letters, else empty>"}.`;
+    const user = b.pick ? `English word: ${text}\nEnglish verse: ${verse}\nGlosses:\n${cands.map((g, i) => i + ': ' + g).join('\n')}`
+                        : `Word: ${text}\nVerse: ${verse}`;
+    const r = await fetch('https://api.openai.com/v1/chat/completions', { method: 'POST', headers: H,
+      body: JSON.stringify({ model: MODEL, temperature: 0, max_tokens: 80, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: sys }, { role: 'user', content: user }] }) });
+    if (r.status === 401 || r.status === 403) return bad('Key not allowed', 503, 'key');
+    if (!r.ok) return bad('Translation service error', 502);
+    let o = {}; try { o = JSON.parse((((await r.json()).choices || [])[0] || {}).message.content || '{}'); } catch (e) { o = {}; }
+    let out;
+    if (b.pick) { const i = parseInt(o.i, 10); if (!(i >= 0 && i < cands.length)) return bad('No match', 502); out = { i }; }
+    else { out = { word: String(o.word || '').slice(0, 60), translit: String(o.translit || '').slice(0, 60) }; if (!out.word) return bad('No word', 502); }
+    try { await store.setJSON(id, out); } catch (e) { /* still answer */ }
+    return Response.json(out);
+  }
   // Ken, 11 Oct: tap one word in a passage -> what it means in that verse, in the reader's own language.
   //   POST /api/translate {gloss:1, text:word, verse, from, to, hint?} -> {base, meaning, note}
   // Each answer is kept, so a word in a verse is only ever looked up once for each language.

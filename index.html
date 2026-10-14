@@ -928,7 +928,18 @@ section.section.bundles{display:block;margin-top:0}
 .nb.mk{background:rgba(245,215,110,.16);border-color:rgba(245,215,110,.6);box-shadow:inset 4px 0 0 #f5d76e}
 .nb .nref{display:block;font:700 .74rem 'Archivo',sans-serif;letter-spacing:.04em;color:var(--brass-soft,#6f9be0);margin-bottom:2px;background:none;border:0;padding:0;cursor:pointer;text-align:left}
 .hlhint{font:.8rem 'Archivo',sans-serif;color:var(--foam-dim,#aaa);margin:0 0 8px}
-.chapter span.mk{background:linear-gradient(transparent 50%,var(--hl,rgba(245,215,110,.55)) 50%);border-radius:2px}
+.chapter span.mk{background:var(--hl,rgba(245,215,110,.5));-webkit-box-decoration-break:clone;box-decoration-break:clone;border-radius:3px;padding:.02em .06em}   /* Ken, 15 Oct: centred on the letters, like a marker */
+::highlight(mfh-gold){background-color:rgba(245,215,110,.55)}::highlight(mfh-green){background-color:rgba(110,214,140,.5)}::highlight(mfh-blue){background-color:rgba(110,170,245,.55)}
+::highlight(mfh-pink){background-color:rgba(245,140,190,.55)}::highlight(mfh-orange){background-color:rgba(250,160,80,.55)}::highlight(mfh-pen){background-color:rgba(255,255,255,.28)}
+.chapter.pen{touch-action:none;-webkit-user-select:none;user-select:none;cursor:crosshair}
+.rpen{border:1px solid rgba(255,255,255,.35);background:none;color:inherit;border-radius:999px;padding:5px 12px;font:700 .8rem 'Archivo',sans-serif;cursor:pointer;white-space:nowrap}
+.rpen[aria-pressed=true]{background:#f5d76e;color:#111;border-color:#f5d76e}
+.wpin{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:10px;font:600 .8rem 'Archivo',sans-serif;flex-wrap:wrap}
+.wpin select{border:1px solid #3a3a3e;background:#0f1114;color:#fff;border-radius:999px;padding:6px 10px;font:700 .8rem 'Archivo',sans-serif;max-width:60%}
+.wpinr{width:100%;text-align:center;font:400 1.15rem 'Spectral',Georgia,serif;min-height:1.2em}.wpinr small{display:block;font:600 .78rem 'Archivo',sans-serif;opacity:.75}
+.wpc{display:flex;gap:6px;justify-content:center;margin-top:8px}.wpc button{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.3);padding:0;cursor:pointer}.wpc button[aria-pressed=true]{border-color:#fff}
+.hearsel.hlsel{background:#2a5fb0}
+[data-mode="light"] .wpin select{background:#fff;color:#111;border-color:#c9ccd2}
 .chapter span[data-v]{cursor:pointer}
 .rspk,.frspk{flex:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--foam);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
 .rspk svg,.frspk svg{width:20px;height:20px}
@@ -1044,7 +1055,7 @@ section.section.bundles{display:block;margin-top:0}
 .ptchips button.today{background:#fff;color:#0b0f14}.ptchips button.was{opacity:.7}.ptchips button.later{opacity:.4}
 .pthl{margin:-6px 0 14px;align-items:center}.pthl .ptbtn{font-size:.95rem;padding:8px 16px}.pthl .ptbtn[aria-pressed=true]{background:#f5d76e;color:#111;border-color:#f5d76e}
 .ptver{border:0;background:none;color:inherit;font:800 .78rem 'Archivo',sans-serif;letter-spacing:.12em;opacity:.7;cursor:pointer;padding:6px}
-.pt .ptq.mk [data-v]{background:linear-gradient(transparent 58%,var(--hl,rgba(245,215,110,.42)) 58%);border-radius:2px}
+.pt .ptq.mk [data-v]{background:var(--hl,rgba(245,215,110,.42));-webkit-box-decoration-break:clone;box-decoration-break:clone;border-radius:3px;padding:.02em .06em}
 .pt .ptq.mk cite [data-v]{background:none}   /* the verse is marked, not its reference */
 .pthl .hlc{display:inline-flex;gap:6px;align-items:center}.pthl .hlc button{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.35);cursor:pointer;padding:0}
 .pthl .hlc button[aria-pressed=true]{border-color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.35)}
@@ -2089,7 +2100,10 @@ select option{background:#0b1620;color:#eaf0f0}
 <div class="wpop" id="wPop" role="dialog" aria-live="polite" hidden><button type="button" class="wpx" id="wpX" aria-label="Close">&times;</button>
   <div class="wpw"><span id="wpWord"></span><button type="button" class="wpsay" id="wpSay" aria-label="Hear it">&#128266;</button></div>
   <div class="wpt" id="wpTr"></div><div class="wpm" id="wpMean"></div><div class="wpn" id="wpNote"></div>
-  <div class="wpb"><button type="button" id="wpLex" hidden></button><button type="button" id="wpHl"></button><button type="button" id="wpPlay"></button><button type="button" id="wpLoop"></button></div></div>
+  <div class="wpb"><button type="button" id="wpLex" hidden></button><button type="button" id="wpHlw"></button><button type="button" id="wpHl"></button><button type="button" id="wpPlay"></button><button type="button" id="wpLoop"></button></div>
+  <div class="wpc" id="wpC" role="group" aria-label="Highlight colour"></div>
+  <div class="wpin"><label for="wpIn" id="wpInL">See it in</label><select id="wpIn"></select><div class="wpinr" id="wpInR" aria-live="polite"></div></div></div>
+<button class="hearsel hlsel" type="button" id="hlSel" hidden><span aria-hidden="true">&#128397;</span> <span id="hlSelLab">Highlight</span></button>
 <button class="hearsel" type="button" id="hearSel" hidden><span aria-hidden="true">&#128266;</span> <span id="hearLab">Hear it</span></button>
 <div class="hearbox" id="hearBox" role="status" hidden><button class="etx" type="button" id="hearX" aria-label="Close">&times;</button><div class="etbig" id="hearTxt"></div><div class="etmine" id="hearMine"></div><div class="etrow"><button type="button" id="hearPlay">&#128266;</button></div></div>
 <div class="okbox" id="okBox" role="dialog" aria-modal="true" aria-labelledby="okTitle" hidden><div class="okcard"><div class="okcheck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><h2 id="okTitle"></h2><div id="okBody"></div><button class="btn" type="button" id="okDone">Done</button></div></div>
@@ -2108,7 +2122,7 @@ select option{background:#0b1620;color:#eaf0f0}
     <p class="rhint" id="rYouVHint">Click on the Bible App button for more versions</p>
     <a class="rbtn p" id="rYouV" target="_blank" rel="noopener">Bible App</a>
     <a class="rbtn s" id="rGate" target="_blank" rel="noopener">Read the full chapter</a>
-    <div class="rfoot"><select class="rver" id="rVer" aria-label="Bible version"></select><div class="rnote" id="rNote"></div></div>
+    <div class="rfoot"><select class="rver" id="rVer" aria-label="Bible version"></select><button type="button" class="rpen" id="rPen" aria-pressed="false">&#128397; Pen</button><div class="rnote" id="rNote"></div></div>
   </div>
 </aside>
 
@@ -2529,7 +2543,7 @@ window.MF=(function(){
   // spoken. Works for the Bible reader and for the small reader under each fish in the side-by-side view.
   function rWords(span,l){ if(span.dataset.w) return; var txt=span.textContent, parts=l==='zh'?txt.split(''):txt.split(/(\s+)/), h='', i=0;
     parts.forEach(function(t){ if(t==='') return; if(/^\s+$/.test(t)) h+=t; else h+='<span class="rw" data-s="'+i+'" data-e="'+(i+t.length)+'">'+esc(t)+'</span>'; i+=t.length; });
-    span.innerHTML=h; span.dataset.w='1'; }
+    span.innerHTML=h; span.dataset.w='1'; if(window.MFhlPaint) MFhlPaint(); }
   function rMarkIn(ctx,v){ document.querySelectorAll('.chapter .reading').forEach(function(e){ e.classList.remove('reading'); e.querySelectorAll('.rw.on').forEach(function(w){ w.classList.remove('on'); }); });
     var e=v&&ctx.root.querySelector('[data-v="'+v+'"]'); if(!e) return null; e.classList.add('reading'); rWords(e,ctx.data.l);
     var bd=ctx.box; if(bd && bd.scrollHeight>bd.clientHeight+4) bd.scrollTop=Math.max(0,e.offsetTop-bd.offsetTop-bd.clientHeight/3); else e.scrollIntoView({block:'nearest',behavior:'smooth'});
@@ -2706,6 +2720,26 @@ window.MF=(function(){
     ko:['뜻','구절 표시','표시 지우기','여기서부터 듣기','이 구절 반복','여기까지 반복','스트롱','뜻을 불러오지 못했습니다.'],
     he:['מה פירוש המילה','סימון הפסוק','הסרת הסימון','האזנה מכאן','חזרה על הפסוק','חזרה עד כאן','סטרונג','לא ניתן לטעון את הפירוש.'],ar:['ما معنى الكلمة','تمييز الآية','إزالة التمييز','الاستماع من هنا','تكرار هذه الآية','التكرار حتى هنا','سترونغ','تعذّر تحميل المعنى.']};
   var WP=null, GLC={};
+  var WPX={en:['Highlight word','Remove word highlight','See it in','—','Original','Greek','Hebrew','Not in the original for this chapter yet.','Could not look it up.'],
+    es:['Resaltar palabra','Quitar resaltado de la palabra','Verla en','—','Original','Griego','Hebreo','Aún no hay original para este capítulo.','No se pudo buscar.'],
+    tl:['I-highlight ang salita','Alisin ang highlight ng salita','Tingnan sa','—','Orihinal','Griyego','Hebreo','Wala pang orihinal para sa kabanatang ito.','Hindi ma-hanap.'],
+    zh:['标记此词','取消此词标记','查看其他语言','—','原文','希腊文','希伯来文','本章暂无原文。','无法查询。'],
+    hi:['शब्द हाइलाइट करें','शब्द का हाइलाइट हटाएँ','इसमें देखें','—','मूल','यूनानी','इब्रानी','इस अध्याय का मूल अभी उपलब्ध नहीं है।','खोजा नहीं जा सका।'],
+    el:['Επισήμανση λέξης','Αφαίρεση επισήμανσης λέξης','Δείτε το σε','—','Πρωτότυπο','Ελληνικά','Εβραϊκά','Δεν υπάρχει ακόμη το πρωτότυπο για αυτό το κεφάλαιο.','Δεν βρέθηκε.'],
+    de:['Wort markieren','Wortmarkierung entfernen','Ansehen auf','—','Urtext','Griechisch','Hebräisch','Für dieses Kapitel gibt es den Urtext noch nicht.','Konnte nicht nachgeschlagen werden.'],
+    ko:['단어 표시','단어 표시 지우기','다른 언어로 보기','—','원어','헬라어','히브리어','이 장의 원어는 아직 없습니다.','찾을 수 없습니다.'],
+    he:['סימון המילה','הסרת סימון המילה','לראות ב','—','המקור','יוונית','עברית','המקור לפרק זה עדיין לא זמין.','לא ניתן לחפש.'],
+    ar:['تمييز الكلمة','إزالة تمييز الكلمة','اعرضها بـ','—','الأصل','اليونانية','العبرية','الأصل غير متوفّر لهذا الإصحاح بعد.','تعذّر البحث.']};
+  var WPLN={en:'English',es:'Español',tl:'Tagalog',zh:'中文',hi:'हिन्दी',el:'Ελληνικά',de:'Deutsch',ko:'한국어',he:'עברית',ar:'العربية',tr:'Türkçe'};
+  function wpX(){ return WPX[MF.lang]||WPX.en; }
+  function wpPhraseKey(){ if(!WP||!WP.t||!WP.X.hl) return null; var c=WP.X.hl; return c.book+' '+c.ch+':'+WP.vn+'#'+WP.t.s+'-'+WP.t.e+'|'+c.ver; }
+  function wpExtras(){ var X2=wpX(), k=wpPhraseKey(), on=!!(k&&hls()[k]);
+    $('wpHlw').hidden=!WP.X.hl||!!WP.o; $('wpHlw').textContent='🖍 '+(on?X2[1]:X2[0]);
+    var col=hlColor(); $('wpC').innerHTML=Object.keys(HLC).map(function(c){ return '<button type="button" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('');
+    $('wpInL').textContent=X2[2];
+    $('wpIn').innerHTML='<option value="">'+X2[3]+'</option>'+(WP.o?'':'<option value="orig">'+esc(X2[4])+'</option>')
+      +Object.keys(WPLN).filter(function(l){ return l!==WP.L; }).map(function(l){ return '<option value="'+l+'">'+esc(WPLN[l])+'</option>'; }).join('');
+    $('wpInR').textContent=''; }
   function wctx(root){ if(reader.contains(root)){ return {d:RD,orig:RO,src:$('rSpk'),hl:stageCtx(),fr:null}; }
     var fr=root.closest('.fr'); if(!fr||!fr._ctx) return null; var c=fr._ctx; return {d:fr._rd,orig:c.orig,src:fr.querySelector('.frspk'),hl:hlCtx(c.k,c.i,c.l,c.orig),fr:fr}; }
   function tokenAt(text,off,L){ if(L==='zh'){ var i=Math.max(0,Math.min(text.length-1,off-1)); if(/[\s\p{P}]/u.test(text[i])&&/\p{L}/u.test(text[i+1]||'')) i++; return /\p{L}/u.test(text[i]||'')?{w:text[i],s:i,e:i+1,n:i}:null; }
@@ -2725,7 +2759,7 @@ window.MF=(function(){
   function openWord(v,off,root,rect,toggle){ var X=wctx(root); if(!X||!X.d) return; var L=X.d.l, text=v.textContent, t=tokenAt(text,off,L); if(!t) return;
     var vn=+v.dataset.v, T=WPT[MF.lang]||WPT.en, pop=$('wPop'), o=null;
     if(X.orig&&X.d.oj){ var row=(X.d.oj.v[vn]||[])[t.n]; if(row) o={w:row[0],tr:row[1],gl:row[2],sn:row[3]}; }
-    WP={v:v,vn:vn,root:root,X:X,w:o?o.w:t.w,L:L,toggle:toggle||null,o:o}; wselMark(v,t);
+    WP={v:v,vn:vn,root:root,X:X,w:o?o.w:t.w,L:L,toggle:toggle||null,o:o,t:t,text:text}; wselMark(v,t); wpExtras();
     $('wpWord').textContent=WP.w; $('wpWord').setAttribute('lang',L); $('wpWord').dir=/^(he|ar)$/.test(L)?'rtl':'ltr';
     $('wpTr').textContent=o?[o.tr,o.gl].filter(Boolean).join(' · '):''; $('wpMean').textContent='…'; $('wpNote').textContent='';
     var lexk=o&&o.sn&&LEX[o.sn]?Object.keys(STRONGS).filter(function(k){ var g=STRONGS[k]; return 'G'+g[0]===o.sn||'H'+g[1]===o.sn; })[0]:null;
@@ -2739,6 +2773,31 @@ window.MF=(function(){
       .then(function(j){ if(WP!==me) return; $('wpMean').textContent=j.meaning||''; $('wpNote').textContent=j.note||''; if(!o&&j.base&&j.base.toLowerCase()!==WP.w.toLowerCase()) $('wpTr').textContent=j.base; })
       .catch(function(){ delete GLC[key]; if(WP!==me) return; $('wpMean').textContent=o?'':T[7]; }); }
   function closeWord(){ $('wPop').hidden=true; WP=null; wselClear(); }
+  window.MFcloseWord=function(){ if(WP) closeWord(); };
+  // just this word
+  $('wpHlw').addEventListener('click',function(){ if(!WP||!WP.X.hl) return; var root=WP.root, vn=WP.vn, t=WP.t, c=WP.X.hl;
+    wselClear(); var sp=root.querySelector('span[data-v="'+vn+'"]'); hlPhrase(sp,c,t.s,t.e); wpExtras(); });
+  $('wpC').addEventListener('click',function(e){ var b=e.target.closest('[data-c]'); if(!b) return; try{ localStorage.setItem('mf-hl-color',b.dataset.c); }catch(er){}
+    var k=wpPhraseKey(), h=hls(); if(k&&h[k]){ h[k].c=b.dataset.c; saveHls(h); hlPaint(); } wpExtras(); });
+  // Ken, 15 Oct: "see that word in Hebrew or Greek or any other language from a little drop down within that box"
+  var WIC={};
+  $('wpIn').addEventListener('change',function(){ if(!WP) return; var to=this.value, me=WP, X2=wpX(), out=$('wpInR'); out.textContent=to?'…':''; if(!to) return;
+    var c=WP.X.hl, p=c?{book:c.book,ch:c.ch}:null, key=to+'|'+WP.L+'|'+WP.w+'|'+WP.vn+'|'+(p?p.book+p.ch:'');
+    var show=function(main,sub){ if(WP!==me) return; out.innerHTML=esc(main)+(sub?'<small>'+esc(sub)+'</small>':''); };
+    if(to==='orig'){
+      if(!p){ out.textContent=X2[7]; return; }
+      (WIC[key]||(WIC[key]=loadOrig(p).then(function(j){ var row=(j.v||{})[WP.vn]||[]; if(!row.length) throw 'none';
+          var lw=WP.w.toLowerCase(), st=lw.slice(0,Math.max(4,lw.length-2)), clean=function(g){ return String(g||'').toLowerCase().replace(/[<>\[\]().,;:!?'’]/g,' '); };
+          var i=row.findIndex(function(x){ return clean(x[2]).split(/\s+/).some(function(g){ return g&&(g===lw||(g.length>3&&g.slice(0,st.length)===st)); }); });
+          if(i>=0) return {j:j,x:row[i]};
+          // not by its gloss: ask which of the original words it translates (only these words can be the answer)
+          return etPost('/api/translate',{pick:1,text:WP.w,verse:WP.text.slice(0,400),cands:row.map(function(x){ return x[2]; }).slice(0,80)}).then(function(r){ if(!r.ok) throw 0; return r.json(); })
+            .then(function(o){ var x=row[+o.i]; if(!x) throw 'none'; return {j:j,x:x}; }); })))
+        .then(function(z){ var x=z.x; show(String(x[0]).replace(/[¶,.;:·]+$/,''),[x[1],x[2],x[3],(z.j.l==='hbo'?X2[6]:X2[5])].filter(Boolean).join(' · ')); })
+        .catch(function(er){ delete WIC[key]; if(WP!==me) return; out.textContent=er==='none'||er===0?X2[7]:X2[8]; });
+      return; }
+    (WIC[key]||(WIC[key]=etPost('/api/translate',{equiv:1,text:WP.w,verse:WP.text.slice(0,400),from:WP.L,to:to}).then(function(r){ if(!r.ok) throw 0; return r.json(); })))
+      .then(function(o){ show(o.word||'',o.translit||''); }).catch(function(){ delete WIC[key]; if(WP===me) out.textContent=X2[8]; }); });
   window.MFwordTap=wordTap;
   $('wpX').addEventListener('click',closeWord);
   document.addEventListener('click',function(e){ if(!WP||$('wPop').contains(e.target)||e.target.closest('.chapter span[data-v],#mpWord')) return; closeWord(); });
@@ -3843,17 +3902,24 @@ window.MF=(function(){
   // when that is not English. Uses /api/translate and /api/say; the device's own voice when those are not available.
   var HEAR={en:'Hear it',es:'Escuchar',tl:'Pakinggan sa Tagalog',zh:'用中文听',hi:'हिन्दी में सुनें',el:'Ακούστε στα ελληνικά',de:'Auf Deutsch hören',ko:'한국어로 듣기',he:'האזינו בעברית',ar:'استمعوا بالعربية'};
   var hearText='', hearT=null;
-  function hearHide(){ $('hearSel').hidden=true; }
+  var HLS={en:'Highlight',es:'Resaltar',tl:'I-highlight',zh:'标记',hi:'हाइलाइट',el:'Επισήμανση',de:'Markieren',ko:'표시',he:'סימון',ar:'تمييز'}, hlSelRange=null;
+  function hearHide(){ $('hearSel').hidden=true; $('hlSel').hidden=true; hlSelRange=null; }
   function hearPlace(){ var sel=window.getSelection&&getSelection(); var t=sel&&sel.rangeCount?sel.toString().replace(/\s+/g,' ').trim():'';
     var n=sel&&sel.anchorNode, el=n&&(n.nodeType===1?n:n.parentElement);
     if(t.length<2 || !el || el.closest('input,textarea,select,#etBox,#hearBox,#hearSel,.cmpmenu,#mfEditBar')){ hearHide(); return; }
     hearText=t; var r=sel.getRangeAt(0).getBoundingClientRect(), b=$('hearSel');
     $('hearLab').textContent=HEAR[MF.lang]||HEAR.en; b.hidden=false;
     var w=b.offsetWidth, top=r.bottom+10; if(top+44>innerHeight) top=Math.max(8,r.top-52);
-    b.style.top=top+'px'; b.style.left=Math.max(8,Math.min(innerWidth-w-8,r.left+r.width/2-w/2))+'px'; }
+    b.style.top=top+'px'; b.style.left=Math.max(8,Math.min(innerWidth-w-8,r.left+r.width/2-w/2))+'px';
+    // inside a Bible chapter the same selection can be highlighted
+    var ch=el.closest('.chapter'), hb=$('hlSel'); hlSelRange=null; hb.hidden=true;
+    if(ch&&window.MFhlRangeOk&&MFhlRangeOk(ch)){ hlSelRange={r:sel.getRangeAt(0).cloneRange(),root:ch}; $('hlSelLab').textContent=HLS[MF.lang]||HLS.en; hb.hidden=false;
+      var w2=hb.offsetWidth; hb.style.top=top+'px'; var L2=parseFloat(b.style.left); if(L2+w+8+w2<innerWidth-8){ hb.style.left=(L2+w+8)+'px'; } else { hb.style.left=Math.max(8,L2-w2-8)+'px'; } } }
   document.addEventListener('selectionchange',function(){ clearTimeout(hearT); hearT=setTimeout(hearPlace,350); });
   window.addEventListener('scroll',hearHide,{passive:true});
   $('hearSel').addEventListener('pointerdown',function(e){ e.preventDefault(); });
+  $('hlSel').addEventListener('pointerdown',function(e){ e.preventDefault(); });
+  $('hlSel').addEventListener('click',function(){ var x=hlSelRange; hearHide(); if(x&&window.MFhlRange) MFhlRange(x.r,x.root); try{ getSelection().removeAllRanges(); }catch(e){} });
   $('hearSel').addEventListener('click',function(){ var l=MF.lang, text=hearText.slice(0,300), T=etT();
     if(hearText.length>300){ var cut=text.search(/[.!?。！？।][^.!?。！？।]*$/); if(cut>80) text=text.slice(0,cut+1); }
     hearHide(); $('hearBox').hidden=false; $('hearMine').textContent=''; $('hearTxt').setAttribute('lang',l); $('hearTxt').textContent=T.wait;
@@ -4028,7 +4094,7 @@ window.MF=(function(){
   function toast(t){ var b=$('mfToast'); b.textContent=t; b.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(function(){ b.hidden=true; },1800); }
   function hlToggle(key,info){ var h=hls(), on=!h[key], es=MF.lang==='es', ver=info.kind==='note'?'note':info.ver, ref=info.kind==='note'?key:info.ref;
     if(on){ info.at=Date.now(); h[key]=info; } else delete h[key]; saveHls(h);
-    if(window.MFcloudHl&&MFcloudHl.on()) (on?MFcloudHl.add(ref,ver):MFcloudHl.del(ref,ver));
+    if(window.MFcloudHl&&MFcloudHl.on()) (on?MFcloudHl.add(ref,ver,info.c):MFcloudHl.del(ref,ver));
     toast(on?(es?'Resaltado · en Mis resaltados':'Highlighted · saved to My highlights'):(es?'Resaltado quitado':'Highlight removed')); return on; }
   // where a verse in a reader comes from: the word's reference, the language and the Bible version
   function verCode(l,orig){ return orig?'orig':l==='en'?'en:'+curVer().k:l; }
@@ -4036,22 +4102,77 @@ window.MF=(function(){
   function hlKey(c,v){ return c.book+' '+c.ch+':'+v+'|'+c.ver; }
   function hlMark(root,c){ if(!root||!c) return; var h=hls(); [].forEach.call(root.querySelectorAll('span[data-v]'),function(sp){ var x=h[hlKey(c,sp.dataset.v)]; sp.classList.toggle('mk',!!x); if(x&&HLC[x.c]) sp.style.setProperty('--hl',HLC[x.c]); else sp.style.removeProperty('--hl'); }); }
   function stageCtx(){ var r=window.MFreader; return r&&r.kind==='ref'?hlCtx(r.k,r.i,r.l||MF.lang,RO):null; }
-  window.MFhlMarkStage=function(){ hlMark($('rChapter'),stageCtx()); };
-  window.MFhlMarkFig=function(fr){ var c=fr&&fr._ctx; if(c) hlMark(fr.querySelector('.chapter'),hlCtx(c.k,c.i,c.l,c.orig)); };
+  // Ken, 15 Oct: "allow me to select one word or a phrase to highlight ... like I would with a pen and a piece of paper".
+  // A word or a phrase is kept as its verse and the letters it covers ("Matthew 11:25#40-47"), and painted with the
+  // browser's own highlighter (CSS Custom Highlight API), so the text is never rewrapped -- the read-along can rebuild a
+  // verse and the marks are simply painted again.
+  var HLAPI=!!(window.CSS&&CSS.highlights&&window.Highlight), PHR=/^(.*)\s+(\d+):(\d+)#(\d+)-(\d+)$/;
+  function ctxOfRoot(root){ if(root===$('rChapter')) return stageCtx(); var fr=root.closest&&root.closest('.fr'); var c=fr&&fr._ctx; return c?hlCtx(c.k,c.i,c.l,c.orig):null; }
+  function rangeIn(sp,s,e){ var w=document.createTreeWalker(sp,NodeFilter.SHOW_TEXT), n, at=0, r=document.createRange(), a=false;
+    while((n=w.nextNode())){ var len=n.textContent.length;
+      if(!a&&s<=at+len){ r.setStart(n,Math.max(0,s-at)); a=true; }
+      if(a&&e<=at+len){ r.setEnd(n,Math.max(0,e-at)); return r; } at+=len; }
+    return null; }
+  function hlPaint(extra){ if(!HLAPI) return; var g={}, h=hls(); Object.keys(HLC).forEach(function(c){ g[c]=[]; });
+    document.querySelectorAll('.chapter').forEach(function(root){ var c=ctxOfRoot(root); if(!c) return;
+      Object.keys(h).forEach(function(k){ var x=h[k]; if(x.kind!=='phrase'||x.ver!==c.ver) return; var m=PHR.exec(x.ref); if(!m||m[1]!==c.book||m[2]!==String(c.ch)) return;
+        var sp=root.querySelector('span[data-v="'+m[3]+'"]'); if(!sp) return; var r=rangeIn(sp,+m[4],+m[5]); if(r) g[HLC[x.c]?x.c:'gold'].push(r); }); });
+    Object.keys(g).forEach(function(c){ CSS.highlights.set('mfh-'+c,new Highlight(...g[c])); });
+    if(extra) CSS.highlights.set('mfh-pen',new Highlight(...extra)); else CSS.highlights.delete('mfh-pen'); }
+  window.MFhlPaint=hlPaint;
+  window.MFhlRangeOk=function(root){ return !!ctxOfRoot(root); };
+  window.MFhlRange=function(range,root){ var c=ctxOfRoot(root); if(!c) return; versesIn(range,root).forEach(function(z){ hlPhrase(z[0],c,z[1],z[2]); }); hlPaint(); };
+  // a word or phrase on or off; what it overlaps in the same verse is replaced, so dragging over a mark redraws it
+  function hlPhrase(sp,c,s,e,col){ if(!sp||!c||e<=s) return false; var v=sp.dataset.v, ref=c.book+' '+c.ch+':'+v+'#'+s+'-'+e, key=ref+'|'+c.ver, h=hls(), same=false;
+    Object.keys(h).forEach(function(k){ var x=h[k]; if(x.kind!=='phrase'||x.ver!==c.ver) return; var m=PHR.exec(x.ref); if(!m||m[1]!==c.book||m[2]!==String(c.ch)||m[3]!==String(v)) return;
+      if(+m[4]<e&&+m[5]>s){ if(k===key) same=true; hlToggle(k,x); } });
+    var on=false; if(!same) on=hlToggle(key,{kind:'phrase',ref:ref,ver:c.ver,k:c.k,i:c.i,l:c.l,v:+v,s:s,e:e,c:col||hlColor(),text:sp.textContent.slice(s,e).slice(0,220)});
+    hlPaint(); return on; }
+  // stretch a span of letters out to whole words
+  function toWords(t,s,e){ while(s>0&&/[\p{L}\p{M}\p{N}'’]/u.test(t[s-1])) s--; while(e<t.length&&/[\p{L}\p{M}\p{N}'’]/u.test(t[e])) e++;
+    while(s<e&&/[\s\p{P}]/u.test(t[s])&&!/['’]/.test(t[s])) s++; while(e>s&&/\s/.test(t[e-1])) e--; return [s,e]; }
+  // the letters of each verse a range covers: [[span,s,e],...]
+  function versesIn(range,root){ var out=[]; root.querySelectorAll('span[data-v]').forEach(function(sp){ if(!range.intersectsNode(sp)) return;
+      var r0=document.createRange(); r0.selectNodeContents(sp); var s=0, e=sp.textContent.length;
+      if(range.compareBoundaryPoints(Range.START_TO_START,r0)>0){ var x=document.createRange(); x.setStart(sp,0); x.setEnd(range.startContainer,range.startOffset); s=x.toString().length; }
+      if(range.compareBoundaryPoints(Range.END_TO_END,r0)<0){ var y=document.createRange(); y.setStart(sp,0); y.setEnd(range.endContainer,range.endOffset); e=y.toString().length; }
+      var w=toWords(sp.textContent,s,e); if(w[1]>w[0]) out.push([sp,w[0],w[1]]); }); return out; }
+  window.MFhlMarkStage=function(){ hlMark($('rChapter'),stageCtx()); hlPaint(); };
+  window.MFhlMarkFig=function(fr){ var c=fr&&fr._ctx; if(c) hlMark(fr.querySelector('.chapter'),hlCtx(c.k,c.i,c.l,c.orig)); hlPaint(); };
+  // ── the Pen: drag across the words like a highlighter on paper; a tap marks one word; a tap on a mark takes it off ──
+  var PEN=null;
+  function penOn(on){ $('rChapter').classList.toggle('pen',on); $('rPen').setAttribute('aria-pressed',String(on)); if(on){ closeWordIf(); } }
+  function closeWordIf(){ if(window.MFcloseWord) MFcloseWord(); }
+  function caretAt(x,y){ var r=null; if(document.caretRangeFromPoint) r=document.caretRangeFromPoint(x,y); else if(document.caretPositionFromPoint){ var q=document.caretPositionFromPoint(x,y); if(q){ r=document.createRange(); r.setStart(q.offsetNode,q.offset); } } return r; }
+  $('rPen').addEventListener('click',function(){ penOn(!$('rChapter').classList.contains('pen')); });
+  $('rChapter').addEventListener('pointerdown',function(e){ if(!this.classList.contains('pen')) return; var r=caretAt(e.clientX,e.clientY); if(!r||!this.contains(r.startContainer)) return;
+    e.preventDefault(); PEN={a:r,b:r,moved:false,x:e.clientX,y:e.clientY}; try{ this.setPointerCapture(e.pointerId); }catch(er){} });
+  $('rChapter').addEventListener('pointermove',function(e){ if(!PEN) return; var r=caretAt(e.clientX,e.clientY); if(!r||!this.contains(r.startContainer)) return;
+    if(Math.abs(e.clientX-PEN.x)+Math.abs(e.clientY-PEN.y)>6) PEN.moved=true; PEN.b=r; var rg=penRange(); if(rg) hlPaint([rg]); });
+  function penRange(){ var rg=document.createRange(), a=PEN.a, b=PEN.b; rg.setStart(a.startContainer,a.startOffset); rg.setEnd(a.startContainer,a.startOffset);
+    try{ if(rg.comparePoint(b.startContainer,b.startOffset)>=0) rg.setEnd(b.startContainer,b.startOffset); else { rg.setStart(b.startContainer,b.startOffset); rg.setEnd(a.startContainer,a.startOffset); } }catch(er){ return null; } return rg; }
+  $('rChapter').addEventListener('pointerup',function(e){ if(!PEN) return; var c=stageCtx(), root=this, rg=penRange(), moved=PEN.moved; PEN=null; if(!c||!rg){ hlPaint(); return; }
+    if(!moved){ var sp=(rg.startContainer.nodeType===1?rg.startContainer:rg.startContainer.parentElement).closest('span[data-v]'); if(!sp){ hlPaint(); return; }
+      var x=document.createRange(); x.setStart(sp,0); x.setEnd(rg.startContainer,rg.startOffset); var off=x.toString().length, t=sp.textContent, w=toWords(t,off,off); if(w[1]<=w[0]){ hlPaint(); return; }
+      // a tap on a mark takes the mark off; a tap on a plain word marks that word
+      var h=hls(), hit=null; Object.keys(h).forEach(function(k){ var y=h[k], m=PHR.exec(y.ref||''); if(y.kind==='phrase'&&y.ver===c.ver&&m&&m[1]===c.book&&m[2]===String(c.ch)&&m[3]===sp.dataset.v&&+m[4]<=off&&+m[5]>=off) hit=[k,y]; });
+      if(hit){ hlToggle(hit[0],hit[1]); hlPaint(); } else hlPhrase(sp,c,w[0],w[1]); return; }
+    versesIn(rg,root).forEach(function(z){ hlPhrase(z[0],c,z[1],z[2]); }); hlPaint(); });
+  $('rChapter').addEventListener('pointercancel',function(){ PEN=null; hlPaint(); });
   function verseTap(e,root,c){ var sp=e.target.closest('span[data-v]'); if(!sp||!c||!root.contains(sp)) return false;
     var sel=window.getSelection&&getSelection(); if(sel&&sel.toString().trim().length>1) return false;
     var tog=function(x){ var v=x.dataset.v, ref=c.book+' '+c.ch+':'+v, col=hlColor(), on=hlToggle(hlKey(c,v),{kind:'verse',ref:ref,ver:c.ver,k:c.k,i:c.i,l:c.l,v:+v,c:col,text:x.textContent.slice(0,220)});
       x.classList.toggle('mk',on); if(on) x.style.setProperty('--hl',HLC[col]); return on; };
     if(window.MFwordTap&&MFwordTap(e,root,tog)) return true;   /* Ken, 11 Oct: a tap picks the one word; highlighting the verse is a button there */
     tog(sp); return true; }
-  $('rChapter').addEventListener('click',function(e){ verseTap(e,this,stageCtx()); });
+  $('rChapter').addEventListener('click',function(e){ if(this.classList.contains('pen')) return; verseTap(e,this,stageCtx()); });
   document.addEventListener('click',function(e){ var fr=e.target.closest&&e.target.closest('.fr'); if(!fr||!fr._ctx||!e.target.closest('.chapter span[data-v]')) return;
     var c=fr._ctx; verseTap(e,fr.querySelector('.chapter'),hlCtx(c.k,c.i,c.l,c.orig)); },true);
   function verLabel(v){ if(v==='orig') return 'Hebrew/Greek'; if(v.indexOf('en:')===0){ var x=VERS.filter(function(z){ return 'en:'+z.k===v; })[0]; return x?x.s:'KJV'; } return (typeof cmpName==='function'?cmpName(v):v); }
   function showHl(){ var h=hls(), es=MF.lang==='es', ks=Object.keys(h).sort(function(a,b){ return (h[b].at||0)-(h[a].at||0); });
     $('hlList').innerHTML=ks.length?ks.map(function(key){ var x=h[key];
       if(x.kind==='note') return '<div class="nb mk" data-hk="'+esc(key)+'">'+(x.k&&DATA[x.k]?'<button type="button" class="nref" data-k="'+x.k+'">'+esc(wordName(x.k))+' · '+(es?'nota':'note')+'</button>':'')+'<div class="nt">'+esc(x.text||'')+'</div><div class="nm"><span>'+esc(stamp(x.at))+'</span><button type="button" data-a="unhl">🖍 '+(es?'Quitar':'Unhighlight')+'</button></div></div>';
-      return '<div class="nb mk" data-hk="'+esc(key)+'"><button type="button" class="nref" data-open="'+esc(key)+'">'+esc(x.ref)+' · '+esc(verLabel(x.ver||''))+' ›</button>'+(x.text?'<div class="nt">'+esc(x.text)+'</div>':'')+'<div class="nm"><span>'+esc(stamp(x.at))+'</span><button type="button" data-a="unhl">🖍 '+(es?'Quitar':'Unhighlight')+'</button></div></div>';
+      return '<div class="nb mk" data-hk="'+esc(key)+'"><button type="button" class="nref" data-open="'+esc(key)+'">'+esc(String(x.ref).replace(/#.*$/,''))+' · '+esc(verLabel(x.ver||''))+' ›</button>'+(x.text?'<div class="nt">'+esc(x.text)+'</div>':'')+'<div class="nm"><span>'+esc(stamp(x.at))+'</span><button type="button" data-a="unhl">🖍 '+(es?'Quitar':'Unhighlight')+'</button></div></div>';
     }).join(''):'<p class="hlhint">'+(es?'Aún no hay resaltados.':'No highlights yet.')+'</p>'; }
   // open a highlighted verse: the word's reader for that chapter, scrolled to the verse
   function openHl(x){ if(!x||!DATA[x.k]) return; pick(x.k,false); if(!DATA[x.k].refs[x.i]){ var fb=$('fishbox'); if(fb) fb.scrollIntoView({block:'center',behavior:'smooth'}); return; } var l=x.ver&&x.ver.indexOf('en:')===0?'en':(x.ver==='orig'?'en':x.l||'en');
@@ -4138,18 +4259,18 @@ window.MF=(function(){
     set:function(id,st){ return sb.from('notes').update({word_key:'PRAYER:'+st,updated_at:new Date().toISOString()}).eq('id',id).then(function(r){ if(r.error) throw r.error; }); },
     del:function(id){ return sb.from('notes').delete().eq('id',id); } };
   window.MFcloudHl={ on:function(){ return !!(me&&sb); },
-    add:function(ref,ver){ return sb.from('highlights').upsert({site:SITE,verse_ref:ref,version:ver,color:'yellow'},{onConflict:'user_id,site,verse_ref,version',ignoreDuplicates:true}).then(function(){}); },
+    add:function(ref,ver,col){ return sb.from('highlights').upsert({site:SITE,verse_ref:ref,version:ver,color:col||'gold'},{onConflict:'user_id,site,verse_ref,version',ignoreDuplicates:true}).then(function(){}); },
     del:function(ref,ver){ return sb.from('highlights').delete().eq('site',SITE).eq('verse_ref',ref).eq('version',ver).then(function(){}); } };
   // highlights: the account's list joins this device's (a verse highlighted on another device opens from its chapter here)
   function hlSync(){ if(!(me&&sb)||!window.MFhls) return Promise.resolve(); var h=MFhls(), mine={};
     Object.keys(h).forEach(function(key){ var x=h[key]; mine[(x.kind==='note'?key:x.ref)+'|'+(x.kind==='note'?'note':x.ver)]=key; });
-    return sb.from('highlights').select('verse_ref,version,created_at').eq('site',SITE).then(function(r){ var got={};
+    return sb.from('highlights').select('verse_ref,version,color,created_at').eq('site',SITE).then(function(r){ var got={};
       (r.data||[]).forEach(function(row){ got[row.verse_ref+'|'+row.version]=1; if(mine[row.verse_ref+'|'+row.version]) return;
         if(row.version==='note') return;   // a highlighted note from another device: shown with its note
-        var m=row.verse_ref.match(/^(.*)\s+(\d+):(\d+)$/); if(!m) return; var k=null,i=0;
+        var m=row.verse_ref.match(/^(.*)\s+(\d+):(\d+)(?:#(\d+)-(\d+))?$/); if(!m) return; var k=null,i=0;
         Object.keys(DATA).some(function(w){ return DATA[w].refs.some(function(rf,j){ var p=parseRef(rf[0]); if(p&&p.book===m[1]&&p.ch===m[2]){ k=w; i=j; return true; } }); });
         if(!k) return; var l=row.version.indexOf('en:')===0||row.version==='orig'?'en':row.version;
-        h[row.verse_ref+'|'+row.version]={kind:'verse',ref:row.verse_ref,ver:row.version,k:k,i:i,l:l,v:+m[3],text:'',at:Date.parse(row.created_at)}; });
+        h[row.verse_ref+'|'+row.version]={kind:m[4]?'phrase':'verse',ref:row.verse_ref,ver:row.version,k:k,i:i,l:l,v:+m[3],s:m[4]?+m[4]:undefined,e:m[5]?+m[5]:undefined,c:row.color==='yellow'?'gold':row.color,text:'',at:Date.parse(row.created_at)}; });
       Object.keys(mine).forEach(function(id){ if(!got[id]){ var x=h[mine[id]]; MFcloudHl.add(x.kind==='note'?mine[id]:x.ref,x.kind==='note'?'note':x.ver); } });
       MFsaveHls(h); }); }
   window.MFnoteSaved=function(k,text){ if(me&&sb) cloudPut(k,text).then(function(r){ if(r&&r.error) $('notesMsg').textContent=T('Saved on this device; account save failed','Guardado aquí; no se pudo guardar en la cuenta'); }); };
