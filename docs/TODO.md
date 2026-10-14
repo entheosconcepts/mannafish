@@ -267,3 +267,13 @@ Also check the small alternate-language fish and its "English ⇄" label the sam
 - [x] Stock the pond: a form asking how many gifts someone would like to stock (Netlify form "stock-the-pond"). No money is taken on the site.
 - [ ] Giving: decide how gifts are received (Stripe or PayPal link), and whether to form a 501(c)(3) or use a fiscal sponsor so gifts can be tax-deductible. Until then the page says gifts are not tax-deductible.
 - [ ] Invitations with every gift: think through how a Gift Giver adds their own invitation (name, QR link) to the back of the card.
+
+## 15 Oct — later (Ken: "put it on the to-do list, not now")
+- [ ] More Bible versions on the site (read-aloud, highlighting, the version picker all keep working; no links out):
+  - API.Bible Pro (about $29/mo; extra licensing fees if the site earns money — ask whether "Stock the pond" sponsors count)
+    licenses NKJV, NLT, CSB, NASB at once. Free Starter plan: 3 copyrighted versions, non-commercial only, no sponsorships.
+    Once there is a key: put it in Netlify and Claude wires it into /api/bible.
+  - NIV: not through API.Bible. Ask Biblica (biblica.com/permissions). Their quick non-commercial licence excludes sites with
+    AI features (MannaFish has "What it means" and the translator), so it needs a direct request. Claude can draft it.
+  - ESV: free. Get a key at api.esv.org, put it in Netlify as ESV_API_KEY, and ESV appears by itself (already built).
+  - BSB (Berean Standard Bible): public domain, modern — can be added any time, no key.
