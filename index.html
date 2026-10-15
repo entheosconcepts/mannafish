@@ -1039,9 +1039,10 @@ section.section.bundles{display:block;margin-top:0}
 .ptc.pthome{width:auto;padding:0 16px 0 12px;gap:7px;border-radius:999px;font:700 .95rem 'Archivo',sans-serif}
 .ptc.pthome span:first-child{font-size:1.15rem}
 @media(min-width:760px) and (min-height:620px){
+  .pt .ptstage::-webkit-scrollbar{display:none}   /* Ken, 16 Oct: no scroll bar on a computer */
   .pt{justify-content:center;padding:14px 0}
   .ptbar{padding-top:0;padding-bottom:10px}
-  .pt .ptstage{flex:0 0 auto;height:min(780px,calc(100vh - 170px));border:1px solid rgba(255,255,255,.2);border-radius:26px;background:rgba(4,8,14,.45);padding:26px 40px;box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
+  .pt .ptstage{flex:0 0 auto;scrollbar-width:none;height:min(900px,calc(100vh - 140px));border:1px solid rgba(255,255,255,.2);border-radius:26px;background:rgba(4,8,14,.45);padding:26px 40px;box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
   .pt .ptnav{padding-bottom:0;padding-top:14px}
 }
 .ptmenu button{display:flex;align-items:center;gap:14px;width:100%;border:0;background:none;color:#fff;font:600 1.12rem 'Archivo',sans-serif;padding:12px 16px;cursor:pointer;text-align:left;border-radius:14px}
@@ -1065,7 +1066,7 @@ section.section.bundles{display:block;margin-top:0}
 .ptk{display:flex;justify-content:space-between;align-items:center;gap:10px;font:800 .8rem 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px}
 .ptof{font-weight:600;letter-spacing:.02em;opacity:.85;text-transform:none;font-size:.9rem}
 .pth{font:800 clamp(1.7rem,7.4vw,2.5rem)/1.12 'Archivo',sans-serif;margin:0 0 16px;letter-spacing:-.01em}
-.pth.ptpr{font:700 clamp(1.35rem,5.6vw,1.9rem)/1.32 'Spectral',Georgia,serif;letter-spacing:0}
+.pth.ptpr{font:600 clamp(1.1rem,4.4vw,1.45rem)/1.42 'Spectral',Georgia,serif;letter-spacing:0}   /* Ken, 16 Oct: the prayer smaller */
 .ptp{font:400 1.12rem/1.5 'Archivo',sans-serif;margin:0 0 14px;opacity:.95}
 .ptp.ptsoft{opacity:.75}
 .ptq{margin:0 0 18px;border-left:4px solid #fff;padding:2px 0 2px 18px;font:700 clamp(1.45rem,6vw,2rem)/1.3 'Spectral',Georgia,serif}
@@ -1120,6 +1121,9 @@ section.section.bundles{display:block;margin-top:0}
 .ptvers{border-top:1px solid rgba(255,255,255,.14);margin-top:4px;padding-top:4px}.ptvers[hidden]{display:none}.ptvers button{font-size:1rem;padding:9px 16px}.ptvers small{opacity:.65;font-weight:700}
 .ptvnote{margin:4px 16px 8px;font:500 .85rem/1.4 'Archivo',sans-serif;opacity:.75}
 .ptweek{display:flex;flex-direction:column;gap:4px;max-width:440px;margin:0 auto 14px;text-align:start}
+.ptweek:not(.open) .ptwk:not(.at){display:none}
+.ptwkh{display:flex;justify-content:space-between;align-items:center;gap:10px;border:0;background:none;color:#c6d2d4;font:700 .78rem 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;padding:2px 4px 4px;cursor:pointer}
+.ptwkh b{font:400 1.05rem 'MFHobo',cursive;letter-spacing:0;text-transform:none;color:#fff}.ptwkh .wks{letter-spacing:.04em;text-transform:none;font-size:.8rem;color:#8fb3e8;white-space:nowrap}
 @media(min-width:760px){.ptweek{gap:3px;order:5;margin-top:18px}.ptpick{order:6}.ptwk{padding:5px 10px}}   /* Ken, 16 Oct: on a computer Listen / Read without scrolling; the week sits under them */
 .ptwk{display:grid;grid-template-columns:22px auto 1fr auto;gap:8px;align-items:baseline;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.25);color:#fff;border-radius:10px;padding:7px 10px;font:600 .84rem/1.35 'Archivo',sans-serif;cursor:pointer;text-align:inherit}
 .ptwk:disabled{opacity:.5;cursor:default}.ptwk.done .wkm{color:#6ed68c}.ptwk.at{border-color:#f5d76e;background:rgba(245,215,110,.12)}.ptwk.at .wkm,.ptwk.at .wkt{color:#f5d76e}
@@ -1256,6 +1260,18 @@ section.section.bundles{display:block;margin-top:0}
 .tnav{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .tnav button{border:1px solid rgba(255,255,255,.35);background:none;color:#fff;border-radius:999px;padding:9px 18px;font:700 .95rem 'Archivo',sans-serif;cursor:pointer}
 .tnav #tNext{background:#fff;color:#0b0f14;border-color:#fff}.tnav button:disabled{visibility:hidden}
+@media(min-width:760px){.ptsheet{max-width:760px;left:50% !important;right:auto !important;width:100%;transform:translateX(-50%)}}
+.yrall{display:flex;align-items:center;justify-content:center;gap:10px;font:700 .9rem 'Archivo',sans-serif;margin:4px 0 10px;cursor:pointer}
+.yrall input{position:absolute;opacity:0;pointer-events:none}.yrall .sw{width:42px;height:24px;border-radius:12px;background:#3a3f46;position:relative;transition:background .2s}
+.yrall .sw::after{content:'';position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s}.yrall input:checked+.sw{background:#2a5fb0}.yrall input:checked+.sw::after{left:21px}
+.ptyear2{display:flex;flex-direction:column;gap:6px;text-align:start}
+.yrw{border:1px solid rgba(255,255,255,.12);border-radius:12px;overflow:hidden}.yrw.now{border-color:#f5d76e}.yrw.past .yrh{opacity:.6}
+.yrh{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;border:0;background:rgba(255,255,255,.04);color:#fff;font:700 .84rem 'Archivo',sans-serif;padding:9px 12px;cursor:pointer;text-align:start}
+.yrh b{font:400 1.15rem 'MFHobo',cursive}.yrh .yrr{font-weight:600;font-size:.76rem;color:#9fb2b6;white-space:nowrap}.yrw.now .yrr{color:#f5d76e}.yrh em{font-style:normal;margin-left:4px}
+.yrds{display:flex;flex-direction:column}.ptyear2.weeks .yrw:not(.open) .yrds,.yrw.shut .yrds{display:none}
+.yrday{display:grid;grid-template-columns:110px 1fr;gap:8px;border:0;border-top:1px solid rgba(255,255,255,.06);background:none;color:#eaf0f0;font:600 .82rem/1.35 'Archivo',sans-serif;padding:7px 12px;text-align:start;cursor:pointer}
+.yrday .yd{opacity:.75;white-space:nowrap}.yrday i{font-style:normal;color:#8fb3e8}.yrday.past{opacity:.6}.yrday.today{background:rgba(245,215,110,.12);color:#f5d76e}
+.yrday.rest{cursor:default;color:#7d8a8e;background:rgba(255,255,255,.02);font-style:italic}
 .ptyear{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:8px}@media(min-width:560px){.ptyear{grid-template-columns:repeat(4,1fr)}}
 .ptyear button{display:flex;flex-direction:column;align-items:center;gap:1px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.03);color:#fff;border-radius:12px;padding:8px 4px;cursor:pointer;font:600 .8rem 'Archivo',sans-serif}
 .ptyear b{font:400 1.2rem 'MFHobo',cursive}.ptyear small{opacity:.7;font-size:.72rem}.ptyear .past{opacity:.55}.ptyear .now{border-color:#f5d76e;background:rgba(245,215,110,.12)}.ptyear i{font-style:normal;color:#f5d76e;font-size:.72rem}
@@ -3135,7 +3151,10 @@ window.MF=(function(){
         +'<span class="wkm">'+(done?'✓':(at?'▶':'○'))+'</span><span class="wkd">'+esc(plF(P.day,{d:d+1,n:PLAN_DAYS}))+'</span><span class="wkr">'+esc(refs)+'</span>'
         +'<span class="wkt">'+(done&&dates[d]?esc(dayLab(dates[d])):(at?esc(P.today):''))+'</span>'+(d===PLAN_DAYS-1?'<span class="wkn">'+esc(W7[0])+'</span>':'')+'</button>'; }
     // Ken, 16 Oct: the sixth day is the double portion; the seventh is rest (Exodus 16:22-30)
-    return '<div class="ptweek">'+h+'<div class="ptwk rest"><span class="wkm">☾</span><span class="wkr">'+esc(W7[1])+'</span></div></div>'; }
+    // Ken, 16 Oct: "make the weekly a header, but daily visible ... see all ... hide / see that week's devos"
+    var open=false; try{ open=localStorage.getItem('mf-wk-open')==='1'; }catch(e){} var SA=SAL[PT.l]||SAL.en;
+    return '<div class="ptweek'+(open?' open':'')+'"><button type="button" class="ptwkh" data-a="wktog" aria-expanded="'+open+'"><span>'+esc(P.week)+' · <b>'+esc(titleIn(l,k))+'</b></span><span class="wks">'+esc(open?SA[1]+' ▴':SA[0]+' ▾')+'</span></button>'+h+'<div class="ptwk rest"><span class="wkm">☾</span><span class="wkr">'+esc(W7[1])+'</span></div></div>'; }
+  var SAL={en:['See all','Hide'],es:['Ver todo','Ocultar'],tl:['Tingnan lahat','Itago'],zh:['查看全部','收起'],hi:['सब देखें','छिपाएँ'],el:['Όλες','Απόκρυψη'],de:['Alle zeigen','Ausblenden'],ko:['모두 보기','숨기기'],he:['הצג הכל','הסתר'],ar:['عرض الكل','إخفاء']};
   var W7S={en:['Double portion','Sabbath · rest in what you gathered'],es:['Porción doble','Sábado · descansa en lo que recogiste'],tl:['Dobleng bahagi','Sabbath · magpahinga sa iyong naipon'],
     zh:['双倍的份','安息日 · 在所收取的中安息'],hi:['दुगना भाग','सब्त · जो इकट्ठा किया उसमें विश्राम'],el:['Διπλή μερίδα','Σάββατο · ανάπαυση σε ό,τι μάζεψες'],
     de:['Doppelte Portion','Sabbat · ruhe in dem, was du gesammelt hast'],ko:['갑절의 몫','안식일 · 모은 것으로 쉬기'],he:['מנה כפולה','שבת · מנוחה במה שאספת'],ar:['نصيب مضاعف','السبت · استرح فيما جمعت']}, W7=W7S.en;
@@ -3345,6 +3364,7 @@ window.MF=(function(){
       var h2=hls(); if(h2[c2.key]){ h2[c2.key].c=b.dataset.c; saveHls(h2); ptHlUI(true); if(window.MFcloudHl&&MFcloudHl.on()) MFcloudHl.add(h2[c2.key].ref,h2[c2.key].ver,b.dataset.c); }
       else { var inf2=JSON.parse(JSON.stringify(c2.info)); inf2.c=b.dataset.c; ptHlUI(hlToggle(c2.key,inf2)); } return; }
     if(a==='vers'){ e.stopPropagation(); $('ptMore').click(); setTimeout(function(){ var v=$('ptMenu').querySelector('.ptvers'); if(v){ v.hidden=false; var f=v.querySelector('[aria-checked=true]'); if(f) f.focus(); } },0); return; }
+    if(a==='wktog'){ var wk=b.closest('.ptweek'), op=!wk.classList.contains('open'), SA2=SAL[PT.l]||SAL.en; wk.classList.toggle('open',op); b.setAttribute('aria-expanded',String(op)); b.querySelector('.wks').textContent=op?SA2[1]+' ▴':SA2[0]+' ▾'; try{ localStorage.setItem('mf-wk-open',op?'1':''); }catch(er){} return; }
     if(a==='planday'){ var dd=+b.dataset.d; PT.dayOv=(dd===planDay(cur))?null:{k:cur,d:dd}; PT.marked={}; PT.steps=ptSteps(); PT.i=0; ptRender(); return; }
     if(a==='planpick'){ var pk=$('ptStage').querySelector('.ptpick'); pk.hidden=!pk.hidden; b.setAttribute('aria-expanded',String(!pk.hidden)); return; }
     if(a==='planset'){ var nk=b.dataset.k; if(!DATA[nk]) return; PT.dayOv=null; planSet(nk); if(nk!==cur) pick(nk,false); PT.steps=ptSteps(); PT.i=0; ptRender(); return; }
@@ -3393,15 +3413,24 @@ window.MF=(function(){
   $('pt').addEventListener('click',function(e){ if(!$('ptMenu').hidden&&!e.target.closest('#ptMenu,#ptMore')) $('ptMenu').hidden=true; });
   // Ken, 16 Oct: "if people want to ... see the whole year, put that under those three dots" -- the MannaFish year:
   // 52 weeks from 11 Oct 2026, one fish a week (the 24 fish in turn), this week marked; a tap starts that week's fish
-  var YRS={en:['The whole year','Week {n}','this week'],es:['Todo el año','Semana {n}','esta semana'],tl:['Ang buong taon','Linggo {n}','ngayong linggo'],
-    zh:['全年','第 {n} 周','本周'],hi:['पूरा साल','सप्ताह {n}','इस सप्ताह'],el:['Όλος ο χρόνος','Εβδομάδα {n}','αυτή την εβδομάδα'],de:['Das ganze Jahr','Woche {n}','diese Woche'],
-    ko:['일 년 전체','{n}주차','이번 주'],he:['כל השנה','שבוע {n}','השבוע'],ar:['السنة كلها','الأسبوع {n}','هذا الأسبوع']};
+  var YRS={en:['The whole year','Week {n}','this week','Every day','Sabbath rest · Friday evening to Saturday evening'],es:['Todo el año','Semana {n}','esta semana','Cada día','Descanso del sábado · del viernes por la tarde al sábado por la tarde'],
+    tl:['Ang buong taon','Linggo {n}','ngayong linggo','Bawat araw','Pahinga ng Sabbath · mula Biyernes ng gabi hanggang Sabado ng gabi'],
+    zh:['全年','第 {n} 周','本周','每一天','安息日 · 周五傍晚至周六傍晚'],hi:['पूरा साल','सप्ताह {n}','इस सप्ताह','हर दिन','सब्त का विश्राम · शुक्रवार शाम से शनिवार शाम तक'],
+    el:['Όλος ο χρόνος','Εβδομάδα {n}','αυτή την εβδομάδα','Κάθε μέρα','Ανάπαυση του Σαββάτου · από Παρασκευή βράδυ ως Σάββατο βράδυ'],de:['Das ganze Jahr','Woche {n}','diese Woche','Jeden Tag','Sabbatruhe · Freitagabend bis Samstagabend'],
+    ko:['일 년 전체','{n}주차','이번 주','매일','안식일 쉼 · 금요일 저녁부터 토요일 저녁까지'],he:['כל השנה','שבוע {n}','השבוע','כל יום','מנוחת שבת · מערב שישי עד מוצאי שבת'],
+    ar:['السنة كلها','الأسبوع {n}','هذا الأسبوع','كل يوم','راحة السبت · من مساء الجمعة إلى مساء السبت']};
   function yearWeeks(){ var d=new Date(), t=Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()), wk=Math.floor(Math.floor((t-PLAN_START)/864e5)/7), y=Math.max(0,Math.floor(wk/52)), out=[], n=ORDER.length;
     for(var i=0;i<52;i++){ var w=y*52+i; out.push({n:i+1,k:ORDER[((w%n)+n)%n],t:PLAN_START+w*7*864e5,now:w===wk,past:w<wk}); } return out; }
-  function ptYear(){ var Y=YRS[PT.l]||YRS.en, sh=$('ptSheet'), fmt=function(ms){ try{ return new Date(ms).toLocaleDateString(PT.l,{month:'short',day:'numeric',timeZone:'UTC'}); }catch(e){ return ''; } };
-    sh.innerHTML='<div class="pshd"><button type="button" class="ptc" data-s="x" aria-label="Close">&times;</button><h3>'+esc(Y[0])+'</h3><span style="width:46px"></span></div><div class="ptyear">'
-      +yearWeeks().map(function(x){ return '<button type="button" data-s="yr" data-k="'+x.k+'" class="'+(x.now?'now':x.past?'past':'')+'"><small>'+esc(plF(Y[1],{n:x.n}))+'</small><b>'+esc(titleIn(PT.l,x.k))+'</b><small>'+esc(fmt(x.t))+' – '+esc(fmt(x.t+5*864e5))+'</small>'+(x.now?'<i>'+esc(Y[2])+'</i>':'')+'</button>'; }).join('')+'</div>';
-    sh.hidden=false; sh.dataset.kind='year'; var n=sh.querySelector('.now'); if(n) setTimeout(function(){ n.scrollIntoView({block:'center'}); },40); }
+  function ptYear(){ var Y=YRS[PT.l]||YRS.en, sh=$('ptSheet'), l=PT.l, fmt=function(ms,o){ try{ return new Date(ms).toLocaleDateString(l==='zh'?'zh-CN':l,o||{month:'short',day:'numeric',timeZone:'UTC'}); }catch(e){ return ''; } };
+    var d0=new Date(), today=Date.UTC(d0.getFullYear(),d0.getMonth(),d0.getDate()), all=true; try{ all=localStorage.getItem('mf-yr-days')!=='0'; }catch(e){}
+    sh.innerHTML='<div class="pshd"><button type="button" class="ptc" data-s="x" aria-label="Close">&times;</button><h3>'+esc(Y[0])+'</h3><span style="width:46px"></span></div>'
+      +'<label class="yrall"><input type="checkbox" data-s="yrall"'+(all?' checked':'')+'><span class="sw"></span>'+esc(Y[3])+'</label><div class="ptyear2'+(all?'':' weeks')+'">'
+      +yearWeeks().map(function(x){ var days='';
+        for(var d=0;d<7;d++){ var t=x.t+d*864e5, cls=(t<today?' past':'')+(t===today?' today':''), lab=fmt(t,{weekday:'short',month:'short',day:'numeric',timeZone:'UTC'});
+          if(d===6){ days+='<div class="yrday rest'+cls+'"><span class="yd">'+esc(lab)+'</span><span class="yr">☾ '+esc(Y[4])+'</span></div>'; continue; }
+          days+='<button type="button" class="yrday'+cls+'" data-s="yrday" data-k="'+x.k+'" data-d="'+d+'"><span class="yd">'+esc(lab)+'</span><span class="yr">'+esc(planRefs(x.k,d).map(function(i){ return refLab(l,x.k,i); }).join(' · '))+(d===5?' <i>· '+esc(W7S[l]?W7S[l][0]:W7S.en[0])+'</i>':'')+'</span></button>'; }
+        return '<div class="yrw'+(x.now?' now open':'')+(x.past?' past':'')+'"><button type="button" class="yrh" data-s="yrtog"><span>'+esc(plF(Y[1],{n:x.n}))+' · <b>'+esc(titleIn(l,x.k))+'</b></span><span class="yrr">'+esc(fmt(x.t))+' – '+esc(fmt(x.t+6*864e5))+(x.now?' · '+esc(Y[2]):'')+' <em>▾</em></span></button><div class="yrds">'+days+'</div></div>'; }).join('')+'</div>';
+    sh.hidden=false; sh.dataset.kind='year'; var n=sh.querySelector('.yrw.now'); if(n) setTimeout(function(){ n.scrollIntoView({block:'start'}); },40); }
   window.MFptYear=ptYear;
   function ptSheet(kind){ var T=ptT(), sh=$('ptSheet'), h='';
     var head=function(t,plus){ return '<div class="pshd"><button type="button" class="ptc" data-s="x" aria-label="Close">&times;</button><h3>'+esc(t)+'</h3>'+(plus?'<button type="button" class="ptc" data-s="add" aria-label="'+esc(T.add)+'">+</button>':'<span style="width:46px"></span>')+'</div>'; };
@@ -3422,6 +3451,9 @@ window.MF=(function(){
   $('ptSheet').addEventListener('click',function(e){ var b=e.target.closest('[data-s]'); if(!b) return; if(b.dataset.s==='pub') return;
     if(b.dataset.s==='link'){ var rw=b.closest('.psrow'); if(rw&&window.MFpub){ var u=MFpub.link('pr:'+rw.dataset.id); if(u) MFshareLink(u,'MannaFish'); } return; } var a=b.dataset.s, T=ptT(), row=b.closest('.psrow'), x=row&&PR.filter(function(y){ return String(y.id)===row.dataset.id; })[0];
     if(a==='x'){ $('ptSheet').hidden=true; return; }
+    if(a==='yrall'){ var on=b.checked; try{ localStorage.setItem('mf-yr-days',on?'1':'0'); }catch(er){} $('ptSheet').querySelector('.ptyear2').classList.toggle('weeks',!on); $('ptSheet').querySelectorAll('.yrw').forEach(function(w){ w.classList.remove('open','shut'); if(w.classList.contains('now')) w.classList.add('open'); }); return; }
+    if(a==='yrtog'){ var yw=b.closest('.yrw'), weeksOnly=yw.parentNode.classList.contains('weeks'), shown=weeksOnly?yw.classList.contains('open'):!yw.classList.contains('shut'); yw.classList.toggle(weeksOnly?'open':'shut',weeksOnly?!shown:shown); return; }
+    if(a==='yrday'){ var dk=b.dataset.k, dd=+b.dataset.d; $('ptSheet').hidden=true; if(!DATA[dk]) return; planSet(dk); if(dk!==cur) pick(dk,false); PT.dayOv=(dd===planDay(dk))?null:{k:dk,d:dd}; PT.marked={}; PT.steps=ptSteps(); PT.i=0; ptRender(); return; }
     if(a==='yr'){ var yk=b.dataset.k; $('ptSheet').hidden=true; if(!DATA[yk]) return; PT.dayOv=null; planSet(yk); if(yk!==cur) pick(yk,false); PT.steps=ptSteps(); PT.i=0; ptRender(); return; }
     if(a==='add'){ ptSheet('add'); return; }
     if(a==='save'){ var t=$('psT').value.trim(), bd=$('psB').value.trim(); if(!t&&!bd){ $('psT').focus(); return; } prAdd(t||bd.split('\n')[0].slice(0,80),t?bd:bd.split('\n').slice(1).join('\n')); $('ptSheet').hidden=true; toast(T.saved);
