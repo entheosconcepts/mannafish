@@ -96,8 +96,7 @@ export function emailFor(m, lang, unsub, opts = {}) {
       + `<span style="font-size:10px">${esc(WKL + w.n)}</span><br><b style="font-size:13px;color:${w.now ? '#f5d76e' : (w.past ? '#9fb2b6' : '#ffffff')}">${esc(es ? (ES.titles[w.key] || w.title) : w.title)}</b><br><span style="font-size:10px">${esc(fmtShort(w.t))}</span></a></td>`).join('') + '</tr>').join('')
     + '</table>' : '';
   // Ken, 16 Oct: "pick up where you left off should be a little icon to the top left and something on the right ... maybe the day of the month"
-  const dt = new Date(m.t || Date.now()), MON = dt.toLocaleDateString(es ? 'es-US' : 'en-US', { month: 'short', timeZone: 'UTC' }).replace('.', '').toUpperCase(), DAYN = dt.getUTCDate();
-  const PU = es ? 'Continuar' : 'Pick up';
+
   const weekNote = opts.weekly ? (es ? 'Tu pez para esta semana. Abre el devocional cualquier día: continúa donde lo dejaste.' : 'Your fish for this week. Open the devotional any day: it picks up where you left off.') : '';
   // Ken, 9 Oct: the email in the site's own look -- black, white lettering, MannaFish blue, the logo in its own font
   const logo = SITE() + '/w/img/logo-email.png';
@@ -125,20 +124,17 @@ export function emailFor(m, lang, unsub, opts = {}) {
 <body class="body" bgcolor="#000000" style="margin:0;padding:0;${BG}font-family:Georgia,serif;color:#eaf0f0">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#000000" style="${BG}"><tr><td align="center" bgcolor="#000000" style="padding:20px 10px;${BG}">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#000000" style="max-width:560px;${BG}">
-${td('padding:18px 10px 16px', `<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-<td width="64" align="center" valign="middle" style="width:64px">${gw(`<a href="${resume}" title="${esc(RL[0])}" style="text-decoration:none;color:#ffffff;display:inline-block"><span style="display:inline-block;width:40px;height:40px;line-height:40px;border-radius:20px;background:#2a5fb0;color:#ffffff;font:bold 17px/40px Arial,sans-serif;text-align:center">&#9654;&#xFE0E;</span><br><span style="font:bold 10px/1.6 Arial,sans-serif;color:#ffffff;letter-spacing:.04em">${esc(PU)}</span></a>`)}</td>
-<td align="center" valign="middle"><a href="${SITE()}${es ? '/?lang=es' : '/'}" style="text-decoration:none"><img src="${logo}" width="270" alt="MannaFish" style="width:100%;max-width:270px;height:auto;display:block;margin:0 auto;border:0;color:#fff;font:bold 30px Arial,sans-serif"></a></td>
-<td width="64" align="center" valign="middle" style="width:64px">${gw(`<span style="display:inline-block;width:44px;border:1px solid #3a4148;border-radius:8px;overflow:hidden;text-align:center"><span style="display:block;background:#2a5fb0;color:#ffffff;font:bold 10px/16px Arial,sans-serif;letter-spacing:.06em">${esc(MON)}</span><span style="display:block;color:#ffffff;font:bold 20px/28px Arial,sans-serif">${DAYN}</span></span>`)}</td>
-</tr></table>`)}
+${td('padding:22px 20px 16px', `<a href="${SITE()}${es ? '/?lang=es' : '/'}" style="text-decoration:none"><img src="${logo}" width="340" alt="MannaFish" style="width:100%;max-width:340px;height:auto;display:block;margin:0 auto;border:0;color:#fff;font:bold 34px Arial,sans-serif"></a>`)}
 ${rule}
 ${opts.welcome ? td('padding:24px 22px 4px', head('welcome', T.hello)) : ''}
-${td('padding:16px 18px', `<a href="${read}" style="text-decoration:none"><img src="${img}" width="524" alt="${esc(word)}" style="width:100%;max-width:524px;height:auto;border-radius:8px;display:block;border:0"></a>`, 'left')}
+${td('padding:16px 18px', `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #3a4148;border-radius:14px;border-collapse:separate"><tr><td bgcolor="#000000" style="${BG}padding:14px;border-radius:14px"><a href="${read}" style="text-decoration:none"><img src="${img}" width="496" alt="${esc(word)}" style="width:100%;max-width:496px;height:auto;display:block;border:0;margin:0 auto"></a></td></tr></table>`)}
 ${dbl ? td('padding:6px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;color:#2a5fb0;font:900 19px Arial,sans-serif')) + '\n'
   + td('padding:6px 30px 14px;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(T.dblNote))) : ''}
 ${dayLine ? td('padding:4px 26px 0;font:bold 13px/1.5 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#8fb3e8', gw(esc(dayLine))) : ''}
 ${weekNote ? td('padding:4px 26px 0;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(weekNote))) : ''}
 ${refs.map((x) => td('padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0', gw(`<a href="${x.url}" style="color:#ffffff;text-decoration:none"><b style="color:#ffffff">${esc(x.ref)}</b></a>${esc(x.snip)}`))).join('\n')}
 ${td('padding:16px 12px 6px;font-size:0', button(listen, 'listen', T.listen) + button(read, 'read', T.read))}
+${td('padding:10px 22px 4px;font:bold 17px/1.5 Arial,sans-serif', gw(`<a href="${resume}" style="color:#ffffff;text-decoration:underline">&#9654;&#xFE0E; ${esc(RL[0])} ›</a>`))}
 ${listRows.length ? td('padding:14px 22px 4px', gw(`<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;font:14px/1.5 Arial,sans-serif">${rowsOf(listRows)}</table>`)) : ''}
 ${td('padding:8px 22px 20px;font:bold 16px/1.9 Arial,sans-serif', gw(`<a href="${another}" style="color:#ffffff;text-decoration:underline">🎣 ${esc(RL[1])} ›</a>`))}
 ${yearGrid ? td('padding:6px 14px 4px;font:bold 13px/1.5 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8fb3e8', gw(esc(YRH))) + '\n' + td('padding:4px 10px 20px', gw(yearGrid)) : ''}

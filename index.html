@@ -432,19 +432,19 @@ a{color:inherit}
 .hero .stage-col{width:100%}
 .hero .stage{aspect-ratio:auto;height:auto;transition:height .45s cubic-bezier(.4,.05,.2,1)}
 .hero .face.back{bottom:auto;padding:22px clamp(16px,4.5cqw,36px) 26px}
-.hero .back .wtitle{font-family:'MFHobo',cursive;font-size:clamp(2.3rem,8cqw,3.7rem);line-height:1}
+.hero .back .wtitle{font-family:'MFHobo',cursive;font-size:clamp(2rem,6.5cqw,3rem);line-height:1}
 .hero .back .hr{margin:14px 0}
 .hero .lang .lab{font-size:.7rem}
-.hero .lang .w{font-size:clamp(1.35rem,4.2cqw,1.95rem)}
+.hero .lang .w{font-size:clamp(1.25rem,3.6cqw,1.7rem)}
 .hero .lang .snd{font-size:.84rem}
-.hero .lang .mean{font-size:.95rem;margin-top:4px}
+.hero .lang .mean{font-size:.88rem;margin-top:4px}
 .hero .conc{display:inline-block;margin-top:6px;font-family:'Archivo',sans-serif;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sea);text-decoration:none;border-bottom:1px solid rgba(79,155,184,.4)}
 .hero .conc:hover{color:var(--brass-soft)}
 .hero .trace{font-size:.7rem;margin-top:2px}
 .hero .refs{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 16px;margin-top:16px}
 .hero .ref{min-width:0}
-.hero .ref .r{font-size:.88rem}
-.hero .ref .s{font-size:.8rem}
+.hero .ref .r{font-size:.82rem}
+.hero .ref .s{font-size:.74rem}
 @media(max-width:640px){
   .hero .langs{grid-template-columns:1fr;gap:16px}
   .hero .langs .div{display:none}
@@ -627,6 +627,31 @@ section.section.bundles{display:block;margin-top:0}
 .deck .trace{margin-top:0 !important}
 .dnav{position:absolute;right:20px;bottom:18px;z-index:6;display:flex;align-items:center;gap:8px;font:600 .72rem 'Archivo',sans-serif;color:var(--foam-dim,#9fb2b6)}
 .dnav[hidden]{display:none}
+.dturn{position:absolute;left:20px;bottom:18px;z-index:6;height:30px;border-radius:999px;border:1px solid rgba(196,210,214,.3);background:#000;color:#eaf0f0;font:700 .9rem 'Archivo',sans-serif;padding:0 10px;cursor:pointer;opacity:.8}
+.dturn:hover{opacity:1}
+.stctl{position:absolute;inset:8px 8px auto 8px;z-index:8;display:flex;justify-content:space-between;pointer-events:none}
+.stb{pointer-events:auto;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(0,0,0,.6);color:#eaf0f0;font:700 .95rem 'Archivo',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;opacity:.7;transition:opacity .2s}
+.stb:hover,.stb:focus-visible{opacity:1}.stb b{font-size:.7rem;margin-left:-2px;margin-top:-10px;color:#f5d76e}
+.stage.on .stctl{display:none}
+/* full screen: the card fills the screen */
+.stage.fs{position:fixed !important;z-index:96;left:50%;top:50%;transform:translate(-50%,-50%);width:min(94vw,calc((100vh - 70px) * 1.55),1300px) !important;margin:0 !important}
+.fsback{position:fixed;inset:0;z-index:95;background:#000}
+.hero .stage.fs .back .wtitle{font-size:clamp(2.4rem,6cqw,4.4rem)}.hero .stage.fs .lang .w{font-size:clamp(1.5rem,3.6cqw,2.6rem)}.hero .stage.fs .lang .mean{font-size:clamp(.95rem,1.7cqw,1.35rem)}
+.hero .stage.fs .trace{font-size:clamp(.72rem,1.2cqw,.95rem)}.hero .stage.fs .ref .r{font-size:clamp(.9rem,1.8cqw,1.35rem)}.hero .stage.fs .ref .s{font-size:clamp(.8rem,1.5cqw,1.15rem)}.hero .stage.fs .lang .lab{font-size:.85rem}.hero .stage.fs .lang .snd{font-size:1rem}.fsback[hidden]{display:none}
+.stage.fs .stctl{display:flex}.stage.fs.on .stctl #bkAdd{visibility:hidden}
+/* the basket */
+.bkfab{position:fixed;right:16px;bottom:max(16px,env(safe-area-inset-bottom));z-index:80;border:0;border-radius:999px;background:#f5d76e;color:#111;font:800 1rem 'Archivo',sans-serif;padding:10px 16px;cursor:pointer;box-shadow:0 10px 30px -8px #000}
+.bkfab[hidden]{display:none}
+.bkbox{position:fixed;inset:0;z-index:110;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:16px}.bkbox[hidden]{display:none}
+.bkin{background:#0e1116;border:1px solid rgba(255,255,255,.16);border-radius:20px;max-width:460px;width:100%;max-height:88vh;overflow:auto;padding:20px;text-align:center;color:#eaf0f0}
+.bkin h3{font:400 1.9rem 'MFHobo',cursive;margin:0}.bkin .bksub{font:italic .92rem 'Spectral',Georgia,serif;color:#c6d2d4;margin:6px 0 14px}
+.bkrow{display:flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:6px 10px;margin:6px 0;text-align:left}
+.bkrow .bkf{position:relative;width:84px;aspect-ratio:2/1;flex:none}.bkrow b{flex:1;font:400 1.2rem 'MFHobo',cursive}
+.bkrow select{border:1px solid #3a3a3e;background:#0f1114;color:#fff;border-radius:999px;padding:5px 8px;font:600 .8rem 'Archivo',sans-serif;max-width:110px}
+.bkrow .bkx{border:0;background:none;color:#9fb2b6;font-size:1.2rem;cursor:pointer}
+.bkin .bkgo{margin-top:14px;width:100%;border:0;border-radius:999px;background:#2a5fb0;color:#fff;font:800 1rem 'Archivo',sans-serif;padding:13px;cursor:pointer}
+.bkin .bkk{margin-top:8px;border:0;background:none;color:#c6d2d4;font:600 .9rem 'Archivo',sans-serif;cursor:pointer;text-decoration:underline}
+.bkin .bknote{font:.78rem 'Archivo',sans-serif;color:#9fb2b6;margin-top:10px}
 .dnav button{width:30px;height:30px;border-radius:50%;border:1px solid rgba(196,210,214,.3);background:#000;color:#eaf0f0;font-size:1.1rem;line-height:1;cursor:pointer;padding:0}
 .dnav button:disabled{opacity:.3;cursor:default}
 /* a passage laid on top of the card, like a card dealt onto a deck */
@@ -1454,7 +1479,7 @@ select option{background:#0b1620;color:#eaf0f0}
 [data-mode="light"] .wpt{color:#3d5a80}[data-mode="light"] .wpn{color:#444}
 .chapter .wsel{background:#f5d76e;color:#111;border-radius:3px}
 .mpmini .mprate{min-width:0;font-size:.95rem;border:1px solid #3a3a3e;border-radius:999px;padding:6px 10px}
-.mftoast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:90;background:#111;color:#fff;border:1px solid var(--brass);border-radius:999px;padding:9px 16px;font:600 .82rem 'Archivo',sans-serif;box-shadow:0 10px 30px -8px #000}
+.mftoast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:120;background:#111;color:#fff;border:1px solid var(--brass);border-radius:999px;padding:9px 16px;font:600 .82rem 'Archivo',sans-serif;box-shadow:0 10px 30px -8px #000}
 .mftoast[hidden]{display:none}
 
 .acctbox h4{font:600 .75rem 'Archivo',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--foam-dim,#aaa);margin:14px 0 6px}
@@ -1598,7 +1623,7 @@ select option{background:#0b1620;color:#eaf0f0}
 @media(max-width:900px){.cmp figure{max-width:100%}}
 
 /* Ken, 7 Oct: one fish on its own is the same size as each fish in the side-by-side view (computers only) */
-@media(min-width:901px){ #stage{width:calc((50% - 9px) * 1.088);margin-left:auto;margin-right:auto} }
+@media(min-width:901px){ #stage{width:min(640px,100%);margin-left:auto;margin-right:auto} }   /* Ken, 16 Oct: on a computer the fish bigger (was the size of one of two) */
 
 /* Ken, 8 Oct: the fish in the side-by-side view flip to the word study too (tap the fish) */
 .cmp .cmpf{cursor:pointer}
@@ -1633,6 +1658,9 @@ select option{background:#0b1620;color:#eaf0f0}
 @media(max-width:480px){#cmpLab{display:none}#cmpLabS{display:inline}}
 </style>
 
+<div class="fsback" id="fsBack" hidden></div>
+<button type="button" class="bkfab" id="bkFab" hidden></button>
+<div class="bkbox" id="bkBox" hidden role="dialog" aria-modal="true" aria-labelledby="bkH"><div class="bkin"><h3 id="bkH"></h3><p class="bksub" id="bkSub"></p><div id="bkList"></div><button type="button" class="bkgo" id="bkGo"></button><button type="button" class="bkk" id="bkKeep"></button><p class="bknote" id="bkNote"></p></div></div>
 <div class="mfintro" id="mfIntro" hidden aria-live="polite"><div class="mi-h"></div><div class="mi-box"><div class="mi-f"></div></div><div class="mi-d"></div></div>
 <script>if(/[?&]devo=(1|cast)\b/.test(location.search)) document.getElementById('mfIntro').hidden=false;</script>
 <div class="mf">
@@ -1672,6 +1700,7 @@ select option{background:#0b1620;color:#eaf0f0}
     <div class="cmpgrid" id="cmpGrid" hidden><button type="button" class="cmpclear" id="cmpClear"></button><span class="gpwrap"><span id="cmpGridLab">Per row</span><span class="gp" id="gp" role="group"></span><span class="gpsz" id="gpSz"></span><button type="button" id="gpAuto">Auto</button></span></div>
     <div class="cmp" id="cmp" hidden><figure data-l="a"><div class="cmpf" id="cmpA"></div><figcaption id="cmpAL"></figcaption></figure><figure data-l="b"><div class="cmpf" id="cmpB"></div><figcaption id="cmpBL"></figcaption></figure></div>
       <div class="stage" id="stage" aria-label="Interactive devotional decal, tap to flip">
+      <div class="stctl"><button type="button" class="stb" id="fsBtn" aria-label="Full screen" title="Full screen">⤢</button><button type="button" class="stb" id="bkAdd" aria-label="Add to my basket" title="Add to my basket">🧺<b>+</b></button></div>
       <div class="flip" id="flip">
         <div class="face front">
           
@@ -1812,6 +1841,7 @@ select option{background:#0b1620;color:#eaf0f0}
       <div class="wide chkrow"><span class="dlab">Decal language</span>
         <span class="freq inline" id="giftLang"><label><input type="radio" name="decal-language" value="English" checked> English</label><label><input type="radio" name="decal-language" value="Español"> Español</label><label><input type="radio" name="decal-language" value="One of each"> One of each</label></span>
       </div>
+      <input type="hidden" name="basket" id="giftBasket" value="">
       <button class="btn btn-primary giftsend" type="submit">Send My Free Decals</button>
     </form>
     <p class="rnote" id="giftFormMsg"></p>
@@ -2309,6 +2339,8 @@ window.MF=(function(){
     while(at<refs.length){ var rc=card('drefs'); rc.appendChild(cl('.trace')); var g=document.createElement('div'); g.className='refs'; rc.appendChild(g); var n=0;
       while(at<refs.length){ g.appendChild(noIds(refs[at].cloneNode(true))); if(over(rc) && n>0){ g.lastChild.remove(); break; } at++; n++; }
       if(!n) at++; }
+    // Ken, 16 Oct: on card 3 or 4 there was no sign of the way back -- a small button, bottom left, turns the fish over
+    var tb=document.createElement('button'); tb.type='button'; tb.className='dturn'; tb.setAttribute('aria-label','Turn the fish over'); tb.title='Turn the fish over'; tb.innerHTML='↺ <span>🐟</span>'; deck.appendChild(tb);
     var nav=document.createElement('div'); nav.className='dnav'; nav.innerHTML='<button type="button" class="dprev" aria-label="Previous card">‹</button><span class="dpos"></span><button type="button" class="dnext" aria-label="Next card">›</button>';
     deck.appendChild(nav); deckShow(deck, Math.min(keep, cards.length-1)); }
   function deckShow(deck,k){ var cs=deck.querySelectorAll('.dcard'), N=cs.length; k=Math.max(0,Math.min(N-1,k)); deck.dataset.at=k;
@@ -3277,6 +3309,7 @@ window.MF=(function(){
     prLoad().then(function(){ if(!PT.on) return; var at=PT.steps[PT.i]&&PT.steps[PT.i].k; PT.steps=ptSteps(); if(at==='welcome'||at==='pray'||at==='hear') ptRender(); }); }
   // Ken, 16 Oct: "keep whatever fish is selected static, anchored at the top ... we want people to see this image as much as possible"
   // Ken, 16 Oct (later): "I meant for it to be inside the bounding box, not on top of it ... put the verbiage up top above that"
+  $('ptStage').addEventListener('click',function(e){ if(e.target.closest('.ptanchor .pttf')) bkAdd(cur); });
   $('ptStage').addEventListener('scroll',function(){ this.classList.toggle('scrolled',this.scrollTop>4); },{passive:true});   // the anchored fish gets a backing only once words pass under it
   function ptTop(on){ $('ptTitle').textContent='MannaFish'; var st=$('ptStage'), a=st.querySelector('.ptanchor'), sk=PT.steps[PT.i]&&PT.steps[PT.i].k;
     if(sk==='fish') on=false;   /* that step shows the fish itself, turning */
@@ -3339,7 +3372,7 @@ window.MF=(function(){
   // ••• menu: add a prayer, the prayer list, answered prayers, the daily reminder, reading speed
   $('ptMore').addEventListener('click',function(e){ e.stopPropagation(); var m=$('ptMenu'), T=ptT(); m.style.top=(this.getBoundingClientRect().bottom+8)+'px';
     var Y=YRS[PT.l]||YRS.en;
-    m.innerHTML='<button type="button" data-m="change"><span class="mi">🐟</span>'+esc(plT().change)+'</button><button type="button" data-m="year"><span class="mi">🗓</span>'+esc(Y[0])+'</button><hr>'
+    m.innerHTML='<button type="button" data-m="basket"><span class="mi">🧺</span>'+esc((BKT[PT.l]||BKT.en)[0])+' +</button><button type="button" data-m="change"><span class="mi">🐟</span>'+esc(plT().change)+'</button><button type="button" data-m="year"><span class="mi">🗓</span>'+esc(Y[0])+'</button><hr>'
       +'<button type="button" data-m="add"><span class="mi">⊕</span>'+esc(T.add)+'</button><button type="button" data-m="list"><span class="mi">☰</span>'+esc(T.m_list)+'</button>'
       +'<button type="button" data-m="answered"><span class="mi">✓</span>'+esc(T.m_answered)+'</button><button type="button" data-m="remind"><span class="mi">🔔</span>'+esc(T.m_remind)+'</button><hr>'
       +'<button type="button" data-m="speed"><span class="mi">⏩</span>'+esc(T.m_speed)+' · '+RATE()+'x</button>'
@@ -3354,6 +3387,7 @@ window.MF=(function(){
     if(m==='speed'){ var r=RATES[(RATES.indexOf(RATE())+1)%RATES.length]; try{ localStorage.setItem('mf-speed',r); }catch(er){} if(sp.audio) sp.audio.playbackRate=r; b.lastChild.textContent=ptT().m_speed+' · '+r+'x'; return; }
     if(m==='change'){ $('ptMenu').hidden=true; if(PT.i!==0) ptGo(0); var pk=$('ptStage').querySelector('.ptpick'); if(pk){ pk.hidden=false; pk.scrollIntoView({block:'start',behavior:'smooth'}); } return; }
     if(m==='year'){ $('ptMenu').hidden=true; ptYear(); return; }
+    if(m==='basket'){ $('ptMenu').hidden=true; bkAdd(cur); return; }
     $('ptMenu').hidden=true; if(m==='remind'){ ptClose(); var d=$('devoBtn'); if(d){ d.scrollIntoView({block:'center',behavior:'smooth'}); if(d.getAttribute('aria-expanded')!=='true') d.click(); } return; }
     ptSheet(m); });
   $('pt').addEventListener('click',function(e){ if(!$('ptMenu').hidden&&!e.target.closest('#ptMenu,#ptMore')) $('ptMenu').hidden=true; });
@@ -4834,6 +4868,37 @@ window.MF=(function(){
     if(two==='1' && !cmpShown()){ cmpDefault=true; setCmp(twoFish()); } cmpLayout(); })();
   // Ken, 14 Oct: from the email -- "Pick up where you left off" opens the devotional on your fish and day;
   // "Want to catch another fish?" opens it at the pond
+  // ── Ken, 16 Oct: "a call to action at any point they would like to order MannaFish ... add it to their basket" -- five loaves,
+  // two fish, and baskets left over (John 6). Never sold: the basket becomes a request on the Free MannaFish form.
+  var BKT={en:['Your basket','Five loaves, two fish, and twelve baskets left over (John 6:9–13). MannaFish is always free.','Request these MannaFish · free','Keep looking','{w} is in your basket','Free, postage included. Someone already paid for it.','Your basket is empty. Tap 🧺 on any fish.'],
+    es:['Tu canasta','Cinco panes, dos peces y doce canastas de sobra (Juan 6:9–13). MannaFish siempre es gratis.','Pedir estos MannaFish · gratis','Seguir mirando','{w} está en tu canasta','Gratis, envío incluido. Alguien ya lo pagó.','Tu canasta está vacía. Toca 🧺 en cualquier pez.']};
+  var BKL={en:'English',es:'Español',tl:'Tagalog',zh:'中文',hi:'हिन्दी',el:'Ελληνικά',de:'Deutsch',ko:'한국어',he:'עברית',ar:'العربية'};
+  function bkT(){ return BKT[MF.lang]||BKT.en; }
+  function bkGet(){ try{ var a=JSON.parse(localStorage.getItem('mf-basket')||'[]'); return Array.isArray(a)?a.filter(function(x){ return x&&DATA[x.k]; }):[]; }catch(e){ return []; } }
+  function bkPut(a){ try{ localStorage.setItem('mf-basket',JSON.stringify(a)); }catch(e){} bkFab(); }
+  function bkFab(){ var n=bkGet().length, f=$('bkFab'); f.hidden=!n; f.textContent='🧺 '+n; f.setAttribute('aria-label',bkT()[0]+': '+n); }
+  function bkAdd(k){ var a=bkGet(); if(!a.some(function(x){ return x.k===k; })) a.push({k:k,l:DEVO[MF.lang]?MF.lang:'en'}); bkPut(a); toast(bkT()[4].replace('{w}',titleIn(MF.lang,k))); }
+  window.MFbkAdd=bkAdd;
+  function bkShow(){ var T=bkT(), a=bkGet(); $('bkH').textContent=T[0]; $('bkSub').textContent=T[1]; $('bkGo').textContent=T[2]; $('bkKeep').textContent=T[3]; $('bkNote').textContent=T[5];
+    $('bkList').innerHTML=a.length?a.map(function(x,i){ return '<div class="bkrow" data-i="'+i+'"><span class="bkf">'+(FISH[x.k]||'')+'</span><b>'+esc(titleIn(MF.lang,x.k))+'</b><select aria-label="Language">'+Object.keys(BKL).map(function(l){ return '<option value="'+l+'"'+(l===x.l?' selected':'')+'>'+BKL[l]+'</option>'; }).join('')+'</select><button type="button" class="bkx" aria-label="Remove">×</button></div>'; }).join(''):'<p class="bknote">'+esc(T[6])+'</p>';
+    $('bkGo').hidden=!a.length; $('bkBox').hidden=false; }
+  $('bkFab').addEventListener('click',bkShow);
+  $('bkKeep').addEventListener('click',function(){ $('bkBox').hidden=true; });
+  $('bkBox').addEventListener('click',function(e){ if(e.target===this){ this.hidden=true; return; } var x=e.target.closest('.bkx'); if(!x) return; var a=bkGet(); a.splice(+x.closest('.bkrow').dataset.i,1); bkPut(a); bkShow(); });
+  $('bkBox').addEventListener('change',function(e){ var r=e.target.closest('.bkrow'); if(!r) return; var a=bkGet(); if(a[+r.dataset.i]){ a[+r.dataset.i].l=e.target.value; bkPut(a); } });
+  $('bkGo').addEventListener('click',function(){ var a=bkGet(); if(!a.length) return; $('bkBox').hidden=true; if(PT.on) ptClose();
+    $('giftBasket').value=a.map(function(x){ return DATA[x.k].title+' ('+BKL[x.l]+')'; }).join(', ');
+    var gw=$('giftWord'); if(gw) gw.value=DATA[a[0].k].title;
+    var gb=$('giftBtn'); if(gb){ if(gb.getAttribute('aria-expanded')!=='true') gb.click(); setTimeout(function(){ gb.scrollIntoView({block:'start',behavior:'smooth'}); },60); } });
+  $('bkAdd').addEventListener('click',function(e){ e.stopPropagation(); bkAdd(cur); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('bkBox').hidden) $('bkBox').hidden=true; });
+  bkFab();
+  // full screen: the fish card fills the screen (Esc, ⤢ or the dark around it goes back)
+  function fsSet(on){ var st=$('stage'); st.classList.toggle('fs',on); $('fsBack').hidden=!on; $('fsBtn').textContent=on?'✕':'⤢'; $('fsBtn').setAttribute('aria-label',on?'Exit full screen':'Full screen');
+    document.documentElement.style.overflow=on?'hidden':''; setTimeout(function(){ sizeStage(); window.dispatchEvent(new Event('resize')); },30); }
+  $('fsBtn').addEventListener('click',function(e){ e.stopPropagation(); fsSet(!$('stage').classList.contains('fs')); });
+  $('fsBack').addEventListener('click',function(){ fsSet(false); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&$('stage').classList.contains('fs')) fsSet(false); });
   // Ken, 16 Oct: "I would like that image to stay on the screen for a second so it makes an impression" -- "This week's
   // MannaFish" (or today's, or this month's, as they signed up), the fish with a slow wobble, about 3 seconds, then the
   // devotional fades in. A tap goes straight on.
