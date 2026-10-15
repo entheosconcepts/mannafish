@@ -5,7 +5,7 @@
 // Text sign-ups are kept too, and start receiving once texting is set up.
 import { getStore } from '@netlify/blobs';
 import { createHash, createHmac, randomBytes } from 'node:crypto';
-import { localNow, todaysManna, welcomeManna, sabbathRest, SEND_HOUR, DEFAULT_TZ, validTz, monthOf } from './manna.mjs';
+import { localNow, todaysManna, welcomeManna, sabbathRest, SEND_HOUR, DEFAULT_TZ, validTz, monthOf, yearOf } from './manna.mjs';
 import WORDS from './words.json';
 import { sendMail } from './mail.mjs';
 import FISH from './fishlines.json';
@@ -88,6 +88,16 @@ export function emailFor(m, lang, unsub, opts = {}) {
     }).join('');
   };
   const listRows = monthRows.length ? monthRows : weekRows;
+  // Ken, 16 Oct: the whole year, four across, each week's fish a link to that week; this week marked
+  const yr = m.t ? yearOf(m.t) : [], YRH = es ? 'Todo el año' : 'The whole year', WKL = es ? 'Semana ' : 'Week ';
+  const fmtShort = (ms) => new Date(ms).toLocaleDateString(es ? 'es-US' : 'en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+  const yearGrid = yr.length ? `<table role="presentation" cellpadding="0" cellspacing="0" align="center" width="100%" style="max-width:516px;margin:0 auto;font:12px/1.35 Arial,sans-serif">`
+    + Array.from({ length: 13 }, (_, r) => '<tr>' + yr.slice(r * 4, r * 4 + 4).map((w) => `<td width="25%" align="center" style="padding:3px"><a href="${SITE()}/?devo=1&w=${w.key.toLowerCase()}${fq}${es ? '&lang=es' : ''}" style="display:block;text-decoration:none;border:1px solid ${w.now ? '#f5d76e' : '#2b3138'};border-radius:8px;padding:5px 2px;color:${w.now ? '#f5d76e' : (w.past ? '#7d8a8e' : '#c6d2d4')}">`
+      + `<span style="font-size:10px">${esc(WKL + w.n)}</span><br><b style="font-size:13px;color:${w.now ? '#f5d76e' : (w.past ? '#9fb2b6' : '#ffffff')}">${esc(es ? (ES.titles[w.key] || w.title) : w.title)}</b><br><span style="font-size:10px">${esc(fmtShort(w.t))}</span></a></td>`).join('') + '</tr>').join('')
+    + '</table>' : '';
+  // Ken, 16 Oct: "pick up where you left off should be a little icon to the top left and something on the right ... maybe the day of the month"
+  const dt = new Date(m.t || Date.now()), MON = dt.toLocaleDateString(es ? 'es-US' : 'en-US', { month: 'short', timeZone: 'UTC' }).replace('.', '').toUpperCase(), DAYN = dt.getUTCDate();
+  const PU = es ? 'Continuar' : 'Pick up';
   const weekNote = opts.weekly ? (es ? 'Tu pez para esta semana. Abre el devocional cualquier día: continúa donde lo dejaste.' : 'Your fish for this week. Open the devotional any day: it picks up where you left off.') : '';
   // Ken, 9 Oct: the email in the site's own look -- black, white lettering, MannaFish blue, the logo in its own font
   const logo = SITE() + '/w/img/logo-email.png';
@@ -115,10 +125,13 @@ export function emailFor(m, lang, unsub, opts = {}) {
 <body class="body" bgcolor="#000000" style="margin:0;padding:0;${BG}font-family:Georgia,serif;color:#eaf0f0">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#000000" style="${BG}"><tr><td align="center" bgcolor="#000000" style="padding:20px 10px;${BG}">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#000000" style="max-width:560px;${BG}">
-${td('padding:22px 20px 18px', `<a href="${SITE()}${es ? '/?lang=es' : '/'}" style="text-decoration:none"><img src="${logo}" width="200" alt="MannaFish" style="width:200px;height:auto;display:block;border:0;color:#fff;font:bold 26px Arial,sans-serif"></a>`)}
+${td('padding:18px 10px 16px', `<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+<td width="64" align="center" valign="middle" style="width:64px">${gw(`<a href="${resume}" title="${esc(RL[0])}" style="text-decoration:none;color:#ffffff;display:inline-block"><span style="display:inline-block;width:40px;height:40px;line-height:40px;border-radius:20px;background:#2a5fb0;color:#ffffff;font:bold 17px/40px Arial,sans-serif;text-align:center">&#9654;&#xFE0E;</span><br><span style="font:bold 10px/1.6 Arial,sans-serif;color:#ffffff;letter-spacing:.04em">${esc(PU)}</span></a>`)}</td>
+<td align="center" valign="middle"><a href="${SITE()}${es ? '/?lang=es' : '/'}" style="text-decoration:none"><img src="${logo}" width="270" alt="MannaFish" style="width:100%;max-width:270px;height:auto;display:block;margin:0 auto;border:0;color:#fff;font:bold 30px Arial,sans-serif"></a></td>
+<td width="64" align="center" valign="middle" style="width:64px">${gw(`<span style="display:inline-block;width:44px;border:1px solid #3a4148;border-radius:8px;overflow:hidden;text-align:center"><span style="display:block;background:#2a5fb0;color:#ffffff;font:bold 10px/16px Arial,sans-serif;letter-spacing:.06em">${esc(MON)}</span><span style="display:block;color:#ffffff;font:bold 20px/28px Arial,sans-serif">${DAYN}</span></span>`)}</td>
+</tr></table>`)}
 ${rule}
 ${opts.welcome ? td('padding:24px 22px 4px', head('welcome', T.hello)) : ''}
-${td('padding:14px 22px 0;font:bold 18px/1.5 Arial,sans-serif', gw(`<a href="${resume}" style="color:#ffffff;text-decoration:underline">▶ ${esc(RL[0])} ›</a>`))}
 ${td('padding:16px 18px', `<a href="${read}" style="text-decoration:none"><img src="${img}" width="524" alt="${esc(word)}" style="width:100%;max-width:524px;height:auto;border-radius:8px;display:block;border:0"></a>`, 'left')}
 ${dbl ? td('padding:6px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;color:#2a5fb0;font:900 19px Arial,sans-serif')) + '\n'
   + td('padding:6px 30px 14px;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(T.dblNote))) : ''}
@@ -128,6 +141,7 @@ ${refs.map((x) => td('padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf
 ${td('padding:16px 12px 6px;font-size:0', button(listen, 'listen', T.listen) + button(read, 'read', T.read))}
 ${listRows.length ? td('padding:14px 22px 4px', gw(`<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;font:14px/1.5 Arial,sans-serif">${rowsOf(listRows)}</table>`)) : ''}
 ${td('padding:8px 22px 20px;font:bold 16px/1.9 Arial,sans-serif', gw(`<a href="${another}" style="color:#ffffff;text-decoration:underline">🎣 ${esc(RL[1])} ›</a>`))}
+${yearGrid ? td('padding:6px 14px 4px;font:bold 13px/1.5 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8fb3e8', gw(esc(YRH))) + '\n' + td('padding:4px 10px 20px', gw(yearGrid)) : ''}
 ${rule}
 ${td('padding:16px 22px 0', head(dbl ? 'sab' : 'fish', dbl ? T.sab : T.fish))}
 ${td(`padding:8px 26px ${dbl ? '0' : '22px'};font:${dbl ? 'normal 19px/1.55' : 'italic 17px/1.55'} Georgia,serif;color:${dbl ? '#eaf0f0' : '#c6d2d4'}`,
@@ -136,7 +150,7 @@ ${dbl ? td('padding:16px 12px 24px;font-size:0', button(sabLink, 'sabread', T.sa
 ${rule}
 ${td('padding:16px 22px 22px;font:12px/1.7 Arial,sans-serif;color:#8a9aa0', gw(`${esc(T.why)} <a href="${unsub}" style="color:#8a9aa0">${esc(T.stop)}</a> · <a href="${SITE()}/privacy/" style="color:#8a9aa0">${es ? 'Privacidad' : 'Privacy'}</a><br>${esc(ADDRESS())}`))}
 </table></td></tr></table></body></html>`;
-  const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${dbl ? T.dbl + ' — ' + T.dblNote + '\n\n' : ''}${dayLine ? dayLine + '\n' : ''}${weekNote ? weekNote + '\n' : ''}${refs.map((x) => T.today + ': ' + x.ref + x.snip + '\n' + x.url).join('\n')}\n${T.listen}: ${listen}\n${T.read}: ${read}\n${RL[0]}: ${resume}\n${RL[1]} ${another}\n\n${listRows.map((r) => (r.rest ? '☾ ' : r.past ? '✓ ' : r.today ? '▶ ' : '○ ') + r.label + (monthRows.length && !r.rest ? ' (' + r.word + ')' : '') + ' — ' + [r.refs.map((x) => x.ref).join(', '), r.note].filter(Boolean).join(' · ') + (r.today ? ' (' + TODAY + ')' : '')).join('\n')}\n\n${dbl ? T.sab : T.fish}: “${f.top} ${f.bottom}” ${f.ref}${dbl ? '\n' + T.sabRead + ': ' + sabLink : ''}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
+  const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${dbl ? T.dbl + ' — ' + T.dblNote + '\n\n' : ''}${dayLine ? dayLine + '\n' : ''}${weekNote ? weekNote + '\n' : ''}${refs.map((x) => T.today + ': ' + x.ref + x.snip + '\n' + x.url).join('\n')}\n${T.listen}: ${listen}\n${T.read}: ${read}\n${RL[0]}: ${resume}\n${RL[1]} ${another}\n${YRH}: ${SITE()}/?devo=1&year=1${fq}${es ? '&lang=es' : ''}\n\n${listRows.map((r) => (r.rest ? '☾ ' : r.past ? '✓ ' : r.today ? '▶ ' : '○ ') + r.label + (monthRows.length && !r.rest ? ' (' + r.word + ')' : '') + ' — ' + [r.refs.map((x) => x.ref).join(', '), r.note].filter(Boolean).join(' · ') + (r.today ? ' (' + TODAY + ')' : '')).join('\n')}\n\n${dbl ? T.sab : T.fish}: “${f.top} ${f.bottom}” ${f.ref}${dbl ? '\n' + T.sabRead + ': ' + sabLink : ''}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
   LINK = keep;
   return { subject: T.sub + (dbl ? T.sabSub : ''), html, text };
 }

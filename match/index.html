@@ -112,6 +112,9 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
 @keyframes mfPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-60%) scale(1)}}
 @media (prefers-reduced-motion:reduce){.matchpop.go{animation:none}}
 /* ── all found ── */
+.how{background:var(--bg2);border:1px solid var(--glow);border-radius:16px;padding:16px 20px;margin-top:6px;margin-bottom:8px}
+.how[hidden]{display:none}.how h2{margin:0 0 6px;font:700 1.05rem 'Archivo',sans-serif}.how ol{margin:0 auto 12px;padding-left:1.3em;line-height:1.5;text-align:left;max-width:560px}.how{text-align:center}.how li{margin:3px 0}
+.howbtn{font-size:.85rem;padding:6px 12px}
 .win{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;background:color-mix(in srgb,var(--bg) 55%,transparent)}
 .win[hidden]{display:none}
 .win .box{background:var(--bg2);border:1px solid var(--glow);border-radius:16px;padding:22px 22px 18px;max-width:320px;width:100%;
@@ -139,8 +142,20 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
   <label class="pick"><span data-t="second">Second language</span><select id="l2"></select></label>
 </div>
 <div class="wrapw bar">
+  <button class="pill howbtn" id="howBtn" type="button" aria-expanded="false">❓ <span data-t="how">How to play</span></button>
   <span id="stat" aria-live="off"></span>
   <label class="say"><input type="checkbox" id="sayChk" checked> <span>🔊 <span data-t="say">Say words when flipped</span></span></label>
+</div>
+<div class="wrapw how" id="how" hidden>
+  <h2 data-t="how">How to play</h2>
+  <ol>
+    <li data-t="h1">Pick a first and a second language at the top (or Mix).</li>
+    <li data-t="h2">Tap two fish to turn them over.</li>
+    <li data-t="h3">The same word is a match, even in two different languages: REST and DESCANSA are a pair. A match stays face up.</li>
+    <li data-t="h4">Not a match? They turn back over. Remember where each word was.</li>
+    <li data-t="h5">Find all 12 pairs. Tap a turned fish again to see its word in the other language; tap 🔊 on the tail to hear it, and the nose to hear its verse.</li>
+  </ol>
+  <button class="pill blue" id="howOk" type="button" data-t="howok">Let's play</button>
 </div>
 <main>
   <div class="board" id="board" aria-label="Cards"></div>
@@ -177,10 +192,18 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
   var T={
     en:{home:'Home',sub:'Memory match',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',
       say:'Say words when flipped',moves:'Moves',pairs:'pairs',won:'All 12 found in {n} moves',winsub:'Tap any card to hear its word.',
-      again:'Play again',look:'See the cards',down:'Card {i}, face down',matched:'matched',match:'Match',verse:'Hear the verse',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
+      again:'Play again',look:'See the cards',how:'How to play',howok:'Let’s play',
+      h1:'Pick a first and a second language at the top (or Mix).',h2:'Tap two fish to turn them over.',
+      h3:'The same word is a match, even in two different languages: REST and DESCANSA are a pair. A match stays face up.',
+      h4:'Not a match? They turn back over. Remember where each word was.',
+      h5:'Find all 12 pairs. Tap a turned fish again to see its word in the other language; tap 🔊 on the tail to hear it, and the nose to hear its verse.',down:'Card {i}, face down',matched:'matched',match:'Match',verse:'Hear the verse',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
     es:{home:'Inicio',sub:'Juego de memoria',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',
       say:'Decirlas al voltear',moves:'Jugadas',pairs:'pares',won:'Las 12 encontradas en {n} jugadas',winsub:'Toca cualquier carta para oír su palabra.',
-      again:'Jugar otra vez',look:'Ver las cartas',down:'Carta {i}, boca abajo',matched:'encontrada',match:'Pareja',verse:'Escuchar el versículo',nomatch:'No son pareja',cards:'Cartas',loading:'Cargando…',oops:'No se pudieron cargar las palabras. Inténtalo otra vez.'}
+      again:'Jugar otra vez',look:'Ver las cartas',how:'Cómo se juega',howok:'¡A jugar!',
+      h1:'Elige un primer y un segundo idioma arriba (o Mezcla).',h2:'Toca dos peces para darles la vuelta.',
+      h3:'La misma palabra es pareja, aunque esté en dos idiomas: REST y DESCANSA son pareja. Una pareja queda boca arriba.',
+      h4:'¿No son pareja? Se vuelven a voltear. Recuerda dónde estaba cada palabra.',
+      h5:'Encuentra las 12 parejas. Toca otra vez un pez volteado para ver su palabra en el otro idioma; toca 🔊 en la cola para oírla, y la nariz para oír su versículo.',down:'Carta {i}, boca abajo',matched:'encontrada',match:'Pareja',verse:'Escuchar el versículo',nomatch:'No son pareja',cards:'Cartas',loading:'Cargando…',oops:'No se pudieron cargar las palabras. Inténtalo otra vez.'}
   };
   function $(id){ return document.getElementById(id); }
   function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
@@ -302,6 +325,10 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
     $('win').hidden=false; announce($('winMsg').textContent); $('againBtn').focus();
   }
   $('newBtn').addEventListener('click',deal);
+  function howShow(on){ $('how').hidden=!on; $('howBtn').setAttribute('aria-expanded',String(on)); if(!on) store('mf-match-how','seen'); }
+  $('howBtn').addEventListener('click',function(){ howShow($('how').hidden); });
+  $('howOk').addEventListener('click',function(){ howShow(false); });
+  if(store('mf-match-how')!=='seen') howShow(true);   // the first time: how to play, open
   $('againBtn').addEventListener('click',deal);
   $('lookBtn').addEventListener('click',function(){ $('win').hidden=true; $('newBtn').focus(); });
 

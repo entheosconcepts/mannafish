@@ -60,6 +60,15 @@ export function monthOf(t) {
   return out;
 }
 
+// Ken, 16 Oct: "the whole year with links on the email" -- the 52 weeks of the MannaFish year holding t (years run
+// from 11 Oct 2026), each week's fish and its Sunday
+export function yearOf(t) {
+  const wk = Math.floor(Math.floor((t - START) / 86400000) / 7), y = Math.max(0, Math.floor(wk / 52)), n = WORDS.order.length, out = [];
+  for (let i = 0; i < 52; i++) { const w = y * 52 + i, key = WORDS.order[((w % n) + n) % n];
+    out.push({ n: i + 1, key, title: WORDS.words[key].title, t: START + w * 7 * 86400000, now: w === wk, past: w < wk }); }
+  return out;
+}
+
 // the verses for day d (0 = Sunday) of a word with c verses, in order: twelve make two a day
 export function dayRefs(c, d) { const a = Math.floor(d * c / DAYS), z = Math.floor((d + 1) * c / DAYS), r = []; for (let i = a; i < z; i++) r.push(i); return r; }
 

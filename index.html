@@ -1003,6 +1003,9 @@ section.section.bundles{display:block;margin-top:0}
 .ptc[hidden],.tsb[hidden]{display:none}.ptpause svg{width:18px;height:18px}.ptc[aria-pressed="true"]{background:#2a5fb0}
 #ptMore{font-size:.85rem;letter-spacing:1px}
 .ptttl{flex:1;text-align:center;font:700 .78rem 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ptttl.hasfish{opacity:1;overflow:visible;display:flex;justify-content:center}
+.ptttl .pttf{display:block;position:relative;width:min(168px,40vw);aspect-ratio:2/1}
+@media(min-width:760px){.ptttl .pttf{width:170px}}
 .ptmenu{position:absolute;top:calc(max(14px,env(safe-area-inset-top)) + 54px);right:16px;z-index:3;background:#2a2622;border-radius:22px;padding:8px 6px;min-width:230px;box-shadow:0 20px 50px -10px #000}
 .ptmenu[hidden]{display:none}
 /* Ken, 12 Oct: "the X should say Home"; and on a computer the devotional is a framed page with its buttons right above it */
@@ -1011,7 +1014,7 @@ section.section.bundles{display:block;margin-top:0}
 @media(min-width:760px) and (min-height:620px){
   .pt{justify-content:center;padding:14px 0}
   .ptbar{padding-top:0;padding-bottom:10px}
-  .pt .ptstage{flex:0 0 auto;height:min(700px,calc(100vh - 230px));border:1px solid rgba(255,255,255,.2);border-radius:26px;background:rgba(4,8,14,.45);padding:26px 40px;box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
+  .pt .ptstage{flex:0 0 auto;height:min(780px,calc(100vh - 170px));border:1px solid rgba(255,255,255,.2);border-radius:26px;background:rgba(4,8,14,.45);padding:26px 40px;box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
   .pt .ptnav{padding-bottom:0;padding-top:14px}
 }
 .ptmenu button{display:flex;align-items:center;gap:14px;width:100%;border:0;background:none;color:#fff;font:600 1.12rem 'Archivo',sans-serif;padding:12px 16px;cursor:pointer;text-align:left;border-radius:14px}
@@ -1022,14 +1025,15 @@ section.section.bundles{display:block;margin-top:0}
 .mfintro{position:fixed;inset:0;z-index:120;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px;text-align:center;transition:opacity .7s ease;cursor:pointer}
 .mfintro[hidden]{display:none}.mfintro.out{opacity:0;pointer-events:none}
 .mfintro .mi-h{font:800 clamp(.9rem,3.6vw,1.15rem) 'Archivo',sans-serif;letter-spacing:.28em;text-transform:uppercase;color:#fff;opacity:0}
-.mfintro .mi-f{position:relative;width:min(88vw,620px);aspect-ratio:2/1;opacity:0}
+.mfintro .mi-box{opacity:0;border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:clamp(14px,4vw,28px);background:#000;box-shadow:0 30px 70px -30px rgba(42,95,176,.6)}
+.mfintro .mi-f{position:relative;width:min(80vw,560px);aspect-ratio:2/1}
 .mfintro .mi-d{font:600 1rem 'Archivo',sans-serif;letter-spacing:.06em;color:#9fb2b6;opacity:0;min-height:1.3em}
 .mfintro.on .mi-h{animation:mifade .8s .1s forwards}
-.mfintro.on .mi-f{animation:mifade .9s .35s forwards,miwob 2.6s .6s ease-in-out}
+.mfintro.on .mi-box{animation:mifade .9s .35s forwards,miwob 2.6s .6s ease-in-out}
 .mfintro.on .mi-d{animation:mifade .8s 1s forwards}
 @keyframes mifade{to{opacity:1}}
 @keyframes miwob{0%,100%{transform:perspective(900px) rotateY(0)}25%{transform:perspective(900px) rotateY(24deg)}62%{transform:perspective(900px) rotateY(-20deg)}85%{transform:perspective(900px) rotateY(6deg)}}
-@media (prefers-reduced-motion:reduce){.mfintro.on .mi-f{animation:mifade .9s .35s forwards}}
+@media (prefers-reduced-motion:reduce){.mfintro.on .mi-box{animation:mifade .9s .35s forwards}}
 @keyframes ptin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .ptk{display:flex;justify-content:space-between;align-items:center;gap:10px;font:800 .8rem 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px}
 .ptof{font-weight:600;letter-spacing:.02em;opacity:.85;text-transform:none;font-size:.9rem}
@@ -1089,6 +1093,7 @@ section.section.bundles{display:block;margin-top:0}
 .ptvers{border-top:1px solid rgba(255,255,255,.14);margin-top:4px;padding-top:4px}.ptvers[hidden]{display:none}.ptvers button{font-size:1rem;padding:9px 16px}.ptvers small{opacity:.65;font-weight:700}
 .ptvnote{margin:4px 16px 8px;font:500 .85rem/1.4 'Archivo',sans-serif;opacity:.75}
 .ptweek{display:flex;flex-direction:column;gap:4px;max-width:440px;margin:0 auto 14px;text-align:start}
+@media(min-width:760px){.ptweek{gap:3px;order:5;margin-top:18px}.ptpick{order:6}.ptwk{padding:5px 10px}}   /* Ken, 16 Oct: on a computer Listen / Read without scrolling; the week sits under them */
 .ptwk{display:grid;grid-template-columns:22px auto 1fr auto;gap:8px;align-items:baseline;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.25);color:#fff;border-radius:10px;padding:7px 10px;font:600 .84rem/1.35 'Archivo',sans-serif;cursor:pointer;text-align:inherit}
 .ptwk:disabled{opacity:.5;cursor:default}.ptwk.done .wkm{color:#6ed68c}.ptwk.at{border-color:#f5d76e;background:rgba(245,215,110,.12)}.ptwk.at .wkm,.ptwk.at .wkt{color:#f5d76e}
 .ptwk .wkn{grid-column:2/-1;font-size:.74rem;color:#8fb3e8;margin-top:-2px}.ptwk.rest{cursor:default;opacity:.6;font-weight:600;background:none;border-style:dashed}.ptwk.rest .wkr{grid-column:2/-1;font-weight:600}
@@ -1224,6 +1229,9 @@ section.section.bundles{display:block;margin-top:0}
 .tnav{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .tnav button{border:1px solid rgba(255,255,255,.35);background:none;color:#fff;border-radius:999px;padding:9px 18px;font:700 .95rem 'Archivo',sans-serif;cursor:pointer}
 .tnav #tNext{background:#fff;color:#0b0f14;border-color:#fff}.tnav button:disabled{visibility:hidden}
+.ptyear{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:8px}@media(min-width:560px){.ptyear{grid-template-columns:repeat(4,1fr)}}
+.ptyear button{display:flex;flex-direction:column;align-items:center;gap:1px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.03);color:#fff;border-radius:12px;padding:8px 4px;cursor:pointer;font:600 .8rem 'Archivo',sans-serif}
+.ptyear b{font:400 1.2rem 'MFHobo',cursive}.ptyear small{opacity:.7;font-size:.72rem}.ptyear .past{opacity:.55}.ptyear .now{border-color:#f5d76e;background:rgba(245,215,110,.12)}.ptyear i{font-style:normal;color:#f5d76e;font-size:.72rem}
 .ptsheet{position:absolute;inset:auto 0 0 0;max-height:86%;overflow:auto;background:#151515;border-radius:24px 24px 0 0;padding:18px 18px max(22px,env(safe-area-inset-bottom));z-index:4;box-shadow:0 -20px 60px -10px #000}
 .ptsheet[hidden]{display:none}
 .pshd{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
@@ -1623,7 +1631,7 @@ select option{background:#0b1620;color:#eaf0f0}
 @media(max-width:480px){#cmpLab{display:none}#cmpLabS{display:inline}}
 </style>
 
-<div class="mfintro" id="mfIntro" hidden aria-live="polite"><div class="mi-h"></div><div class="mi-f"></div><div class="mi-d"></div></div>
+<div class="mfintro" id="mfIntro" hidden aria-live="polite"><div class="mi-h"></div><div class="mi-box"><div class="mi-f"></div></div><div class="mi-d"></div></div>
 <script>if(/[?&]devo=(1|cast)\b/.test(location.search)) document.getElementById('mfIntro').hidden=false;</script>
 <div class="mf">
 
@@ -2956,7 +2964,7 @@ window.MF=(function(){
     var bk=$('ptStage').querySelector('.ptcback'); bk.hidden=!(ph==='hook'||ph==='bite'); bk.textContent='↩ '+C.back;
     b.classList.toggle('pull',ph==='bite'); b.textContent=ph==='idle'?'🎣 '+C.cast_btn:'↑ '+C.pull_btn;
     c.querySelector('.cpause').textContent=CA.paused?'▶ '+C.resume:'⏸ '+C.pause;
-    if(ph==='caught'){ $('ptStage').querySelector('.ptcp').textContent='👉 '+C.p_caught; $('ptTitle').textContent=titleIn(PT.l,cur); } }
+    if(ph==='caught'){ $('ptStage').querySelector('.ptcp').textContent='👉 '+C.p_caught; ptTop(true); } }
   // the fish in the water: today's word and five others, each its own pace and depth
   function caFish(){ var ks=[cur], o=ORDER.filter(function(k){ return k!==cur; });
     while(ks.length<6&&o.length) ks.push(o.splice(Math.floor(Math.random()*o.length),1)[0]);
@@ -3178,8 +3186,7 @@ window.MF=(function(){
     var P=D.p.map(function(x){ return x.replace(/^\*/,'').replace('{w}',w).replace('{r}',sy[2]).replace('{v}',sy[1]); });
     var kick=function(a,b){ return '<div class="ptk"><span>'+esc(a)+'</span>'+(b?'<span class="ptof">'+b+'</span>':'')+'</div>'; };
     var prm=function(key){ return '<p class="ptprompt">👉 '+esc(T[key])+'</p>'; };
-    if(s.k==='welcome'){ t=[P[0]]; var PL=plT(); h=kick(T.k_welcome)+'<h2 class="pth">'+esc(D.b[1])+'</h2>'
-        +'<div class="ptplan"><span><b>'+esc(w)+'</b> · '+esc(plF(PL.day,{d:ptDay(k)+1,n:PLAN_DAYS}))+'</span><button type="button" class="ptlink" data-a="planpick" aria-expanded="false">'+esc(PL.change)+' ⋯</button></div>'+planWeekList(k,l)+planPicker()
+    if(s.k==='welcome'){ t=[P[0]]; h=kick(T.k_welcome)+planWeekList(k,l)+planPicker()   /* Ken, 16 Oct: no "Pray · Hear · Do" or "Rest · Day 1 of 6" -- the fish at the top says it; Change fish is under ••• */
         +'<p class="ptp">'+sp1(1,P[0])+'</p>'
         +'<div class="ptlenq">'+esc((DLEN[l]||DLEN.en).how)+'</div><div class="ptlen" role="radiogroup">'+['quick','std','full'].map(function(x){ var D2=DLEN[l]||DLEN.en;
           return '<button type="button" role="radio" data-a="len" data-len="'+x+'" aria-checked="'+((PT.len||dLen())===x)+'"><b>'+esc(D2.min.replace('{n}',DMIN[x]))+'</b><small>'+esc(D2[x==='quick'?'q':x==='std'?'s':'d'])+'</small></button>'; }).join('')+'</div>'
@@ -3241,7 +3248,7 @@ window.MF=(function(){
     $('ptDots').innerHTML='<i style="width:'+Math.round((PT.i+1)/PT.steps.length*100)+'%"></i>';
     $('pt').classList.toggle('guided',!!PT.listen);
     $('ptBack').disabled=PT.i===0; $('ptNext').hidden=PT.i===PT.steps.length-1; $('ptNext').disabled=false;
-    $('ptHomeLab').textContent=({en:'Home',es:'Inicio',tl:'Home',zh:'首页',hi:'होम',el:'Αρχική',de:'Start',ko:'홈',he:'בית',ar:'الرئيسية'})[PT.l]||'Home'; var rtl=/^(he|ar)$/.test(PT.l); $('ptBack').textContent=(rtl?'› ':'‹ ')+T.back; $('ptNext').textContent=T.next+(rtl?' ‹':' ›'); $('ptTitle').textContent=PT.i<=ptCastAt()?'MannaFish':w;
+    $('ptHomeLab').textContent=({en:'Home',es:'Inicio',tl:'Home',zh:'首页',hi:'होम',el:'Αρχική',de:'Start',ko:'홈',he:'בית',ar:'الرئيسية'})[PT.l]||'Home'; var rtl=/^(he|ar)$/.test(PT.l); $('ptBack').textContent=(rtl?'› ':'‹ ')+T.back; $('ptNext').textContent=T.next+(rtl?' ‹':' ›'); ptTop(!(s.k==='cast'&&!CA.done&&CA.ph!=='caught'));
     $('ptSpk').setAttribute('aria-label',T.listen); $('ptSpk').setAttribute('aria-pressed',PT.listen?'true':'false'); }
   function ptSay(){ stopSpeak(); $('pt').classList.toggle('guided',!!PT.listen); var me=PT.i, s=PT.steps[me];
     if(!PT.listen){ $('ptSpk').setAttribute('aria-pressed','false'); return; }
@@ -3266,6 +3273,9 @@ window.MF=(function(){
     var pt=$('pt'); pt.dir=/^(he|ar)$/.test(PT.l)?'rtl':'ltr'; pt.setAttribute('lang',PT.l); PR=prLocal().filter(function(x){ return prCloud()||!x.c; });
     PT.l2=null; CA.done=false; PT.len=dLen(); PT.marked={}; PT.dayOv=null; var pf=planFish(); if(pf!==cur) pick(pf,false); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; document.documentElement.style.overflow='hidden'; ptRender();
     prLoad().then(function(){ if(!PT.on) return; var at=PT.steps[PT.i]&&PT.steps[PT.i].k; PT.steps=ptSteps(); if(at==='welcome'||at==='pray'||at==='hear') ptRender(); }); }
+  // Ken, 16 Oct: "keep whatever fish is selected static, anchored at the top ... we want people to see this image as much as possible"
+  function ptTop(on){ var t=$('ptTitle'); t.classList.toggle('hasfish',!!on);
+    if(on) t.innerHTML='<span class="pttf" role="img" aria-label="'+esc(titleIn(PT.l,cur))+'">'+(fishFor(PT.l,cur)||FISH[cur]||'')+'</span>'; else t.textContent='MannaFish'; }
   function ptClose(){ caStop(); PT.on=false; PT.listen=false; stopSpeak(); $('pt').hidden=true; $('ptSheet').hidden=true; $('ptMenu').hidden=true; document.documentElement.style.overflow=''; }
   function ptRebuild(keep){ PT.steps=ptSteps(); var j=PT.steps.findIndex(function(s){ return s.k===keep; }); if(j>=0&&keep!=='prayer') PT.i=j; PT.i=Math.min(PT.i,PT.steps.length-1); ptRender(); }
   $('ptBtn').addEventListener('click',ptOpen);
@@ -3322,7 +3332,9 @@ window.MF=(function(){
     else if(a==='amen'){ stopSpeak(); $('ptStage').innerHTML='<div class="ptk"><span>'+esc(T.k_amen)+'</span></div><h2 class="pth">✓ '+esc(T.done)+'</h2>'; $('ptNext').hidden=true; setTimeout(function(){ if(PT.on) ptClose(); },1800); } });
   // ••• menu: add a prayer, the prayer list, answered prayers, the daily reminder, reading speed
   $('ptMore').addEventListener('click',function(e){ e.stopPropagation(); var m=$('ptMenu'), T=ptT(); m.style.top=(this.getBoundingClientRect().bottom+8)+'px';
-    m.innerHTML='<button type="button" data-m="add"><span class="mi">⊕</span>'+esc(T.add)+'</button><button type="button" data-m="list"><span class="mi">☰</span>'+esc(T.m_list)+'</button>'
+    var Y=YRS[PT.l]||YRS.en;
+    m.innerHTML='<button type="button" data-m="change"><span class="mi">🐟</span>'+esc(plT().change)+'</button><button type="button" data-m="year"><span class="mi">🗓</span>'+esc(Y[0])+'</button><hr>'
+      +'<button type="button" data-m="add"><span class="mi">⊕</span>'+esc(T.add)+'</button><button type="button" data-m="list"><span class="mi">☰</span>'+esc(T.m_list)+'</button>'
       +'<button type="button" data-m="answered"><span class="mi">✓</span>'+esc(T.m_answered)+'</button><button type="button" data-m="remind"><span class="mi">🔔</span>'+esc(T.m_remind)+'</button><hr>'
       +'<button type="button" data-m="speed"><span class="mi">⏩</span>'+esc(T.m_speed)+' · '+RATE()+'x</button>'
       +'<button type="button" data-m="ver" aria-expanded="false"><span class="mi">📖</span>'+esc((BVL[PT.l]||BVL.en)[0])+' · '+esc(curVer().s)+'</button>'
@@ -3334,9 +3346,23 @@ window.MF=(function(){
     if(m==='setver'){ try{ localStorage.setItem(VKEY,b.dataset.ver); }catch(er){} if($('rVer')) $('rVer').value=b.dataset.ver; $('ptMenu').hidden=true;
       toast('📖 '+curVer().n); var sk=PT.steps[PT.i]&&PT.steps[PT.i].k; if(sk==='ref'||sk==='hear'){ stopSpeak(); ptRender(); } return; }
     if(m==='speed'){ var r=RATES[(RATES.indexOf(RATE())+1)%RATES.length]; try{ localStorage.setItem('mf-speed',r); }catch(er){} if(sp.audio) sp.audio.playbackRate=r; b.lastChild.textContent=ptT().m_speed+' · '+r+'x'; return; }
+    if(m==='change'){ $('ptMenu').hidden=true; if(PT.i!==0) ptGo(0); var pk=$('ptStage').querySelector('.ptpick'); if(pk){ pk.hidden=false; pk.scrollIntoView({block:'start',behavior:'smooth'}); } return; }
+    if(m==='year'){ $('ptMenu').hidden=true; ptYear(); return; }
     $('ptMenu').hidden=true; if(m==='remind'){ ptClose(); var d=$('devoBtn'); if(d){ d.scrollIntoView({block:'center',behavior:'smooth'}); if(d.getAttribute('aria-expanded')!=='true') d.click(); } return; }
     ptSheet(m); });
   $('pt').addEventListener('click',function(e){ if(!$('ptMenu').hidden&&!e.target.closest('#ptMenu,#ptMore')) $('ptMenu').hidden=true; });
+  // Ken, 16 Oct: "if people want to ... see the whole year, put that under those three dots" -- the MannaFish year:
+  // 52 weeks from 11 Oct 2026, one fish a week (the 24 fish in turn), this week marked; a tap starts that week's fish
+  var YRS={en:['The whole year','Week {n}','this week'],es:['Todo el año','Semana {n}','esta semana'],tl:['Ang buong taon','Linggo {n}','ngayong linggo'],
+    zh:['全年','第 {n} 周','本周'],hi:['पूरा साल','सप्ताह {n}','इस सप्ताह'],el:['Όλος ο χρόνος','Εβδομάδα {n}','αυτή την εβδομάδα'],de:['Das ganze Jahr','Woche {n}','diese Woche'],
+    ko:['일 년 전체','{n}주차','이번 주'],he:['כל השנה','שבוע {n}','השבוע'],ar:['السنة كلها','الأسبوع {n}','هذا الأسبوع']};
+  function yearWeeks(){ var d=new Date(), t=Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()), wk=Math.floor(Math.floor((t-PLAN_START)/864e5)/7), y=Math.max(0,Math.floor(wk/52)), out=[], n=ORDER.length;
+    for(var i=0;i<52;i++){ var w=y*52+i; out.push({n:i+1,k:ORDER[((w%n)+n)%n],t:PLAN_START+w*7*864e5,now:w===wk,past:w<wk}); } return out; }
+  function ptYear(){ var Y=YRS[PT.l]||YRS.en, sh=$('ptSheet'), fmt=function(ms){ try{ return new Date(ms).toLocaleDateString(PT.l,{month:'short',day:'numeric',timeZone:'UTC'}); }catch(e){ return ''; } };
+    sh.innerHTML='<div class="pshd"><button type="button" class="ptc" data-s="x" aria-label="Close">&times;</button><h3>'+esc(Y[0])+'</h3><span style="width:46px"></span></div><div class="ptyear">'
+      +yearWeeks().map(function(x){ return '<button type="button" data-s="yr" data-k="'+x.k+'" class="'+(x.now?'now':x.past?'past':'')+'"><small>'+esc(plF(Y[1],{n:x.n}))+'</small><b>'+esc(titleIn(PT.l,x.k))+'</b><small>'+esc(fmt(x.t))+' – '+esc(fmt(x.t+5*864e5))+'</small>'+(x.now?'<i>'+esc(Y[2])+'</i>':'')+'</button>'; }).join('')+'</div>';
+    sh.hidden=false; sh.dataset.kind='year'; var n=sh.querySelector('.now'); if(n) setTimeout(function(){ n.scrollIntoView({block:'center'}); },40); }
+  window.MFptYear=ptYear;
   function ptSheet(kind){ var T=ptT(), sh=$('ptSheet'), h='';
     var head=function(t,plus){ return '<div class="pshd"><button type="button" class="ptc" data-s="x" aria-label="Close">&times;</button><h3>'+esc(t)+'</h3>'+(plus?'<button type="button" class="ptc" data-s="add" aria-label="'+esc(T.add)+'">+</button>':'<span style="width:46px"></span>')+'</div>'; };
     var when=function(t){ try{ return new Date(t).toLocaleDateString(PT.l,{month:'numeric',day:'numeric',year:'2-digit'}); }catch(e){ return ''; } };
@@ -3356,6 +3382,7 @@ window.MF=(function(){
   $('ptSheet').addEventListener('click',function(e){ var b=e.target.closest('[data-s]'); if(!b) return; if(b.dataset.s==='pub') return;
     if(b.dataset.s==='link'){ var rw=b.closest('.psrow'); if(rw&&window.MFpub){ var u=MFpub.link('pr:'+rw.dataset.id); if(u) MFshareLink(u,'MannaFish'); } return; } var a=b.dataset.s, T=ptT(), row=b.closest('.psrow'), x=row&&PR.filter(function(y){ return String(y.id)===row.dataset.id; })[0];
     if(a==='x'){ $('ptSheet').hidden=true; return; }
+    if(a==='yr'){ var yk=b.dataset.k; $('ptSheet').hidden=true; if(!DATA[yk]) return; PT.dayOv=null; planSet(yk); if(yk!==cur) pick(yk,false); PT.steps=ptSteps(); PT.i=0; ptRender(); return; }
     if(a==='add'){ ptSheet('add'); return; }
     if(a==='save'){ var t=$('psT').value.trim(), bd=$('psB').value.trim(); if(!t&&!bd){ $('psT').focus(); return; } prAdd(t||bd.split('\n')[0].slice(0,80),t?bd:bd.split('\n').slice(1).join('\n')); $('ptSheet').hidden=true; toast(T.saved);
       var at=PT.steps[PT.i].k; ptRebuild(at==='prayer0'?'prayer':at); if(at==='prayer0'){ PT.i=PT.steps.findIndex(function(s){ return s.k==='prayer'; }); ptRender(); } return; }
@@ -4821,6 +4848,7 @@ window.MF=(function(){
     box.hidden=false; box.classList.add('on');
     var done=false, end=function(){ if(done) return; done=true; go(); box.classList.add('out'); setTimeout(function(){ box.hidden=true; box.classList.remove('on','out'); },750); };
     box.onclick=end; setTimeout(end,3400); })();
+  (function(){ if(!/[?&]year=1\b/.test(location.search)) return; setTimeout(function(){ if(!PT.on) ptOpen(); ptYear(); },/[?&]devo=/.test(location.search)?3500:400); })();
   // Ken, 9 Oct: from the devotional email, land on the day's fish (as on the site) with the verse open right under it
   (function(){var m=location.search.match(/[?&]r=(\d+)/); if(m && DATA[cur].refs[+m[1]]){ landing=true;
     if(/[?&]listen=1/.test(location.search)){ sheet=true; listenUI(); var want=null, t0=Date.now();
