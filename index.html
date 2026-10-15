@@ -1031,8 +1031,9 @@ section.section.bundles{display:block;margin-top:0}
 .ptanchor{position:sticky;top:-18px;z-index:2;margin:-18px -28px 12px;padding:14px 28px 12px;text-align:center;background:none;transition:background .2s}
 .ptstage.scrolled .ptanchor{background:linear-gradient(#0b1017 82%,rgba(11,16,23,0))}
 .ptanchor .ptak{font:800 .74rem 'Archivo',sans-serif;letter-spacing:.22em;text-transform:uppercase;margin-bottom:8px}
-.ptanchor .pttf{display:block;position:relative;width:min(210px,56vw);aspect-ratio:2/1;margin:0 auto}
-@media(min-width:760px) and (min-height:620px){.ptanchor{top:-26px;margin:-26px -40px 12px;padding:18px 40px 12px;border-radius:26px 26px 0 0}.ptstage.scrolled .ptanchor{background:linear-gradient(#070b11 82%,rgba(7,11,17,0))}.ptanchor .pttf{width:190px}}
+.ptanchor .pttf{display:block;position:relative;width:min(250px,62vw);aspect-ratio:2/1;margin:0 auto}
+.ptstage>.ptanchor{margin-top:-18px}   /* the fish sits at the top of the box, not centred with the rest */
+@media(min-width:760px) and (min-height:620px){.pt .ptstage>.ptanchor{margin-top:-26px}.ptanchor .ptak{font-size:.95rem;letter-spacing:.26em;margin-bottom:12px}.pt .ptstage>.ptweek{margin-top:auto}.ptanchor{top:-26px;margin:-26px -40px 12px;padding:22px 40px 14px;border-radius:26px 26px 0 0}.ptstage.scrolled .ptanchor{background:linear-gradient(#070b11 82%,rgba(7,11,17,0))}.ptanchor .pttf{width:min(62%,clamp(190px,calc(95vh - 516px),320px))}}   /* Ken, 16 Oct mock-up: bigger (a little smaller on a short screen, so nothing scrolls) */
 .ptmenu{position:absolute;top:calc(max(14px,env(safe-area-inset-top)) + 54px);right:16px;z-index:3;background:#2a2622;border-radius:22px;padding:8px 6px;min-width:230px;box-shadow:0 20px 50px -10px #000}
 .ptmenu[hidden]{display:none}
 /* Ken, 12 Oct: "the X should say Home"; and on a computer the devotional is a framed page with its buttons right above it */
