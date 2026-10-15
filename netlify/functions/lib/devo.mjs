@@ -5,7 +5,7 @@
 // Text sign-ups are kept too, and start receiving once texting is set up.
 import { getStore } from '@netlify/blobs';
 import { createHash, createHmac, randomBytes } from 'node:crypto';
-import { localNow, todaysManna, welcomeManna, sabbathRest, SEND_HOUR, DEFAULT_TZ, validTz } from './manna.mjs';
+import { localNow, todaysManna, welcomeManna, sabbathRest, SEND_HOUR, DEFAULT_TZ, validTz, monthOf } from './manna.mjs';
 import WORDS from './words.json';
 import { sendMail } from './mail.mjs';
 import FISH from './fishlines.json';
@@ -61,13 +61,33 @@ export function emailFor(m, lang, unsub, opts = {}) {
   // Ken, 13 Oct: one fish a week -- which day of the week's fish this is; the weekly email says the site picks up where they left off
   const dayLine = m.day ? (es ? `Día ${m.day} de ${m.days} con ${word}` : `Day ${m.day} of ${m.days} with ${word}`) : '';
   // Ken, 14 Oct: "something in the email says pick up where you left off? Or want to catch another fish?"
-  const resume = SITE() + '/?devo=1' + (es ? '&lang=es' : ''), another = SITE() + '/?devo=cast' + (es ? '&lang=es' : '');
+  // Ken, 16 Oct: the site opens with "Today's / This week's / This month's MannaFish", as they signed up
+  const fq = '&f=' + ({ Weekly: 'w', Monthly: 'm' }[opts.freq] || 'd');
+  const resume = SITE() + '/?devo=1' + fq + (es ? '&lang=es' : ''), another = SITE() + '/?devo=cast' + fq + (es ? '&lang=es' : '');
   const RL = es ? ['Continúa donde lo dejaste', '¿Quieres pescar otro pez?'] : ['Pick up where you left off', 'Want to catch another fish?'];
   // the week: each day's date and verses; the days before today ticked, today marked
-  const fmtDay = (ms) => new Date(ms).toLocaleDateString(es ? 'es-US' : 'en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
-  const weekRows = (m.week || []).map((d) => ({ past: d.day < m.day, today: d.day === m.day, label: (es ? 'Día ' : 'Day ') + d.day + ' · ' + fmtDay(d.t),
-    refs: d.refs.map((x) => ({ ref: refEs(x.ref), url: SITE() + x.url + (es ? '&lang=es' : '') })) }));
   const TODAY = es ? 'hoy' : 'today';
+  const fmtDay = (ms) => new Date(ms).toLocaleDateString(es ? 'es-US' : 'en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
+  // Ken, 16 Oct: Friday is the double portion and Saturday the Sabbath, in the list too ("God told his people to gather manna six days and rest the seventh")
+  const DBLW = es ? 'porción doble' : 'double portion', RESTW = es ? 'Descanso del sábado' : 'Sabbath rest';
+  const weekRows = (m.week || []).map((d) => ({ past: d.day < m.day, today: d.day === m.day, label: (es ? 'Día ' : 'Day ') + d.day + ' · ' + fmtDay(d.t),
+    note: d.day === 6 ? DBLW : '', refs: d.refs.map((x) => ({ ref: refEs(x.ref), url: SITE() + x.url + (es ? '&lang=es' : '') })) }));
+  if (m.week && m.week.length) { const sat = m.week[m.week.length - 1].t + 86400000; weekRows.push({ past: false, today: false, rest: true, label: fmtDay(sat), refs: [], note: RESTW }); }
+  // Ken, 16 Oct: the monthly email lists every day of the month, each week's fish above its days
+  const monthRows = opts.freq === 'Monthly' && m.t ? monthOf(m.t).map((d) => ({ past: d.t < m.t, today: d.t === m.t, rest: d.sabbath, key: d.key,
+    word: es ? (ES.titles[d.key] || d.title) : d.title, label: fmtDay(d.t), note: d.friday ? DBLW : (d.sabbath ? RESTW : ''),
+    refs: d.refs.map((x) => ({ ref: refEs(x.ref), url: SITE() + x.url + (es ? '&lang=es' : '') })) })) : [];
+  const rowsOf = (rows) => {
+    let last = null; return rows.map((r) => {
+      const head = monthRows.length && r.key !== last && !r.rest ? `<tr><td colspan="2" style="padding:12px 0 2px;font:bold 15px/1.4 Arial,sans-serif;color:#8fb3e8;letter-spacing:.06em">${esc(r.word)}</td></tr>` : '';
+      if (!r.rest) last = r.key;
+      const col = r.today ? '#f5d76e' : (r.past ? '#9fb2b6' : '#c6d2d4');
+      return head + `<tr><td style="padding:4px 10px 4px 0;white-space:nowrap;vertical-align:top;color:${col};font-weight:${r.today ? 'bold' : 'normal'}">${r.rest ? '☾ ' : (r.past ? '✓ ' : (r.today ? '▶ ' : '○ '))}${esc(r.label)}</td>`
+        + `<td style="padding:4px 0;vertical-align:top;text-align:left">${r.refs.map((x) => `<a href="${x.url}" style="color:${r.today ? '#ffffff' : '#c6d2d4'};text-decoration:${r.today ? 'none' : 'underline'};font-weight:${r.today ? 'bold' : 'normal'}">${esc(x.ref)}</a>`).join(' · ')}`
+        + `${r.note ? ` <span style="color:${r.rest ? '#9fb2b6' : '#8fb3e8'};font-style:${r.rest ? 'italic' : 'normal'}">${r.refs.length ? '· ' : ''}${esc(r.note)}</span>` : ''}${r.today ? ` <span style="color:#f5d76e">· ${TODAY}</span>` : ''}</td></tr>`;
+    }).join('');
+  };
+  const listRows = monthRows.length ? monthRows : weekRows;
   const weekNote = opts.weekly ? (es ? 'Tu pez para esta semana. Abre el devocional cualquier día: continúa donde lo dejaste.' : 'Your fish for this week. Open the devotional any day: it picks up where you left off.') : '';
   // Ken, 9 Oct: the email in the site's own look -- black, white lettering, MannaFish blue, the logo in its own font
   const logo = SITE() + '/w/img/logo-email.png';
@@ -106,9 +126,7 @@ ${dayLine ? td('padding:4px 26px 0;font:bold 13px/1.5 Arial,sans-serif;letter-sp
 ${weekNote ? td('padding:4px 26px 0;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(weekNote))) : ''}
 ${refs.map((x) => td('padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0', gw(`<a href="${x.url}" style="color:#ffffff;text-decoration:none"><b style="color:#ffffff">${esc(x.ref)}</b></a>${esc(x.snip)}`))).join('\n')}
 ${td('padding:16px 12px 6px;font-size:0', button(listen, 'listen', T.listen) + button(read, 'read', T.read))}
-${weekRows.length ? td('padding:14px 22px 4px', gw(`<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;font:14px/1.5 Arial,sans-serif">${weekRows.map((r) =>
-  `<tr><td style="padding:4px 10px 4px 0;white-space:nowrap;vertical-align:top;color:${r.today ? '#f5d76e' : (r.past ? '#9fb2b6' : '#c6d2d4')};font-weight:${r.today ? 'bold' : 'normal'}">${r.past ? '✓ ' : (r.today ? '▶ ' : '○ ')}${esc(r.label)}</td>`
-  + `<td style="padding:4px 0;vertical-align:top;text-align:left">${r.refs.map((x) => `<a href="${x.url}" style="color:${r.today ? '#ffffff' : '#c6d2d4'};text-decoration:${r.today ? 'none' : 'underline'};font-weight:${r.today ? 'bold' : 'normal'}">${esc(x.ref)}</a>`).join(' · ')}${r.today ? ` <span style="color:#f5d76e">· ${TODAY}</span>` : ''}</td></tr>`).join('')}</table>`)) : ''}
+${listRows.length ? td('padding:14px 22px 4px', gw(`<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;font:14px/1.5 Arial,sans-serif">${rowsOf(listRows)}</table>`)) : ''}
 ${td('padding:8px 22px 20px;font:bold 16px/1.9 Arial,sans-serif', gw(`<a href="${another}" style="color:#ffffff;text-decoration:underline">🎣 ${esc(RL[1])} ›</a>`))}
 ${rule}
 ${td('padding:16px 22px 0', head(dbl ? 'sab' : 'fish', dbl ? T.sab : T.fish))}
@@ -118,7 +136,7 @@ ${dbl ? td('padding:16px 12px 24px;font-size:0', button(sabLink, 'sabread', T.sa
 ${rule}
 ${td('padding:16px 22px 22px;font:12px/1.7 Arial,sans-serif;color:#8a9aa0', gw(`${esc(T.why)} <a href="${unsub}" style="color:#8a9aa0">${esc(T.stop)}</a> · <a href="${SITE()}/privacy/" style="color:#8a9aa0">${es ? 'Privacidad' : 'Privacy'}</a><br>${esc(ADDRESS())}`))}
 </table></td></tr></table></body></html>`;
-  const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${dbl ? T.dbl + ' — ' + T.dblNote + '\n\n' : ''}${dayLine ? dayLine + '\n' : ''}${weekNote ? weekNote + '\n' : ''}${refs.map((x) => T.today + ': ' + x.ref + x.snip + '\n' + x.url).join('\n')}\n${T.listen}: ${listen}\n${T.read}: ${read}\n${RL[0]}: ${resume}\n${RL[1]} ${another}\n\n${weekRows.map((r) => (r.past ? '✓ ' : r.today ? '▶ ' : '○ ') + r.label + ' — ' + r.refs.map((x) => x.ref).join(', ') + (r.today ? ' (' + TODAY + ')' : '')).join('\n')}\n\n${dbl ? T.sab : T.fish}: “${f.top} ${f.bottom}” ${f.ref}${dbl ? '\n' + T.sabRead + ': ' + sabLink : ''}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
+  const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${dbl ? T.dbl + ' — ' + T.dblNote + '\n\n' : ''}${dayLine ? dayLine + '\n' : ''}${weekNote ? weekNote + '\n' : ''}${refs.map((x) => T.today + ': ' + x.ref + x.snip + '\n' + x.url).join('\n')}\n${T.listen}: ${listen}\n${T.read}: ${read}\n${RL[0]}: ${resume}\n${RL[1]} ${another}\n\n${listRows.map((r) => (r.rest ? '☾ ' : r.past ? '✓ ' : r.today ? '▶ ' : '○ ') + r.label + (monthRows.length && !r.rest ? ' (' + r.word + ')' : '') + ' — ' + [r.refs.map((x) => x.ref).join(', '), r.note].filter(Boolean).join(' · ') + (r.today ? ' (' + TODAY + ')' : '')).join('\n')}\n\n${dbl ? T.sab : T.fish}: “${f.top} ${f.bottom}” ${f.ref}${dbl ? '\n' + T.sabRead + ': ' + sabLink : ''}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
   LINK = keep;
   return { subject: T.sub + (dbl ? T.sabSub : ''), html, text };
 }
@@ -126,7 +144,7 @@ ${td('padding:16px 22px 22px;font:12px/1.7 Arial,sans-serif;color:#8a9aa0', gw(`
 export async function deliver(rec, m, opts) {
   LINK = rec.site || null;
   const unsub = await unsubUrl(rec.email);
-  const e = emailFor(m, rec.lang, unsub, opts); LINK = null;
+  const e = emailFor(m, rec.lang, unsub, { ...opts, freq: rec.freq }); LINK = null;
   return sendMail({ to: rec.email, name: rec.name, subject: e.subject, html: e.html, text: e.text, tag: 'devotional',
     headers: { 'List-Unsubscribe': '<' + unsub + '>', 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' } });
 }

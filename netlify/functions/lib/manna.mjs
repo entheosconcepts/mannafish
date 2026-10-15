@@ -39,11 +39,25 @@ export function todaysManna(now = new Date(), tz = DEFAULT_TZ) {
   for (let d = 0; d < DAYS; d++) week.push({ day: d + 1, t: t + (d - dow) * 86400000,
     refs: dayRefs(w.refs.length, d).map((i) => ({ i, ref: w.refs[i][0], url: '/?w=' + key.toLowerCase() + '&r=' + i })) });
   return {
-    key, title: w.title, day: dow + 1, days: DAYS, refs, week,
+    key, title: w.title, day: dow + 1, days: DAYS, refs, week, t,
     refIndex: refs[0].i, ref: refs[0].ref, snippet: refs[0].snippet,
     friday: dow === 5,
     url: refs[0].url
   };
+}
+
+// Ken, 16 Oct: "if it's a monthly I would like to see a list of every day of the month" -- each day of the month of t
+// (a UTC midnight): its fish and verses; Friday is the double portion, Saturday the Sabbath (no verses)
+export function mannaOn(t) {
+  const dow = new Date(t).getUTCDay(), wk = Math.floor(Math.floor((t - START) / 86400000) / 7), n = WORDS.order.length;
+  const key = WORDS.order[((wk % n) + n) % n], w = WORDS.words[key];
+  return { t, dow, key, title: w.title, friday: dow === 5, sabbath: dow === 6,
+    refs: dow === 6 ? [] : dayRefs(w.refs.length, dow).map((i) => ({ i, ref: w.refs[i][0], url: '/?w=' + key.toLowerCase() + '&r=' + i })) };
+}
+export function monthOf(t) {
+  const d = new Date(t), y = d.getUTCFullYear(), mo = d.getUTCMonth(), out = [];
+  for (let x = Date.UTC(y, mo, 1); new Date(x).getUTCMonth() === mo; x += 86400000) out.push(mannaOn(x));
+  return out;
 }
 
 // the verses for day d (0 = Sunday) of a word with c verses, in order: twelve make two a day
