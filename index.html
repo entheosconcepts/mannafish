@@ -928,9 +928,17 @@ section.section.bundles{display:block;margin-top:0}
 .nb.mk{background:rgba(245,215,110,.16);border-color:rgba(245,215,110,.6);box-shadow:inset 4px 0 0 #f5d76e}
 .nb .nref{display:block;font:700 .74rem 'Archivo',sans-serif;letter-spacing:.04em;color:var(--brass-soft,#6f9be0);margin-bottom:2px;background:none;border:0;padding:0;cursor:pointer;text-align:left}
 .hlhint{font:.8rem 'Archivo',sans-serif;color:var(--foam-dim,#aaa);margin:0 0 8px}
-.chapter span.mk{background:var(--hl,rgba(245,215,110,.5));-webkit-box-decoration-break:clone;box-decoration-break:clone;border-radius:3px;padding:.02em .06em}   /* Ken, 15 Oct: centred on the letters, like a marker */
-::highlight(mfh-gold){background-color:rgba(245,215,110,.55)}::highlight(mfh-green){background-color:rgba(110,214,140,.5)}::highlight(mfh-blue){background-color:rgba(110,170,245,.55)}
-::highlight(mfh-pink){background-color:rgba(245,140,190,.55)}::highlight(mfh-orange){background-color:rgba(250,160,80,.55)}::highlight(mfh-pen){background-color:rgba(255,255,255,.28)}
+.chapter span.mk{background:var(--hl,#f5d76e);color:#14181d;-webkit-box-decoration-break:clone;box-decoration-break:clone;border-radius:3px;padding:.02em .06em}   /* Ken, 15 Oct: centred on the letters, like a marker */
+::highlight(mfh-gold){background-color:#f5d76e;color:#14181d}::highlight(mfh-green){background-color:#8ddca4;color:#14181d}::highlight(mfh-blue){background-color:#93bff5;color:#14181d}
+::highlight(mfh-pink){background-color:#f5a9cb;color:#14181d}::highlight(mfh-orange){background-color:#f8b273;color:#14181d}
+/* Ken, 16 Oct: hide / show highlights */
+.hlhide .chapter span.mk,.hlhide .pt .ptq.mk [data-v]{background:none!important;color:inherit!important}
+.hlmenu{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:8px 0 2px}.hlmenu[hidden]{display:none}
+.hlmenu button{border:1px solid rgba(255,255,255,.3);background:#14181d;color:#fff;border-radius:999px;padding:6px 12px;font:600 .78rem 'Archivo',sans-serif;cursor:pointer}
+.hlmenu button.hlx{border-color:rgba(245,120,120,.55);color:#f6b0b0}
+[data-mode="light"] .hlmenu button{background:#fff;color:#111;border-color:#c9ccd2}[data-mode="light"] .hlmenu button.hlx{color:#b02a2a;border-color:#e3a0a0}
+.rhlmore{min-width:40px;letter-spacing:.08em}
+.pthlmenu{margin:-4px 0 16px}::highlight(mfh-pen){background-color:rgba(255,255,255,.28)}
 .chapter.pen{touch-action:none;-webkit-user-select:none;user-select:none;cursor:crosshair}
 .rpen{border:1px solid rgba(255,255,255,.35);background:none;color:inherit;border-radius:999px;padding:5px 12px;font:700 .8rem 'Archivo',sans-serif;cursor:pointer;white-space:nowrap}
 .rpen[aria-pressed=true]{background:#f5d76e;color:#111;border-color:#f5d76e}
@@ -1061,8 +1069,8 @@ section.section.bundles{display:block;margin-top:0}
 .ptchips button.today{background:#fff;color:#0b0f14}.ptchips button.was{opacity:.7}.ptchips button.later{opacity:.4}
 .pthl{margin:-6px 0 14px;align-items:center}.pthl .ptbtn{font-size:.95rem;padding:8px 16px}.pthl .ptbtn[aria-pressed=true]{background:#f5d76e;color:#111;border-color:#f5d76e}
 .ptver{border:0;background:none;color:inherit;font:800 .78rem 'Archivo',sans-serif;letter-spacing:.12em;opacity:.7;cursor:pointer;padding:6px}
-.pt .ptq.mk [data-v]{background:var(--hl,rgba(245,215,110,.42));-webkit-box-decoration-break:clone;box-decoration-break:clone;border-radius:3px;padding:.02em .06em}
-.pt .ptq.mk cite [data-v]{background:none}   /* the verse is marked, not its reference */
+.pt .ptq.mk [data-v]{background:var(--hl,#f5d76e);color:#14181d;-webkit-box-decoration-break:clone;box-decoration-break:clone;border-radius:3px;padding:.02em .06em}
+.pt .ptq.mk cite [data-v]{background:none;color:inherit}   /* the verse is marked, not its reference */
 .pthl .hlc{display:inline-flex;gap:6px;align-items:center}.pthl .hlc button{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.35);cursor:pointer;padding:0}
 .pthl .hlc button[aria-pressed=true]{border-color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.35)}
 .ptversel{appearance:none;-webkit-appearance:none;border:1px solid rgba(255,255,255,.4);background:rgba(0,0,0,.3);color:#fff;border-radius:999px;padding:7px 28px 7px 12px;font:800 .82rem 'Archivo',sans-serif;letter-spacing:.06em;cursor:pointer;background-image:linear-gradient(45deg,transparent 50%,#fff 50%),linear-gradient(135deg,#fff 50%,transparent 50%);background-position:calc(100% - 15px) 52%,calc(100% - 10px) 52%;background-size:5px 5px;background-repeat:no-repeat}
@@ -2133,7 +2141,7 @@ select option{background:#0b1620;color:#eaf0f0}
     <p class="rhint" id="rYouVHint">Click on the Bible App button for more versions</p>
     <a class="rbtn p" id="rYouV" target="_blank" rel="noopener">Bible App</a>
     <a class="rbtn s" id="rGate" target="_blank" rel="noopener">Read the full chapter</a>
-    <div class="rfoot"><select class="rver" id="rVer" aria-label="Bible version"></select><button type="button" class="rpen" id="rPen" aria-pressed="false"></button><div class="rnote" id="rNote"></div></div>
+    <div class="rfoot"><select class="rver" id="rVer" aria-label="Bible version"></select><button type="button" class="rpen" id="rPen" aria-pressed="false"></button><button type="button" class="rpen rhlmore" id="rHlMore" aria-expanded="false">⋯</button><div class="hlmenu" id="rHlMenu" hidden></div><div class="rnote" id="rNote"></div></div>
   </div>
 </aside>
 
@@ -3130,8 +3138,8 @@ window.MF=(function(){
   // Ken, 14 Oct: "I would like to be able to change bible versions not just KJV here" -- the version is a picker under the verse
   function ptHlRow(){ var cv=curVer().k, col=hlColor();
     return '<div class="penbar ptpenbar" hidden></div><div class="ptrow pthl"><button type="button" class="ptbtn" data-a="hl" aria-pressed="false" hidden></button><button type="button" class="ptbtn" data-a="hlpen" aria-pressed="false" hidden></button>'
-      +'<span class="hlc" role="group" aria-label="Highlight colour">'+Object.keys(HLC).map(function(c){ return '<button type="button" data-a="hlc" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('')+'</span>'
-      +(PT.l==='en'?'<select class="ptversel" aria-label="'+esc((BVL[PT.l]||BVL.en)[0])+'">'+VERS.map(function(v){ return '<option value="'+v.k+'"'+(v.k===cv?' selected':'')+'>'+esc(v.s)+' \u00b7 '+esc(v.n)+'</option>'; }).join('')+'</select>':'')+'</div>'; }
+      +'<button type="button" class="ptbtn rhlmore" data-a="hlmore" aria-expanded="false">⋯</button><span class="hlc" role="group" aria-label="Highlight colour">'+Object.keys(HLC).map(function(c){ return '<button type="button" data-a="hlc" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('')+'</span>'
+      +(PT.l==='en'?'<select class="ptversel" aria-label="'+esc((BVL[PT.l]||BVL.en)[0])+'">'+VERS.map(function(v){ return '<option value="'+v.k+'"'+(v.k===cv?' selected':'')+'>'+esc(v.s)+' \u00b7 '+esc(v.n)+'</option>'; }).join('')+'</select>':'')+'</div><div class="hlmenu pthlmenu" hidden></div>'; }
   function ptHlSet(pr,k,i,l,text){ var st=$('ptStage'), b=st.querySelector('[data-a="hl"]'); if(!b||!pr) return;
     var ver=verCode(l,false), info={kind:'verse',ref:pr.book+' '+pr.ch+':'+pr.vs,ver:ver,k:k,i:i,l:l,v:+pr.vs,text:String(text||'').slice(0,220)};
     PT.hlc={key:hlKey({book:pr.book,ch:pr.ch,ver:ver},pr.vs),info:info}; ptHlUI(!!hls()[PT.hlc.key]); b.hidden=false;
@@ -3263,10 +3271,11 @@ window.MF=(function(){
     if(a==='hlpen'){ var q=$('ptStage').querySelector('.ptq'), bar=$('ptStage').querySelector('.ptpenbar'); if(!q||!q.querySelector('[data-hv]')) return;
       var on=!q.classList.contains('pen'), off=function(){ q.classList.remove('pen'); bar.hidden=true; b.setAttribute('aria-pressed','false'); b.textContent=MFpenL()[0]; };
       if(!on){ off(); return; } stopSpeak(); q.classList.add('pen'); bar.hidden=false; MFpenBar(bar,off); b.setAttribute('aria-pressed','true'); b.textContent=MFpenL()[2]; return; }
+    if(a==='hlmore'){ var mn=$('ptStage').querySelector('.pthlmenu'), c3=PT.hlc&&PT.hlc.info; if(mn) MFhlMenu(mn,b,c3?{book:parseRef(c3.ref).book,ch:parseRef(c3.ref).ch,ver:c3.ver}:null); return; }
     if(a==='hl'){ var c=PT.hlc; if(!c) return; var inf=JSON.parse(JSON.stringify(c.info)); inf.c=hlColor(); ptHlUI(hlToggle(c.key,inf)); return; }
     // a colour: it becomes the one used from now on; the verse is highlighted in it (or re-coloured if it already is)
     if(a==='hlc'){ try{ localStorage.setItem('mf-hl-color',b.dataset.c); }catch(er){} var c2=PT.hlc; if(!c2){ ptHlUI(false); return; }
-      var h2=hls(); if(h2[c2.key]){ h2[c2.key].c=b.dataset.c; saveHls(h2); ptHlUI(true); }
+      var h2=hls(); if(h2[c2.key]){ h2[c2.key].c=b.dataset.c; saveHls(h2); ptHlUI(true); if(window.MFcloudHl&&MFcloudHl.on()) MFcloudHl.add(h2[c2.key].ref,h2[c2.key].ver,b.dataset.c); }
       else { var inf2=JSON.parse(JSON.stringify(c2.info)); inf2.c=b.dataset.c; ptHlUI(hlToggle(c2.key,inf2)); } return; }
     if(a==='vers'){ e.stopPropagation(); $('ptMore').click(); setTimeout(function(){ var v=$('ptMenu').querySelector('.ptvers'); if(v){ v.hidden=false; var f=v.querySelector('[aria-checked=true]'); if(f) f.focus(); } },0); return; }
     if(a==='planday'){ var dd=+b.dataset.d; PT.dayOv=(dd===planDay(cur))?null:{k:cur,d:dd}; PT.marked={}; PT.steps=ptSteps(); PT.i=0; ptRender(); return; }
@@ -4145,7 +4154,9 @@ window.MF=(function(){
   // ── Highlights: a verse in any reader, or a note. Kept in this browser, and in the account when signed in.
   var HKEY='mf-hl';
   // Ken, 14 Oct: "can we have options to what color we use to highlight"
-  var HLC={gold:'rgba(245,215,110,.6)',green:'rgba(110,214,140,.55)',blue:'rgba(110,170,245,.6)',pink:'rgba(245,140,190,.6)',orange:'rgba(250,160,80,.6)'};
+  // Ken, 16 Oct: "my highlights are not the colors that I chose ... very ugly" -- see-through colours went muddy on black, so they are
+  // solid now with dark letters, like a highlighter on paper
+  var HLC={gold:'#f5d76e',green:'#8ddca4',blue:'#93bff5',pink:'#f5a9cb',orange:'#f8b273'};
   function hlColor(){ var c='gold'; try{ c=localStorage.getItem('mf-hl-color')||'gold'; }catch(e){} return HLC[c]?c:'gold'; }
   window.MFhlColors=HLC; window.MFhlColor=hlColor;
   function hls(){ try{ return JSON.parse(localStorage.getItem(HKEY)||'{}')||{}; }catch(e){ return {}; } }
@@ -4173,7 +4184,7 @@ window.MF=(function(){
       if(!a&&s<=at+len){ r.setStart(n,Math.max(0,s-at)); a=true; }
       if(a&&e<=at+len){ r.setEnd(n,Math.max(0,e-at)); return r; } at+=len; }
     return null; }
-  function hlPaint(extra){ if(!HLAPI) return; var g={}, h=hls(); Object.keys(HLC).forEach(function(c){ g[c]=[]; });
+  function hlPaint(extra){ if(!HLAPI) return; var g={}, h=hlHidden()?{}:hls(); Object.keys(HLC).forEach(function(c){ g[c]=[]; });
     document.querySelectorAll('.chapter').forEach(function(root){ var c=ctxOfRoot(root); if(!c) return;
       Object.keys(h).forEach(function(k){ var x=h[k]; if(x.kind!=='phrase'||x.ver!==c.ver) return; var m=PHR.exec(x.ref); if(!m||m[1]!==c.book||m[2]!==String(c.ch)) return;
         var sp=root.querySelector('span[data-v="'+m[3]+'"]'); if(!sp) return; var r=rangeIn(sp,+m[4],+m[5]); if(r) g[HLC[x.c]?x.c:'gold'].push(r); }); });
@@ -4184,6 +4195,39 @@ window.MF=(function(){
     Object.keys(g).forEach(function(c){ CSS.highlights.set('mfh-'+c,new Highlight(...g[c])); });
     if(extra) CSS.highlights.set('mfh-pen',new Highlight(...extra)); else CSS.highlights.delete('mfh-pen'); }
   window.MFhlPaint=hlPaint;
+  // ── Ken, 16 Oct: "a button to clear all highlights ... see highlights or hide highlights, and then delete highlights" -- the ⋯ by Highlight words
+  var HLM={en:['Hide highlights','Show highlights','Clear this chapter','Clear all my highlights','See my highlights','Remove the highlights in this chapter?','Remove all your Bible highlights? This cannot be undone.','Highlights removed'],
+    es:['Ocultar resaltados','Mostrar resaltados','Borrar este capítulo','Borrar todos mis resaltados','Ver mis resaltados','¿Quitar los resaltados de este capítulo?','¿Quitar todos tus resaltados de la Biblia? No se puede deshacer.','Resaltados quitados'],
+    tl:['Itago ang mga highlight','Ipakita ang mga highlight','Burahin sa kabanatang ito','Burahin lahat ng aking highlight','Tingnan ang aking mga highlight','Alisin ang mga highlight sa kabanatang ito?','Alisin lahat ng iyong highlight sa Bibliya? Hindi na ito maibabalik.','Naalis ang mga highlight'],
+    zh:['隐藏标记','显示标记','清除本章','清除我的所有标记','查看我的标记','清除本章的标记吗？','清除你所有的经文标记吗？此操作无法撤销。','标记已清除'],
+    hi:['हाइलाइट छिपाएँ','हाइलाइट दिखाएँ','यह अध्याय मिटाएँ','मेरे सभी हाइलाइट मिटाएँ','मेरे हाइलाइट देखें','इस अध्याय के हाइलाइट हटाएँ?','बाइबल के अपने सभी हाइलाइट हटाएँ? यह वापस नहीं होगा।','हाइलाइट हटा दिए गए'],
+    el:['Απόκρυψη επισημάνσεων','Εμφάνιση επισημάνσεων','Διαγραφή σε αυτό το κεφάλαιο','Διαγραφή όλων των επισημάνσεών μου','Οι επισημάνσεις μου','Να διαγραφούν οι επισημάνσεις αυτού του κεφαλαίου;','Να διαγραφούν όλες οι επισημάνσεις σας στη Βίβλο; Δεν αναιρείται.','Οι επισημάνσεις διαγράφηκαν'],
+    de:['Markierungen ausblenden','Markierungen zeigen','Dieses Kapitel löschen','Alle meine Markierungen löschen','Meine Markierungen','Markierungen in diesem Kapitel löschen?','Alle deine Bibel-Markierungen löschen? Das lässt sich nicht rückgängig machen.','Markierungen gelöscht'],
+    ko:['표시 숨기기','표시 보이기','이 장 지우기','내 표시 모두 지우기','내 표시 보기','이 장의 표시를 지울까요?','성경에 한 표시를 모두 지울까요? 되돌릴 수 없습니다.','표시를 지웠습니다'],
+    he:['הסתרת סימונים','הצגת סימונים','מחיקה בפרק זה','מחיקת כל הסימונים שלי','הסימונים שלי','למחוק את הסימונים בפרק זה?','למחוק את כל הסימונים שלך בכתובים? לא ניתן לבטל.','הסימונים נמחקו'],
+    ar:['إخفاء التمييز','إظهار التمييز','مسح هذا الأصحاح','مسح كل تمييزاتي','عرض تمييزاتي','مسح التمييز في هذا الأصحاح؟','مسح كل تمييزاتك في الكتاب المقدس؟ لا يمكن التراجع.','تم مسح التمييز']};
+  function hlHidden(){ try{ return localStorage.getItem('mf-hl-hide')==='1'; }catch(e){ return false; } }
+  function hlSetHidden(on){ try{ localStorage.setItem('mf-hl-hide',on?'1':''); }catch(e){} document.documentElement.classList.toggle('hlhide',on); hlPaint(); }
+  document.documentElement.classList.toggle('hlhide',hlHidden());
+  // remove highlights (not highlighted notes): those of one chapter in one version, or all of them
+  function hlClear(c){ var h=hls(), n=0; Object.keys(h).forEach(function(k){ var x=h[k]; if(x.kind==='note') return;
+      if(c){ var m=/^(.*)\s+(\d+):/.exec(x.ref||''); if(!m||m[1]!==c.book||m[2]!==String(c.ch)||x.ver!==c.ver) return; }
+      delete h[k]; n++; if(window.MFcloudHl&&MFcloudHl.on()) MFcloudHl.del(x.ref,x.ver); });
+    saveHls(h); if(window.MFhlMarkStage) MFhlMarkStage(); document.querySelectorAll('.fr').forEach(function(fr){ if(fr._ctx&&window.MFhlMarkFig) MFhlMarkFig(fr); });
+    var st=$('ptStage'), q=st&&st.querySelector('.ptq.mk'); if(q&&!(PT.hlc&&h[PT.hlc.key])) ptHlUI(false); hlPaint(); return n; }
+  // menu: the box it opens in, the ⋯ button, and the chapter on screen (or null)
+  window.MFhlMenu=function(box,btn,c){ var L=HLM[MF.lang]||HLM.en, open=box.hidden;
+    btn.setAttribute('aria-expanded',String(open)); if(!open){ box.hidden=true; return; }
+    box.innerHTML='<button type="button" data-m="hide">'+(hlHidden()?'👁 '+esc(L[1]):'🙈 '+esc(L[0]))+'</button><button type="button" data-m="see">📋 '+esc(L[4])+'</button>'
+      +(c?'<button type="button" class="hlx" data-m="ch">🗑 '+esc(L[2])+'</button>':'')+'<button type="button" class="hlx" data-m="all">🗑 '+esc(L[3])+'</button>';
+    box.hidden=false;
+    box.onclick=function(e){ var m=e.target.closest('[data-m]'); if(!m) return; m=m.dataset.m;
+      if(m==='hide'){ hlSetHidden(!hlHidden()); }
+      else if(m==='see'){ $('notesBox').style.zIndex='95'; if($('notesBox').hidden) $('notesBtn').click(); tab(true); }   /* above the reader and the devotional; closing it goes back */
+      else if(m==='ch'){ if(!confirm(L[5])) return; hlClear(c); toast(L[7]); }
+      else if(m==='all'){ if(!confirm(L[6])) return; hlClear(null); toast(L[7]); }
+      box.hidden=true; btn.setAttribute('aria-expanded','false'); }; };
+  $('rHlMore').addEventListener('click',function(){ MFhlMenu($('rHlMenu'),this,stageCtx()); });
   window.MFhlRangeOk=function(root){ return !!ctxOfRoot(root); };
   window.MFhlRange=function(range,root){ var c=ctxOfRoot(root); if(!c) return; versesIn(range,root).forEach(function(z){ hlPhrase(z[0],c,z[1],z[2]); }); hlPaint(); };
   // a word or phrase on or off; what it overlaps in the same verse is replaced, so dragging over a mark redraws it
@@ -4238,7 +4282,7 @@ window.MF=(function(){
     root.addEventListener('pointercancel',function(){ P=null; hlPaint(); }); }
   // the reader
   function rPenOn(on){ $('rChapter').classList.toggle('pen',on); $('rPen').setAttribute('aria-pressed',String(on)); $('rPen').textContent=on?penL()[2]:penL()[0];
-    $('rPenBar').hidden=!on; if(on){ if(window.MFcloseWord) MFcloseWord(); penBar($('rPenBar'),function(){ rPenOn(false); }); } }
+    $('rPenBar').hidden=!on; if(on){ if(hlHidden()) hlSetHidden(false); if(window.MFcloseWord) MFcloseWord(); penBar($('rPenBar'),function(){ rPenOn(false); }); } }
   $('rPen').addEventListener('click',function(){ rPenOn(!$('rChapter').classList.contains('pen')); });
   rPenOn(false); MF.onChange(function(){ rPenOn($('rChapter').classList.contains('pen')); });
   penBind($('rChapter'),stageCtx,'span[data-v]');
@@ -4344,19 +4388,20 @@ window.MF=(function(){
     set:function(id,st){ return sb.from('notes').update({word_key:'PRAYER:'+st,updated_at:new Date().toISOString()}).eq('id',id).then(function(r){ if(r.error) throw r.error; }); },
     del:function(id){ return sb.from('notes').delete().eq('id',id); } };
   window.MFcloudHl={ on:function(){ return !!(me&&sb); },
-    add:function(ref,ver,col){ return sb.from('highlights').upsert({site:SITE,verse_ref:ref,version:ver,color:col||'gold'},{onConflict:'user_id,site,verse_ref,version',ignoreDuplicates:true}).then(function(){}); },
+    add:function(ref,ver,col){ return sb.from('highlights').upsert({site:SITE,verse_ref:ref,version:ver,color:col||'gold'},{onConflict:'user_id,site,verse_ref,version'}).then(function(){}); },
     del:function(ref,ver){ return sb.from('highlights').delete().eq('site',SITE).eq('verse_ref',ref).eq('version',ver).then(function(){}); } };
   // highlights: the account's list joins this device's (a verse highlighted on another device opens from its chapter here)
   function hlSync(){ if(!(me&&sb)||!window.MFhls) return Promise.resolve(); var h=MFhls(), mine={};
     Object.keys(h).forEach(function(key){ var x=h[key]; mine[(x.kind==='note'?key:x.ref)+'|'+(x.kind==='note'?'note':x.ver)]=key; });
     return sb.from('highlights').select('verse_ref,version,color,created_at').eq('site',SITE).then(function(r){ var got={};
-      (r.data||[]).forEach(function(row){ got[row.verse_ref+'|'+row.version]=1; if(mine[row.verse_ref+'|'+row.version]) return;
+      (r.data||[]).forEach(function(row){ got[row.verse_ref+'|'+row.version]=row.color==='yellow'?'gold':(row.color||'gold'); if(mine[row.verse_ref+'|'+row.version]) return;
         if(row.version==='note') return;   // a highlighted note from another device: shown with its note
         var m=row.verse_ref.match(/^(.*)\s+(\d+):(\d+)(?:#(\d+)-(\d+))?$/); if(!m) return; var k=null,i=0;
         Object.keys(DATA).some(function(w){ return DATA[w].refs.some(function(rf,j){ var p=parseRef(rf[0]); if(p&&p.book===m[1]&&p.ch===m[2]){ k=w; i=j; return true; } }); });
         if(!k) return; var l=row.version.indexOf('en:')===0||row.version==='orig'?'en':row.version;
         h[row.verse_ref+'|'+row.version]={kind:m[4]?'phrase':'verse',ref:row.verse_ref,ver:row.version,k:k,i:i,l:l,v:+m[3],s:m[4]?+m[4]:undefined,e:m[5]?+m[5]:undefined,c:row.color==='yellow'?'gold':row.color,text:'',at:Date.parse(row.created_at)}; });
-      Object.keys(mine).forEach(function(id){ if(!got[id]){ var x=h[mine[id]]; MFcloudHl.add(x.kind==='note'?mine[id]:x.ref,x.kind==='note'?'note':x.ver); } });
+      // Ken, 16 Oct: highlights came back gold -- the colour was never sent; now it is, and this device's colour wins
+      Object.keys(mine).forEach(function(id){ var x=h[mine[id]], c=x.kind==='note'?'gold':(x.c||'gold'); if(!got[id]||got[id]!==c) MFcloudHl.add(x.kind==='note'?mine[id]:x.ref,x.kind==='note'?'note':x.ver,c); });
       MFsaveHls(h); }); }
   window.MFnoteSaved=function(k,text){ if(me&&sb) cloudPut(k,text).then(function(r){ if(r&&r.error) $('notesMsg').textContent=T('Saved on this device; account save failed','Guardado aquí; no se pudo guardar en la cuenta'); }); };
   window.MFnoteLoad=function(k,cb){ if(!(me&&sb)) return; cloudGet(k).then(function(row){ if(row&&k===cur) cb(row.body); }); };
