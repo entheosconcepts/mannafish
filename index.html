@@ -448,6 +448,16 @@ a{color:inherit}
 @media(max-width:640px){
   .hero .langs{grid-template-columns:1fr;gap:16px}
   .hero .langs .div{display:none}
+  /* Ken, 16 Oct: on a phone too, the Greek and the Hebrew side by side on one card */
+  .hero .deck .langs:not(.one){grid-template-columns:1fr 1px 1fr;gap:0 10px}
+  .hero .deck .langs:not(.one) .div{display:block}
+  .hero .deck .langs:not(.one) .lang .w{font-size:1.2rem}
+  .hero .deck .langs:not(.one) .lang .lab{font-size:.6rem;flex-basis:100%}
+  .hero .deck .langs:not(.one) .lang .snd{font-size:.72rem;flex-basis:100%}
+  .hero .deck .langs:not(.one) .lang .mean{font-size:.8rem;line-height:1.35}
+  .hero .deck .langs:not(.one) .conc{font-size:.52rem;letter-spacing:.06em}
+  .hero .deck .dstudy .wtitle{font-size:1.9rem}.hero .deck .dstudy .hr{margin:6px 0 !important}
+  .hero .deck .dcard.dstudy{padding-top:12px;padding-bottom:36px}
   .hero .refs{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 .rtools{display:flex;gap:8px;align-items:center;flex:0 0 auto}
@@ -2329,17 +2339,18 @@ window.MF=(function(){
   window.addEventListener('pageshow',function(e){if(e.persisted) restoreReturn();});
   // The card is as tall as whichever side is showing: the fish, or the whole study.
   function sizeStage(){var st=$('stage'); if(!st) return; if(!st.classList.contains('on') && reader.classList.contains('stacked') && reader.classList.contains('open')) closeReader(); var w=st.clientWidth, fb=$('fishbox');
-    var fh=(fb?fb.offsetHeight:w/2)+44, front=st.classList.contains('on')?Math.max(w*10/16,fh):fh;
+    var fh=(fb?fb.offsetHeight:w/2)+44, front=st.classList.contains('on')?Math.max(w*10/16+(innerWidth<=640?(innerWidth<380?62:34):0),fh):fh;   /* a phone: room for Greek and Hebrew side by side */
     // a phone gets more room for a verse or a Strong's card opened on the fish (Ken, 11 Oct)
     if(st.classList.contains('on')&&reader.classList.contains('stacked')&&reader.classList.contains('open')&&innerWidth<=640) front=Math.max(front,Math.round(innerHeight*0.62));
-    st.style.height=front+'px'; if(st.classList.contains('on')) buildDeck(st.querySelector('.face.back'));
+    st.style.height=front+'px'; if(st.classList.contains('on')){ buildDeck(st.querySelector('.face.back')); clearTimeout(sizeStage.t); sizeStage.t=setTimeout(function(){ if(st.classList.contains('on')) buildDeck(st.querySelector('.face.back')); },500); }   /* again once the card has grown to its height */
     if(reader.classList.contains('lexbig') && reader.classList.contains('stacked')) st.style.height='auto'; }
   window.addEventListener('resize',sizeStage);
 
   // Ken, 9 Oct: "a deck of cards" -- the back of the fish is the same rectangle as the decal. The word with its Greek
   // and Hebrew is the first card; the verses follow on as many cards as they need, stacked, with arrows to move through.
   // A verse opened from a card is laid on top of the deck, the same size.
-  function deckCardH(w){ return window.matchMedia('(max-width:640px)').matches ? Math.round((w-2)/2+60) : Math.round(Math.max(w*0.625, w*0.46+60)); }
+  function deckCardH(w){ return window.matchMedia('(max-width:640px)').matches ? Math.round((w-2)/2+92) :   /* Ken, 16 Oct: room for the Greek and Hebrew side by side on a phone */
+    Math.round(Math.max(w*0.625, w*0.46+60)); }
   function noIds(e){ e.removeAttribute('id'); [].forEach.call(e.querySelectorAll('[id]'),function(x){ x.removeAttribute('id'); }); return e; }
   function buildDeck(face){ if(!face) return; var src=face.querySelector('.bsrc'), deck=face.querySelector('.deck'); if(!src||!deck) return;
     face.classList.add('decked'); if(!deck.clientHeight||!deck.clientWidth) return;
