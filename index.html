@@ -629,16 +629,16 @@ section.section.bundles{display:block;margin-top:0}
 .dnav[hidden]{display:none}
 .dturn{position:absolute;left:20px;bottom:18px;z-index:6;height:30px;border-radius:999px;border:1px solid rgba(196,210,214,.3);background:#000;color:#eaf0f0;font:700 .9rem 'Archivo',sans-serif;padding:0 10px;cursor:pointer;opacity:.8}
 .dturn:hover{opacity:1}
-.stctl{position:absolute;inset:8px 8px auto 8px;z-index:8;display:flex;justify-content:space-between;pointer-events:none}
+.ftmid{display:inline-flex;gap:8px;pointer-events:none}
+.fishtog .stb{pointer-events:auto;width:30px;height:30px;padding:0;font-size:.85rem}
 .stb{pointer-events:auto;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(0,0,0,.6);color:#eaf0f0;font:700 .95rem 'Archivo',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;opacity:.7;transition:opacity .2s}
 .stb:hover,.stb:focus-visible{opacity:1}.stb b{font-size:.7rem;margin-left:-2px;margin-top:-10px;color:#f5d76e}
-.stage.on .stctl{display:none}
 /* full screen: the card fills the screen */
 .stage.fs{position:fixed !important;z-index:96;left:50%;top:50%;transform:translate(-50%,-50%);width:min(94vw,calc((100vh - 70px) * 1.55),1300px) !important;margin:0 !important}
 .fsback{position:fixed;inset:0;z-index:95;background:#000}
 .hero .stage.fs .back .wtitle{font-size:clamp(2.4rem,6cqw,4.4rem)}.hero .stage.fs .lang .w{font-size:clamp(1.5rem,3.6cqw,2.6rem)}.hero .stage.fs .lang .mean{font-size:clamp(.95rem,1.7cqw,1.35rem)}
 .hero .stage.fs .trace{font-size:clamp(.72rem,1.2cqw,.95rem)}.hero .stage.fs .ref .r{font-size:clamp(.9rem,1.8cqw,1.35rem)}.hero .stage.fs .ref .s{font-size:clamp(.8rem,1.5cqw,1.15rem)}.hero .stage.fs .lang .lab{font-size:.85rem}.hero .stage.fs .lang .snd{font-size:1rem}.fsback[hidden]{display:none}
-.stage.fs .stctl{display:flex}.stage.fs.on .stctl #bkAdd{visibility:hidden}
+.fsx{position:fixed;top:max(14px,env(safe-area-inset-top));right:16px;z-index:97;opacity:1;width:42px;height:42px;font-size:1.1rem}.fsx[hidden]{display:none}
 /* the basket */
 .bkfab{position:fixed;right:16px;bottom:max(16px,env(safe-area-inset-bottom));z-index:80;border:0;border-radius:999px;background:#f5d76e;color:#111;font:800 1rem 'Archivo',sans-serif;padding:10px 16px;cursor:pointer;box-shadow:0 10px 30px -8px #000}
 .bkfab[hidden]{display:none}
@@ -1712,12 +1712,12 @@ select option{background:#0b1620;color:#eaf0f0}
   <div class="resumebar" id="resumeBar" hidden><span id="resumeTxt"></span><span class="rbtns"><button type="button" class="toolbtn" id="resumeGo">Pick up where I left off</button><button type="button" class="rx" id="resumeX" aria-label="Dismiss">&#215;</button></span></div>
   <div class="stage-col">
     <!-- Ken, 11 Oct (mock-up): "One fish" and "Two fish" in the top corners of the fish card -->
-    <div class="fishtog" id="fishTog"><button type="button" id="ftOne" aria-pressed="false"></button><button type="button" id="ftTwo" aria-pressed="false"></button></div>
+    <div class="fishtog" id="fishTog"><button type="button" id="ftOne" aria-pressed="false"></button><span class="ftmid"><button type="button" class="stb" id="fsBtn" aria-label="Full screen" title="Full screen">⤢</button><button type="button" class="stb" id="bkAdd" aria-label="Add to my basket" title="Add to my basket">🧺<b>+</b></button></span><button type="button" id="ftTwo" aria-pressed="false"></button></div>
+    <button type="button" class="stb fsx" id="fsX" aria-label="Exit full screen" hidden>✕</button>
     <div class="cmpgrid onebar" id="oneBar" hidden><button type="button" class="cmpclear" id="twoBtn"></button></div>
     <div class="cmpgrid" id="cmpGrid" hidden><button type="button" class="cmpclear" id="cmpClear"></button><span class="gpwrap"><span id="cmpGridLab">Per row</span><span class="gp" id="gp" role="group"></span><span class="gpsz" id="gpSz"></span><button type="button" id="gpAuto">Auto</button></span></div>
     <div class="cmp" id="cmp" hidden><figure data-l="a"><div class="cmpf" id="cmpA"></div><figcaption id="cmpAL"></figcaption></figure><figure data-l="b"><div class="cmpf" id="cmpB"></div><figcaption id="cmpBL"></figcaption></figure></div>
       <div class="stage" id="stage" aria-label="Interactive devotional decal, tap to flip">
-      <div class="stctl"><button type="button" class="stb" id="fsBtn" aria-label="Full screen" title="Full screen">⤢</button><button type="button" class="stb" id="bkAdd" aria-label="Add to my basket" title="Add to my basket">🧺<b>+</b></button></div>
       <div class="flip" id="flip">
         <div class="face front">
           
@@ -4927,10 +4927,10 @@ window.MF=(function(){
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('bkBox').hidden) $('bkBox').hidden=true; });
   bkFab();
   // full screen: the fish card fills the screen (Esc, ⤢ or the dark around it goes back)
-  function fsSet(on){ var st=$('stage'); st.classList.toggle('fs',on); $('fsBack').hidden=!on; $('fsBtn').textContent=on?'✕':'⤢'; $('fsBtn').setAttribute('aria-label',on?'Exit full screen':'Full screen');
+  function fsSet(on){ var st=$('stage'); st.classList.toggle('fs',on); $('fsBack').hidden=!on; $('fsX').hidden=!on;
     document.documentElement.style.overflow=on?'hidden':''; setTimeout(function(){ sizeStage(); window.dispatchEvent(new Event('resize')); },30); }
   $('fsBtn').addEventListener('click',function(e){ e.stopPropagation(); fsSet(!$('stage').classList.contains('fs')); });
-  $('fsBack').addEventListener('click',function(){ fsSet(false); });
+  $('fsBack').addEventListener('click',function(){ fsSet(false); }); $('fsX').addEventListener('click',function(){ fsSet(false); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&$('stage').classList.contains('fs')) fsSet(false); });
   // Ken, 16 Oct: "I would like that image to stay on the screen for a second so it makes an impression" -- "This week's
   // MannaFish" (or today's, or this month's, as they signed up), the fish with a slow wobble, about 3 seconds, then the
