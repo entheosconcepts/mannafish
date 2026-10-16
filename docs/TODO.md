@@ -114,6 +114,11 @@ For each one: a free-to-use Bible text, the 24 command words, the verse lines, t
 - [x] In the Bible reader: hear the verse or the whole chapter; pick the language (the passage opens in that language's Bible) and the voice. The verse being read is marked.
 - [x] Spanish chapters now show in the reader from the Reina-Valera 1909 (public domain), with a "Leer en RVR1960" link; the fish still quote the RVR1960.
 
+### Master edit sheet (16 Oct, on the test site): /edit/
+- Every fish in all 10 languages (240): the word, both verse lines, the reference, and the Greek and Hebrew meanings. Changed boxes turn gold and stay on that device until sent; "Send all changes" sends them all in one email (to MF_PROOF_TO, else 2fish@manna-fish.com), saved in the mannafish-proof store under edits/. "Copy the list" copies the same list.
+- To apply: paste the email (or the copied list) to Claude. The list of everything sent: /api/proof-fix?k=<PROOF_KEY>&edits=1.
+- The sheet's words come from edit/data.json; after changing words, run `python3 tools/edit_build.py`.
+
 ### Proofreading the fish (11 Oct, on the test site): /proof/  -- delete when proofreading is done
 - All 216 fish numbered 1A–24I (number = word, letter = language: A English, B Spanish, C Tagalog, D Chinese, E Hindi, F Greek, G German, H Korean, I Hebrew), each with its exact wording.
 - "Suggest a fix" under each fish: anyone with the link sends a correction, no sign-in. Each is emailed to 2fish@manna-fish.com (or MF_PROOF_TO) and saved.

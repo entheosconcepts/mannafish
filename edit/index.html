@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MannaFish master edit sheet</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#05080c">
+<link rel="icon" href="/icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&display=swap">
+<!-- Ken, 16 Oct: "Can we edit all these in one place so that you get all the updates at once?" Every fish's wording and
+     word-study meanings in every language; change anything, then Send all changes once. The words come from
+     edit/data.json (made by tools/edit_build.py). Changes wait on this device until they are sent. -->
+<style>
+@font-face{font-family:'MFHobo';src:url(/fish-lang/hobo.woff2) format('woff2');font-display:swap}
+:root{--bg:#05080c;--bg2:#0e1319;--line:rgba(255,255,255,.14);--text:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--gold:#f5d76e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 'Archivo',system-ui,sans-serif;padding-bottom:150px}
+.wrap{max-width:980px;margin:0 auto;padding:0 14px}
+header{text-align:center;padding:22px 0 8px}
+h1{font:400 clamp(1.9rem,6vw,2.6rem)/1 'MFHobo',cursive;margin:0}h1 b{font-weight:400;color:#4a86e0}
+header p{color:var(--dim);margin:10px auto;max-width:640px;font-size:.95rem}
+.key{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:12px 0 6px}
+.key button{border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:6px 12px;font:600 .82rem 'Archivo',sans-serif;cursor:pointer}
+.key button[aria-pressed=true]{background:var(--blue);border-color:var(--blue)}
+.key i{font-style:normal;color:var(--gold);margin-right:5px}.key .cnt{margin-left:5px;color:var(--gold)}
+.find{display:block;margin:10px auto 0;width:min(420px,100%);background:var(--bg2);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:9px 14px;font:inherit}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:14px;margin:14px 0}
+.card.changed{border-color:var(--gold)}
+.hd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.num{font:800 .9rem 'Archivo',sans-serif;color:var(--gold)}.hd b{font:400 1.35rem 'MFHobo',cursive}.hd span{color:var(--dim);font-size:.85rem}
+.hd img{width:120px;height:auto;border-radius:6px;margin-left:auto;background:#000}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.hd img{width:96px}}
+label{display:block;font:700 .7rem 'Archivo',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+textarea{display:block;width:100%;margin-top:4px;background:#000;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:8px 10px;font:1rem/1.4 'Archivo',sans-serif;resize:vertical;min-height:42px}
+textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
+.was{font:.78rem 'Archivo',sans-serif;color:var(--dim);margin-top:3px;display:flex;gap:8px;align-items:baseline}
+.was button{border:0;background:none;color:#8fb3e8;cursor:pointer;font:600 .78rem 'Archivo',sans-serif;padding:0;white-space:nowrap}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:5;background:rgba(10,14,20,.97);border-top:1px solid var(--line);padding:10px 14px max(10px,env(safe-area-inset-bottom))}
+.bar .in{max-width:980px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+.bar .n{font-weight:800;color:var(--gold);min-width:110px;text-align:center}
+.bar input{background:#000;border:1px solid var(--line);color:var(--text);border-radius:999px;padding:9px 14px;font:inherit;width:min(220px,100%)}
+.btn{border:0;border-radius:999px;padding:10px 18px;font:800 .95rem 'Archivo',sans-serif;cursor:pointer}
+.btn.send{background:var(--blue);color:#fff}.btn.send:disabled{opacity:.45;cursor:default}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--text)}
+.msg{width:100%;text-align:center;font-size:.9rem;min-height:1.2em;color:#7fd18b}.msg.err{color:#f6a0a0}
+.empty{text-align:center;color:var(--dim);margin:30px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Manna<b>Fish</b> edit sheet</h1>
+  <p>Every fish in every language: the word, the two verse lines, the reference, and the Greek and Hebrew meanings on the back. Change anything you like: changed boxes turn gold, and they wait on this device. When you are done, tap <b>Send all changes</b> once. Everything goes together in one email.</p>
+  <div class="key" id="key" role="group" aria-label="Language"></div>
+  <input class="find" id="find" type="search" placeholder="Find a word (for example: Rest, 7, Hope)" aria-label="Find a word">
+</header>
+<main id="list"></main>
+</div>
+<div class="bar"><div class="in">
+  <span class="n" id="count">No changes yet</span>
+  <input id="who" placeholder="Your name (optional)" aria-label="Your name" autocomplete="name">
+  <button class="btn send" id="send" type="button" disabled>Send all changes</button>
+  <button class="btn ghost" id="copy" type="button">Copy the list</button>
+  <button class="btn ghost" id="undo" type="button">Undo all</button>
+  <p class="msg" id="msg" role="status"></p>
+</div></div>
+<script>
+(function(){
+  'use strict';
+  var $=function(id){ return document.getElementById(id); };
+  var F=[['word','Word on the fish'],['ref','Reference'],['top','Verse line 1'],['bot','Verse line 2'],['gkm','Greek meaning (back)'],['hbm','Hebrew meaning (back)']];
+  var D=null, show='A', q='', draft={};
+  function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function load(){ try{ draft=JSON.parse(localStorage.getItem('mf-edit-draft')||'{}')||{}; }catch(e){ draft={}; } try{ show=localStorage.getItem('mf-edit-show')||'A'; $('who').value=localStorage.getItem('mf-proof-name')||''; }catch(e){} }
+  function save(){ try{ localStorage.setItem('mf-edit-draft',JSON.stringify(draft)); }catch(e){} }
+  function id(n,f){ return n+'.'+f; }
+  function changes(){ var out=[]; Object.keys(draft).forEach(function(k){ var p=k.split('.'), n=p[0], f=p[1], rec=D.f[n]; if(!rec) return; var was=rec[f]||'';
+    if(draft[k]!==was){ var w=D.words[parseInt(n,10)-1], L=D.langs.filter(function(x){ return x.l===n.slice(-1); })[0]; out.push({n:n,field:f,was:was,now:draft[k],lang:L?L.name:'',en:w?w.en:''}); } });
+    return out.sort(function(a,b){ return parseInt(a.n,10)-parseInt(b.n,10)||a.n.localeCompare(b.n); }); }
+  function counts(){ var c={}; changes().forEach(function(x){ var l=x.n.slice(-1); c[l]=(c[l]||0)+1; }); return c; }
+  function key(){ var c=counts(); $('key').innerHTML='<button type="button" data-l="all" aria-pressed="'+(show==='all')+'">All languages</button>'+D.langs.map(function(x){
+    return '<button type="button" data-l="'+x.l+'" aria-pressed="'+(show===x.l)+'"><i>'+x.l+'</i>'+esc(x.name)+(x.native!==x.name?' · '+esc(x.native):'')+(c[x.l]?'<span class="cnt">'+c[x.l]+'</span>':'')+'</button>'; }).join(''); }
+  function bar(){ var n=changes().length; $('count').textContent=n?n+' change'+(n===1?'':'s'):'No changes yet'; $('send').disabled=!n; }
+  function render(){ key(); var langs=show==='all'?D.langs:D.langs.filter(function(x){ return x.l===show; }), qq=q.trim().toLowerCase(), h='';
+    D.words.forEach(function(w){ if(qq&&String(w.n)!==qq&&w.en.toLowerCase().indexOf(qq)<0&&w.key.toLowerCase().indexOf(qq)<0) return;
+      langs.forEach(function(L){ var n=w.n+L.l, rec=D.f[n], rtl=L.code==='he'||L.code==='ar', any=false;
+        var fields=F.map(function(f){ var was=rec[f[0]]||'', v=Object.prototype.hasOwnProperty.call(draft,id(n,f[0]))?draft[id(n,f[0])]:was, ch=v!==was; if(ch) any=true;
+          return '<div><label for="t'+n+f[0]+'">'+f[1]+'</label><textarea id="t'+n+f[0]+'" data-n="'+n+'" data-f="'+f[0]+'" rows="'+(f[0]==='word'||f[0]==='ref'?1:2)+'" lang="'+L.code+'"'+(rtl?' dir="rtl"':'')+(ch?' class="ch"':'')+'>'+esc(v)+'</textarea>'
+            +(ch?'<div class="was"><span>was: '+esc(was||'(empty)')+'</span><button type="button" data-undo="'+id(n,f[0])+'">↺ undo</button></div>':'')+'</div>'; }).join('');
+        h+='<article class="card'+(any?' changed':'')+'" id="c'+n+'"><div class="hd"><span class="num">'+n+'</span><b>'+esc(rec.word)+'</b><span>'+esc(w.en)+' · '+esc(L.name)+'</span>'
+          +(L.l<='I'?'<img src="/proof/img/'+n+'.jpg" alt="" width="792" height="398" loading="lazy" onerror="this.remove()">':'')+'</div><div class="grid">'+fields+'</div></article>'; }); });
+    $('list').innerHTML=h||'<p class="empty">No word matches.</p>'; bar(); }
+  $('list').addEventListener('input',function(e){ var t=e.target; if(!t.dataset||!t.dataset.n) return; var n=t.dataset.n, f=t.dataset.f, was=D.f[n][f]||'';
+    if(t.value===was) delete draft[id(n,f)]; else draft[id(n,f)]=t.value; save(); var ch=t.value!==was; t.classList.toggle('ch',ch);
+    var wl=t.parentNode.querySelector('.was'); if(ch&&!wl) t.insertAdjacentHTML('afterend','<div class="was"><span>was: '+esc(was||'(empty)')+'</span><button type="button" data-undo="'+id(n,f)+'">↺ undo</button></div>'); else if(!ch&&wl) wl.remove();
+    var c=t.closest('.card'); c.classList.toggle('changed',!!c.querySelector('textarea.ch')); bar(); key(); });
+  $('list').addEventListener('click',function(e){ var u=e.target.closest('[data-undo]'); if(!u) return; delete draft[u.dataset.undo]; save(); render(); });
+  $('key').addEventListener('click',function(e){ var b=e.target.closest('button[data-l]'); if(!b) return; show=b.dataset.l; try{ localStorage.setItem('mf-edit-show',show); }catch(x){} render(); window.scrollTo(0,0); });
+  $('find').addEventListener('input',function(){ q=this.value; render(); });
+  function listText(ch){ var who=$('who').value.trim(); return 'MannaFish edits: '+ch.length+' change'+(ch.length===1?'':'s')+(who?' from '+who:'')+'\n\n'+ch.map(function(x){ var F2={}; F.forEach(function(f){ F2[f[0]]=f[1]; });
+    return x.n+' · '+x.en+' · '+x.lang+' · '+F2[x.field]+'\n   was: '+x.was+'\n   now: '+x.now; }).join('\n\n'); }
+  $('copy').addEventListener('click',function(){ var ch=changes(); if(!ch.length){ $('msg').textContent='No changes yet.'; return; } var t=listText(ch);
+    (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){ $('msg').className='msg'; $('msg').textContent='Copied: paste it to Claude, or anywhere.'; },function(){ $('msg').textContent='Could not copy on this device.'; }); });
+  $('undo').addEventListener('click',function(){ if(!changes().length) return; if(!confirm('Undo every change you made here?')) return; draft={}; save(); render(); $('msg').textContent=''; });
+  $('send').addEventListener('click',function(){ var ch=changes(), b=this, who=$('who').value.trim(); if(!ch.length) return; try{ localStorage.setItem('mf-proof-name',who); }catch(e){}
+    b.disabled=true; $('msg').className='msg'; $('msg').textContent='Sending…';
+    fetch('/api/proof-fix',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({batch:ch,name:who})}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||'Could not send'); return j; }); })
+      .then(function(j){ draft={}; save(); render(); $('msg').className='msg'; $('msg').textContent='Sent: '+j.n+' change'+(j.n===1?'':'s')+'. They are in your email. Paste that email to Claude and they go on the site.'; })
+      .catch(function(e){ b.disabled=false; $('msg').className='msg err'; $('msg').textContent=(e.message||'Could not send')+'. Your changes are still here; try again, or use Copy the list.'; }); });
+  load();
+  fetch('/edit/data.json',{cache:'no-store'}).then(function(r){ return r.json(); }).then(function(d){ D=d; if(show!=='all'&&!D.langs.some(function(x){ return x.l===show; })) show='A'; render(); })
+    .catch(function(){ $('list').innerHTML='<p class="empty">The words could not be loaded. Please reload the page.</p>'; });
+})();
+</script>
+</body>
+</html>

@@ -22,7 +22,7 @@ export default async (req, context) => {
   if (req.method === 'GET') {
     const k = new URL(req.url).searchParams.get('k');
     if (!process.env.PROOF_KEY || k !== process.env.PROOF_KEY) return bad('Not allowed', 403);
-    const { blobs } = await store.list({ prefix: 'fix/' });
+    const { blobs } = await store.list({ prefix: new URL(req.url).searchParams.get('edits') ? 'edits/' : 'fix/' });   // ?edits=1: the edit sheet's batches
     const all = await Promise.all(blobs.map((b) => store.get(b.key, { type: 'json' })));
     return Response.json(all.filter(Boolean).sort((a, b) => (a.at < b.at ? -1 : 1)));
   }
@@ -30,8 +30,30 @@ export default async (req, context) => {
   if (!okOrigin(req.headers.get('origin'))) return bad('Not allowed', 403);
   let b; try { b = await req.json(); } catch (e) { return bad('Bad request', 400); }
   if (b.website) return Response.json({ ok: true });   // a robot filled the hidden field
+  // Ken, 16 Oct: the master edit sheet (/edit/) sends every change at once -- one record, one email
+  if (Array.isArray(b.batch)) {
+    const FIELD = { word: 'Word', top: 'Verse line 1', bot: 'Verse line 2', ref: 'Reference', gkm: 'Greek meaning', hbm: 'Hebrew meaning' };
+    const items = b.batch.slice(0, 1500).map((x) => ({ n: String(x.n || '').toUpperCase().slice(0, 4), lang: String(x.lang || '').slice(0, 40), en: String(x.en || '').slice(0, 40),
+      field: FIELD[x.field] ? x.field : '', was: String(x.was == null ? '' : x.was).slice(0, 600), now: String(x.now == null ? '' : x.now).slice(0, 600) }))
+      .filter((x) => /^\d{1,2}[A-J]$/.test(x.n) && x.field && x.was !== x.now);
+    if (!items.length) return bad('No changes to send', 400);
+    if (await limited(context && context.ip)) return bad('Please wait a little', 429);
+    const rec = { batch: items, name: String(b.name || '').trim().slice(0, 120), note: String(b.note || '').trim().slice(0, 2000), at: new Date().toISOString() };
+    await store.setJSON(`edits/${rec.at}-${Math.random().toString(36).slice(2, 7)}`, rec);
+    const line = (x) => `${x.n} · ${x.en} · ${x.lang} · ${FIELD[x.field]}\n   was: ${x.was}\n   now: ${x.now}`;
+    const text = `MannaFish edits: ${items.length} change${items.length === 1 ? '' : 's'}${rec.name ? ' from ' + rec.name : ''}\n${rec.note ? '\nNote: ' + rec.note + '\n' : ''}\n${items.map(line).join('\n\n')}\n\n${rec.at}`;
+    if (hasMail()) {
+      try {
+        await sendMail({ to: TO(), name: 'MannaFish', subject: `MannaFish edits: ${items.length} change${items.length === 1 ? '' : 's'}${rec.name ? ' from ' + rec.name : ''}`, tag: 'proof', text,
+          html: `<p style="font:16px Arial,sans-serif"><b>${items.length} change${items.length === 1 ? '' : 's'}</b>${rec.name ? ' from ' + esc(rec.name) : ''}</p>${rec.note ? '<p style="font:15px Georgia,serif">' + esc(rec.note) + '</p>' : ''}`
+            + items.map((x) => `<p style="font:15px/1.5 Arial,sans-serif;margin:14px 0"><b>${esc(x.n)}</b> · ${esc(x.en)} · ${esc(x.lang)} · ${esc(FIELD[x.field])}<br><span style="color:#888">was:</span> ${esc(x.was)}<br><span style="color:#2a5fb0">now:</span> <b>${esc(x.now)}</b></p>`).join('')
+            + `<p style="font:13px Arial,sans-serif;color:#555">Paste this email to Claude to put the changes on the site. ${esc(rec.at)}</p>` });
+      } catch (e) { console.log('edits email failed', String(e).slice(0, 200)); }
+    }
+    return Response.json({ ok: true, n: items.length });
+  }
   const n = String(b.n || '').toUpperCase().slice(0, 4), fix = String(b.fix || '').trim().slice(0, 2000);
-  if (!/^\d{1,2}[A-I]$/.test(n)) return bad('Which fish?', 400);
+  if (!/^\d{1,2}[A-J]$/.test(n)) return bad('Which fish?', 400);
   if (!fix) return bad('Please write the correction', 400);
   if (await limited(context && context.ip)) return bad('Please wait a little', 429);
   const rec = { n, word: String(b.word || '').slice(0, 80), lang: String(b.lang || '').slice(0, 40), fix, name: String(b.name || '').trim().slice(0, 120), via: String(b.via || '').slice(0, 40), at: new Date().toISOString() };
