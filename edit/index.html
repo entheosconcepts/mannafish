@@ -46,6 +46,10 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
 .btn.ghost{background:none;border:1px solid var(--line);color:var(--text)}
 .msg{width:100%;text-align:center;font-size:.9rem;min-height:1.2em;color:#7fd18b}.msg.err{color:#f6a0a0}
 .empty{text-align:center;color:var(--dim);margin:30px 0}
+.dz{grid-column:1/-1;border:1px dashed var(--line);border-radius:12px;padding:8px 12px}.dz[open]{border-color:rgba(245,215,110,.5)}
+.dz summary{cursor:pointer;font:700 .9rem 'Archivo',sans-serif;color:#8fb3e8}.dz summary b{color:var(--gold)}
+.dzo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px;margin:10px 0 8px}@media(max-width:640px){.dzo{grid-template-columns:1fr}}
+.dzc{display:flex;align-items:center;gap:8px;font:600 .9rem 'Archivo',sans-serif;letter-spacing:0;text-transform:none;color:var(--text);cursor:pointer;padding:3px 0}.dzc input{width:18px;height:18px;accent-color:#2a5fb0}
 </style>
 </head>
 <body>
@@ -72,6 +76,8 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
   var $=function(id){ return document.getElementById(id); };
   var F=[['word','Word on the fish'],['ref','Reference'],['top','Verse line 1'],['bot','Verse line 2'],['gkm','Greek meaning (back)'],['hbm','Hebrew meaning (back)']];
   var D=null, show='A', q='', draft={};
+  // Ken, 16 Oct: the word in the middle of the fish sometimes needs moving or sizing -- tick as many as apply
+  var DZ=['Make bigger','Make smaller','Move left','Move right','Move up','Move down','Stretch taller (vertically)','Stretch wider (horizontally)','Squeeze narrower','Spelling or letters look wrong'];
   function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function load(){ try{ draft=JSON.parse(localStorage.getItem('mf-edit-draft')||'{}')||{}; }catch(e){ draft={}; } try{ show=localStorage.getItem('mf-edit-show')||'A'; $('who').value=localStorage.getItem('mf-proof-name')||''; }catch(e){} }
   function save(){ try{ localStorage.setItem('mf-edit-draft',JSON.stringify(draft)); }catch(e){} }
@@ -89,17 +95,26 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
         var fields=F.map(function(f){ var was=rec[f[0]]||'', v=Object.prototype.hasOwnProperty.call(draft,id(n,f[0]))?draft[id(n,f[0])]:was, ch=v!==was; if(ch) any=true;
           return '<div><label for="t'+n+f[0]+'">'+f[1]+'</label><textarea id="t'+n+f[0]+'" data-n="'+n+'" data-f="'+f[0]+'" rows="'+(f[0]==='word'||f[0]==='ref'?1:2)+'" lang="'+L.code+'"'+(rtl?' dir="rtl"':'')+(ch?' class="ch"':'')+'>'+esc(v)+'</textarea>'
             +(ch?'<div class="was"><span>was: '+esc(was||'(empty)')+'</span><button type="button" data-undo="'+id(n,f[0])+'">↺ undo</button></div>':'')+'</div>'; }).join('');
+        var dz=Object.prototype.hasOwnProperty.call(draft,id(n,'design'))?draft[id(n,'design')]:'', dsel=dz?dz.split('; '):[], dn=Object.prototype.hasOwnProperty.call(draft,id(n,'dnote'))?draft[id(n,'dnote')]:'';
+        if(dz||dn) any=true;
+        fields+='<details class="dz"'+(dz||dn?' open':'')+'><summary>✎ The word in the middle of the fish'+(dsel.length?' <b>('+dsel.length+')</b>':'')+'</summary><div class="dzo">'
+          +DZ.map(function(o){ return '<label class="dzc"><input type="checkbox" data-dz="'+n+'" value="'+esc(o)+'"'+(dsel.indexOf(o)>=0?' checked':'')+'> '+esc(o)+'</label>'; }).join('')
+          +'</div><textarea data-n="'+n+'" data-f="dnote" rows="2" placeholder="Anything else about how the fish looks (optional)"'+(dn?' class="ch"':'')+'>'+esc(dn)+'</textarea></details>';
         h+='<article class="card'+(any?' changed':'')+'" id="c'+n+'"><div class="hd"><span class="num">'+n+'</span><b>'+esc(rec.word)+'</b><span>'+esc(w.en)+' · '+esc(L.name)+'</span>'
           +(L.l<='I'?'<img src="/proof/img/'+n+'.jpg" alt="" width="792" height="398" loading="lazy" onerror="this.remove()">':'')+'</div><div class="grid">'+fields+'</div></article>'; }); });
     $('list').innerHTML=h||'<p class="empty">No word matches.</p>'; bar(); }
   $('list').addEventListener('input',function(e){ var t=e.target; if(!t.dataset||!t.dataset.n) return; var n=t.dataset.n, f=t.dataset.f, was=D.f[n][f]||'';
     if(t.value===was) delete draft[id(n,f)]; else draft[id(n,f)]=t.value; save(); var ch=t.value!==was; t.classList.toggle('ch',ch);
-    var wl=t.parentNode.querySelector('.was'); if(ch&&!wl) t.insertAdjacentHTML('afterend','<div class="was"><span>was: '+esc(was||'(empty)')+'</span><button type="button" data-undo="'+id(n,f)+'">↺ undo</button></div>'); else if(!ch&&wl) wl.remove();
+    var wl=t.parentNode.querySelector('.was'); if(f==='dnote') wl=true; else if(ch&&!wl) t.insertAdjacentHTML('afterend','<div class="was"><span>was: '+esc(was||'(empty)')+'</span><button type="button" data-undo="'+id(n,f)+'">↺ undo</button></div>'); else if(!ch&&wl&&wl.remove) wl.remove();
     var c=t.closest('.card'); c.classList.toggle('changed',!!c.querySelector('textarea.ch')); bar(); key(); });
+  $('list').addEventListener('change',function(e){ var c=e.target; if(!c.dataset||!c.dataset.dz) return; var n=c.dataset.dz, box=c.closest('.dz'), sel=[].map.call(box.querySelectorAll('input[data-dz]:checked'),function(x){ return x.value; });
+    if(sel.length) draft[id(n,'design')]=sel.join('; '); else delete draft[id(n,'design')]; save();
+    var sm=box.querySelector('summary'); sm.innerHTML='✎ The word in the middle of the fish'+(sel.length?' <b>('+sel.length+')</b>':'');
+    var card=box.closest('.card'); card.classList.toggle('changed',!!(sel.length||card.querySelector('textarea.ch'))); bar(); key(); });
   $('list').addEventListener('click',function(e){ var u=e.target.closest('[data-undo]'); if(!u) return; delete draft[u.dataset.undo]; save(); render(); });
   $('key').addEventListener('click',function(e){ var b=e.target.closest('button[data-l]'); if(!b) return; show=b.dataset.l; try{ localStorage.setItem('mf-edit-show',show); }catch(x){} render(); window.scrollTo(0,0); });
   $('find').addEventListener('input',function(){ q=this.value; render(); });
-  function listText(ch){ var who=$('who').value.trim(); return 'MannaFish edits: '+ch.length+' change'+(ch.length===1?'':'s')+(who?' from '+who:'')+'\n\n'+ch.map(function(x){ var F2={}; F.forEach(function(f){ F2[f[0]]=f[1]; });
+  function listText(ch){ var who=$('who').value.trim(); return 'MannaFish edits: '+ch.length+' change'+(ch.length===1?'':'s')+(who?' from '+who:'')+'\n\n'+ch.map(function(x){ var F2={design:'Word in the middle: design fixes',dnote:'Design note'}; F.forEach(function(f){ F2[f[0]]=f[1]; });
     return x.n+' · '+x.en+' · '+x.lang+' · '+F2[x.field]+'\n   was: '+x.was+'\n   now: '+x.now; }).join('\n\n'); }
   $('copy').addEventListener('click',function(){ var ch=changes(); if(!ch.length){ $('msg').textContent='No changes yet.'; return; } var t=listText(ch);
     (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){ $('msg').className='msg'; $('msg').textContent='Copied: paste it to Claude, or anywhere.'; },function(){ $('msg').textContent='Could not copy on this device.'; }); });
