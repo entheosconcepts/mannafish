@@ -629,6 +629,10 @@ section.section.bundles{display:block;margin-top:0}
 .dcard.under3{z-index:1;transform:translate(8px,8px);opacity:0}
 .dcard.past{z-index:5;opacity:0;transform:translateX(-24px);pointer-events:none}
 .dcard .wtitle{margin:0}
+.dcard.tight{padding-top:10px}.dcard.tight .wtitle{font-size:clamp(1.6rem,6cqw,2.4rem) !important;line-height:1.15}.dcard.tight .wsub{font-size:.85rem !important;margin-top:6px !important}
+.dcard .wtitle+.wsub{margin-top:8px}.dnav .dpos{direction:ltr;unicode-bidi:isolate}   /* 1 / 3, also in Hebrew and Arabic */
+.dcard.tight .hr{margin:6px 0 !important}.dcard.tight .lang .mean{font-size:.8rem !important;line-height:1.3 !important}.dcard.tight .lang .w{font-size:clamp(1.05rem,3.4cqw,1.5rem) !important}
+.dcard.tight .lang .snd{font-size:.72rem !important}.dcard.tight .conc{font-size:.54rem !important;letter-spacing:.06em !important;margin-top:3px !important}
 .dcard .wtitle.small{font-size:1.6rem !important}
 .dcard .hr{margin:10px 0 !important}
 .dcard .langs.one{grid-template-columns:1fr !important}
@@ -2360,7 +2364,9 @@ window.MF=(function(){
     function cl(sel){ var e=src.querySelector(sel); return e?noIds(e.cloneNode(true)):null; }
     var c1=card('dstudy'); ['.wtitle','.wsub'].forEach(function(q){ var e=cl(q); if(e) c1.appendChild(e); }); c1.appendChild(cl('.hr'));
     var langs=cl('.langs'); c1.appendChild(langs);
-    if(over(c1)){ var ls=langs.querySelectorAll('.lang'), dv=langs.querySelector('.div'); if(dv) dv.remove(); langs.classList.add('one');
+    // Ken, 16 Oct: Greek and Hebrew side by side on one card in every language -- tighten the card first; split only if it still will not fit
+    if(over(c1)) c1.classList.add('tight');
+    if(over(c1)){ c1.classList.remove('tight'); var ls=langs.querySelectorAll('.lang'), dv=langs.querySelector('.div'); if(dv) dv.remove(); langs.classList.add('one');
       var c2=card('dstudy'); var t2=cl('.wtitle'); t2.classList.add('small'); c2.appendChild(t2); c2.appendChild(cl('.hr'));
       var l2=document.createElement('div'); l2.className='langs one'; l2.appendChild(ls[1]); c2.appendChild(l2); }
     var refs=[].slice.call(src.querySelectorAll('.refs .ref')), at=0;
