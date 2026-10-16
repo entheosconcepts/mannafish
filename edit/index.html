@@ -13,6 +13,12 @@
      edit/data.json (made by tools/edit_build.py). Changes wait on this device until they are sent. -->
 <style>
 @font-face{font-family:'MFHobo';src:url(/fish-lang/hobo.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'ZCOOL KuaiLe';src:url(/fish-lang/zh.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Baloo 2';src:url(/fish-lang/hi.woff2) format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Ubuntu';src:url(/fish-lang/el.woff2) format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Jua';src:url(/fish-lang/ko.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Fredoka';src:url(/fish-lang/he.woff2) format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Cairo';src:url(/fish-lang/ar.woff2) format('woff2');font-weight:100 900;font-display:swap}
 :root{--bg:#05080c;--bg2:#0e1319;--line:rgba(255,255,255,.14);--text:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--gold:#f5d76e}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 'Archivo',system-ui,sans-serif;padding-bottom:150px}
@@ -47,6 +53,10 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
 .msg{width:100%;text-align:center;font-size:.9rem;min-height:1.2em;color:#7fd18b}.msg.err{color:#f6a0a0}
 .empty{text-align:center;color:var(--dim);margin:30px 0}
 .dz{grid-column:1/-1;border:1px dashed var(--line);border-radius:12px;padding:8px 12px}.dz[open]{border-color:rgba(245,215,110,.5)}
+.dzh{font:.85rem 'Archivo',sans-serif;color:var(--dim);margin:8px 0}
+.pv{position:relative;width:100%;max-width:520px;aspect-ratio:2/1;margin:6px auto;background:#000;border-radius:10px;overflow:hidden}
+.adj{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0}.adj button{min-width:44px;height:40px;border:1px solid var(--line);background:#000;color:var(--text);border-radius:10px;font:800 1rem 'Archivo',sans-serif;cursor:pointer}
+.adj button:active{background:var(--blue)}.lay{text-align:center;font:600 .85rem 'Archivo',sans-serif;color:var(--gold);min-height:1.2em;margin:4px 0 8px}
 .dz summary{cursor:pointer;font:700 .9rem 'Archivo',sans-serif;color:#8fb3e8}.dz summary b{color:var(--gold)}
 .dzo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px;margin:10px 0 8px}@media(max-width:640px){.dzo{grid-template-columns:1fr}}
 .dzc{display:flex;align-items:center;gap:8px;font:600 .9rem 'Archivo',sans-serif;letter-spacing:0;text-transform:none;color:var(--text);cursor:pointer;padding:3px 0}.dzc input{width:18px;height:18px;accent-color:#2a5fb0}
@@ -77,6 +87,21 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
   var F=[['word','Word on the fish'],['ref','Reference'],['top','Verse line 1'],['bot','Verse line 2'],['gkm','Greek meaning (back)'],['hbm','Hebrew meaning (back)']];
   var D=null, show='A', q='', draft={};
   // Ken, 16 Oct: the word in the middle of the fish sometimes needs moving or sizing -- tick as many as apply
+  // the word's size and place on a translated fish: [action, button, help]
+  var ADJ=[['big','A+','Bigger'],['small','A−','Smaller'],['left','←','Move left'],['right','→','Move right'],['up','↑','Move up'],['down','↓','Move down'],
+    ['tall','↕+','Stretch taller'],['short','↕−','Shorter'],['wide','↔+','Stretch wider'],['narrow','↔−','Narrower'],['reset','↺','Back to how it was']];
+  var FISHSRC={es:'/match/fish-es.json'}, FISHC={}, ADJS={};
+  function fishOf(code){ if(!FISHC[code]) FISHC[code]=fetch(FISHSRC[code]||('/fish-lang/'+code+'.json')).then(function(r){ return r.json(); }); return FISHC[code]; }
+  function adjParse(t){ var a={s:1,w:1,h:1,x:0,y:0}; if(!t) return a; var m;
+    if((m=/size ×([\d.]+)/.exec(t))) a.s=+m[1]; if((m=/width ×([\d.]+)/.exec(t))) a.w=+m[1]; if((m=/height ×([\d.]+)/.exec(t))) a.h=+m[1];
+    if((m=/(left|right) (\d+)/.exec(t))) a.x=(m[1]==='left'?-1:1)*+m[2]; if((m=/(up|down) (\d+)/.exec(t))) a.y=(m[1]==='up'?-1:1)*+m[2]; return a; }
+  function adjText(a){ var p=[]; if(a.s!==1) p.push('size ×'+a.s.toFixed(2)); if(a.w!==1) p.push('width ×'+a.w.toFixed(2)); if(a.h!==1) p.push('height ×'+a.h.toFixed(2));
+    if(a.x) p.push((a.x<0?'left ':'right ')+Math.abs(a.x)); if(a.y) p.push((a.y<0?'up ':'down ')+Math.abs(a.y)); return p.length?p.join(' · ')+' (fish is 4000 × 2000)':''; }
+  function adjApply(n){ var pv=$('pv'+n); if(!pv) return; var t=pv.querySelector('text[fill="#fff"]'); if(!t) return; var a=ADJS[n]; if(!t.dataset.fs){ t.dataset.fs=t.getAttribute('font-size'); t.dataset.x=t.getAttribute('x'); t.dataset.y=t.getAttribute('y'); t.dataset.tl=t.getAttribute('textLength')||''; }
+    var x=+t.dataset.x, y=+t.dataset.y; t.setAttribute('font-size',(+t.dataset.fs*a.s).toFixed(1)); if(t.dataset.tl) t.setAttribute('textLength',(+t.dataset.tl*a.s).toFixed(1));   /* a word fitted to a width grows with it */
+    t.setAttribute('transform','translate('+(x+a.x)+' '+(y+a.y)+') scale('+a.w+' '+a.h+') translate('+(-x)+' '+(-y)+')'); }
+  function adjShow(box){ var n=box.dataset.n, code=box.dataset.code, pv=$('pv'+n); if(!pv||pv.dataset.ok) return; pv.dataset.ok='1'; var k=D.words[parseInt(n,10)-1].key;
+    fishOf(code).then(function(m){ pv.innerHTML=m[k]||''; ADJS[n]=adjParse(draft[id(n,'layout')]); adjApply(n); }).catch(function(){ pv.textContent='The fish could not be loaded.'; }); }
   var DZ=['Make bigger','Make smaller','Move left','Move right','Move up','Move down','Stretch taller (vertically)','Stretch wider (horizontally)','Squeeze narrower','Spelling or letters look wrong'];
   function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function load(){ try{ draft=JSON.parse(localStorage.getItem('mf-edit-draft')||'{}')||{}; }catch(e){ draft={}; } try{ show=localStorage.getItem('mf-edit-show')||'A'; $('who').value=localStorage.getItem('mf-proof-name')||''; }catch(e){} }
@@ -97,9 +122,13 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
             +(ch?'<div class="was"><span>was: '+esc(was||'(empty)')+'</span><button type="button" data-undo="'+id(n,f[0])+'">↺ undo</button></div>':'')+'</div>'; }).join('');
         var dz=Object.prototype.hasOwnProperty.call(draft,id(n,'design'))?draft[id(n,'design')]:'', dsel=dz?dz.split('; '):[], dn=Object.prototype.hasOwnProperty.call(draft,id(n,'dnote'))?draft[id(n,'dnote')]:'';
         if(dz||dn) any=true;
-        fields+='<details class="dz"'+(dz||dn?' open':'')+'><summary>✎ The word in the middle of the fish'+(dsel.length?' <b>('+dsel.length+')</b>':'')+'</summary><div class="dzo">'
-          +DZ.map(function(o){ return '<label class="dzc"><input type="checkbox" data-dz="'+n+'" value="'+esc(o)+'"'+(dsel.indexOf(o)>=0?' checked':'')+'> '+esc(o)+'</label>'; }).join('')
-          +'</div><textarea data-n="'+n+'" data-f="dnote" rows="2" placeholder="Anything else about how the fish looks (optional)"'+(dn?' class="ch"':'')+'>'+esc(dn)+'</textarea></details>';
+        var lay=Object.prototype.hasOwnProperty.call(draft,id(n,'layout'))?draft[id(n,'layout')]:''; if(lay) any=true;
+        fields+='<details class="dz"'+(dz||dn||lay?' open':'')+' data-n="'+n+'" data-code="'+L.code+'"><summary>✎ The word in the middle of the fish'+(dsel.length||lay?' <b>(changed)</b>':'')+'</summary>'
+          +(L.code==='en'
+            ?'<p class="dzh">The English fish are hand-drawn, so tick what should change:</p><div class="dzo">'+DZ.map(function(o){ return '<label class="dzc"><input type="checkbox" data-dz="'+n+'" value="'+esc(o)+'"'+(dsel.indexOf(o)>=0?' checked':'')+'> '+esc(o)+'</label>'; }).join('')+'</div>'
+            :'<p class="dzh">Use the buttons to size and move the word right on the fish. What you see is what gets sent.</p><div class="pv" id="pv'+n+'"></div><div class="adj" data-adj="'+n+'">'
+              +ADJ.map(function(a){ return '<button type="button" data-a="'+a[0]+'" title="'+esc(a[2])+'">'+a[1]+'</button>'; }).join('')+'</div><p class="lay" id="lay'+n+'">'+esc(lay)+'</p>')
+          +'<textarea data-n="'+n+'" data-f="dnote" rows="2" placeholder="Anything else about how the fish looks (optional)"'+(dn?' class="ch"':'')+'>'+esc(dn)+'</textarea></details>';
         h+='<article class="card'+(any?' changed':'')+'" id="c'+n+'"><div class="hd"><span class="num">'+n+'</span><b>'+esc(rec.word)+'</b><span>'+esc(w.en)+' · '+esc(L.name)+'</span>'
           +(L.l<='I'?'<img src="/proof/img/'+n+'.jpg" alt="" width="792" height="398" loading="lazy" onerror="this.remove()">':'')+'</div><div class="grid">'+fields+'</div></article>'; }); });
     $('list').innerHTML=h||'<p class="empty">No word matches.</p>'; bar(); }
@@ -111,10 +140,17 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
     if(sel.length) draft[id(n,'design')]=sel.join('; '); else delete draft[id(n,'design')]; save();
     var sm=box.querySelector('summary'); sm.innerHTML='✎ The word in the middle of the fish'+(sel.length?' <b>('+sel.length+')</b>':'');
     var card=box.closest('.card'); card.classList.toggle('changed',!!(sel.length||card.querySelector('textarea.ch'))); bar(); key(); });
+  $('list').addEventListener('toggle',function(e){ if(e.target.classList&&e.target.classList.contains('dz')&&e.target.open) adjShow(e.target); },true);
+  $('list').addEventListener('click',function(e){ var b=e.target.closest('.adj button'); if(!b) return; var n=b.closest('.adj').dataset.adj, a=ADJS[n]; if(!a) return;
+    var st={big:['s',.05],small:['s',-.05],tall:['h',.05],short:['h',-.05],wide:['w',.05],narrow:['w',-.05]}[b.dataset.a];
+    if(st) a[st[0]]=Math.max(.3,Math.round((a[st[0]]+st[1])*100)/100); else if(b.dataset.a==='left') a.x-=30; else if(b.dataset.a==='right') a.x+=30; else if(b.dataset.a==='up') a.y-=30; else if(b.dataset.a==='down') a.y+=30; else if(b.dataset.a==='reset') ADJS[n]=a={s:1,w:1,h:1,x:0,y:0};
+    adjApply(n); var tx=adjText(a); if(tx) draft[id(n,'layout')]=tx; else delete draft[id(n,'layout')]; save(); $('lay'+n).textContent=tx;
+    var box=b.closest('.dz'), card=box.closest('.card'); box.querySelector('summary').innerHTML='✎ The word in the middle of the fish'+(tx||box.querySelector('input:checked')?' <b>(changed)</b>':'');
+    card.classList.toggle('changed',!!(tx||card.querySelector('textarea.ch')||card.querySelector('.dz input:checked'))); bar(); key(); });
   $('list').addEventListener('click',function(e){ var u=e.target.closest('[data-undo]'); if(!u) return; delete draft[u.dataset.undo]; save(); render(); });
   $('key').addEventListener('click',function(e){ var b=e.target.closest('button[data-l]'); if(!b) return; show=b.dataset.l; try{ localStorage.setItem('mf-edit-show',show); }catch(x){} render(); window.scrollTo(0,0); });
   $('find').addEventListener('input',function(){ q=this.value; render(); });
-  function listText(ch){ var who=$('who').value.trim(); return 'MannaFish edits: '+ch.length+' change'+(ch.length===1?'':'s')+(who?' from '+who:'')+'\n\n'+ch.map(function(x){ var F2={design:'Word in the middle: design fixes',dnote:'Design note'}; F.forEach(function(f){ F2[f[0]]=f[1]; });
+  function listText(ch){ var who=$('who').value.trim(); return 'MannaFish edits: '+ch.length+' change'+(ch.length===1?'':'s')+(who?' from '+who:'')+'\n\n'+ch.map(function(x){ var F2={design:'Word in the middle: design fixes',dnote:'Design note',layout:'Word in the middle: size and position'}; F.forEach(function(f){ F2[f[0]]=f[1]; });
     return x.n+' · '+x.en+' · '+x.lang+' · '+F2[x.field]+'\n   was: '+x.was+'\n   now: '+x.now; }).join('\n\n'); }
   $('copy').addEventListener('click',function(){ var ch=changes(); if(!ch.length){ $('msg').textContent='No changes yet.'; return; } var t=listText(ch);
     (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){ $('msg').className='msg'; $('msg').textContent='Copied: paste it to Claude, or anywhere.'; },function(){ $('msg').textContent='Could not copy on this device.'; }); });
