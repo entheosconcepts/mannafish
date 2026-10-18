@@ -1,0 +1,79 @@
+[
+ {
+  "week": 13,
+  "day": "Sun",
+  "slot": "",
+  "word": "Kindness",
+  "ref": "2 Samuel 9:7",
+  "refShort": "2 Sam. 9:7",
+  "top": "Fear not: for I will surely shew thee kindness",
+  "bottom": "...and thou shalt eat bread at my table continually.",
+  "source": "weekly"
+ },
+ {
+  "week": 13,
+  "day": "Mon",
+  "slot": "",
+  "word": "Absolve",
+  "ref": "2 Samuel 12:13",
+  "refShort": "2 Sam. 12:13",
+  "top": "I have sinned against the LORD.",
+  "bottom": "...hath put away thy sin; thou shalt not die.",
+  "source": "new"
+ },
+ {
+  "week": 13,
+  "day": "Tue",
+  "slot": "",
+  "word": "Weep",
+  "ref": "2 Samuel 18:33",
+  "refShort": "2 Sam. 18:33",
+  "top": "...O my son Absalom, my son, my son Absalom!",
+  "bottom": "would God I had died for thee...",
+  "source": "new"
+ },
+ {
+  "week": 13,
+  "day": "Wed",
+  "slot": "",
+  "word": "Fortress",
+  "ref": "2 Samuel 22:2",
+  "refShort": "2 Sam. 22:2",
+  "top": "...The LORD is my rock,",
+  "bottom": "and my fortress, and my deliverer;",
+  "source": "new"
+ },
+ {
+  "week": 13,
+  "day": "Thu",
+  "slot": "",
+  "word": "Offering",
+  "ref": "2 Samuel 24:24",
+  "refShort": "2 Sam. 24:24",
+  "top": "...neither will I offer burnt offerings",
+  "bottom": "unto the LORD my God of that which doth cost me nothing.",
+  "source": "new"
+ },
+ {
+  "week": 13,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Wisdom",
+  "ref": "1 Kings 3:9",
+  "refShort": "1 Kgs. 3:9",
+  "top": "Give therefore thy servant",
+  "bottom": "an understanding heart...",
+  "source": "alt"
+ },
+ {
+  "week": 13,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Purpose",
+  "ref": "1 Kings 5:5",
+  "refShort": "1 Kgs. 5:5",
+  "top": "...I purpose to build an house",
+  "bottom": "unto the name of the LORD my God...",
+  "source": "new"
+ }
+]

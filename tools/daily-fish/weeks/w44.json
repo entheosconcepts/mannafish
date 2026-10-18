@@ -1,0 +1,79 @@
+[
+ {
+  "week": 44,
+  "day": "Sun",
+  "slot": "",
+  "word": "Priority",
+  "ref": "Luke 12:34",
+  "refShort": "Luke 12:34",
+  "top": "For where your treasure is,",
+  "bottom": "there will your heart be also.",
+  "source": "new"
+ },
+ {
+  "week": 44,
+  "day": "Mon",
+  "slot": "",
+  "word": "Found",
+  "ref": "Luke 15:24",
+  "refShort": "Luke 15:24",
+  "top": "For this my son was dead, and is alive again;",
+  "bottom": "he was lost, and is found.",
+  "source": "alt"
+ },
+ {
+  "week": 44,
+  "day": "Tue",
+  "slot": "",
+  "word": "Save",
+  "ref": "Luke 19:10",
+  "refShort": "Luke 19:10",
+  "top": "For the Son of man is come",
+  "bottom": "to seek and to save that which was lost.",
+  "source": "new"
+ },
+ {
+  "week": 44,
+  "day": "Wed",
+  "slot": "",
+  "word": "Lamb",
+  "ref": "John 1:29",
+  "refShort": "John 1:29",
+  "top": "...Behold the Lamb of God,",
+  "bottom": "which taketh away the sin of the world.",
+  "source": "new"
+ },
+ {
+  "week": 44,
+  "day": "Thu",
+  "slot": "",
+  "word": "Born",
+  "ref": "John 3:3",
+  "refShort": "John 3:3",
+  "top": "Verily, verily, I say unto thee,",
+  "bottom": "Except a man be born again, he cannot see the kingdom of God.",
+  "source": "alt"
+ },
+ {
+  "week": 44,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Free",
+  "ref": "John 8:36",
+  "refShort": "John 8:36",
+  "top": "If the Son therefore shall make you free,",
+  "bottom": "ye shall be free indeed.",
+  "source": "weekly"
+ },
+ {
+  "week": 44,
+  "day": "Fri",
+  "slot": "b",
+  "word": "See",
+  "ref": "John 9:25",
+  "refShort": "John 9:25",
+  "top": "...one thing I know,",
+  "bottom": "that, whereas I was blind, now I see.",
+  "source": "new"
+ }
+]

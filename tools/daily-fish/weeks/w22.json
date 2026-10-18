@@ -1,0 +1,79 @@
+[
+ {
+  "week": 22,
+  "day": "Sun",
+  "slot": "",
+  "word": "Guardian",
+  "ref": "Psalm 3:3",
+  "refShort": "Ps. 3:3",
+  "top": "But thou, O LORD,",
+  "bottom": "art a shield for me; my glory...",
+  "source": "new"
+ },
+ {
+  "week": 22,
+  "day": "Mon",
+  "slot": "",
+  "word": "Confide",
+  "ref": "Psalm 9:10",
+  "refShort": "Ps. 9:10",
+  "top": "And they that know thy name",
+  "bottom": "will put their trust in thee...",
+  "source": "new"
+ },
+ {
+  "week": 22,
+  "day": "Tue",
+  "slot": "",
+  "word": "Purify",
+  "ref": "Psalm 12:6",
+  "refShort": "Ps. 12:6",
+  "top": "The words of the LORD are pure words:",
+  "bottom": "as silver tried in a furnace of earth, purified seven times.",
+  "source": "new"
+ },
+ {
+  "week": 22,
+  "day": "Wed",
+  "slot": "",
+  "word": "Path",
+  "ref": "Psalm 16:11",
+  "refShort": "Ps. 16:11",
+  "top": "Thou wilt shew me the path of life:",
+  "bottom": "in thy presence is fulness of joy...",
+  "source": "new"
+ },
+ {
+  "week": 22,
+  "day": "Thu",
+  "slot": "",
+  "word": "Heavens",
+  "ref": "Psalm 19:1",
+  "refShort": "Ps. 19:1",
+  "top": "The heavens declare the glory of God;",
+  "bottom": "and the firmament sheweth his handywork.",
+  "source": "new"
+ },
+ {
+  "week": 22,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Shepherd",
+  "ref": "Psalm 23:1",
+  "refShort": "Ps. 23:1",
+  "top": "The LORD is my shepherd;",
+  "bottom": "I shall not want.",
+  "source": "weekly"
+ },
+ {
+  "week": 22,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Ways",
+  "ref": "Psalm 25:4",
+  "refShort": "Ps. 25:4",
+  "top": "Shew me thy ways, O LORD;",
+  "bottom": "teach me thy paths.",
+  "source": "new"
+ }
+]

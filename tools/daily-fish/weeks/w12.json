@@ -1,0 +1,79 @@
+[
+ {
+  "week": 12,
+  "day": "Sun",
+  "slot": "",
+  "word": "Battle",
+  "ref": "1 Samuel 17:47",
+  "refShort": "1 Sam. 17:47",
+  "top": "...for the battle is the LORD’s,",
+  "bottom": "and he will give you into our hands.",
+  "source": "alt"
+ },
+ {
+  "week": 12,
+  "day": "Mon",
+  "slot": "",
+  "word": "Uphold",
+  "ref": "1 Samuel 23:16",
+  "refShort": "1 Sam. 23:16",
+  "top": "And Jonathan Saul’s son arose,",
+  "bottom": "and went to David... and strengthened his hand in God.",
+  "source": "new"
+ },
+ {
+  "week": 12,
+  "day": "Tue",
+  "slot": "",
+  "word": "Anoint",
+  "ref": "1 Samuel 24:10",
+  "refShort": "1 Sam. 24:10",
+  "top": "...I will not put forth mine hand",
+  "bottom": "against my lord; for he is the LORD’s anointed.",
+  "source": "new"
+ },
+ {
+  "week": 12,
+  "day": "Wed",
+  "slot": "",
+  "word": "Recover",
+  "ref": "1 Samuel 30:8",
+  "refShort": "1 Sam. 30:8",
+  "top": "...thou shalt surely overtake them,",
+  "bottom": "and without fail recover all.",
+  "source": "new"
+ },
+ {
+  "week": 12,
+  "day": "Thu",
+  "slot": "",
+  "word": "Truth",
+  "ref": "2 Samuel 2:6",
+  "refShort": "2 Sam. 2:6",
+  "top": "And now the LORD shew kindness",
+  "bottom": "and truth unto you...",
+  "source": "new"
+ },
+ {
+  "week": 12,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Kingdom",
+  "ref": "2 Samuel 7:16",
+  "refShort": "2 Sam. 7:16",
+  "top": "And thine house and thy kingdom",
+  "bottom": "shall be established for ever before thee...",
+  "source": "weekly"
+ },
+ {
+  "week": 12,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Dance",
+  "ref": "2 Samuel 6:14",
+  "refShort": "2 Sam. 6:14",
+  "top": "And David danced before the LORD",
+  "bottom": "with all his might...",
+  "source": "new"
+ }
+]

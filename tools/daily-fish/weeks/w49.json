@@ -1,0 +1,79 @@
+[
+ {
+  "week": 49,
+  "day": "Sun",
+  "slot": "",
+  "word": "Faith",
+  "ref": "Ephesians 2:8",
+  "refShort": "Eph. 2:8",
+  "top": "For by grace are ye saved through faith;",
+  "bottom": "and that not of yourselves: it is the gift of God.",
+  "source": "weekly"
+ },
+ {
+  "week": 49,
+  "day": "Mon",
+  "slot": "",
+  "word": "Armour",
+  "ref": "Ephesians 6:11",
+  "refShort": "Eph. 6:11",
+  "top": "Put on the whole armour of God,",
+  "bottom": "that ye may be able to stand against the wiles of the devil.",
+  "source": "alt"
+ },
+ {
+  "week": 49,
+  "day": "Tue",
+  "slot": "",
+  "word": "Rejoice",
+  "ref": "Philippians 4:4",
+  "refShort": "Phil. 4:4",
+  "top": "Rejoice in the Lord alway:",
+  "bottom": "and again I say, Rejoice.",
+  "source": "alt"
+ },
+ {
+  "week": 49,
+  "day": "Wed",
+  "slot": "",
+  "word": "Zeal",
+  "ref": "Colossians 3:23",
+  "refShort": "Col. 3:23",
+  "top": "And whatsoever ye do, do it heartily,",
+  "bottom": "as to the Lord, and not unto men;",
+  "source": "new"
+ },
+ {
+  "week": 49,
+  "day": "Thu",
+  "slot": "",
+  "word": "Forever",
+  "ref": "1 Thessalonians 4:17",
+  "refShort": "1 Thess. 4:17",
+  "top": "...caught up... to meet the Lord in the air:",
+  "bottom": "and so shall we ever be with the Lord.",
+  "source": "new"
+ },
+ {
+  "week": 49,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Advent",
+  "ref": "1 Timothy 1:15",
+  "refShort": "1 Tim. 1:15",
+  "top": "...Christ Jesus came into the world",
+  "bottom": "to save sinners; of whom I am chief.",
+  "source": "new"
+ },
+ {
+  "week": 49,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Secure",
+  "ref": "2 Thessalonians 3:3",
+  "refShort": "2 Thess. 3:3",
+  "top": "But the Lord is faithful,",
+  "bottom": "who shall stablish you, and keep you from evil.",
+  "source": "new"
+ }
+]

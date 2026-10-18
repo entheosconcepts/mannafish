@@ -1,0 +1,79 @@
+[
+ {
+  "week": 34,
+  "day": "Sun",
+  "slot": "",
+  "word": "Emmanuel",
+  "ref": "Jeremiah 14:9",
+  "refShort": "Jer. 14:9",
+  "top": "...yet thou, O LORD",
+  "bottom": "art in the midst of us, and we are called by thy name...",
+  "source": "new"
+ },
+ {
+  "week": 34,
+  "day": "Mon",
+  "slot": "",
+  "word": "Root",
+  "ref": "Jeremiah 17:8",
+  "refShort": "Jer. 17:8",
+  "top": "For he shall be as a tree planted by the waters,",
+  "bottom": "and that spreadeth out her roots by the river...",
+  "source": "new"
+ },
+ {
+  "week": 34,
+  "day": "Tue",
+  "slot": "",
+  "word": "Clay",
+  "ref": "Jeremiah 18:6",
+  "refShort": "Jer. 18:6",
+  "top": "Behold, as the clay is in the potter’s hand,",
+  "bottom": "so are ye in mine hand...",
+  "source": "alt"
+ },
+ {
+  "week": 34,
+  "day": "Wed",
+  "slot": "",
+  "word": "Branch",
+  "ref": "Jeremiah 23:5",
+  "refShort": "Jer. 23:5",
+  "top": "...I will raise unto David a righteous Branch,",
+  "bottom": "and a King shall reign and prosper...",
+  "source": "new"
+ },
+ {
+  "week": 34,
+  "day": "Thu",
+  "slot": "",
+  "word": "Amend",
+  "ref": "Jeremiah 26:13",
+  "refShort": "Jer. 26:13",
+  "top": "Therefore now amend your ways and your doings,",
+  "bottom": "and obey the voice of the LORD your God...",
+  "source": "new"
+ },
+ {
+  "week": 34,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Find",
+  "ref": "Jeremiah 29:13",
+  "refShort": "Jer. 29:13",
+  "top": "And ye shall seek me, and find me,",
+  "bottom": "when ye shall search for me with all your heart.",
+  "source": "weekly"
+ },
+ {
+  "week": 34,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Hard",
+  "ref": "Jeremiah 32:17",
+  "refShort": "Jer. 32:17",
+  "top": "Ah Lord GOD! behold, thou hast made the heaven and the earth...",
+  "bottom": "...there is nothing too hard for thee.",
+  "source": "alt"
+ }
+]

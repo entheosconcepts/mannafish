@@ -1,0 +1,79 @@
+[
+ {
+  "week": 35,
+  "day": "Sun",
+  "slot": "",
+  "word": "Call",
+  "ref": "Jeremiah 33:3",
+  "refShort": "Jer. 33:3",
+  "top": "Call unto me, and I will answer thee,",
+  "bottom": "and shew thee great and mighty things, which thou knowest not.",
+  "source": "alt"
+ },
+ {
+  "week": 35,
+  "day": "Mon",
+  "slot": "",
+  "word": "Safety",
+  "ref": "Jeremiah 39:18",
+  "refShort": "Jer. 39:18",
+  "top": "For I will surely deliver thee...",
+  "bottom": "...because thou hast put thy trust in me, saith the LORD.",
+  "source": "new"
+ },
+ {
+  "week": 35,
+  "day": "Tue",
+  "slot": "",
+  "word": "Plant",
+  "ref": "Jeremiah 42:10",
+  "refShort": "Jer. 42:10",
+  "top": "...then will I build you, and not pull you down,",
+  "bottom": "and I will plant you, and not pluck you up...",
+  "source": "new"
+ },
+ {
+  "week": 35,
+  "day": "Wed",
+  "slot": "",
+  "word": "Fearless",
+  "ref": "Jeremiah 46:28",
+  "refShort": "Jer. 46:28",
+  "top": "Fear thou not, O Jacob my servant, saith the LORD:",
+  "bottom": "for I am with thee...",
+  "source": "new"
+ },
+ {
+  "week": 35,
+  "day": "Thu",
+  "slot": "",
+  "word": "Erase",
+  "ref": "Jeremiah 50:20",
+  "refShort": "Jer. 50:20",
+  "top": "...the iniquity of Israel shall be sought for,",
+  "bottom": "and there shall be none... for I will pardon them...",
+  "source": "new"
+ },
+ {
+  "week": 35,
+  "day": "Fri",
+  "slot": "a",
+  "word": "New",
+  "ref": "Lamentations 3:22–23",
+  "refShort": "Lam. 3:22–23",
+  "top": "...his compassions fail not.",
+  "bottom": "They are new every morning: great is thy faithfulness.",
+  "source": "weekly"
+ },
+ {
+  "week": 35,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Expect",
+  "ref": "Lamentations 3:24",
+  "refShort": "Lam. 3:24",
+  "top": "The LORD is my portion, saith my soul;",
+  "bottom": "therefore will I hope in him.",
+  "source": "new"
+ }
+]

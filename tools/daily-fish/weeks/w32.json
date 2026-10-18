@@ -1,0 +1,79 @@
+[
+ {
+  "week": 32,
+  "day": "Sun",
+  "slot": "",
+  "word": "Shadow",
+  "ref": "Isaiah 32:2",
+  "refShort": "Isa. 32:2",
+  "top": "...as rivers of water in a dry place,",
+  "bottom": "as the shadow of a great rock in a weary land.",
+  "source": "new"
+ },
+ {
+  "week": 32,
+  "day": "Mon",
+  "slot": "",
+  "word": "Pilgrim",
+  "ref": "Isaiah 35:10",
+  "refShort": "Isa. 35:10",
+  "top": "And the ransomed of the LORD shall return,",
+  "bottom": "and come to Zion with songs and everlasting joy...",
+  "source": "new"
+ },
+ {
+  "week": 32,
+  "day": "Tue",
+  "slot": "",
+  "word": "Wait",
+  "ref": "Isaiah 40:31",
+  "refShort": "Isa. 40:31",
+  "top": "But they that wait upon the LORD shall renew their strength;",
+  "bottom": "they shall mount up with wings as eagles...",
+  "source": "weekly"
+ },
+ {
+  "week": 32,
+  "day": "Wed",
+  "slot": "",
+  "word": "Called",
+  "ref": "Isaiah 43:1",
+  "refShort": "Isa. 43:1",
+  "top": "Fear not: for I have redeemed thee,",
+  "bottom": "I have called thee by thy name; thou art mine.",
+  "source": "alt"
+ },
+ {
+  "week": 32,
+  "day": "Thu",
+  "slot": "",
+  "word": "Support",
+  "ref": "Isaiah 46:4",
+  "refShort": "Isa. 46:4",
+  "top": "And even to your old age I am he;",
+  "bottom": "and even to hoar hairs will I carry you...",
+  "source": "new"
+ },
+ {
+  "week": 32,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Wounded",
+  "ref": "Isaiah 53:5",
+  "refShort": "Isa. 53:5",
+  "top": "But he was wounded for our transgressions,",
+  "bottom": "...and with his stripes we are healed.",
+  "source": "alt"
+ },
+ {
+  "week": 32,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Tidings",
+  "ref": "Isaiah 52:7",
+  "refShort": "Isa. 52:7",
+  "top": "How beautiful upon the mountains are the feet",
+  "bottom": "of him that bringeth good tidings, that publisheth peace...",
+  "source": "new"
+ }
+]

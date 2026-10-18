@@ -1,0 +1,79 @@
+[
+ {
+  "week": 45,
+  "day": "Sun",
+  "slot": "",
+  "word": "Life",
+  "ref": "John 11:25",
+  "refShort": "John 11:25",
+  "top": "I am the resurrection, and the life:",
+  "bottom": "he that believeth in me... yet shall he live:",
+  "source": "new"
+ },
+ {
+  "week": 45,
+  "day": "Mon",
+  "slot": "",
+  "word": "Abide",
+  "ref": "John 15:4",
+  "refShort": "John 15:4",
+  "top": "Abide in me, and I in you.",
+  "bottom": "As the branch cannot bear fruit of itself, except it abide in the vine...",
+  "source": "weekly"
+ },
+ {
+  "week": 45,
+  "day": "Tue",
+  "slot": "",
+  "word": "Finished",
+  "ref": "John 19:30",
+  "refShort": "John 19:30",
+  "top": "...he said, It is finished:",
+  "bottom": "and he bowed his head, and gave up the ghost.",
+  "source": "alt"
+ },
+ {
+  "week": 45,
+  "day": "Wed",
+  "slot": "",
+  "word": "Power",
+  "ref": "Acts 1:8",
+  "refShort": "Acts 1:8",
+  "top": "But ye shall receive power,",
+  "bottom": "after that the Holy Ghost is come upon you...",
+  "source": "alt"
+ },
+ {
+  "week": 45,
+  "day": "Thu",
+  "slot": "",
+  "word": "Christ",
+  "ref": "Acts 4:12",
+  "refShort": "Acts 4:12",
+  "top": "...there is none other name under heaven",
+  "bottom": "given among men, whereby we must be saved.",
+  "source": "new"
+ },
+ {
+  "week": 45,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Messiah",
+  "ref": "Acts 10:38",
+  "refShort": "Acts 10:38",
+  "top": "How God anointed Jesus of Nazareth",
+  "bottom": "with the Holy Ghost and with power...",
+  "source": "new"
+ },
+ {
+  "week": 45,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Preach",
+  "ref": "Acts 8:35",
+  "refShort": "Acts 8:35",
+  "top": "Then Philip opened his mouth,",
+  "bottom": "...and preached unto him Jesus.",
+  "source": "new"
+ }
+]

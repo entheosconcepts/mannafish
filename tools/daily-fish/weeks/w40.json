@@ -1,0 +1,79 @@
+[
+ {
+  "week": 40,
+  "day": "Sun",
+  "slot": "",
+  "word": "Spare",
+  "ref": "Jonah 4:11",
+  "refShort": "Jonah 4:11",
+  "top": "And should not I spare Nineveh, that great city,",
+  "bottom": "wherein are more than sixscore thousand persons...",
+  "source": "new"
+ },
+ {
+  "week": 40,
+  "day": "Mon",
+  "slot": "",
+  "word": "Mercy",
+  "ref": "Micah 7:18",
+  "refShort": "Micah 7:18",
+  "top": "Who is a God like unto thee, that pardoneth iniquity...",
+  "bottom": "...he retaineth not his anger for ever, because he delighteth in mercy.",
+  "source": "weekly"
+ },
+ {
+  "week": 40,
+  "day": "Tue",
+  "slot": "",
+  "word": "Haven",
+  "ref": "Nahum 1:7",
+  "refShort": "Nahum 1:7",
+  "top": "The LORD is good, a strong hold",
+  "bottom": "in the day of trouble; and he knoweth them that trust in him.",
+  "source": "new"
+ },
+ {
+  "week": 40,
+  "day": "Wed",
+  "slot": "",
+  "word": "Vision",
+  "ref": "Habakkuk 2:2",
+  "refShort": "Hab. 2:2",
+  "top": "Write the vision, and make it plain upon tables,",
+  "bottom": "that he may run that readeth it.",
+  "source": "alt"
+ },
+ {
+  "week": 40,
+  "day": "Thu",
+  "slot": "",
+  "word": "Rejoice",
+  "ref": "Zephaniah 3:17",
+  "refShort": "Zeph. 3:17",
+  "top": "The LORD thy God in the midst of thee is mighty; he will save,",
+  "bottom": "he will rejoice over thee with joy...",
+  "source": "alt"
+ },
+ {
+  "week": 40,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Wall",
+  "ref": "Zechariah 2:5",
+  "refShort": "Zech. 2:5",
+  "top": "...will be unto her a wall of fire round about,",
+  "bottom": "and will be the glory in the midst of her.",
+  "source": "new"
+ },
+ {
+  "week": 40,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Clothe",
+  "ref": "Zechariah 3:4",
+  "refShort": "Zech. 3:4",
+  "top": "...I have caused thine iniquity to pass from thee,",
+  "bottom": "and I will clothe thee with change of raiment.",
+  "source": "new"
+ }
+]

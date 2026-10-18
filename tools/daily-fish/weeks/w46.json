@@ -1,0 +1,79 @@
+[
+ {
+  "week": 46,
+  "day": "Sun",
+  "slot": "",
+  "word": "Rain",
+  "ref": "Acts 14:17",
+  "refShort": "Acts 14:17",
+  "top": "Nevertheless he left not himself without witness,",
+  "bottom": "in that he did good, and gave us rain from heaven...",
+  "source": "new"
+ },
+ {
+  "week": 46,
+  "day": "Mon",
+  "slot": "",
+  "word": "Saved",
+  "ref": "Acts 16:31",
+  "refShort": "Acts 16:31",
+  "top": "Believe on the Lord Jesus Christ,",
+  "bottom": "and thou shalt be saved, and thy house.",
+  "source": "alt"
+ },
+ {
+  "week": 46,
+  "day": "Tue",
+  "slot": "",
+  "word": "Cheer",
+  "ref": "Acts 23:11",
+  "refShort": "Acts 23:11",
+  "top": "...the Lord stood by him, and said,",
+  "bottom": "Be of good cheer, Paul...",
+  "source": "new"
+ },
+ {
+  "week": 46,
+  "day": "Wed",
+  "slot": "",
+  "word": "Inherit",
+  "ref": "Acts 26:18",
+  "refShort": "Acts 26:18",
+  "top": "To open their eyes, and to turn them",
+  "bottom": "from darkness to light, and from the power of Satan...",
+  "source": "new"
+ },
+ {
+  "week": 46,
+  "day": "Thu",
+  "slot": "",
+  "word": "Gospel",
+  "ref": "Romans 1:16",
+  "refShort": "Rom. 1:16",
+  "top": "For I am not ashamed of the gospel of Christ:",
+  "bottom": "for it is the power of God unto salvation...",
+  "source": "new"
+ },
+ {
+  "week": 46,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Gift",
+  "ref": "Romans 6:23",
+  "refShort": "Rom. 6:23",
+  "top": "For the wages of sin is death;",
+  "bottom": "but the gift of God is eternal life through Jesus Christ our Lord.",
+  "source": "weekly"
+ },
+ {
+  "week": 46,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Grace",
+  "ref": "Romans 5:20",
+  "refShort": "Rom. 5:20",
+  "top": "But where sin abounded,",
+  "bottom": "grace did much more abound.",
+  "source": "alt"
+ }
+]

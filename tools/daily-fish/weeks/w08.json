@@ -1,0 +1,79 @@
+[
+ {
+  "week": 8,
+  "day": "Sun",
+  "slot": "",
+  "word": "Bread",
+  "ref": "Deuteronomy 8:3",
+  "refShort": "Deut. 8:3",
+  "top": "...man doth not live by bread only,",
+  "bottom": "but by every word that proceedeth out of the mouth of the LORD...",
+  "source": "weekly"
+ },
+ {
+  "week": 8,
+  "day": "Mon",
+  "slot": "",
+  "word": "Open",
+  "ref": "Deuteronomy 15:11",
+  "refShort": "Deut. 15:11",
+  "top": "Thou shalt open thine hand wide",
+  "bottom": "unto thy brother, to thy poor, and to thy needy...",
+  "source": "new"
+ },
+ {
+  "week": 8,
+  "day": "Tue",
+  "slot": "",
+  "word": "Prophet",
+  "ref": "Deuteronomy 18:15",
+  "refShort": "Deut. 18:15",
+  "top": "The LORD thy God will raise up unto thee a Prophet",
+  "bottom": "...unto him ye shall hearken;",
+  "source": "new"
+ },
+ {
+  "week": 8,
+  "day": "Wed",
+  "slot": "",
+  "word": "Help",
+  "ref": "Deuteronomy 22:4",
+  "refShort": "Deut. 22:4",
+  "top": "...thou shalt surely help him",
+  "bottom": "to lift them up again.",
+  "source": "new"
+ },
+ {
+  "week": 8,
+  "day": "Thu",
+  "slot": "",
+  "word": "Cry",
+  "ref": "Deuteronomy 26:7",
+  "refShort": "Deut. 26:7",
+  "top": "And when we cried unto the LORD...",
+  "bottom": "the LORD heard our voice, and looked on our affliction...",
+  "source": "new"
+ },
+ {
+  "week": 8,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Reveal",
+  "ref": "Deuteronomy 29:29",
+  "refShort": "Deut. 29:29",
+  "top": "The secret things belong unto the LORD our God:",
+  "bottom": "but those things which are revealed belong unto us...",
+  "source": "new"
+ },
+ {
+  "week": 8,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Obey",
+  "ref": "Deuteronomy 30:20",
+  "refShort": "Deut. 30:20",
+  "top": "...that thou mayest obey his voice,",
+  "bottom": "and that thou mayest cleave unto him: for he is thy life...",
+  "source": "new"
+ }
+]

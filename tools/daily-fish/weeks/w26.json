@@ -1,0 +1,79 @@
+[
+ {
+  "week": 26,
+  "day": "Sun",
+  "slot": "",
+  "word": "Worship",
+  "ref": "Psalm 95:6",
+  "refShort": "Ps. 95:6",
+  "top": "O come, let us worship and bow down:",
+  "bottom": "let us kneel before the LORD our maker.",
+  "source": "weekly"
+ },
+ {
+  "week": 26,
+  "day": "Mon",
+  "slot": "",
+  "word": "Enter",
+  "ref": "Psalm 100:4",
+  "refShort": "Ps. 100:4",
+  "top": "Enter into his gates with thanksgiving,",
+  "bottom": "and into his courts with praise...",
+  "source": "alt"
+ },
+ {
+  "week": 26,
+  "day": "Tue",
+  "slot": "",
+  "word": "Remove",
+  "ref": "Psalm 103:12",
+  "refShort": "Ps. 103:12",
+  "top": "As far as the east is from the west,",
+  "bottom": "so far hath he removed our transgressions from us.",
+  "source": "new"
+ },
+ {
+  "week": 26,
+  "day": "Wed",
+  "slot": "",
+  "word": "Satisfy",
+  "ref": "Psalm 107:9",
+  "refShort": "Ps. 107:9",
+  "top": "For he satisfieth the longing soul,",
+  "bottom": "and filleth the hungry soul with goodness.",
+  "source": "new"
+ },
+ {
+  "week": 26,
+  "day": "Thu",
+  "slot": "",
+  "word": "Release",
+  "ref": "Psalm 111:9",
+  "refShort": "Ps. 111:9",
+  "top": "He sent redemption unto his people:",
+  "bottom": "he hath commanded his covenant for ever...",
+  "source": "new"
+ },
+ {
+  "week": 26,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Uplift",
+  "ref": "Psalm 113:7",
+  "refShort": "Ps. 113:7",
+  "top": "He raiseth up the poor out of the dust,",
+  "bottom": "and lifteth the needy out of the dunghill...",
+  "source": "new"
+ },
+ {
+  "week": 26,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Cup",
+  "ref": "Psalm 116:13",
+  "refShort": "Ps. 116:13",
+  "top": "I will take the cup of salvation,",
+  "bottom": "and call upon the name of the LORD.",
+  "source": "new"
+ }
+]

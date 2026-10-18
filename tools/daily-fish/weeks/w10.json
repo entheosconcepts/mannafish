@@ -1,0 +1,79 @@
+[
+ {
+  "week": 10,
+  "day": "Sun",
+  "slot": "",
+  "word": "Refuge",
+  "ref": "Joshua 20:3",
+  "refShort": "Josh. 20:3",
+  "top": "...and they shall be your refuge",
+  "bottom": "from the avenger of blood.",
+  "source": "alt"
+ },
+ {
+  "week": 10,
+  "day": "Mon",
+  "slot": "",
+  "word": "Serve",
+  "ref": "Joshua 24:15",
+  "refShort": "Josh. 24:15",
+  "top": "...choose you this day whom ye will serve;",
+  "bottom": "...as for me and my house, we will serve the LORD.",
+  "source": "weekly"
+ },
+ {
+  "week": 10,
+  "day": "Tue",
+  "slot": "",
+  "word": "Valour",
+  "ref": "Judges 6:12",
+  "refShort": "Judges 6:12",
+  "top": "...The LORD is with thee,",
+  "bottom": "thou mighty man of valour.",
+  "source": "new"
+ },
+ {
+  "week": 10,
+  "day": "Wed",
+  "slot": "",
+  "word": "Rule",
+  "ref": "Judges 8:23",
+  "refShort": "Judges 8:23",
+  "top": "I will not rule over you...",
+  "bottom": "the LORD shall rule over you.",
+  "source": "new"
+ },
+ {
+  "week": 10,
+  "day": "Thu",
+  "slot": "",
+  "word": "Instruct",
+  "ref": "Judges 13:8",
+  "refShort": "Judges 13:8",
+  "top": "O my Lord... come again unto us,",
+  "bottom": "and teach us what we shall do...",
+  "source": "new"
+ },
+ {
+  "week": 10,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Revive",
+  "ref": "Judges 15:19",
+  "refShort": "Judges 15:19",
+  "top": "...and when he had drunk,",
+  "bottom": "his spirit came again, and he revived...",
+  "source": "new"
+ },
+ {
+  "week": 10,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Plead",
+  "ref": "Judges 16:28",
+  "refShort": "Judges 16:28",
+  "top": "O Lord GOD, remember me, I pray thee,",
+  "bottom": "and strengthen me, I pray thee, only this once...",
+  "source": "new"
+ }
+]

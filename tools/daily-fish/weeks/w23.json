@@ -1,0 +1,79 @@
+[
+ {
+  "week": 23,
+  "day": "Sun",
+  "slot": "",
+  "word": "Light",
+  "ref": "Psalm 27:1",
+  "refShort": "Ps. 27:1",
+  "top": "The LORD is my light and my salvation;",
+  "bottom": "whom shall I fear?",
+  "source": "alt"
+ },
+ {
+  "week": 23,
+  "day": "Mon",
+  "slot": "",
+  "word": "Dawn",
+  "ref": "Psalm 30:5",
+  "refShort": "Ps. 30:5",
+  "top": "...weeping may endure for a night,",
+  "bottom": "but joy cometh in the morning.",
+  "source": "new"
+ },
+ {
+  "week": 23,
+  "day": "Tue",
+  "slot": "",
+  "word": "Taste",
+  "ref": "Psalm 34:8",
+  "refShort": "Ps. 34:8",
+  "top": "O taste and see that the LORD is good:",
+  "bottom": "blessed is the man that trusteth in him.",
+  "source": "alt"
+ },
+ {
+  "week": 23,
+  "day": "Wed",
+  "slot": "",
+  "word": "Hymn",
+  "ref": "Psalm 40:3",
+  "refShort": "Ps. 40:3",
+  "top": "And he hath put a new song in my mouth,",
+  "bottom": "even praise unto our God...",
+  "source": "new"
+ },
+ {
+  "week": 23,
+  "day": "Thu",
+  "slot": "",
+  "word": "Guidance",
+  "ref": "Psalm 43:3",
+  "refShort": "Ps. 43:3",
+  "top": "O send out thy light and thy truth:",
+  "bottom": "let them lead me...",
+  "source": "new"
+ },
+ {
+  "week": 23,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Still",
+  "ref": "Psalm 46:10",
+  "refShort": "Ps. 46:10",
+  "top": "Be still, and know that I am God:",
+  "bottom": "I will be exalted among the heathen...",
+  "source": "weekly"
+ },
+ {
+  "week": 23,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Present",
+  "ref": "Psalm 46:1",
+  "refShort": "Ps. 46:1",
+  "top": "God is our refuge and strength,",
+  "bottom": "a very present help in trouble.",
+  "source": "new"
+ }
+]

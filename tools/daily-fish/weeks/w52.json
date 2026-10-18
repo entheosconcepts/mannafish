@@ -1,0 +1,79 @@
+[
+ {
+  "week": 52,
+  "day": "Sun",
+  "slot": "",
+  "word": "Door",
+  "ref": "Revelation 3:20",
+  "refShort": "Rev. 3:20",
+  "top": "Behold, I stand at the door, and knock:",
+  "bottom": "if any man hear my voice, and open the door, I will come in...",
+  "source": "alt"
+ },
+ {
+  "week": 52,
+  "day": "Mon",
+  "slot": "",
+  "word": "Worthy",
+  "ref": "Revelation 5:12",
+  "refShort": "Rev. 5:12",
+  "top": "Worthy is the Lamb that was slain",
+  "bottom": "to receive power, and riches, and wisdom...",
+  "source": "alt"
+ },
+ {
+  "week": 52,
+  "day": "Tue",
+  "slot": "",
+  "word": "Reign",
+  "ref": "Revelation 11:15",
+  "refShort": "Rev. 11:15",
+  "top": "...the kingdoms of our Lord, and of his Christ;",
+  "bottom": "and he shall reign for ever and ever.",
+  "source": "new"
+ },
+ {
+  "week": 52,
+  "day": "Wed",
+  "slot": "",
+  "word": "Testify",
+  "ref": "Revelation 12:11",
+  "refShort": "Rev. 12:11",
+  "top": "And they overcame him by the blood of the Lamb,",
+  "bottom": "and by the word of their testimony...",
+  "source": "new"
+ },
+ {
+  "week": 52,
+  "day": "Thu",
+  "slot": "",
+  "word": "Marvel",
+  "ref": "Revelation 15:3",
+  "refShort": "Rev. 15:3",
+  "top": "Great and marvellous are thy works,",
+  "bottom": "Lord God Almighty; just and true are thy ways...",
+  "source": "new"
+ },
+ {
+  "week": 52,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Amen",
+  "ref": "Revelation 22:20",
+  "refShort": "Rev. 22:20",
+  "top": "Surely I come quickly. Amen.",
+  "bottom": "Even so, come, Lord Jesus.",
+  "source": "weekly"
+ },
+ {
+  "week": 52,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Water",
+  "ref": "Revelation 22:17",
+  "refShort": "Rev. 22:17",
+  "top": "And whosoever will,",
+  "bottom": "let him take the water of life freely.",
+  "source": "alt"
+ }
+]

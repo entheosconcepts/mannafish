@@ -1,0 +1,79 @@
+[
+ {
+  "week": 6,
+  "day": "Sun",
+  "slot": "",
+  "word": "Liberty",
+  "ref": "Leviticus 25:10",
+  "refShort": "Lev. 25:10",
+  "top": "...and proclaim liberty throughout all the land",
+  "bottom": "unto all the inhabitants thereof...",
+  "source": "alt"
+ },
+ {
+  "week": 6,
+  "day": "Mon",
+  "slot": "",
+  "word": "Repay",
+  "ref": "Numbers 5:7",
+  "refShort": "Num. 5:7",
+  "top": "...and he shall recompense his trespass",
+  "bottom": "with the principal thereof...",
+  "source": "new"
+ },
+ {
+  "week": 6,
+  "day": "Tue",
+  "slot": "",
+  "word": "Keep",
+  "ref": "Numbers 6:24",
+  "refShort": "Num. 6:24",
+  "top": "The LORD bless thee,",
+  "bottom": "and keep thee.",
+  "source": "weekly"
+ },
+ {
+  "week": 6,
+  "day": "Wed",
+  "slot": "",
+  "word": "Meekness",
+  "ref": "Numbers 12:3",
+  "refShort": "Num. 12:3",
+  "top": "Now the man Moses was very meek,",
+  "bottom": "above all the men which were upon the face of the earth.",
+  "source": "new"
+ },
+ {
+  "week": 6,
+  "day": "Thu",
+  "slot": "",
+  "word": "Overcome",
+  "ref": "Numbers 13:30",
+  "refShort": "Num. 13:30",
+  "top": "Let us go up at once, and possess it;",
+  "bottom": "for we are well able to overcome it.",
+  "source": "new"
+ },
+ {
+  "week": 6,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Blossom",
+  "ref": "Numbers 17:8",
+  "refShort": "Num. 17:8",
+  "top": "...the rod of Aaron...",
+  "bottom": "was budded, and brought forth buds, and bloomed blossoms...",
+  "source": "new"
+ },
+ {
+  "week": 6,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Portion",
+  "ref": "Numbers 18:20",
+  "refShort": "Num. 18:20",
+  "top": "...I am thy part and thine inheritance",
+  "bottom": "among the children of Israel.",
+  "source": "new"
+ }
+]

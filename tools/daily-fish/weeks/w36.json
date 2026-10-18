@@ -1,0 +1,79 @@
+[
+ {
+  "week": 36,
+  "day": "Sun",
+  "slot": "",
+  "word": "Throne",
+  "ref": "Lamentations 5:19",
+  "refShort": "Lam. 5:19",
+  "top": "Thou, O LORD, remainest for ever;",
+  "bottom": "thy throne from generation to generation.",
+  "source": "new"
+ },
+ {
+  "week": 36,
+  "day": "Mon",
+  "slot": "",
+  "word": "Watchman",
+  "ref": "Ezekiel 3:17",
+  "refShort": "Ezek. 3:17",
+  "top": "Son of man, I have made thee a watchman",
+  "bottom": "...therefore hear the word at my mouth...",
+  "source": "new"
+ },
+ {
+  "week": 36,
+  "day": "Tue",
+  "slot": "",
+  "word": "Cloud",
+  "ref": "Ezekiel 10:4",
+  "refShort": "Ezek. 10:4",
+  "top": "...and the house was filled with the cloud,",
+  "bottom": "...full of the brightness of the LORD’s glory.",
+  "source": "new"
+ },
+ {
+  "week": 36,
+  "day": "Wed",
+  "slot": "",
+  "word": "Spirit",
+  "ref": "Ezekiel 11:19",
+  "refShort": "Ezek. 11:19",
+  "top": "...and I will put a new spirit within you;",
+  "bottom": "and I will take the stony heart out of their flesh...",
+  "source": "alt"
+ },
+ {
+  "week": 36,
+  "day": "Thu",
+  "slot": "",
+  "word": "Bond",
+  "ref": "Ezekiel 16:60",
+  "refShort": "Ezek. 16:60",
+  "top": "Nevertheless I will remember my covenant...",
+  "bottom": "...and I will establish unto thee an everlasting covenant.",
+  "source": "new"
+ },
+ {
+  "week": 36,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Turn",
+  "ref": "Ezekiel 18:32",
+  "refShort": "Ezek. 18:32",
+  "top": "For I have no pleasure in the death of him that dieth...",
+  "bottom": "...wherefore turn yourselves, and live ye.",
+  "source": "weekly"
+ },
+ {
+  "week": 36,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Repent",
+  "ref": "Ezekiel 18:30",
+  "refShort": "Ezek. 18:30",
+  "top": "Repent, and turn yourselves...",
+  "bottom": "...so iniquity shall not be your ruin.",
+  "source": "new"
+ }
+]

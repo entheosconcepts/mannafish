@@ -1,0 +1,79 @@
+[
+ {
+  "week": 37,
+  "day": "Sun",
+  "slot": "",
+  "word": "Stand",
+  "ref": "Ezekiel 22:30",
+  "refShort": "Ezek. 22:30",
+  "top": "And I sought for a man among them,",
+  "bottom": "that should make up the hedge, and stand in the gap...",
+  "source": "weekly"
+ },
+ {
+  "week": 37,
+  "day": "Mon",
+  "slot": "",
+  "word": "Vineyard",
+  "ref": "Ezekiel 28:26",
+  "refShort": "Ezek. 28:26",
+  "top": "...and shall build houses, and plant vineyards;",
+  "bottom": "yea, they shall dwell with confidence...",
+  "source": "new"
+ },
+ {
+  "week": 37,
+  "day": "Tue",
+  "slot": "",
+  "word": "Forget",
+  "ref": "Ezekiel 33:16",
+  "refShort": "Ezek. 33:16",
+  "top": "None of his sins that he hath committed",
+  "bottom": "shall be mentioned unto him...he shall surely live.",
+  "source": "new"
+ },
+ {
+  "week": 37,
+  "day": "Wed",
+  "slot": "",
+  "word": "Search",
+  "ref": "Ezekiel 34:11",
+  "refShort": "Ezek. 34:11",
+  "top": "Behold, I, even I, will both search my sheep,",
+  "bottom": "and seek them out.",
+  "source": "alt"
+ },
+ {
+  "week": 37,
+  "day": "Thu",
+  "slot": "",
+  "word": "Alive",
+  "ref": "Ezekiel 37:14",
+  "refShort": "Ezek. 37:14",
+  "top": "And shall put my spirit in you, and ye shall live,",
+  "bottom": "and I shall place you in your own land...",
+  "source": "new"
+ },
+ {
+  "week": 37,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Voice",
+  "ref": "Ezekiel 43:2",
+  "refShort": "Ezek. 43:2",
+  "top": "...and his voice was like a noise of many waters:",
+  "bottom": "and the earth shined with his glory.",
+  "source": "new"
+ },
+ {
+  "week": 37,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Holiness",
+  "ref": "Ezekiel 44:23",
+  "refShort": "Ezek. 44:23",
+  "top": "And they shall teach my people",
+  "bottom": "the difference between the holy and profane...",
+  "source": "new"
+ }
+]

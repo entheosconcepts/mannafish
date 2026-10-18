@@ -1,0 +1,79 @@
+[
+ {
+  "week": 20,
+  "day": "Sun",
+  "slot": "",
+  "word": "Name",
+  "ref": "Job 1:21",
+  "refShort": "Job 1:21",
+  "top": "...the LORD gave, and the LORD hath taken away;",
+  "bottom": "blessed be the name of the LORD.",
+  "source": "new"
+ },
+ {
+  "week": 20,
+  "day": "Mon",
+  "slot": "",
+  "word": "Commit",
+  "ref": "Job 5:8",
+  "refShort": "Job 5:8",
+  "top": "I would seek unto God,",
+  "bottom": "and unto God would I commit my cause...",
+  "source": "new"
+ },
+ {
+  "week": 20,
+  "day": "Tue",
+  "slot": "",
+  "word": "Increase",
+  "ref": "Job 8:7",
+  "refShort": "Job 8:7",
+  "top": "Though thy beginning was small,",
+  "bottom": "yet thy latter end should greatly increase.",
+  "source": "new"
+ },
+ {
+  "week": 20,
+  "day": "Wed",
+  "slot": "",
+  "word": "Counsel",
+  "ref": "Job 12:13",
+  "refShort": "Job 12:13",
+  "top": "With him is wisdom and strength,",
+  "bottom": "he hath counsel and understanding.",
+  "source": "new"
+ },
+ {
+  "week": 20,
+  "day": "Thu",
+  "slot": "",
+  "word": "Witness",
+  "ref": "Job 16:19",
+  "refShort": "Job 16:19",
+  "top": "Also now, behold, my witness is in heaven,",
+  "bottom": "and my record is on high.",
+  "source": "new"
+ },
+ {
+  "week": 20,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Redeemer",
+  "ref": "Job 19:25",
+  "refShort": "Job 19:25",
+  "top": "For I know that my redeemer liveth,",
+  "bottom": "and that he shall stand at the latter day upon the earth.",
+  "source": "weekly"
+ },
+ {
+  "week": 20,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Behold",
+  "ref": "Job 19:27",
+  "refShort": "Job 19:27",
+  "top": "Whom I shall see for myself,",
+  "bottom": "and mine eyes shall behold, and not another...",
+  "source": "new"
+ }
+]

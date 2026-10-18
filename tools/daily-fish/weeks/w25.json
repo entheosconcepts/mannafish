@@ -1,0 +1,79 @@
+[
+ {
+  "week": 25,
+  "day": "Sun",
+  "slot": "",
+  "word": "Heritage",
+  "ref": "Psalm 73:26",
+  "refShort": "Ps. 73:26",
+  "top": "My flesh and my heart faileth:",
+  "bottom": "but God is the strength of my heart, and my portion for ever.",
+  "source": "new"
+ },
+ {
+  "week": 25,
+  "day": "Mon",
+  "slot": "",
+  "word": "Flock",
+  "ref": "Psalm 78:52",
+  "refShort": "Ps. 78:52",
+  "top": "But made his own people to go forth like sheep,",
+  "bottom": "and guided them in the wilderness like a flock.",
+  "source": "new"
+ },
+ {
+  "week": 25,
+  "day": "Tue",
+  "slot": "",
+  "word": "Supply",
+  "ref": "Psalm 81:10",
+  "refShort": "Ps. 81:10",
+  "top": "I am the LORD thy God...",
+  "bottom": "open thy mouth wide, and I will fill it.",
+  "source": "new"
+ },
+ {
+  "week": 25,
+  "day": "Wed",
+  "slot": "",
+  "word": "Awaken",
+  "ref": "Psalm 85:6",
+  "refShort": "Ps. 85:6",
+  "top": "Wilt thou not revive us again:",
+  "bottom": "that thy people may rejoice in thee?",
+  "source": "new"
+ },
+ {
+  "week": 25,
+  "day": "Thu",
+  "slot": "",
+  "word": "Hands",
+  "ref": "Psalm 90:17",
+  "refShort": "Ps. 90:17",
+  "top": "And let the beauty of the LORD our God be upon us:",
+  "bottom": "and establish thou the work of our hands upon us...",
+  "source": "new"
+ },
+ {
+  "week": 25,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Refuge",
+  "ref": "Psalm 91:2",
+  "refShort": "Ps. 91:2",
+  "top": "I will say of the LORD,",
+  "bottom": "He is my refuge and my fortress: my God; in him will I trust.",
+  "source": "weekly"
+ },
+ {
+  "week": 25,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Dwell",
+  "ref": "Psalm 91:1",
+  "refShort": "Ps. 91:1",
+  "top": "He that dwelleth in the secret place",
+  "bottom": "of the most High shall abide under the shadow of the Almighty.",
+  "source": "alt"
+ }
+]

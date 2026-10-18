@@ -1,0 +1,79 @@
+[
+ {
+  "week": 47,
+  "day": "Sun",
+  "slot": "",
+  "word": "Confess",
+  "ref": "Romans 10:9",
+  "refShort": "Rom. 10:9",
+  "top": "That if thou shalt confess with thy mouth the Lord Jesus,",
+  "bottom": "...thou shalt be saved.",
+  "source": "alt"
+ },
+ {
+  "week": 47,
+  "day": "Mon",
+  "slot": "",
+  "word": "Renew",
+  "ref": "Romans 12:2",
+  "refShort": "Rom. 12:2",
+  "top": "And be not conformed to this world:",
+  "bottom": "but be ye transformed by the renewing of your mind...",
+  "source": "weekly"
+ },
+ {
+  "week": 47,
+  "day": "Tue",
+  "slot": "",
+  "word": "Abound",
+  "ref": "Romans 15:13",
+  "refShort": "Rom. 15:13",
+  "top": "Now the God of hope fill you with all joy",
+  "bottom": "and peace in believing, that ye may abound in hope...",
+  "source": "new"
+ },
+ {
+  "week": 47,
+  "day": "Wed",
+  "slot": "",
+  "word": "Temple",
+  "ref": "1 Corinthians 3:16",
+  "refShort": "1 Cor. 3:16",
+  "top": "Know ye not that ye are the temple of God,",
+  "bottom": "and that the Spirit of God dwelleth in you?",
+  "source": "new"
+ },
+ {
+  "week": 47,
+  "day": "Thu",
+  "slot": "",
+  "word": "Price",
+  "ref": "1 Corinthians 6:20",
+  "refShort": "1 Cor. 6:20",
+  "top": "For ye are bought with a price:",
+  "bottom": "therefore glorify God in your body, and in your spirit...",
+  "source": "new"
+ },
+ {
+  "week": 47,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Escape",
+  "ref": "1 Corinthians 10:13",
+  "refShort": "1 Cor. 10:13",
+  "top": "...God is faithful... with the temptation also",
+  "bottom": "make a way to escape, that ye may be able to bear it.",
+  "source": "new"
+ },
+ {
+  "week": 47,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Charity",
+  "ref": "1 Corinthians 13:13",
+  "refShort": "1 Cor. 13:13",
+  "top": "And now abideth faith, hope, charity, these three;",
+  "bottom": "but the greatest of these is charity.",
+  "source": "new"
+ }
+]

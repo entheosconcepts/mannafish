@@ -1,0 +1,79 @@
+[
+ {
+  "week": 42,
+  "day": "Sun",
+  "slot": "",
+  "word": "Yoke",
+  "ref": "Matthew 11:29",
+  "refShort": "Matt. 11:29",
+  "top": "Take my yoke upon you, and learn of me;",
+  "bottom": "...and ye shall find rest unto your souls.",
+  "source": "new"
+ },
+ {
+  "week": 42,
+  "day": "Mon",
+  "slot": "",
+  "word": "Rock",
+  "ref": "Matthew 16:18",
+  "refShort": "Matt. 16:18",
+  "top": "...and upon this rock I will build my church;",
+  "bottom": "and the gates of hell shall not prevail against it.",
+  "source": "alt"
+ },
+ {
+  "week": 42,
+  "day": "Tue",
+  "slot": "",
+  "word": "Faith",
+  "ref": "Matthew 17:20",
+  "refShort": "Matt. 17:20",
+  "top": "...If ye have faith as a grain of mustard seed...",
+  "bottom": "...nothing shall be impossible unto you.",
+  "source": "alt"
+ },
+ {
+  "week": 42,
+  "day": "Wed",
+  "slot": "",
+  "word": "Hosanna",
+  "ref": "Matthew 21:9",
+  "refShort": "Matt. 21:9",
+  "top": "Hosanna to the Son of David:",
+  "bottom": "Blessed is he that cometh in the name of the Lord...",
+  "source": "new"
+ },
+ {
+  "week": 42,
+  "day": "Thu",
+  "slot": "",
+  "word": "Steward",
+  "ref": "Matthew 25:21",
+  "refShort": "Matt. 25:21",
+  "top": "Well done, thou good and faithful servant:",
+  "bottom": "...enter thou into the joy of thy lord.",
+  "source": "new"
+ },
+ {
+  "week": 42,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Go",
+  "ref": "Matthew 28:19",
+  "refShort": "Matt. 28:19",
+  "top": "Go ye therefore, and teach all nations,",
+  "bottom": "baptizing them in the name of the Father...",
+  "source": "weekly"
+ },
+ {
+  "week": 42,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Risen",
+  "ref": "Matthew 28:6",
+  "refShort": "Matt. 28:6",
+  "top": "He is not here: for he is risen, as he said.",
+  "bottom": "Come, see the place where the Lord lay.",
+  "source": "new"
+ }
+]

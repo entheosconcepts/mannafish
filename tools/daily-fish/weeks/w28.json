@@ -1,0 +1,79 @@
+[
+ {
+  "week": 28,
+  "day": "Sun",
+  "slot": "",
+  "word": "Upright",
+  "ref": "Psalm 143:10",
+  "refShort": "Ps. 143:10",
+  "top": "Teach me to do thy will; for thou art my God:",
+  "bottom": "thy spirit is good; lead me into the land of uprightness.",
+  "source": "new"
+ },
+ {
+  "week": 28,
+  "day": "Mon",
+  "slot": "",
+  "word": "Near",
+  "ref": "Psalm 145:18",
+  "refShort": "Ps. 145:18",
+  "top": "The LORD is nigh unto all them that call upon him,",
+  "bottom": "to all that call upon him in truth.",
+  "source": "new"
+ },
+ {
+  "week": 28,
+  "day": "Tue",
+  "slot": "",
+  "word": "Praise",
+  "ref": "Psalm 150:6",
+  "refShort": "Ps. 150:6",
+  "top": "Let every thing that hath breath",
+  "bottom": "praise the LORD. Praise ye the LORD.",
+  "source": "weekly"
+ },
+ {
+  "week": 28,
+  "day": "Wed",
+  "slot": "",
+  "word": "Direct",
+  "ref": "Proverbs 3:6",
+  "refShort": "Prov. 3:6",
+  "top": "In all thy ways acknowledge him,",
+  "bottom": "and he shall direct thy paths.",
+  "source": "alt"
+ },
+ {
+  "week": 28,
+  "day": "Thu",
+  "slot": "",
+  "word": "Watch",
+  "ref": "Proverbs 8:34",
+  "refShort": "Prov. 8:34",
+  "top": "Blessed is the man that heareth me,",
+  "bottom": "watching daily at my gates...",
+  "source": "new"
+ },
+ {
+  "week": 28,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Cover",
+  "ref": "Proverbs 10:12",
+  "refShort": "Prov. 10:12",
+  "top": "Hatred stirreth up strifes:",
+  "bottom": "but love covereth all sins.",
+  "source": "new"
+ },
+ {
+  "week": 28,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Generous",
+  "ref": "Proverbs 11:25",
+  "refShort": "Prov. 11:25",
+  "top": "The liberal soul shall be made fat:",
+  "bottom": "and he that watereth shall be watered also himself.",
+  "source": "new"
+ }
+]

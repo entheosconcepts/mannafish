@@ -1,0 +1,79 @@
+[
+ {
+  "week": 1,
+  "day": "Sun",
+  "slot": "",
+  "word": "Create",
+  "ref": "Genesis 1:1",
+  "refShort": "Gen. 1:1",
+  "top": "In the beginning God created",
+  "bottom": "the heaven and the earth.",
+  "source": "alt"
+ },
+ {
+  "week": 1,
+  "day": "Mon",
+  "slot": "",
+  "word": "Walk",
+  "ref": "Genesis 5:24",
+  "refShort": "Gen. 5:24",
+  "top": "And Enoch walked with God:",
+  "bottom": "and he was not; for God took him.",
+  "source": "alt"
+ },
+ {
+  "week": 1,
+  "day": "Tue",
+  "slot": "",
+  "word": "Covenant",
+  "ref": "Genesis 9:13",
+  "refShort": "Gen. 9:13",
+  "top": "I do set my bow in the cloud,",
+  "bottom": "and it shall be for a token of a covenant...",
+  "source": "new"
+ },
+ {
+  "week": 1,
+  "day": "Wed",
+  "slot": "",
+  "word": "Shield",
+  "ref": "Genesis 15:1",
+  "refShort": "Gen. 15:1",
+  "top": "Fear not, Abram: I am thy shield,",
+  "bottom": "and thy exceeding great reward.",
+  "source": "new"
+ },
+ {
+  "week": 1,
+  "day": "Thu",
+  "slot": "",
+  "word": "Almighty",
+  "ref": "Genesis 17:1",
+  "refShort": "Gen. 17:1",
+  "top": "I am the Almighty God;",
+  "bottom": "walk before me, and be thou perfect.",
+  "source": "new"
+ },
+ {
+  "week": 1,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Provide",
+  "ref": "Genesis 22:8",
+  "refShort": "Gen. 22:8",
+  "top": "My son, God will provide",
+  "bottom": "himself a lamb for a burnt offering...",
+  "source": "weekly"
+ },
+ {
+  "week": 1,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Visit",
+  "ref": "Genesis 21:1",
+  "refShort": "Gen. 21:1",
+  "top": "And the LORD visited Sarah",
+  "bottom": "as he had said...",
+  "source": "new"
+ }
+]

@@ -1,0 +1,79 @@
+[
+ {
+  "week": 50,
+  "day": "Sun",
+  "slot": "",
+  "word": "Mediator",
+  "ref": "1 Timothy 2:5",
+  "refShort": "1 Tim. 2:5",
+  "top": "For there is one God, and one mediator",
+  "bottom": "between God and men, the man Christ Jesus;",
+  "source": "new"
+ },
+ {
+  "week": 50,
+  "day": "Mon",
+  "slot": "",
+  "word": "Study",
+  "ref": "2 Timothy 2:15",
+  "refShort": "2 Tim. 2:15",
+  "top": "Study to shew thyself approved unto God,",
+  "bottom": "a workman that needeth not to be ashamed...",
+  "source": "new"
+ },
+ {
+  "week": 50,
+  "day": "Tue",
+  "slot": "",
+  "word": "Finish",
+  "ref": "2 Timothy 4:7",
+  "refShort": "2 Tim. 4:7",
+  "top": "I have fought a good fight, I have finished my course,",
+  "bottom": "I have kept the faith.",
+  "source": "alt"
+ },
+ {
+  "week": 50,
+  "day": "Wed",
+  "slot": "",
+  "word": "Glorify",
+  "ref": "Hebrews 2:9",
+  "refShort": "Heb. 2:9",
+  "top": "But we see Jesus, who was made a little lower",
+  "bottom": "than the angels... crowned with glory and honour...",
+  "source": "new"
+ },
+ {
+  "week": 50,
+  "day": "Thu",
+  "slot": "",
+  "word": "Word",
+  "ref": "Hebrews 4:12",
+  "refShort": "Heb. 4:12",
+  "top": "For the word of God is quick, and powerful,",
+  "bottom": "and sharper than any twoedged sword...",
+  "source": "weekly"
+ },
+ {
+  "week": 50,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Profess",
+  "ref": "Hebrews 10:23",
+  "refShort": "Heb. 10:23",
+  "top": "Let us hold fast the profession of our faith",
+  "bottom": "without wavering; (for he is faithful that promised;)",
+  "source": "new"
+ },
+ {
+  "week": 50,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Blood",
+  "ref": "Hebrews 9:14",
+  "refShort": "Heb. 9:14",
+  "top": "How much more shall the blood of Christ...",
+  "bottom": "purge your conscience... to serve the living God?",
+  "source": "new"
+ }
+]

@@ -1,0 +1,79 @@
+[
+ {
+  "week": 48,
+  "day": "Sun",
+  "slot": "",
+  "word": "Victory",
+  "ref": "1 Corinthians 15:57",
+  "refShort": "1 Cor. 15:57",
+  "top": "But thanks be to God, which giveth us the victory",
+  "bottom": "through our Lord Jesus Christ.",
+  "source": "alt"
+ },
+ {
+  "week": 48,
+  "day": "Mon",
+  "slot": "",
+  "word": "Vessel",
+  "ref": "2 Corinthians 4:7",
+  "refShort": "2 Cor. 4:7",
+  "top": "But we have this treasure in earthen vessels,",
+  "bottom": "that the excellency of the power may be of God...",
+  "source": "new"
+ },
+ {
+  "week": 48,
+  "day": "Tue",
+  "slot": "",
+  "word": "Riches",
+  "ref": "2 Corinthians 8:9",
+  "refShort": "2 Cor. 8:9",
+  "top": "...for your sakes he became poor,",
+  "bottom": "that ye through his poverty might be rich.",
+  "source": "new"
+ },
+ {
+  "week": 48,
+  "day": "Wed",
+  "slot": "",
+  "word": "Grace",
+  "ref": "2 Corinthians 12:9",
+  "refShort": "2 Cor. 12:9",
+  "top": "My grace is sufficient for thee:",
+  "bottom": "for my strength is made perfect in weakness.",
+  "source": "weekly"
+ },
+ {
+  "week": 48,
+  "day": "Thu",
+  "slot": "",
+  "word": "Children",
+  "ref": "Galatians 3:26",
+  "refShort": "Gal. 3:26",
+  "top": "For ye are all the children of God",
+  "bottom": "by faith in Christ Jesus.",
+  "source": "new"
+ },
+ {
+  "week": 48,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Fruit",
+  "ref": "Galatians 5:22",
+  "refShort": "Gal. 5:22",
+  "top": "But the fruit of the Spirit is love, joy, peace,",
+  "bottom": "longsuffering, gentleness, goodness, faith...",
+  "source": "alt"
+ },
+ {
+  "week": 48,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Persist",
+  "ref": "Galatians 6:9",
+  "refShort": "Gal. 6:9",
+  "top": "And let us not be weary in well doing:",
+  "bottom": "for in due season we shall reap, if we faint not.",
+  "source": "new"
+ }
+]

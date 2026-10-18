@@ -1,0 +1,4419 @@
+[
+ {
+  "week": 1,
+  "series": "wild",
+  "reading": "Genesis 1–23",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Genesis 1",
+     "Genesis 2",
+     "Genesis 3",
+     "Genesis 4"
+    ],
+    "label": "Genesis 1–4"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Genesis 5",
+     "Genesis 6",
+     "Genesis 7",
+     "Genesis 8"
+    ],
+    "label": "Genesis 5–8"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Genesis 9",
+     "Genesis 10",
+     "Genesis 11",
+     "Genesis 12"
+    ],
+    "label": "Genesis 9–12"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Genesis 13",
+     "Genesis 14",
+     "Genesis 15"
+    ],
+    "label": "Genesis 13–15"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Genesis 16",
+     "Genesis 17",
+     "Genesis 18",
+     "Genesis 19"
+    ],
+    "label": "Genesis 16–19"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Genesis 20",
+     "Genesis 21",
+     "Genesis 22",
+     "Genesis 23"
+    ],
+    "label": "Genesis 20–23"
+   }
+  ],
+  "weekly": {
+   "word": "Provide",
+   "ref": "Genesis 22:8",
+   "top": "My son, God will provide",
+   "bottom": "himself a lamb for a burnt offering...",
+   "day": "Fri"
+  },
+  "alternates": [
+   {
+    "word": "Create",
+    "ref": "Genesis 1:1",
+    "top": "In the beginning God created",
+    "bottom": "the heaven and the earth.",
+    "day": "Sun"
+   },
+   {
+    "word": "Walk",
+    "ref": "Genesis 5:24",
+    "top": "And Enoch walked with God:",
+    "bottom": "and he was not; for God took him.",
+    "day": "Mon"
+   }
+  ]
+ },
+ {
+  "week": 2,
+  "series": "wild",
+  "reading": "Genesis 24–46",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Genesis 24",
+     "Genesis 25",
+     "Genesis 26",
+     "Genesis 27"
+    ],
+    "label": "Genesis 24–27"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Genesis 28",
+     "Genesis 29",
+     "Genesis 30",
+     "Genesis 31"
+    ],
+    "label": "Genesis 28–31"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Genesis 32",
+     "Genesis 33",
+     "Genesis 34",
+     "Genesis 35"
+    ],
+    "label": "Genesis 32–35"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Genesis 36",
+     "Genesis 37",
+     "Genesis 38"
+    ],
+    "label": "Genesis 36–38"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Genesis 39",
+     "Genesis 40",
+     "Genesis 41",
+     "Genesis 42"
+    ],
+    "label": "Genesis 39–42"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Genesis 43",
+     "Genesis 44",
+     "Genesis 45",
+     "Genesis 46"
+    ],
+    "label": "Genesis 43–46"
+   }
+  ],
+  "weekly": {
+   "word": "Bless",
+   "ref": "Genesis 32:26",
+   "top": "I will not let thee go,",
+   "bottom": "except thou bless me.",
+   "day": "Tue"
+  },
+  "alternates": [
+   {
+    "word": "With",
+    "ref": "Genesis 28:15",
+    "top": "And, behold, I am with thee,",
+    "bottom": "and will keep thee in all places whither thou goest...",
+    "day": "Mon"
+   }
+  ]
+ },
+ {
+  "week": 3,
+  "series": "wild",
+  "reading": "Genesis 47 – Exodus 19",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Genesis 47",
+     "Genesis 48",
+     "Genesis 49",
+     "Genesis 50"
+    ],
+    "label": "Genesis 47–50"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Exodus 1",
+     "Exodus 2",
+     "Exodus 3",
+     "Exodus 4"
+    ],
+    "label": "Exodus 1–4"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Exodus 5",
+     "Exodus 6",
+     "Exodus 7",
+     "Exodus 8"
+    ],
+    "label": "Exodus 5–8"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Exodus 9",
+     "Exodus 10",
+     "Exodus 11"
+    ],
+    "label": "Exodus 9–11"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Exodus 12",
+     "Exodus 13",
+     "Exodus 14",
+     "Exodus 15"
+    ],
+    "label": "Exodus 12–15"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Exodus 16",
+     "Exodus 17",
+     "Exodus 18",
+     "Exodus 19"
+    ],
+    "label": "Exodus 16–19"
+   }
+  ],
+  "weekly": {
+   "word": "Deliver",
+   "ref": "Exodus 3:8",
+   "top": "And I am come down to deliver them",
+   "bottom": "out of the hand of the Egyptians...",
+   "day": "Mon"
+  },
+  "alternates": [
+   {
+    "word": "Good",
+    "ref": "Genesis 50:20",
+    "top": "Ye thought evil against me;",
+    "bottom": "but God meant it unto good...",
+    "day": "Sun"
+   },
+   {
+    "word": "Strength",
+    "ref": "Exodus 15:2",
+    "top": "The LORD is my strength and song,",
+    "bottom": "and he is become my salvation...",
+    "day": "Thu"
+   }
+  ]
+ },
+ {
+  "week": 4,
+  "series": "wild",
+  "reading": "Exodus 20 – Leviticus 1",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Exodus 20",
+     "Exodus 21",
+     "Exodus 22",
+     "Exodus 23"
+    ],
+    "label": "Exodus 20–23"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Exodus 24",
+     "Exodus 25",
+     "Exodus 26"
+    ],
+    "label": "Exodus 24–26"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Exodus 27",
+     "Exodus 28",
+     "Exodus 29",
+     "Exodus 30"
+    ],
+    "label": "Exodus 27–30"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Exodus 31",
+     "Exodus 32",
+     "Exodus 33",
+     "Exodus 34"
+    ],
+    "label": "Exodus 31–34"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Exodus 35",
+     "Exodus 36",
+     "Exodus 37"
+    ],
+    "label": "Exodus 35–37"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Exodus 38",
+     "Exodus 39",
+     "Exodus 40",
+     "Leviticus 1"
+    ],
+    "label": "Exodus 38 – Leviticus 1"
+   }
+  ],
+  "weekly": {
+   "word": "Presence",
+   "ref": "Exodus 33:14",
+   "top": "My presence shall go with thee,",
+   "bottom": "and I will give thee rest.",
+   "day": "Wed"
+  },
+  "alternates": [
+   {
+    "word": "Glory",
+    "ref": "Exodus 33:18",
+    "top": "And he said,",
+    "bottom": "I beseech thee, shew me thy glory.",
+    "day": "Wed"
+   }
+  ]
+ },
+ {
+  "week": 5,
+  "series": "wild",
+  "reading": "Leviticus 2–24",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Leviticus 2",
+     "Leviticus 3",
+     "Leviticus 4",
+     "Leviticus 5"
+    ],
+    "label": "Leviticus 2–5"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Leviticus 6",
+     "Leviticus 7",
+     "Leviticus 8",
+     "Leviticus 9"
+    ],
+    "label": "Leviticus 6–9"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Leviticus 10",
+     "Leviticus 11",
+     "Leviticus 12",
+     "Leviticus 13"
+    ],
+    "label": "Leviticus 10–13"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Leviticus 14",
+     "Leviticus 15",
+     "Leviticus 16"
+    ],
+    "label": "Leviticus 14–16"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Leviticus 17",
+     "Leviticus 18",
+     "Leviticus 19",
+     "Leviticus 20"
+    ],
+    "label": "Leviticus 17–20"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Leviticus 21",
+     "Leviticus 22",
+     "Leviticus 23",
+     "Leviticus 24"
+    ],
+    "label": "Leviticus 21–24"
+   }
+  ],
+  "weekly": {
+   "word": "Holy",
+   "ref": "Leviticus 11:44",
+   "top": "For I am the LORD your God...",
+   "bottom": "ye shall be holy; for I am holy...",
+   "day": "Tue"
+  },
+  "alternates": [
+   {
+    "word": "Atone",
+    "ref": "Leviticus 17:11",
+    "top": "For the life of the flesh is in the blood:",
+    "bottom": "...it is the blood that maketh an atonement for the soul.",
+    "day": "Thu"
+   }
+  ]
+ },
+ {
+  "week": 6,
+  "series": "wild",
+  "reading": "Leviticus 25 – Numbers 20",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Leviticus 25",
+     "Leviticus 26",
+     "Leviticus 27",
+     "Numbers 1"
+    ],
+    "label": "Leviticus 25 – Numbers 1"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Numbers 2",
+     "Numbers 3",
+     "Numbers 4",
+     "Numbers 5"
+    ],
+    "label": "Numbers 2–5"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Numbers 6",
+     "Numbers 7",
+     "Numbers 8",
+     "Numbers 9"
+    ],
+    "label": "Numbers 6–9"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Numbers 10",
+     "Numbers 11",
+     "Numbers 12"
+    ],
+    "label": "Numbers 10–12"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Numbers 13",
+     "Numbers 14",
+     "Numbers 15",
+     "Numbers 16"
+    ],
+    "label": "Numbers 13–16"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Numbers 17",
+     "Numbers 18",
+     "Numbers 19",
+     "Numbers 20"
+    ],
+    "label": "Numbers 17–20"
+   }
+  ],
+  "weekly": {
+   "word": "Keep",
+   "ref": "Numbers 6:24",
+   "top": "The LORD bless thee,",
+   "bottom": "and keep thee.",
+   "day": "Tue"
+  },
+  "alternates": [
+   {
+    "word": "Liberty",
+    "ref": "Leviticus 25:10",
+    "top": "...and proclaim liberty throughout all the land",
+    "bottom": "unto all the inhabitants thereof...",
+    "day": "Sun"
+   }
+  ]
+ },
+ {
+  "week": 7,
+  "series": "wild",
+  "reading": "Numbers 21 – Deuteronomy 7",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Numbers 21",
+     "Numbers 22",
+     "Numbers 23",
+     "Numbers 24"
+    ],
+    "label": "Numbers 21–24"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Numbers 25",
+     "Numbers 26",
+     "Numbers 27",
+     "Numbers 28"
+    ],
+    "label": "Numbers 25–28"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Numbers 29",
+     "Numbers 30",
+     "Numbers 31",
+     "Numbers 32"
+    ],
+    "label": "Numbers 29–32"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Numbers 33",
+     "Numbers 34",
+     "Numbers 35"
+    ],
+    "label": "Numbers 33–35"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Numbers 36",
+     "Deuteronomy 1",
+     "Deuteronomy 2",
+     "Deuteronomy 3"
+    ],
+    "label": "Numbers 36 – Deuteronomy 3"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Deuteronomy 4",
+     "Deuteronomy 5",
+     "Deuteronomy 6",
+     "Deuteronomy 7"
+    ],
+    "label": "Deuteronomy 4–7"
+   }
+  ],
+  "weekly": {
+   "word": "Look",
+   "ref": "Numbers 21:8",
+   "top": "...every one that is bitten,",
+   "bottom": "when he looketh upon it, shall live.",
+   "day": "Sun"
+  },
+  "alternates": []
+ },
+ {
+  "week": 8,
+  "series": "wild",
+  "reading": "Deuteronomy 8–30",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Deuteronomy 8",
+     "Deuteronomy 9",
+     "Deuteronomy 10",
+     "Deuteronomy 11"
+    ],
+    "label": "Deuteronomy 8–11"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Deuteronomy 12",
+     "Deuteronomy 13",
+     "Deuteronomy 14",
+     "Deuteronomy 15"
+    ],
+    "label": "Deuteronomy 12–15"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Deuteronomy 16",
+     "Deuteronomy 17",
+     "Deuteronomy 18",
+     "Deuteronomy 19"
+    ],
+    "label": "Deuteronomy 16–19"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Deuteronomy 20",
+     "Deuteronomy 21",
+     "Deuteronomy 22"
+    ],
+    "label": "Deuteronomy 20–22"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Deuteronomy 23",
+     "Deuteronomy 24",
+     "Deuteronomy 25",
+     "Deuteronomy 26"
+    ],
+    "label": "Deuteronomy 23–26"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Deuteronomy 27",
+     "Deuteronomy 28",
+     "Deuteronomy 29",
+     "Deuteronomy 30"
+    ],
+    "label": "Deuteronomy 27–30"
+   }
+  ],
+  "weekly": {
+   "word": "Bread",
+   "ref": "Deuteronomy 8:3",
+   "top": "...man doth not live by bread only,",
+   "bottom": "but by every word that proceedeth out of the mouth of the LORD...",
+   "day": "Sun"
+  },
+  "alternates": []
+ },
+ {
+  "week": 9,
+  "series": "land",
+  "reading": "Deuteronomy 31 – Joshua 19",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Deuteronomy 31",
+     "Deuteronomy 32",
+     "Deuteronomy 33",
+     "Deuteronomy 34"
+    ],
+    "label": "Deuteronomy 31–34"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Joshua 1",
+     "Joshua 2",
+     "Joshua 3",
+     "Joshua 4"
+    ],
+    "label": "Joshua 1–4"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Joshua 5",
+     "Joshua 6",
+     "Joshua 7",
+     "Joshua 8"
+    ],
+    "label": "Joshua 5–8"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Joshua 9",
+     "Joshua 10",
+     "Joshua 11"
+    ],
+    "label": "Joshua 9–11"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Joshua 12",
+     "Joshua 13",
+     "Joshua 14",
+     "Joshua 15"
+    ],
+    "label": "Joshua 12–15"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Joshua 16",
+     "Joshua 17",
+     "Joshua 18",
+     "Joshua 19"
+    ],
+    "label": "Joshua 16–19"
+   }
+  ],
+  "weekly": {
+   "word": "Courage",
+   "ref": "Joshua 1:9",
+   "top": "Be strong and of a good courage;",
+   "bottom": "...the LORD thy God is with thee whithersoever thou goest.",
+   "day": "Mon"
+  },
+  "alternates": []
+ },
+ {
+  "week": 10,
+  "series": "land",
+  "reading": "Joshua 20 – Judges 18",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Joshua 20",
+     "Joshua 21",
+     "Joshua 22",
+     "Joshua 23"
+    ],
+    "label": "Joshua 20–23"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Joshua 24",
+     "Judges 1",
+     "Judges 2",
+     "Judges 3"
+    ],
+    "label": "Joshua 24 – Judges 3"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Judges 4",
+     "Judges 5",
+     "Judges 6",
+     "Judges 7"
+    ],
+    "label": "Judges 4–7"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Judges 8",
+     "Judges 9",
+     "Judges 10"
+    ],
+    "label": "Judges 8–10"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Judges 11",
+     "Judges 12",
+     "Judges 13",
+     "Judges 14"
+    ],
+    "label": "Judges 11–14"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Judges 15",
+     "Judges 16",
+     "Judges 17",
+     "Judges 18"
+    ],
+    "label": "Judges 15–18"
+   }
+  ],
+  "weekly": {
+   "word": "Serve",
+   "ref": "Joshua 24:15",
+   "top": "...choose you this day whom ye will serve;",
+   "bottom": "...as for me and my house, we will serve the LORD.",
+   "day": "Mon"
+  },
+  "alternates": [
+   {
+    "word": "Refuge",
+    "ref": "Joshua 20:3",
+    "top": "...and they shall be your refuge",
+    "bottom": "from the avenger of blood.",
+    "day": "Sun"
+   }
+  ]
+ },
+ {
+  "week": 11,
+  "series": "land",
+  "reading": "Judges 19 – 1 Samuel 16",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Judges 19",
+     "Judges 20",
+     "Judges 21",
+     "Ruth 1"
+    ],
+    "label": "Judges 19 – Ruth 1"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Ruth 2",
+     "Ruth 3",
+     "Ruth 4",
+     "1Samuel 1"
+    ],
+    "label": "Ruth 2 – 1 Samuel 1"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "1Samuel 2",
+     "1Samuel 3",
+     "1Samuel 4",
+     "1Samuel 5"
+    ],
+    "label": "1 Samuel 2–5"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "1Samuel 6",
+     "1Samuel 7",
+     "1Samuel 8"
+    ],
+    "label": "1 Samuel 6–8"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "1Samuel 9",
+     "1Samuel 10",
+     "1Samuel 11",
+     "1Samuel 12"
+    ],
+    "label": "1 Samuel 9–12"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "1Samuel 13",
+     "1Samuel 14",
+     "1Samuel 15",
+     "1Samuel 16"
+    ],
+    "label": "1 Samuel 13–16"
+   }
+  ],
+  "weekly": {
+   "word": "Heart",
+   "ref": "1 Samuel 16:7",
+   "top": "...for man looketh on the outward appearance,",
+   "bottom": "but the LORD looketh on the heart.",
+   "day": "Fri"
+  },
+  "alternates": [
+   {
+    "word": "Redeem",
+    "ref": "Ruth 4:4",
+    "top": "If thou wilt redeem it, redeem it:",
+    "bottom": "...And he said, I will redeem it.",
+    "day": "Mon"
+   },
+   {
+    "word": "Speak",
+    "ref": "1 Samuel 3:10",
+    "top": "Then Samuel answered,",
+    "bottom": "Speak; for thy servant heareth.",
+    "day": "Tue"
+   }
+  ]
+ },
+ {
+  "week": 12,
+  "series": "king",
+  "reading": "1 Samuel 17 – 2 Samuel 7",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "1Samuel 17",
+     "1Samuel 18",
+     "1Samuel 19",
+     "1Samuel 20"
+    ],
+    "label": "1 Samuel 17–20"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "1Samuel 21",
+     "1Samuel 22",
+     "1Samuel 23"
+    ],
+    "label": "1 Samuel 21–23"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "1Samuel 24",
+     "1Samuel 25",
+     "1Samuel 26",
+     "1Samuel 27"
+    ],
+    "label": "1 Samuel 24–27"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "1Samuel 28",
+     "1Samuel 29",
+     "1Samuel 30",
+     "1Samuel 31"
+    ],
+    "label": "1 Samuel 28–31"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "2Samuel 1",
+     "2Samuel 2",
+     "2Samuel 3"
+    ],
+    "label": "2 Samuel 1–3"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "2Samuel 4",
+     "2Samuel 5",
+     "2Samuel 6",
+     "2Samuel 7"
+    ],
+    "label": "2 Samuel 4–7"
+   }
+  ],
+  "weekly": {
+   "word": "Kingdom",
+   "ref": "2 Samuel 7:16",
+   "top": "And thine house and thy kingdom",
+   "bottom": "shall be established for ever before thee...",
+   "day": "Fri"
+  },
+  "alternates": [
+   {
+    "word": "Battle",
+    "ref": "1 Samuel 17:47",
+    "top": "...for the battle is the LORD’s,",
+    "bottom": "and he will give you into our hands.",
+    "day": "Sun"
+   }
+  ]
+ },
+ {
+  "week": 13,
+  "series": "king",
+  "reading": "2 Samuel 8 – 1 Kings 6",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "2Samuel 8",
+     "2Samuel 9",
+     "2Samuel 10",
+     "2Samuel 11"
+    ],
+    "label": "2 Samuel 8–11"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "2Samuel 12",
+     "2Samuel 13",
+     "2Samuel 14",
+     "2Samuel 15"
+    ],
+    "label": "2 Samuel 12–15"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "2Samuel 16",
+     "2Samuel 17",
+     "2Samuel 18",
+     "2Samuel 19"
+    ],
+    "label": "2 Samuel 16–19"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "2Samuel 20",
+     "2Samuel 21",
+     "2Samuel 22"
+    ],
+    "label": "2 Samuel 20–22"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "2Samuel 23",
+     "2Samuel 24",
+     "1Kings 1",
+     "1Kings 2"
+    ],
+    "label": "2 Samuel 23 – 1 Kings 2"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "1Kings 3",
+     "1Kings 4",
+     "1Kings 5",
+     "1Kings 6"
+    ],
+    "label": "1 Kings 3–6"
+   }
+  ],
+  "weekly": {
+   "word": "Kindness",
+   "ref": "2 Samuel 9:7",
+   "top": "Fear not: for I will surely shew thee kindness",
+   "bottom": "...and thou shalt eat bread at my table continually.",
+   "day": "Sun"
+  },
+  "alternates": [
+   {
+    "word": "Wisdom",
+    "ref": "1 Kings 3:9",
+    "top": "Give therefore thy servant",
+    "bottom": "an understanding heart...",
+    "day": "Fri"
+   }
+  ]
+ },
+ {
+  "week": 14,
+  "series": "king",
+  "reading": "1 Kings 7 – 2 Kings 7",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "1Kings 7",
+     "1Kings 8",
+     "1Kings 9",
+     "1Kings 10"
+    ],
+    "label": "1 Kings 7–10"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "1Kings 11",
+     "1Kings 12",
+     "1Kings 13",
+     "1Kings 14"
+    ],
+    "label": "1 Kings 11–14"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "1Kings 15",
+     "1Kings 16",
+     "1Kings 17",
+     "1Kings 18"
+    ],
+    "label": "1 Kings 15–18"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "1Kings 19",
+     "1Kings 20",
+     "1Kings 21"
+    ],
+    "label": "1 Kings 19–21"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "1Kings 22",
+     "2Kings 1",
+     "2Kings 2",
+     "2Kings 3"
+    ],
+    "label": "1 Kings 22 – 2 Kings 3"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "2Kings 4",
+     "2Kings 5",
+     "2Kings 6",
+     "2Kings 7"
+    ],
+    "label": "2 Kings 4–7"
+   }
+  ],
+  "weekly": {
+   "word": "Oil",
+   "ref": "2 Kings 4:6",
+   "top": "...There is not a vessel more.",
+   "bottom": "And the oil stayed.",
+   "day": "Fri"
+  },
+  "alternates": [
+   {
+    "word": "Double",
+    "ref": "2 Kings 2:9",
+    "top": "...I pray thee, let a double portion",
+    "bottom": "of thy spirit be upon me.",
+    "day": "Thu"
+   },
+   {
+    "word": "Fire",
+    "ref": "1 Kings 18:38",
+    "top": "Then the fire of the LORD fell,",
+    "bottom": "and consumed the burnt sacrifice...",
+    "day": "Tue"
+   },
+   {
+    "word": "Still",
+    "ref": "1 Kings 19:12",
+    "top": "...and after the fire",
+    "bottom": "a still small voice.",
+    "day": "Wed"
+   }
+  ]
+ },
+ {
+  "week": 15,
+  "series": "king",
+  "reading": "2 Kings 8 – 1 Chronicles 5",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "2Kings 8",
+     "2Kings 9",
+     "2Kings 10",
+     "2Kings 11"
+    ],
+    "label": "2 Kings 8–11"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "2Kings 12",
+     "2Kings 13",
+     "2Kings 14",
+     "2Kings 15"
+    ],
+    "label": "2 Kings 12–15"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "2Kings 16",
+     "2Kings 17",
+     "2Kings 18",
+     "2Kings 19"
+    ],
+    "label": "2 Kings 16–19"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "2Kings 20",
+     "2Kings 21",
+     "2Kings 22"
+    ],
+    "label": "2 Kings 20–22"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "2Kings 23",
+     "2Kings 24",
+     "2Kings 25",
+     "1Chronicles 1"
+    ],
+    "label": "2 Kings 23 – 1 Chronicles 1"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "1Chronicles 2",
+     "1Chronicles 3",
+     "1Chronicles 4",
+     "1Chronicles 5"
+    ],
+    "label": "1 Chronicles 2–5"
+   }
+  ],
+  "weekly": {
+   "word": "Heal",
+   "ref": "2 Kings 20:5",
+   "top": "I have heard thy prayer, I have seen thy tears:",
+   "bottom": "behold, I will heal thee...",
+   "day": "Wed"
+  },
+  "alternates": [
+   {
+    "word": "Found",
+    "ref": "2 Kings 22:8",
+    "top": "I have found the book of the law",
+    "bottom": "in the house of the LORD.",
+    "day": "Wed"
+   }
+  ]
+ },
+ {
+  "week": 16,
+  "series": "king",
+  "reading": "1 Chronicles 6–28",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "1Chronicles 6",
+     "1Chronicles 7",
+     "1Chronicles 8",
+     "1Chronicles 9"
+    ],
+    "label": "1 Chronicles 6–9"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "1Chronicles 10",
+     "1Chronicles 11",
+     "1Chronicles 12",
+     "1Chronicles 13"
+    ],
+    "label": "1 Chronicles 10–13"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "1Chronicles 14",
+     "1Chronicles 15",
+     "1Chronicles 16",
+     "1Chronicles 17"
+    ],
+    "label": "1 Chronicles 14–17"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "1Chronicles 18",
+     "1Chronicles 19",
+     "1Chronicles 20"
+    ],
+    "label": "1 Chronicles 18–20"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "1Chronicles 21",
+     "1Chronicles 22",
+     "1Chronicles 23",
+     "1Chronicles 24"
+    ],
+    "label": "1 Chronicles 21–24"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "1Chronicles 25",
+     "1Chronicles 26",
+     "1Chronicles 27",
+     "1Chronicles 28"
+    ],
+    "label": "1 Chronicles 25–28"
+   }
+  ],
+  "weekly": {
+   "word": "Thank",
+   "ref": "1 Chronicles 16:34",
+   "top": "O give thanks unto the LORD; for he is good;",
+   "bottom": "for his mercy endureth for ever.",
+   "day": "Tue"
+  },
+  "alternates": []
+ },
+ {
+  "week": 17,
+  "series": "king",
+  "reading": "1 Chronicles 29 – 2 Chronicles 22",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "1Chronicles 29",
+     "2Chronicles 1",
+     "2Chronicles 2",
+     "2Chronicles 3"
+    ],
+    "label": "1 Chronicles 29 – 2 Chronicles 3"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "2Chronicles 4",
+     "2Chronicles 5",
+     "2Chronicles 6",
+     "2Chronicles 7"
+    ],
+    "label": "2 Chronicles 4–7"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "2Chronicles 8",
+     "2Chronicles 9",
+     "2Chronicles 10",
+     "2Chronicles 11"
+    ],
+    "label": "2 Chronicles 8–11"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "2Chronicles 12",
+     "2Chronicles 13",
+     "2Chronicles 14"
+    ],
+    "label": "2 Chronicles 12–14"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "2Chronicles 15",
+     "2Chronicles 16",
+     "2Chronicles 17",
+     "2Chronicles 18"
+    ],
+    "label": "2 Chronicles 15–18"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "2Chronicles 19",
+     "2Chronicles 20",
+     "2Chronicles 21",
+     "2Chronicles 22"
+    ],
+    "label": "2 Chronicles 19–22"
+   }
+  ],
+  "weekly": {
+   "word": "Humble",
+   "ref": "2 Chronicles 7:14",
+   "top": "If my people... shall humble themselves, and pray,",
+   "bottom": "...then will I hear from heaven... and will heal their land.",
+   "day": "Mon"
+  },
+  "alternates": []
+ },
+ {
+  "week": 18,
+  "series": "build",
+  "reading": "2 Chronicles 23 – Ezra 9",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "2Chronicles 23",
+     "2Chronicles 24",
+     "2Chronicles 25",
+     "2Chronicles 26"
+    ],
+    "label": "2 Chronicles 23–26"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "2Chronicles 27",
+     "2Chronicles 28",
+     "2Chronicles 29",
+     "2Chronicles 30"
+    ],
+    "label": "2 Chronicles 27–30"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "2Chronicles 31",
+     "2Chronicles 32",
+     "2Chronicles 33",
+     "2Chronicles 34"
+    ],
+    "label": "2 Chronicles 31–34"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "2Chronicles 35",
+     "2Chronicles 36",
+     "Ezra 1"
+    ],
+    "label": "2 Chronicles 35 – Ezra 1"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Ezra 2",
+     "Ezra 3",
+     "Ezra 4",
+     "Ezra 5"
+    ],
+    "label": "Ezra 2–5"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Ezra 6",
+     "Ezra 7",
+     "Ezra 8",
+     "Ezra 9"
+    ],
+    "label": "Ezra 6–9"
+   }
+  ],
+  "weekly": {
+   "word": "Return",
+   "ref": "2 Chronicles 30:9",
+   "top": "...the LORD your God is gracious and merciful,",
+   "bottom": "and will not turn away his face from you, if ye return unto him.",
+   "day": "Mon"
+  },
+  "alternates": []
+ },
+ {
+  "week": 19,
+  "series": "build",
+  "reading": "Ezra 10 – Esther 8",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Ezra 10",
+     "Nehemiah 1",
+     "Nehemiah 2",
+     "Nehemiah 3"
+    ],
+    "label": "Ezra 10 – Nehemiah 3"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Nehemiah 4",
+     "Nehemiah 5",
+     "Nehemiah 6"
+    ],
+    "label": "Nehemiah 4–6"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Nehemiah 7",
+     "Nehemiah 8",
+     "Nehemiah 9",
+     "Nehemiah 10"
+    ],
+    "label": "Nehemiah 7–10"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Nehemiah 11",
+     "Nehemiah 12",
+     "Nehemiah 13",
+     "Esther 1"
+    ],
+    "label": "Nehemiah 11 – Esther 1"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Esther 2",
+     "Esther 3",
+     "Esther 4"
+    ],
+    "label": "Esther 2–4"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Esther 5",
+     "Esther 6",
+     "Esther 7",
+     "Esther 8"
+    ],
+    "label": "Esther 5–8"
+   }
+  ],
+  "weekly": {
+   "word": "Joy",
+   "ref": "Nehemiah 8:10",
+   "top": "...neither be ye sorry;",
+   "bottom": "for the joy of the LORD is your strength.",
+   "day": "Tue"
+  },
+  "alternates": [
+   {
+    "word": "Build",
+    "ref": "Nehemiah 2:20",
+    "top": "The God of heaven, he will prosper us;",
+    "bottom": "therefore we his servants will arise and build...",
+    "day": "Sun"
+   },
+   {
+    "word": "Time",
+    "ref": "Esther 4:14",
+    "top": "...who knoweth whether thou art come to the kingdom",
+    "bottom": "for such a time as this?",
+    "day": "Thu"
+   }
+  ]
+ },
+ {
+  "week": 20,
+  "series": "song",
+  "reading": "Esther 9 – Job 21",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Esther 9",
+     "Esther 10",
+     "Job 1",
+     "Job 2"
+    ],
+    "label": "Esther 9 – Job 2"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Job 3",
+     "Job 4",
+     "Job 5",
+     "Job 6"
+    ],
+    "label": "Job 3–6"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Job 7",
+     "Job 8",
+     "Job 9",
+     "Job 10"
+    ],
+    "label": "Job 7–10"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Job 11",
+     "Job 12",
+     "Job 13"
+    ],
+    "label": "Job 11–13"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Job 14",
+     "Job 15",
+     "Job 16",
+     "Job 17"
+    ],
+    "label": "Job 14–17"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Job 18",
+     "Job 19",
+     "Job 20",
+     "Job 21"
+    ],
+    "label": "Job 18–21"
+   }
+  ],
+  "weekly": {
+   "word": "Redeemer",
+   "ref": "Job 19:25",
+   "top": "For I know that my redeemer liveth,",
+   "bottom": "and that he shall stand at the latter day upon the earth.",
+   "day": "Fri"
+  },
+  "alternates": []
+ },
+ {
+  "week": 21,
+  "series": "song",
+  "reading": "Job 22 – Psalm 2",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Job 22",
+     "Job 23",
+     "Job 24",
+     "Job 25"
+    ],
+    "label": "Job 22–25"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Job 26",
+     "Job 27",
+     "Job 28",
+     "Job 29"
+    ],
+    "label": "Job 26–29"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Job 30",
+     "Job 31",
+     "Job 32",
+     "Job 33"
+    ],
+    "label": "Job 30–33"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Job 34",
+     "Job 35",
+     "Job 36"
+    ],
+    "label": "Job 34–36"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Job 37",
+     "Job 38",
+     "Job 39",
+     "Job 40"
+    ],
+    "label": "Job 37–40"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Job 41",
+     "Job 42",
+     "Psalms 1",
+     "Psalms 2"
+    ],
+    "label": "Job 41 – Psalm 2"
+   }
+  ],
+  "weekly": {
+   "word": "Gold",
+   "ref": "Job 23:10",
+   "top": "But he knoweth the way that I take:",
+   "bottom": "when he hath tried me, I shall come forth as gold.",
+   "day": "Sun"
+  },
+  "alternates": [
+   {
+    "word": "Delight",
+    "ref": "Psalm 1:2",
+    "top": "But his delight is in the law of the LORD;",
+    "bottom": "and in his law doth he meditate day and night.",
+    "day": "Fri"
+   }
+  ]
+ },
+ {
+  "week": 22,
+  "series": "song",
+  "reading": "Psalm 3–25",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Psalms 3",
+     "Psalms 4",
+     "Psalms 5",
+     "Psalms 6"
+    ],
+    "label": "Psalm 3–6"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Psalms 7",
+     "Psalms 8",
+     "Psalms 9",
+     "Psalms 10"
+    ],
+    "label": "Psalm 7–10"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Psalms 11",
+     "Psalms 12",
+     "Psalms 13",
+     "Psalms 14"
+    ],
+    "label": "Psalm 11–14"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Psalms 15",
+     "Psalms 16",
+     "Psalms 17"
+    ],
+    "label": "Psalm 15–17"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Psalms 18",
+     "Psalms 19",
+     "Psalms 20",
+     "Psalms 21"
+    ],
+    "label": "Psalm 18–21"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Psalms 22",
+     "Psalms 23",
+     "Psalms 24",
+     "Psalms 25"
+    ],
+    "label": "Psalm 22–25"
+   }
+  ],
+  "weekly": {
+   "word": "Shepherd",
+   "ref": "Psalm 23:1",
+   "top": "The LORD is my shepherd;",
+   "bottom": "I shall not want.",
+   "day": "Fri"
+  },
+  "alternates": []
+ },
+ {
+  "week": 23,
+  "series": "song",
+  "reading": "Psalm 26–48",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Psalms 26",
+     "Psalms 27",
+     "Psalms 28",
+     "Psalms 29"
+    ],
+    "label": "Psalm 26–29"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Psalms 30",
+     "Psalms 31",
+     "Psalms 32",
+     "Psalms 33"
+    ],
+    "label": "Psalm 30–33"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Psalms 34",
+     "Psalms 35",
+     "Psalms 36",
+     "Psalms 37"
+    ],
+    "label": "Psalm 34–37"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Psalms 38",
+     "Psalms 39",
+     "Psalms 40"
+    ],
+    "label": "Psalm 38–40"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Psalms 41",
+     "Psalms 42",
+     "Psalms 43",
+     "Psalms 44"
+    ],
+    "label": "Psalm 41–44"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Psalms 45",
+     "Psalms 46",
+     "Psalms 47",
+     "Psalms 48"
+    ],
+    "label": "Psalm 45–48"
+   }
+  ],
+  "weekly": {
+   "word": "Still",
+   "ref": "Psalm 46:10",
+   "top": "Be still, and know that I am God:",
+   "bottom": "I will be exalted among the heathen...",
+   "day": "Fri"
+  },
+  "alternates": [
+   {
+    "word": "Light",
+    "ref": "Psalm 27:1",
+    "top": "The LORD is my light and my salvation;",
+    "bottom": "whom shall I fear?",
+    "day": "Sun"
+   },
+   {
+    "word": "Taste",
+    "ref": "Psalm 34:8",
+    "top": "O taste and see that the LORD is good:",
+    "bottom": "blessed is the man that trusteth in him.",
+    "day": "Tue"
+   }
+  ]
+ },
+ {
+  "week": 24,
+  "series": "song",
+  "reading": "Psalm 49–71",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Psalms 49",
+     "Psalms 50",
+     "Psalms 51",
+     "Psalms 52"
+    ],
+    "label": "Psalm 49–52"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Psalms 53",
+     "Psalms 54",
+     "Psalms 55",
+     "Psalms 56"
+    ],
+    "label": "Psalm 53–56"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Psalms 57",
+     "Psalms 58",
+     "Psalms 59",
+     "Psalms 60"
+    ],
+    "label": "Psalm 57–60"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Psalms 61",
+     "Psalms 62",
+     "Psalms 63"
+    ],
+    "label": "Psalm 61–63"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Psalms 64",
+     "Psalms 65",
+     "Psalms 66",
+     "Psalms 67"
+    ],
+    "label": "Psalm 64–67"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Psalms 68",
+     "Psalms 69",
+     "Psalms 70",
+     "Psalms 71"
+    ],
+    "label": "Psalm 68–71"
+   }
+  ],
+  "weekly": {
+   "word": "Wash",
+   "ref": "Psalm 51:7",
+   "top": "Purge me with hyssop, and I shall be clean:",
+   "bottom": "wash me, and I shall be whiter than snow.",
+   "day": "Sun"
+  },
+  "alternates": [
+   {
+    "word": "Thirst",
+    "ref": "Psalm 63:1",
+    "top": "O God, thou art my God; early will I seek thee:",
+    "bottom": "my soul thirsteth for thee...",
+    "day": "Wed"
+   }
+  ]
+ },
+ {
+  "week": 25,
+  "series": "song",
+  "reading": "Psalm 72–94",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Psalms 72",
+     "Psalms 73",
+     "Psalms 74",
+     "Psalms 75"
+    ],
+    "label": "Psalm 72–75"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Psalms 76",
+     "Psalms 77",
+     "Psalms 78",
+     "Psalms 79"
+    ],
+    "label": "Psalm 76–79"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Psalms 80",
+     "Psalms 81",
+     "Psalms 82",
+     "Psalms 83"
+    ],
+    "label": "Psalm 80–83"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Psalms 84",
+     "Psalms 85",
+     "Psalms 86"
+    ],
+    "label": "Psalm 84–86"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Psalms 87",
+     "Psalms 88",
+     "Psalms 89",
+     "Psalms 90"
+    ],
+    "label": "Psalm 87–90"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Psalms 91",
+     "Psalms 92",
+     "Psalms 93",
+     "Psalms 94"
+    ],
+    "label": "Psalm 91–94"
+   }
+  ],
+  "weekly": {
+   "word": "Refuge",
+   "ref": "Psalm 91:2",
+   "top": "I will say of the LORD, He is my refuge and my fortress:",
+   "bottom": "my God; in him will I trust.",
+   "day": "Fri"
+  },
+  "alternates": [
+   {
+    "word": "Dwell",
+    "ref": "Psalm 91:1",
+    "top": "He that dwelleth in the secret place of the most High",
+    "bottom": "shall abide under the shadow of the Almighty.",
+    "day": "Fri"
+   }
+  ]
+ },
+ {
+  "week": 26,
+  "series": "song",
+  "reading": "Psalm 95–116",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Psalms 95",
+     "Psalms 96",
+     "Psalms 97",
+     "Psalms 98"
+    ],
+    "label": "Psalm 95–98"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Psalms 99",
+     "Psalms 100",
+     "Psalms 101"
+    ],
+    "label": "Psalm 99–101"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Psalms 102",
+     "Psalms 103",
+     "Psalms 104",
+     "Psalms 105"
+    ],
+    "label": "Psalm 102–105"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Psalms 106",
+     "Psalms 107",
+     "Psalms 108",
+     "Psalms 109"
+    ],
+    "label": "Psalm 106–109"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Psalms 110",
+     "Psalms 111",
+     "Psalms 112"
+    ],
+    "label": "Psalm 110–112"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Psalms 113",
+     "Psalms 114",
+     "Psalms 115",
+     "Psalms 116"
+    ],
+    "label": "Psalm 113–116"
+   }
+  ],
+  "weekly": {
+   "word": "Worship",
+   "ref": "Psalm 95:6",
+   "top": "O come, let us worship and bow down:",
+   "bottom": "let us kneel before the LORD our maker.",
+   "day": "Sun"
+  },
+  "alternates": [
+   {
+    "word": "Enter",
+    "ref": "Psalm 100:4",
+    "top": "Enter into his gates with thanksgiving,",
+    "bottom": "and into his courts with praise...",
+    "day": "Mon"
+   }
+  ]
+ },
+ {
+  "week": 27,
+  "series": "song",
+  "reading": "Psalm 117–139",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Psalms 117",
+     "Psalms 118",
+     "Psalms 119",
+     "Psalms 120"
+    ],
+    "label": "Psalm 117–120"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Psalms 121",
+     "Psalms 122",
+     "Psalms 123",
+     "Psalms 124"
+    ],
+    "label": "Psalm 121–124"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Psalms 125",
+     "Psalms 126",
+     "Psalms 127",
+     "Psalms 128"
+    ],
+    "label": "Psalm 125–128"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Psalms 129",
+     "Psalms 130",
+     "Psalms 131"
+    ],
+    "label": "Psalm 129–131"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Psalms 132",
+     "Psalms 133",
+     "Psalms 134",
+     "Psalms 135"
+    ],
+    "label": "Psalm 132–135"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Psalms 136",
+     "Psalms 137",
+     "Psalms 138",
+     "Psalms 139"
+    ],
+    "label": "Psalm 136–139"
+   }
+  ],
+  "weekly": {
+   "word": "Lamp",
+   "ref": "Psalm 119:105",
+   "top": "Thy word is a lamp unto my feet,",
+   "bottom": "and a light unto my path.",
+   "day": "Sun"
+  },
+  "alternates": [
+   {
+    "word": "Made",
+    "ref": "Psalm 139:14",
+    "top": "I will praise thee;",
+    "bottom": "for I am fearfully and wonderfully made...",
+    "day": "Fri"
+   }
+  ]
+ },
+ {
+  "week": 28,
+  "series": "song",
+  "reading": "Psalm 140 – Proverbs 12",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Psalms 140",
+     "Psalms 141",
+     "Psalms 142",
+     "Psalms 143"
+    ],
+    "label": "Psalm 140–143"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Psalms 144",
+     "Psalms 145",
+     "Psalms 146",
+     "Psalms 147"
+    ],
+    "label": "Psalm 144–147"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Psalms 148",
+     "Psalms 149",
+     "Psalms 150",
+     "Proverbs 1"
+    ],
+    "label": "Psalm 148 – Proverbs 1"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Proverbs 2",
+     "Proverbs 3",
+     "Proverbs 4"
+    ],
+    "label": "Proverbs 2–4"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Proverbs 5",
+     "Proverbs 6",
+     "Proverbs 7",
+     "Proverbs 8"
+    ],
+    "label": "Proverbs 5–8"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Proverbs 9",
+     "Proverbs 10",
+     "Proverbs 11",
+     "Proverbs 12"
+    ],
+    "label": "Proverbs 9–12"
+   }
+  ],
+  "weekly": {
+   "word": "Praise",
+   "ref": "Psalm 150:6",
+   "top": "Let every thing that hath breath",
+   "bottom": "praise the LORD. Praise ye the LORD.",
+   "day": "Tue"
+  },
+  "alternates": [
+   {
+    "word": "Direct",
+    "ref": "Proverbs 3:6",
+    "top": "In all thy ways acknowledge him,",
+    "bottom": "and he shall direct thy paths.",
+    "day": "Wed"
+   }
+  ]
+ },
+ {
+  "week": 29,
+  "series": "song",
+  "reading": "Proverbs 13 – Ecclesiastes 4",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Proverbs 13",
+     "Proverbs 14",
+     "Proverbs 15",
+     "Proverbs 16"
+    ],
+    "label": "Proverbs 13–16"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Proverbs 17",
+     "Proverbs 18",
+     "Proverbs 19",
+     "Proverbs 20"
+    ],
+    "label": "Proverbs 17–20"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Proverbs 21",
+     "Proverbs 22",
+     "Proverbs 23",
+     "Proverbs 24"
+    ],
+    "label": "Proverbs 21–24"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Proverbs 25",
+     "Proverbs 26",
+     "Proverbs 27"
+    ],
+    "label": "Proverbs 25–27"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Proverbs 28",
+     "Proverbs 29",
+     "Proverbs 30",
+     "Proverbs 31"
+    ],
+    "label": "Proverbs 28–31"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Ecclesiastes 1",
+     "Ecclesiastes 2",
+     "Ecclesiastes 3",
+     "Ecclesiastes 4"
+    ],
+    "label": "Ecclesiastes 1–4"
+   }
+  ],
+  "weekly": {
+   "word": "Wisdom",
+   "ref": "Proverbs 16:16",
+   "top": "How much better is it to get wisdom than gold!",
+   "bottom": "and to get understanding rather to be chosen than silver!",
+   "day": "Sun"
+  },
+  "alternates": [
+   {
+    "word": "Tower",
+    "ref": "Proverbs 18:10",
+    "top": "The name of the LORD is a strong tower:",
+    "bottom": "the righteous runneth into it, and is safe.",
+    "day": "Mon"
+   },
+   {
+    "word": "Season",
+    "ref": "Ecclesiastes 3:1",
+    "top": "To every thing there is a season,",
+    "bottom": "and a time to every purpose under the heaven.",
+    "day": "Fri"
+   }
+  ]
+ },
+ {
+  "week": 30,
+  "series": "proph",
+  "reading": "Ecclesiastes 5 – Isaiah 7",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Ecclesiastes 5",
+     "Ecclesiastes 6",
+     "Ecclesiastes 7",
+     "Ecclesiastes 8"
+    ],
+    "label": "Ecclesiastes 5–8"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Ecclesiastes 9",
+     "Ecclesiastes 10",
+     "Ecclesiastes 11",
+     "Ecclesiastes 12"
+    ],
+    "label": "Ecclesiastes 9–12"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Song 1",
+     "Song 2",
+     "Song 3",
+     "Song 4"
+    ],
+    "label": "Song of Solomon 1–4"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Song 5",
+     "Song 6",
+     "Song 7"
+    ],
+    "label": "Song of Solomon 5–7"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Song 8",
+     "Isaiah 1",
+     "Isaiah 2",
+     "Isaiah 3"
+    ],
+    "label": "Song of Solomon 8 – Isaiah 3"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Isaiah 4",
+     "Isaiah 5",
+     "Isaiah 6",
+     "Isaiah 7"
+    ],
+    "label": "Isaiah 4–7"
+   }
+  ],
+  "weekly": {
+   "word": "Send",
+   "ref": "Isaiah 6:8",
+   "top": "Whom shall I send, and who will go for us?",
+   "bottom": "Then said I, Here am I; send me.",
+   "day": "Fri"
+  },
+  "alternates": [
+   {
+    "word": "Immanuel",
+    "ref": "Isaiah 7:14",
+    "top": "Behold, a virgin shall conceive, and bear a son,",
+    "bottom": "and shall call his name Immanuel.",
+    "day": "Fri"
+   },
+   {
+    "word": "Reason",
+    "ref": "Isaiah 1:18",
+    "top": "Come now, and let us reason together, saith the LORD:",
+    "bottom": "though your sins be as scarlet, they shall be as white as snow...",
+    "day": "Thu"
+   }
+  ]
+ },
+ {
+  "week": 31,
+  "series": "proph",
+  "reading": "Isaiah 8–30",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Isaiah 8",
+     "Isaiah 9",
+     "Isaiah 10",
+     "Isaiah 11"
+    ],
+    "label": "Isaiah 8–11"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Isaiah 12",
+     "Isaiah 13",
+     "Isaiah 14",
+     "Isaiah 15"
+    ],
+    "label": "Isaiah 12–15"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Isaiah 16",
+     "Isaiah 17",
+     "Isaiah 18",
+     "Isaiah 19"
+    ],
+    "label": "Isaiah 16–19"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Isaiah 20",
+     "Isaiah 21",
+     "Isaiah 22"
+    ],
+    "label": "Isaiah 20–22"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Isaiah 23",
+     "Isaiah 24",
+     "Isaiah 25",
+     "Isaiah 26"
+    ],
+    "label": "Isaiah 23–26"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Isaiah 27",
+     "Isaiah 28",
+     "Isaiah 29",
+     "Isaiah 30"
+    ],
+    "label": "Isaiah 27–30"
+   }
+  ],
+  "weekly": {
+   "word": "Peace",
+   "ref": "Isaiah 26:3",
+   "top": "Thou wilt keep him in perfect peace,",
+   "bottom": "whose mind is stayed on thee...",
+   "day": "Thu"
+  },
+  "alternates": [
+   {
+    "word": "Wonderful",
+    "ref": "Isaiah 9:6",
+    "top": "...and his name shall be called Wonderful, Counsellor,",
+    "bottom": "The mighty God, The everlasting Father, The Prince of Peace.",
+    "day": "Sun"
+   }
+  ]
+ },
+ {
+  "week": 32,
+  "series": "proph",
+  "reading": "Isaiah 31–53",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Isaiah 31",
+     "Isaiah 32",
+     "Isaiah 33",
+     "Isaiah 34"
+    ],
+    "label": "Isaiah 31–34"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Isaiah 35",
+     "Isaiah 36",
+     "Isaiah 37",
+     "Isaiah 38"
+    ],
+    "label": "Isaiah 35–38"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Isaiah 39",
+     "Isaiah 40",
+     "Isaiah 41",
+     "Isaiah 42"
+    ],
+    "label": "Isaiah 39–42"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Isaiah 43",
+     "Isaiah 44",
+     "Isaiah 45"
+    ],
+    "label": "Isaiah 43–45"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Isaiah 46",
+     "Isaiah 47",
+     "Isaiah 48",
+     "Isaiah 49"
+    ],
+    "label": "Isaiah 46–49"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Isaiah 50",
+     "Isaiah 51",
+     "Isaiah 52",
+     "Isaiah 53"
+    ],
+    "label": "Isaiah 50–53"
+   }
+  ],
+  "weekly": {
+   "word": "Wait",
+   "ref": "Isaiah 40:31",
+   "top": "But they that wait upon the LORD shall renew their strength;",
+   "bottom": "they shall mount up with wings as eagles...",
+   "day": "Tue"
+  },
+  "alternates": [
+   {
+    "word": "Comfort",
+    "ref": "Isaiah 40:1",
+    "top": "Comfort ye, comfort ye my people,",
+    "bottom": "saith your God.",
+    "day": "Tue"
+   },
+   {
+    "word": "Called",
+    "ref": "Isaiah 43:1",
+    "top": "Fear not: for I have redeemed thee,",
+    "bottom": "I have called thee by thy name; thou art mine.",
+    "day": "Wed"
+   },
+   {
+    "word": "Wounded",
+    "ref": "Isaiah 53:5",
+    "top": "But he was wounded for our transgressions,",
+    "bottom": "...and with his stripes we are healed.",
+    "day": "Fri"
+   }
+  ]
+ },
+ {
+  "week": 33,
+  "series": "proph",
+  "reading": "Isaiah 54 – Jeremiah 10",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Isaiah 54",
+     "Isaiah 55",
+     "Isaiah 56",
+     "Isaiah 57"
+    ],
+    "label": "Isaiah 54–57"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Isaiah 58",
+     "Isaiah 59",
+     "Isaiah 60",
+     "Isaiah 61"
+    ],
+    "label": "Isaiah 58–61"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Isaiah 62",
+     "Isaiah 63",
+     "Isaiah 64",
+     "Isaiah 65"
+    ],
+    "label": "Isaiah 62–65"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Isaiah 66",
+     "Jeremiah 1",
+     "Jeremiah 2"
+    ],
+    "label": "Isaiah 66 – Jeremiah 2"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Jeremiah 3",
+     "Jeremiah 4",
+     "Jeremiah 5",
+     "Jeremiah 6"
+    ],
+    "label": "Jeremiah 3–6"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Jeremiah 7",
+     "Jeremiah 8",
+     "Jeremiah 9",
+     "Jeremiah 10"
+    ],
+    "label": "Jeremiah 7–10"
+   }
+  ],
+  "weekly": {
+   "word": "Come",
+   "ref": "Isaiah 55:1",
+   "top": "Ho, every one that thirsteth, come ye to the waters...",
+   "bottom": "...come, buy wine and milk without money and without price.",
+   "day": "Sun"
+  },
+  "alternates": [
+   {
+    "word": "Arise",
+    "ref": "Isaiah 60:1",
+    "top": "Arise, shine; for thy light is come,",
+    "bottom": "and the glory of the LORD is risen upon thee.",
+    "day": "Mon"
+   }
+  ]
+ },
+ {
+  "week": 34,
+  "series": "proph",
+  "reading": "Jeremiah 11–32",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Jeremiah 11",
+     "Jeremiah 12",
+     "Jeremiah 13",
+     "Jeremiah 14"
+    ],
+    "label": "Jeremiah 11–14"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Jeremiah 15",
+     "Jeremiah 16",
+     "Jeremiah 17"
+    ],
+    "label": "Jeremiah 15–17"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Jeremiah 18",
+     "Jeremiah 19",
+     "Jeremiah 20",
+     "Jeremiah 21"
+    ],
+    "label": "Jeremiah 18–21"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Jeremiah 22",
+     "Jeremiah 23",
+     "Jeremiah 24",
+     "Jeremiah 25"
+    ],
+    "label": "Jeremiah 22–25"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Jeremiah 26",
+     "Jeremiah 27",
+     "Jeremiah 28"
+    ],
+    "label": "Jeremiah 26–28"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Jeremiah 29",
+     "Jeremiah 30",
+     "Jeremiah 31",
+     "Jeremiah 32"
+    ],
+    "label": "Jeremiah 29–32"
+   }
+  ],
+  "weekly": {
+   "word": "Find",
+   "ref": "Jeremiah 29:13",
+   "top": "And ye shall seek me, and find me,",
+   "bottom": "when ye shall search for me with all your heart.",
+   "day": "Fri"
+  },
+  "alternates": [
+   {
+    "word": "Clay",
+    "ref": "Jeremiah 18:6",
+    "top": "Behold, as the clay is in the potter’s hand,",
+    "bottom": "so are ye in mine hand...",
+    "day": "Tue"
+   },
+   {
+    "word": "Hard",
+    "ref": "Jeremiah 32:17",
+    "top": "Ah Lord GOD! behold, thou hast made the heaven and the earth...",
+    "bottom": "...there is nothing too hard for thee.",
+    "day": "Fri"
+   }
+  ]
+ },
+ {
+  "week": 35,
+  "series": "proph",
+  "reading": "Jeremiah 33 – Lamentations 3",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Jeremiah 33",
+     "Jeremiah 34",
+     "Jeremiah 35",
+     "Jeremiah 36"
+    ],
+    "label": "Jeremiah 33–36"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Jeremiah 37",
+     "Jeremiah 38",
+     "Jeremiah 39",
+     "Jeremiah 40"
+    ],
+    "label": "Jeremiah 37–40"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Jeremiah 41",
+     "Jeremiah 42",
+     "Jeremiah 43",
+     "Jeremiah 44"
+    ],
+    "label": "Jeremiah 41–44"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Jeremiah 45",
+     "Jeremiah 46",
+     "Jeremiah 47"
+    ],
+    "label": "Jeremiah 45–47"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Jeremiah 48",
+     "Jeremiah 49",
+     "Jeremiah 50",
+     "Jeremiah 51"
+    ],
+    "label": "Jeremiah 48–51"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Jeremiah 52",
+     "Lamentations 1",
+     "Lamentations 2",
+     "Lamentations 3"
+    ],
+    "label": "Jeremiah 52 – Lamentations 3"
+   }
+  ],
+  "weekly": {
+   "word": "New",
+   "ref": "Lamentations 3:22–23",
+   "top": "...his compassions fail not.",
+   "bottom": "They are new every morning: great is thy faithfulness.",
+   "day": "Fri"
+  },
+  "alternates": [
+   {
+    "word": "Call",
+    "ref": "Jeremiah 33:3",
+    "top": "Call unto me, and I will answer thee,",
+    "bottom": "and shew thee great and mighty things, which thou knowest not.",
+    "day": "Sun"
+   }
+  ]
+ },
+ {
+  "week": 36,
+  "series": "proph",
+  "reading": "Lamentations 4 – Ezekiel 21",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Lamentations 4",
+     "Lamentations 5",
+     "Ezekiel 1",
+     "Ezekiel 2"
+    ],
+    "label": "Lamentations 4 – Ezekiel 2"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Ezekiel 3",
+     "Ezekiel 4",
+     "Ezekiel 5",
+     "Ezekiel 6"
+    ],
+    "label": "Ezekiel 3–6"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Ezekiel 7",
+     "Ezekiel 8",
+     "Ezekiel 9",
+     "Ezekiel 10"
+    ],
+    "label": "Ezekiel 7–10"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Ezekiel 11",
+     "Ezekiel 12",
+     "Ezekiel 13"
+    ],
+    "label": "Ezekiel 11–13"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Ezekiel 14",
+     "Ezekiel 15",
+     "Ezekiel 16",
+     "Ezekiel 17"
+    ],
+    "label": "Ezekiel 14–17"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Ezekiel 18",
+     "Ezekiel 19",
+     "Ezekiel 20",
+     "Ezekiel 21"
+    ],
+    "label": "Ezekiel 18–21"
+   }
+  ],
+  "weekly": {
+   "word": "Turn",
+   "ref": "Ezekiel 18:32",
+   "top": "For I have no pleasure in the death of him that dieth...",
+   "bottom": "...wherefore turn yourselves, and live ye.",
+   "day": "Fri"
+  },
+  "alternates": [
+   {
+    "word": "Spirit",
+    "ref": "Ezekiel 11:19",
+    "top": "...and I will put a new spirit within you;",
+    "bottom": "and I will take the stony heart out of their flesh...",
+    "day": "Wed"
+   }
+  ]
+ },
+ {
+  "week": 37,
+  "series": "proph",
+  "reading": "Ezekiel 22–44",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Ezekiel 22",
+     "Ezekiel 23",
+     "Ezekiel 24",
+     "Ezekiel 25"
+    ],
+    "label": "Ezekiel 22–25"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Ezekiel 26",
+     "Ezekiel 27",
+     "Ezekiel 28",
+     "Ezekiel 29"
+    ],
+    "label": "Ezekiel 26–29"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Ezekiel 30",
+     "Ezekiel 31",
+     "Ezekiel 32",
+     "Ezekiel 33"
+    ],
+    "label": "Ezekiel 30–33"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Ezekiel 34",
+     "Ezekiel 35",
+     "Ezekiel 36"
+    ],
+    "label": "Ezekiel 34–36"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Ezekiel 37",
+     "Ezekiel 38",
+     "Ezekiel 39",
+     "Ezekiel 40"
+    ],
+    "label": "Ezekiel 37–40"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Ezekiel 41",
+     "Ezekiel 42",
+     "Ezekiel 43",
+     "Ezekiel 44"
+    ],
+    "label": "Ezekiel 41–44"
+   }
+  ],
+  "weekly": {
+   "word": "Stand",
+   "ref": "Ezekiel 22:30",
+   "top": "And I sought for a man among them,",
+   "bottom": "that should make up the hedge, and stand in the gap...",
+   "day": "Sun"
+  },
+  "alternates": [
+   {
+    "word": "Search",
+    "ref": "Ezekiel 34:11",
+    "top": "Behold, I, even I, will both search my sheep,",
+    "bottom": "and seek them out.",
+    "day": "Wed"
+   }
+  ]
+ },
+ {
+  "week": 38,
+  "series": "proph",
+  "reading": "Ezekiel 45 – Hosea 7",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Ezekiel 45",
+     "Ezekiel 46",
+     "Ezekiel 47",
+     "Ezekiel 48"
+    ],
+    "label": "Ezekiel 45–48"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Daniel 1",
+     "Daniel 2",
+     "Daniel 3",
+     "Daniel 4"
+    ],
+    "label": "Daniel 1–4"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Daniel 5",
+     "Daniel 6",
+     "Daniel 7",
+     "Daniel 8"
+    ],
+    "label": "Daniel 5–8"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Daniel 9",
+     "Daniel 10",
+     "Daniel 11"
+    ],
+    "label": "Daniel 9–11"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Daniel 12",
+     "Hosea 1",
+     "Hosea 2",
+     "Hosea 3"
+    ],
+    "label": "Daniel 12 – Hosea 3"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Hosea 4",
+     "Hosea 5",
+     "Hosea 6",
+     "Hosea 7"
+    ],
+    "label": "Hosea 4–7"
+   }
+  ],
+  "weekly": {
+   "word": "River",
+   "ref": "Ezekiel 47:9",
+   "top": "...whithersoever the rivers shall come, shall live:",
+   "bottom": "and there shall be a very great multitude of fish...",
+   "day": "Sun"
+  },
+  "alternates": [
+   {
+    "word": "Faithful",
+    "ref": "Daniel 6:4",
+    "top": "...but they could find none occasion nor fault;",
+    "bottom": "forasmuch as he was faithful...",
+    "day": "Tue"
+   }
+  ]
+ },
+ {
+  "week": 39,
+  "series": "proph",
+  "reading": "Hosea 8 – Jonah 3",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Hosea 8",
+     "Hosea 9",
+     "Hosea 10",
+     "Hosea 11"
+    ],
+    "label": "Hosea 8–11"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Hosea 12",
+     "Hosea 13",
+     "Hosea 14",
+     "Joel 1"
+    ],
+    "label": "Hosea 12 – Joel 1"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Joel 2",
+     "Joel 3",
+     "Amos 1",
+     "Amos 2"
+    ],
+    "label": "Joel 2 – Amos 2"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Amos 3",
+     "Amos 4",
+     "Amos 5"
+    ],
+    "label": "Amos 3–5"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Amos 6",
+     "Amos 7",
+     "Amos 8",
+     "Amos 9"
+    ],
+    "label": "Amos 6–9"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Obadiah 1",
+     "Jonah 1",
+     "Jonah 2",
+     "Jonah 3"
+    ],
+    "label": "Obadiah 1 – Jonah 3"
+   }
+  ],
+  "weekly": {
+   "word": "Restore",
+   "ref": "Joel 2:25",
+   "top": "And I will restore to you",
+   "bottom": "the years that the locust hath eaten...",
+   "day": "Tue"
+  },
+  "alternates": [
+   {
+    "word": "Fish",
+    "ref": "Jonah 1:17",
+    "top": "Now the LORD had prepared a great fish",
+    "bottom": "to swallow up Jonah.",
+    "day": "Fri"
+   },
+   {
+    "word": "Pour",
+    "ref": "Joel 2:28",
+    "top": "...I will pour out my spirit upon all flesh;",
+    "bottom": "and your sons and your daughters shall prophesy...",
+    "day": "Tue"
+   }
+  ]
+ },
+ {
+  "week": 40,
+  "series": "proph",
+  "reading": "Jonah 4 – Zechariah 4",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Jonah 4",
+     "Micah 1",
+     "Micah 2",
+     "Micah 3"
+    ],
+    "label": "Jonah 4 – Micah 3"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Micah 4",
+     "Micah 5",
+     "Micah 6",
+     "Micah 7"
+    ],
+    "label": "Micah 4–7"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Nahum 1",
+     "Nahum 2",
+     "Nahum 3",
+     "Habakkuk 1"
+    ],
+    "label": "Nahum 1 – Habakkuk 1"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Habakkuk 2",
+     "Habakkuk 3",
+     "Zephaniah 1"
+    ],
+    "label": "Habakkuk 2 – Zephaniah 1"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Zephaniah 2",
+     "Zephaniah 3",
+     "Haggai 1",
+     "Haggai 2"
+    ],
+    "label": "Zephaniah 2 – Haggai 2"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Zechariah 1",
+     "Zechariah 2",
+     "Zechariah 3",
+     "Zechariah 4"
+    ],
+    "label": "Zechariah 1–4"
+   }
+  ],
+  "weekly": {
+   "word": "Mercy",
+   "ref": "Micah 7:18",
+   "top": "Who is a God like unto thee, that pardoneth iniquity...",
+   "bottom": "...he retaineth not his anger for ever, because he delighteth in mercy.",
+   "day": "Mon"
+  },
+  "alternates": [
+   {
+    "word": "Vision",
+    "ref": "Habakkuk 2:2",
+    "top": "Write the vision, and make it plain upon tables,",
+    "bottom": "that he may run that readeth it.",
+    "day": "Wed"
+   },
+   {
+    "word": "Rejoice",
+    "ref": "Zephaniah 3:17",
+    "top": "The LORD thy God in the midst of thee is mighty; he will save,",
+    "bottom": "he will rejoice over thee with joy...",
+    "day": "Thu"
+   }
+  ]
+ },
+ {
+  "week": 41,
+  "series": "gosp",
+  "reading": "Zechariah 5 – Matthew 8",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Zechariah 5",
+     "Zechariah 6",
+     "Zechariah 7",
+     "Zechariah 8"
+    ],
+    "label": "Zechariah 5–8"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Zechariah 9",
+     "Zechariah 10",
+     "Zechariah 11"
+    ],
+    "label": "Zechariah 9–11"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Zechariah 12",
+     "Zechariah 13",
+     "Zechariah 14",
+     "Malachi 1"
+    ],
+    "label": "Zechariah 12 – Malachi 1"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Malachi 2",
+     "Malachi 3",
+     "Malachi 4",
+     "Matthew 1"
+    ],
+    "label": "Malachi 2 – Matthew 1"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Matthew 2",
+     "Matthew 3",
+     "Matthew 4"
+    ],
+    "label": "Matthew 2–4"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Matthew 5",
+     "Matthew 6",
+     "Matthew 7",
+     "Matthew 8"
+    ],
+    "label": "Matthew 5–8"
+   }
+  ],
+  "weekly": {
+   "word": "Fishers",
+   "ref": "Matthew 4:19",
+   "top": "And he saith unto them, Follow me,",
+   "bottom": "and I will make you fishers of men.",
+   "day": "Thu"
+  },
+  "alternates": [
+   {
+    "word": "King",
+    "ref": "Zechariah 9:9",
+    "top": "...behold, thy King cometh unto thee:",
+    "bottom": "he is just, and having salvation; lowly...",
+    "day": "Mon"
+   },
+   {
+    "word": "Daily",
+    "ref": "Matthew 6:11",
+    "top": "Give us this day",
+    "bottom": "our daily bread.",
+    "day": "Fri"
+   },
+   {
+    "word": "Shine",
+    "ref": "Matthew 5:16",
+    "top": "Let your light so shine before men,",
+    "bottom": "that they may see your good works, and glorify your Father...",
+    "day": "Fri"
+   }
+  ]
+ },
+ {
+  "week": 42,
+  "series": "gosp",
+  "reading": "Matthew 9 – Mark 3",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Matthew 9",
+     "Matthew 10",
+     "Matthew 11",
+     "Matthew 12"
+    ],
+    "label": "Matthew 9–12"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Matthew 13",
+     "Matthew 14",
+     "Matthew 15",
+     "Matthew 16"
+    ],
+    "label": "Matthew 13–16"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Matthew 17",
+     "Matthew 18",
+     "Matthew 19",
+     "Matthew 20"
+    ],
+    "label": "Matthew 17–20"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Matthew 21",
+     "Matthew 22",
+     "Matthew 23"
+    ],
+    "label": "Matthew 21–23"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Matthew 24",
+     "Matthew 25",
+     "Matthew 26",
+     "Matthew 27"
+    ],
+    "label": "Matthew 24–27"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Matthew 28",
+     "Mark 1",
+     "Mark 2",
+     "Mark 3"
+    ],
+    "label": "Matthew 28 – Mark 3"
+   }
+  ],
+  "weekly": {
+   "word": "Go",
+   "ref": "Matthew 28:19",
+   "top": "Go ye therefore, and teach all nations,",
+   "bottom": "baptizing them in the name of the Father...",
+   "day": "Fri"
+  },
+  "alternates": [
+   {
+    "word": "Faith",
+    "ref": "Matthew 17:20",
+    "top": "...If ye have faith as a grain of mustard seed...",
+    "bottom": "...nothing shall be impossible unto you.",
+    "day": "Tue"
+   },
+   {
+    "word": "Rock",
+    "ref": "Matthew 16:18",
+    "top": "...and upon this rock I will build my church;",
+    "bottom": "and the gates of hell shall not prevail against it.",
+    "day": "Mon"
+   }
+  ]
+ },
+ {
+  "week": 43,
+  "series": "gosp",
+  "reading": "Mark 4 – Luke 10",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Mark 4",
+     "Mark 5",
+     "Mark 6",
+     "Mark 7"
+    ],
+    "label": "Mark 4–7"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Mark 8",
+     "Mark 9",
+     "Mark 10",
+     "Mark 11"
+    ],
+    "label": "Mark 8–11"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Mark 12",
+     "Mark 13",
+     "Mark 14",
+     "Mark 15"
+    ],
+    "label": "Mark 12–15"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Mark 16",
+     "Luke 1",
+     "Luke 2"
+    ],
+    "label": "Mark 16 – Luke 2"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Luke 3",
+     "Luke 4",
+     "Luke 5",
+     "Luke 6"
+    ],
+    "label": "Luke 3–6"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Luke 7",
+     "Luke 8",
+     "Luke 9",
+     "Luke 10"
+    ],
+    "label": "Luke 7–10"
+   }
+  ],
+  "weekly": {
+   "word": "Deep",
+   "ref": "Luke 5:4",
+   "top": "Launch out into the deep,",
+   "bottom": "and let down your nets for a draught.",
+   "day": "Thu"
+  },
+  "alternates": [
+   {
+    "word": "Saviour",
+    "ref": "Luke 2:11",
+    "top": "For unto you is born this day in the city of David",
+    "bottom": "a Saviour, which is Christ the Lord.",
+    "day": "Wed"
+   },
+   {
+    "word": "Possible",
+    "ref": "Mark 9:23",
+    "top": "If thou canst believe,",
+    "bottom": "all things are possible to him that believeth.",
+    "day": "Mon"
+   }
+  ]
+ },
+ {
+  "week": 44,
+  "series": "gosp",
+  "reading": "Luke 11 – John 9",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Luke 11",
+     "Luke 12",
+     "Luke 13",
+     "Luke 14"
+    ],
+    "label": "Luke 11–14"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Luke 15",
+     "Luke 16",
+     "Luke 17",
+     "Luke 18"
+    ],
+    "label": "Luke 15–18"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Luke 19",
+     "Luke 20",
+     "Luke 21",
+     "Luke 22"
+    ],
+    "label": "Luke 19–22"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Luke 23",
+     "Luke 24",
+     "John 1"
+    ],
+    "label": "Luke 23 – John 1"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "John 2",
+     "John 3",
+     "John 4",
+     "John 5"
+    ],
+    "label": "John 2–5"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "John 6",
+     "John 7",
+     "John 8",
+     "John 9"
+    ],
+    "label": "John 6–9"
+   }
+  ],
+  "weekly": {
+   "word": "Free",
+   "ref": "John 8:36",
+   "top": "If the Son therefore shall make you free,",
+   "bottom": "ye shall be free indeed.",
+   "day": "Fri"
+  },
+  "alternates": [
+   {
+    "word": "Found",
+    "ref": "Luke 15:24",
+    "top": "For this my son was dead, and is alive again;",
+    "bottom": "he was lost, and is found.",
+    "day": "Mon"
+   },
+   {
+    "word": "Born",
+    "ref": "John 3:3",
+    "top": "Verily, verily, I say unto thee,",
+    "bottom": "Except a man be born again, he cannot see the kingdom of God.",
+    "day": "Thu"
+   },
+   {
+    "word": "Water",
+    "ref": "John 4:14",
+    "top": "...whosoever drinketh of the water that I shall give him",
+    "bottom": "shall never thirst...",
+    "day": "Thu"
+   }
+  ]
+ },
+ {
+  "week": 45,
+  "series": "gosp",
+  "reading": "John 10 – Acts 11",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "John 10",
+     "John 11",
+     "John 12",
+     "John 13"
+    ],
+    "label": "John 10–13"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "John 14",
+     "John 15",
+     "John 16",
+     "John 17"
+    ],
+    "label": "John 14–17"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "John 18",
+     "John 19",
+     "John 20",
+     "John 21"
+    ],
+    "label": "John 18–21"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Acts 1",
+     "Acts 2",
+     "Acts 3"
+    ],
+    "label": "Acts 1–3"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Acts 4",
+     "Acts 5",
+     "Acts 6",
+     "Acts 7"
+    ],
+    "label": "Acts 4–7"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Acts 8",
+     "Acts 9",
+     "Acts 10",
+     "Acts 11"
+    ],
+    "label": "Acts 8–11"
+   }
+  ],
+  "weekly": {
+   "word": "Abide",
+   "ref": "John 15:4",
+   "top": "Abide in me, and I in you.",
+   "bottom": "As the branch cannot bear fruit of itself, except it abide in the vine...",
+   "day": "Mon"
+  },
+  "alternates": [
+   {
+    "word": "Finished",
+    "ref": "John 19:30",
+    "top": "...he said, It is finished:",
+    "bottom": "and he bowed his head, and gave up the ghost.",
+    "day": "Tue"
+   },
+   {
+    "word": "Cast",
+    "ref": "John 21:6",
+    "top": "Cast the net on the right side of the ship,",
+    "bottom": "and ye shall find.",
+    "day": "Tue"
+   },
+   {
+    "word": "Way",
+    "ref": "John 14:6",
+    "top": "I am the way, the truth, and the life:",
+    "bottom": "no man cometh unto the Father, but by me.",
+    "day": "Mon"
+   },
+   {
+    "word": "Power",
+    "ref": "Acts 1:8",
+    "top": "But ye shall receive power,",
+    "bottom": "after that the Holy Ghost is come upon you...",
+    "day": "Wed"
+   }
+  ]
+ },
+ {
+  "week": 46,
+  "series": "lett",
+  "reading": "Acts 12 – Romans 6",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Acts 12",
+     "Acts 13",
+     "Acts 14",
+     "Acts 15"
+    ],
+    "label": "Acts 12–15"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Acts 16",
+     "Acts 17",
+     "Acts 18",
+     "Acts 19"
+    ],
+    "label": "Acts 16–19"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Acts 20",
+     "Acts 21",
+     "Acts 22",
+     "Acts 23"
+    ],
+    "label": "Acts 20–23"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Acts 24",
+     "Acts 25",
+     "Acts 26"
+    ],
+    "label": "Acts 24–26"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Acts 27",
+     "Acts 28",
+     "Romans 1",
+     "Romans 2"
+    ],
+    "label": "Acts 27 – Romans 2"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Romans 3",
+     "Romans 4",
+     "Romans 5",
+     "Romans 6"
+    ],
+    "label": "Romans 3–6"
+   }
+  ],
+  "weekly": {
+   "word": "Gift",
+   "ref": "Romans 6:23",
+   "top": "For the wages of sin is death;",
+   "bottom": "but the gift of God is eternal life through Jesus Christ our Lord.",
+   "day": "Fri"
+  },
+  "alternates": [
+   {
+    "word": "Saved",
+    "ref": "Acts 16:31",
+    "top": "Believe on the Lord Jesus Christ,",
+    "bottom": "and thou shalt be saved, and thy house.",
+    "day": "Mon"
+   },
+   {
+    "word": "Grace",
+    "ref": "Romans 5:20",
+    "top": "But where sin abounded,",
+    "bottom": "grace did much more abound.",
+    "day": "Fri"
+   }
+  ]
+ },
+ {
+  "week": 47,
+  "series": "lett",
+  "reading": "Romans 7 – 1 Corinthians 13",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Romans 7",
+     "Romans 8",
+     "Romans 9",
+     "Romans 10"
+    ],
+    "label": "Romans 7–10"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Romans 11",
+     "Romans 12",
+     "Romans 13",
+     "Romans 14"
+    ],
+    "label": "Romans 11–14"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Romans 15",
+     "Romans 16",
+     "1Corinthians 1",
+     "1Corinthians 2"
+    ],
+    "label": "Romans 15 – 1 Corinthians 2"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "1Corinthians 3",
+     "1Corinthians 4",
+     "1Corinthians 5"
+    ],
+    "label": "1 Corinthians 3–5"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "1Corinthians 6",
+     "1Corinthians 7",
+     "1Corinthians 8",
+     "1Corinthians 9"
+    ],
+    "label": "1 Corinthians 6–9"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "1Corinthians 10",
+     "1Corinthians 11",
+     "1Corinthians 12",
+     "1Corinthians 13"
+    ],
+    "label": "1 Corinthians 10–13"
+   }
+  ],
+  "weekly": {
+   "word": "Renew",
+   "ref": "Romans 12:2",
+   "top": "And be not conformed to this world:",
+   "bottom": "but be ye transformed by the renewing of your mind...",
+   "day": "Mon"
+  },
+  "alternates": [
+   {
+    "word": "Confess",
+    "ref": "Romans 10:9",
+    "top": "That if thou shalt confess with thy mouth the Lord Jesus,",
+    "bottom": "...thou shalt be saved.",
+    "day": "Sun"
+   },
+   {
+    "word": "Together",
+    "ref": "Romans 8:28",
+    "top": "And we know that all things work together for good",
+    "bottom": "to them that love God...",
+    "day": "Sun"
+   }
+  ]
+ },
+ {
+  "week": 48,
+  "series": "lett",
+  "reading": "1 Corinthians 14 – Ephesians 1",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "1Corinthians 14",
+     "1Corinthians 15",
+     "1Corinthians 16",
+     "2Corinthians 1"
+    ],
+    "label": "1 Corinthians 14 – 2 Corinthians 1"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "2Corinthians 2",
+     "2Corinthians 3",
+     "2Corinthians 4",
+     "2Corinthians 5"
+    ],
+    "label": "2 Corinthians 2–5"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "2Corinthians 6",
+     "2Corinthians 7",
+     "2Corinthians 8",
+     "2Corinthians 9"
+    ],
+    "label": "2 Corinthians 6–9"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "2Corinthians 10",
+     "2Corinthians 11",
+     "2Corinthians 12"
+    ],
+    "label": "2 Corinthians 10–12"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "2Corinthians 13",
+     "Galatians 1",
+     "Galatians 2",
+     "Galatians 3"
+    ],
+    "label": "2 Corinthians 13 – Galatians 3"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Galatians 4",
+     "Galatians 5",
+     "Galatians 6",
+     "Ephesians 1"
+    ],
+    "label": "Galatians 4 – Ephesians 1"
+   }
+  ],
+  "weekly": {
+   "word": "Grace",
+   "ref": "2 Corinthians 12:9",
+   "top": "My grace is sufficient for thee:",
+   "bottom": "for my strength is made perfect in weakness.",
+   "day": "Wed"
+  },
+  "alternates": [
+   {
+    "word": "Victory",
+    "ref": "1 Corinthians 15:57",
+    "top": "But thanks be to God, which giveth us the victory",
+    "bottom": "through our Lord Jesus Christ.",
+    "day": "Sun"
+   },
+   {
+    "word": "Fruit",
+    "ref": "Galatians 5:22",
+    "top": "But the fruit of the Spirit is love, joy, peace,",
+    "bottom": "longsuffering, gentleness, goodness, faith...",
+    "day": "Fri"
+   }
+  ]
+ },
+ {
+  "week": 49,
+  "series": "lett",
+  "reading": "Ephesians 2 – 1 Timothy 1",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Ephesians 2",
+     "Ephesians 3",
+     "Ephesians 4",
+     "Ephesians 5"
+    ],
+    "label": "Ephesians 2–5"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Ephesians 6",
+     "Philippians 1",
+     "Philippians 2"
+    ],
+    "label": "Ephesians 6 – Philippians 2"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Philippians 3",
+     "Philippians 4",
+     "Colossians 1",
+     "Colossians 2"
+    ],
+    "label": "Philippians 3 – Colossians 2"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Colossians 3",
+     "Colossians 4",
+     "1Thessalonians 1",
+     "1Thessalonians 2"
+    ],
+    "label": "Colossians 3 – 1 Thessalonians 2"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "1Thessalonians 3",
+     "1Thessalonians 4",
+     "1Thessalonians 5"
+    ],
+    "label": "1 Thessalonians 3–5"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "2Thessalonians 1",
+     "2Thessalonians 2",
+     "2Thessalonians 3",
+     "1Timothy 1"
+    ],
+    "label": "2 Thessalonians 1 – 1 Timothy 1"
+   }
+  ],
+  "weekly": {
+   "word": "Faith",
+   "ref": "Ephesians 2:8",
+   "top": "For by grace are ye saved through faith;",
+   "bottom": "and that not of yourselves: it is the gift of God.",
+   "day": "Sun"
+  },
+  "alternates": [
+   {
+    "word": "Rejoice",
+    "ref": "Philippians 4:4",
+    "top": "Rejoice in the Lord alway:",
+    "bottom": "and again I say, Rejoice.",
+    "day": "Tue"
+   },
+   {
+    "word": "Press",
+    "ref": "Philippians 3:14",
+    "top": "I press toward the mark for the prize",
+    "bottom": "of the high calling of God in Christ Jesus.",
+    "day": "Tue"
+   },
+   {
+    "word": "Armour",
+    "ref": "Ephesians 6:11",
+    "top": "Put on the whole armour of God,",
+    "bottom": "that ye may be able to stand against the wiles of the devil.",
+    "day": "Mon"
+   }
+  ]
+ },
+ {
+  "week": 50,
+  "series": "lett",
+  "reading": "1 Timothy 2 – Hebrews 10",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "1Timothy 2",
+     "1Timothy 3",
+     "1Timothy 4",
+     "1Timothy 5"
+    ],
+    "label": "1 Timothy 2–5"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "1Timothy 6",
+     "2Timothy 1",
+     "2Timothy 2",
+     "2Timothy 3"
+    ],
+    "label": "1 Timothy 6 – 2 Timothy 3"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "2Timothy 4",
+     "Titus 1",
+     "Titus 2",
+     "Titus 3"
+    ],
+    "label": "2 Timothy 4 – Titus 3"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Philemon 1",
+     "Hebrews 1",
+     "Hebrews 2"
+    ],
+    "label": "Philemon 1 – Hebrews 2"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Hebrews 3",
+     "Hebrews 4",
+     "Hebrews 5",
+     "Hebrews 6"
+    ],
+    "label": "Hebrews 3–6"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Hebrews 7",
+     "Hebrews 8",
+     "Hebrews 9",
+     "Hebrews 10"
+    ],
+    "label": "Hebrews 7–10"
+   }
+  ],
+  "weekly": {
+   "word": "Word",
+   "ref": "Hebrews 4:12",
+   "top": "For the word of God is quick, and powerful,",
+   "bottom": "and sharper than any twoedged sword...",
+   "day": "Thu"
+  },
+  "alternates": [
+   {
+    "word": "Bold",
+    "ref": "Hebrews 4:16",
+    "top": "Let us therefore come boldly unto the throne of grace,",
+    "bottom": "that we may obtain mercy, and find grace to help in time of need.",
+    "day": "Thu"
+   },
+   {
+    "word": "Finish",
+    "ref": "2 Timothy 4:7",
+    "top": "I have fought a good fight, I have finished my course,",
+    "bottom": "I have kept the faith.",
+    "day": "Tue"
+   }
+  ]
+ },
+ {
+  "week": 51,
+  "series": "lett",
+  "reading": "Hebrews 11 – 3 John 1",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Hebrews 11",
+     "Hebrews 12",
+     "Hebrews 13",
+     "James 1"
+    ],
+    "label": "Hebrews 11 – James 1"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "James 2",
+     "James 3",
+     "James 4",
+     "James 5"
+    ],
+    "label": "James 2–5"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "1Peter 1",
+     "1Peter 2",
+     "1Peter 3",
+     "1Peter 4"
+    ],
+    "label": "1 Peter 1–4"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "1Peter 5",
+     "2Peter 1",
+     "2Peter 2"
+    ],
+    "label": "1 Peter 5 – 2 Peter 2"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "2Peter 3",
+     "1John 1",
+     "1John 2",
+     "1John 3"
+    ],
+    "label": "2 Peter 3 – 1 John 3"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "1John 4",
+     "1John 5",
+     "2John 1",
+     "3John 1"
+    ],
+    "label": "1 John 4 – 3 John 1"
+   }
+  ],
+  "weekly": {
+   "word": "Run",
+   "ref": "Hebrews 12:1",
+   "top": "...and let us run with patience",
+   "bottom": "the race that is set before us.",
+   "day": "Sun"
+  },
+  "alternates": [
+   {
+    "word": "Faith",
+    "ref": "Hebrews 11:1",
+    "top": "Now faith is the substance of things hoped for,",
+    "bottom": "the evidence of things not seen.",
+    "day": "Sun"
+   },
+   {
+    "word": "Cast",
+    "ref": "1 Peter 5:7",
+    "top": "Casting all your care upon him;",
+    "bottom": "for he careth for you.",
+    "day": "Wed"
+   }
+  ]
+ },
+ {
+  "week": 52,
+  "series": "end",
+  "reading": "Jude 1 – Revelation 22",
+  "days": [
+   {
+    "day": "Sun",
+    "chapters": [
+     "Jude 1",
+     "Revelation 1",
+     "Revelation 2",
+     "Revelation 3"
+    ],
+    "label": "Jude 1 – Revelation 3"
+   },
+   {
+    "day": "Mon",
+    "chapters": [
+     "Revelation 4",
+     "Revelation 5",
+     "Revelation 6",
+     "Revelation 7"
+    ],
+    "label": "Revelation 4–7"
+   },
+   {
+    "day": "Tue",
+    "chapters": [
+     "Revelation 8",
+     "Revelation 9",
+     "Revelation 10",
+     "Revelation 11"
+    ],
+    "label": "Revelation 8–11"
+   },
+   {
+    "day": "Wed",
+    "chapters": [
+     "Revelation 12",
+     "Revelation 13",
+     "Revelation 14"
+    ],
+    "label": "Revelation 12–14"
+   },
+   {
+    "day": "Thu",
+    "chapters": [
+     "Revelation 15",
+     "Revelation 16",
+     "Revelation 17",
+     "Revelation 18"
+    ],
+    "label": "Revelation 15–18"
+   },
+   {
+    "day": "Fri",
+    "chapters": [
+     "Revelation 19",
+     "Revelation 20",
+     "Revelation 21",
+     "Revelation 22"
+    ],
+    "label": "Revelation 19–22"
+   }
+  ],
+  "weekly": {
+   "word": "Amen",
+   "ref": "Revelation 22:20",
+   "top": "Surely I come quickly. Amen.",
+   "bottom": "Even so, come, Lord Jesus.",
+   "day": "Fri"
+  },
+  "alternates": [
+   {
+    "word": "Door",
+    "ref": "Revelation 3:20",
+    "top": "Behold, I stand at the door, and knock:",
+    "bottom": "if any man hear my voice, and open the door, I will come in...",
+    "day": "Sun"
+   },
+   {
+    "word": "Water",
+    "ref": "Revelation 22:17",
+    "top": "And whosoever will,",
+    "bottom": "let him take the water of life freely.",
+    "day": "Fri"
+   },
+   {
+    "word": "Worthy",
+    "ref": "Revelation 5:12",
+    "top": "Worthy is the Lamb that was slain",
+    "bottom": "to receive power, and riches, and wisdom...",
+    "day": "Mon"
+   }
+  ]
+ }
+]

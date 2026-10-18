@@ -1,0 +1,79 @@
+[
+ {
+  "week": 43,
+  "day": "Sun",
+  "slot": "",
+  "word": "Calm",
+  "ref": "Mark 4:39",
+  "refShort": "Mark 4:39",
+  "top": "...and said unto the sea, Peace, be still.",
+  "bottom": "And the wind ceased, and there was a great calm.",
+  "source": "new"
+ },
+ {
+  "week": 43,
+  "day": "Mon",
+  "slot": "",
+  "word": "Possible",
+  "ref": "Mark 9:23",
+  "refShort": "Mark 9:23",
+  "top": "If thou canst believe,",
+  "bottom": "all things are possible to him that believeth.",
+  "source": "alt"
+ },
+ {
+  "week": 43,
+  "day": "Tue",
+  "slot": "",
+  "word": "Abba",
+  "ref": "Mark 14:36",
+  "refShort": "Mark 14:36",
+  "top": "Abba, Father, all things are possible unto thee;",
+  "bottom": "...nevertheless not what I will, but what thou wilt.",
+  "source": "new"
+ },
+ {
+  "week": 43,
+  "day": "Wed",
+  "slot": "",
+  "word": "Saviour",
+  "ref": "Luke 2:11",
+  "refShort": "Luke 2:11",
+  "top": "For unto you is born this day in the city of David",
+  "bottom": "a Saviour, which is Christ the Lord.",
+  "source": "alt"
+ },
+ {
+  "week": 43,
+  "day": "Thu",
+  "slot": "",
+  "word": "Deep",
+  "ref": "Luke 5:4",
+  "refShort": "Luke 5:4",
+  "top": "Launch out into the deep,",
+  "bottom": "and let down your nets for a draught.",
+  "source": "weekly"
+ },
+ {
+  "week": 43,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Cross",
+  "ref": "Luke 9:23",
+  "refShort": "Luke 9:23",
+  "top": "If any man will come after me,",
+  "bottom": "let him deny himself, and take up his cross daily...",
+  "source": "new"
+ },
+ {
+  "week": 43,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Harvest",
+  "ref": "Luke 10:2",
+  "refShort": "Luke 10:2",
+  "top": "The harvest truly is great,",
+  "bottom": "but the labourers are few...",
+  "source": "new"
+ }
+]

@@ -1,0 +1,79 @@
+[
+ {
+  "week": 39,
+  "day": "Sun",
+  "slot": "",
+  "word": "Sow",
+  "ref": "Hosea 10:12",
+  "refShort": "Hosea 10:12",
+  "top": "Sow to yourselves in righteousness, reap in mercy;",
+  "bottom": "...for it is time to seek the LORD...",
+  "source": "new"
+ },
+ {
+  "week": 39,
+  "day": "Mon",
+  "slot": "",
+  "word": "Dew",
+  "ref": "Hosea 14:5",
+  "refShort": "Hosea 14:5",
+  "top": "I will be as the dew unto Israel:",
+  "bottom": "he shall grow as the lily...",
+  "source": "new"
+ },
+ {
+  "week": 39,
+  "day": "Tue",
+  "slot": "",
+  "word": "Restore",
+  "ref": "Joel 2:25",
+  "refShort": "Joel 2:25",
+  "top": "And I will restore to you",
+  "bottom": "the years that the locust hath eaten...",
+  "source": "weekly"
+ },
+ {
+  "week": 39,
+  "day": "Wed",
+  "slot": "",
+  "word": "Equity",
+  "ref": "Amos 5:24",
+  "refShort": "Amos 5:24",
+  "top": "But let judgment run down as waters,",
+  "bottom": "and righteousness as a mighty stream.",
+  "source": "new"
+ },
+ {
+  "week": 39,
+  "day": "Thu",
+  "slot": "",
+  "word": "Rebuild",
+  "ref": "Amos 9:11",
+  "refShort": "Amos 9:11",
+  "top": "In that day will I raise up the tabernacle of David",
+  "bottom": "that is fallen, and close up the breaches thereof...",
+  "source": "new"
+ },
+ {
+  "week": 39,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Fish",
+  "ref": "Jonah 1:17",
+  "refShort": "Jonah 1:17",
+  "top": "Now the LORD had prepared a great fish",
+  "bottom": "to swallow up Jonah.",
+  "source": "alt"
+ },
+ {
+  "week": 39,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Answer",
+  "ref": "Jonah 2:2",
+  "refShort": "Jonah 2:2",
+  "top": "I cried by reason of mine affliction unto the LORD,",
+  "bottom": "and he heard me...thou heardest my voice.",
+  "source": "new"
+ }
+]

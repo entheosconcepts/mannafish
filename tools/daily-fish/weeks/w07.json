@@ -1,0 +1,79 @@
+[
+ {
+  "week": 7,
+  "day": "Sun",
+  "slot": "",
+  "word": "Look",
+  "ref": "Numbers 21:8",
+  "refShort": "Num. 21:8",
+  "top": "...every one that is bitten,",
+  "bottom": "when he looketh upon it, shall live.",
+  "source": "weekly"
+ },
+ {
+  "week": 7,
+  "day": "Mon",
+  "slot": "",
+  "word": "Sheep",
+  "ref": "Numbers 27:17",
+  "refShort": "Num. 27:17",
+  "top": "...that the congregation of the LORD",
+  "bottom": "be not as sheep which have no shepherd.",
+  "source": "new"
+ },
+ {
+  "week": 7,
+  "day": "Tue",
+  "slot": "",
+  "word": "Vow",
+  "ref": "Numbers 30:2",
+  "refShort": "Num. 30:2",
+  "top": "If a man vow a vow unto the LORD...",
+  "bottom": "he shall not break his word...",
+  "source": "new"
+ },
+ {
+  "week": 7,
+  "day": "Wed",
+  "slot": "",
+  "word": "Flee",
+  "ref": "Numbers 35:11",
+  "refShort": "Num. 35:11",
+  "top": "...cities of refuge for you;",
+  "bottom": "that the slayer may flee thither...",
+  "source": "new"
+ },
+ {
+  "week": 7,
+  "day": "Thu",
+  "slot": "",
+  "word": "Carry",
+  "ref": "Deuteronomy 1:31",
+  "refShort": "Deut. 1:31",
+  "top": "...the LORD thy God bare thee,",
+  "bottom": "as a man doth bear his son, in all the way that ye went...",
+  "source": "new"
+ },
+ {
+  "week": 7,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Hear",
+  "ref": "Deuteronomy 6:4",
+  "refShort": "Deut. 6:4",
+  "top": "Hear, O Israel:",
+  "bottom": "The LORD our God is one LORD:",
+  "source": "new"
+ },
+ {
+  "week": 7,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Teach",
+  "ref": "Deuteronomy 6:7",
+  "refShort": "Deut. 6:7",
+  "top": "And thou shalt teach them diligently",
+  "bottom": "unto thy children...",
+  "source": "new"
+ }
+]

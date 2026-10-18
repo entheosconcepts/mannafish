@@ -1,0 +1,79 @@
+[
+ {
+  "week": 29,
+  "day": "Sun",
+  "slot": "",
+  "word": "Wisdom",
+  "ref": "Proverbs 16:16",
+  "refShort": "Prov. 16:16",
+  "top": "How much better is it to get wisdom than gold!",
+  "bottom": "and to get understanding rather to be chosen than silver!",
+  "source": "weekly"
+ },
+ {
+  "week": 29,
+  "day": "Mon",
+  "slot": "",
+  "word": "Tower",
+  "ref": "Proverbs 18:10",
+  "refShort": "Prov. 18:10",
+  "top": "The name of the LORD is a strong tower:",
+  "bottom": "the righteous runneth into it, and is safe.",
+  "source": "alt"
+ },
+ {
+  "week": 29,
+  "day": "Tue",
+  "slot": "",
+  "word": "Train",
+  "ref": "Proverbs 22:6",
+  "refShort": "Prov. 22:6",
+  "top": "Train up a child in the way he should go:",
+  "bottom": "and when he is old, he will not depart from it.",
+  "source": "new"
+ },
+ {
+  "week": 29,
+  "day": "Wed",
+  "slot": "",
+  "word": "Friend",
+  "ref": "Proverbs 27:17",
+  "refShort": "Prov. 27:17",
+  "top": "Iron sharpeneth iron;",
+  "bottom": "so a man sharpeneth the countenance of his friend.",
+  "source": "new"
+ },
+ {
+  "week": 29,
+  "day": "Thu",
+  "slot": "",
+  "word": "Purity",
+  "ref": "Proverbs 30:5",
+  "refShort": "Prov. 30:5",
+  "top": "Every word of God is pure:",
+  "bottom": "he is a shield unto them that put their trust in him.",
+  "source": "new"
+ },
+ {
+  "week": 29,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Season",
+  "ref": "Ecclesiastes 3:1",
+  "refShort": "Eccl. 3:1",
+  "top": "To every thing there is a season,",
+  "bottom": "and a time to every purpose under the heaven.",
+  "source": "alt"
+ },
+ {
+  "week": 29,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Partner",
+  "ref": "Ecclesiastes 4:9–10",
+  "refShort": "Eccl. 4:9–10",
+  "top": "Two are better than one...",
+  "bottom": "...if they fall, the one will lift up his fellow...",
+  "source": "new"
+ }
+]

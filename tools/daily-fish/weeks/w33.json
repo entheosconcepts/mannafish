@@ -1,0 +1,79 @@
+[
+ {
+  "week": 33,
+  "day": "Sun",
+  "slot": "",
+  "word": "Come",
+  "ref": "Isaiah 55:1",
+  "refShort": "Isa. 55:1",
+  "top": "Ho, every one that thirsteth, come ye to the waters...",
+  "bottom": "...come, buy wine and milk without money and without price.",
+  "source": "weekly"
+ },
+ {
+  "week": 33,
+  "day": "Mon",
+  "slot": "",
+  "word": "Arise",
+  "ref": "Isaiah 60:1",
+  "refShort": "Isa. 60:1",
+  "top": "Arise, shine; for thy light is come,",
+  "bottom": "and the glory of the LORD is risen upon thee.",
+  "source": "alt"
+ },
+ {
+  "week": 33,
+  "day": "Tue",
+  "slot": "",
+  "word": "Jewel",
+  "ref": "Isaiah 62:3",
+  "refShort": "Isa. 62:3",
+  "top": "Thou shalt also be a crown of glory",
+  "bottom": "in the hand of the LORD...",
+  "source": "new"
+ },
+ {
+  "week": 33,
+  "day": "Wed",
+  "slot": "",
+  "word": "Fountain",
+  "ref": "Jeremiah 2:13",
+  "refShort": "Jer. 2:13",
+  "top": "...they have forsaken me",
+  "bottom": "the fountain of living waters...",
+  "source": "new"
+ },
+ {
+  "week": 33,
+  "day": "Thu",
+  "slot": "",
+  "word": "Soul",
+  "ref": "Jeremiah 6:16",
+  "refShort": "Jer. 6:16",
+  "top": "...ask for the old paths, where is the good way,",
+  "bottom": "and walk therein, and ye shall find rest for your souls.",
+  "source": "new"
+ },
+ {
+  "week": 33,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Boast",
+  "ref": "Jeremiah 9:24",
+  "refShort": "Jer. 9:24",
+  "top": "...let him that glorieth glory in this,",
+  "bottom": "that he understandeth and knoweth me...",
+  "source": "new"
+ },
+ {
+  "week": 33,
+  "day": "Fri",
+  "slot": "b",
+  "word": "People",
+  "ref": "Jeremiah 7:23",
+  "refShort": "Jer. 7:23",
+  "top": "Obey my voice, and I will be your God,",
+  "bottom": "and ye shall be my people...",
+  "source": "new"
+ }
+]

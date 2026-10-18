@@ -1,0 +1,79 @@
+[
+ {
+  "week": 24,
+  "day": "Sun",
+  "slot": "",
+  "word": "Wash",
+  "ref": "Psalm 51:7",
+  "refShort": "Ps. 51:7",
+  "top": "Purge me with hyssop, and I shall be clean:",
+  "bottom": "wash me, and I shall be whiter than snow.",
+  "source": "weekly"
+ },
+ {
+  "week": 24,
+  "day": "Mon",
+  "slot": "",
+  "word": "Sustain",
+  "ref": "Psalm 55:22",
+  "refShort": "Ps. 55:22",
+  "top": "Cast thy burden upon the LORD,",
+  "bottom": "and he shall sustain thee...",
+  "source": "new"
+ },
+ {
+  "week": 24,
+  "day": "Tue",
+  "slot": "",
+  "word": "Shelter",
+  "ref": "Psalm 57:1",
+  "refShort": "Ps. 57:1",
+  "top": "...yea, in the shadow of thy wings",
+  "bottom": "will I make my refuge, until these calamities be overpast.",
+  "source": "new"
+ },
+ {
+  "week": 24,
+  "day": "Wed",
+  "slot": "",
+  "word": "Thirst",
+  "ref": "Psalm 63:1",
+  "refShort": "Ps. 63:1",
+  "top": "O God, thou art my God; early will I seek thee:",
+  "bottom": "my soul thirsteth for thee...",
+  "source": "alt"
+ },
+ {
+  "week": 24,
+  "day": "Thu",
+  "slot": "",
+  "word": "Crown",
+  "ref": "Psalm 65:11",
+  "refShort": "Ps. 65:11",
+  "top": "Thou crownest the year with thy goodness;",
+  "bottom": "and thy paths drop fatness.",
+  "source": "new"
+ },
+ {
+  "week": 24,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Father",
+  "ref": "Psalm 68:5",
+  "refShort": "Ps. 68:5",
+  "top": "A father of the fatherless,",
+  "bottom": "and a judge of the widows, is God in his holy habitation.",
+  "source": "new"
+ },
+ {
+  "week": 24,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Magnify",
+  "ref": "Psalm 69:30",
+  "refShort": "Ps. 69:30",
+  "top": "I will praise the name of God with a song,",
+  "bottom": "and will magnify him with thanksgiving.",
+  "source": "new"
+ }
+]

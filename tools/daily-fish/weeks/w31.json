@@ -1,0 +1,79 @@
+[
+ {
+  "week": 31,
+  "day": "Sun",
+  "slot": "",
+  "word": "Wonderful",
+  "ref": "Isaiah 9:6",
+  "refShort": "Isa. 9:6",
+  "top": "...and his name shall be called Wonderful, Counsellor,",
+  "bottom": "The mighty God, The everlasting Father, The Prince of Peace.",
+  "source": "alt"
+ },
+ {
+  "week": 31,
+  "day": "Mon",
+  "slot": "",
+  "word": "Draw",
+  "ref": "Isaiah 12:3",
+  "refShort": "Isa. 12:3",
+  "top": "Therefore with joy shall ye draw water",
+  "bottom": "out of the wells of salvation.",
+  "source": "new"
+ },
+ {
+  "week": 31,
+  "day": "Tue",
+  "slot": "",
+  "word": "Maker",
+  "ref": "Isaiah 17:7",
+  "refShort": "Isa. 17:7",
+  "top": "At that day shall a man look to his Maker,",
+  "bottom": "and his eyes shall have respect to the Holy One of Israel.",
+  "source": "new"
+ },
+ {
+  "week": 31,
+  "day": "Wed",
+  "slot": "",
+  "word": "Key",
+  "ref": "Isaiah 22:22",
+  "refShort": "Isa. 22:22",
+  "top": "And the key of the house of David...",
+  "bottom": "...so he shall open, and none shall shut...",
+  "source": "new"
+ },
+ {
+  "week": 31,
+  "day": "Thu",
+  "slot": "",
+  "word": "Peace",
+  "ref": "Isaiah 26:3",
+  "refShort": "Isa. 26:3",
+  "top": "Thou wilt keep him in perfect peace,",
+  "bottom": "whose mind is stayed on thee...",
+  "source": "weekly"
+ },
+ {
+  "week": 31,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Quiet",
+  "ref": "Isaiah 30:15",
+  "refShort": "Isa. 30:15",
+  "top": "In returning and rest shall ye be saved;",
+  "bottom": "in quietness and in confidence shall be your strength...",
+  "source": "new"
+ },
+ {
+  "week": 31,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Stone",
+  "ref": "Isaiah 28:16",
+  "refShort": "Isa. 28:16",
+  "top": "Behold, I lay in Zion for a foundation a stone,",
+  "bottom": "a tried stone, a precious corner stone...",
+  "source": "new"
+ }
+]

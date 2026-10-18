@@ -1,0 +1,79 @@
+[
+ {
+  "week": 27,
+  "day": "Sun",
+  "slot": "",
+  "word": "Lamp",
+  "ref": "Psalm 119:105",
+  "refShort": "Ps. 119:105",
+  "top": "Thy word is a lamp unto my feet,",
+  "bottom": "and a light unto my path.",
+  "source": "weekly"
+ },
+ {
+  "week": 27,
+  "day": "Mon",
+  "slot": "",
+  "word": "Hills",
+  "ref": "Psalm 121:1",
+  "refShort": "Ps. 121:1",
+  "top": "I will lift up mine eyes unto the hills,",
+  "bottom": "from whence cometh my help.",
+  "source": "new"
+ },
+ {
+  "week": 27,
+  "day": "Tue",
+  "slot": "",
+  "word": "Reap",
+  "ref": "Psalm 126:5",
+  "refShort": "Ps. 126:5",
+  "top": "They that sow in tears",
+  "bottom": "shall reap in joy.",
+  "source": "new"
+ },
+ {
+  "week": 27,
+  "day": "Wed",
+  "slot": "",
+  "word": "Revere",
+  "ref": "Psalm 130:4",
+  "refShort": "Ps. 130:4",
+  "top": "But there is forgiveness with thee,",
+  "bottom": "that thou mayest be feared.",
+  "source": "new"
+ },
+ {
+  "week": 27,
+  "day": "Thu",
+  "slot": "",
+  "word": "Unity",
+  "ref": "Psalm 133:1",
+  "refShort": "Ps. 133:1",
+  "top": "Behold, how good and how pleasant it is",
+  "bottom": "for brethren to dwell together in unity!",
+  "source": "new"
+ },
+ {
+  "week": 27,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Made",
+  "ref": "Psalm 139:14",
+  "refShort": "Ps. 139:14",
+  "top": "I will praise thee;",
+  "bottom": "for I am fearfully and wonderfully made...",
+  "source": "alt"
+ },
+ {
+  "week": 27,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Hold",
+  "ref": "Psalm 139:10",
+  "refShort": "Ps. 139:10",
+  "top": "Even there shall thy hand lead me,",
+  "bottom": "and thy right hand shall hold me.",
+  "source": "new"
+ }
+]

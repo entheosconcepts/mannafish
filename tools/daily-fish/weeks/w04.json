@@ -1,0 +1,79 @@
+[
+ {
+  "week": 4,
+  "day": "Sun",
+  "slot": "",
+  "word": "Guard",
+  "ref": "Exodus 23:20",
+  "refShort": "Ex. 23:20",
+  "top": "Behold, I send an Angel before thee,",
+  "bottom": "to keep thee in the way...",
+  "source": "new"
+ },
+ {
+  "week": 4,
+  "day": "Mon",
+  "slot": "",
+  "word": "Meet",
+  "ref": "Exodus 25:22",
+  "refShort": "Ex. 25:22",
+  "top": "And there I will meet with thee,",
+  "bottom": "and I will commune with thee...",
+  "source": "new"
+ },
+ {
+  "week": 4,
+  "day": "Tue",
+  "slot": "",
+  "word": "Know",
+  "ref": "Exodus 29:46",
+  "refShort": "Ex. 29:46",
+  "top": "And they shall know",
+  "bottom": "that I am the LORD their God...",
+  "source": "new"
+ },
+ {
+  "week": 4,
+  "day": "Wed",
+  "slot": "",
+  "word": "Presence",
+  "ref": "Exodus 33:14",
+  "refShort": "Ex. 33:14",
+  "top": "My presence shall go with thee,",
+  "bottom": "and I will give thee rest.",
+  "source": "weekly"
+ },
+ {
+  "week": 4,
+  "day": "Thu",
+  "slot": "",
+  "word": "Offer",
+  "ref": "Exodus 35:21",
+  "refShort": "Ex. 35:21",
+  "top": "...every one whom his spirit made willing,",
+  "bottom": "and they brought the LORD's offering...",
+  "source": "new"
+ },
+ {
+  "week": 4,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Fill",
+  "ref": "Exodus 40:34",
+  "refShort": "Ex. 40:34",
+  "top": "Then a cloud covered the tent...",
+  "bottom": "and the glory of the LORD filled the tabernacle.",
+  "source": "new"
+ },
+ {
+  "week": 4,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Guide",
+  "ref": "Exodus 40:38",
+  "refShort": "Ex. 40:38",
+  "top": "For the cloud of the LORD was upon the tabernacle",
+  "bottom": "by day, and fire was on it by night...",
+  "source": "new"
+ }
+]

@@ -1,0 +1,79 @@
+[
+ {
+  "week": 5,
+  "day": "Sun",
+  "slot": "",
+  "word": "Pardon",
+  "ref": "Leviticus 4:31",
+  "refShort": "Lev. 4:31",
+  "top": "...the priest shall make an atonement for him,",
+  "bottom": "and it shall be forgiven him.",
+  "source": "new"
+ },
+ {
+  "week": 5,
+  "day": "Mon",
+  "slot": "",
+  "word": "Burn",
+  "ref": "Leviticus 6:13",
+  "refShort": "Lev. 6:13",
+  "top": "The fire shall ever be burning upon the altar;",
+  "bottom": "it shall never go out.",
+  "source": "new"
+ },
+ {
+  "week": 5,
+  "day": "Tue",
+  "slot": "",
+  "word": "Holy",
+  "ref": "Leviticus 11:44",
+  "refShort": "Lev. 11:44",
+  "top": "For I am the LORD your God...",
+  "bottom": "ye shall be holy; for I am holy...",
+  "source": "weekly"
+ },
+ {
+  "week": 5,
+  "day": "Wed",
+  "slot": "",
+  "word": "Cleanse",
+  "ref": "Leviticus 16:30",
+  "refShort": "Lev. 16:30",
+  "top": "...to cleanse you, that ye may be clean",
+  "bottom": "from all your sins before the LORD.",
+  "source": "new"
+ },
+ {
+  "week": 5,
+  "day": "Thu",
+  "slot": "",
+  "word": "Atone",
+  "ref": "Leviticus 17:11",
+  "refShort": "Lev. 17:11",
+  "top": "For the life of the flesh is in the blood:",
+  "bottom": "...it is the blood that maketh an atonement for the soul.",
+  "source": "alt"
+ },
+ {
+  "week": 5,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Sabbath",
+  "ref": "Leviticus 23:3",
+  "refShort": "Lev. 23:3",
+  "top": "...the seventh day is the sabbath of rest,",
+  "bottom": "an holy convocation...",
+  "source": "new"
+ },
+ {
+  "week": 5,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Share",
+  "ref": "Leviticus 23:22",
+  "refShort": "Lev. 23:22",
+  "top": "...thou shalt leave them unto the poor,",
+  "bottom": "and to the stranger: I am the LORD your God.",
+  "source": "new"
+ }
+]

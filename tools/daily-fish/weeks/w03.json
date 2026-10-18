@@ -1,0 +1,79 @@
+[
+ {
+  "week": 3,
+  "day": "Sun",
+  "slot": "",
+  "word": "Good",
+  "ref": "Genesis 50:20",
+  "refShort": "Gen. 50:20",
+  "top": "Ye thought evil against me;",
+  "bottom": "but God meant it unto good...",
+  "source": "alt"
+ },
+ {
+  "week": 3,
+  "day": "Mon",
+  "slot": "",
+  "word": "Deliver",
+  "ref": "Exodus 3:8",
+  "refShort": "Ex. 3:8",
+  "top": "And I am come down to deliver them",
+  "bottom": "out of the hand of the Egyptians...",
+  "source": "weekly"
+ },
+ {
+  "week": 3,
+  "day": "Tue",
+  "slot": "",
+  "word": "Belong",
+  "ref": "Exodus 6:7",
+  "refShort": "Ex. 6:7",
+  "top": "And I will take you to me for a people,",
+  "bottom": "and I will be to you a God...",
+  "source": "new"
+ },
+ {
+  "week": 3,
+  "day": "Wed",
+  "slot": "",
+  "word": "Declare",
+  "ref": "Exodus 9:16",
+  "refShort": "Ex. 9:16",
+  "top": "...that my name may be declared",
+  "bottom": "throughout all the earth.",
+  "source": "new"
+ },
+ {
+  "week": 3,
+  "day": "Thu",
+  "slot": "",
+  "word": "Strength",
+  "ref": "Exodus 15:2",
+  "refShort": "Ex. 15:2",
+  "top": "The LORD is my strength and song,",
+  "bottom": "and he is become my salvation...",
+  "source": "alt"
+ },
+ {
+  "week": 3,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Wings",
+  "ref": "Exodus 19:4",
+  "refShort": "Ex. 19:4",
+  "top": "...how I bare you on eagles' wings,",
+  "bottom": "and brought you unto myself.",
+  "source": "new"
+ },
+ {
+  "week": 3,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Treasure",
+  "ref": "Exodus 19:5",
+  "refShort": "Ex. 19:5",
+  "top": "...ye shall be a peculiar treasure",
+  "bottom": "unto me above all people...",
+  "source": "new"
+ }
+]

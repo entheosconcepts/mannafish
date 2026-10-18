@@ -1,0 +1,79 @@
+[
+ {
+  "week": 41,
+  "day": "Sun",
+  "slot": "",
+  "word": "Honesty",
+  "ref": "Zechariah 8:16",
+  "refShort": "Zech. 8:16",
+  "top": "Speak ye every man the truth to his neighbour;",
+  "bottom": "execute the judgment of truth and peace in your gates...",
+  "source": "new"
+ },
+ {
+  "week": 41,
+  "day": "Mon",
+  "slot": "",
+  "word": "King",
+  "ref": "Zechariah 9:9",
+  "refShort": "Zech. 9:9",
+  "top": "...behold, thy King cometh unto thee:",
+  "bottom": "he is just, and having salvation; lowly...",
+  "source": "alt"
+ },
+ {
+  "week": 41,
+  "day": "Tue",
+  "slot": "",
+  "word": "Spring",
+  "ref": "Zechariah 13:1",
+  "refShort": "Zech. 13:1",
+  "top": "In that day there shall be a fountain opened",
+  "bottom": "...for sin and for uncleanness.",
+  "source": "new"
+ },
+ {
+  "week": 41,
+  "day": "Wed",
+  "slot": "",
+  "word": "Jesus",
+  "ref": "Matthew 1:21",
+  "refShort": "Matt. 1:21",
+  "top": "...thou shalt call his name JESUS:",
+  "bottom": "for he shall save his people from their sins.",
+  "source": "new"
+ },
+ {
+  "week": 41,
+  "day": "Thu",
+  "slot": "",
+  "word": "Fishers",
+  "ref": "Matthew 4:19",
+  "refShort": "Matt. 4:19",
+  "top": "And he saith unto them, Follow me,",
+  "bottom": "and I will make you fishers of men.",
+  "source": "weekly"
+ },
+ {
+  "week": 41,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Daily",
+  "ref": "Matthew 6:11",
+  "refShort": "Matt. 6:11",
+  "top": "Give us this day",
+  "bottom": "our daily bread.",
+  "source": "alt"
+ },
+ {
+  "week": 41,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Shine",
+  "ref": "Matthew 5:16",
+  "refShort": "Matt. 5:16",
+  "top": "Let your light so shine before men,",
+  "bottom": "that they may see your good works, and glorify your Father...",
+  "source": "alt"
+ }
+]

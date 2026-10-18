@@ -1,0 +1,79 @@
+[
+ {
+  "week": 11,
+  "day": "Sun",
+  "slot": "",
+  "word": "Loyalty",
+  "ref": "Ruth 1:16",
+  "refShort": "Ruth 1:16",
+  "top": "...whither thou goest, I will go;",
+  "bottom": "...thy people shall be my people, and thy God my God:",
+  "source": "new"
+ },
+ {
+  "week": 11,
+  "day": "Mon",
+  "slot": "",
+  "word": "Redeem",
+  "ref": "Ruth 4:4",
+  "refShort": "Ruth 4:4",
+  "top": "If thou wilt redeem it, redeem it:",
+  "bottom": "...And he said, I will redeem it.",
+  "source": "alt"
+ },
+ {
+  "week": 11,
+  "day": "Tue",
+  "slot": "",
+  "word": "Speak",
+  "ref": "1 Samuel 3:10",
+  "refShort": "1 Sam. 3:10",
+  "top": "Then Samuel answered,",
+  "bottom": "Speak; for thy servant heareth.",
+  "source": "alt"
+ },
+ {
+  "week": 11,
+  "day": "Wed",
+  "slot": "",
+  "word": "Hitherto",
+  "ref": "1 Samuel 7:12",
+  "refShort": "1 Sam. 7:12",
+  "top": "...and called the name of it Eben-ezer,",
+  "bottom": "saying, Hitherto hath the LORD helped us.",
+  "source": "new"
+ },
+ {
+  "week": 11,
+  "day": "Thu",
+  "slot": "",
+  "word": "Consider",
+  "ref": "1 Samuel 12:24",
+  "refShort": "1 Sam. 12:24",
+  "top": "Only fear the LORD, and serve him in truth...",
+  "bottom": "for consider how great things he hath done for you.",
+  "source": "new"
+ },
+ {
+  "week": 11,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Heart",
+  "ref": "1 Samuel 16:7",
+  "refShort": "1 Sam. 16:7",
+  "top": "...for man looketh on the outward appearance,",
+  "bottom": "but the LORD looketh on the heart.",
+  "source": "weekly"
+ },
+ {
+  "week": 11,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Heed",
+  "ref": "1 Samuel 15:22",
+  "refShort": "1 Sam. 15:22",
+  "top": "...Behold, to obey is better than sacrifice,",
+  "bottom": "and to hearken than the fat of rams.",
+  "source": "new"
+ }
+]

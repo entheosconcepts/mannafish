@@ -1,0 +1,79 @@
+[
+ {
+  "week": 30,
+  "day": "Sun",
+  "slot": "",
+  "word": "Patience",
+  "ref": "Ecclesiastes 7:8",
+  "refShort": "Eccl. 7:8",
+  "top": "Better is the end of a thing than the beginning...",
+  "bottom": "...the patient in spirit is better than the proud in spirit.",
+  "source": "new"
+ },
+ {
+  "week": 30,
+  "day": "Mon",
+  "slot": "",
+  "word": "Creator",
+  "ref": "Ecclesiastes 12:1",
+  "refShort": "Eccl. 12:1",
+  "top": "Remember now thy Creator",
+  "bottom": "in the days of thy youth...",
+  "source": "new"
+ },
+ {
+  "week": 30,
+  "day": "Tue",
+  "slot": "",
+  "word": "Banner",
+  "ref": "Song of Solomon 2:4",
+  "refShort": "Song 2:4",
+  "top": "He brought me to the banqueting house,",
+  "bottom": "and his banner over me was love.",
+  "source": "new"
+ },
+ {
+  "week": 30,
+  "day": "Wed",
+  "slot": "",
+  "word": "Beloved",
+  "ref": "Song of Solomon 6:3",
+  "refShort": "Song 6:3",
+  "top": "I am my beloved’s, and my beloved is mine:",
+  "bottom": "he feedeth among the lilies.",
+  "source": "new"
+ },
+ {
+  "week": 30,
+  "day": "Thu",
+  "slot": "",
+  "word": "Reason",
+  "ref": "Isaiah 1:18",
+  "refShort": "Isa. 1:18",
+  "top": "Come now, and let us reason together, saith the LORD:",
+  "bottom": "though your sins be as scarlet, they shall be as white as snow...",
+  "source": "alt"
+ },
+ {
+  "week": 30,
+  "day": "Fri",
+  "slot": "a",
+  "word": "Send",
+  "ref": "Isaiah 6:8",
+  "refShort": "Isa. 6:8",
+  "top": "Whom shall I send, and who will go for us?",
+  "bottom": "Then said I, Here am I; send me.",
+  "source": "weekly"
+ },
+ {
+  "week": 30,
+  "day": "Fri",
+  "slot": "b",
+  "word": "Immanuel",
+  "ref": "Isaiah 7:14",
+  "refShort": "Isa. 7:14",
+  "top": "Behold, a virgin shall conceive, and bear a son,",
+  "bottom": "and shall call his name Immanuel.",
+  "source": "alt"
+ }
+]
