@@ -137,6 +137,10 @@ html,body{overflow-x:hidden}
 .gfline{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}.gfline path{fill:none;stroke:rgba(255,255,255,.75);stroke-width:.35;vector-effect:non-scaling-stroke}
 .gfbob{position:absolute;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff 0 30%,#e8473c 31% 100%);z-index:5;box-shadow:0 0 0 0 rgba(255,255,255,.6);animation:gfrip 1s ease-out}
 @keyframes gfrip{from{box-shadow:0 0 0 0 rgba(255,255,255,.6)}to{box-shadow:0 0 0 22px rgba(255,255,255,0)}}
+.gfstat{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}.gfstat span{border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-weight:700;font-size:.85rem;color:var(--dim);font-variant-numeric:tabular-nums}.gfstat b{color:var(--text)}
+.gfres{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:rgba(0,0,0,.45);text-align:center;pointer-events:none;animation:gfres .5s cubic-bezier(.2,.8,.2,1.2)}.gfres[hidden]{display:none}
+.gfres b{font:400 clamp(2rem,9vw,3.4rem)/1 'MFHobo','Archivo',sans-serif;color:#7fd18b;text-shadow:0 3px 12px #000}.gfres.no b{color:#f0b35a}.gfres span{font-weight:800;color:#fff;text-shadow:0 2px 8px #000}
+@keyframes gfres{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
 .gfmsg{min-height:1.4em;margin:10px 0 6px;font-weight:700;color:var(--text)}.gfmsg.ok{color:#7fd18b}.gfmsg.no{color:#f0b35a}
 .score{font-weight:800;color:var(--text)}.score b{color:#f5d76e}
 .win{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;background:color-mix(in srgb,var(--bg) 55%,transparent)}
@@ -192,7 +196,8 @@ html,body{overflow-x:hidden}
     <div class="gfbox">
       <div class="gfhd"><h2 id="gfH"></h2><span class="gftries" id="gfTries" aria-live="polite"></span></div>
       <p class="gfsub" id="gfSub"></p>
-      <div class="pond" id="pond"><svg class="gfline" id="gfLine" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d=""/></svg><span class="gfbob" id="gfBob" hidden></span></div>
+      <div class="gfstat" id="gfStat"></div>
+      <div class="pond" id="pond"><svg class="gfline" id="gfLine" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d=""/></svg><span class="gfbob" id="gfBob" hidden></span><div class="gfres" id="gfRes" hidden></div></div>
       <p class="gfmsg" id="gfMsg" aria-live="polite"></p>
       <div class="row"><button class="pill" id="gfSkip" type="button" data-t="gfskip">Skip</button></div>
     </div>
@@ -230,7 +235,7 @@ html,body{overflow-x:hidden}
     en:{home:'Home',sub:'Go MannaFish',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',
       say:'Say words when flipped',moves:'Moves',pairs:'pairs',won:'All 12 found in {n} moves',winsub:'Tap any card to hear its word.',
       again:'Play again',look:'See the cards',how:'How to play',howok:'Let’s play',
-      gfh:'Go fish!',hidden:'Hidden fish {i}',gfsub:'Catch <b>{w}</b>. Every fish is hidden until you catch it: pick one!',gfskip:'Skip',gfok:'You caught {w}! Catch ×{m}',gfno:'That was {w}. {n} left',gfaway:'It got away. Catch stays ×{m}',score:'Score',catch:'Catch',fish:'fish',
+      gfh:'Go fish!',hidden:'Hidden fish {i}',gfmult:'Catch multiplied!',gfnob:'No bonus',gfnob2:'Your catch stays ×{m}',gfmults:'Now ×{m} · +{b} points',matches:'Matches',caught:'Caught',gfsub:'Catch <b>{w}</b>. Every fish is hidden until you catch it: pick one!',gfskip:'Skip',gfok:'You caught {w}! Catch ×{m}',gfno:'That was {w}. {n} left',gfaway:'It got away. Catch stays ×{m}',score:'Score',catch:'Catch',fish:'fish',
       won2:'All 12 found in {n} moves · Score {s} · {f} fish caught',best:'Your best: {b}',gfoff:'Go fish after a match',
       h1:'Pick a first and a second language at the top (or Mix).',h2:'Tap two fish to turn them over.',
       h3:'The same word is a match, even in two different languages: REST and DESCANSA are a pair. A match stays face up.',
@@ -240,7 +245,7 @@ html,body{overflow-x:hidden}
     es:{home:'Inicio',sub:'Go MannaFish',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',
       say:'Decirlas al voltear',moves:'Jugadas',pairs:'pares',won:'Las 12 encontradas en {n} jugadas',winsub:'Toca cualquier carta para oír su palabra.',
       again:'Jugar otra vez',look:'Ver las cartas',how:'Cómo se juega',howok:'¡A jugar!',
-      gfh:'¡A pescar!',hidden:'Pez escondido {i}',gfsub:'Atrapa <b>{w}</b>. Cada pez está escondido hasta que lo atrapes: ¡elige uno!',gfskip:'Saltar',gfok:'¡Atrapaste {w}! Pesca ×{m}',gfno:'Era {w}. Quedan {n}',gfaway:'Se escapó. La pesca sigue ×{m}',score:'Puntos',catch:'Pesca',fish:'peces',
+      gfh:'¡A pescar!',hidden:'Pez escondido {i}',gfmult:'¡Pesca multiplicada!',gfnob:'Sin bono',gfnob2:'Tu pesca sigue ×{m}',gfmults:'Ahora ×{m} · +{b} puntos',matches:'Parejas',caught:'Atrapados',gfsub:'Atrapa <b>{w}</b>. Cada pez está escondido hasta que lo atrapes: ¡elige uno!',gfskip:'Saltar',gfok:'¡Atrapaste {w}! Pesca ×{m}',gfno:'Era {w}. Quedan {n}',gfaway:'Se escapó. La pesca sigue ×{m}',score:'Puntos',catch:'Pesca',fish:'peces',
       won2:'Las 12 en {n} jugadas · {s} puntos · {f} peces',best:'Tu mejor: {b}',gfoff:'Pescar después de cada pareja',
       h1:'Elige un primer y un segundo idioma arriba (o Mezcla).',h2:'Toca dos peces para darles la vuelta.',
       h3:'La misma palabra es pareja, aunque esté en dos idiomas: REST y DESCANSA son pareja. Una pareja queda boca arriba.',
@@ -464,8 +469,11 @@ html,body{overflow-x:hidden}
       f.addEventListener('click',function(e){ e.stopPropagation(); cast(f,e); });
       pond.appendChild(f);
     });
-    tries(); $('goFish').hidden=false; $('gfSkip').focus({preventScroll:true});
+    $('gfRes').hidden=true; gfStat(); tries(); $('goFish').hidden=false; $('gfSkip').focus({preventScroll:true});
   }
+  // Ken, 18 Oct: "something that says no bonus after 3 attempts, or if one was a match 'catch multiplied' shows, and a number of matches"
+  function gfStat(){ $('gfStat').innerHTML='<span>'+esc(t('matches'))+' <b>'+found+'/'+PAIRS+'</b></span><span>'+esc(t('caught'))+' <b>🐟 '+caught+'</b></span><span>'+esc(t('catch'))+' <b>×'+mult+'</b></span><span>'+esc(t('score'))+' <b>'+score+'</b></span>'; }
+  function gfShow(ok,line2){ var r=$('gfRes'); r.className='gfres'+(ok?'':' no'); r.innerHTML='<b>'+esc(ok?t('gfmult'):t('gfnob'))+'</b><span>'+esc(line2)+'</span>'; r.hidden=false; gfStat(); }
   function tries(){ var n=gf?gf.tries:0; $('gfTries').textContent='🎣'.repeat(n)+'◦'.repeat(TRIES-n); }
   function line(e){ var r=$('pond').getBoundingClientRect(), x=(e.clientX-r.left)/r.width*100, y=(e.clientY-r.top)/r.height*100;
     if(!e.clientX&&!e.clientY){ x=50; y=50; }
@@ -478,12 +486,12 @@ html,body{overflow-x:hidden}
       gf.done=true; mult++; caught++; var bonus=10*mult; score+=bonus;
       f.classList.add('caught'); try{ if(navigator.vibrate) navigator.vibrate([60,40,120]); }catch(x){}
       $('gfMsg').textContent=t('gfok').replace('{w}',W[l1][gf.k]).replace('{m}',mult)+' · +'+bonus; $('gfMsg').className='gfmsg ok';
-      announce($('gfMsg').textContent); status(); gfTimer=setTimeout(gfEnd,1700); return;
+      announce($('gfMsg').textContent); status(); gfShow(true,t('gfmults').replace('{m}',mult).replace('{b}',bonus)); gfTimer=setTimeout(gfEnd,2200); return;
     }
     gf.tries--; tries(); f.classList.add('nope'); f.disabled=true;
     if(gf.tries>0){ $('gfMsg').textContent=t('gfno').replace('{w}',W[l1][f.dataset.k]).replace('{n}',gf.tries); $('gfMsg').className='gfmsg no'; announce($('gfMsg').textContent); return; }
-    gf.done=true; $('gfMsg').textContent=t('gfaway').replace('{m}',mult); $('gfMsg').className='gfmsg no'; announce($('gfMsg').textContent);
-    gfTimer=setTimeout(gfEnd,1600);
+    gf.done=true; $('gfMsg').textContent=t('gfaway').replace('{m}',mult); $('gfMsg').className='gfmsg no'; announce(t('gfnob')+'. '+$('gfMsg').textContent);
+    gfShow(false,t('gfnob2').replace('{m}',mult)); gfTimer=setTimeout(gfEnd,2200);
   }
   function gfClose(){ clearTimeout(gfTimer); $('goFish').hidden=true; [].slice.call($('pond').querySelectorAll('.gfish')).forEach(function(x){ x.remove(); }); var g=gf; gf=null; return g; }
   function gfEnd(){ var g=gfClose(); if(g&&g.last) setTimeout(won,300); }
