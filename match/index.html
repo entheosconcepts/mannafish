@@ -132,7 +132,8 @@ html,body{overflow-x:hidden}
 @keyframes gfswim{from{left:100%}to{left:calc(-1 * var(--w,30%))}}
 @keyframes gfwig{from{transform:translateY(-3px) rotate(-1.5deg)}to{transform:translateY(3px) rotate(1.5deg)}}
 .gfish.caught{animation:none;transition:transform 1s cubic-bezier(.2,.7,.2,1),opacity 1s;transform:translateY(-120%) scale(1.15);z-index:3}
-.gfish.nope{animation-play-state:paused;opacity:.45}
+.gfish.nope{animation-play-state:paused;opacity:.55}
+.gfish.shown .gfin{animation:gfflip .45s ease-out}@keyframes gfflip{from{transform:rotateX(90deg)}to{transform:none}}
 .gfline{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}.gfline path{fill:none;stroke:rgba(255,255,255,.75);stroke-width:.35;vector-effect:non-scaling-stroke}
 .gfbob{position:absolute;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff 0 30%,#e8473c 31% 100%);z-index:5;box-shadow:0 0 0 0 rgba(255,255,255,.6);animation:gfrip 1s ease-out}
 @keyframes gfrip{from{box-shadow:0 0 0 0 rgba(255,255,255,.6)}to{box-shadow:0 0 0 22px rgba(255,255,255,0)}}
@@ -229,23 +230,23 @@ html,body{overflow-x:hidden}
     en:{home:'Home',sub:'Go MannaFish',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',
       say:'Say words when flipped',moves:'Moves',pairs:'pairs',won:'All 12 found in {n} moves',winsub:'Tap any card to hear its word.',
       again:'Play again',look:'See the cards',how:'How to play',howok:'Let’s play',
-      gfh:'Go fish!',gfsub:'Catch <b>{w}</b> — tap the fish with the same word.',gfskip:'Skip',gfok:'You caught {w}! Catch ×{m}',gfno:'That’s {w}. {n} left',gfaway:'It got away. Catch stays ×{m}',score:'Score',catch:'Catch',fish:'fish',
+      gfh:'Go fish!',hidden:'Hidden fish {i}',gfsub:'Catch <b>{w}</b>. Every fish is hidden until you catch it: pick one!',gfskip:'Skip',gfok:'You caught {w}! Catch ×{m}',gfno:'That was {w}. {n} left',gfaway:'It got away. Catch stays ×{m}',score:'Score',catch:'Catch',fish:'fish',
       won2:'All 12 found in {n} moves · Score {s} · {f} fish caught',best:'Your best: {b}',gfoff:'Go fish after a match',
       h1:'Pick a first and a second language at the top (or Mix).',h2:'Tap two fish to turn them over.',
       h3:'The same word is a match, even in two different languages: REST and DESCANSA are a pair. A match stays face up.',
       h4:'Not a match? They turn back over. Remember where each word was.',
       h5:'Find all 12 pairs. Tap a turned fish again to see its word in the other language; tap 🔊 on the tail to hear it, and the nose to hear its verse.',
-      h6:'Every pair lets you go fish: tap the swimming fish with the same word. You have 3 tries. Each catch raises your catch multiplier (×2, ×3 …), and every pair scores 10 × your multiplier.',down:'Card {i}, face down',matched:'matched',match:'Match',verse:'Hear the verse',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
+      h6:'Every pair lets you go fish for the same word. The fish are hidden: tap one to reel it in and see its word. You have 3 tries. Each catch raises your catch multiplier (×2, ×3 …), and every pair scores 10 × your multiplier.',down:'Card {i}, face down',matched:'matched',match:'Match',verse:'Hear the verse',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
     es:{home:'Inicio',sub:'Go MannaFish',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',
       say:'Decirlas al voltear',moves:'Jugadas',pairs:'pares',won:'Las 12 encontradas en {n} jugadas',winsub:'Toca cualquier carta para oír su palabra.',
       again:'Jugar otra vez',look:'Ver las cartas',how:'Cómo se juega',howok:'¡A jugar!',
-      gfh:'¡A pescar!',gfsub:'Atrapa <b>{w}</b>: toca el pez con la misma palabra.',gfskip:'Saltar',gfok:'¡Atrapaste {w}! Pesca ×{m}',gfno:'Ese es {w}. Quedan {n}',gfaway:'Se escapó. La pesca sigue ×{m}',score:'Puntos',catch:'Pesca',fish:'peces',
+      gfh:'¡A pescar!',hidden:'Pez escondido {i}',gfsub:'Atrapa <b>{w}</b>. Cada pez está escondido hasta que lo atrapes: ¡elige uno!',gfskip:'Saltar',gfok:'¡Atrapaste {w}! Pesca ×{m}',gfno:'Era {w}. Quedan {n}',gfaway:'Se escapó. La pesca sigue ×{m}',score:'Puntos',catch:'Pesca',fish:'peces',
       won2:'Las 12 en {n} jugadas · {s} puntos · {f} peces',best:'Tu mejor: {b}',gfoff:'Pescar después de cada pareja',
       h1:'Elige un primer y un segundo idioma arriba (o Mezcla).',h2:'Toca dos peces para darles la vuelta.',
       h3:'La misma palabra es pareja, aunque esté en dos idiomas: REST y DESCANSA son pareja. Una pareja queda boca arriba.',
       h4:'¿No son pareja? Se vuelven a voltear. Recuerda dónde estaba cada palabra.',
       h5:'Encuentra las 12 parejas. Toca otra vez un pez volteado para ver su palabra en el otro idioma; toca 🔊 en la cola para oírla, y la nariz para oír su versículo.',
-      h6:'Cada pareja te deja pescar: toca el pez que nada con la misma palabra. Tienes 3 intentos. Cada pez atrapado sube tu multiplicador (×2, ×3 …), y cada pareja vale 10 × tu multiplicador.',down:'Carta {i}, boca abajo',matched:'encontrada',match:'Pareja',verse:'Escuchar el versículo',nomatch:'No son pareja',cards:'Cartas',loading:'Cargando…',oops:'No se pudieron cargar las palabras. Inténtalo otra vez.'}
+      h6:'Cada pareja te deja pescar la misma palabra. Los peces están escondidos: toca uno para sacarlo y ver su palabra. Tienes 3 intentos. Cada pez atrapado sube tu multiplicador (×2, ×3 …), y cada pareja vale 10 × tu multiplicador.',down:'Carta {i}, boca abajo',matched:'encontrada',match:'Pareja',verse:'Escuchar el versículo',nomatch:'No son pareja',cards:'Cartas',loading:'Cargando…',oops:'No se pudieron cargar las palabras. Inténtalo otra vez.'}
   };
   function $(id){ return document.getElementById(id); }
   function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
@@ -443,7 +444,10 @@ html,body{overflow-x:hidden}
   }
   // ── Go fish: after each pair, catch the same word in the pond. 3 tries; each catch raises the multiplier ──
   // the pond's fish are the cards' own decals in the first language, swimming nose first (right to left, never mirrored)
-  var gf=null, gfTimer=null, TRIES=3;
+  // Ken, 18 Oct: "the name should be hidden, he doesn't know what the word is until he catches it" -- the pond fish swim as the
+  // MannaFish card back; a tap reels one in and turns it over to show its word
+  var gf=null, gfTimer=null, TRIES=3, POND='';
+  fetch('/match/back-pond.svg').then(function(r){ return r.ok?r.text():''; }).then(function(x){ POND=x; }).catch(function(){});
   function goFish(k,last){
     var F=FISH[l1]; if(!F||!F[k]){ if(last) won(); return; }
     var others=shuffle(Object.keys(F).filter(function(x){ return x!==k&&F[x]; })).slice(0,4), list=shuffle([k].concat(others));
@@ -453,10 +457,10 @@ html,body{overflow-x:hidden}
     var pond=$('pond'); [].slice.call(pond.querySelectorAll('.gfish')).forEach(function(x){ x.remove(); });
     var lanes=list.length, w=document.documentElement.clientWidth<600?44:30;
     list.forEach(function(x,i){
-      var f=document.createElement('button'); f.type='button'; f.className='gfish'; f.dataset.k=x; f.setAttribute('aria-label',W[l1][x]); f.setAttribute('lang',l1);
+      var f=document.createElement('button'); f.type='button'; f.className='gfish'; f.dataset.k=x; f.setAttribute('aria-label',t('hidden').replace('{i}',i+1));
       var top=4+i*(88-w/2)/(lanes-1||1);
       f.style.cssText='top:'+top.toFixed(1)+'%;--w:'+w+'%;--t:'+(7+Math.random()*5).toFixed(1)+'s;--d:-'+(Math.random()*9).toFixed(1)+'s';
-      f.innerHTML='<span class="gfin">'+own(F[x],'gf'+i)+'</span>';
+      f.innerHTML='<span class="gfin">'+(POND||BACK)+'</span>'; f.dataset.i=i;
       f.addEventListener('click',function(e){ e.stopPropagation(); cast(f,e); });
       pond.appendChild(f);
     });
@@ -468,7 +472,8 @@ html,body{overflow-x:hidden}
     $('gfLine').firstChild.setAttribute('d','M50 -2 Q '+((50+x)/2).toFixed(1)+' '+(y*.6).toFixed(1)+' '+x.toFixed(1)+' '+y.toFixed(1));
     var b=$('gfBob'); b.hidden=true; void b.offsetWidth; b.style.left=x+'%'; b.style.top=y+'%'; b.hidden=false; }
   function cast(f,e){
-    if(!gf||gf.done) return; line(e);
+    if(!gf||gf.done||f.disabled) return; line(e);
+    f.querySelector('.gfin').innerHTML=own(FISH[l1][f.dataset.k],'gf'+f.dataset.i); f.setAttribute('aria-label',W[l1][f.dataset.k]); f.setAttribute('lang',l1); f.classList.add('shown');
     if(f.dataset.k===gf.k){
       gf.done=true; mult++; caught++; var bonus=10*mult; score+=bonus;
       f.classList.add('caught'); try{ if(navigator.vibrate) navigator.vibrate([60,40,120]); }catch(x){}
