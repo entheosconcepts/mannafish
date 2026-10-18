@@ -6,7 +6,7 @@ N=json.load(open('/home/user/mannafish/edit/new/data.json'))
 ser={f['w']:f['series'] for f in N['fish']}
 fish=[]
 for wk in range(1,53):
-    L=json.load(open(os.path.join(D,'out','w%02d.json'%wk)))
+    L=json.load(open(os.path.join(D,'weeks','w%02d.json'%wk)))
     assert len(L)==7,(wk,len(L))
     days=[x['day']+x.get('slot','') for x in L]; assert days==['Sun','Mon','Tue','Wed','Thu','Fria','Frib'],(wk,days)
     for x in L:
