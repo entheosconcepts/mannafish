@@ -99,6 +99,9 @@ textarea.ch,input.tx.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold
 @media(max-width:600px){.bar .btn{padding:7px 10px;font-size:.78rem}.bar .n{min-width:0;font-size:.85rem}.bar #copy,.bar #undo{display:none}.msg{font-size:.8rem}}
 .msg{width:100%;text-align:center;font-size:.88rem;min-height:1.2em;color:var(--ok)}.msg.err{color:#f6a0a0}
 .empty{text-align:center;color:var(--dim);margin:30px 0}
+.cloud{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;color:var(--ok);font:700 .88rem 'Archivo',sans-serif;margin:4px 0 8px;text-align:center}
+.cloud input{background:#000;border:1px solid var(--line);color:var(--text);border-radius:999px;padding:7px 12px;font:inherit;width:min(220px,60vw)}
+.cloud[data-s=nokey],.cloud[data-s=badkey]{color:var(--gold)}.cloud[data-s=err]{color:#f6a0a0}
 button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 </style>
 </head>
@@ -116,6 +119,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     <input id="who" placeholder="Your name" aria-label="Your name" autocomplete="name">
   </div>
 </header>
+<p class="cloud" id="cloud"></p>
 <details class="rules" id="rulesBox"><summary>The rules · copy · undo</summary>
   <ul>
     <li>The reference on the tail and the MannaFish™ logo are always the same size on every fish (168). A long reference is shortened, never made smaller.</li>
@@ -165,7 +169,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   // ═════ what's been changed, kept on this device ═════
   //  S.d[fish] = {word, top, bot, ref, gkm, hbm, design, dnote,  wl: word size/place,  tl / bl: top / bottom line size/place}
   //  The 24: wl = {s,w,h,x,y} (relative to the drawn fish), tl/bl = {size,slide,w}.  New fish: wl = {size,dx,dy,ww,hh}, tl/bl = {size,slide,lw}.
-  function blank(){ return {d:{},saved:{},st:{},tpl:{},rules:{word:{},top:{},bot:{}}}; }
+  function blank(){ return {d:{},saved:{},st:{},tpl:{},rules:{word:{},top:{},bot:{}},t:{},rt:0,syncVer:0}; }
   function snapOf(o){ var r={}; Object.keys(o||{}).sort().forEach(function(k){ r[k]=o[k]; }); return JSON.stringify(r); }
   // bring over what was made in the two earlier sheets
   function migrate(s){
@@ -186,7 +190,49 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   function load(){ var s=null; try{ s=JSON.parse(ls(KEY)||'null'); }catch(e){}
     if(s&&s.d) return Object.assign(blank(),s); s=blank(); try{ migrate(s); }catch(e){} return s; }
   var S=load();
-  function save(){ ls(KEY,JSON.stringify(S)); count(); }
+  function save(){ stamp(); ls(KEY,JSON.stringify(S)); count(); queuePush(); }
+
+  // ═════ kept on the server too, so every device has the same sheet (Ken, 19 Oct) ═════
+  // Each fish carries the time it last changed; when two devices both changed things, the newer change of each fish wins.
+  var sigs={}, rsig='';
+  function fishSig(id){ return JSON.stringify([S.d[id]||null,S.saved[id]||null,S.st[id]||null,S.tpl[id]||null]); }
+  function allIds(o){ var ids={}; [o.d,o.saved,o.st,o.tpl,o.t].forEach(function(m){ Object.keys(m||{}).forEach(function(k){ ids[k]=1; }); }); return ids; }
+  function primeSigs(){ sigs={}; Object.keys(allIds(S)).forEach(function(id){ sigs[id]=fishSig(id); }); rsig=JSON.stringify(S.rules); }
+  function stamp(){ var now=Date.now(), ids=allIds(S); S.t=S.t||{}; Object.keys(sigs).forEach(function(k){ ids[k]=1; });
+    Object.keys(ids).forEach(function(id){ var g=fishSig(id); if(sigs[id]!==g){ S.t[id]=now; sigs[id]=g; } });
+    var r=JSON.stringify(S.rules); if(r!==rsig){ S.rt=now; rsig=r; } }
+  function merge(L,R){ var M=JSON.parse(JSON.stringify(R)); ['d','saved','st','tpl','t'].forEach(function(k){ M[k]=M[k]||{}; L[k]=L[k]||{}; }); M.rules=M.rules||{word:{},top:{},bot:{}};
+    Object.keys(allIds(L)).forEach(function(id){ var rKnows=M.t[id]!=null||M.d[id]!==undefined||M.saved[id]!==undefined||M.st[id]!==undefined||M.tpl[id]!==undefined;
+      if(!rKnows||(L.t[id]||0)>(M.t[id]||0)){ ['d','saved','st','tpl'].forEach(function(k){ if(L[k][id]!==undefined) M[k][id]=L[k][id]; else delete M[k][id]; }); if(L.t[id]!=null) M.t[id]=L.t[id]; } });
+    if((L.rt||0)>(M.rt||0)){ M.rules=L.rules; M.rt=L.rt; } return M; }
+  function strip(o){ var c=Object.assign({},o); delete c.syncVer; return c; }
+  function CK(){ return ls('mf-admin-key')||''; }
+  var pushT=null, pushing=false, again=false, cloudAt='';
+  function cloud(state,info){ var c=$('cloud'); if(!c) return;
+    if(state==='nokey'||state==='badkey'){ if(c.dataset.s!==state){ c.dataset.s=state; c.innerHTML='<span>☁ '+(state==='badkey'?'That password is not right. ':'Keep your edits on every device: ')+'</span><input type="password" id="ckIn" placeholder="Admin password" autocomplete="current-password"><button type="button" class="hb" id="ckGo">Connect</button>'; } return; }
+    c.dataset.s=state; var t=info?new Date(info).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}):'';
+    c.innerHTML=state==='waiting'?'☁ Saving to the server…':state==='ok'?'☁ On the server'+(t?' · '+t:'')+' · the same on every device':'☁ Can’t reach the server right now. Your changes are safe here and go up when it can.'; }
+  function queuePush(){ if(!CK()) return; clearTimeout(pushT); cloud('waiting'); pushT=setTimeout(push,1200); }
+  function push(){ if(!CK()) return; if(pushing){ again=true; return; } pushing=true;
+    fetch('/api/edit-save',{method:'POST',headers:{'content-type':'application/json','x-mf-key':CK()},body:JSON.stringify({state:strip(S),base:S.syncVer||0,by:($('who')&&$('who').value)||''})})
+      .then(function(r){ return r.json().then(function(j){ return {r:r,j:j}; }); })
+      .then(function(x){ pushing=false; var r=x.r, j=x.j;
+        if(r.status===401){ cloud('badkey'); return; }
+        if(r.status===409){ S=merge(S,j.state||blank()); S.syncVer=j.ver; ls(KEY,JSON.stringify(S)); primeSigs(); if(D&&N) render(); push(); return; }
+        if(!r.ok) throw j; S.syncVer=j.ver; cloudAt=j.at; ls(KEY,JSON.stringify(S)); cloud('ok',j.at); if(again){ again=false; push(); } })
+      .catch(function(){ pushing=false; cloud('err'); setTimeout(function(){ if(!pushing) push(); },30000); }); }
+  function pull(){ if(!CK()){ cloud('nokey'); return Promise.resolve(); }
+    return fetch('/api/edit-save',{headers:{'x-mf-key':CK()},cache:'no-store'}).then(function(r){ return r.json().then(function(j){ return {r:r,j:j}; }); }).then(function(x){ var r=x.r, j=x.j;
+        if(r.status===401){ cloud('badkey'); return; } if(!r.ok) throw j;
+        if(!j.state){ push(); return; }
+        if(j.ver===S.syncVer){ cloud('ok',j.at); return; }
+        var M=merge(S,j.state); M.syncVer=j.ver; var before=JSON.stringify(strip(S)), after=JSON.stringify(strip(M));
+        S=M; ls(KEY,JSON.stringify(S)); primeSigs(); if(before!==after&&D&&N) render(); cloud('ok',j.at);
+        if(after!==JSON.stringify(j.state)) push(); })
+      .catch(function(){ cloud('err'); }); }
+  document.addEventListener('click',function(e){ if(e.target.id!=='ckGo') return; var v=$('ckIn').value.trim(); if(!v) return; ls('mf-admin-key',v); $('cloud').dataset.s=''; cloud('waiting'); pull(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Enter'&&e.target.id==='ckIn') $('ckGo').click(); });
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible'&&!pushing) pull(); });
   function snap(id){ return snapOf(S.d[id]); }
   function unsaved(id){ return snap(id)!==(S.saved[id]||'{}'); }
   function own(id){ return S.d[id]||(S.d[id]={}); }
@@ -447,7 +493,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     $('count').textContent=n?n+' change'+(n>1?'s':''):'No changes'; $('send').disabled=!n; $('sendReady').disabled=!r; $('sendReady').textContent='Send ready'+(r?' ('+r+')':'');
     var un=Object.keys(Object.assign({},S.d,S.saved)).filter(unsaved).length; $('saveAll').textContent=un?'💾 Save ('+un+')':'💾 Saved'; }
   function msg(t,err){ var m=$('msg'); m.textContent=t; m.className='msg'+(err?' err':''); }
-  $('saveAll').addEventListener('click',function(){ Object.keys(Object.assign({},S.d,S.saved)).forEach(function(id){ if(S.d[id]) S.saved[id]=snap(id); else delete S.saved[id]; }); save(); LIST.forEach(status); msg('Saved on this device. Keep working; nothing is sent until you tap Send.'); });
+  $('saveAll').addEventListener('click',function(){ Object.keys(Object.assign({},S.d,S.saved)).forEach(function(id){ if(S.d[id]) S.saved[id]=snap(id); else delete S.saved[id]; }); save(); LIST.forEach(status); msg(CK()?'Saved, on the server too: open the sheet on any device. Nothing is sent until you tap Send.':'Saved on this device. Connect with your admin password (above) to keep it on every device.'); });
   $('sendReady').addEventListener('click',function(){ sendSome(true,this); });
   $('send').addEventListener('click',function(){ sendSome(false,this); });
   function sendSome(onlyReady,btn){ var ch=changes(onlyReady), who=$('who').value.trim(); if(!ch.length) return; ls('mf-proof-name',who); btn.disabled=true; msg('Sending…');
@@ -466,7 +512,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     S=blank(); save(); render(); msg('Back to how the fish were.'); });
 
   // ═════ start ═════
-  $('who').value=ls('mf-proof-name')||'';
+  $('who').value=ls('mf-proof-name')||''; primeSigs(); pull();
   Promise.all([fetch('/edit/data.json',{cache:'no-store'}).then(function(r){ return r.json(); }),fetch('/edit/new/data.json').then(function(r){ return r.json(); }),fetch('/edit/new/base.svg').then(function(r){ return r.text(); }),document.fonts.load('100px MFHobo')])
     .then(function(x){ D=x[0]; N=x[1]; BASE=x[2]; if(/[?&]set=new/.test(location.search)) set='new'; if(set==='24'&&lang!=='all'&&!D.langs.some(function(l){ return l.l===lang; })) lang='B'; render(); })
     .catch(function(){ $('list').innerHTML='<p class="empty">The fish could not be loaded. Please reload the page.</p>'; });
