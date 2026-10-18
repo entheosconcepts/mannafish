@@ -12,7 +12,7 @@
      click on the verse, I want those edit tools to slide up for editing. And make everything print quality, so I can download PNG
      with no background: the black letters inside the white fish knocked out to be transparent -- the verse, the reference, the
      MannaFish logo on the tail -- and the space behind the white word in the middle."
-     One sheet: the 24 fish in 10 languages (edit/data.json) and the 128 new fish (edit/new/data.json). Tap the word, a verse line
+     One sheet: the 24 fish in 10 languages (edit/data.json) the 128 new fish (edit/new/data.json) and the 364 daily fish (edit/daily/data.json). Tap the word, a verse line
      or the reference on a fish and its tools slide up. Every change waits on this device (💾 Save marks a point to come back to)
      until Send. ⬇ PNG draws the fish at print size and turns everything black into see-through. -->
 <style>
@@ -58,6 +58,7 @@ details.rules summary{cursor:pointer;font:800 .8rem 'Archivo',sans-serif;letter-
 .pv{position:relative;width:100%;max-width:640px;aspect-ratio:2/1;margin:6px auto;background:#000;border-radius:10px;overflow:hidden}
 .pv svg{position:absolute;inset:0;width:100%;height:100%;user-select:none;-webkit-user-select:none}
 .pv text{cursor:pointer}.pv.drawn{cursor:pointer}
+.card.on .pv svg{touch-action:none}   /* while its tools are up, a finger on the fish moves the word, not the page */
 .hint{text-align:center;color:var(--dim);font-size:.82rem;margin:4px 0 0}
 .chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px}
 .chips button{border:1px solid var(--line);background:#000;color:var(--text);border-radius:999px;padding:6px 12px;font:700 .82rem 'Archivo',sans-serif;cursor:pointer}
@@ -70,7 +71,7 @@ textarea.ch,input.tx.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold
 .was button{border:0;background:none;color:var(--sky);cursor:pointer;font:600 .78rem 'Archivo',sans-serif;padding:0;white-space:nowrap}
 .hold{display:none}
 /* the tools slide up from the bottom of the screen */
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:20;max-height:60vh;overflow:auto;background:#0b1118;border-top:2px solid var(--gold);border-radius:18px 18px 0 0;box-shadow:0 -18px 40px -10px #000;
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:20;max-height:60vh;max-height:max(36vh,min(60vh,calc(100vh - 50vw - 40px)));max-height:max(36dvh,min(60dvh,calc(100dvh - 50vw - 40px)));overflow:auto;background:#0b1118;border-top:2px solid var(--gold);border-radius:18px 18px 0 0;box-shadow:0 -18px 40px -10px #000;
   transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1);padding:10px max(14px,env(safe-area-inset-left)) calc(12px + env(safe-area-inset-bottom))}
 .sheet.open{transform:none}
 @media (prefers-reduced-motion:reduce){.sheet{transition:none}}
@@ -109,8 +110,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 <div class="wrap">
 <header>
   <h1>Manna<b>Fish</b> edit sheet</h1>
-  <p>Every fish in one place: the 24 fish in 10 languages, and the 128 new fish. <b>Tap the word or a verse line on a fish</b> and its tools slide up. Changes wait on this device; <b>💾 Save</b> marks a point to come back to, and nothing goes out until you tap <b>Send</b>. <b>⬇ PNG</b> saves a print-size picture with no background.</p>
-  <div class="sets" role="group" aria-label="Which fish"><button type="button" data-set="24">The 24 fish · 10 languages</button><button type="button" data-set="new">New fish · Bible in a year (128)</button></div>
+  <p>Every fish in one place: the 24 fish in 10 languages, the 128 new fish, and the 364 daily fish (Sunday to Friday, two on Friday). <b>Tap the word or a verse line on a fish</b> and its tools slide up. Changes wait on this device; <b>💾 Save</b> marks a point to come back to, and nothing goes out until you tap <b>Send</b>. <b>⬇ PNG</b> saves a print-size picture with no background.</p>
+  <div class="sets" role="group" aria-label="Which fish"><button type="button" data-set="24">The 24 fish · 10 languages</button><button type="button" data-set="new">New fish · Bible in a year (128)</button><button type="button" data-set="daily">Daily · 364 fish</button></div>
   <div class="key" id="key"></div>
   <div class="tools">
     <input id="find" type="search" placeholder="Find a word" aria-label="Find a word">
@@ -239,12 +240,13 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   function clean(id){ var o=S.d[id]; if(o&&!Object.keys(o).length) delete S.d[id]; }
 
   // ═════ the fish ═════
-  var D=null, N=null, BASE='', FJ={}, set=ls('mf-edit-set')||'24', lang=ls('mf-edit-show')||'B', q='', show='all', F={}, LIST=[];
+  var D=null, N=null, DY=null, BASE='', FJ={}, set=ls('mf-edit-set')||'24', lang=ls('mf-edit-show')||'B', q='', show='all', F={}, LIST=[];
   function fishJson(code){ if(!FJ[code]) FJ[code]=fetch(code==='en'||code==='es'?'/match/fish-'+code+'.json':'/fish-lang/'+code+'.json').then(function(r){ return r.json(); }); return FJ[code]; }
   function langOf(l){ return D.langs.filter(function(x){ return x.l===l; })[0]; }
   function make24(n){ var num=parseInt(n,10), L=langOf(n.slice(-1)), w=D.words[num-1];
     return {id:n,set:'24',code:L.code,langName:L.name,key:w.key,title:D.f[n].word,sub:w.en+' · '+L.name,base:D.f[n],drawn:L.code==='en',num:num}; }
   function makeNew(f){ return {id:f.k,set:'new',code:'en',langName:'English',title:f.word,sub:'Week '+f.w+' · '+f.ref+' · '+f.series+(f.first?' · first pick':''),base:f,nf:f}; }
+  function makeDaily(f){ return {id:f.k,set:'new',daily:true,code:'en',langName:'English',title:f.word,sub:'Week '+f.w+' · '+f.day+(f.slot?' '+f.slot:'')+' · '+f.read+' · '+f.ref+(f.src!=='new'?' · from the year fish':''),base:f,nf:f}; }
   function val(X,f){ var o=S.d[X.id]; return o&&o[f]!=null?o[f]:(X.base[f]==null?'':X.base[f]); }
   function rtl(X,s){ return X.code==='he'||X.code==='ar'?'‫'+s+'‬':s; }
 
@@ -340,7 +342,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   function txBox(f,label,rows){ return '<label class="fl">'+esc(label)+(rows?'<textarea data-f="'+f+'" rows="'+rows+'"></textarea>':'<input class="tx" data-f="'+f+'">')+'</label><div class="wasbox"></div>'; }
   function tabsOf(X){ return X.drawn?[['look','The look']]:[['word','Word'],['top','Top line'],['bot','Bottom line'],['ref','Reference']]; }
   function card(X){ var el=document.createElement('article'); el.className='card'; el.dataset.id=X.id; X.el=el;
-    el.innerHTML='<div class="hd"><span class="num">'+esc(X.set==='24'?X.id:'Week '+X.nf.w)+'</span><b>'+esc(X.title)+'</b><span class="sub">'+esc(X.sub)+'</span><span class="st"></span>'
+    el.innerHTML='<div class="hd"><span class="num">'+esc(X.set==='24'?X.id:X.daily?'Wk '+X.nf.w+' · '+X.nf.day+(X.nf.slot?' '+X.nf.slot:''):'Week '+X.nf.w)+'</span><b>'+esc(X.title)+'</b><span class="sub">'+esc(X.sub)+'</span><span class="st"></span>'
       +(X.set==='new'?'<button type="button" class="hb star" aria-pressed="false">⭐ Template</button>':'')+'<button type="button" class="hb png">⬇ PNG</button></div>'
       +'<div class="pv"></div><p class="hint">'+(X.drawn?'Your hand-drawn English fish: tap it to note what should change.':'Tap the word, a verse line or the reference to edit it.')+'</p>'
       +'<div class="chips">'+tabsOf(X).map(function(t){ return '<button type="button" data-open="'+t[0]+'">✎ '+t[1]+'</button>'; }).join('')+'</div>'
@@ -377,7 +379,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     $('shTabs').innerHTML=tabs.map(function(t){ return '<button type="button" data-tab="'+t[0]+'" aria-pressed="'+(t[0]===tab)+'">'+t[1]+'</button>'; }).join('');
     var p=X.el.querySelector('.p-'+tab); if(p) $('shBody').appendChild(p);
     $('sheet').classList.add('open'); document.body.classList.add('sheet-open'); X.el.classList.add('on');
-    X.el.scrollIntoView({block:'start',behavior:'smooth'}); if(X.tool) X.tool.refresh(); lineHeads(X); }
+    fitView(X); if(X.tool) X.tool.refresh(); lineHeads(X); }
+  // Ken, 19 Oct: "When I click on the word to center it it bounces back down on my mobile device. So I cant resize it"
+  // Keep the fish itself in the open space above the tools, and leave the page alone when it is already there.
+  function fitView(X){ var pv=X.el.querySelector('.pv'); if(!pv) return; var r=pv.getBoundingClientRect(), vh=window.visualViewport?window.visualViewport.height:innerHeight, room=vh-$('sheet').offsetHeight;
+    if(r.top>=4&&r.bottom<=room-4) return; window.scrollBy({top:r.top-Math.max(8,(room-r.height)/2),behavior:'smooth'}); }
   function putBack(){ if(!SH) return; var hold=SH.X.el.querySelector('.hold'); [].slice.call($('shBody').children).forEach(function(c){ hold.appendChild(c); }); }
   function closeSheet(){ if(!SH) return; putBack(); SH.X.el.classList.remove('on'); SH=null; $('sheet').classList.remove('open'); document.body.classList.remove('sheet-open'); }
   $('shDone').addEventListener('click',closeSheet);
@@ -443,18 +449,21 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   function key(){ var h='';
     if(set==='24') h='<button type="button" data-l="all" aria-pressed="'+(lang==='all')+'">All languages</button>'+D.langs.map(function(x){ var c=Object.keys(S.d).filter(function(k){ return /^\d/.test(k)&&k.slice(-1)===x.l; }).length;
         return '<button type="button" data-l="'+x.l+'" aria-pressed="'+(lang===x.l)+'">'+esc(x.name)+(x.native!==x.name?' · '+esc(x.native):'')+(c?'<span class="cnt">'+c+'</span>':'')+'</button>'; }).join('');
+    else if(set==='daily') h=[['all','All 364'],['Sun','Sundays'],['Mon','Mondays'],['Tue','Tuesdays'],['Wed','Wednesdays'],['Thu','Thursdays'],['Fri','Fridays · double portion'],['year','From the year fish'],['tpl','Templates']].map(function(o){ return '<button type="button" data-l="d-'+o[0]+'" aria-pressed="'+(lang==='d-'+o[0])+'">'+o[1]+'</button>'; }).join('');
     else h=[['all','All 128'],['first','My first picks (52)'],['tpl','Templates']].map(function(o){ return '<button type="button" data-l="n-'+o[0]+'" aria-pressed="'+(lang==='n-'+o[0])+'">'+o[1]+'</button>'; }).join('');
     $('key').innerHTML=h; [].forEach.call(document.querySelectorAll('.sets [data-set]'),function(b){ b.setAttribute('aria-pressed',String(b.dataset.set===set)); }); }
   function wanted(X){ var st=S.st[X.id]||'';
     if(show==='changed'&&!S.d[X.id]) return false; if(show==='unsaved'&&!unsaved(X.id)) return false; if((show==='unsure'||show==='ready')&&st!==show) return false;
     if(q){ var qq=q.toLowerCase(); if(String(X.title).toLowerCase().indexOf(qq)<0&&X.sub.toLowerCase().indexOf(qq)<0&&X.id.toLowerCase()!==qq) return false; }
-    if(X.set==='new'){ if(lang==='n-first'&&!X.nf.first) return false; if(lang==='n-tpl'&&!S.tpl[X.id]) return false; }
+    if(X.daily){ var dl=lang.slice(2); if(dl==='tpl'&&!S.tpl[X.id]) return false; if(dl==='year'&&X.nf.src==='new') return false; if(/^[A-Z]/.test(dl)&&X.nf.day!==dl) return false; }
+    else if(X.set==='new'){ if(lang==='n-first'&&!X.nf.first) return false; if(lang==='n-tpl'&&!S.tpl[X.id]) return false; }
     return true; }
   var io=null;
   function render(){ closeSheet();
-    if(set==='24'&&/^n-/.test(lang)) lang='B'; if(set==='new'&&!/^n-/.test(lang)) lang='n-all'; key();
+    if(set==='24'&&/^[nd]-/.test(lang)) lang='B'; if(set==='new'&&!/^n-/.test(lang)) lang='n-all'; if(set==='daily'&&!/^d-/.test(lang)) lang='d-all'; key();
     LIST=[];
     if(set==='24') D.words.forEach(function(w){ D.langs.forEach(function(L){ if(lang!=='all'&&L.l!==lang) return; var n=w.n+L.l; LIST.push(F[n]||(F[n]=make24(n))); }); });
+    else if(set==='daily') DY.fish.forEach(function(f){ LIST.push(F[f.k]||(F[f.k]=makeDaily(f))); });
     else N.fish.forEach(function(f){ LIST.push(F[f.k]||(F[f.k]=makeNew(f))); });
     LIST=LIST.filter(wanted);
     var list=$('list'); list.innerHTML=''; if(io) io.disconnect();
@@ -462,7 +471,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     io='IntersectionObserver' in window?new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ ensure(F[e.target.dataset.id]); io.unobserve(e.target); } }); },{rootMargin:'700px'}):null;
     LIST.forEach(function(X){ X.built=null; X.svg=null; X.tool=null; X.E=null; card(X); list.appendChild(X.el); status(X); if(io) io.observe(X.el); else ensure(X); });
     count(); rules(); }
-  document.querySelector('.sets').addEventListener('click',function(e){ var b=e.target.closest('[data-set]'); if(!b) return; set=b.dataset.set; ls('mf-edit-set',set); lang=set==='24'?(ls('mf-edit-show')||'B'):'n-all'; render(); window.scrollTo(0,0); });
+  document.querySelector('.sets').addEventListener('click',function(e){ var b=e.target.closest('[data-set]'); if(!b) return; set=b.dataset.set; ls('mf-edit-set',set); lang=set==='24'?(ls('mf-edit-show')||'B'):set==='new'?'n-all':'d-all'; render(); window.scrollTo(0,0); });
   $('key').addEventListener('click',function(e){ var b=e.target.closest('[data-l]'); if(!b) return; lang=b.dataset.l; if(set==='24') ls('mf-edit-show',lang); render(); window.scrollTo(0,0); });
   var qt; $('find').addEventListener('input',function(){ clearTimeout(qt); var v=this.value; qt=setTimeout(function(){ q=v.trim(); render(); },250); });
   $('fShow').addEventListener('change',function(){ show=this.value; render(); });
@@ -481,12 +490,13 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   // ═════ changes: count, save, send, copy, undo ═════
   function adjText(a){ var p=[]; if(a.s!==1) p.push('size ×'+(+a.s).toFixed(2)); if(a.w!==1) p.push('width ×'+(+a.w).toFixed(2)); if(a.h!==1) p.push('height ×'+(+a.h).toFixed(2));
     if(a.x) p.push((a.x<0?'left ':'right ')+Math.abs(a.x)); if(a.y) p.push((a.y<0?'up ':'down ')+Math.abs(a.y)); return p.length?p.join(' · ')+' (fish is 4000 × 2000)':''; }
-  function fishInfo(id){ if(/^W/.test(id)){ var f=N.fish.filter(function(x){ return x.k===id; })[0]; return {base:f||{},en:f?f.word:'',lang:'English'}; }
+  function fishInfo(id){ if(/^D\d/.test(id)){ var g=DY.fish.filter(function(x){ return x.k===id; })[0]; return {base:g||{},en:g?g.word:'',lang:'English'}; }
+    if(/^W/.test(id)){ var f=N.fish.filter(function(x){ return x.k===id; })[0]; return {base:f||{},en:f?f.word:'',lang:'English'}; }
     var num=parseInt(id,10), L=langOf(id.slice(-1)), w=D.words[num-1]; return {base:D.f[id]||{},en:w?w.en:'',lang:L?L.name:''}; }
   function changes(onlyReady){ var out=[];
     Object.keys(S.d).forEach(function(id){ var o=S.d[id], st=S.st[id]; if(st==='sent') return; if(onlyReady&&st!=='ready') return; var I=fishInfo(id), b=I.base, n=id.toUpperCase();
       ['word','top','bot','ref','gkm','hbm','design','dnote'].forEach(function(f){ if(o[f]!=null&&o[f]!==(b[f]||'')) out.push({n:n,field:f,was:b[f]||'',now:o[f],lang:I.lang,en:I.en}); });
-      if(/^W/.test(id)){ var p=[]; if(o.wl) p.push('word size '+Math.round(o.wl.size)+', left/right '+Math.round(o.wl.dx)+', up/down '+Math.round(o.wl.dy)+', width '+Math.round(o.wl.ww*100)+'%, height '+Math.round((o.wl.hh||1)*100)+'%');
+      if(/^[WD]\d/.test(id)){ var p=[]; if(o.wl) p.push('word size '+Math.round(o.wl.size)+', left/right '+Math.round(o.wl.dx)+', up/down '+Math.round(o.wl.dy)+', width '+Math.round(o.wl.ww*100)+'%, height '+Math.round((o.wl.hh||1)*100)+'%');
           if(o.tl) p.push('top size '+Math.round(o.tl.size)+', width '+Math.round((o.tl.lw||1)*100)+'%, slide '+o.tl.slide+'%'); if(o.bl) p.push('bottom size '+Math.round(o.bl.size)+', width '+Math.round((o.bl.lw||1)*100)+'%, slide '+o.bl.slide+'%');
           if(p.length) out.push({n:n,field:'layout',was:'rule',now:p.join('; '),lang:I.lang,en:I.en}); }
       else { if(o.wl){ var t=adjText(o.wl); if(t) out.push({n:n,field:'layout',was:'',now:t,lang:I.lang,en:I.en}); }
@@ -521,8 +531,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 
   // ═════ start ═════
   $('who').value=ls('mf-proof-name')||''; primeSigs(); pull();
-  Promise.all([fetch('/edit/data.json',{cache:'no-store'}).then(function(r){ return r.json(); }),fetch('/edit/new/data.json').then(function(r){ return r.json(); }),fetch('/edit/new/base.svg').then(function(r){ return r.text(); }),document.fonts.load('100px MFHobo')])
-    .then(function(x){ D=x[0]; N=x[1]; BASE=x[2]; if(/[?&]set=new/.test(location.search)) set='new'; if(set==='24'&&lang!=='all'&&!D.langs.some(function(l){ return l.l===lang; })) lang='B'; render(); })
+  Promise.all([fetch('/edit/data.json',{cache:'no-store'}).then(function(r){ return r.json(); }),fetch('/edit/new/data.json').then(function(r){ return r.json(); }),fetch('/edit/new/base.svg').then(function(r){ return r.text(); }),document.fonts.load('100px MFHobo'),fetch('/edit/daily/data.json').then(function(r){ return r.json(); }).catch(function(){ return {fish:[]}; })])
+    .then(function(x){ D=x[0]; N=x[1]; BASE=x[2]; DY=x[4]; if(!DY.fish.length){ document.querySelector('[data-set=daily]').hidden=true; if(set==='daily') set='new'; } var qs=/[?&]set=(new|daily)/.exec(location.search); if(qs&&(qs[1]!=='daily'||DY.fish.length)) set=qs[1]; if(set==='24'&&lang!=='all'&&!D.langs.some(function(l){ return l.l===lang; })) lang='B'; render(); })
     .catch(function(){ $('list').innerHTML='<p class="empty">The fish could not be loaded. Please reload the page.</p>'; });
 })();
 </script>
