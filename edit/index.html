@@ -283,7 +283,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     if(X.set==='new'){ pv.innerHTML=BASE.replace(/id="g_(\w+)"/g,'id="'+X.id+'g_$1"'); var svg=pv.firstChild, g=svg.querySelector('g');
       function t(){ var e=document.createElementNS(NS,'text'); e.setAttribute('font-family','MFHobo'); g.appendChild(e); return e; }
       var E={word:t(),top:t(),bot:t(),ref:t()};
-      ['top','bot'].forEach(function(w){ var tp=document.createElementNS(NS,'textPath'); tp.setAttribute('href','#'+X.id+'g_'+w); tp.setAttribute('text-anchor','middle'); E[w].appendChild(tp); E[w].setAttribute('fill','#000'); });
+      ['top','bot'].forEach(function(w){ var tp=document.createElementNS(NS,'textPath'); tp.setAttribute('href','#'+X.id+'g_'+w); tp.setAttribute('text-anchor','start'); E[w].appendChild(tp); E[w].setAttribute('fill','#000'); });
       E.word.setAttribute('fill','#fff'); E.word.setAttribute('text-anchor','middle');
       E.ref.setAttribute('fill','#000'); E.ref.setAttribute('stroke','#000'); E.ref.setAttribute('stroke-width','7'); E.ref.setAttribute('stroke-linejoin','round'); E.ref.setAttribute('text-anchor','middle'); E.ref.setAttribute('x',G.ref.x); E.ref.setAttribute('y',G.ref.y); E.ref.setAttribute('transform',G.ref.rot); E.ref.setAttribute('font-size',G.ref.size);
       X.svg=svg; X.E=E; X.plen={top:svg.querySelector('[id="'+X.id+'g_top"]').getTotalLength(),bot:svg.querySelector('[id="'+X.id+'g_bot"]').getTotalLength()};
@@ -306,8 +306,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
         // Ken, 19 Oct: "can you assume at least the balance of where the verse should go" -- a line never runs off its curve:
         // it stays between 2% and 98% of the curve, whatever its slide or width
         var want=Math.min(span,Math.min(len,span)*lv.w), mid=L*((V.start+V.end)/2+lv.slide/100), lo=L*V.start+want/2, hi=L*V.end-want/2;
-        mid=Math.max(lo,Math.min(hi,mid));
-        el.setAttribute('font-size',lv.size.toFixed(1)); tp.textContent=txt; tp.setAttribute('startOffset',(mid/L*100).toFixed(2)+'%');
+        mid=Math.max(lo,Math.min(hi,mid)); (X.full||(X.full={}))[w]=want>=span-1;
+        // Ken, 19 Oct (iPhone): a squeezed line lost its first letters off the nose. Safari centres a squeezed line by its unsqueezed
+        // length, so each line is placed from its start instead: same place on every browser, and in the PNG.
+        el.setAttribute('font-size',lv.size.toFixed(1)); tp.textContent=txt; tp.setAttribute('startOffset',((mid-want/2)/L*100).toFixed(2)+'%');
         if(Math.abs(want-len)>0.5){ tp.setAttribute('textLength',want.toFixed(1)); tp.setAttribute('lengthAdjust','spacingAndGlyphs'); } else { tp.removeAttribute('textLength'); tp.removeAttribute('lengthAdjust'); } });
       // Ken, 19 Oct: "some scripture refs do not need to be abbreviated, like Kings, Ruth, Ezra" -- a short book name (6 letters or
       // fewer) is always written out and narrowed a little if it must; a long one is shortened only when it doesn't fit
@@ -361,6 +363,9 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     i.classList.toggle('ch',ch); if(box&&box.classList.contains('wasbox')) box.innerHTML=ch?'<div class="was"><span>was: '+esc(X.base[f]||'(empty)')+'</span><button type="button" data-undo="'+f+'">↺ undo</button></div>':''; }
   function lineHeads(X){ if(X.drawn||!X.svg) return; ['top','bot'].forEach(function(w){ var box=X.el.querySelector('.vl[data-w="'+w+'"]')||(SH&&SH.X===X?$('shBody').querySelector('.vl[data-w="'+w+'"]'):null); if(!box) return; var v=lineGet(X,w); if(!v) return;
       box.querySelector('h4 i').textContent='letter size '+Math.round(v.size)+' · width '+Math.round(v.w*100)+'% · slide '+(Math.round(v.slide*10)/10)+((S.d[X.id]||{})[w==='top'?'tl':'bl']?' · set by you':'');
+      // Ken, 19 Oct: "When I try to slide the bottom verse that tool is not working" -- a line that fills its curve has no room to slide
+      var nt=box.querySelector('.fullnote'); if(!nt){ nt=document.createElement('p'); nt.className='hint fullnote'; nt.style.textAlign='left'; box.querySelector('h4').after(nt); }
+      nt.textContent=X.full&&X.full[w]?'This line fills its curve from end to end, so it has no room to slide. Make the letter size or width smaller (A− or ↔−) and then slide it.':''; nt.hidden=!nt.textContent;
       ['size','w','slide'].forEach(function(k){ var i=box.querySelector('[data-k="'+k+'"]'); if(document.activeElement!==i) i.value=k==='w'?Math.round(v.w*100):k==='size'?Math.round(v.size):Math.round(v.slide*10)/10; });
       var lb=box.querySelector('.learn'); if(lb) lb.textContent='📚 Use size '+Math.round(v.size)+', width '+Math.round(v.w*100)+'% for '+(w==='top'?'top':'bottom')+' lines of about '+val(X,w).length+' letters'; }); }
   function status(X){ if(!X.el) return; var id=X.id, u=unsaved(id), st=S.st[id]||''; if(st==='sent'&&u){ delete S.st[id]; st=''; }
