@@ -3,247 +3,473 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>MannaFish master edit sheet</title>
+<title>MannaFish edit sheet</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#05080c">
 <link rel="icon" href="/icon-192.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&display=swap">
-<!-- Ken, 16 Oct: "Can we edit all these in one place so that you get all the updates at once?" Every fish's wording and
-     word-study meanings in every language; change anything, then Send all changes once. The words come from
-     edit/data.json (made by tools/edit_build.py). Changes wait on this device until they are sent. -->
+<!-- Ken, 19 Oct: "I do not want two edit sheets ... all on one sheet. I want to be able to click on the word in the middle, and if I
+     click on the verse, I want those edit tools to slide up for editing. And make everything print quality, so I can download PNG
+     with no background: the black letters inside the white fish knocked out to be transparent -- the verse, the reference, the
+     MannaFish logo on the tail -- and the space behind the white word in the middle."
+     One sheet: the 24 fish in 10 languages (edit/data.json) and the 128 new fish (edit/new/data.json). Tap the word, a verse line
+     or the reference on a fish and its tools slide up. Every change waits on this device (💾 Save marks a point to come back to)
+     until Send. ⬇ PNG draws the fish at print size and turns everything black into see-through. -->
 <style>
-@font-face{font-family:'MFHobo';src:url(/fish-lang/hobo.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'MFHobo';src:url(/fish-lang/hobo.woff2) format('woff2');font-display:block}
 @font-face{font-family:'ZCOOL KuaiLe';src:url(/fish-lang/zh.woff2) format('woff2');font-display:swap}
 @font-face{font-family:'Baloo 2';src:url(/fish-lang/hi.woff2) format('woff2');font-weight:100 900;font-display:swap}
 @font-face{font-family:'Ubuntu';src:url(/fish-lang/el.woff2) format('woff2');font-weight:100 900;font-display:swap}
 @font-face{font-family:'Jua';src:url(/fish-lang/ko.woff2) format('woff2');font-display:swap}
 @font-face{font-family:'Fredoka';src:url(/fish-lang/he.woff2) format('woff2');font-weight:100 900;font-display:swap}
 @font-face{font-family:'Cairo';src:url(/fish-lang/ar.woff2) format('woff2');font-weight:100 900;font-display:swap}
-:root{--bg:#05080c;--bg2:#0e1319;--line:rgba(255,255,255,.14);--text:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--gold:#f5d76e}
+:root{--bg:#05080c;--bg2:#0e1319;--line:rgba(255,255,255,.14);--text:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--gold:#f5d76e;--ok:#7fd18b;--sky:#8fb3e8}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 'Archivo',system-ui,sans-serif;padding-bottom:150px}
-.wrap{max-width:980px;margin:0 auto;padding:0 14px}
-header{text-align:center;padding:22px 0 8px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 'Archivo',system-ui,sans-serif;padding-bottom:170px}
+body.sheet-open{padding-bottom:62vh}
+.wrap{max-width:980px;margin:0 auto;padding:0 max(14px,env(safe-area-inset-left))}
+header{text-align:center;padding:22px 0 6px}
 h1{font:400 clamp(1.9rem,6vw,2.6rem)/1 'MFHobo',cursive;margin:0}h1 b{font-weight:400;color:#4a86e0}
-header p{color:var(--dim);margin:10px auto;max-width:640px;font-size:.95rem}
-.key{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:12px 0 6px}
+header p{color:var(--dim);margin:10px auto;max-width:680px;font-size:.95rem}
+.sets{display:flex;gap:8px;justify-content:center;margin:12px 0 6px;flex-wrap:wrap}
+.sets button{border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:9px 16px;font:800 .95rem 'Archivo',sans-serif;cursor:pointer}
+.sets button[aria-pressed=true]{background:var(--blue);border-color:var(--blue)}
+.key{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0 4px}
 .key button{border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:6px 12px;font:600 .82rem 'Archivo',sans-serif;cursor:pointer}
-.key button[aria-pressed=true]{background:var(--blue);border-color:var(--blue)}
-.key i{font-style:normal;color:var(--gold);margin-right:5px}.key .cnt{margin-left:5px;color:var(--gold)}
-.find{display:block;margin:10px auto 0;width:min(420px,100%);background:var(--bg2);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:9px 14px;font:inherit}
-.card{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:14px;margin:14px 0}
-.card.changed{border-color:var(--gold)}
-.hd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
-.num{font:800 .9rem 'Archivo',sans-serif;color:var(--gold)}.hd b{font:400 1.35rem 'MFHobo',cursive}.hd span{color:var(--dim);font-size:.85rem}
-.hd img{width:120px;height:auto;border-radius:6px;margin-left:auto;background:#000}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px}
-@media(max-width:640px){.grid{grid-template-columns:1fr}.hd img{width:96px}}
-label{display:block;font:700 .7rem 'Archivo',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
-textarea{display:block;width:100%;margin-top:4px;background:#000;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:8px 10px;font:1rem/1.4 'Archivo',sans-serif;resize:vertical;min-height:42px}
-textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
+.key button[aria-pressed=true]{background:var(--blue);border-color:var(--blue)}.key .cnt{margin-left:5px;color:var(--gold)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}
+.tools select,.tools input{background:var(--bg2);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:8px 14px;font:inherit;max-width:100%}
+details.rules{background:var(--bg2);border:1px solid rgba(245,215,110,.45);border-radius:16px;padding:10px 14px;margin:10px 0}
+details.rules summary{cursor:pointer;font:800 .8rem 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.rules h3{font:700 .72rem 'Archivo',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:12px 0 4px}
+.rules ul{margin:6px 0 0;padding-left:1.2em}.rules li{margin:3px 0}
+.rules table{border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:.9rem}.rules td,.rules th{padding:3px 10px 3px 0;text-align:left}.rules th{color:var(--dim);font-weight:600}
+.rules td button{border:0;background:none;color:#f6a0a0;cursor:pointer;font:600 .8rem 'Archivo',sans-serif}.rules .tw{overflow-x:auto}
+.rules .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:14px;margin:14px 0;scroll-margin-top:10px}
+.card.changed{border-color:var(--sky)}.card.unsure{border-color:var(--gold)}.card.ready{border-color:var(--ok)}.card.on{box-shadow:0 0 0 2px var(--gold) inset}
+.hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.num{font:800 .85rem 'Archivo',sans-serif;color:var(--gold)}.hd b{font:400 1.35rem 'MFHobo',cursive}.hd .sub{color:var(--dim);font-size:.85rem}
+.st{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto}
+.st .dot{font:700 .78rem 'Archivo',sans-serif;border-radius:999px;padding:3px 9px;border:1px solid var(--line)}
+.st .dot.blue{color:var(--sky);border-color:var(--sky)}.st .dot.yel{color:var(--gold);border-color:var(--gold)}.st .dot.grn{color:var(--ok);border-color:var(--ok)}.st .dot.sent{color:var(--dim)}
+.st button,.hb{border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:5px 10px;font:700 .78rem 'Archivo',sans-serif;cursor:pointer}
+.st button[aria-pressed=true],.hb[aria-pressed=true]{background:var(--blue);border-color:var(--blue)}
+.pv{position:relative;width:100%;max-width:640px;aspect-ratio:2/1;margin:6px auto;background:#000;border-radius:10px;overflow:hidden}
+.pv svg{position:absolute;inset:0;width:100%;height:100%;user-select:none;-webkit-user-select:none}
+.pv text{cursor:pointer}.pv.drawn{cursor:pointer}
+.hint{text-align:center;color:var(--dim);font-size:.82rem;margin:4px 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px}
+.chips button{border:1px solid var(--line);background:#000;color:var(--text);border-radius:999px;padding:6px 12px;font:700 .82rem 'Archivo',sans-serif;cursor:pointer}
+details.more{margin-top:8px}details.more summary{cursor:pointer;color:var(--sky);font:700 .85rem 'Archivo',sans-serif}
+.verse{color:var(--dim);font-size:.85rem;margin:6px 0 0}
+label.fl{display:block;font:700 .68rem 'Archivo',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-top:8px}
+textarea,input.tx{display:block;width:100%;margin-top:4px;background:#000;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:8px 10px;font:1rem/1.4 'Archivo',sans-serif;resize:vertical;text-transform:none;letter-spacing:0}
+textarea.ch,input.tx.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
 .was{font:.78rem 'Archivo',sans-serif;color:var(--dim);margin-top:3px;display:flex;gap:8px;align-items:baseline}
-.was button{border:0;background:none;color:#8fb3e8;cursor:pointer;font:600 .78rem 'Archivo',sans-serif;padding:0;white-space:nowrap}
-.bar{position:fixed;left:0;right:0;bottom:0;z-index:5;background:rgba(10,14,20,.97);border-top:1px solid var(--line);padding:10px 14px max(10px,env(safe-area-inset-bottom))}
-.bar .in{max-width:980px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
-.bar .n{font-weight:800;color:var(--gold);min-width:110px;text-align:center}
-.bar input{background:#000;border:1px solid var(--line);color:var(--text);border-radius:999px;padding:9px 14px;font:inherit;width:min(220px,100%)}
-.btn{border:0;border-radius:999px;padding:10px 18px;font:800 .95rem 'Archivo',sans-serif;cursor:pointer}
-.btn.send{background:var(--blue);color:#fff}.btn.send:disabled{opacity:.45;cursor:default}
-.btn.ghost{background:none;border:1px solid var(--line);color:var(--text)}
-.msg{width:100%;text-align:center;font-size:.9rem;min-height:1.2em;color:#7fd18b}.msg.err{color:#f6a0a0}
+.was button{border:0;background:none;color:var(--sky);cursor:pointer;font:600 .78rem 'Archivo',sans-serif;padding:0;white-space:nowrap}
+.hold{display:none}
+/* the tools slide up from the bottom of the screen */
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:20;max-height:60vh;overflow:auto;background:#0b1118;border-top:2px solid var(--gold);border-radius:18px 18px 0 0;box-shadow:0 -18px 40px -10px #000;
+  transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1);padding:10px max(14px,env(safe-area-inset-left)) calc(12px + env(safe-area-inset-bottom))}
+.sheet.open{transform:none}
+@media (prefers-reduced-motion:reduce){.sheet{transition:none}}
+.sh-hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:-10px;background:#0b1118;padding:6px 0 8px;z-index:2}
+.sh-hd b{font:400 1.2rem 'MFHobo',cursive}.sh-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.sh-tabs button{border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:5px 11px;font:700 .8rem 'Archivo',sans-serif;cursor:pointer}
+.sh-tabs button[aria-pressed=true]{background:var(--gold);color:#1a1400;border-color:var(--gold)}
+.sh-done{margin-left:auto}
+.sh-body{max-width:980px;margin:0 auto}
+.vl{border:1px dashed var(--line);border-radius:12px;padding:8px 10px;margin:8px 0}.vl h4{margin:0 0 6px;font:700 .72rem 'Archivo',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.vl h4 i{font-style:normal;color:var(--gold);letter-spacing:0;text-transform:none}
+.vl .r{display:flex;flex-wrap:wrap;gap:6px;align-items:end;margin-top:6px}
+.vl .r label{font:700 .66rem 'Archivo',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.vl .r label input{display:block;width:88px;margin-top:3px;background:#000;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:7px 8px;font:700 1rem 'Archivo',sans-serif}
+.vl button{min-width:40px;height:38px;border:1px solid var(--line);background:#000;color:var(--text);border-radius:10px;font:800 .88rem 'Archivo',sans-serif;cursor:pointer;padding:0 9px}
+.vl button.learn{background:var(--gold);color:#1a1400;border-color:var(--gold)}
+.note{font:600 .8rem 'Archivo',sans-serif;color:var(--ok);margin:4px 0 0;min-height:1em}
+.dzo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px;margin:8px 0}@media(max-width:640px){.dzo{grid-template-columns:1fr}}
+.dzc{display:flex;align-items:center;gap:8px;font:600 .9rem 'Archivo',sans-serif;cursor:pointer;padding:3px 0}.dzc input{width:18px;height:18px;accent-color:#2a5fb0}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:10;background:rgb(10,14,20);border-top:1px solid var(--line);padding:8px 14px max(8px,env(safe-area-inset-bottom))}
+.bar .in{max-width:980px;margin:0 auto;display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center}
+.bar .n{font-weight:800;color:var(--gold);min-width:100px;text-align:center}
+.btn{border:0;border-radius:999px;padding:9px 15px;font:800 .9rem 'Archivo',sans-serif;cursor:pointer}
+.btn.send{background:var(--blue);color:#fff}.btn:disabled{opacity:.45;cursor:default}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--text)}.btn.gold{background:var(--gold);color:#1a1400}
+@media(max-width:600px){.bar .btn{padding:7px 10px;font-size:.78rem}.bar .n{min-width:0;font-size:.85rem}.bar #copy,.bar #undo{display:none}.msg{font-size:.8rem}}
+.msg{width:100%;text-align:center;font-size:.88rem;min-height:1.2em;color:var(--ok)}.msg.err{color:#f6a0a0}
 .empty{text-align:center;color:var(--dim);margin:30px 0}
-.dz{grid-column:1/-1;border:1px dashed var(--line);border-radius:12px;padding:8px 12px}.dz[open]{border-color:rgba(245,215,110,.5)}
-.dzh{font:.85rem 'Archivo',sans-serif;color:var(--dim);margin:8px 0}
-.pv{position:relative;width:100%;max-width:520px;aspect-ratio:2/1;margin:6px auto;background:#000;border-radius:10px;overflow:hidden}
-.adj{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0}.adj button{min-width:44px;height:40px;border:1px solid var(--line);background:#000;color:var(--text);border-radius:10px;font:800 1rem 'Archivo',sans-serif;cursor:pointer}
-.adj button:active{background:var(--blue)}.lay{text-align:center;font:600 .85rem 'Archivo',sans-serif;color:var(--gold);min-height:1.2em;margin:4px 0 8px}
-.dz summary{cursor:pointer;font:700 .9rem 'Archivo',sans-serif;color:#8fb3e8}.dz summary b{color:var(--gold)}
-.dzo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px;margin:10px 0 8px}@media(max-width:640px){.dzo{grid-template-columns:1fr}}
-.st{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto}.st .dot{font:700 .8rem 'Archivo',sans-serif;border-radius:999px;padding:3px 9px;border:1px solid var(--line);color:var(--dim)}
-.st .dot.blue{color:#8fb3e8;border-color:#8fb3e8}.st .dot.yel{color:var(--gold);border-color:var(--gold)}.st .dot.grn{color:#7fd18b;border-color:#7fd18b}
-.st button{border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:4px 10px;font:700 .78rem 'Archivo',sans-serif;cursor:pointer}.st button[aria-pressed=true]{background:var(--blue);border-color:var(--blue)}
-.card.ready{border-color:#7fd18b}.card.unsure{border-color:var(--gold)}
-.vl{border:1px dashed var(--line);border-radius:12px;padding:8px 10px;margin:8px 0}.vl h4{margin:0 0 6px;font:700 .72rem 'Archivo',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}.vl h4 i{font-style:normal;color:var(--gold);letter-spacing:0;text-transform:none}
-.vl .r{display:flex;flex-wrap:wrap;gap:6px;align-items:end}.vl label{font:700 .66rem 'Archivo',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}.vl label input{display:block;width:84px;margin-top:3px;background:#000;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:6px 8px;font:700 1rem 'Archivo',sans-serif}
-.vl button{min-width:40px;height:36px;border:1px solid var(--line);background:#000;color:var(--text);border-radius:10px;font:800 .88rem 'Archivo',sans-serif;cursor:pointer;padding:0 8px}
-.dzc{display:flex;align-items:center;gap:8px;font:600 .9rem 'Archivo',sans-serif;letter-spacing:0;text-transform:none;color:var(--text);cursor:pointer;padding:3px 0}.dzc input{width:18px;height:18px;accent-color:#2a5fb0}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
   <h1>Manna<b>Fish</b> edit sheet</h1>
-  <p>Every fish in every language: the word, the two verse lines, the reference, and the Greek and Hebrew meanings on the back. Change anything you like: changed boxes turn gold, and they wait on this device. When you are done, tap <b>Send all changes</b> once. Everything goes together in one email.</p>
-  <p><a href="/edit/new/" style="color:#f5d76e">The 128 new fish (Bible in a year) have their own sheet →</a></p>
-  <div class="key" id="key" role="group" aria-label="Language"></div>
-  <input class="find" id="find" type="search" placeholder="Find a word (for example: Rest, 7, Hope)" aria-label="Find a word">
+  <p>Every fish in one place: the 24 fish in 10 languages, and the 128 new fish. <b>Tap the word or a verse line on a fish</b> and its tools slide up. Changes wait on this device; <b>💾 Save</b> marks a point to come back to, and nothing goes out until you tap <b>Send</b>. <b>⬇ PNG</b> saves a print-size picture with no background.</p>
+  <div class="sets" role="group" aria-label="Which fish"><button type="button" data-set="24">The 24 fish · 10 languages</button><button type="button" data-set="new">New fish · Bible in a year (128)</button></div>
+  <div class="key" id="key"></div>
+  <div class="tools">
+    <input id="find" type="search" placeholder="Find a word" aria-label="Find a word">
+    <select id="fShow" aria-label="Show"><option value="all">Show all</option><option value="changed">Changed</option><option value="unsaved">Not saved</option><option value="unsure">Not sure</option><option value="ready">Ready</option></select>
+    <select id="pxSel" aria-label="PNG size"><option value="4000">PNG 4000 × 2000 (print)</option><option value="8000">PNG 8000 × 4000 (large print)</option><option value="2000">PNG 2000 × 1000 (web)</option></select>
+    <input id="who" placeholder="Your name" aria-label="Your name" autocomplete="name">
+  </div>
 </header>
-<main id="list"></main>
+<details class="rules" id="rulesBox"><summary>The rules · copy · undo</summary>
+  <ul>
+    <li>The reference on the tail and the MannaFish™ logo are always the same size on every fish (168). A long reference is shortened, never made smaller.</li>
+    <li>New fish: each verse line runs the length of its curve like your original 24 (size 170 to 230), and the word fills the eye, unless a rule or your own setting says otherwise.</li>
+    <li>📚 saves a word's size and place as the rule for every word with that many letters in that language. Fish you haven't adjusted follow it.</li>
+  </ul>
+  <h3>Word in the middle</h3><div class="tw" id="rWord"></div>
+  <h3>Verse lines (new fish)</h3><div class="tw" id="rLines"></div>
+  <div class="row"><button class="btn ghost" type="button" data-click="copy">Copy the list</button><button class="btn ghost" type="button" data-click="undo">Undo all changes</button></div>
+  <div class="row"><button class="btn gold" type="button" id="applyAll">Apply the rules to the fish shown</button><button class="btn ghost" type="button" id="clearRules">Clear all rules</button></div>
+</details>
+<main id="list"><p class="empty">Loading the fish…</p></main>
 </div>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="false" aria-labelledby="shTitle">
+  <div class="sh-hd"><b id="shTitle"></b><div class="sh-tabs" id="shTabs"></div><button class="hb sh-done" type="button" id="shDone">Done ✓</button></div>
+  <div class="sh-body" id="shBody"></div>
+</div>
+
 <div class="bar"><div class="in">
-  <span class="n" id="count">No changes yet</span>
-  <input id="who" placeholder="Your name (optional)" aria-label="Your name" autocomplete="name">
-  <button class="btn ghost" id="saveAll" type="button">💾 Save</button>
-  <button class="btn send" id="sendReady" type="button" disabled>Send ready</button>
-  <button class="btn ghost" id="send" type="button" disabled>Send all</button>
-  <button class="btn ghost" id="copy" type="button">Copy the list</button>
-  <button class="btn ghost" id="undo" type="button">Undo all</button>
-  <p class="msg" id="msg" role="status"></p>
+  <span class="n" id="count">No changes</span>
+  <button class="btn ghost" type="button" id="saveAll">💾 Save</button>
+  <button class="btn send" type="button" id="sendReady" disabled>Send ready</button>
+  <button class="btn ghost" type="button" id="send" disabled>Send all</button>
+  <button class="btn ghost" type="button" id="zip">⬇ Ready as PNGs</button>
+  <button class="btn ghost" type="button" id="copy">Copy the list</button>
+  <button class="btn ghost" type="button" id="undo">Undo all</button>
+  <div class="msg" id="msg" aria-live="polite"></div>
 </div></div>
+
 <script src="/edit/wordtool.js"></script>
 <script>
 (function(){
   'use strict';
-  var $=function(id){ return document.getElementById(id); };
-  // Ken, 18 Oct: the word tool (tap, drag, pinch, numbers) and "use this as a learning tool for all fish": 📚 saves a word's
-  // size and place as the rule for every word with that many letters in that language. Fish without their own setting follow it.
-  var RULES={}; try{ RULES=JSON.parse(localStorage.getItem('mf-word-rules')||'{}')||{}; }catch(e){ RULES={}; }
-  function saveRules(){ try{ localStorage.setItem('mf-word-rules',JSON.stringify(RULES)); }catch(e){} }
-  function letters(w){ return Array.from(String(w||'').replace(/[\s\u200f\u200e\u202a-\u202e]/g,'')).length; }
-  var F=[['word','Word on the fish'],['ref','Reference'],['top','Verse line 1'],['bot','Verse line 2'],['gkm','Greek meaning (back)'],['hbm','Hebrew meaning (back)']];
-  var D=null, show='A', q='', draft={};
-  // Ken, 16 Oct: the word in the middle of the fish sometimes needs moving or sizing -- tick as many as apply
-  // the word's size and place on a translated fish: [action, button, help]
-  var ADJ=[['big','A+','Bigger'],['small','A−','Smaller'],['left','←','Move left'],['right','→','Move right'],['up','↑','Move up'],['down','↓','Move down'],
-    ['tall','↕+','Stretch taller'],['short','↕−','Shorter'],['wide','↔+','Stretch wider'],['narrow','↔−','Narrower'],['reset','↺','Back to how it was']];
-  var FISHSRC={es:'/match/fish-es.json'}, FISHC={}, ADJS={};
-  function fishOf(code){ if(!FISHC[code]) FISHC[code]=fetch(FISHSRC[code]||('/fish-lang/'+code+'.json')).then(function(r){ return r.json(); }); return FISHC[code]; }
-  function adjParse(t){ var a={s:1,w:1,h:1,x:0,y:0}; if(!t) return a; var m;
-    if((m=/size ×([\d.]+)/.exec(t))) a.s=+m[1]; if((m=/width ×([\d.]+)/.exec(t))) a.w=+m[1]; if((m=/height ×([\d.]+)/.exec(t))) a.h=+m[1];
-    if((m=/(left|right) (\d+)/.exec(t))) a.x=(m[1]==='left'?-1:1)*+m[2]; if((m=/(up|down) (\d+)/.exec(t))) a.y=(m[1]==='up'?-1:1)*+m[2]; return a; }
-  function adjText(a){ var p=[]; if(a.s!==1) p.push('size ×'+a.s.toFixed(2)); if(a.w!==1) p.push('width ×'+a.w.toFixed(2)); if(a.h!==1) p.push('height ×'+a.h.toFixed(2));
-    if(a.x) p.push((a.x<0?'left ':'right ')+Math.abs(a.x)); if(a.y) p.push((a.y<0?'up ':'down ')+Math.abs(a.y)); return p.length?p.join(' · ')+' (fish is 4000 × 2000)':''; }
-  function adjApply(n){ var pv=$('pv'+n); if(!pv) return; var t=pv.querySelector('text[fill="#fff"]'); if(!t) return; var a=ADJS[n]; if(!t.dataset.fs){ t.dataset.fs=t.getAttribute('font-size'); t.dataset.x=t.getAttribute('x'); t.dataset.y=t.getAttribute('y'); t.dataset.tl=t.getAttribute('textLength')||''; }
-    var x=+t.dataset.x, y=+t.dataset.y; t.setAttribute('font-size',(+t.dataset.fs*a.s).toFixed(1)); if(t.dataset.tl) t.setAttribute('textLength',(+t.dataset.tl*a.s).toFixed(1));   /* a word fitted to a width grows with it */
-    t.setAttribute('transform','translate('+(x+a.x)+' '+(y+a.y)+') scale('+a.w+' '+a.h+') translate('+(-x)+' '+(-y)+')'); }
-  function adjShow(box){ var n=box.dataset.n, code=box.dataset.code, pv=$('pv'+n); if(!pv||pv.dataset.ok) return; pv.dataset.ok='1'; var k=D.words[parseInt(n,10)-1].key;
-    fishOf(code).then(function(m){ pv.innerHTML=m[k]||''; var t=pv.querySelector('text[fill="#fff"]'), svg=pv.querySelector('svg'); if(!t||!svg) return;
-      ADJS[n]=adjParse(draft[id(n,'layout')]); adjApply(n); var fs0=+t.dataset.fs, word=D.f[n].word, L=D.langs.filter(function(x){ return x.l===n.slice(-1); })[0];
-      function fromRule(){ if(draft[id(n,'layout')]) return null; return MFWordTool.ruleFor(RULES[code],letters(word)); }
-      function show(){ var r=fromRule(); if(r){ ADJS[n]={s:r.size/fs0,w:r.ww,h:r.hh||1,x:r.dx,y:r.dy}; adjApply(n); } }
-      show(); pv._show=show;
-      MFWordTool.attach({svg:svg,text:function(){ return t; },panel:$('wp'+n),langName:L?L.name:code,
-        n:function(){ return letters(word); },
-        get:function(){ var a=ADJS[n]; return {size:fs0*a.s,dx:a.x,dy:a.y,ww:a.w,hh:a.h}; },
-        set:function(v){ var a=ADJS[n]; a.s=Math.round(v.size/fs0*1000)/1000; a.w=Math.round(v.ww*1000)/1000; a.h=Math.round((v.hh||1)*1000)/1000; a.x=Math.round(v.dx); a.y=Math.round(v.dy); adjApply(n); setLay(n,box); },
-        reset:function(){ ADJS[n]={s:1,w:1,h:1,x:0,y:0}; adjApply(n); setLay(n,box); },
-        learned:function(){ return draft[id(n,'layout')]?'set by you':fromRule()?'from your rule':''; },
-        onLearn:function(v){ var c=letters(word); RULES[code]=RULES[code]||{}; RULES[code][c]={size:Math.round(v.size),dx:Math.round(v.dx),dy:Math.round(v.dy),ww:+(+v.ww).toFixed(3),hh:+(+(v.hh||1)).toFixed(3),src:n,from:word}; saveRules();
-          [].forEach.call(document.querySelectorAll('.pv'),function(x){ if(x._show&&x!==pv) x._show(); }); bar();
-          return 'Saved: every '+c+'-letter word in '+(L?L.name:code)+' now uses size '+Math.round(v.size)+'.'; }});
-      verseTool(n,svg,box);
-    }).catch(function(){ pv.textContent='The fish could not be loaded.'; }); }
-  // Ken, 19 Oct: "I need to be able to push them forward or squeeze them together or stretch them, but they need to stay along the
-  // contour of the fish ... and I'd like to know the font size, so I could select the same font size for the top and bottom."
-  // Each verse line: letter size, slide along its curve, squeeze or stretch (the letters keep their height).
-  function vParse(t){ var o={}, re=/(top|bottom): size ([\d.]+), slide (-?[\d.]+), width ([\d.]+)%/g, m; while((m=re.exec(t||''))) o[m[1]==='top'?'top':'bot']={size:+m[2],slide:+m[3],w:+m[4]/100}; return o; }
-  function verseTool(n,svg,box){ var host=$('vl'+n); if(!host) return; var B={}, VS=vParse(draft[id(n,'vlayout')]);
-    ['top','bot'].forEach(function(w){ var tp=svg.querySelector('textPath[href$="g_'+w+'"]'); if(!tp) return; var tx=tp.parentNode, path=svg.querySelector('[id="g_'+w+'"]'), L=path?path.getTotalLength():3200;
-      var so=tp.getAttribute('startOffset')||'0', tl=+tp.getAttribute('textLength')||0;
-      B[w]={tp:tp,tx:tx,off0:/%$/.test(so)?parseFloat(so)/100*L:+so,fs0:+tx.getAttribute('font-size')||220,tl0:tl||tp.getComputedTextLength(),hadTL:!!tl}; });
-    function val(w){ var b=B[w]; return VS[w]||{size:b.fs0,slide:0,w:1}; }
-    function apply(){ Object.keys(B).forEach(function(w){ var b=B[w], v=val(w); b.tx.setAttribute('font-size',(+v.size).toFixed(1)); b.tp.setAttribute('startOffset',(b.off0+v.slide).toFixed(1));
-      if(!b.hadTL&&Math.abs(v.size-b.fs0)<.05&&Math.abs(v.w-1)<.001){ b.tp.removeAttribute('textLength'); b.tp.removeAttribute('lengthAdjust'); }
-      else { b.tp.setAttribute('textLength',(b.tl0*v.size/b.fs0*v.w).toFixed(1)); b.tp.setAttribute('lengthAdjust','spacingAndGlyphs'); } }); }
-    function text(){ var p=[]; Object.keys(B).forEach(function(w){ var v=val(w), b=B[w]; if(Math.abs(v.size-b.fs0)>.05||v.slide||Math.abs(v.w-1)>.001) p.push((w==='top'?'top':'bottom')+': size '+Math.round(v.size)+', slide '+Math.round(v.slide)+', width '+Math.round(v.w*100)+'%'); }); return p.join('; '); }
-    function draw(){ host.innerHTML=Object.keys(B).map(function(w){ var v=val(w), o=w==='top'?'bot':'top';
-      return '<div class="vl" data-w="'+w+'"><h4>'+(w==='top'?'Top verse line':'Bottom verse line')+' <i>letter size '+Math.round(v.size)+' · width '+Math.round(v.w*100)+'% · slide '+Math.round(v.slide)+'</i></h4><div class="r">'
-        +'<label>Letter size<input type="number" step="5" data-k="size" value="'+Math.round(v.size)+'"></label><label>Width %<input type="number" step="1" data-k="w" value="'+Math.round(v.w*100)+'"></label><label>Slide<input type="number" step="25" data-k="slide" value="'+Math.round(v.slide)+'"></label>'
-        +'<button type="button" data-v="s-">A−</button><button type="button" data-v="s+">A+</button><button type="button" data-v="w-" title="Squeeze">↔−</button><button type="button" data-v="w+" title="Stretch">↔+</button><button type="button" data-v="x-" title="Slide back">←</button><button type="button" data-v="x+" title="Slide forward">→</button><button type="button" data-v="0">↺</button>'
-        +(B[o]?'<button type="button" data-v="same">= '+(o==='top'?'top':'bottom')+' size</button>':'')+'</div></div>'; }).join(''); }
-    function put(){ var t=text(); if(t) draft[id(n,'vlayout')]=t; else delete draft[id(n,'vlayout')]; save(); apply();
-      var card=box.closest('.card'); card.classList.toggle('changed',!!(t||draft[id(n,'layout')]||card.querySelector('textarea.ch'))); bar(); key(); }
-    host.onclick=function(e){ var b=e.target.closest('[data-v]'); if(!b) return; var w=b.closest('.vl').dataset.w, v=Object.assign({},val(w)), a=b.dataset.v;
-      if(a==='0'){ delete VS[w]; } else { if(a==='s-') v.size*=0.96; else if(a==='s+') v.size*=1.04; else if(a==='w-') v.w-=0.02; else if(a==='w+') v.w+=0.02; else if(a==='x-') v.slide-=25; else if(a==='x+') v.slide+=25; else if(a==='same') v.size=val(w==='top'?'bot':'top').size; v.size=Math.round(v.size*10)/10; v.w=Math.max(.4,Math.min(1.8,Math.round(v.w*100)/100)); VS[w]=v; }
-      put(); draw(); };
-    host.oninput=function(e){ var i=e.target.closest('input[data-k]'); if(!i||i.value===''||isNaN(+i.value)) return; var w=i.closest('.vl').dataset.w, v=Object.assign({},val(w)); v[i.dataset.k]=i.dataset.k==='w'?+i.value/100:+i.value; VS[w]=v; put();
-      i.closest('.vl').querySelector('h4 i').textContent='letter size '+Math.round(v.size)+' · width '+Math.round(v.w*100)+'% · slide '+Math.round(v.slide); };
-    apply(); draw(); }
-  function setLay(n,box){ var a=ADJS[n], tx=adjText(a); if(tx) draft[id(n,'layout')]=tx; else delete draft[id(n,'layout')]; save(); $('lay'+n).textContent=tx;
-    var card=box.closest('.card'); box.querySelector('summary').innerHTML='✎ The word in the middle and the verse lines'+(tx||box.querySelector('input:checked')?' <b>(changed)</b>':'');
-    card.classList.toggle('changed',!!(tx||card.querySelector('textarea.ch')||card.querySelector('.dz input:checked'))); bar(); key(); }
+  var NS='http://www.w3.org/2000/svg', KEY='mf-edit-v3';
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
+  function letters(w){ return Array.from(String(w||'').replace(/[\s‎‏‪-‮]/g,'')).length; }
+  var FIELD={word:'Word',top:'Verse line 1',bot:'Verse line 2',ref:'Reference',gkm:'Greek meaning',hbm:'Hebrew meaning',design:'Word in the middle: design fixes',dnote:'Design note',layout:'Size and position',vlayout:'Verse lines: size and position',template:'Rule for all fish'};
   var DZ=['Make bigger','Make smaller','Move left','Move right','Move up','Move down','Stretch taller (vertically)','Stretch wider (horizontally)','Squeeze narrower','Spelling or letters look wrong'];
-  function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-  function load(){ try{ draft=JSON.parse(localStorage.getItem('mf-edit-draft')||'{}')||{}; }catch(e){ draft={}; } try{ show=localStorage.getItem('mf-edit-show')||'A'; $('who').value=localStorage.getItem('mf-proof-name')||''; }catch(e){} }
-  function save(){ try{ localStorage.setItem('mf-edit-draft',JSON.stringify(draft)); }catch(e){} }
-  // Ken, 19 Oct: "save all changes before I send them ... a dot on the ones I've adjusted but haven't saved, yellow if I'm not sure,
-  // green if it's ready to go". Changes always stay on this device; 💾 Save marks a point you can go back to.
-  var SAVED={}, STAT={}; try{ SAVED=JSON.parse(localStorage.getItem('mf-edit-saved')||'{}')||{}; STAT=JSON.parse(localStorage.getItem('mf-edit-status')||'{}')||{}; }catch(e){}
-  function keep(){ try{ localStorage.setItem('mf-edit-saved',JSON.stringify(SAVED)); localStorage.setItem('mf-edit-status',JSON.stringify(STAT)); }catch(e){} }
-  function sig(o,n){ return JSON.stringify(Object.keys(o).filter(function(k){ return k.split('.')[0]===n; }).sort().map(function(k){ return [k,o[k]]; })); }
-  function fishWith(o){ var m={}; Object.keys(o).forEach(function(k){ m[k.split('.')[0]]=1; }); return m; }
-  function unsaved(n){ return sig(draft,n)!==sig(SAVED,n); }
-  function stHtml(n){ var u=unsaved(n), st=STAT[n]||'';
-    return (u?'<span class="dot blue">● Not saved</span>':'')+(st==='unsure'?'<span class="dot yel">● Not sure</span>':st==='ready'?'<span class="dot grn">● Ready</span>':'')
-      +'<button type="button" data-st="unsure" data-n="'+n+'" aria-pressed="'+(st==='unsure')+'">🟡 Not sure</button><button type="button" data-st="ready" data-n="'+n+'" aria-pressed="'+(st==='ready')+'">🟢 Ready</button>'
-      +(u&&sig(SAVED,n)!=='[]'?'<button type="button" data-back="'+n+'">↺ Back to saved</button>':''); }
-  function stAll(){ [].forEach.call(document.querySelectorAll('.card'),function(c){ var n=c.id.slice(1), b=c.querySelector('.st'); if(b){ var h=stHtml(n); if(b._h!==h){ b._h=h; b.innerHTML=h; } } c.classList.toggle('ready',STAT[n]==='ready'); c.classList.toggle('unsure',STAT[n]==='unsure'); });
-    var un=Object.keys(Object.assign(fishWith(draft),fishWith(SAVED))).filter(unsaved).length; $('saveAll').textContent=un?'💾 Save ('+un+')':'💾 Saved'; }
-  function id(n,f){ return n+'.'+f; }
-  function changes(){ var out=[]; Object.keys(draft).forEach(function(k){ var p=k.split('.'), n=p[0], f=p[1], rec=D.f[n]; if(!rec) return; var was=rec[f]||'';
-    if(draft[k]!==was){ var w=D.words[parseInt(n,10)-1], L=D.langs.filter(function(x){ return x.l===n.slice(-1); })[0]; out.push({n:n,field:f,was:was,now:draft[k],lang:L?L.name:'',en:w?w.en:''}); } });
-    out.sort(function(a,b){ return parseInt(a.n,10)-parseInt(b.n,10)||a.n.localeCompare(b.n); });
-    Object.keys(RULES).forEach(function(code){ var L=D.langs.filter(function(x){ return x.code===code; })[0]; Object.keys(RULES[code]).forEach(function(c){ var r=RULES[code][c]; if(r.sent) return;
-      out.push({n:r.src,field:'template',was:'',now:'RULE '+(L?L.name:code)+' word '+c+' letters: size '+r.size+', left/right '+r.dx+', up/down '+r.dy+', width '+Math.round(r.ww*100)+'%, height '+Math.round((r.hh||1)*100)+'%',lang:L?L.name:code,en:r.from}); }); });
+  // the new fish: Ken's HOPE body and tail, drawn here (eye centre, usable width, the reference on the lower tail)
+  var G={cx:1705,cy:993.6,eyeW:1900,cap:867,ref:{x:3550.39,y:1562.6,rot:'rotate(49.97 3550.386836451912 1494.7294054190638)',size:167.7,avail:937.5}};
+  var V={start:0.02,end:0.98,min:170,max:230};
+  var FONTFILE={'MFHobo':'hobo','ZCOOL KuaiLe':'zh','Baloo 2':'hi','Ubuntu':'el','Jua':'ko','Fredoka':'he','Cairo':'ar'};
+
+  // ═════ what's been changed, kept on this device ═════
+  //  S.d[fish] = {word, top, bot, ref, gkm, hbm, design, dnote,  wl: word size/place,  tl / bl: top / bottom line size/place}
+  //  The 24: wl = {s,w,h,x,y} (relative to the drawn fish), tl/bl = {size,slide,w}.  New fish: wl = {size,dx,dy,ww,hh}, tl/bl = {size,slide,lw}.
+  function blank(){ return {d:{},saved:{},st:{},tpl:{},rules:{word:{},top:{},bot:{}}}; }
+  function snapOf(o){ var r={}; Object.keys(o||{}).sort().forEach(function(k){ r[k]=o[k]; }); return JSON.stringify(r); }
+  // bring over what was made in the two earlier sheets
+  function migrate(s){
+    function adjParse(t){ var a={s:1,w:1,h:1,x:0,y:0}, m; if((m=/size ×([\d.]+)/.exec(t))) a.s=+m[1]; if((m=/width ×([\d.]+)/.exec(t))) a.w=+m[1]; if((m=/height ×([\d.]+)/.exec(t))) a.h=+m[1];
+      if((m=/(left|right) (\d+)/.exec(t))) a.x=(m[1]==='left'?-1:1)*+m[2]; if((m=/(up|down) (\d+)/.exec(t))) a.y=(m[1]==='up'?-1:1)*+m[2]; return a; }
+    function vParse(t,o){ var re=/(top|bottom): size ([\d.]+), slide (-?[\d.]+), width ([\d.]+)%/g, m; while((m=re.exec(t||''))) o[m[1]==='top'?'tl':'bl']={size:+m[2],slide:+m[3],w:+m[4]/100}; }
+    function conv(src){ var out={}; Object.keys(src||{}).forEach(function(k){ var p=k.split('.'), n=p[0], f=p[1], o=out[n]||(out[n]={});
+      if(f==='layout') o.wl=adjParse(src[k]); else if(f==='vlayout') vParse(src[k],o); else o[f]=src[k]; }); return out; }
+    var dr=JSON.parse(ls('mf-edit-draft')||'{}'), sv=JSON.parse(ls('mf-edit-saved')||'{}'), stt=JSON.parse(ls('mf-edit-status')||'{}');
+    s.d=conv(dr); var sd=conv(sv); Object.keys(sd).forEach(function(n){ s.saved[n]=snapOf(sd[n]); }); Object.keys(stt).forEach(function(n){ s.st[n]=stt[n]; });
+    var R=JSON.parse(ls('mf-word-rules')||'{}'); Object.keys(R).forEach(function(code){ s.rules.word[code]=R[code]; });
+    var NF=JSON.parse(ls('mf-newfish-v2')||'null');
+    if(NF){ Object.keys(NF.f||{}).forEach(function(k){ var a=NF.f[k], o={}; if(a.word) o.wl=a.word; if(a.top) o.tl=a.top; if(a.bot) o.bl=a.bot; if(a.topT!=null) o.top=a.topT; if(a.botT!=null) o.bot=a.botT; if(Object.keys(o).length) s.d[k]=o; });
+      Object.keys(NF.saved||{}).forEach(function(k){ var a=JSON.parse(NF.saved[k]||'{}'), o={}; if(a.word) o.wl=a.word; if(a.top) o.tl=a.top; if(a.bot) o.bl=a.bot; if(a.topT!=null) o.top=a.topT; if(a.botT!=null) o.bot=a.botT; s.saved[k]=snapOf(o); });
+      Object.keys(NF.st||{}).forEach(function(k){ s.st[k]=NF.st[k]; }); s.tpl=NF.tpl||{};
+      if(NF.rules){ if(NF.rules.word&&Object.keys(NF.rules.word).length) s.rules.word.en=Object.assign(s.rules.word.en||{},NF.rules.word); s.rules.top.en=NF.rules.top||[]; s.rules.bot.en=NF.rules.bot||[]; } }
+  }
+  function load(){ var s=null; try{ s=JSON.parse(ls(KEY)||'null'); }catch(e){}
+    if(s&&s.d) return Object.assign(blank(),s); s=blank(); try{ migrate(s); }catch(e){} return s; }
+  var S=load();
+  function save(){ ls(KEY,JSON.stringify(S)); count(); }
+  function snap(id){ return snapOf(S.d[id]); }
+  function unsaved(id){ return snap(id)!==(S.saved[id]||'{}'); }
+  function own(id){ return S.d[id]||(S.d[id]={}); }
+  function clean(id){ var o=S.d[id]; if(o&&!Object.keys(o).length) delete S.d[id]; }
+
+  // ═════ the fish ═════
+  var D=null, N=null, BASE='', FJ={}, set=ls('mf-edit-set')||'24', lang=ls('mf-edit-show')||'B', q='', show='all', F={}, LIST=[];
+  function fishJson(code){ if(!FJ[code]) FJ[code]=fetch(code==='en'||code==='es'?'/match/fish-'+code+'.json':'/fish-lang/'+code+'.json').then(function(r){ return r.json(); }); return FJ[code]; }
+  function langOf(l){ return D.langs.filter(function(x){ return x.l===l; })[0]; }
+  function make24(n){ var num=parseInt(n,10), L=langOf(n.slice(-1)), w=D.words[num-1];
+    return {id:n,set:'24',code:L.code,langName:L.name,key:w.key,title:D.f[n].word,sub:w.en+' · '+L.name,base:D.f[n],drawn:L.code==='en',num:num}; }
+  function makeNew(f){ return {id:f.k,set:'new',code:'en',langName:'English',title:f.word,sub:'Week '+f.w+' · '+f.ref+' · '+f.series+(f.first?' · first pick':''),base:f,nf:f}; }
+  function val(X,f){ var o=S.d[X.id]; return o&&o[f]!=null?o[f]:(X.base[f]==null?'':X.base[f]); }
+  function rtl(X,s){ return X.code==='he'||X.code==='ar'?'‫'+s+'‬':s; }
+
+  // ── measuring in the Hobo face (new fish) ──
+  var mc=document.createElement('canvas').getContext('2d');
+  function meas(t,size){ mc.font=size+'px MFHobo'; var m=mc.measureText(t); return {w:m.width,ink:m.actualBoundingBoxLeft+m.actualBoundingBoxRight,asc:m.actualBoundingBoxAscent,desc:m.actualBoundingBoxDescent}; }
+  function fitWord(w){ return Math.min(G.cap,100*G.eyeW/meas(w,100).ink); }
+
+  // ── the word in the middle: the fish's own setting, else the rule for its letter count, else as drawn ──
+  function ruleWord(X){ return MFWordTool.ruleFor(S.rules.word[X.code],letters(val(X,'word'))); }
+  function rel24(X){ var a=(S.d[X.id]||{}).wl; if(a) return a; var r=ruleWord(X), B=X.B; return r?{s:r.size/B.fs0,w:r.ww,h:r.hh||1,x:r.dx,y:r.dy}:{s:1,w:1,h:1,x:0,y:0}; }
+  function wordGet(X){ if(X.set==='24'){ var a=rel24(X); return {size:X.B.fs0*a.s,dx:a.x,dy:a.y,ww:a.w,hh:a.h}; }
+    var o=(S.d[X.id]||{}).wl; if(o) return Object.assign({hh:1},o); var word=val(X,'word'), r=ruleWord(X);
+    if(r){ var v={size:r.size,dx:r.dx,dy:r.dy,ww:r.ww,hh:r.hh||1}, max=100*G.eyeW*1.03/(meas(word,100).ink*v.ww); if(v.size>max) v.size=max; return v; }
+    return {size:fitWord(word),dx:0,dy:0,ww:1,hh:1}; }
+  function wordFrom(X){ return (S.d[X.id]||{}).wl?'set by you':ruleWord(X)?'from your rule':''; }
+  function wordPut(X,v){ var o=own(X.id); if(X.set==='24') o.wl={s:+(v.size/X.B.fs0).toFixed(4),w:+(+v.ww).toFixed(3),h:+(+(v.hh||1)).toFixed(3),x:Math.round(v.dx),y:Math.round(v.dy)};
+    else o.wl={size:+(+v.size).toFixed(1),dx:Math.round(v.dx),dy:Math.round(v.dy),ww:+(+v.ww).toFixed(3),hh:+(+(v.hh||1)).toFixed(3)}; }
+  // ── a verse line: letter size, width (squeeze or stretch), slide along the curve ──
+  function lineRule(X,w,n){ var list=(S.rules[w][X.code]||[]).slice().sort(function(a,b){ return a.n-b.n; }), lo=null, hi=null; if(!list.length) return null;
+    list.forEach(function(r){ if(r.n<=n) lo=r; if(r.n>=n&&!hi) hi=r; });
+    if(lo&&hi){ if(lo===hi) return {size:lo.size,slide:lo.slide,lw:lo.lw||1}; var t=(n-lo.n)/(hi.n-lo.n); return {size:lo.size+(hi.size-lo.size)*t,slide:lo.slide+(hi.slide-lo.slide)*t,lw:(lo.lw||1)+((hi.lw||1)-(lo.lw||1))*t}; }
+    var r=lo||hi; return {size:r.size,slide:r.slide,lw:r.lw||1}; }
+  function lineGet(X,w){ var o=(S.d[X.id]||{})[w==='top'?'tl':'bl'];
+    if(X.set==='24'){ var b=X.B&&X.B[w]; if(!b) return null; return o?{size:o.size,slide:o.slide,w:o.w}:{size:b.fs0,slide:0,w:1}; }
+    if(o) return {size:o.size,slide:o.slide||0,w:o.lw||1};
+    var txt=val(X,w), r=lineRule(X,w,txt.length); if(r) return {size:r.size,slide:r.slide,w:r.lw};
+    var span=X.plen[w]*(V.end-V.start); return {size:Math.max(V.min,Math.min(V.max,100*span/meas(txt,100).w)),slide:0,w:1}; }
+  function linePut(X,w,v){ var o=own(X.id), k=w==='top'?'tl':'bl'; v.size=Math.round(v.size*10)/10; v.w=Math.max(.4,Math.min(1.8,Math.round(v.w*100)/100));
+    o[k]=X.set==='24'?{size:v.size,slide:Math.round(v.slide),w:v.w}:{size:v.size,slide:Math.round(v.slide*10)/10,lw:v.w}; }
+
+  // ── drawing ──
+  function build(X){ var pv=X.el.querySelector('.pv');
+    if(X.set==='new'){ pv.innerHTML=BASE.replace(/id="g_(\w+)"/g,'id="'+X.id+'g_$1"'); var svg=pv.firstChild, g=svg.querySelector('g');
+      function t(){ var e=document.createElementNS(NS,'text'); e.setAttribute('font-family','MFHobo'); g.appendChild(e); return e; }
+      var E={word:t(),top:t(),bot:t(),ref:t()};
+      ['top','bot'].forEach(function(w){ var tp=document.createElementNS(NS,'textPath'); tp.setAttribute('href','#'+X.id+'g_'+w); tp.setAttribute('text-anchor','middle'); E[w].appendChild(tp); E[w].setAttribute('fill','#000'); });
+      E.word.setAttribute('fill','#fff'); E.word.setAttribute('text-anchor','middle');
+      E.ref.setAttribute('fill','#000'); E.ref.setAttribute('text-anchor','middle'); E.ref.setAttribute('x',G.ref.x); E.ref.setAttribute('y',G.ref.y); E.ref.setAttribute('transform',G.ref.rot); E.ref.setAttribute('font-size',G.ref.size);
+      X.svg=svg; X.E=E; X.plen={top:svg.querySelector('[id="'+X.id+'g_top"]').getTotalLength(),bot:svg.querySelector('[id="'+X.id+'g_bot"]').getTotalLength()};
+      draw(X); tool(X); return Promise.resolve(); }
+    return fishJson(X.code).then(function(m){ pv.innerHTML=(m[X.key]||'').replace(/id="(g_[a-z]+)"/g,'id="'+X.id+'$1"').replace(/href="#(g_[a-z]+)"/g,'href="#'+X.id+'$1"');
+      var svg=pv.querySelector('svg'); X.svg=svg; if(!svg) return; if(X.drawn){ pv.classList.add('drawn'); status(X); return; }
+      var word=svg.querySelector('text[fill="#fff"]'), E={word:word}, B={fs0:+word.getAttribute('font-size'),x:+word.getAttribute('x'),y:+word.getAttribute('y'),tl:+word.getAttribute('textLength')||0};
+      ['top','bot'].forEach(function(w){ var tp=svg.querySelector('textPath[href$="g_'+w+'"]'); if(!tp) return; var tx=tp.parentNode, path=svg.querySelector('[id="'+X.id+'g_'+w+'"]'), L=path?path.getTotalLength():3200;
+        var so=tp.getAttribute('startOffset')||'0', tl=+tp.getAttribute('textLength')||0;
+        E[w]=tx; B[w]={tp:tp,off0:/%$/.test(so)?parseFloat(so)/100*L:+so,fs0:+tx.getAttribute('font-size')||220,tl0:tl||tp.getComputedTextLength(),hadTL:!!tl,txt0:tp.textContent}; });
+      E.ref=[].filter.call(svg.querySelectorAll('text'),function(t){ return /rotate/.test(t.getAttribute('transform')||''); })[0]||null;
+      X.E=E; X.B=B; draw(X); tool(X); }); }
+  function draw(X){ if(!X.svg){ if(X.el) status(X); return; }
+    if(X.set==='new'){ var E=X.E, word=val(X,'word'), v=wordGet(X), m=meas(word,v.size);
+      E.word.textContent=word; E.word.setAttribute('font-size',v.size.toFixed(1)); E.word.setAttribute('x',(G.cx+v.dx).toFixed(1)); E.word.setAttribute('y',(G.cy+(m.asc-m.desc)/2+v.dy).toFixed(1));
+      if(Math.abs(v.ww-1)>1e-3){ E.word.setAttribute('textLength',(m.w*v.ww).toFixed(1)); E.word.setAttribute('lengthAdjust','spacingAndGlyphs'); } else { E.word.removeAttribute('textLength'); E.word.removeAttribute('lengthAdjust'); }
+      var my=G.cy+v.dy; if(Math.abs((v.hh||1)-1)>1e-3) E.word.setAttribute('transform','translate(0 '+my.toFixed(1)+') scale(1 '+(+v.hh).toFixed(3)+') translate(0 '+(-my).toFixed(1)+')'); else E.word.removeAttribute('transform');
+      ['top','bot'].forEach(function(w){ var el=E[w], tp=el.firstChild, txt=val(X,w), L=X.plen[w], span=L*(V.end-V.start), lv=lineGet(X,w), len=meas(txt,lv.size).w;
+        el.setAttribute('font-size',lv.size.toFixed(1)); tp.textContent=txt; tp.setAttribute('startOffset',((V.start+V.end)/2*100+lv.slide).toFixed(2)+'%');
+        var want=Math.min(L*0.99,Math.min(len,span)*lv.w); if(Math.abs(want-len)>0.5){ tp.setAttribute('textLength',want.toFixed(1)); tp.setAttribute('lengthAdjust','spacingAndGlyphs'); } else { tp.removeAttribute('textLength'); tp.removeAttribute('lengthAdjust'); } });
+      var r=val(X,'ref')+' (KJV)'; if(meas(r,G.ref.size).w>G.ref.avail) r=X.nf.refShort+' (KJV)'; E.ref.textContent=r;
+      if(meas(r,G.ref.size).w>G.ref.avail){ E.ref.setAttribute('textLength',G.ref.avail); E.ref.setAttribute('lengthAdjust','spacingAndGlyphs'); } else { E.ref.removeAttribute('textLength'); E.ref.removeAttribute('lengthAdjust'); }
+    } else if(!X.drawn){ var B=X.B, E2=X.E, a=rel24(X), o=S.d[X.id]||{};
+      E2.word.textContent=rtl(X,val(X,'word'));
+      E2.word.setAttribute('font-size',(B.fs0*a.s).toFixed(1)); if(B.tl) E2.word.setAttribute('textLength',(B.tl*a.s).toFixed(1));
+      E2.word.setAttribute('transform','translate('+(B.x+a.x)+' '+(B.y+a.y)+') scale('+a.w+' '+a.h+') translate('+(-B.x)+' '+(-B.y)+')');
+      ['top','bot'].forEach(function(w){ var b=B[w]; if(!b) return; var lv=lineGet(X,w), tp=b.tp; tp.textContent=o[w]!=null?rtl(X,o[w]):b.txt0;
+        E2[w].setAttribute('font-size',(+lv.size).toFixed(1)); tp.setAttribute('startOffset',(b.off0+lv.slide).toFixed(1));
+        if(!b.hadTL&&Math.abs(lv.size-b.fs0)<.05&&Math.abs(lv.w-1)<.001){ tp.removeAttribute('textLength'); tp.removeAttribute('lengthAdjust'); }
+        else { var base=b.tl0; if(o[w]!=null&&!b.hadTL){ tp.removeAttribute('textLength'); base=tp.getComputedTextLength()*b.fs0/lv.size; }
+          tp.setAttribute('textLength',(base*lv.size/b.fs0*lv.w).toFixed(1)); tp.setAttribute('lengthAdjust','spacingAndGlyphs'); } }); }
+    if(X.tool) X.tool.refresh(); lineHeads(X); status(X); }
+  // the word tool (tap, drag, pinch, numbers, 📚) from /edit/wordtool.js, one per fish, shown in the sheet
+  function tool(X){ if(X.drawn||!X.E||!X.E.word) return; var hold=X.el.querySelector('.wpanel');
+    X.tool=MFWordTool.attach({svg:X.svg,text:function(){ return X.E.word; },panel:hold,langName:X.langName,
+      n:function(){ return letters(val(X,'word')); }, get:function(){ return wordGet(X); },
+      set:function(v){ wordPut(X,v); draw(X); }, done:function(){ save(); }, reset:function(){ delete own(X.id).wl; clean(X.id); save(); draw(X); },
+      learned:function(){ return wordFrom(X); },
+      onLearn:function(v){ var c=letters(val(X,'word')); S.rules.word[X.code]=S.rules.word[X.code]||{}; S.rules.word[X.code][c]={size:Math.round(v.size),dx:Math.round(v.dx),dy:Math.round(v.dy),ww:+(+v.ww).toFixed(3),hh:+(+(v.hh||1)).toFixed(3),src:X.id,from:val(X,'word')};
+        save(); LIST.forEach(function(Y){ if(Y.code===X.code&&Y!==X) draw(Y); }); rules(); return 'Saved: every '+c+'-letter word in '+X.langName+' now uses size '+Math.round(v.size)+'.'; }}); }
+
+  // ── a card ──
+  function lineBox(X,w){ return '<div class="vl" data-w="'+w+'"><h4>'+(w==='top'?'Top verse line':'Bottom verse line')+' <i></i></h4>'
+      +'<input class="tx" data-f="'+w+'" aria-label="'+(w==='top'?'Top':'Bottom')+' line words"><div class="wasbox"></div>'
+      +'<div class="r"><label>Letter size<input type="number" step="5" data-k="size" inputmode="decimal"></label><label>Width %<input type="number" step="1" data-k="w" inputmode="decimal"></label><label>Slide'+(X.set==='new'?' %':'')+'<input type="number" step="'+(X.set==='new'?1:25)+'" data-k="slide" inputmode="decimal"></label>'
+      +'<button type="button" data-v="s-">A−</button><button type="button" data-v="s+">A+</button><button type="button" data-v="w-" title="Squeeze">↔−</button><button type="button" data-v="w+" title="Stretch">↔+</button><button type="button" data-v="x-" title="Slide back">←</button><button type="button" data-v="x+" title="Slide forward">→</button><button type="button" data-v="0">↺</button>'
+      +'<button type="button" data-v="same">= '+(w==='top'?'bottom':'top')+' size</button>'+(X.set==='new'?'<button type="button" class="learn" data-v="learn"></button>':'')+'</div><p class="note" aria-live="polite"></p></div>'; }
+  function txBox(f,label,rows){ return '<label class="fl">'+esc(label)+(rows?'<textarea data-f="'+f+'" rows="'+rows+'"></textarea>':'<input class="tx" data-f="'+f+'">')+'</label><div class="wasbox"></div>'; }
+  function tabsOf(X){ return X.drawn?[['look','The look']]:[['word','Word'],['top','Top line'],['bot','Bottom line'],['ref','Reference']]; }
+  function card(X){ var el=document.createElement('article'); el.className='card'; el.dataset.id=X.id; X.el=el;
+    el.innerHTML='<div class="hd"><span class="num">'+esc(X.set==='24'?X.id:'Week '+X.nf.w)+'</span><b>'+esc(X.title)+'</b><span class="sub">'+esc(X.sub)+'</span><span class="st"></span>'
+      +(X.set==='new'?'<button type="button" class="hb star" aria-pressed="false">⭐ Template</button>':'')+'<button type="button" class="hb png">⬇ PNG</button></div>'
+      +'<div class="pv"></div><p class="hint">'+(X.drawn?'Your hand-drawn English fish: tap it to note what should change.':'Tap the word, a verse line or the reference to edit it.')+'</p>'
+      +'<div class="chips">'+tabsOf(X).map(function(t){ return '<button type="button" data-open="'+t[0]+'">✎ '+t[1]+'</button>'; }).join('')+'</div>'
+      +(X.set==='24'?'<details class="more"><summary>Back of the fish: Greek and Hebrew meanings</summary>'+txBox('gkm','Greek meaning',2)+txBox('hbm','Hebrew meaning',2)+'</details>'
+        :'<p class="verse">'+esc(X.nf.verse)+' ('+esc(X.nf.ref)+', KJV)</p>')
+      +'<div class="hold">'
+        +(X.drawn?'<div class="p-look"><p class="hint" style="text-align:left">The English fish are hand-drawn, so tick what should change:</p><div class="dzo">'+DZ.map(function(o){ return '<label class="dzc"><input type="checkbox" data-dz value="'+esc(o)+'"> '+esc(o)+'</label>'; }).join('')+'</div>'
+            +txBox('word','The word')+txBox('top','Verse line 1')+txBox('bot','Verse line 2')+txBox('ref','Reference')+txBox('dnote','Anything else about how the fish looks',2)+'</div>'
+          :'<div class="p-word">'+txBox('word','The word')+'<div class="wpanel"></div></div><div class="p-top">'+lineBox(X,'top')+'</div><div class="p-bot">'+lineBox(X,'bot')+'</div>'
+            +'<div class="p-ref">'+txBox('ref','Reference')+'<p class="hint" style="text-align:left">The reference and the MannaFish™ logo are always size 168 on every fish. A long reference is shortened, never made smaller.'+(X.set==='24'?' A new reference shows on the fish after Claude rebuilds it.':'')+'</p></div>')
+      +'</div>';
+    [].forEach.call(el.querySelectorAll('[data-f]'),function(i){ i.value=val(X,i.dataset.f); mark(X,i); });
+    if(X.drawn){ var dz=val(X,'design'); [].forEach.call(el.querySelectorAll('[data-dz]'),function(c){ c.checked=dz.split('; ').indexOf(c.value)>=0; }); }
+    return el; }
+  function mark(X,i){ var f=i.dataset.f, o=S.d[X.id]||{}, ch=o[f]!=null&&o[f]!==(X.base[f]||''), lab=i.closest('label'), box=lab?lab.nextElementSibling:i.nextElementSibling;
+    i.classList.toggle('ch',ch); if(box&&box.classList.contains('wasbox')) box.innerHTML=ch?'<div class="was"><span>was: '+esc(X.base[f]||'(empty)')+'</span><button type="button" data-undo="'+f+'">↺ undo</button></div>':''; }
+  function lineHeads(X){ if(X.drawn||!X.svg) return; ['top','bot'].forEach(function(w){ var box=X.el.querySelector('.vl[data-w="'+w+'"]')||(SH&&SH.X===X?$('shBody').querySelector('.vl[data-w="'+w+'"]'):null); if(!box) return; var v=lineGet(X,w); if(!v) return;
+      box.querySelector('h4 i').textContent='letter size '+Math.round(v.size)+' · width '+Math.round(v.w*100)+'% · slide '+(Math.round(v.slide*10)/10)+((S.d[X.id]||{})[w==='top'?'tl':'bl']?' · set by you':'');
+      ['size','w','slide'].forEach(function(k){ var i=box.querySelector('[data-k="'+k+'"]'); if(document.activeElement!==i) i.value=k==='w'?Math.round(v.w*100):k==='size'?Math.round(v.size):Math.round(v.slide*10)/10; });
+      var lb=box.querySelector('.learn'); if(lb) lb.textContent='📚 Use size '+Math.round(v.size)+', width '+Math.round(v.w*100)+'% for '+(w==='top'?'top':'bottom')+' lines of about '+val(X,w).length+' letters'; }); }
+  function status(X){ if(!X.el) return; var id=X.id, u=unsaved(id), st=S.st[id]||''; if(st==='sent'&&u){ delete S.st[id]; st=''; }
+    var h=(u?'<span class="dot blue">● Not saved</span>':'')+(st==='unsure'?'<span class="dot yel">● Not sure</span>':st==='ready'?'<span class="dot grn">● Ready</span>':st==='sent'?'<span class="dot sent">✓ Sent</span>':'')
+      +'<button type="button" data-st="unsure" aria-pressed="'+(st==='unsure')+'">🟡 Not sure</button><button type="button" data-st="ready" aria-pressed="'+(st==='ready')+'">🟢 Ready</button>'
+      +(u&&S.saved[id]?'<button type="button" data-back>↺ Back to saved</button>':'');
+    var b=X.el.querySelector('.st'); if(b._h!==h){ b._h=h; b.innerHTML=h; }
+    X.el.classList.toggle('changed',!!S.d[id]&&st!=='sent'); X.el.classList.toggle('unsure',st==='unsure'); X.el.classList.toggle('ready',st==='ready');
+    var sb=X.el.querySelector('.star'); if(sb) sb.setAttribute('aria-pressed',String(!!S.tpl[id])); }
+
+  // ── the tools slide up from the bottom ──
+  var SH=null;
+  function openSheet(X,tab){ if(SH&&SH.X!==X) closeSheet(); var tabs=tabsOf(X); if(!tabs.some(function(t){ return t[0]===tab; })) tab=tabs[0][0];
+    if(SH) putBack();
+    SH={X:X,tab:tab}; $('shTitle').textContent=X.title+(X.set==='24'?' · '+X.langName:'');
+    $('shTabs').innerHTML=tabs.map(function(t){ return '<button type="button" data-tab="'+t[0]+'" aria-pressed="'+(t[0]===tab)+'">'+t[1]+'</button>'; }).join('');
+    var p=X.el.querySelector('.p-'+tab); if(p) $('shBody').appendChild(p);
+    $('sheet').classList.add('open'); document.body.classList.add('sheet-open'); X.el.classList.add('on');
+    X.el.scrollIntoView({block:'start',behavior:'smooth'}); if(X.tool) X.tool.refresh(); lineHeads(X); }
+  function putBack(){ if(!SH) return; var hold=SH.X.el.querySelector('.hold'); [].slice.call($('shBody').children).forEach(function(c){ hold.appendChild(c); }); }
+  function closeSheet(){ if(!SH) return; putBack(); SH.X.el.classList.remove('on'); SH=null; $('sheet').classList.remove('open'); document.body.classList.remove('sheet-open'); }
+  $('shDone').addEventListener('click',closeSheet);
+  $('shTabs').addEventListener('click',function(e){ var b=e.target.closest('[data-tab]'); if(b&&SH) openSheet(SH.X,b.dataset.tab); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeSheet(); });
+
+  // ── taps and typing, in the cards and in the sheet ──
+  function fishOfEl(el){ var c=el.closest('.card'); if(c) return F[c.dataset.id]; if(el.closest('#sheet')&&SH) return SH.X; return null; }
+  function redrawNew(){ LIST.forEach(function(Y){ if(Y.set==='new') draw(Y); }); }
+  function onClick(e){ var X=fishOfEl(e.target); if(!X) return; var t=e.target;
+    if(t.closest('.pv')){ if(X.drawn){ openSheet(X,'look'); return; } if(!X.E) return; var tx=t.closest('text');
+      // a tap near (not on) the letters: the part of the fish it is in -- the tail, the top band, the bottom band, or the eye
+      if(!tx){ var m=X.svg.getScreenCTM(); if(!m) return; var pt=X.svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY; pt=pt.matrixTransform(m.inverse());
+        if(pt.x>3050) openSheet(X,'ref'); else { var wb=X.E.word.getBBox(); if(pt.y>wb.y-40&&pt.y<wb.y+wb.height+40&&pt.x>wb.x-80&&pt.x<wb.x+wb.width+80) openSheet(X,'word'); else openSheet(X,pt.y<1000?'top':'bot'); } return; }
+      if(tx===X.E.word) openSheet(X,'word'); else if(tx===X.E.top) openSheet(X,'top'); else if(tx===X.E.bot) openSheet(X,'bot'); else if(tx===X.E.ref) openSheet(X,'ref'); return; }
+    var ob=t.closest('[data-open]'); if(ob){ openSheet(X,ob.dataset.open); return; }
+    var sb=t.closest('[data-st]'); if(sb){ var v=sb.dataset.st; if(S.st[X.id]===v) delete S.st[X.id]; else S.st[X.id]=v; save(); status(X); return; }
+    if(t.closest('[data-back]')){ var sv=JSON.parse(S.saved[X.id]||'{}'); if(Object.keys(sv).length) S.d[X.id]=sv; else delete S.d[X.id]; save(); refill(X); draw(X); return; }
+    var u=t.closest('[data-undo]'); if(u){ delete own(X.id)[u.dataset.undo]; clean(X.id); save(); refill(X); draw(X); return; }
+    if(t.closest('.png')){ pngOne(X); return; }
+    if(t.closest('.star')){ if(S.tpl[X.id]) delete S.tpl[X.id]; else { S.tpl[X.id]=1; var v2=wordGet(X); S.rules.word.en=S.rules.word.en||{}; S.rules.word.en[letters(val(X,'word'))]={size:Math.round(v2.size),dx:Math.round(v2.dx),dy:Math.round(v2.dy),ww:+(+v2.ww).toFixed(3),hh:+(+(v2.hh||1)).toFixed(3),src:X.id,from:val(X,'word')}; learnLine(X,'top'); learnLine(X,'bot'); }
+      save(); redrawNew(); rules(); return; }
+    var vb=t.closest('.vl [data-v]'); if(vb){ var w=vb.closest('.vl').dataset.w, a=vb.dataset.v, cur=lineGet(X,w), step=X.set==='new'?1:25; if(!cur) return;
+      if(a==='learn'){ var r=learnLine(X,w); save(); redrawNew(); rules(); vb.closest('.vl').querySelector('.note').textContent='Saved: '+(w==='top'?'top':'bottom')+' lines of about '+r.n+' letters now use size '+r.size+'.'; return; }
+      if(a==='0'){ delete own(X.id)[w==='top'?'tl':'bl']; clean(X.id); }
+      else { if(a==='s-') cur.size*=0.96; else if(a==='s+') cur.size*=1.04; else if(a==='w-') cur.w-=0.02; else if(a==='w+') cur.w+=0.02; else if(a==='x-') cur.slide-=step; else if(a==='x+') cur.slide+=step; else if(a==='same') cur.size=(lineGet(X,w==='top'?'bot':'top')||cur).size; linePut(X,w,cur); }
+      save(); draw(X); } }
+  function learnLine(X,w){ var v=lineGet(X,w), n=val(X,w).length, list=(S.rules[w][X.code]||[]).filter(function(r){ return r.n!==n; });
+    list.push({n:n,size:Math.round(v.size),slide:Math.round(v.slide*10)/10,lw:+(+v.w).toFixed(3),src:X.id,from:val(X,'word')}); S.rules[w][X.code]=list; return {n:n,size:Math.round(v.size)}; }
+  function onInput(e){ var X=fishOfEl(e.target); if(!X) return; var i=e.target;
+    if(i.dataset.f){ var f=i.dataset.f, o=own(X.id); if(i.value===(X.base[f]||'')) delete o[f]; else o[f]=i.value; clean(X.id); save(); mark(X,i); draw(X); return; }
+    if(i.hasAttribute('data-dz')){ var sel=[].map.call(i.closest('.p-look').querySelectorAll('[data-dz]:checked'),function(c){ return c.value; }), o2=own(X.id); if(sel.length) o2.design=sel.join('; '); else delete o2.design; clean(X.id); save(); status(X); return; }
+    var k=i.dataset.k, box=i.closest('.vl'); if(k&&box&&i.value!==''&&!isNaN(+i.value)){ var w=box.dataset.w, cur=lineGet(X,w); if(!cur) return; cur[k]=k==='w'?+i.value/100:+i.value; linePut(X,w,cur); save(); draw(X); } }
+  function refill(X){ [X.el,$('shBody')].forEach(function(r){ if(r===$('shBody')&&!(SH&&SH.X===X)) return; [].forEach.call(r.querySelectorAll('[data-f]'),function(i){ i.value=val(X,i.dataset.f); mark(X,i); }); }); }
+  $('list').addEventListener('click',onClick); $('sheet').addEventListener('click',onClick);
+  $('list').addEventListener('input',onInput); $('sheet').addEventListener('input',onInput); $('sheet').addEventListener('change',function(e){ if(e.target.hasAttribute('data-dz')) onInput(e); });
+
+  // ═════ print-quality PNG: drawn big, everything black made see-through ═════
+  var FONT64={};
+  function font64(fam){ var f=FONTFILE[fam]; if(!f) return Promise.resolve(''); if(!FONT64[fam]) FONT64[fam]=fetch('/fish-lang/'+f+'.woff2').then(function(r){ return r.arrayBuffer(); }).then(function(b){ var s='', u=new Uint8Array(b); for(var i=0;i<u.length;i+=32768) s+=String.fromCharCode.apply(null,u.subarray(i,i+32768)); return "@font-face{font-family:'"+fam+"';src:url(data:font/woff2;base64,"+btoa(s)+") format('woff2');font-weight:100 900}"; }); return FONT64[fam]; }
+  function pngBlob(X,px){ return ensure(X).then(function(){ var svg=X.svg.cloneNode(true); [].forEach.call(svg.querySelectorAll('.wtsel,.wth'),function(x){ x.remove(); });
+      var fams={}; [].forEach.call(svg.querySelectorAll('[font-family]'),function(e){ fams[e.getAttribute('font-family').replace(/['"]/g,'').split(',')[0].trim()]=1; });
+      return Promise.all(Object.keys(fams).map(font64)).then(function(css){ var w=px, h=Math.round(px/2);
+        svg.setAttribute('width',w); svg.setAttribute('height',h); svg.setAttribute('preserveAspectRatio','none'); svg.removeAttribute('style'); svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
+        var st=document.createElementNS(NS,'style'); st.textContent=css.join(''); svg.insertBefore(st,svg.firstChild);
+        var xml=new XMLSerializer().serializeToString(svg);
+        return new Promise(function(ok,no){ var img=new Image(); img.onload=function(){ setTimeout(function(){ try{
+            var c=document.createElement('canvas'); c.width=w; c.height=h; var g=c.getContext('2d'); g.fillStyle='#000'; g.fillRect(0,0,w,h); g.drawImage(img,0,0,w,h);
+            // white stays white; black (letters, logo, the eye behind the word, the background) becomes see-through
+            var d=g.getImageData(0,0,w,h), p=d.data; for(var i=0;i<p.length;i+=4){ var a=Math.max(p[i],p[i+1],p[i+2]); p[i]=p[i+1]=p[i+2]=255; p[i+3]=a; }
+            g.putImageData(d,0,0); c.toBlob(function(b){ b?ok(b):no(new Error('png')); },'image/png'); }catch(e){ no(e); } },150); };
+          img.onerror=function(){ no(new Error('draw')); }; img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(xml); }); }); }); }
+  window.MFpng=pngBlob;   // for testing
+  function fname(X){ return 'MannaFish-'+(X.set==='24'?X.id+'-'+X.key+'-'+X.code:X.id+'-'+String(val(X,'word')).toUpperCase())+'.png'; }
+  function saveBlob(b,name){ var u=URL.createObjectURL(b), a=document.createElement('a'); a.href=u; a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(u); },4000); }
+  function pngOne(X){ var px=+$('pxSel').value; msg('Drawing '+X.title+' at '+px+' × '+px/2+'…'); pngBlob(X,px).then(function(b){ saveBlob(b,fname(X)); msg('Saved '+fname(X)+': a white fish with see-through letters and background.'); },function(){ msg('Could not draw that one at this size. Try a smaller PNG size.',true); }); }
+  $('zip').addEventListener('click',function(){ var ready=LIST.filter(function(X){ return S.st[X.id]==='ready'||S.st[X.id]==='sent'; }); if(!ready.length){ msg('Mark fish 🟢 Ready first; this saves those as PNGs.',true); return; }
+    var px=+$('pxSel').value, n=0; msg('Drawing '+ready.length+' fish…');
+    (function next(i){ if(i>=ready.length){ msg('Saved '+n+' PNG'+(n===1?'':'s')+'.'); return; } pngBlob(ready[i],px).then(function(b){ saveBlob(b,fname(ready[i])); n++; msg('Saved '+n+' of '+ready.length+'…'); setTimeout(function(){ next(i+1); },400); },function(){ next(i+1); }); })(0); });
+
+  // ═════ the list ═════
+  function ensure(X){ if(!X.el){ card(X); } if(X.built) return X.built; return X.built=build(X); }
+  function key(){ var h='';
+    if(set==='24') h='<button type="button" data-l="all" aria-pressed="'+(lang==='all')+'">All languages</button>'+D.langs.map(function(x){ var c=Object.keys(S.d).filter(function(k){ return /^\d/.test(k)&&k.slice(-1)===x.l; }).length;
+        return '<button type="button" data-l="'+x.l+'" aria-pressed="'+(lang===x.l)+'">'+esc(x.name)+(x.native!==x.name?' · '+esc(x.native):'')+(c?'<span class="cnt">'+c+'</span>':'')+'</button>'; }).join('');
+    else h=[['all','All 128'],['first','My first picks (52)'],['tpl','Templates']].map(function(o){ return '<button type="button" data-l="n-'+o[0]+'" aria-pressed="'+(lang==='n-'+o[0])+'">'+o[1]+'</button>'; }).join('');
+    $('key').innerHTML=h; [].forEach.call(document.querySelectorAll('.sets [data-set]'),function(b){ b.setAttribute('aria-pressed',String(b.dataset.set===set)); }); }
+  function wanted(X){ var st=S.st[X.id]||'';
+    if(show==='changed'&&!S.d[X.id]) return false; if(show==='unsaved'&&!unsaved(X.id)) return false; if((show==='unsure'||show==='ready')&&st!==show) return false;
+    if(q){ var qq=q.toLowerCase(); if(String(X.title).toLowerCase().indexOf(qq)<0&&X.sub.toLowerCase().indexOf(qq)<0&&X.id.toLowerCase()!==qq) return false; }
+    if(X.set==='new'){ if(lang==='n-first'&&!X.nf.first) return false; if(lang==='n-tpl'&&!S.tpl[X.id]) return false; }
+    return true; }
+  var io=null;
+  function render(){ closeSheet();
+    if(set==='24'&&/^n-/.test(lang)) lang='B'; if(set==='new'&&!/^n-/.test(lang)) lang='n-all'; key();
+    LIST=[];
+    if(set==='24') D.words.forEach(function(w){ D.langs.forEach(function(L){ if(lang!=='all'&&L.l!==lang) return; var n=w.n+L.l; LIST.push(F[n]||(F[n]=make24(n))); }); });
+    else N.fish.forEach(function(f){ LIST.push(F[f.k]||(F[f.k]=makeNew(f))); });
+    LIST=LIST.filter(wanted);
+    var list=$('list'); list.innerHTML=''; if(io) io.disconnect();
+    if(!LIST.length){ list.innerHTML='<p class="empty">No fish match.</p>'; count(); rules(); return; }
+    io='IntersectionObserver' in window?new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ ensure(F[e.target.dataset.id]); io.unobserve(e.target); } }); },{rootMargin:'700px'}):null;
+    LIST.forEach(function(X){ X.built=null; X.svg=null; X.tool=null; X.E=null; card(X); list.appendChild(X.el); status(X); if(io) io.observe(X.el); else ensure(X); });
+    count(); rules(); }
+  document.querySelector('.sets').addEventListener('click',function(e){ var b=e.target.closest('[data-set]'); if(!b) return; set=b.dataset.set; ls('mf-edit-set',set); lang=set==='24'?(ls('mf-edit-show')||'B'):'n-all'; render(); window.scrollTo(0,0); });
+  $('key').addEventListener('click',function(e){ var b=e.target.closest('[data-l]'); if(!b) return; lang=b.dataset.l; if(set==='24') ls('mf-edit-show',lang); render(); window.scrollTo(0,0); });
+  var qt; $('find').addEventListener('input',function(){ clearTimeout(qt); var v=this.value; qt=setTimeout(function(){ q=v.trim(); render(); },250); });
+  $('fShow').addEventListener('change',function(){ show=this.value; render(); });
+
+  // ── the rules panel ──
+  function rules(){ var R=S.rules, rows=[];
+    Object.keys(R.word).forEach(function(code){ Object.keys(R.word[code]).map(Number).sort(function(a,b){ return a-b; }).forEach(function(n){ var r=R.word[code][n]; rows.push('<tr><td>'+esc(code.toUpperCase())+'</td><td>'+n+'</td><td>'+r.size+'</td><td>'+r.dx+'</td><td>'+r.dy+'</td><td>'+Math.round(r.ww*100)+'%</td><td>'+Math.round((r.hh||1)*100)+'%</td><td>'+esc(r.from)+'</td><td><button type="button" data-del="word" data-c="'+esc(code)+'" data-n="'+n+'">remove</button></td></tr>'); }); });
+    $('rWord').innerHTML=rows.length?'<table><tr><th>Lang</th><th>Letters</th><th>Size</th><th>Left/right</th><th>Up/down</th><th>Width</th><th>Height</th><th>From</th><th></th></tr>'+rows.join('')+'</table>':'<p class="hint" style="text-align:left">None yet. Tap 📚 in a word’s tools.</p>';
+    var lr=[]; ['top','bot'].forEach(function(k){ Object.keys(R[k]).forEach(function(code){ (R[k][code]||[]).slice().sort(function(a,b){ return a.n-b.n; }).forEach(function(r){ lr.push('<tr><td>'+(k==='top'?'Top':'Bottom')+'</td><td>'+r.n+'</td><td>'+r.size+'</td><td>'+Math.round((r.lw||1)*100)+'%</td><td>'+r.slide+'%</td><td>'+esc(r.from)+'</td><td><button type="button" data-del="'+k+'" data-c="'+esc(code)+'" data-n="'+r.n+'">remove</button></td></tr>'); }); }); });
+    $('rLines').innerHTML=lr.length?'<table><tr><th>Line</th><th>Letters</th><th>Letter size</th><th>Width</th><th>Slide</th><th>From</th><th></th></tr>'+lr.join('')+'</table>':'<p class="hint" style="text-align:left">None yet. Each line fills its curve.</p>'; }
+  $('rulesBox').addEventListener('click',function(e){ var c=e.target.closest('[data-click]'); if(c){ $(c.dataset.click).click(); return; } var b=e.target.closest('[data-del]'); if(!b) return; var k=b.dataset.del, c=b.dataset.c, n=+b.dataset.n;
+    if(k==='word') delete S.rules.word[c][n]; else S.rules[k][c]=(S.rules[k][c]||[]).filter(function(r){ return r.n!==n; }); save(); LIST.forEach(draw); rules(); });
+  $('applyAll').addEventListener('click',function(){ LIST.forEach(function(X){ if(S.tpl[X.id]) return; var o=S.d[X.id]; if(!o) return; delete o.wl; delete o.tl; delete o.bl; clean(X.id); }); save(); LIST.forEach(draw); msg('The fish shown now follow the rules (templates keep their own).'); });
+  $('clearRules').addEventListener('click',function(){ S.rules={word:{},top:{},bot:{}}; S.tpl={}; save(); LIST.forEach(draw); rules(); msg('Rules cleared.'); });
+
+  // ═════ changes: count, save, send, copy, undo ═════
+  function adjText(a){ var p=[]; if(a.s!==1) p.push('size ×'+(+a.s).toFixed(2)); if(a.w!==1) p.push('width ×'+(+a.w).toFixed(2)); if(a.h!==1) p.push('height ×'+(+a.h).toFixed(2));
+    if(a.x) p.push((a.x<0?'left ':'right ')+Math.abs(a.x)); if(a.y) p.push((a.y<0?'up ':'down ')+Math.abs(a.y)); return p.length?p.join(' · ')+' (fish is 4000 × 2000)':''; }
+  function fishInfo(id){ if(/^W/.test(id)){ var f=N.fish.filter(function(x){ return x.k===id; })[0]; return {base:f||{},en:f?f.word:'',lang:'English'}; }
+    var num=parseInt(id,10), L=langOf(id.slice(-1)), w=D.words[num-1]; return {base:D.f[id]||{},en:w?w.en:'',lang:L?L.name:''}; }
+  function changes(onlyReady){ var out=[];
+    Object.keys(S.d).forEach(function(id){ var o=S.d[id], st=S.st[id]; if(st==='sent') return; if(onlyReady&&st!=='ready') return; var I=fishInfo(id), b=I.base, n=id.toUpperCase();
+      ['word','top','bot','ref','gkm','hbm','design','dnote'].forEach(function(f){ if(o[f]!=null&&o[f]!==(b[f]||'')) out.push({n:n,field:f,was:b[f]||'',now:o[f],lang:I.lang,en:I.en}); });
+      if(/^W/.test(id)){ var p=[]; if(o.wl) p.push('word size '+Math.round(o.wl.size)+', left/right '+Math.round(o.wl.dx)+', up/down '+Math.round(o.wl.dy)+', width '+Math.round(o.wl.ww*100)+'%, height '+Math.round((o.wl.hh||1)*100)+'%');
+          if(o.tl) p.push('top size '+Math.round(o.tl.size)+', width '+Math.round((o.tl.lw||1)*100)+'%, slide '+o.tl.slide+'%'); if(o.bl) p.push('bottom size '+Math.round(o.bl.size)+', width '+Math.round((o.bl.lw||1)*100)+'%, slide '+o.bl.slide+'%');
+          if(p.length) out.push({n:n,field:'layout',was:'rule',now:p.join('; '),lang:I.lang,en:I.en}); }
+      else { if(o.wl){ var t=adjText(o.wl); if(t) out.push({n:n,field:'layout',was:'',now:t,lang:I.lang,en:I.en}); }
+        var v=[]; [['tl','top'],['bl','bottom']].forEach(function(x){ var l=o[x[0]]; if(l) v.push(x[1]+': size '+Math.round(l.size)+', slide '+Math.round(l.slide)+', width '+Math.round(l.w*100)+'%'); });
+        if(v.length) out.push({n:n,field:'vlayout',was:'',now:v.join('; '),lang:I.lang,en:I.en}); } });
+    Object.keys(S.rules.word).forEach(function(code){ Object.keys(S.rules.word[code]).forEach(function(c){ var r=S.rules.word[code][c]; if(r.sent) return;
+      out.push({n:String(r.src).toUpperCase(),field:'template',was:'',now:'RULE '+code.toUpperCase()+' word '+c+' letters: size '+r.size+', left/right '+r.dx+', up/down '+r.dy+', width '+Math.round(r.ww*100)+'%, height '+Math.round((r.hh||1)*100)+'%',lang:code,en:r.from}); }); });
+    ['top','bot'].forEach(function(k){ Object.keys(S.rules[k]).forEach(function(code){ (S.rules[k][code]||[]).forEach(function(r){ if(r.sent) return;
+      out.push({n:String(r.src).toUpperCase(),field:'template',was:'',now:'RULE '+(k==='top'?'top':'bottom')+' line '+r.n+' letters: size '+r.size+', width '+Math.round((r.lw||1)*100)+'%, slide '+r.slide+'%',lang:code,en:r.from}); }); }); });
     return out; }
-  function counts(){ var c={}; changes().forEach(function(x){ var l=x.n.slice(-1); c[l]=(c[l]||0)+1; }); return c; }
-  function key(){ var c=counts(); $('key').innerHTML='<button type="button" data-l="all" aria-pressed="'+(show==='all')+'">All languages</button>'+D.langs.map(function(x){
-    return '<button type="button" data-l="'+x.l+'" aria-pressed="'+(show===x.l)+'"><i>'+x.l+'</i>'+esc(x.name)+(x.native!==x.name?' · '+esc(x.native):'')+(c[x.l]?'<span class="cnt">'+c[x.l]+'</span>':'')+'</button>'; }).join(''); }
-  function bar(){ var ch=changes(), n=ch.length, r=ch.filter(function(x){ return STAT[x.n]==='ready'; }).length; $('count').textContent=n?n+' change'+(n===1?'':'s'):'No changes yet'; $('send').disabled=!n;
-    $('sendReady').disabled=!r; $('sendReady').textContent='Send ready'+(r?' ('+r+')':''); stAll(); }
-  function render(){ key(); var langs=show==='all'?D.langs:D.langs.filter(function(x){ return x.l===show; }), qq=q.trim().toLowerCase(), h='';
-    D.words.forEach(function(w){ if(qq&&String(w.n)!==qq&&w.en.toLowerCase().indexOf(qq)<0&&w.key.toLowerCase().indexOf(qq)<0) return;
-      langs.forEach(function(L){ var n=w.n+L.l, rec=D.f[n], rtl=L.code==='he'||L.code==='ar', any=false;
-        var fields=F.map(function(f){ var was=rec[f[0]]||'', v=Object.prototype.hasOwnProperty.call(draft,id(n,f[0]))?draft[id(n,f[0])]:was, ch=v!==was; if(ch) any=true;
-          return '<div><label for="t'+n+f[0]+'">'+f[1]+'</label><textarea id="t'+n+f[0]+'" data-n="'+n+'" data-f="'+f[0]+'" rows="'+(f[0]==='word'||f[0]==='ref'?1:2)+'" lang="'+L.code+'"'+(rtl?' dir="rtl"':'')+(ch?' class="ch"':'')+'>'+esc(v)+'</textarea>'
-            +(ch?'<div class="was"><span>was: '+esc(was||'(empty)')+'</span><button type="button" data-undo="'+id(n,f[0])+'">↺ undo</button></div>':'')+'</div>'; }).join('');
-        var dz=Object.prototype.hasOwnProperty.call(draft,id(n,'design'))?draft[id(n,'design')]:'', dsel=dz?dz.split('; '):[], dn=Object.prototype.hasOwnProperty.call(draft,id(n,'dnote'))?draft[id(n,'dnote')]:'';
-        if(dz||dn) any=true;
-        var lay=Object.prototype.hasOwnProperty.call(draft,id(n,'layout'))?draft[id(n,'layout')]:''; if(lay||draft[id(n,'vlayout')]) any=true; if(draft[id(n,'vlayout')]) lay=lay||' ';
-        fields+='<details class="dz"'+(dz||dn||lay?' open':'')+' data-n="'+n+'" data-code="'+L.code+'"><summary>✎ The word in the middle and the verse lines'+(dsel.length||lay?' <b>(changed)</b>':'')+'</summary>'
-          +(L.code==='en'
-            ?'<p class="dzh">The English fish are hand-drawn, so tick what should change:</p><div class="dzo">'+DZ.map(function(o){ return '<label class="dzc"><input type="checkbox" data-dz="'+n+'" value="'+esc(o)+'"'+(dsel.indexOf(o)>=0?' checked':'')+'> '+esc(o)+'</label>'; }).join('')+'</div>'
-            :'<p class="dzh">Tap the word on the fish to move it, pinch it to size, or type the numbers. What you see is what gets sent.</p><div class="pv" id="pv'+n+'"></div><div class="wpanel" id="wp'+n+'"></div><p class="lay" id="lay'+n+'">'+esc(lay)+'</p><div id="vl'+n+'"></div>')
-          +'<textarea data-n="'+n+'" data-f="dnote" rows="2" placeholder="Anything else about how the fish looks (optional)"'+(dn?' class="ch"':'')+'>'+esc(dn)+'</textarea></details>';
-        h+='<article class="card'+(any?' changed':'')+'" id="c'+n+'"><div class="hd"><span class="num">'+n+'</span><b>'+esc(rec.word)+'</b><span>'+esc(w.en)+' · '+esc(L.name)+'</span><span class="st"></span>'
-          +(L.l<='I'?'<img src="/proof/img/'+n+'.jpg" alt="" width="792" height="398" loading="lazy" onerror="this.remove()">':'')+'</div><div class="grid">'+fields+'</div></article>'; }); });
-    $('list').innerHTML=h||'<p class="empty">No word matches.</p>'; bar(); }
-  $('list').addEventListener('input',function(e){ var t=e.target; if(!t.dataset||!t.dataset.n) return; var n=t.dataset.n, f=t.dataset.f, was=D.f[n][f]||'';
-    if(t.value===was) delete draft[id(n,f)]; else draft[id(n,f)]=t.value; save(); var ch=t.value!==was; t.classList.toggle('ch',ch);
-    var wl=t.parentNode.querySelector('.was'); if(f==='dnote') wl=true; else if(ch&&!wl) t.insertAdjacentHTML('afterend','<div class="was"><span>was: '+esc(was||'(empty)')+'</span><button type="button" data-undo="'+id(n,f)+'">↺ undo</button></div>'); else if(!ch&&wl&&wl.remove) wl.remove();
-    var c=t.closest('.card'); c.classList.toggle('changed',!!c.querySelector('textarea.ch')); bar(); key(); });
-  $('list').addEventListener('change',function(e){ var c=e.target; if(!c.dataset||!c.dataset.dz) return; var n=c.dataset.dz, box=c.closest('.dz'), sel=[].map.call(box.querySelectorAll('input[data-dz]:checked'),function(x){ return x.value; });
-    if(sel.length) draft[id(n,'design')]=sel.join('; '); else delete draft[id(n,'design')]; save();
-    var sm=box.querySelector('summary'); sm.innerHTML='✎ The word in the middle and the verse lines'+(sel.length?' <b>('+sel.length+')</b>':'');
-    var card=box.closest('.card'); card.classList.toggle('changed',!!(sel.length||card.querySelector('textarea.ch'))); bar(); key(); });
-  $('list').addEventListener('toggle',function(e){ if(e.target.classList&&e.target.classList.contains('dz')&&e.target.open) adjShow(e.target); },true);
-  $('list').addEventListener('click',function(e){ var b=e.target.closest('.adj button'); if(!b) return; var n=b.closest('.adj').dataset.adj, a=ADJS[n]; if(!a) return;
-    var st={big:['s',.05],small:['s',-.05],tall:['h',.05],short:['h',-.05],wide:['w',.05],narrow:['w',-.05]}[b.dataset.a];
-    if(st) a[st[0]]=Math.max(.3,Math.round((a[st[0]]+st[1])*100)/100); else if(b.dataset.a==='left') a.x-=30; else if(b.dataset.a==='right') a.x+=30; else if(b.dataset.a==='up') a.y-=30; else if(b.dataset.a==='down') a.y+=30; else if(b.dataset.a==='reset') ADJS[n]=a={s:1,w:1,h:1,x:0,y:0};
-    adjApply(n); var tx=adjText(a); if(tx) draft[id(n,'layout')]=tx; else delete draft[id(n,'layout')]; save(); $('lay'+n).textContent=tx;
-    var box=b.closest('.dz'), card=box.closest('.card'); box.querySelector('summary').innerHTML='✎ The word in the middle and the verse lines'+(tx||box.querySelector('input:checked')?' <b>(changed)</b>':'');
-    card.classList.toggle('changed',!!(tx||card.querySelector('textarea.ch')||card.querySelector('.dz input:checked'))); bar(); key(); });
-  $('list').addEventListener('click',function(e){ var u=e.target.closest('[data-undo]'); if(!u) return; delete draft[u.dataset.undo]; save(); render(); });
-  $('list').addEventListener('click',function(e){ var b=e.target.closest('[data-st]'); if(b){ var n=b.dataset.n, v=b.dataset.st; if(STAT[n]===v) delete STAT[n]; else STAT[n]=v; keep(); bar(); return; }
-    var bk=e.target.closest('[data-back]'); if(bk){ var m=bk.dataset.back; Object.keys(draft).forEach(function(k){ if(k.split('.')[0]===m) delete draft[k]; }); Object.keys(SAVED).forEach(function(k){ if(k.split('.')[0]===m) draft[k]=SAVED[k]; }); save(); render(); } });
-  $('saveAll').addEventListener('click',function(){ SAVED=JSON.parse(JSON.stringify(draft)); keep(); bar(); $('msg').className='msg'; $('msg').textContent='Saved on this device. Keep working; nothing is sent until you tap Send.'; });
-  $('key').addEventListener('click',function(e){ var b=e.target.closest('button[data-l]'); if(!b) return; show=b.dataset.l; try{ localStorage.setItem('mf-edit-show',show); }catch(x){} render(); window.scrollTo(0,0); });
-  $('find').addEventListener('input',function(){ q=this.value; render(); });
-  function listText(ch){ var who=$('who').value.trim(); return 'MannaFish edits: '+ch.length+' change'+(ch.length===1?'':'s')+(who?' from '+who:'')+'\n\n'+ch.map(function(x){ var F2={design:'Word in the middle: design fixes',dnote:'Design note',layout:'Word in the middle: size and position',template:'Rule for all fish',vlayout:'Verse lines: size and position'}; F.forEach(function(f){ F2[f[0]]=f[1]; });
-    return x.n+' · '+x.en+' · '+x.lang+' · '+F2[x.field]+'\n   was: '+x.was+'\n   now: '+x.now; }).join('\n\n'); }
-  $('copy').addEventListener('click',function(){ var ch=changes(); if(!ch.length){ $('msg').textContent='No changes yet.'; return; } var t=listText(ch);
-    (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){ $('msg').className='msg'; $('msg').textContent='Copied: paste it to Claude, or anywhere.'; },function(){ $('msg').textContent='Could not copy on this device.'; }); });
-  $('undo').addEventListener('click',function(){ if(!changes().length) return; if(!confirm('Undo every change you made here?')) return; draft={}; save(); render(); $('msg').textContent=''; });
+  function count(){ if(!D||!N) return; var ch=changes(), n=ch.length, r=changes(true).filter(function(x){ return x.field!=='template'; }).length;
+    $('count').textContent=n?n+' change'+(n>1?'s':''):'No changes'; $('send').disabled=!n; $('sendReady').disabled=!r; $('sendReady').textContent='Send ready'+(r?' ('+r+')':'');
+    var un=Object.keys(Object.assign({},S.d,S.saved)).filter(unsaved).length; $('saveAll').textContent=un?'💾 Save ('+un+')':'💾 Saved'; }
+  function msg(t,err){ var m=$('msg'); m.textContent=t; m.className='msg'+(err?' err':''); }
+  $('saveAll').addEventListener('click',function(){ Object.keys(Object.assign({},S.d,S.saved)).forEach(function(id){ if(S.d[id]) S.saved[id]=snap(id); else delete S.saved[id]; }); save(); LIST.forEach(status); msg('Saved on this device. Keep working; nothing is sent until you tap Send.'); });
   $('sendReady').addEventListener('click',function(){ sendSome(true,this); });
   $('send').addEventListener('click',function(){ sendSome(false,this); });
-  function sendSome(onlyReady,b){ var ch=changes().filter(function(x){ return !onlyReady||STAT[x.n]==='ready'||x.field==='template'; }), who=$('who').value.trim(); if(!ch.length) return; try{ localStorage.setItem('mf-proof-name',who); }catch(e){}
-    b.disabled=true; $('msg').className='msg'; $('msg').textContent='Sending…';
-    fetch('/api/proof-fix',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({batch:ch,name:who})}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||'Could not send'); return j; }); })
-      .then(function(j){ var sent={}; ch.forEach(function(x){ sent[x.n]=1; }); Object.keys(draft).forEach(function(k){ if(sent[k.split('.')[0]]) delete draft[k]; }); Object.keys(SAVED).forEach(function(k){ if(sent[k.split('.')[0]]) delete SAVED[k]; }); Object.keys(sent).forEach(function(n){ delete STAT[n]; }); keep(); save(); Object.keys(RULES).forEach(function(c){ Object.keys(RULES[c]).forEach(function(n){ RULES[c][n].sent=true; }); }); saveRules(); render(); $('msg').className='msg'; $('msg').textContent='Sent: '+j.n+' change'+(j.n===1?'':'s')+'. They are in your email. Paste that email to Claude and they go on the site.'; })
-      .catch(function(e){ b.disabled=false; $('msg').className='msg err'; $('msg').textContent=(e.message||'Could not send')+'. Your changes are still here; try again, or use Copy the list.'; }); }
-  load();
-  fetch('/edit/data.json',{cache:'no-store'}).then(function(r){ return r.json(); }).then(function(d){ D=d; if(show!=='all'&&!D.langs.some(function(x){ return x.l===show; })) show='A'; render(); })
-    .catch(function(){ $('list').innerHTML='<p class="empty">The words could not be loaded. Please reload the page.</p>'; });
+  function sendSome(onlyReady,btn){ var ch=changes(onlyReady), who=$('who').value.trim(); if(!ch.length) return; ls('mf-proof-name',who); btn.disabled=true; msg('Sending…');
+    fetch('/api/proof-fix',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({batch:ch,name:who,note:'Edit sheet (/edit/)'})})
+      .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||'Could not send'); return j; }); })
+      .then(function(j){ var ids={}; ch.forEach(function(x){ if(x.field!=='template') ids[x.n]=1; });
+        Object.keys(S.d).forEach(function(id){ if(ids[id.toUpperCase()]){ S.st[id]='sent'; S.saved[id]=snap(id); } });
+        Object.keys(S.rules.word).forEach(function(c){ Object.keys(S.rules.word[c]).forEach(function(n){ S.rules.word[c][n].sent=true; }); });
+        ['top','bot'].forEach(function(k){ Object.keys(S.rules[k]).forEach(function(c){ (S.rules[k][c]||[]).forEach(function(r){ r.sent=true; }); }); });
+        save(); LIST.forEach(status); msg('Sent '+j.n+' change'+(j.n===1?'':'s')+'. They are in your email; paste it to Claude. The fish stay here marked ✓ Sent.'); count(); })
+      .catch(function(e){ btn.disabled=false; msg((e.message||'Could not send')+'. Your changes are still here; try again, or use Copy the list.',true); }); }
+  $('copy').addEventListener('click',function(){ var ch=changes(); if(!ch.length){ msg('No changes yet.'); return; }
+    var t='MannaFish edits: '+ch.length+'\n\n'+ch.map(function(x){ return x.n+' · '+x.en+' · '+x.lang+' · '+(FIELD[x.field]||x.field)+'\n   was: '+x.was+'\n   now: '+x.now; }).join('\n\n');
+    (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){ msg('Copied: paste it to Claude.'); },function(){ msg('Could not copy on this device.',true); }); });
+  var undoArm=0; $('undo').addEventListener('click',function(){ if(Date.now()-undoArm>4000){ undoArm=Date.now(); msg('Tap Undo all again to undo every change on this device.',true); return; }
+    S=blank(); save(); render(); msg('Back to how the fish were.'); });
+
+  // ═════ start ═════
+  $('who').value=ls('mf-proof-name')||'';
+  Promise.all([fetch('/edit/data.json',{cache:'no-store'}).then(function(r){ return r.json(); }),fetch('/edit/new/data.json').then(function(r){ return r.json(); }),fetch('/edit/new/base.svg').then(function(r){ return r.text(); }),document.fonts.load('100px MFHobo')])
+    .then(function(x){ D=x[0]; N=x[1]; BASE=x[2]; if(/[?&]set=new/.test(location.search)) set='new'; if(set==='24'&&lang!=='all'&&!D.langs.some(function(l){ return l.l===lang; })) lang='B'; render(); })
+    .catch(function(){ $('list').innerHTML='<p class="empty">The fish could not be loaded. Please reload the page.</p>'; });
 })();
 </script>
 </body>
