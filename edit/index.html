@@ -162,7 +162,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   var FIELD={word:'Word',top:'Verse line 1',bot:'Verse line 2',ref:'Reference',gkm:'Greek meaning',hbm:'Hebrew meaning',design:'Word in the middle: design fixes',dnote:'Design note',layout:'Size and position',vlayout:'Verse lines: size and position',template:'Rule for all fish'};
   var DZ=['Make bigger','Make smaller','Move left','Move right','Move up','Move down','Stretch taller (vertically)','Stretch wider (horizontally)','Squeeze narrower','Spelling or letters look wrong'];
   // the new fish: Ken's HOPE body and tail, drawn here (eye centre, usable width, the reference on the lower tail)
-  var G={cx:1705,cy:993.6,eyeW:1900,cap:867,ref:{x:3550.39,y:1562.6,rot:'rotate(49.97 3550.386836451912 1494.7294054190638)',size:167.7,avail:937.5}};
+  var G={cx:1705,cy:993.6,eyeW:1900,cap:867,ref:{x:3550.39,y:1562.6,rot:'rotate(49.97 3550.386836451912 1494.7294054190638)',size:167.7,avail:1000}};   // avail: the room on the lower tail, tip to the fold
   var V={start:0.02,end:0.98,min:170,max:230};
   var FONTFILE={'MFHobo':'hobo','ZCOOL KuaiLe':'zh','Baloo 2':'hi','Ubuntu':'el','Jua':'ko','Fredoka':'he','Cairo':'ar'};
 
@@ -283,7 +283,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
       var E={word:t(),top:t(),bot:t(),ref:t()};
       ['top','bot'].forEach(function(w){ var tp=document.createElementNS(NS,'textPath'); tp.setAttribute('href','#'+X.id+'g_'+w); tp.setAttribute('text-anchor','middle'); E[w].appendChild(tp); E[w].setAttribute('fill','#000'); });
       E.word.setAttribute('fill','#fff'); E.word.setAttribute('text-anchor','middle');
-      E.ref.setAttribute('fill','#000'); E.ref.setAttribute('text-anchor','middle'); E.ref.setAttribute('x',G.ref.x); E.ref.setAttribute('y',G.ref.y); E.ref.setAttribute('transform',G.ref.rot); E.ref.setAttribute('font-size',G.ref.size);
+      E.ref.setAttribute('fill','#000'); E.ref.setAttribute('stroke','#000'); E.ref.setAttribute('stroke-width','7'); E.ref.setAttribute('stroke-linejoin','round'); E.ref.setAttribute('text-anchor','middle'); E.ref.setAttribute('x',G.ref.x); E.ref.setAttribute('y',G.ref.y); E.ref.setAttribute('transform',G.ref.rot); E.ref.setAttribute('font-size',G.ref.size);
       X.svg=svg; X.E=E; X.plen={top:svg.querySelector('[id="'+X.id+'g_top"]').getTotalLength(),bot:svg.querySelector('[id="'+X.id+'g_bot"]').getTotalLength()};
       draw(X); tool(X); return Promise.resolve(); }
     return fishJson(X.code).then(function(m){ pv.innerHTML=(m[X.key]||'').replace(/id="(g_[a-z]+)"/g,'id="'+X.id+'$1"').replace(/href="#(g_[a-z]+)"/g,'href="#'+X.id+'$1"');
@@ -293,6 +293,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
         var so=tp.getAttribute('startOffset')||'0', tl=+tp.getAttribute('textLength')||0;
         E[w]=tx; B[w]={tp:tp,off0:/%$/.test(so)?parseFloat(so)/100*L:+so,fs0:+tx.getAttribute('font-size')||220,tl0:tl||tp.getComputedTextLength(),hadTL:!!tl,txt0:tp.textContent}; });
       E.ref=[].filter.call(svg.querySelectorAll('text'),function(t){ return /rotate/.test(t.getAttribute('transform')||''); })[0]||null;
+      if(E.ref){ E.ref.setAttribute('stroke','#000'); E.ref.setAttribute('stroke-width','7'); E.ref.setAttribute('stroke-linejoin','round'); }   // a little bolder, like the MannaFish lettering
       X.E=E; X.B=B; draw(X); tool(X); }); }
   function draw(X){ if(!X.svg){ if(X.el) status(X); return; }
     if(X.set==='new'){ var E=X.E, word=val(X,'word'), v=wordGet(X), m=meas(word,v.size);
@@ -300,9 +301,16 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
       if(Math.abs(v.ww-1)>1e-3){ E.word.setAttribute('textLength',(m.w*v.ww).toFixed(1)); E.word.setAttribute('lengthAdjust','spacingAndGlyphs'); } else { E.word.removeAttribute('textLength'); E.word.removeAttribute('lengthAdjust'); }
       var my=G.cy+v.dy; if(Math.abs((v.hh||1)-1)>1e-3) E.word.setAttribute('transform','translate(0 '+my.toFixed(1)+') scale(1 '+(+v.hh).toFixed(3)+') translate(0 '+(-my).toFixed(1)+')'); else E.word.removeAttribute('transform');
       ['top','bot'].forEach(function(w){ var el=E[w], tp=el.firstChild, txt=val(X,w), L=X.plen[w], span=L*(V.end-V.start), lv=lineGet(X,w), len=meas(txt,lv.size).w;
-        el.setAttribute('font-size',lv.size.toFixed(1)); tp.textContent=txt; tp.setAttribute('startOffset',((V.start+V.end)/2*100+lv.slide).toFixed(2)+'%');
-        var want=Math.min(L*0.99,Math.min(len,span)*lv.w); if(Math.abs(want-len)>0.5){ tp.setAttribute('textLength',want.toFixed(1)); tp.setAttribute('lengthAdjust','spacingAndGlyphs'); } else { tp.removeAttribute('textLength'); tp.removeAttribute('lengthAdjust'); } });
-      var r=val(X,'ref')+' (KJV)'; if(meas(r,G.ref.size).w>G.ref.avail) r=X.nf.refShort+' (KJV)'; E.ref.textContent=r;
+        // Ken, 19 Oct: "can you assume at least the balance of where the verse should go" -- a line never runs off its curve:
+        // it stays between 2% and 98% of the curve, whatever its slide or width
+        var want=Math.min(span,Math.min(len,span)*lv.w), mid=L*((V.start+V.end)/2+lv.slide/100), lo=L*V.start+want/2, hi=L*V.end-want/2;
+        mid=Math.max(lo,Math.min(hi,mid));
+        el.setAttribute('font-size',lv.size.toFixed(1)); tp.textContent=txt; tp.setAttribute('startOffset',(mid/L*100).toFixed(2)+'%');
+        if(Math.abs(want-len)>0.5){ tp.setAttribute('textLength',want.toFixed(1)); tp.setAttribute('lengthAdjust','spacingAndGlyphs'); } else { tp.removeAttribute('textLength'); tp.removeAttribute('lengthAdjust'); } });
+      // Ken, 19 Oct: "some scripture refs do not need to be abbreviated, like Kings, Ruth, Ezra" -- a short book name (6 letters or
+      // fewer) is always written out and narrowed a little if it must; a long one is shortened only when it doesn't fit
+      var ref=val(X,'ref'), book=ref.replace(/\s*\d+[:.,]\d.*$/,'').replace(/^\d\s*/,''), r=ref+' (KJV)';
+      if(book.length>6&&meas(r,G.ref.size).w>G.ref.avail&&ref===X.base.ref) r=X.nf.refShort+' (KJV)'; E.ref.textContent=r;
       if(meas(r,G.ref.size).w>G.ref.avail){ E.ref.setAttribute('textLength',G.ref.avail); E.ref.setAttribute('lengthAdjust','spacingAndGlyphs'); } else { E.ref.removeAttribute('textLength'); E.ref.removeAttribute('lengthAdjust'); }
     } else if(!X.drawn){ var B=X.B, E2=X.E, a=rel24(X), o=S.d[X.id]||{};
       E2.word.textContent=rtl(X,val(X,'word'));
