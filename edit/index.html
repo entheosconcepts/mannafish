@@ -111,15 +111,15 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
     fishOf(code).then(function(m){ pv.innerHTML=m[k]||''; var t=pv.querySelector('text[fill="#fff"]'), svg=pv.querySelector('svg'); if(!t||!svg) return;
       ADJS[n]=adjParse(draft[id(n,'layout')]); adjApply(n); var fs0=+t.dataset.fs, word=D.f[n].word, L=D.langs.filter(function(x){ return x.l===n.slice(-1); })[0];
       function fromRule(){ if(draft[id(n,'layout')]) return null; return MFWordTool.ruleFor(RULES[code],letters(word)); }
-      function show(){ var r=fromRule(); if(r){ ADJS[n]={s:r.size/fs0,w:r.ww,h:1,x:r.dx,y:r.dy}; adjApply(n); } }
+      function show(){ var r=fromRule(); if(r){ ADJS[n]={s:r.size/fs0,w:r.ww,h:r.hh||1,x:r.dx,y:r.dy}; adjApply(n); } }
       show(); pv._show=show;
       MFWordTool.attach({svg:svg,text:function(){ return t; },panel:$('wp'+n),langName:L?L.name:code,
         n:function(){ return letters(word); },
-        get:function(){ var a=ADJS[n]; return {size:fs0*a.s,dx:a.x,dy:a.y,ww:a.w}; },
-        set:function(v){ var a=ADJS[n]; a.s=Math.round(v.size/fs0*1000)/1000; a.w=Math.round(v.ww*1000)/1000; a.x=Math.round(v.dx); a.y=Math.round(v.dy); adjApply(n); setLay(n,box); },
+        get:function(){ var a=ADJS[n]; return {size:fs0*a.s,dx:a.x,dy:a.y,ww:a.w,hh:a.h}; },
+        set:function(v){ var a=ADJS[n]; a.s=Math.round(v.size/fs0*1000)/1000; a.w=Math.round(v.ww*1000)/1000; a.h=Math.round((v.hh||1)*1000)/1000; a.x=Math.round(v.dx); a.y=Math.round(v.dy); adjApply(n); setLay(n,box); },
         reset:function(){ ADJS[n]={s:1,w:1,h:1,x:0,y:0}; adjApply(n); setLay(n,box); },
         learned:function(){ return draft[id(n,'layout')]?'set by you':fromRule()?'from your rule':''; },
-        onLearn:function(v){ var c=letters(word); RULES[code]=RULES[code]||{}; RULES[code][c]={size:Math.round(v.size),dx:Math.round(v.dx),dy:Math.round(v.dy),ww:+(+v.ww).toFixed(3),src:n,from:word}; saveRules();
+        onLearn:function(v){ var c=letters(word); RULES[code]=RULES[code]||{}; RULES[code][c]={size:Math.round(v.size),dx:Math.round(v.dx),dy:Math.round(v.dy),ww:+(+v.ww).toFixed(3),hh:+(+(v.hh||1)).toFixed(3),src:n,from:word}; saveRules();
           [].forEach.call(document.querySelectorAll('.pv'),function(x){ if(x._show&&x!==pv) x._show(); }); bar();
           return 'Saved: every '+c+'-letter word in '+(L?L.name:code)+' now uses size '+Math.round(v.size)+'.'; }});
     }).catch(function(){ pv.textContent='The fish could not be loaded.'; }); }
@@ -135,7 +135,7 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
     if(draft[k]!==was){ var w=D.words[parseInt(n,10)-1], L=D.langs.filter(function(x){ return x.l===n.slice(-1); })[0]; out.push({n:n,field:f,was:was,now:draft[k],lang:L?L.name:'',en:w?w.en:''}); } });
     out.sort(function(a,b){ return parseInt(a.n,10)-parseInt(b.n,10)||a.n.localeCompare(b.n); });
     Object.keys(RULES).forEach(function(code){ var L=D.langs.filter(function(x){ return x.code===code; })[0]; Object.keys(RULES[code]).forEach(function(c){ var r=RULES[code][c]; if(r.sent) return;
-      out.push({n:r.src,field:'template',was:'',now:'RULE '+(L?L.name:code)+' word '+c+' letters: size '+r.size+', left/right '+r.dx+', up/down '+r.dy+', width '+Math.round(r.ww*100)+'%',lang:L?L.name:code,en:r.from}); }); });
+      out.push({n:r.src,field:'template',was:'',now:'RULE '+(L?L.name:code)+' word '+c+' letters: size '+r.size+', left/right '+r.dx+', up/down '+r.dy+', width '+Math.round(r.ww*100)+'%, height '+Math.round((r.hh||1)*100)+'%',lang:L?L.name:code,en:r.from}); }); });
     return out; }
   function counts(){ var c={}; changes().forEach(function(x){ var l=x.n.slice(-1); c[l]=(c[l]||0)+1; }); return c; }
   function key(){ var c=counts(); $('key').innerHTML='<button type="button" data-l="all" aria-pressed="'+(show==='all')+'">All languages</button>'+D.langs.map(function(x){

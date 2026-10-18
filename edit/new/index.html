@@ -133,16 +133,16 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
   // ── what a fish is drawn with: its own numbers, else the rules, else the plain rule ──
   function wordSet(f){ var a=(S.f[f.k]||{}).word; if(a) return {v:Object.assign({},a),from:'own'};
     var r=MFWordTool.ruleFor(S.rules.word,f.word.length);
-    if(r){ var v={size:r.size,dx:r.dx,dy:r.dy,ww:r.ww}, max=100*G.eyeW*1.03/(meas(f.word,100).ink*v.ww); if(v.size>max) v.size=max;
+    if(r){ var v={size:r.size,dx:r.dx,dy:r.dy,ww:r.ww,hh:r.hh||1}, max=100*G.eyeW*1.03/(meas(f.word,100).ink*v.ww); if(v.size>max) v.size=max;
       return {v:v,from:r.exact?'rule':'rule for '+(r.between?r.between.join('–'):r.near)+' letters'}; }
-    return {v:{size:fitWord(f.word),dx:0,dy:0,ww:1},from:'plain'}; }
+    return {v:{size:fitWord(f.word),dx:0,dy:0,ww:1,hh:1},from:'plain'}; }
   function lineRule(list,n){ if(!list.length) return null; var s=list.slice().sort(function(a,b){ return a.n-b.n; }), lo=null, hi=null;
     s.forEach(function(r){ if(r.n<=n) lo=r; if(r.n>=n&&!hi) hi=r; });
-    if(lo&&hi){ if(lo===hi) return {size:lo.size,slide:lo.slide,exact:true}; var t=(n-lo.n)/(hi.n-lo.n); return {size:lo.size+(hi.size-lo.size)*t,slide:lo.slide+(hi.slide-lo.slide)*t}; }
-    var r=lo||hi; return {size:r.size,slide:r.slide}; }
-  function lineSet(f,w,L){ var a=(S.f[f.k]||{})[w]; if(a) return {v:Object.assign({},a),from:'own'}; var t=text(f,w), r=lineRule(S.rules[w],t.length);
-    if(r) return {v:{size:r.size,slide:r.slide},from:r.exact?'rule':'rules nearby'};
-    var span=L*(V.end-V.start); return {v:{size:Math.max(V.min,Math.min(V.max,100*span/meas(t,100).w)),slide:0},from:'plain'}; }
+    if(lo&&hi){ if(lo===hi) return {size:lo.size,slide:lo.slide,lw:lo.lw||1,exact:true}; var t=(n-lo.n)/(hi.n-lo.n); return {size:lo.size+(hi.size-lo.size)*t,slide:lo.slide+(hi.slide-lo.slide)*t,lw:(lo.lw||1)+((hi.lw||1)-(lo.lw||1))*t}; }
+    var r=lo||hi; return {size:r.size,slide:r.slide,lw:r.lw||1}; }
+  function lineSet(f,w,L){ var a=(S.f[f.k]||{})[w]; if(a) return {v:Object.assign({lw:1},a),from:'own'}; var t=text(f,w), r=lineRule(S.rules[w],t.length);
+    if(r) return {v:{size:r.size,slide:r.slide,lw:r.lw},from:r.exact?'rule':'rules nearby'};
+    var span=L*(V.end-V.start); return {v:{size:Math.max(V.min,Math.min(V.max,100*span/meas(t,100).w)),slide:0,lw:1},from:'plain'}; }
 
   // ── drawing ──
   function build(f){ var box=document.createElement('div'); box.className='pv'; box.innerHTML=BASE.replace(/id="g_(\w+)"/g,'id="'+f.k+'g_$1"');
@@ -155,15 +155,18 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
     return d; }
   function drawWord(f,v){ var d=cards[f.k].d, m=meas(f.word,v.size);
     d.word.setAttribute('font-size',v.size.toFixed(1)); d.word.setAttribute('x',(G.cx+v.dx).toFixed(1)); d.word.setAttribute('y',(G.cy+(m.asc-m.desc)/2+v.dy).toFixed(1));
-    if(Math.abs(v.ww-1)>1e-3){ d.word.setAttribute('textLength',(m.w*v.ww).toFixed(1)); d.word.setAttribute('lengthAdjust','spacingAndGlyphs'); } else { d.word.removeAttribute('textLength'); d.word.removeAttribute('lengthAdjust'); } }
+    if(Math.abs(v.ww-1)>1e-3){ d.word.setAttribute('textLength',(m.w*v.ww).toFixed(1)); d.word.setAttribute('lengthAdjust','spacingAndGlyphs'); } else { d.word.removeAttribute('textLength'); d.word.removeAttribute('lengthAdjust'); }
+    var hh=v.hh||1, my=G.cy+v.dy; if(Math.abs(hh-1)>1e-3) d.word.setAttribute('transform','translate(0 '+my.toFixed(1)+') scale(1 '+hh.toFixed(3)+') translate(0 '+(-my).toFixed(1)+')'); else d.word.removeAttribute('transform'); }
   function drawLine(f,w){ var c=cards[f.k], d=c.d, el=d[w], tp=el.firstChild, t=text(f,w), L=plen[w], span=L*(V.end-V.start), st=lineSet(f,w,L), v=st.v, len=meas(t,v.size).w;
     el.setAttribute('font-size',v.size.toFixed(1)); tp.textContent=t; tp.setAttribute('startOffset',((V.start+V.end)/2*100+v.slide).toFixed(2)+'%');
-    if(len>span){ tp.setAttribute('textLength',span.toFixed(1)); tp.setAttribute('lengthAdjust','spacingAndGlyphs'); } else { tp.removeAttribute('textLength'); tp.removeAttribute('lengthAdjust'); }
+    var lw=v.lw||1, want=Math.min(L*0.99,Math.min(len,span)*lw);   // Ken, 18 Oct: stretch or squeeze a line without changing the letters' height
+    if(Math.abs(want-len)>0.5){ tp.setAttribute('textLength',want.toFixed(1)); tp.setAttribute('lengthAdjust','spacingAndGlyphs'); } else { tp.removeAttribute('textLength'); tp.removeAttribute('lengthAdjust'); }
     var box=c.el.querySelector('[data-line="'+w+'"]');
-    box.querySelector('h3 i').textContent=t.length+' letters · size '+Math.round(v.size)+(len>span?' · narrowed to fit':'')+(st.from==='own'?' · set by you':st.from==='plain'?'':' · from the '+st.from);
+    box.querySelector('h3 i').textContent=t.length+' letters · letter size '+Math.round(v.size)+' · width '+Math.round(want/len*100)+'%'+(st.from==='own'?' · set by you':st.from==='plain'?'':' · from the '+st.from);
+    if(document.activeElement!==box.querySelector('[data-k=lw]')) box.querySelector('[data-k=lw]').value=Math.round(lw*100);
     if(document.activeElement!==box.querySelector('[data-k=size]')) box.querySelector('[data-k=size]').value=Math.round(v.size);
     if(document.activeElement!==box.querySelector('[data-k=slide]')) box.querySelector('[data-k=slide]').value=Math.round(v.slide*10)/10;
-    box.querySelector('.learn').textContent='📚 Use size '+Math.round(v.size)+' for '+(w==='top'?'top':'bottom')+' lines of about '+t.length+' letters'; }
+    box.querySelector('.learn').textContent='📚 Use size '+Math.round(v.size)+', width '+Math.round(lw*100)+'% for '+(w==='top'?'top':'bottom')+' lines of about '+t.length+' letters'; }
   function isChanged(k){ var a=S.f[k]; return !!(a&&(a.word||a.top||a.bot||a.topT!=null||a.botT!=null)); }
   function draw(f){ var c=cards[f.k]; if(!c||!c.d) return; var d=c.d;
     drawWord(f,wordSet(f).v); drawLine(f,'top'); drawLine(f,'bot');
@@ -175,8 +178,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
 
   // ── cards ──
   function lineGrp(w,label){ return '<div class="grp" data-line="'+w+'"><h3>'+label+' <i></i></h3><input class="ln" data-l="'+w+'" aria-label="'+label+' words">'
-    +'<div class="lrow"><label>Size<input type="number" step="5" data-k="size" inputmode="decimal"></label><label>Slide %<input type="number" step="0.5" data-k="slide" inputmode="decimal"></label>'
-    +'<button type="button" data-b="s-">A−</button><button type="button" data-b="s+">A+</button><button type="button" data-b="x-">←</button><button type="button" data-b="x+">→</button><button type="button" data-b="0">↺</button>'
+    +'<div class="lrow"><label>Letter size<input type="number" step="5" data-k="size" inputmode="decimal"></label><label>Width %<input type="number" step="1" data-k="lw" inputmode="decimal"></label><label>Slide %<input type="number" step="0.5" data-k="slide" inputmode="decimal"></label>'
+    +'<button type="button" data-b="s-">A−</button><button type="button" data-b="s+">A+</button><button type="button" data-b="w-" title="Squeeze">↔−</button><button type="button" data-b="w+" title="Stretch">↔+</button><button type="button" data-b="x-">←</button><button type="button" data-b="x+">→</button><button type="button" data-b="0">↺</button>'
     +'<button type="button" class="learn" data-b="learn"></button></div><p class="note" aria-live="polite"></p></div>'; }
   function card(f){ var el=document.createElement('article'); el.className='card'; el.dataset.k=f.k;
     el.innerHTML='<div class="hd"><span class="num">Week '+f.w+'</span><b>'+esc(f.word)+'</b><span>'+esc(f.ref)+' · '+esc(f.series)+(f.first?' · first pick':'')+'</span><button class="star" type="button" aria-pressed="false">⭐ Use as template</button></div>'
@@ -188,36 +191,36 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
     if(!plen.top){ plen.top=c.d.svg.querySelector('[id="'+f.k+'g_top"]').getTotalLength(); plen.bot=c.d.svg.querySelector('[id="'+f.k+'g_bot"]').getTotalLength(); }
     c.tool=MFWordTool.attach({svg:c.d.svg,text:function(){ return c.d.word; },panel:c.el.querySelector('.wpanel'),langName:'English',
       n:function(){ return f.word.length; }, get:function(){ return wordSet(f).v; },
-      set:function(v){ own(f.k).word={size:+v.size,dx:+v.dx,dy:+v.dy,ww:+v.ww}; drawWord(f,v); c.el.classList.add('changed'); },
+      set:function(v){ own(f.k).word={size:+v.size,dx:+v.dx,dy:+v.dy,ww:+v.ww,hh:+(v.hh||1)}; drawWord(f,v); c.el.classList.add('changed'); },
       done:function(){ save(); }, reset:function(){ delete own(f.k).word; save(); draw(f); },
       learned:function(){ var s=wordSet(f); return s.from==='own'?'set by you':s.from==='plain'?'':'from the '+s.from; },
-      onLearn:function(v){ S.rules.word[f.word.length]={size:Math.round(v.size),dx:Math.round(v.dx),dy:Math.round(v.dy),ww:+(+v.ww).toFixed(3),src:f.k,from:f.word}; save(); redrawAll();
+      onLearn:function(v){ S.rules.word[f.word.length]={size:Math.round(v.size),dx:Math.round(v.dx),dy:Math.round(v.dy),ww:+(+v.ww).toFixed(3),hh:+(+(v.hh||1)).toFixed(3),src:f.k,from:f.word}; save(); redrawAll();
         return 'Saved: every '+f.word.length+'-letter word now uses size '+Math.round(v.size)+'.'; }});
     draw(f); }
   function redrawAll(){ DATA.fish.forEach(function(f){ if(cards[f.k].d) draw(f); }); rules(); }
 
   function learnLine(f,w){ var st=lineSet(f,w,plen[w]), n=text(f,w).length, list=S.rules[w].filter(function(r){ return r.n!==n; });
-    list.push({n:n,size:Math.round(st.v.size),slide:Math.round(st.v.slide*10)/10,src:f.k,from:f.word}); S.rules[w]=list; return {n:n,size:Math.round(st.v.size)}; }
+    list.push({n:n,size:Math.round(st.v.size),slide:Math.round(st.v.slide*10)/10,lw:+(+(st.v.lw||1)).toFixed(3),src:f.k,from:f.word}); S.rules[w]=list; return {n:n,size:Math.round(st.v.size)}; }
   function onClick(e){ var el=e.target.closest('.card'); if(!el) return; var k=el.dataset.k, f=fishOf(k);
     if(e.target.closest('.star')){ if(S.tpl[k]) delete S.tpl[k];
-      else { S.tpl[k]=1; var v=wordSet(f).v; S.rules.word[f.word.length]={size:Math.round(v.size),dx:Math.round(v.dx),dy:Math.round(v.dy),ww:+(+v.ww).toFixed(3),src:k,from:f.word}; learnLine(f,'top'); learnLine(f,'bot'); }
+      else { S.tpl[k]=1; var v=wordSet(f).v; S.rules.word[f.word.length]={size:Math.round(v.size),dx:Math.round(v.dx),dy:Math.round(v.dy),ww:+(+v.ww).toFixed(3),hh:+(+(v.hh||1)).toFixed(3),src:k,from:f.word}; learnLine(f,'top'); learnLine(f,'bot'); }
       save(); redrawAll(); return; }
     var b=e.target.closest('.lrow button'); if(!b) return; var g=b.closest('[data-line]'), w=g.dataset.line, act=b.dataset.b;
     if(act==='learn'){ var r=learnLine(f,w); save(); redrawAll(); g.querySelector('.note').textContent='Saved: '+(w==='top'?'top':'bottom')+' lines of about '+r.n+' letters now use size '+r.size+'.'; return; }
     var o=own(k), cur=lineSet(f,w,plen[w]).v;
-    if(act==='0') delete o[w]; else { if(act==='s-') cur.size*=0.96; else if(act==='s+') cur.size*=1.04; else if(act==='x-') cur.slide-=1; else if(act==='x+') cur.slide+=1; o[w]=cur; }
+    if(act==='0') delete o[w]; else { if(act==='s-') cur.size*=0.96; else if(act==='s+') cur.size*=1.04; else if(act==='x-') cur.slide-=1; else if(act==='x+') cur.slide+=1; else if(act==='w-') cur.lw=(cur.lw||1)-0.03; else if(act==='w+') cur.lw=(cur.lw||1)+0.03; o[w]=cur; }
     save(); draw(f); }
   function onInput(e){ var i=e.target, c=i.closest('.card'); if(!c||c.querySelector('.wpanel').contains(i)) return; var k=c.dataset.k, f=fishOf(k);
     if(i.classList.contains('ln')){ var w=i.dataset.l, o=own(k); if(i.value===f[w]) delete o[w+'T']; else o[w+'T']=i.value; i.classList.toggle('ch',o[w+'T']!=null); save(); draw(f); return; }
-    var g=i.closest('[data-line]'); if(g&&i.dataset.k&&i.value!==''&&!isNaN(+i.value)){ var w2=g.dataset.line, cur=lineSet(f,w2,plen[w2]).v; cur[i.dataset.k]=+i.value; own(k)[w2]=cur; save(); draw(f); } }
+    var g=i.closest('[data-line]'); if(g&&i.dataset.k&&i.value!==''&&!isNaN(+i.value)){ var w2=g.dataset.line, cur=lineSet(f,w2,plen[w2]).v; cur[i.dataset.k]=i.dataset.k==='lw'?+i.value/100:+i.value; own(k)[w2]=cur; save(); draw(f); } }
 
   // ── the rules panel ──
   function rules(){ var R=S.rules, ks=Object.keys(R.word).map(Number).sort(function(a,b){ return a-b; });
-    $('rWord').innerHTML=ks.length?'<table><tr><th>Letters</th><th>Size</th><th>Left/right</th><th>Up/down</th><th>Width</th><th>From</th><th></th></tr>'+ks.map(function(n){ var r=R.word[n];
-      return '<tr><td>'+n+'</td><td>'+r.size+'</td><td>'+r.dx+'</td><td>'+r.dy+'</td><td>'+Math.round(r.ww*100)+'%</td><td>'+esc(r.from)+'</td><td><button type="button" data-del="word" data-n="'+n+'">remove</button></td></tr>'; }).join('')+'</table>'
+    $('rWord').innerHTML=ks.length?'<table><tr><th>Letters</th><th>Size</th><th>Left/right</th><th>Up/down</th><th>Width</th><th>Height</th><th>From</th><th></th></tr>'+ks.map(function(n){ var r=R.word[n];
+      return '<tr><td>'+n+'</td><td>'+r.size+'</td><td>'+r.dx+'</td><td>'+r.dy+'</td><td>'+Math.round(r.ww*100)+'%</td><td>'+Math.round((r.hh||1)*100)+'%</td><td>'+esc(r.from)+'</td><td><button type="button" data-del="word" data-n="'+n+'">remove</button></td></tr>'; }).join('')+'</table>'
       :'<p class="fixed">None yet. Tap 📚 under a word that looks right.</p>';
     ['top','bot'].forEach(function(w){ var list=R[w].slice().sort(function(a,b){ return a.n-b.n; });
-      $(w==='top'?'rTop':'rBot').innerHTML=list.length?'<table><tr><th>Letters</th><th>Size</th><th>Slide</th><th>From</th><th></th></tr>'+list.map(function(r){ return '<tr><td>'+r.n+'</td><td>'+r.size+'</td><td>'+r.slide+'%</td><td>'+esc(r.from)+'</td><td><button type="button" data-del="'+w+'" data-n="'+r.n+'">remove</button></td></tr>'; }).join('')+'</table>'
+      $(w==='top'?'rTop':'rBot').innerHTML=list.length?'<table><tr><th>Letters</th><th>Letter size</th><th>Width</th><th>Slide</th><th>From</th><th></th></tr>'+list.map(function(r){ return '<tr><td>'+r.n+'</td><td>'+r.size+'</td><td>'+Math.round((r.lw||1)*100)+'%</td><td>'+r.slide+'%</td><td>'+esc(r.from)+'</td><td><button type="button" data-del="'+w+'" data-n="'+r.n+'">remove</button></td></tr>'; }).join('')+'</table>'
         :'<p class="fixed">None yet. Each line fills its curve (size 170 to 230).</p>'; }); }
   document.querySelector('.rules').addEventListener('click',function(e){ var b=e.target.closest('[data-del]'); if(!b) return; var w=b.dataset.del, n=+b.dataset.n;
     if(w==='word') delete S.rules.word[n]; else S.rules[w]=S.rules[w].filter(function(r){ return r.n!==n; }); save(); redrawAll(); });
@@ -226,13 +229,13 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
 
   // ── changes: count, send, copy, undo ──
   function changes(){ var out=[], R=S.rules;
-    Object.keys(R.word).forEach(function(n){ var r=R.word[n]; out.push({n:r.src,en:r.from,lang:'English',field:'template',was:'',now:'RULE word '+n+' letters: size '+r.size+', left/right '+r.dx+', up/down '+r.dy+', width '+Math.round(r.ww*100)+'%'}); });
-    ['top','bot'].forEach(function(w){ R[w].forEach(function(r){ out.push({n:r.src,en:r.from,lang:'English',field:'template',was:'',now:'RULE '+(w==='top'?'top':'bottom')+' line '+r.n+' letters: size '+r.size+', slide '+r.slide+'%'}); }); });
+    Object.keys(R.word).forEach(function(n){ var r=R.word[n]; out.push({n:r.src,en:r.from,lang:'English',field:'template',was:'',now:'RULE word '+n+' letters: size '+r.size+', left/right '+r.dx+', up/down '+r.dy+', width '+Math.round(r.ww*100)+'%, height '+Math.round((r.hh||1)*100)+'%'}); });
+    ['top','bot'].forEach(function(w){ R[w].forEach(function(r){ out.push({n:r.src,en:r.from,lang:'English',field:'template',was:'',now:'RULE '+(w==='top'?'top':'bottom')+' line '+r.n+' letters: size '+r.size+', width '+Math.round((r.lw||1)*100)+'%, slide '+r.slide+'%'}); }); });
     DATA.fish.forEach(function(f){ var a=S.f[f.k]||{};
       if(a.topT!=null) out.push({n:f.k,en:f.word,lang:'English',field:'top',was:f.top,now:a.topT});
       if(a.botT!=null) out.push({n:f.k,en:f.word,lang:'English',field:'bot',was:f.bot,now:a.botT});
-      var p=[]; if(a.word) p.push('word size '+Math.round(a.word.size)+', left/right '+Math.round(a.word.dx)+', up/down '+Math.round(a.word.dy)+', width '+Math.round(a.word.ww*100)+'%');
-      if(a.top) p.push('top size '+Math.round(a.top.size)+', slide '+(Math.round(a.top.slide*10)/10)+'%'); if(a.bot) p.push('bottom size '+Math.round(a.bot.size)+', slide '+(Math.round(a.bot.slide*10)/10)+'%');
+      var p=[]; if(a.word) p.push('word size '+Math.round(a.word.size)+', left/right '+Math.round(a.word.dx)+', up/down '+Math.round(a.word.dy)+', width '+Math.round(a.word.ww*100)+'%, height '+Math.round((a.word.hh||1)*100)+'%');
+      if(a.top) p.push('top size '+Math.round(a.top.size)+', width '+Math.round((a.top.lw||1)*100)+'%, slide '+(Math.round(a.top.slide*10)/10)+'%'); if(a.bot) p.push('bottom size '+Math.round(a.bot.size)+', width '+Math.round((a.bot.lw||1)*100)+'%, slide '+(Math.round(a.bot.slide*10)/10)+'%');
       if(p.length) out.push({n:f.k,en:f.word,lang:'English',field:'layout',was:'rule',now:p.join('; ')}); });
     return out.map(function(x){ x.n=String(x.n).toUpperCase(); return x; }); }
   function count(){ var n=changes().length; $('count').textContent=n?n+' change'+(n>1?'s':''):'No changes'; $('send').disabled=!n; }
