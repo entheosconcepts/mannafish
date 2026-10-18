@@ -32,10 +32,10 @@ export default async (req, context) => {
   if (b.website) return Response.json({ ok: true });   // a robot filled the hidden field
   // Ken, 16 Oct: the master edit sheet (/edit/) sends every change at once -- one record, one email
   if (Array.isArray(b.batch)) {
-    const FIELD = { word: 'Word', top: 'Verse line 1', bot: 'Verse line 2', ref: 'Reference', gkm: 'Greek meaning', hbm: 'Hebrew meaning', design: 'Word in the middle: design fixes', dnote: 'Design note', layout: 'Word in the middle: size and position' };
+    const FIELD = { word: 'Word', top: 'Verse line 1', bot: 'Verse line 2', ref: 'Reference', gkm: 'Greek meaning', hbm: 'Hebrew meaning', design: 'Word in the middle: design fixes', dnote: 'Design note', layout: 'Word in the middle: size and position', template: 'Template (a good example)' };
     const items = b.batch.slice(0, 1500).map((x) => ({ n: String(x.n || '').toUpperCase().slice(0, 4), lang: String(x.lang || '').slice(0, 40), en: String(x.en || '').slice(0, 40),
       field: FIELD[x.field] ? x.field : '', was: String(x.was == null ? '' : x.was).slice(0, 600), now: String(x.now == null ? '' : x.now).slice(0, 600) }))
-      .filter((x) => /^\d{1,2}[A-J]$/.test(x.n) && x.field && x.was !== x.now);
+      .filter((x) => /^(\d{1,2}[A-J]|W\d\d[A-E])$/.test(x.n) && x.field && x.was !== x.now);   // W01A: the new fish (/edit/new/)
     if (!items.length) return bad('No changes to send', 400);
     if (await limited(context && context.ip)) return bad('Please wait a little', 429);
     const rec = { batch: items, name: String(b.name || '').trim().slice(0, 120), note: String(b.note || '').trim().slice(0, 2000), at: new Date().toISOString() };
