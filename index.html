@@ -1122,6 +1122,7 @@ section.section.bundles{display:block;margin-top:0}
 .ptpickg{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px}
 .ptpickg button{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.04);color:#fff;border-radius:12px;padding:6px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px}
 .ptpickg button[aria-pressed=true]{background:#fff;color:#0b0f14}.ptpickg b{font:400 1rem 'MFHobo',cursive}.ptpickg small{font:700 .72rem 'Archivo',sans-serif;opacity:.8;min-height:1em}
+.ptpickx{display:flex;gap:6px;margin-top:8px}.ptpickx>*{flex:1;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;border-radius:12px;padding:8px 6px;cursor:pointer;font:700 .85rem 'Archivo',sans-serif;text-align:center;text-decoration:none}
 .ptpickk{font:600 .8rem 'Archivo',sans-serif;opacity:.75;margin:8px 0 0}
 .ptplanend{margin:8px 0 6px}.ptplanok{font-weight:700}.ptplanend .ptbtn[aria-pressed=true]{background:#fff;color:#0b0f14;border-color:#fff}
 .ptchips button.today{background:#fff;color:#0b0f14}.ptchips button.was{opacity:.7}.ptchips button.later{opacity:.4}
@@ -1714,7 +1715,7 @@ select option{background:#0b1620;color:#eaf0f0}
     <button type="button" class="hbtn smi" id="smNotes" role="menuitem"><span class="hbi" aria-hidden="true">&#9998;&#xFE0E;</span><span class="hbt"><b id="smNotesLab">My notes</b><small id="smNotesSub">Notes and highlights</small></span></button>
     <button type="button" class="hbtn smi" id="smAcct" role="menuitem"><span class="hbi" aria-hidden="true">&#128100;&#xFE0E;</span><span class="hbt"><b id="smAcctLab">Sign in</b><small id="smAcctSub">Keep your notes on every device</small></span></button>
     <button type="button" class="hbtn smi" id="smMode" role="menuitem"><span class="hbi" aria-hidden="true" id="smModeIco">&#9790;&#xFE0E;</span><span class="hbt"><b id="smModeLab">Dark mode</b></span></button>
-    <button type="button" class="hbtn smi" id="smMatch" role="menuitem"><span class="hbi" aria-hidden="true">&#127924;&#xFE0E;</span><span class="hbt"><b id="smMaLab">Memory match</b><small id="smMaSub">Two fish, the same word</small></span></button>
+    <button type="button" class="hbtn smi" id="smMatch" role="menuitem"><span class="hbi" aria-hidden="true">&#127924;&#xFE0E;</span><span class="hbt"><b id="smMaLab">Go MannaFish</b><small id="smMaSub">Match a pair, then go fish</small></span></button>
     <button type="button" class="hbtn smi" id="smStories" role="menuitem"><span class="hbi" aria-hidden="true">&#128031;&#xFE0E;</span><span class="hbt"><b id="smStLab">Fish stories</b><small id="smStSub">Share your catch</small></span></button>
     <button type="button" class="hbtn smi" id="smResume" role="menuitem" hidden><span class="hbi" aria-hidden="true">&#8634;&#xFE0E;</span><span class="hbt"><b id="smResLab">Pick up where you left off</b><small id="smResSub"></small></span></button>
   </div>
@@ -3187,9 +3188,13 @@ window.MF=(function(){
     if(c.dd) { p.dd=p.dd||{}; for(var k2 in c.dd) if(DATA[k2]){ p.dd[k2]=p.dd[k2]||{}; for(var d2 in c.dd[k2]) if(!p.dd[k2][d2]) p.dd[k2][d2]=c.dd[k2][d2]; } }
     if((c.at||0)>(p.at||0)&&c.k&&DATA[c.k]) p.k=c.k; p.at=Math.max(p.at||0,c.at||0); try{ localStorage.setItem('mf-plan',JSON.stringify(p)); }catch(e){} };
   function planPicker(){ var l=PT.l, wk=planWeek(), P=plT();
-    return '<div class="ptpick" role="group" aria-label="'+esc(P.pick)+'" hidden><div class="ptpickh">'+esc(P.pick)+'</div><div class="ptpickg">'+ORDER.map(function(k){ var dn=planDone(k);
+    return '<div class="ptpick" role="group" aria-label="'+esc(P.pick)+'"'+(PT.pickOpen?'':' hidden')+'><div class="ptpickh">'+esc(P.pick)+'</div><div class="ptpickg">'+ORDER.map(function(k){ var dn=planDone(k);
       return '<button type="button" data-a="planset" data-k="'+k+'" aria-pressed="'+(k===cur)+'"><b>'+esc(titleIn(l,k))+'</b><small>'+(dn>=PLAN_DAYS?'✓':dn?dn+' / '+PLAN_DAYS:'')+(k===wk?' ★':'')+'</small></button>'; }).join('')
-      +'</div><p class="ptpickk">★ '+esc(P.week)+'</p></div>'; }
+      +'</div><div class="ptpickx"><button type="button" data-a="planrand">🎲 '+esc(PKX[l]?PKX[l][0]:PKX.en[0])+'</button><a href="/go/">🎣 '+esc(PKX[l]?PKX[l][1]:PKX.en[1])+'</a></div>'
+      +'<p class="ptpickk">★ '+esc(P.week)+'</p></div>'; }
+  // Ken, 18 Oct: "if someone wants a random word they can choose random, and if someone wants a little more fun ... Go MannaFish"
+  var PKX={en:['Surprise me','Go MannaFish'],es:['Sorpréndeme','Go MannaFish'],tl:['Sorpresahin mo ako','Go MannaFish'],zh:['随机一条','Go MannaFish'],
+    hi:['कोई भी मछली','Go MannaFish'],el:['Τυχαίο ψάρι','Go MannaFish'],de:['Überrasch mich','Go MannaFish'],ko:['아무거나','Go MannaFish'],he:['הפתיעו אותי','Go MannaFish'],ar:['فاجئني','Go MannaFish']};
   // the end of the day's devotional: mark the day, then stay with this fish or change it
   function planEnd(){ var l=PT.l, P=plT(), k=cur, w=titleIn(l,k), d=PT.marked[k]; if(d==null){ d=ptDay(k); var p=planGet(); p.p[k]=Math.max(+(p.p[k])||0,d+1); p.k=k; p.dd=p.dd||{}; p.dd[k]=p.dd[k]||{}; if(!p.dd[k][d]) p.dd[k][d]=ymd(); planPut(p); PT.marked[k]=d; }
     var dn=planDone(k), nx=planNext(k), h='<div class="ptplanend"><p class="ptp ptplanok">'+esc(plF(P.did,{d:d+1,n:PLAN_DAYS,w:w}))+'</p>';
@@ -3197,7 +3202,7 @@ window.MF=(function(){
       +'<div class="ptrow"><button type="button" class="ptbtn" data-a="planstay" aria-pressed="true">'+esc(plF(P.stay,{w:w}))+'</button><button type="button" class="ptbtn" data-a="plannext" data-k="'+nx+'" aria-pressed="false">'+esc(plF(P.next,{w:titleIn(l,nx)}))+' ›</button></div>';
     else h+='<p class="ptp ptsoft">'+esc(plF(P.done,{w:w}))+'</p><div class="ptrow"><button type="button" class="ptbtn" data-a="plannext" data-k="'+nx+'" aria-pressed="true">'+esc(plF(P.next,{w:titleIn(l,nx)}))+' ›</button><button type="button" class="ptbtn" data-a="planagain" aria-pressed="false">'+esc(plF(P.again,{w:w}))+'</button></div>';
     return h+'<p class="ptp ptsoft ptplanmsg" aria-live="polite">'+esc(P.left)+'</p></div>'; }
-  function ptSteps(){ var len=PT.len||dLen(), st=[{k:'welcome'},{k:'pray'},{k:'cast'},{k:'hear'}], op=prOpen(), d=ptDay(cur), pr=planRefs(cur,d);
+  function ptSteps(){ var len=PT.len||dLen(), st=[{k:'welcome'},{k:'pray'},{k:'hear'}]   /* Ken, 18 Oct: no fish catching in the devotional; Go MannaFish (the memory game) has it */, op=prOpen(), d=ptDay(cur), pr=planRefs(cur,d);
     if(d===0||len==='full') st.push({k:'fish'},{k:'orig'});
     if(len==='full') st.push({k:'count'});
     pr.forEach(function(i,j){ st.push({k:'ref',i:i,n:pr.length,j:j}); });
@@ -3342,7 +3347,7 @@ window.MF=(function(){
   function ptGo(i){ PT.i=Math.max(0,Math.min(PT.steps.length-1,i)); $('ptMenu').hidden=true; ptRender(); ptSay(); }
   function ptOpen(){ if(window.MFplClose&&!$('mfPlayer').hidden) MFplClose(); stopSpeak(); PT.l=DEVO[MF.lang]?MF.lang:'en'; PT.on=true; PT.listen=false;
     var pt=$('pt'); pt.dir=/^(he|ar)$/.test(PT.l)?'rtl':'ltr'; pt.setAttribute('lang',PT.l); PR=prLocal().filter(function(x){ return prCloud()||!x.c; });
-    PT.l2=null; CA.done=false; PT.len=dLen(); PT.marked={}; PT.dayOv=null; var pf=planFish(); if(pf!==cur) pick(pf,false); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; document.documentElement.style.overflow='hidden'; ptRender();
+    PT.l2=null; CA.done=false; PT.pickOpen=false; PT.len=dLen(); PT.marked={}; PT.dayOv=null; var pf=planFish(); if(pf!==cur) pick(pf,false); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; document.documentElement.style.overflow='hidden'; ptRender();
     prLoad().then(function(){ if(!PT.on) return; var at=PT.steps[PT.i]&&PT.steps[PT.i].k; PT.steps=ptSteps(); if(at==='welcome'||at==='pray'||at==='hear') ptRender(); }); }
   // Ken, 16 Oct: "keep whatever fish is selected static, anchored at the top ... we want people to see this image as much as possible"
   // Ken, 16 Oct (later): "I meant for it to be inside the bounding box, not on top of it ... put the verbiage up top above that"
@@ -3385,7 +3390,8 @@ window.MF=(function(){
     if(a==='wktog'){ var wk=b.closest('.ptweek'), op=!wk.classList.contains('open'), SA2=SAL[PT.l]||SAL.en; wk.classList.toggle('open',op); b.setAttribute('aria-expanded',String(op)); b.querySelector('.wks').textContent=op?SA2[1]+' ▴':SA2[0]+' ▾'; try{ localStorage.setItem('mf-wk-open',op?'1':''); }catch(er){} return; }
     if(a==='planday'){ var dd=+b.dataset.d; PT.dayOv=(dd===planDay(cur))?null:{k:cur,d:dd}; PT.marked={}; PT.steps=ptSteps(); PT.i=0; ptRender(); return; }
     if(a==='planpick'){ var pk=$('ptStage').querySelector('.ptpick'); pk.hidden=!pk.hidden; b.setAttribute('aria-expanded',String(!pk.hidden)); return; }
-    if(a==='planset'){ var nk=b.dataset.k; if(!DATA[nk]) return; PT.dayOv=null; planSet(nk); if(nk!==cur) pick(nk,false); PT.steps=ptSteps(); PT.i=0; ptRender(); return; }
+    if(a==='planrand'){ var rs=ORDER.filter(function(x){ return x!==cur&&DATA[x]; }); b.dataset.k=rs[Math.floor(Math.random()*rs.length)]; a='planset'; }
+    if(a==='planset'){ PT.pickOpen=false; var nk=b.dataset.k; if(!DATA[nk]) return; PT.dayOv=null; planSet(nk); if(nk!==cur) pick(nk,false); PT.steps=ptSteps(); PT.i=0; ptRender(); return; }
     if(a==='planstay'||a==='plannext'||a==='planagain'){ var P2=plT(), w2=titleIn(PT.l,cur), msg=$('ptStage').querySelector('.ptplanmsg');
       $('ptStage').querySelectorAll('.ptplanend [aria-pressed]').forEach(function(x){ x.setAttribute('aria-pressed',String(x===b)); });
       if(a==='planstay'){ planSet(cur); msg.textContent=plF(P2.next_time,{d:planDone(cur)+1,refs:planRefs(cur,planDone(cur)).map(function(i){ return refLab(PT.l,cur,i); }).join(' · ')}); }
@@ -3659,8 +3665,8 @@ window.MF=(function(){
   function mmss(n){ n=Math.max(0,Math.round(n)); return Math.floor(n/60)+':'+('0'+n%60).slice(-2); }
   function fsUI(){ var T=stT(), F=FSL[MF.lang]||FSL.en; $('fsEy').textContent=T.ey; $('fsH').textContent=T.h; $('fsP').textContent=T.p; $('fsShare').textContent=T.share; $('fsMore').textContent=T.more;
     $('smStLab').textContent=F[1]; $('smStSub').textContent=F[2];
-    var MA=({en:['Memory match','Two fish, the same word'],es:['Memorama','Dos peces, la misma palabra'],tl:['Memory match','Dalawang isda, iisang salita'],zh:['记忆配对','两条鱼，同一个词'],hi:['याददाश्त का खेल','दो मछलियाँ, एक ही शब्द'],
-      el:['Παιχνίδι μνήμης','Δύο ψάρια, η ίδια λέξη'],de:['Memory','Zwei Fische, dasselbe Wort'],ko:['짝 맞추기','두 물고기, 같은 단어'],he:['משחק זיכרון','שני דגים, אותה מילה'],ar:['لعبة الذاكرة','سمكتان، والكلمة نفسها']})[MF.lang]||['Memory match','Two fish, the same word'];
+    var MA=({en:['Go MannaFish','Match a pair, then go fish'],es:['Go MannaFish','Haz una pareja y ve a pescar'],tl:['Go MannaFish','Magtugma ng pares, saka mangisda'],zh:['Go MannaFish','配成一对，再去钓鱼'],hi:['Go MannaFish','जोड़ी मिलाएँ, फिर मछली पकड़ें'],
+      el:['Go MannaFish','Βρες ένα ζευγάρι, μετά ψάρεψε'],de:['Go MannaFish','Finde ein Paar, dann geh fischen'],ko:['Go MannaFish','짝을 맞추고 낚시하러 가요'],he:['Go MannaFish','מצאו זוג, ואז צאו לדוג'],ar:['Go MannaFish','طابِق زوجًا، ثم اذهب للصيد']})[MF.lang]||['Go MannaFish','Match a pair, then go fish'];
     $('smMaLab').textContent=MA[0]; $('smMaSub').textContent=MA[1];
     $('fsTitle').textContent=T.title; $('fsH2').textContent=T.h2;
     Array.prototype.forEach.call(document.querySelectorAll('.fstabs button'),function(b){ b.textContent=T[b.dataset.k]; b.setAttribute('aria-selected',b.dataset.k===FS.kind?'true':'false'); });
@@ -3756,7 +3762,7 @@ window.MF=(function(){
   $('acctBtn').addEventListener('click',function(){ setTimeout(function(){ if(!$('acctBox').hidden&&!$('notesBox').hidden){ $('notesBox').hidden=true; $('notesBtn').setAttribute('aria-expanded','false'); } },0); });
   $('notesBtn').addEventListener('click',function(){ setTimeout(function(){ if(!$('notesBox').hidden&&!$('acctBox').hidden){ $('acctBox').hidden=true; $('acctBtn').setAttribute('aria-expanded','false'); } },0); });
   $('smAcct').addEventListener('click',function(){ smPanel('acctBtn','acctBox'); });
-  $('smMatch').addEventListener('click',function(){ location.href='/match/'; });
+  $('smMatch').addEventListener('click',function(){ location.href='/go/'; });
   $('smStories').addEventListener('click',function(){ $('stories').scrollIntoView({behavior:'smooth',block:'start'}); });
   $('ptStage').addEventListener('click',function(e){ if(e.target.closest('[data-fs]')) fsOpen(); });
   MF.onChange(fsUI); fsUI();
@@ -4958,7 +4964,7 @@ window.MF=(function(){
     de:['MannaFish für heute','MannaFish dieser Woche','MannaFish dieses Monats'],ko:['오늘의 MannaFish','이번 주 MannaFish','이번 달 MannaFish'],
     he:['ה-MannaFish של היום','ה-MannaFish של השבוע','ה-MannaFish של החודש'],ar:['MannaFish اليوم','MannaFish هذا الأسبوع','MannaFish هذا الشهر']};
   (function(){ var m=location.search.match(/[?&]devo=(1|cast)\b/); if(!m) return;
-    var go=function(){ ptOpen(); if(m[1]==='cast'){ var j=PT.steps.findIndex(function(x){ return x.k==='cast'; }); if(j>0) ptGo(j); } };
+    var go=function(){ ptOpen(); if(m[1]==='cast'){ PT.pickOpen=true; ptRender(); var pk=$('ptStage').querySelector('.ptpick'); if(pk) setTimeout(function(){ pk.scrollIntoView({block:'center',behavior:'smooth'}); },300); } };
     var box=$('mfIntro'); if(!box){ setTimeout(go,400); return; }
     var f=(location.search.match(/[?&]f=([dwm])\b/)||[])[1], l=DEVO[MF.lang]?MF.lang:'en', k=planFish(), L=INTRO[l]||INTRO.en, P=PLT[l]||PLT.en;
     box.dir=/^(he|ar)$/.test(l)?'rtl':'ltr';

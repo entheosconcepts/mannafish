@@ -5,3 +5,7 @@
 /translator  /translate/  301
 /game  /match/  301
 /memory  /match/  301
+/go  /match/index.html  200
+/go/  /match/index.html  200
+/gofish  /go/  301
+/go-mannafish  /go/  301

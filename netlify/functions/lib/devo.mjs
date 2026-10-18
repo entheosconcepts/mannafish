@@ -61,10 +61,11 @@ export function emailFor(m, lang, unsub, opts = {}) {
   // Ken, 13 Oct: one fish a week -- which day of the week's fish this is; the weekly email says the site picks up where they left off
   const dayLine = m.day ? (es ? `Día ${m.day} de ${m.days} con ${word}` : `Day ${m.day} of ${m.days} with ${word}`) : '';
   // Ken, 14 Oct: "something in the email says pick up where you left off? Or want to catch another fish?"
+  // Ken, 18 Oct: no fish catching in the devotional now -- this opens Change fish (Surprise me · Go MannaFish)
   // Ken, 16 Oct: the site opens with "Today's / This week's / This month's MannaFish", as they signed up
   const fq = '&f=' + ({ Weekly: 'w', Monthly: 'm' }[opts.freq] || 'd');
   const resume = SITE() + '/?devo=1' + fq + (es ? '&lang=es' : ''), another = SITE() + '/?devo=cast' + fq + (es ? '&lang=es' : '');
-  const RL = es ? ['Continúa donde lo dejaste', '¿Quieres pescar otro pez?'] : ['Pick up where you left off', 'Want to catch another fish?'];
+  const RL = es ? ['Continúa donde lo dejaste', '¿Quieres otro pez?'] : ['Pick up where you left off', 'Want another fish?'];
   // the week: each day's date and verses; the days before today ticked, today marked
   const TODAY = es ? 'hoy' : 'today';
   const fmtDay = (ms) => new Date(ms).toLocaleDateString(es ? 'es-US' : 'en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
