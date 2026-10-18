@@ -39,7 +39,10 @@ header p{color:var(--dim);margin:10px auto;max-width:660px;font-size:.95rem}
 .card.changed{border-color:var(--gold)}.card.tpl{border-color:var(--ok);box-shadow:0 0 0 1px var(--ok) inset}
 .hd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .num{font:800 .85rem 'Archivo',sans-serif;color:var(--gold)}.hd b{font:400 1.35rem 'MFHobo',cursive}.hd span{color:var(--dim);font-size:.85rem}
-.star{margin-left:auto;border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:7px 12px;font:700 .85rem 'Archivo',sans-serif;cursor:pointer}
+.st{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto}.st .dot{font:700 .8rem 'Archivo',sans-serif;border-radius:999px;padding:3px 9px;border:1px solid var(--line)}
+.st .dot.blue{color:#8fb3e8;border-color:#8fb3e8}.st .dot.yel{color:var(--gold);border-color:var(--gold)}.st .dot.grn{color:var(--ok);border-color:var(--ok)}.st .dot.sent{color:var(--dim)}
+.st button{border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:4px 10px;font:700 .78rem 'Archivo',sans-serif;cursor:pointer}.st button[aria-pressed=true]{background:var(--blue);border-color:var(--blue)}
+.star{border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:7px 12px;font:700 .85rem 'Archivo',sans-serif;cursor:pointer}
 .star[aria-pressed=true]{background:var(--ok);border-color:var(--ok);color:#06210c}
 .pv{position:relative;width:100%;max-width:640px;aspect-ratio:2/1;margin:6px auto;background:#000;border-radius:10px;overflow:hidden}
 .pv svg{position:absolute;inset:0;width:100%;height:100%;user-select:none;-webkit-user-select:none}
@@ -100,7 +103,9 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
 
 <div class="bar"><div class="in">
   <span class="n" id="count">No changes</span>
-  <button class="btn send" type="button" id="send" disabled>Send all changes</button>
+  <button class="btn ghost" type="button" id="saveAll">💾 Save</button>
+  <button class="btn send" type="button" id="sendReady" disabled>Send ready</button>
+  <button class="btn ghost" type="button" id="send" disabled>Send all</button>
   <button class="btn ghost" type="button" id="copy">Copy the list</button>
   <button class="btn ghost" type="button" id="undo">Undo all</button>
   <div class="msg" id="msg" aria-live="polite"></div>
@@ -116,8 +121,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
   // Ken's original 24, measured: each verse line runs nearly the whole curve (2% to 98%), bigger letters for a short line
   var V={start:0.02,end:0.98,min:170,max:230};   // above about 230 the letters leave the white band
   var DATA, BASE, TAG, S=load(), cards={}, plen={};
-  function blank(){ return {f:{},tpl:{},rules:{word:{},top:[],bot:[]}}; }
-  function load(){ try{ var s=JSON.parse(localStorage.getItem(KEY)||'{}'); return {f:s.f||{},tpl:s.tpl||{},rules:s.rules||{word:{},top:[],bot:[]}}; }catch(e){ return blank(); } }
+  function blank(){ return {f:{},tpl:{},rules:{word:{},top:[],bot:[]},saved:{},st:{}}; }
+  function load(){ try{ var s=JSON.parse(localStorage.getItem(KEY)||'{}'); return {f:s.f||{},tpl:s.tpl||{},rules:s.rules||{word:{},top:[],bot:[]},saved:s.saved||{},st:s.st||{}}; }catch(e){ return blank(); } }
   function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} count(); }
   function $(id){ return document.getElementById(id); }
   function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
@@ -167,6 +172,14 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
     if(document.activeElement!==box.querySelector('[data-k=size]')) box.querySelector('[data-k=size]').value=Math.round(v.size);
     if(document.activeElement!==box.querySelector('[data-k=slide]')) box.querySelector('[data-k=slide]').value=Math.round(v.slide*10)/10;
     box.querySelector('.learn').textContent='📚 Use size '+Math.round(v.size)+', width '+Math.round(lw*100)+'% for '+(w==='top'?'top':'bottom')+' lines of about '+t.length+' letters'; }
+  // Ken, 19 Oct: save before sending, and a dot for each fish: not saved (blue), not sure (yellow), ready (green)
+  function snap(k){ var a=S.f[k]||{}, o={}; Object.keys(a).sort().forEach(function(x){ o[x]=a[x]; }); return JSON.stringify(o); }
+  function unsaved(k){ return snap(k)!==(S.saved[k]||'{}'); }
+  function stHtml(k){ var u=unsaved(k), st=S.st[k]||'';
+    return (u?'<span class="dot blue">● Not saved</span>':'')+(st==='unsure'?'<span class="dot yel">● Not sure</span>':st==='ready'?'<span class="dot grn">● Ready</span>':st==='sent'?'<span class="dot sent">✓ Sent</span>':'')
+      +'<button type="button" data-st="unsure" aria-pressed="'+(st==='unsure')+'">🟡 Not sure</button><button type="button" data-st="ready" aria-pressed="'+(st==='ready')+'">🟢 Ready</button>'
+      +(u&&S.saved[k]?'<button type="button" data-back="1">↺ Back to saved</button>':''); }
+  function stDraw(k){ var c=cards[k]; if(!c) return; if(S.st[k]==='sent'&&unsaved(k)) delete S.st[k]; var b=c.el.querySelector('.st'), h=stHtml(k); if(b._h!==h){ b._h=h; b.innerHTML=h; } }
   function isChanged(k){ var a=S.f[k]; return !!(a&&(a.word||a.top||a.bot||a.topT!=null||a.botT!=null)); }
   function draw(f){ var c=cards[f.k]; if(!c||!c.d) return; var d=c.d;
     drawWord(f,wordSet(f).v); drawLine(f,'top'); drawLine(f,'bot');
@@ -174,15 +187,15 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
     if(meas(r,G.ref.size).w>G.ref.avail){ d.ref.setAttribute('textLength',G.ref.avail); d.ref.setAttribute('lengthAdjust','spacingAndGlyphs'); } else { d.ref.removeAttribute('textLength'); d.ref.removeAttribute('lengthAdjust'); }
     c.el.querySelector('.fixed').innerHTML='Tail: <b>'+esc(r)+'</b> at size 168, and the MannaFish™ logo: the same on every fish';
     if(c.tool) c.tool.refresh();
-    c.el.classList.toggle('changed',isChanged(f.k)); c.el.classList.toggle('tpl',!!S.tpl[f.k]); c.el.querySelector('.star').setAttribute('aria-pressed',String(!!S.tpl[f.k])); }
+    stDraw(f.k); c.el.classList.toggle('changed',isChanged(f.k)); c.el.classList.toggle('tpl',!!S.tpl[f.k]); c.el.querySelector('.star').setAttribute('aria-pressed',String(!!S.tpl[f.k])); }
 
   // ── cards ──
   function lineGrp(w,label){ return '<div class="grp" data-line="'+w+'"><h3>'+label+' <i></i></h3><input class="ln" data-l="'+w+'" aria-label="'+label+' words">'
     +'<div class="lrow"><label>Letter size<input type="number" step="5" data-k="size" inputmode="decimal"></label><label>Width %<input type="number" step="1" data-k="lw" inputmode="decimal"></label><label>Slide %<input type="number" step="0.5" data-k="slide" inputmode="decimal"></label>'
-    +'<button type="button" data-b="s-">A−</button><button type="button" data-b="s+">A+</button><button type="button" data-b="w-" title="Squeeze">↔−</button><button type="button" data-b="w+" title="Stretch">↔+</button><button type="button" data-b="x-">←</button><button type="button" data-b="x+">→</button><button type="button" data-b="0">↺</button>'
+    +'<button type="button" data-b="s-">A−</button><button type="button" data-b="s+">A+</button><button type="button" data-b="w-" title="Squeeze">↔−</button><button type="button" data-b="w+" title="Stretch">↔+</button><button type="button" data-b="x-">←</button><button type="button" data-b="x+">→</button><button type="button" data-b="0">↺</button><button type="button" data-b="same">= '+(w==='top'?'bottom':'top')+' size</button>'
     +'<button type="button" class="learn" data-b="learn"></button></div><p class="note" aria-live="polite"></p></div>'; }
   function card(f){ var el=document.createElement('article'); el.className='card'; el.dataset.k=f.k;
-    el.innerHTML='<div class="hd"><span class="num">Week '+f.w+'</span><b>'+esc(f.word)+'</b><span>'+esc(f.ref)+' · '+esc(f.series)+(f.first?' · first pick':'')+'</span><button class="star" type="button" aria-pressed="false">⭐ Use as template</button></div>'
+    el.innerHTML='<div class="hd"><span class="num">Week '+f.w+'</span><b>'+esc(f.word)+'</b><span>'+esc(f.ref)+' · '+esc(f.series)+(f.first?' · first pick':'')+'</span><span class="st"></span><button class="star" type="button" aria-pressed="false">⭐ Use as template</button></div>'
       +'<div class="slot"></div><div class="wpanel"></div>'+lineGrp('top','Top line')+lineGrp('bot','Bottom line')
       +'<p class="fixed"></p><p class="verse">'+esc(f.verse)+' ('+esc(f.ref)+', KJV)</p>';
     el.querySelector('[data-l=top]').value=text(f,'top'); el.querySelector('[data-l=bot]').value=text(f,'bot');
@@ -202,12 +215,15 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
   function learnLine(f,w){ var st=lineSet(f,w,plen[w]), n=text(f,w).length, list=S.rules[w].filter(function(r){ return r.n!==n; });
     list.push({n:n,size:Math.round(st.v.size),slide:Math.round(st.v.slide*10)/10,lw:+(+(st.v.lw||1)).toFixed(3),src:f.k,from:f.word}); S.rules[w]=list; return {n:n,size:Math.round(st.v.size)}; }
   function onClick(e){ var el=e.target.closest('.card'); if(!el) return; var k=el.dataset.k, f=fishOf(k);
+    var sb=e.target.closest('[data-st]'); if(sb){ var v=sb.dataset.st; if(S.st[k]===v) delete S.st[k]; else S.st[k]=v; save(); stDraw(k); return; }
+    if(e.target.closest('[data-back]')){ S.f[k]=JSON.parse(S.saved[k]||'{}'); var ce=cards[k].el; ce.querySelector('[data-l=top]').value=text(f,'top'); ce.querySelector('[data-l=bot]').value=text(f,'bot'); save(); draw(f); return; }
     if(e.target.closest('.star')){ if(S.tpl[k]) delete S.tpl[k];
       else { S.tpl[k]=1; var v=wordSet(f).v; S.rules.word[f.word.length]={size:Math.round(v.size),dx:Math.round(v.dx),dy:Math.round(v.dy),ww:+(+v.ww).toFixed(3),hh:+(+(v.hh||1)).toFixed(3),src:k,from:f.word}; learnLine(f,'top'); learnLine(f,'bot'); }
       save(); redrawAll(); return; }
     var b=e.target.closest('.lrow button'); if(!b) return; var g=b.closest('[data-line]'), w=g.dataset.line, act=b.dataset.b;
     if(act==='learn'){ var r=learnLine(f,w); save(); redrawAll(); g.querySelector('.note').textContent='Saved: '+(w==='top'?'top':'bottom')+' lines of about '+r.n+' letters now use size '+r.size+'.'; return; }
     var o=own(k), cur=lineSet(f,w,plen[w]).v;
+    if(act==='same'){ var ow=w==='top'?'bot':'top'; cur.size=lineSet(f,ow,plen[ow]).v.size; o[w]=cur; save(); draw(f); return; }
     if(act==='0') delete o[w]; else { if(act==='s-') cur.size*=0.96; else if(act==='s+') cur.size*=1.04; else if(act==='x-') cur.slide-=1; else if(act==='x+') cur.slide+=1; else if(act==='w-') cur.lw=(cur.lw||1)-0.03; else if(act==='w+') cur.lw=(cur.lw||1)+0.03; o[w]=cur; }
     save(); draw(f); }
   function onInput(e){ var i=e.target, c=i.closest('.card'); if(!c||c.querySelector('.wpanel').contains(i)) return; var k=c.dataset.k, f=fishOf(k);
@@ -228,23 +244,29 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
   $('clearRules').addEventListener('click',function(){ S.rules={word:{},top:[],bot:[]}; S.tpl={}; save(); redrawAll(); msg('Rules cleared.'); });
 
   // ── changes: count, send, copy, undo ──
-  function changes(){ var out=[], R=S.rules;
+  function changes(onlyReady){ var out=[], R=S.rules;
     Object.keys(R.word).forEach(function(n){ var r=R.word[n]; out.push({n:r.src,en:r.from,lang:'English',field:'template',was:'',now:'RULE word '+n+' letters: size '+r.size+', left/right '+r.dx+', up/down '+r.dy+', width '+Math.round(r.ww*100)+'%, height '+Math.round((r.hh||1)*100)+'%'}); });
     ['top','bot'].forEach(function(w){ R[w].forEach(function(r){ out.push({n:r.src,en:r.from,lang:'English',field:'template',was:'',now:'RULE '+(w==='top'?'top':'bottom')+' line '+r.n+' letters: size '+r.size+', width '+Math.round((r.lw||1)*100)+'%, slide '+r.slide+'%'}); }); });
-    DATA.fish.forEach(function(f){ var a=S.f[f.k]||{};
+    DATA.fish.forEach(function(f){ var a=S.f[f.k]||{}; if(onlyReady&&S.st[f.k]!=='ready') return; if(S.st[f.k]==='sent') return;
       if(a.topT!=null) out.push({n:f.k,en:f.word,lang:'English',field:'top',was:f.top,now:a.topT});
       if(a.botT!=null) out.push({n:f.k,en:f.word,lang:'English',field:'bot',was:f.bot,now:a.botT});
       var p=[]; if(a.word) p.push('word size '+Math.round(a.word.size)+', left/right '+Math.round(a.word.dx)+', up/down '+Math.round(a.word.dy)+', width '+Math.round(a.word.ww*100)+'%, height '+Math.round((a.word.hh||1)*100)+'%');
       if(a.top) p.push('top size '+Math.round(a.top.size)+', width '+Math.round((a.top.lw||1)*100)+'%, slide '+(Math.round(a.top.slide*10)/10)+'%'); if(a.bot) p.push('bottom size '+Math.round(a.bot.size)+', width '+Math.round((a.bot.lw||1)*100)+'%, slide '+(Math.round(a.bot.slide*10)/10)+'%');
       if(p.length) out.push({n:f.k,en:f.word,lang:'English',field:'layout',was:'rule',now:p.join('; ')}); });
     return out.map(function(x){ x.n=String(x.n).toUpperCase(); return x; }); }
-  function count(){ var n=changes().length; $('count').textContent=n?n+' change'+(n>1?'s':''):'No changes'; $('send').disabled=!n; }
+  function count(){ if(!DATA) return; var n=changes().length, r=changes(true).filter(function(x){ return x.field!=='template'; }).length; $('count').textContent=n?n+' change'+(n>1?'s':''):'No changes'; $('send').disabled=!n;
+    $('sendReady').disabled=!r; $('sendReady').textContent='Send ready'+(r?' ('+r+')':'');
+    var un=Object.keys(S.f).filter(unsaved).length; $('saveAll').textContent=un?'💾 Save ('+un+')':'💾 Saved'; }
   function msg(t,err){ var m=$('msg'); m.textContent=t; m.className='msg'+(err?' err':''); }
-  $('send').addEventListener('click',function(){ var b=changes(); if(!b.length) return; $('send').disabled=true; msg('Sending…'); try{ localStorage.setItem('mf-proof-name',$('who').value); }catch(e){}
+  $('saveAll').addEventListener('click',function(){ Object.keys(S.f).forEach(function(k){ S.saved[k]=snap(k); }); save(); Object.keys(cards).forEach(function(k){ if(cards[k].d) stDraw(k); }); msg('Saved on this device. Keep working; nothing is sent until you tap Send.'); });
+  $('sendReady').addEventListener('click',function(){ sendSome(true); });
+  $('send').addEventListener('click',function(){ sendSome(false); });
+  function sendSome(onlyReady){ var b=changes(onlyReady); if(!b.length) return; $('send').disabled=true; msg('Sending…'); try{ localStorage.setItem('mf-proof-name',$('who').value); }catch(e){}
     fetch('/api/proof-fix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({batch:b,name:$('who').value,note:'New fish edit sheet (/edit/new/)'})})
       .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||'Could not send'); return j; }); })
-      .then(function(j){ msg('Sent '+j.n+' item'+(j.n>1?'s':'')+'. They stay here, so you can keep working.'); count(); })
-      .catch(function(e){ msg(String(e.message||e)+'. Try Copy the list instead.',true); count(); }); });
+      .then(function(j){ b.forEach(function(x){ var k=Object.keys(cards).filter(function(c){ return c.toUpperCase()===x.n; })[0]; if(k&&x.field!=='template'){ S.st[k]='sent'; S.saved[k]=snap(k); } }); save(); Object.keys(cards).forEach(function(k){ if(cards[k].d) stDraw(k); });
+        msg('Sent '+j.n+' item'+(j.n>1?'s':'')+'. They stay here marked ✓ Sent, so you can keep working.'); count(); })
+      .catch(function(e){ msg(String(e.message||e)+'. Try Copy the list instead.',true); count(); }); }
   $('copy').addEventListener('click',function(){ var t='New fish edits:\n'+changes().map(function(x){ return x.n+' '+x.en+' · '+x.field+': '+x.now; }).join('\n');
     if(navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ msg('Copied. Paste it to Claude.'); },function(){ msg('Could not copy here.',true); }); });
   $('undo').addEventListener('click',function(){ S=blank(); save();

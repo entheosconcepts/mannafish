@@ -59,6 +59,13 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
 .adj button:active{background:var(--blue)}.lay{text-align:center;font:600 .85rem 'Archivo',sans-serif;color:var(--gold);min-height:1.2em;margin:4px 0 8px}
 .dz summary{cursor:pointer;font:700 .9rem 'Archivo',sans-serif;color:#8fb3e8}.dz summary b{color:var(--gold)}
 .dzo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px;margin:10px 0 8px}@media(max-width:640px){.dzo{grid-template-columns:1fr}}
+.st{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto}.st .dot{font:700 .8rem 'Archivo',sans-serif;border-radius:999px;padding:3px 9px;border:1px solid var(--line);color:var(--dim)}
+.st .dot.blue{color:#8fb3e8;border-color:#8fb3e8}.st .dot.yel{color:var(--gold);border-color:var(--gold)}.st .dot.grn{color:#7fd18b;border-color:#7fd18b}
+.st button{border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:4px 10px;font:700 .78rem 'Archivo',sans-serif;cursor:pointer}.st button[aria-pressed=true]{background:var(--blue);border-color:var(--blue)}
+.card.ready{border-color:#7fd18b}.card.unsure{border-color:var(--gold)}
+.vl{border:1px dashed var(--line);border-radius:12px;padding:8px 10px;margin:8px 0}.vl h4{margin:0 0 6px;font:700 .72rem 'Archivo',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}.vl h4 i{font-style:normal;color:var(--gold);letter-spacing:0;text-transform:none}
+.vl .r{display:flex;flex-wrap:wrap;gap:6px;align-items:end}.vl label{font:700 .66rem 'Archivo',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}.vl label input{display:block;width:84px;margin-top:3px;background:#000;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:6px 8px;font:700 1rem 'Archivo',sans-serif}
+.vl button{min-width:40px;height:36px;border:1px solid var(--line);background:#000;color:var(--text);border-radius:10px;font:800 .88rem 'Archivo',sans-serif;cursor:pointer;padding:0 8px}
 .dzc{display:flex;align-items:center;gap:8px;font:600 .9rem 'Archivo',sans-serif;letter-spacing:0;text-transform:none;color:var(--text);cursor:pointer;padding:3px 0}.dzc input{width:18px;height:18px;accent-color:#2a5fb0}
 </style>
 </head>
@@ -76,7 +83,9 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
 <div class="bar"><div class="in">
   <span class="n" id="count">No changes yet</span>
   <input id="who" placeholder="Your name (optional)" aria-label="Your name" autocomplete="name">
-  <button class="btn send" id="send" type="button" disabled>Send all changes</button>
+  <button class="btn ghost" id="saveAll" type="button">💾 Save</button>
+  <button class="btn send" id="sendReady" type="button" disabled>Send ready</button>
+  <button class="btn ghost" id="send" type="button" disabled>Send all</button>
   <button class="btn ghost" id="copy" type="button">Copy the list</button>
   <button class="btn ghost" id="undo" type="button">Undo all</button>
   <p class="msg" id="msg" role="status"></p>
@@ -122,14 +131,54 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
         onLearn:function(v){ var c=letters(word); RULES[code]=RULES[code]||{}; RULES[code][c]={size:Math.round(v.size),dx:Math.round(v.dx),dy:Math.round(v.dy),ww:+(+v.ww).toFixed(3),hh:+(+(v.hh||1)).toFixed(3),src:n,from:word}; saveRules();
           [].forEach.call(document.querySelectorAll('.pv'),function(x){ if(x._show&&x!==pv) x._show(); }); bar();
           return 'Saved: every '+c+'-letter word in '+(L?L.name:code)+' now uses size '+Math.round(v.size)+'.'; }});
+      verseTool(n,svg,box);
     }).catch(function(){ pv.textContent='The fish could not be loaded.'; }); }
+  // Ken, 19 Oct: "I need to be able to push them forward or squeeze them together or stretch them, but they need to stay along the
+  // contour of the fish ... and I'd like to know the font size, so I could select the same font size for the top and bottom."
+  // Each verse line: letter size, slide along its curve, squeeze or stretch (the letters keep their height).
+  function vParse(t){ var o={}, re=/(top|bottom): size ([\d.]+), slide (-?[\d.]+), width ([\d.]+)%/g, m; while((m=re.exec(t||''))) o[m[1]==='top'?'top':'bot']={size:+m[2],slide:+m[3],w:+m[4]/100}; return o; }
+  function verseTool(n,svg,box){ var host=$('vl'+n); if(!host) return; var B={}, VS=vParse(draft[id(n,'vlayout')]);
+    ['top','bot'].forEach(function(w){ var tp=svg.querySelector('textPath[href$="g_'+w+'"]'); if(!tp) return; var tx=tp.parentNode, path=svg.querySelector('[id="g_'+w+'"]'), L=path?path.getTotalLength():3200;
+      var so=tp.getAttribute('startOffset')||'0', tl=+tp.getAttribute('textLength')||0;
+      B[w]={tp:tp,tx:tx,off0:/%$/.test(so)?parseFloat(so)/100*L:+so,fs0:+tx.getAttribute('font-size')||220,tl0:tl||tp.getComputedTextLength(),hadTL:!!tl}; });
+    function val(w){ var b=B[w]; return VS[w]||{size:b.fs0,slide:0,w:1}; }
+    function apply(){ Object.keys(B).forEach(function(w){ var b=B[w], v=val(w); b.tx.setAttribute('font-size',(+v.size).toFixed(1)); b.tp.setAttribute('startOffset',(b.off0+v.slide).toFixed(1));
+      if(!b.hadTL&&Math.abs(v.size-b.fs0)<.05&&Math.abs(v.w-1)<.001){ b.tp.removeAttribute('textLength'); b.tp.removeAttribute('lengthAdjust'); }
+      else { b.tp.setAttribute('textLength',(b.tl0*v.size/b.fs0*v.w).toFixed(1)); b.tp.setAttribute('lengthAdjust','spacingAndGlyphs'); } }); }
+    function text(){ var p=[]; Object.keys(B).forEach(function(w){ var v=val(w), b=B[w]; if(Math.abs(v.size-b.fs0)>.05||v.slide||Math.abs(v.w-1)>.001) p.push((w==='top'?'top':'bottom')+': size '+Math.round(v.size)+', slide '+Math.round(v.slide)+', width '+Math.round(v.w*100)+'%'); }); return p.join('; '); }
+    function draw(){ host.innerHTML=Object.keys(B).map(function(w){ var v=val(w), o=w==='top'?'bot':'top';
+      return '<div class="vl" data-w="'+w+'"><h4>'+(w==='top'?'Top verse line':'Bottom verse line')+' <i>letter size '+Math.round(v.size)+' · width '+Math.round(v.w*100)+'% · slide '+Math.round(v.slide)+'</i></h4><div class="r">'
+        +'<label>Letter size<input type="number" step="5" data-k="size" value="'+Math.round(v.size)+'"></label><label>Width %<input type="number" step="1" data-k="w" value="'+Math.round(v.w*100)+'"></label><label>Slide<input type="number" step="25" data-k="slide" value="'+Math.round(v.slide)+'"></label>'
+        +'<button type="button" data-v="s-">A−</button><button type="button" data-v="s+">A+</button><button type="button" data-v="w-" title="Squeeze">↔−</button><button type="button" data-v="w+" title="Stretch">↔+</button><button type="button" data-v="x-" title="Slide back">←</button><button type="button" data-v="x+" title="Slide forward">→</button><button type="button" data-v="0">↺</button>'
+        +(B[o]?'<button type="button" data-v="same">= '+(o==='top'?'top':'bottom')+' size</button>':'')+'</div></div>'; }).join(''); }
+    function put(){ var t=text(); if(t) draft[id(n,'vlayout')]=t; else delete draft[id(n,'vlayout')]; save(); apply();
+      var card=box.closest('.card'); card.classList.toggle('changed',!!(t||draft[id(n,'layout')]||card.querySelector('textarea.ch'))); bar(); key(); }
+    host.onclick=function(e){ var b=e.target.closest('[data-v]'); if(!b) return; var w=b.closest('.vl').dataset.w, v=Object.assign({},val(w)), a=b.dataset.v;
+      if(a==='0'){ delete VS[w]; } else { if(a==='s-') v.size*=0.96; else if(a==='s+') v.size*=1.04; else if(a==='w-') v.w-=0.02; else if(a==='w+') v.w+=0.02; else if(a==='x-') v.slide-=25; else if(a==='x+') v.slide+=25; else if(a==='same') v.size=val(w==='top'?'bot':'top').size; v.size=Math.round(v.size*10)/10; v.w=Math.max(.4,Math.min(1.8,Math.round(v.w*100)/100)); VS[w]=v; }
+      put(); draw(); };
+    host.oninput=function(e){ var i=e.target.closest('input[data-k]'); if(!i||i.value===''||isNaN(+i.value)) return; var w=i.closest('.vl').dataset.w, v=Object.assign({},val(w)); v[i.dataset.k]=i.dataset.k==='w'?+i.value/100:+i.value; VS[w]=v; put();
+      i.closest('.vl').querySelector('h4 i').textContent='letter size '+Math.round(v.size)+' · width '+Math.round(v.w*100)+'% · slide '+Math.round(v.slide); };
+    apply(); draw(); }
   function setLay(n,box){ var a=ADJS[n], tx=adjText(a); if(tx) draft[id(n,'layout')]=tx; else delete draft[id(n,'layout')]; save(); $('lay'+n).textContent=tx;
-    var card=box.closest('.card'); box.querySelector('summary').innerHTML='✎ The word in the middle of the fish'+(tx||box.querySelector('input:checked')?' <b>(changed)</b>':'');
+    var card=box.closest('.card'); box.querySelector('summary').innerHTML='✎ The word in the middle and the verse lines'+(tx||box.querySelector('input:checked')?' <b>(changed)</b>':'');
     card.classList.toggle('changed',!!(tx||card.querySelector('textarea.ch')||card.querySelector('.dz input:checked'))); bar(); key(); }
   var DZ=['Make bigger','Make smaller','Move left','Move right','Move up','Move down','Stretch taller (vertically)','Stretch wider (horizontally)','Squeeze narrower','Spelling or letters look wrong'];
   function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function load(){ try{ draft=JSON.parse(localStorage.getItem('mf-edit-draft')||'{}')||{}; }catch(e){ draft={}; } try{ show=localStorage.getItem('mf-edit-show')||'A'; $('who').value=localStorage.getItem('mf-proof-name')||''; }catch(e){} }
   function save(){ try{ localStorage.setItem('mf-edit-draft',JSON.stringify(draft)); }catch(e){} }
+  // Ken, 19 Oct: "save all changes before I send them ... a dot on the ones I've adjusted but haven't saved, yellow if I'm not sure,
+  // green if it's ready to go". Changes always stay on this device; 💾 Save marks a point you can go back to.
+  var SAVED={}, STAT={}; try{ SAVED=JSON.parse(localStorage.getItem('mf-edit-saved')||'{}')||{}; STAT=JSON.parse(localStorage.getItem('mf-edit-status')||'{}')||{}; }catch(e){}
+  function keep(){ try{ localStorage.setItem('mf-edit-saved',JSON.stringify(SAVED)); localStorage.setItem('mf-edit-status',JSON.stringify(STAT)); }catch(e){} }
+  function sig(o,n){ return JSON.stringify(Object.keys(o).filter(function(k){ return k.split('.')[0]===n; }).sort().map(function(k){ return [k,o[k]]; })); }
+  function fishWith(o){ var m={}; Object.keys(o).forEach(function(k){ m[k.split('.')[0]]=1; }); return m; }
+  function unsaved(n){ return sig(draft,n)!==sig(SAVED,n); }
+  function stHtml(n){ var u=unsaved(n), st=STAT[n]||'';
+    return (u?'<span class="dot blue">● Not saved</span>':'')+(st==='unsure'?'<span class="dot yel">● Not sure</span>':st==='ready'?'<span class="dot grn">● Ready</span>':'')
+      +'<button type="button" data-st="unsure" data-n="'+n+'" aria-pressed="'+(st==='unsure')+'">🟡 Not sure</button><button type="button" data-st="ready" data-n="'+n+'" aria-pressed="'+(st==='ready')+'">🟢 Ready</button>'
+      +(u&&sig(SAVED,n)!=='[]'?'<button type="button" data-back="'+n+'">↺ Back to saved</button>':''); }
+  function stAll(){ [].forEach.call(document.querySelectorAll('.card'),function(c){ var n=c.id.slice(1), b=c.querySelector('.st'); if(b){ var h=stHtml(n); if(b._h!==h){ b._h=h; b.innerHTML=h; } } c.classList.toggle('ready',STAT[n]==='ready'); c.classList.toggle('unsure',STAT[n]==='unsure'); });
+    var un=Object.keys(Object.assign(fishWith(draft),fishWith(SAVED))).filter(unsaved).length; $('saveAll').textContent=un?'💾 Save ('+un+')':'💾 Saved'; }
   function id(n,f){ return n+'.'+f; }
   function changes(){ var out=[]; Object.keys(draft).forEach(function(k){ var p=k.split('.'), n=p[0], f=p[1], rec=D.f[n]; if(!rec) return; var was=rec[f]||'';
     if(draft[k]!==was){ var w=D.words[parseInt(n,10)-1], L=D.langs.filter(function(x){ return x.l===n.slice(-1); })[0]; out.push({n:n,field:f,was:was,now:draft[k],lang:L?L.name:'',en:w?w.en:''}); } });
@@ -140,7 +189,8 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
   function counts(){ var c={}; changes().forEach(function(x){ var l=x.n.slice(-1); c[l]=(c[l]||0)+1; }); return c; }
   function key(){ var c=counts(); $('key').innerHTML='<button type="button" data-l="all" aria-pressed="'+(show==='all')+'">All languages</button>'+D.langs.map(function(x){
     return '<button type="button" data-l="'+x.l+'" aria-pressed="'+(show===x.l)+'"><i>'+x.l+'</i>'+esc(x.name)+(x.native!==x.name?' · '+esc(x.native):'')+(c[x.l]?'<span class="cnt">'+c[x.l]+'</span>':'')+'</button>'; }).join(''); }
-  function bar(){ var n=changes().length; $('count').textContent=n?n+' change'+(n===1?'':'s'):'No changes yet'; $('send').disabled=!n; }
+  function bar(){ var ch=changes(), n=ch.length, r=ch.filter(function(x){ return STAT[x.n]==='ready'; }).length; $('count').textContent=n?n+' change'+(n===1?'':'s'):'No changes yet'; $('send').disabled=!n;
+    $('sendReady').disabled=!r; $('sendReady').textContent='Send ready'+(r?' ('+r+')':''); stAll(); }
   function render(){ key(); var langs=show==='all'?D.langs:D.langs.filter(function(x){ return x.l===show; }), qq=q.trim().toLowerCase(), h='';
     D.words.forEach(function(w){ if(qq&&String(w.n)!==qq&&w.en.toLowerCase().indexOf(qq)<0&&w.key.toLowerCase().indexOf(qq)<0) return;
       langs.forEach(function(L){ var n=w.n+L.l, rec=D.f[n], rtl=L.code==='he'||L.code==='ar', any=false;
@@ -149,13 +199,13 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
             +(ch?'<div class="was"><span>was: '+esc(was||'(empty)')+'</span><button type="button" data-undo="'+id(n,f[0])+'">↺ undo</button></div>':'')+'</div>'; }).join('');
         var dz=Object.prototype.hasOwnProperty.call(draft,id(n,'design'))?draft[id(n,'design')]:'', dsel=dz?dz.split('; '):[], dn=Object.prototype.hasOwnProperty.call(draft,id(n,'dnote'))?draft[id(n,'dnote')]:'';
         if(dz||dn) any=true;
-        var lay=Object.prototype.hasOwnProperty.call(draft,id(n,'layout'))?draft[id(n,'layout')]:''; if(lay) any=true;
-        fields+='<details class="dz"'+(dz||dn||lay?' open':'')+' data-n="'+n+'" data-code="'+L.code+'"><summary>✎ The word in the middle of the fish'+(dsel.length||lay?' <b>(changed)</b>':'')+'</summary>'
+        var lay=Object.prototype.hasOwnProperty.call(draft,id(n,'layout'))?draft[id(n,'layout')]:''; if(lay||draft[id(n,'vlayout')]) any=true; if(draft[id(n,'vlayout')]) lay=lay||' ';
+        fields+='<details class="dz"'+(dz||dn||lay?' open':'')+' data-n="'+n+'" data-code="'+L.code+'"><summary>✎ The word in the middle and the verse lines'+(dsel.length||lay?' <b>(changed)</b>':'')+'</summary>'
           +(L.code==='en'
             ?'<p class="dzh">The English fish are hand-drawn, so tick what should change:</p><div class="dzo">'+DZ.map(function(o){ return '<label class="dzc"><input type="checkbox" data-dz="'+n+'" value="'+esc(o)+'"'+(dsel.indexOf(o)>=0?' checked':'')+'> '+esc(o)+'</label>'; }).join('')+'</div>'
-            :'<p class="dzh">Tap the word on the fish to move it, pinch it to size, or type the numbers. What you see is what gets sent.</p><div class="pv" id="pv'+n+'"></div><div class="wpanel" id="wp'+n+'"></div><p class="lay" id="lay'+n+'">'+esc(lay)+'</p>')
+            :'<p class="dzh">Tap the word on the fish to move it, pinch it to size, or type the numbers. What you see is what gets sent.</p><div class="pv" id="pv'+n+'"></div><div class="wpanel" id="wp'+n+'"></div><p class="lay" id="lay'+n+'">'+esc(lay)+'</p><div id="vl'+n+'"></div>')
           +'<textarea data-n="'+n+'" data-f="dnote" rows="2" placeholder="Anything else about how the fish looks (optional)"'+(dn?' class="ch"':'')+'>'+esc(dn)+'</textarea></details>';
-        h+='<article class="card'+(any?' changed':'')+'" id="c'+n+'"><div class="hd"><span class="num">'+n+'</span><b>'+esc(rec.word)+'</b><span>'+esc(w.en)+' · '+esc(L.name)+'</span>'
+        h+='<article class="card'+(any?' changed':'')+'" id="c'+n+'"><div class="hd"><span class="num">'+n+'</span><b>'+esc(rec.word)+'</b><span>'+esc(w.en)+' · '+esc(L.name)+'</span><span class="st"></span>'
           +(L.l<='I'?'<img src="/proof/img/'+n+'.jpg" alt="" width="792" height="398" loading="lazy" onerror="this.remove()">':'')+'</div><div class="grid">'+fields+'</div></article>'; }); });
     $('list').innerHTML=h||'<p class="empty">No word matches.</p>'; bar(); }
   $('list').addEventListener('input',function(e){ var t=e.target; if(!t.dataset||!t.dataset.n) return; var n=t.dataset.n, f=t.dataset.f, was=D.f[n][f]||'';
@@ -164,28 +214,33 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
     var c=t.closest('.card'); c.classList.toggle('changed',!!c.querySelector('textarea.ch')); bar(); key(); });
   $('list').addEventListener('change',function(e){ var c=e.target; if(!c.dataset||!c.dataset.dz) return; var n=c.dataset.dz, box=c.closest('.dz'), sel=[].map.call(box.querySelectorAll('input[data-dz]:checked'),function(x){ return x.value; });
     if(sel.length) draft[id(n,'design')]=sel.join('; '); else delete draft[id(n,'design')]; save();
-    var sm=box.querySelector('summary'); sm.innerHTML='✎ The word in the middle of the fish'+(sel.length?' <b>('+sel.length+')</b>':'');
+    var sm=box.querySelector('summary'); sm.innerHTML='✎ The word in the middle and the verse lines'+(sel.length?' <b>('+sel.length+')</b>':'');
     var card=box.closest('.card'); card.classList.toggle('changed',!!(sel.length||card.querySelector('textarea.ch'))); bar(); key(); });
   $('list').addEventListener('toggle',function(e){ if(e.target.classList&&e.target.classList.contains('dz')&&e.target.open) adjShow(e.target); },true);
   $('list').addEventListener('click',function(e){ var b=e.target.closest('.adj button'); if(!b) return; var n=b.closest('.adj').dataset.adj, a=ADJS[n]; if(!a) return;
     var st={big:['s',.05],small:['s',-.05],tall:['h',.05],short:['h',-.05],wide:['w',.05],narrow:['w',-.05]}[b.dataset.a];
     if(st) a[st[0]]=Math.max(.3,Math.round((a[st[0]]+st[1])*100)/100); else if(b.dataset.a==='left') a.x-=30; else if(b.dataset.a==='right') a.x+=30; else if(b.dataset.a==='up') a.y-=30; else if(b.dataset.a==='down') a.y+=30; else if(b.dataset.a==='reset') ADJS[n]=a={s:1,w:1,h:1,x:0,y:0};
     adjApply(n); var tx=adjText(a); if(tx) draft[id(n,'layout')]=tx; else delete draft[id(n,'layout')]; save(); $('lay'+n).textContent=tx;
-    var box=b.closest('.dz'), card=box.closest('.card'); box.querySelector('summary').innerHTML='✎ The word in the middle of the fish'+(tx||box.querySelector('input:checked')?' <b>(changed)</b>':'');
+    var box=b.closest('.dz'), card=box.closest('.card'); box.querySelector('summary').innerHTML='✎ The word in the middle and the verse lines'+(tx||box.querySelector('input:checked')?' <b>(changed)</b>':'');
     card.classList.toggle('changed',!!(tx||card.querySelector('textarea.ch')||card.querySelector('.dz input:checked'))); bar(); key(); });
   $('list').addEventListener('click',function(e){ var u=e.target.closest('[data-undo]'); if(!u) return; delete draft[u.dataset.undo]; save(); render(); });
+  $('list').addEventListener('click',function(e){ var b=e.target.closest('[data-st]'); if(b){ var n=b.dataset.n, v=b.dataset.st; if(STAT[n]===v) delete STAT[n]; else STAT[n]=v; keep(); bar(); return; }
+    var bk=e.target.closest('[data-back]'); if(bk){ var m=bk.dataset.back; Object.keys(draft).forEach(function(k){ if(k.split('.')[0]===m) delete draft[k]; }); Object.keys(SAVED).forEach(function(k){ if(k.split('.')[0]===m) draft[k]=SAVED[k]; }); save(); render(); } });
+  $('saveAll').addEventListener('click',function(){ SAVED=JSON.parse(JSON.stringify(draft)); keep(); bar(); $('msg').className='msg'; $('msg').textContent='Saved on this device. Keep working; nothing is sent until you tap Send.'; });
   $('key').addEventListener('click',function(e){ var b=e.target.closest('button[data-l]'); if(!b) return; show=b.dataset.l; try{ localStorage.setItem('mf-edit-show',show); }catch(x){} render(); window.scrollTo(0,0); });
   $('find').addEventListener('input',function(){ q=this.value; render(); });
-  function listText(ch){ var who=$('who').value.trim(); return 'MannaFish edits: '+ch.length+' change'+(ch.length===1?'':'s')+(who?' from '+who:'')+'\n\n'+ch.map(function(x){ var F2={design:'Word in the middle: design fixes',dnote:'Design note',layout:'Word in the middle: size and position',template:'Rule for all fish'}; F.forEach(function(f){ F2[f[0]]=f[1]; });
+  function listText(ch){ var who=$('who').value.trim(); return 'MannaFish edits: '+ch.length+' change'+(ch.length===1?'':'s')+(who?' from '+who:'')+'\n\n'+ch.map(function(x){ var F2={design:'Word in the middle: design fixes',dnote:'Design note',layout:'Word in the middle: size and position',template:'Rule for all fish',vlayout:'Verse lines: size and position'}; F.forEach(function(f){ F2[f[0]]=f[1]; });
     return x.n+' · '+x.en+' · '+x.lang+' · '+F2[x.field]+'\n   was: '+x.was+'\n   now: '+x.now; }).join('\n\n'); }
   $('copy').addEventListener('click',function(){ var ch=changes(); if(!ch.length){ $('msg').textContent='No changes yet.'; return; } var t=listText(ch);
     (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){ $('msg').className='msg'; $('msg').textContent='Copied: paste it to Claude, or anywhere.'; },function(){ $('msg').textContent='Could not copy on this device.'; }); });
   $('undo').addEventListener('click',function(){ if(!changes().length) return; if(!confirm('Undo every change you made here?')) return; draft={}; save(); render(); $('msg').textContent=''; });
-  $('send').addEventListener('click',function(){ var ch=changes(), b=this, who=$('who').value.trim(); if(!ch.length) return; try{ localStorage.setItem('mf-proof-name',who); }catch(e){}
+  $('sendReady').addEventListener('click',function(){ sendSome(true,this); });
+  $('send').addEventListener('click',function(){ sendSome(false,this); });
+  function sendSome(onlyReady,b){ var ch=changes().filter(function(x){ return !onlyReady||STAT[x.n]==='ready'||x.field==='template'; }), who=$('who').value.trim(); if(!ch.length) return; try{ localStorage.setItem('mf-proof-name',who); }catch(e){}
     b.disabled=true; $('msg').className='msg'; $('msg').textContent='Sending…';
     fetch('/api/proof-fix',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({batch:ch,name:who})}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||'Could not send'); return j; }); })
-      .then(function(j){ draft={}; save(); Object.keys(RULES).forEach(function(c){ Object.keys(RULES[c]).forEach(function(n){ RULES[c][n].sent=true; }); }); saveRules(); render(); $('msg').className='msg'; $('msg').textContent='Sent: '+j.n+' change'+(j.n===1?'':'s')+'. They are in your email. Paste that email to Claude and they go on the site.'; })
-      .catch(function(e){ b.disabled=false; $('msg').className='msg err'; $('msg').textContent=(e.message||'Could not send')+'. Your changes are still here; try again, or use Copy the list.'; }); });
+      .then(function(j){ var sent={}; ch.forEach(function(x){ sent[x.n]=1; }); Object.keys(draft).forEach(function(k){ if(sent[k.split('.')[0]]) delete draft[k]; }); Object.keys(SAVED).forEach(function(k){ if(sent[k.split('.')[0]]) delete SAVED[k]; }); Object.keys(sent).forEach(function(n){ delete STAT[n]; }); keep(); save(); Object.keys(RULES).forEach(function(c){ Object.keys(RULES[c]).forEach(function(n){ RULES[c][n].sent=true; }); }); saveRules(); render(); $('msg').className='msg'; $('msg').textContent='Sent: '+j.n+' change'+(j.n===1?'':'s')+'. They are in your email. Paste that email to Claude and they go on the site.'; })
+      .catch(function(e){ b.disabled=false; $('msg').className='msg err'; $('msg').textContent=(e.message||'Could not send')+'. Your changes are still here; try again, or use Copy the list.'; }); }
   load();
   fetch('/edit/data.json',{cache:'no-store'}).then(function(r){ return r.json(); }).then(function(d){ D=d; if(show!=='all'&&!D.langs.some(function(x){ return x.l===show; })) show='A'; render(); })
     .catch(function(){ $('list').innerHTML='<p class="empty">The words could not be loaded. Please reload the page.</p>'; });
