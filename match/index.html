@@ -18,7 +18,7 @@
 <!-- Ken, 12 Oct: "a matching game ... on one side of the fish, it's just a fish, and it says MannaFish in the middle, with
      the white Manna and blue Fish ... If you flip 2 over and they're the same word, even if it's a different language, it's
      a match. 24 words, so 12 matches on one screen. When somebody clicks on the word, I'd like them to still hear it.
-     They can pick the language on the memory game screen." No scores kept, no rewards: just the game. -->
+     They can pick the language on the memory game screen." No rewards, no prizes: a game score only. -->
 <style>
 @font-face{font-family:'MFHobo';src:url(/fish-lang/hobo.woff2) format('woff2');font-display:swap}
 /* each language's lettering: the same small trimmed fonts the fish are drawn with */
@@ -56,6 +56,7 @@ button,select,input{font:inherit;color:inherit}
 .pill{display:inline-flex;align-items:center;justify-content:center;gap:5px;border-radius:999px;border:1px solid var(--line);
   background:transparent;padding:7px 12px;font-weight:600;font-size:.8rem;text-decoration:none;color:var(--text);cursor:pointer;white-space:nowrap}
 .pill.blue{background:var(--btn);border-color:var(--btn);color:var(--btn-text)}
+.pill:disabled{opacity:.45;cursor:default}
 .top .home{justify-self:start}
 
 .wm{margin:0;font:400 1.55rem/1 'MFHobo','Archivo',sans-serif;letter-spacing:.01em;white-space:nowrap}
@@ -151,6 +152,25 @@ html,body{overflow-x:hidden}
 .win p{margin:0 0 14px;color:var(--dim);font-size:.86rem}
 .win .row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .win .pill{font-size:.9rem;padding:9px 16px}
+.players{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding:0 12px 8px}.players[hidden]{display:none}
+.pchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 11px;font-weight:700;font-size:.82rem;color:var(--dim);font-variant-numeric:tabular-nums}
+.pchip i{width:10px;height:10px;border-radius:50%;background:var(--pc,#3370FF);display:inline-block}.pchip b{color:var(--text)}.pchip.on{border-color:var(--pc);color:var(--text);box-shadow:0 0 0 1px var(--pc) inset;background:color-mix(in srgb,var(--pc) 16%,transparent)}.pchip.gone{opacity:.45;text-decoration:line-through}
+.cell.got[style*="--own"] .front{border-color:var(--own);box-shadow:inset 0 0 0 2px var(--own)}
+.chat{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding:0 12px 8px}.chat[hidden]{display:none}.chat button{font-size:.8rem;padding:5px 10px}
+.bubble{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 70px);transform:translateX(-50%);z-index:70;background:var(--bg2);border:1px solid var(--glow);border-radius:999px;padding:8px 16px;font-weight:700;box-shadow:0 10px 30px -8px #000;max-width:92vw}
+.bubble[hidden]{display:none}
+.turnpop{position:fixed;left:50%;top:38%;transform:translate(-50%,-50%);z-index:21;font:400 clamp(1.6rem,8vw,2.8rem)/1.1 'MFHobo','Archivo',sans-serif;color:#1a1400;background:var(--pc,#f5d76e);padding:10px 24px 12px;border-radius:999px;box-shadow:0 12px 40px -8px rgba(0,0,0,.6);pointer-events:none}
+.turnpop[hidden]{display:none}.turnpop.go{animation:mfPop 1.3s ease-out forwards}
+.sheet{text-align:left}.sheet h2{text-align:center}.sheet .grp{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:10px 0}.sheet h3{margin:0 0 6px;font:700 .72rem 'Archivo',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.sheet label.opt{display:flex;align-items:center;gap:8px;margin:6px 0;cursor:pointer}.sheet input[type=text]{width:100%;background:#000;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:8px 10px;margin-top:4px}
+.sheet .nums{display:flex;gap:6px;flex-wrap:wrap}.sheet .nums button[aria-pressed=true]{background:var(--btn);border-color:var(--btn);color:#fff}
+.sheet .who{display:flex;flex-direction:column;gap:6px}.sheet .who div{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--line);border-radius:10px;padding:6px 8px 6px 12px}
+.sheet .note{color:var(--dim);font-size:.85rem;margin:6px 0}.sheet .link{display:flex;gap:6px;align-items:center}.sheet .link input{flex:1;min-width:0}
+.sheet .row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}.sheet .err{color:#f6a0a0}.sheet .ok{color:#7fd18b}
+.toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:80;background:var(--bg2);border:1px solid var(--glow);border-radius:16px;padding:10px 14px;box-shadow:0 14px 40px -10px #000;display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:94vw;font-weight:600}
+.toast[hidden]{display:none}
+.gfwho{margin:-4px 0 8px;text-align:left;font-weight:700;color:var(--pc,#f5d76e)}.gfwho:empty{display:none}
+.pond.watch{cursor:default}.pond.watch .gfish{cursor:default}
 @media (max-width:420px){.top .pill{padding:6px 9px;font-size:.76rem}.wrapw{padding:0 10px}.top{padding-top:max(14px,env(safe-area-inset-top))}}
 @media (min-width:700px){
   .wm{font-size:2rem}
@@ -165,7 +185,7 @@ html,body{overflow-x:hidden}
   <a class="pill home" href="/">⌂ <span data-t="home">Home</span></a>
   <h1 class="wm"><span class="m">Manna</span><span class="f">Fish</span><small data-t="sub">Go MannaFish</small></h1>
   <span class="topr"><button class="pill blue" id="newBtn" type="button" data-t="new">New game</button><button class="pill more" id="moreBtn" type="button" aria-label="More" aria-expanded="false">&bull;&bull;&bull;</button>
-    <span class="mmenu" id="mMenu" hidden><button type="button" id="howBtn">❓ <span data-t="how">How to play</span></button></span></span>
+    <span class="mmenu" id="mMenu" hidden><button type="button" id="howBtn">❓ <span data-t="how">How to play</span></button><button type="button" id="playersBtn">👥 <span data-t="mPlayers">Players on this device</span></button><button type="button" id="onlineBtn">🌐 <span data-t="mOnline">Play online</span></button></span></span>
 </header>
 <div class="wrapw opts">
   <label class="pick"><span data-t="first">First language</span><select id="l1"></select></label>
@@ -175,6 +195,38 @@ html,body{overflow-x:hidden}
   <span id="stat" aria-live="off"></span>
   <label class="say"><input type="checkbox" id="sayChk" checked> <span>🔊 <span data-t="say">Say words when flipped</span></span></label>
 </div>
+<div class="wrapw players" id="players" hidden aria-live="polite"></div>
+<div class="wrapw chat" id="chat" hidden></div>
+<!-- Ken, 18 Oct: "what do you think about 1 or 2 players? Maybe more for community play? Kind of like online chess? If someone is
+     online you can ask if they want to play, as anonymous or show user name" -- "Build it all". Players on one device take turns;
+     online, one device (the host) keeps the game and the others send their moves to it. No typing to strangers: only set messages. -->
+<div class="howwrap" id="setup" hidden><div class="how sheet" role="dialog" aria-modal="true" aria-labelledby="setupH">
+  <h2 id="setupH" data-t="mPlayers">Players on this device</h2>
+  <p class="note" data-t="setupNote">Take turns on one phone or tablet. A match lets you go again.</p>
+  <div class="grp"><h3 data-t="howMany">How many players?</h3><div class="nums" id="pCount"></div></div>
+  <div class="grp" id="pNames"></div>
+  <div class="row"><button class="pill blue" type="button" id="setupGo" data-t="startGame">Start the game</button><button class="pill" type="button" id="setupX" data-t="close">Close</button></div>
+</div></div>
+<div class="howwrap" id="online" hidden><div class="how sheet" role="dialog" aria-modal="true" aria-labelledby="onlineH">
+  <h2 id="onlineH" data-t="mOnline">Play online</h2>
+  <div class="grp"><h3 data-t="yourName">Your name online</h3>
+    <label class="opt"><input type="radio" name="nm" value="anon" id="nmAnon"> <span><span data-t="anon">Stay anonymous as</span> <b id="anonName"></b></span></label>
+    <label class="opt"><input type="radio" name="nm" value="name" id="nmName"> <span data-t="showName">Show my first name</span></label>
+    <input type="text" id="myName" maxlength="20" autocomplete="given-name" hidden>
+    <p class="note err" id="nameErr" hidden></p>
+  </div>
+  <div class="grp"><h3 data-t="friendH">Play a friend</h3><p class="note" data-t="friendNote">Send a link. Up to 4 players.</p>
+    <div id="roomBox"><button class="pill blue" type="button" id="makeRoom" data-t="makeLink">Make a game link</button></div></div>
+  <div class="grp"><h3 data-t="whoH">Who's online now</h3>
+    <label class="opt"><input type="checkbox" id="visible" checked> <span data-t="visible">Let others see me and ask me to play</span></label>
+    <div class="who" id="whoList"></div></div>
+  <p class="note" id="netMsg" aria-live="polite"></p>
+  <p class="note" data-t="safeNote">No typing to other players: only set messages like “Good catch!”. Your email is never shown.</p>
+  <div class="row"><button class="pill" type="button" id="onlineX" data-t="close">Close</button></div>
+</div></div>
+<div class="toast" id="invite" hidden role="alertdialog" aria-live="assertive"></div>
+<div class="bubble" id="bubble" hidden aria-live="polite"></div>
+<div class="turnpop" id="turnPop" hidden aria-hidden="true"></div>
 <div class="howwrap" id="how" hidden><div class="how" role="dialog" aria-modal="true" aria-labelledby="howH">
   <h2 id="howH" data-t="how">How to play</h2>
   <ol>
@@ -184,6 +236,7 @@ html,body{overflow-x:hidden}
     <li data-t="h4">Not a match? They turn back over. Remember where each word was.</li>
     <li data-t="h6">Every pair lets you go fish.</li>
     <li data-t="h5">Find all 12 pairs. Tap a turned fish again to see its word in the other language; tap 🔊 on the tail to hear it, and the nose to hear its verse.</li>
+    <li data-t="h7">More players?</li>
   </ol>
   <button class="pill blue" id="howOk" type="button" data-t="howok">Let's play</button>
 </div></div>
@@ -195,6 +248,7 @@ html,body{overflow-x:hidden}
   <div class="gofish" id="goFish" hidden role="dialog" aria-modal="true" aria-labelledby="gfH">
     <div class="gfbox">
       <div class="gfhd"><h2 id="gfH"></h2><span class="gftries" id="gfTries" aria-live="polite"></span></div>
+      <p class="gfwho" id="gfWho"></p>
       <p class="gfsub" id="gfSub"></p>
       <div class="gfstat" id="gfStat"></div>
       <div class="pond" id="pond"><svg class="gfline" id="gfLine" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d=""/></svg><span class="gfbob" id="gfBob" hidden></span><div class="gfres" id="gfRes" hidden></div></div>
@@ -220,108 +274,196 @@ html,body{overflow-x:hidden}
   'use strict';
   var LANGS=['en','es','tl','zh','hi','el','de','ko','he','ar'];
   var NAME={en:'English',es:'Español',tl:'Tagalog',zh:'中文',hi:'हिन्दी',el:'Ελληνικά',de:'Deutsch',ko:'한국어',he:'עברית',ar:'العربية'};
-  var RTL={he:1,ar:1};
-  // the language's own name in its lettering where that small font holds all its letters
-  var LNFONT={hi:1,el:1,he:1,ar:1};
-  // the word on each card in the lettering its fish is drawn with; Latin languages in the MannaFish font
-  var FONT={en:'MFHobo',es:'MFHobo',tl:'MFHobo',de:'MFHobo',zh:'ZCOOL KuaiLe',hi:'Baloo 2',el:'Ubuntu',ko:'Jua',he:'Fredoka',ar:'Cairo'};
-  var FALL={zh:"'PingFang SC','Noto Sans SC','Microsoft YaHei',",hi:"'Noto Sans Devanagari','Nirmala UI',",ko:"'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',",
-    he:"'Noto Sans Hebrew','Arial Hebrew',",ar:"'Noto Sans Arabic','Geeza Pro','Segoe UI',"};
   var LCODE={en:'en-US',es:'es-US',tl:'fil-PH',zh:'zh-CN',hi:'hi-IN',el:'el-GR',de:'de-DE',ko:'ko-KR',he:'he-IL',ar:'ar-SA'};
   var LPRE={en:['en'],es:['es'],tl:['fil','tl'],zh:['zh','cmn'],hi:['hi'],el:['el'],de:['de'],ko:['ko'],he:['he','iw'],ar:['ar']};
   var VOICES=['alloy','ash','ballad','coral','echo','fable','nova','onyx','sage','shimmer','verse'];
-  var PAIRS=12;
+  var PAIRS=12, TRIES=3, MAXP=4, PC=['#3370FF','#f5d76e','#7fd18b','#e8735c'];
   var T={
     en:{home:'Home',sub:'Go MannaFish',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',
-      say:'Say words when flipped',moves:'Moves',pairs:'pairs',won:'All 12 found in {n} moves',winsub:'Tap any card to hear its word.',
+      say:'Say words when flipped',moves:'Moves',pairs:'pairs',winsub:'Tap any card to hear its word.',
       again:'Play again',look:'See the cards',how:'How to play',howok:'Let’s play',
-      gfh:'Go fish!',hidden:'Hidden fish {i}',gfmult:'Catch multiplied!',gfnob:'No bonus',gfnob2:'Your catch stays ×{m}',gfmults:'Now ×{m} · +{b} points',matches:'Matches',caught:'Caught',gfsub:'Catch <b>{w}</b>. Every fish is hidden until you catch it: pick one!',gfskip:'Skip',gfok:'You caught {w}! Catch ×{m}',gfno:'That was {w}. {n} left',gfaway:'It got away. Catch stays ×{m}',score:'Score',catch:'Catch',fish:'fish',
-      won2:'All 12 found in {n} moves · Score {s} · {f} fish caught',best:'Your best: {b}',gfoff:'Go fish after a match',
+      gfh:'Go fish!',hidden:'Hidden fish {i}',gfmult:'Catch multiplied!',gfnob:'No bonus',gfnob2:'Your catch stays ×{m}',gfnob3:'{p}’s catch stays ×{m}',gfmults:'Now ×{m} · +{b} points',matches:'Matches',caught:'Caught',gfsub:'Catch <b>{w}</b>. Every fish is hidden until you catch it: pick one!',gfskip:'Skip',gfok:'{p} caught {w}! Catch ×{m}',gfokme:'You caught {w}! Catch ×{m}',gfno:'That was {w}. {n} left',gfaway:'It got away. Catch stays ×{m}',score:'Score',catch:'Catch',fish:'fish',
+      won2:'All 12 found in {n} moves · Score {s} · {f} fish caught',best:'Your best: {b}',wins:'{p} wins!',tie:'A tie!',
+      fishing:'{p} is fishing…',turn:'{p}’s turn',yourturn:'Your turn!',notyours:'It’s {p}’s turn',waithost:'Waiting for {p} to start…',
+      mPlayers:'Players on this device',mOnline:'Play online',setupNote:'Take turns on one phone or tablet. A match lets you go again.',howMany:'How many players?',player:'Player {n}',startGame:'Start the game',close:'Close',
+      yourName:'Your name online',anon:'Stay anonymous as',showName:'Show my first name',nameBad:'Use 2 to 20 letters.',friendH:'Play a friend',friendNote:'Send a link. Up to 4 players.',makeLink:'Make a game link',
+      copy:'Copy',share:'Share',copied:'Copied',inRoom:'In this game:',startOnline:'Start the game',needTwo:'Waiting for a friend to open the link…',
+      whoH:'Who’s online now',visible:'Let others see me and ask me to play',nobody:'Nobody else is here right now. Send a friend a link.',ask:'Ask to play',asked:'Asked…',playing:'playing',
+      invite:'{p} asks you to play',accept:'Play',decline:'No thanks',declined:'{p} said no thanks.',joining:'Joining the game…',
+      netNo:'Online play isn’t available right now. Try again later.',connecting:'Connecting…',hostLeft:'{p} left, so the game ended.',left:'{p} left the game.',leave:'Leave game',you:'you',
+      safeNote:'No typing to other players: only set messages like “Good catch!”. Your email is never shown.',
+      msgs:['👋 Hello!','🎣 Good catch!','👏 Well done!','🙏 God bless','😄 Ha!','🏁 Good game!'],
       h1:'Pick a first and a second language at the top (or Mix).',h2:'Tap two fish to turn them over.',
       h3:'The same word is a match, even in two different languages: REST and DESCANSA are a pair. A match stays face up.',
       h4:'Not a match? They turn back over. Remember where each word was.',
       h5:'Find all 12 pairs. Tap a turned fish again to see its word in the other language; tap 🔊 on the tail to hear it, and the nose to hear its verse.',
-      h6:'Every pair lets you go fish for the same word. The fish are hidden: tap one to reel it in and see its word. You have 3 tries. Each catch raises your catch multiplier (×2, ×3 …), and every pair scores 10 × your multiplier.',down:'Card {i}, face down',matched:'matched',match:'Match',verse:'Hear the verse',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
+      h6:'Every pair lets you go fish for the same word. The fish are hidden: tap one to reel it in and see its word. You have 3 tries. Each catch raises your catch multiplier (×2, ×3 …), and every pair scores 10 × your multiplier.',
+      h7:'More players? ⋯ → Players on this device (take turns), or Play online with a friend. A match lets you go again.',
+      down:'Card {i}, face down',matched:'matched',match:'Match',verse:'Hear the verse',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
     es:{home:'Inicio',sub:'Go MannaFish',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',
-      say:'Decirlas al voltear',moves:'Jugadas',pairs:'pares',won:'Las 12 encontradas en {n} jugadas',winsub:'Toca cualquier carta para oír su palabra.',
+      say:'Decirlas al voltear',moves:'Jugadas',pairs:'pares',winsub:'Toca cualquier carta para oír su palabra.',
       again:'Jugar otra vez',look:'Ver las cartas',how:'Cómo se juega',howok:'¡A jugar!',
-      gfh:'¡A pescar!',hidden:'Pez escondido {i}',gfmult:'¡Pesca multiplicada!',gfnob:'Sin bono',gfnob2:'Tu pesca sigue ×{m}',gfmults:'Ahora ×{m} · +{b} puntos',matches:'Parejas',caught:'Atrapados',gfsub:'Atrapa <b>{w}</b>. Cada pez está escondido hasta que lo atrapes: ¡elige uno!',gfskip:'Saltar',gfok:'¡Atrapaste {w}! Pesca ×{m}',gfno:'Era {w}. Quedan {n}',gfaway:'Se escapó. La pesca sigue ×{m}',score:'Puntos',catch:'Pesca',fish:'peces',
-      won2:'Las 12 en {n} jugadas · {s} puntos · {f} peces',best:'Tu mejor: {b}',gfoff:'Pescar después de cada pareja',
+      gfh:'¡A pescar!',hidden:'Pez escondido {i}',gfmult:'¡Pesca multiplicada!',gfnob:'Sin bono',gfnob2:'Tu pesca sigue ×{m}',gfnob3:'La pesca de {p} sigue ×{m}',gfmults:'Ahora ×{m} · +{b} puntos',matches:'Parejas',caught:'Atrapados',gfsub:'Atrapa <b>{w}</b>. Cada pez está escondido hasta que lo atrapes: ¡elige uno!',gfskip:'Saltar',gfok:'¡{p} atrapó {w}! Pesca ×{m}',gfokme:'¡Atrapaste {w}! Pesca ×{m}',gfno:'Era {w}. Quedan {n}',gfaway:'Se escapó. La pesca sigue ×{m}',score:'Puntos',catch:'Pesca',fish:'peces',
+      won2:'Las 12 en {n} jugadas · {s} puntos · {f} peces',best:'Tu mejor: {b}',wins:'¡Gana {p}!',tie:'¡Empate!',
+      fishing:'{p} está pescando…',turn:'Turno de {p}',yourturn:'¡Tu turno!',notyours:'Es el turno de {p}',waithost:'Esperando a que {p} empiece…',
+      mPlayers:'Jugadores en este aparato',mOnline:'Jugar en línea',setupNote:'Tomen turnos en un teléfono o tableta. Una pareja te deja jugar otra vez.',howMany:'¿Cuántos jugadores?',player:'Jugador {n}',startGame:'Empezar el juego',close:'Cerrar',
+      yourName:'Tu nombre en línea',anon:'Quedarme anónimo como',showName:'Mostrar mi nombre',nameBad:'Usa de 2 a 20 letras.',friendH:'Jugar con un amigo',friendNote:'Envía un enlace. Hasta 4 jugadores.',makeLink:'Crear un enlace de juego',
+      copy:'Copiar',share:'Compartir',copied:'Copiado',inRoom:'En este juego:',startOnline:'Empezar el juego',needTwo:'Esperando a que un amigo abra el enlace…',
+      whoH:'Quién está en línea',visible:'Dejar que otros me vean y me inviten',nobody:'No hay nadie más ahora. Envía un enlace a un amigo.',ask:'Invitar',asked:'Invitado…',playing:'jugando',
+      invite:'{p} te invita a jugar',accept:'Jugar',decline:'No, gracias',declined:'{p} dijo que no, gracias.',joining:'Entrando al juego…',
+      netNo:'El juego en línea no está disponible ahora. Inténtalo más tarde.',connecting:'Conectando…',hostLeft:'{p} se fue, así que el juego terminó.',left:'{p} dejó el juego.',leave:'Salir del juego',you:'tú',
+      safeNote:'No se escribe a otros jugadores: solo mensajes fijos como “¡Buena pesca!”. Tu correo nunca se muestra.',
+      msgs:['👋 ¡Hola!','🎣 ¡Buena pesca!','👏 ¡Bien hecho!','🙏 Dios te bendiga','😄 ¡Ja!','🏁 ¡Buen juego!'],
       h1:'Elige un primer y un segundo idioma arriba (o Mezcla).',h2:'Toca dos peces para darles la vuelta.',
       h3:'La misma palabra es pareja, aunque esté en dos idiomas: REST y DESCANSA son pareja. Una pareja queda boca arriba.',
       h4:'¿No son pareja? Se vuelven a voltear. Recuerda dónde estaba cada palabra.',
       h5:'Encuentra las 12 parejas. Toca otra vez un pez volteado para ver su palabra en el otro idioma; toca 🔊 en la cola para oírla, y la nariz para oír su versículo.',
-      h6:'Cada pareja te deja pescar la misma palabra. Los peces están escondidos: toca uno para sacarlo y ver su palabra. Tienes 3 intentos. Cada pez atrapado sube tu multiplicador (×2, ×3 …), y cada pareja vale 10 × tu multiplicador.',down:'Carta {i}, boca abajo',matched:'encontrada',match:'Pareja',verse:'Escuchar el versículo',nomatch:'No son pareja',cards:'Cartas',loading:'Cargando…',oops:'No se pudieron cargar las palabras. Inténtalo otra vez.'}
+      h6:'Cada pareja te deja pescar la misma palabra. Los peces están escondidos: toca uno para sacarlo y ver su palabra. Tienes 3 intentos. Cada pez atrapado sube tu multiplicador (×2, ×3 …), y cada pareja vale 10 × tu multiplicador.',
+      h7:'¿Más jugadores? ⋯ → Jugadores en este aparato (por turnos), o Jugar en línea con un amigo. Una pareja te deja jugar otra vez.',
+      down:'Carta {i}, boca abajo',matched:'encontrada',match:'Pareja',verse:'Escuchar el versículo',nomatch:'No son pareja',cards:'Cartas',loading:'Cargando…',oops:'No se pudieron cargar las palabras. Inténtalo otra vez.'}
   };
   function $(id){ return document.getElementById(id); }
   function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
   function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function rid(n){ var c='abcdefghjkmnpqrstuvwxyz23456789', s=''; for(var i=0;i<n;i++) s+=c[Math.floor(Math.random()*c.length)]; return s; }
 
-  var W=null, l1, l2, ui='en', cards=[], open=[], moves=0, found=0, score=0, mult=1, caught=0, backTimer=null, sayOn=store('mf-match-say')!=='off';
-  function t(k){ return (T[ui]||T.en)[k]||T.en[k]; }
+  var W=null, l1, l2, ui='en', sayOn=store('mf-match-say')!=='off';
+  function t(k){ var o=(T[ui]||T.en)[k]; return o==null?T.en[k]:o; }
+  function f(k,o){ var s=t(k); for(var x in o) s=s.split('{'+x+'}').join(o[x]); return s; }
+
+  // ── who I am on this device ──
+  var ME={id:store('mf-go-id')||rid(10)}; store('mf-go-id',ME.id);
+  // testing two players in one browser: each tab its own id
+  if(/[?&]nettest=1/.test(location.search)) try{ ME.id=sessionStorage.getItem('mf-go-tid')||rid(10); sessionStorage.setItem('mf-go-tid',ME.id); }catch(e){}
+  window.MFgoMe=function(){ return ME.id; };
 
   // ── languages ──
   var site=store('mf-lang'), s1=store('mf-match-l1'), s2=store('mf-match-l2');
   l1=LANGS.indexOf(s1)>=0?s1:(LANGS.indexOf(site)>=0?site:'en');
   l2=(s2==='mix'||LANGS.indexOf(s2)>=0)&&s2!==l1?s2:(l1==='en'?'es':'en');
+  function narrow(){ return document.documentElement.clientWidth<600; }
   function fillPickers(){
     $('l1').innerHTML=LANGS.map(function(l){ return '<option value="'+l+'"'+(l===l1?' selected':'')+'>'+NAME[l]+'</option>'; }).join('');
     $('l2').innerHTML=LANGS.map(function(l){ return '<option value="'+l+'"'+(l===l2?' selected':'')+(l===l1?' disabled':'')+'>'+NAME[l]+'</option>'; }).join('')+
       '<option value="mix" title="'+esc(t('mix'))+'"'+(l2==='mix'?' selected':'')+'>'+esc(narrow()?t('mixs'):t('mix'))+'</option>';
+    var lock=!!(NET&&!NET.host); $('l1').disabled=lock; $('l2').disabled=lock; $('newBtn').disabled=lock;
   }
-  // a phone's picker is too narrow for the whole Mix label, so it shows the short one
-  function narrow(){ return document.documentElement.clientWidth<600; }
   function applyUI(){
     ui=l1==='es'?'es':'en'; document.documentElement.lang=ui;
     document.querySelectorAll('[data-t]').forEach(function(el){ el.textContent=t(el.getAttribute('data-t')); });
     $('board').setAttribute('aria-label',t('cards'));
-    fillPickers(); status();
+    fillPickers(); hud();
   }
   $('l1').addEventListener('change',function(){ l1=this.value; if(l2===l1) l2=l1==='es'?'en':'es'; store('mf-match-l1',l1); store('mf-match-l2',l2); applyUI(); deal(); });
   $('l2').addEventListener('change',function(){ l2=this.value; store('mf-match-l2',l2); deal(); });
   $('sayChk').checked=sayOn;
   $('sayChk').addEventListener('change',function(){ sayOn=this.checked; store('mf-match-say',sayOn?'on':'off'); });
 
-  // ── the card back: a fish, and MannaFish across the middle ──
-  var BOOK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 6.5C10.3 5.2 7.9 4.5 5 4.5c-.9 0-1.7.1-2.5.2v14.5c.8-.1 1.6-.2 2.5-.2 2.9 0 5.3.7 7 2 1.7-1.3 4.1-2 7-2 .9 0 1.7.1 2.5.2V4.7c-.8-.1-1.6-.2-2.5-.2-2.9 0-5.3.7-7 2zm-1 12.3c-1.7-.8-3.7-1.3-6-1.3H4.5V6.6h.5c2.4 0 4.4.6 6 1.6zm8.5-1.3H19c-2.3 0-4.3.5-6 1.3V8.2c1.6-1 3.6-1.6 6-1.6h.5z"/></svg>', V={}, BACK='', FISH={}, SPK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+  var BOOK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 6.5C10.3 5.2 7.9 4.5 5 4.5c-.9 0-1.7.1-2.5.2v14.5c.8-.1 1.6-.2 2.5-.2 2.9 0 5.3.7 7 2 1.7-1.3 4.1-2 7-2 .9 0 1.7.1 2.5.2V4.7c-.8-.1-1.6-.2-2.5-.2-2.9 0-5.3.7-7 2zm-1 12.3c-1.7-.8-3.7-1.3-6-1.3H4.5V6.6h.5c2.4 0 4.4.6 6 1.6zm8.5-1.3H19c-2.3 0-4.3.5-6 1.3V8.2c1.6-1 3.6-1.6 6-1.6h.5z"/></svg>', V={}, BACK='', POND='', FISH={}, SPK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
   // the decals: English and Spanish from /match, the other eight from the site's own fish files
-  function need(l){ if(FISH[l]) return FISH[l]; var u=(l==='en'||l==='es')?'/match/fish-'+l+'.json':'/fish-lang/'+l+'.json';
+  function need(l){ if(FISH[l]) return Promise.resolve(FISH[l]).then(function(x){ return x; }); var u=(l==='en'||l==='es')?'/match/fish-'+l+'.json':'/fish-lang/'+l+'.json';
     return FISH[l]=fetch(u).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(d){ FISH[l]=d; return d; },function(e){ delete FISH[l]; throw e; }); }
   // each decal names its lettering guides (g_top, g_bot...); give every card its own names so 24 decals never mix them up
   function own(svg,i){ return svg.replace(/id="(g_[a-z]+)"/g,'id="c'+i+'$1"').replace(/href="#(g_[a-z]+)"/g,'href="#c'+i+'$1"'); }
 
-  function fontOf(l){ return "'"+FONT[l]+"',"+(FALL[l]||'')+"system-ui,sans-serif"; }
-  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  // ═════ the game itself: one state, kept by the host device (this device, unless we joined someone online) ═════
+  //  G = {id, l1, l2, deck:[{k,l}], got:[player or -1], open:[card], moves, players:[{id,name,score,mult,caught,pairs,gone}],
+  //       turn, lock, pond:{k,fish,tries,picked,res,by,bonus}|null, over}
+  var G=null, cards=[], built='', LOCAL=null, timers=[];
+  function found(){ var n=0; if(G) G.got.forEach(function(x){ if(x>=0) n++; }); return n/2; }
+  function cur(){ return G&&G.players[G.turn]; }
+  function isMe(p){ return !NET||(p&&p.id===ME.id); }
+  function later(ms,fn){ var id=G&&G.id; timers.push(setTimeout(function(){ if(G&&G.id===id) fn(); },ms)); }
+  function clearTimers(){ timers.forEach(clearTimeout); timers=[]; }
+  function players0(){ if(NET){ var r=NET.roster.filter(function(m){ return m.id===ME.id; }).concat(NET.roster.filter(function(m){ return m.id!==ME.id; })); return r.slice(0,MAXP).map(function(m){ return {id:m.id,name:m.name}; }); }
+    if(LOCAL) return LOCAL.map(function(n,i){ return {id:'p'+i,name:n}; }); return [{id:ME.id,name:''}]; }
 
   // ── a new game: 12 random words, each once in the first language and once in the second (or a mixed one) ──
   function deal(){
-    if(!W||!BACK) return;
-    clearTimeout(backTimer); stopSpeak(); gfClose(); open=[]; moves=0; found=0; score=0; mult=1; caught=0; $('win').hidden=true;
+    if(!W||!BACK) return; if(NET&&!NET.host) return;
+    clearTimers(); stopSpeak();
     var keys=shuffle(Object.keys(W.en)).slice(0,PAIRS), others=LANGS.filter(function(l){ return l!==l1; }), pool=[];
     while(pool.length<PAIRS) pool=pool.concat(shuffle(others));
-    var list=[];
-    keys.forEach(function(k,i){ list.push({k:k,l:l1}); list.push({k:k,l:l2==='mix'?pool[i]:l2}); });
-    var deck=shuffle(list).map(function(c,i){ c.i=i; c.up=false; c.got=false; return c; }), langs={};
-    deck.forEach(function(c){ langs[c.l]=1; });
-    $('stat').textContent=t('loading'); var my=++dealId;
-    Promise.all(Object.keys(langs).map(need)).then(function(){ if(my!==dealId) return; cards=deck; draw(); },function(){ if(my===dealId) $('stat').textContent=t('oops'); });
+    var list=[]; keys.forEach(function(k,i){ list.push({k:k,l:l1}); list.push({k:k,l:l2==='mix'?pool[i]:l2}); });
+    var deck=shuffle(list);
+    G={id:rid(8),l1:l1,l2:l2,deck:deck,got:deck.map(function(){ return -1; }),open:[],moves:0,turn:0,lock:false,pond:null,over:false,
+      players:players0().map(function(p){ return {id:p.id,name:p.name,score:0,mult:1,caught:0,pairs:0,gone:false}; })};
+    push({t:'deal'});
   }
-  var dealId=0;
+  // every change goes through here: draw it, and (online, as host) send it to the others
+  function push(ev){ render(ev); if(NET&&NET.host) NET.send({t:'state',G:G,ev:ev}); }
+  function nextTurn(){ if(G.players.length<2) return; var n=G.players.length; for(var i=1;i<=n;i++){ var j=(G.turn+i)%n; if(!G.players[j].gone){ G.turn=j; return; } } }
+
+  // a move, from this device or (as host) from another player's device
+  function hostApply(a,by){
+    if(!G||G.over) return; var P=G.players;
+    if(a.t==='flip'){
+      if(G.pond||G.lock) return; if(NET&&P[G.turn].id!==by) return;
+      var i=+a.i; if(!(i>=0&&i<G.deck.length)||G.got[i]>=0||G.open.indexOf(i)>=0) return;
+      G.open.push(i); var ev={t:'flip',i:i};
+      if(G.open.length===2){ G.moves++; var x=G.open[0], y=G.open[1];
+        if(G.deck[x].k===G.deck[y].k){ var p=P[G.turn]; G.got[x]=G.got[y]=G.turn; G.open=[]; p.pairs++; p.score+=10*p.mult; G.lock=true; ev={t:'match',i:i,a:x,b:y};
+          later(900,function(){ G.lock=false; startPond(G.deck[x].k); });
+        } else { G.lock=true; ev={t:'nomatch',i:i,a:x,b:y};
+          later(1100,function(){ G.open=[]; G.lock=false; var was=G.turn; nextTurn(); push({t:G.turn!==was?'turn':'back'}); }); }
+      }
+      push(ev); return;
+    }
+    var pd=G.pond; if(!pd) return; if(NET&&P[pd.by].id!==by) return;
+    if(a.t==='cast'){ var fi=+a.f; if(pd.res||!(fi>=0&&fi<pd.fish.length)||pd.picked.indexOf(fi)>=0) return; pd.picked.push(fi); var pl=P[pd.by];
+      if(pd.fish[fi]===pd.k){ pl.mult++; pl.caught++; pd.bonus=10*pl.mult; pl.score+=pd.bonus; pd.res='hit'; }
+      else { pd.tries--; if(pd.tries<=0) pd.res='miss'; }
+      if(pd.res) later(2200,endPond);
+      push({t:'cast',f:fi}); return; }
+    if(a.t==='skip'){ endPond(); }
+  }
+  function startPond(k){ var F=FISH[G.l1]; if(!F||!F[k]){ endPond(); return; }
+    var others=shuffle(Object.keys(F).filter(function(x){ return x!==k&&F[x]; })).slice(0,4);
+    G.pond={k:k,fish:shuffle([k].concat(others)),tries:TRIES,picked:[],res:null,by:G.turn,bonus:0}; push({t:'pond'}); }
+  function endPond(){ G.pond=null; if(found()>=PAIRS) G.over=true; push({t:G.over?'over':'pondend'}); }   // a match keeps the turn
+
+  // a tap on this device: do it here (host) or send it to the host
+  function act(a){ if(!G) return;
+    if(NET){ var p=a.t==='flip'?cur():G.pond&&G.players[G.pond.by]; if(p&&p.id!==ME.id){ bubble(f('notyours',{p:pname(p)})); return; } }
+    if(NET&&!NET.host) NET.send({t:'act',a:a,by:ME.id}); else hostApply(a,ME.id); }
+
+  // ═════ drawing the state ═════
+  var pending=null;
+  function render(ev){ if(!G) return;
+    if(built!==G.id){ pending=ev; buildBoard(); return; }
+    // the languages follow the host's game
+    if(NET&&!NET.host&&(G.l1!==l1||G.l2!==l2)){ l1=G.l1; l2=G.l2; applyUI(); }
+    cards.forEach(function(c,i){ var up=G.got[i]>=0||G.open.indexOf(i)>=0; if(up!==c.up) flipDom(c,up);
+      var g=G.got[i]>=0; if(g!==c.got){ c.got=g; c.el.classList.toggle('got',g); if(g&&G.players.length>1) c.el.style.setProperty('--own',PC[G.got[i]%PC.length]); else c.el.style.removeProperty('--own'); label(c); } });
+    if(ev){
+      if(ev.t==='flip'||ev.t==='match'||ev.t==='nomatch'){ var c=cards[ev.i]; if(c&&sayOn) say(c,true); }
+      if(ev.t==='match'){ var a=cards[ev.a], b=cards[ev.b]; announce(t('match')+': '+W[a.l][a.k]+' · '+W[b.l][b.k]); pop(t('match')+'!'); }
+      if(ev.t==='nomatch'){ [ev.a,ev.b].forEach(function(j){ cards[j].el.classList.add('miss'); }); announce(t('nomatch')); }
+      if(ev.t==='turn'&&G.players.length>1){ var p=cur(); turnPop(NET&&p.id===ME.id?t('yourturn'):f('turn',{p:pname(p)}),PC[G.turn%PC.length]); announce(f('turn',{p:pname(p)})); }
+    }
+    hud(); pondDraw(ev); winDraw(ev);
+  }
+  function buildBoard(){ var my=G.id, langs={}; G.deck.forEach(function(c){ langs[c.l]=1; }); langs[G.l1]=1; $('stat').textContent=t('loading');
+    Promise.all(Object.keys(langs).map(need)).then(function(){ if(!G||G.id!==my) return;
+      stopSpeak(); $('win').hidden=true; pondClose(); built=my;
+      cards=G.deck.map(function(d,i){ return {k:d.k,l:d.l,i:i,up:false,got:false}; }); draw(); var ev=pending; pending=null; render(ev&&ev.t!=='deal'?ev:null); },
+      function(){ if(G&&G.id===my) $('stat').textContent=t('oops'); }); }
   function draw(){
     var b=$('board'); b.innerHTML='';
     cards.forEach(function(c){
-      var w=W[c.l][c.k], el=document.createElement('div');
-      el.className='cell';
+      var el=document.createElement('div'); el.className='cell';
       el.innerHTML='<button type="button" class="card"><span class="inner"><span class="face back">'+BACK+'</span>'+
         '<span class="face front" aria-hidden="true" lang="'+c.l+'">'+own(FISH[c.l][c.k]||'',c.i)+'<span class="spk">'+SPK+'</span><span class="vrs" title="'+esc(t('verse'))+'">'+BOOK+'</span><span class="ln" title="'+esc(NAME[c.l])+'">'+c.l.toUpperCase()+'</span></span></span></button>';
       c.el=el; c.btn=el.querySelector('.card');
       c.btn.addEventListener('click',function(e){
         if(c.up&&e.target.closest('.vrs')){ say(c,false,'verse'); return; }   // the tip of the nose: the verse
         if(c.up&&e.target.closest('.spk')){ say(c,false,true); return; }      // the speaker: first language, then second
-        tap(c); });
+        if(c.up){ swap(c); return; }                                          // Ken, 13 Oct: tap again -- the same word in the other language
+        act({t:'flip',i:c.i}); });
       label(c); b.appendChild(el);
     });
-    status(); layout();
+    layout();
   }
   // as many columns as make the cards biggest while all 24 stay on the screen
   function layout(){ var b=$('board'); if(!b||!cards.length) return;
@@ -336,60 +478,225 @@ html,body{overflow-x:hidden}
     var w=vw<700?best.w:Math.min(best.w,(avH-gap*(Math.ceil(cards.length/best.cols)-1))/Math.ceil(cards.length/best.cols)*2);
     w=Math.min(w,(vw-gap*(best.cols-1))/best.cols);
     b.style.setProperty('--gap',gap+'px'); b.style.gridTemplateColumns='repeat('+best.cols+','+Math.floor(w)+'px)'; }
-  function label(c){
-    var s=c.up?W[c.l][c.k]+', '+NAME[c.l]+(c.got?', '+t('matched'):''):t('down').replace('{i}',c.i+1);
-    c.btn.setAttribute('aria-label',s);
-  }
-  function status(){ $('stat').innerHTML=esc(t('moves')+' '+moves+' · '+found+'/'+PAIRS+' '+t('pairs'))+
-    ' · <span class="score">'+esc(t('score'))+' <b>'+score+'</b> · '+esc(t('catch'))+' <b>×'+mult+'</b> · 🐟 '+caught+'</span>'; }
+  function label(c){ var s=c.up?W[c.l][c.k]+', '+NAME[c.l]+(c.got?', '+t('matched'):''):t('down').replace('{i}',c.i+1); c.btn.setAttribute('aria-label',s); }
   function announce(s){ var l=$('live'); l.textContent=''; setTimeout(function(){ l.textContent=s; },30); }
-
-  function flip(c,up){ if(!up&&c.shown&&c.shown!==c.l){ c.shown=c.l; var f=c.el.querySelector('.front'), keep=[].slice.call(f.querySelectorAll('.spk,.vrs,.ln'));
-      f.innerHTML=own(FISH[c.l][c.k],c.i); keep.forEach(function(x){ f.appendChild(x); }); f.querySelector('.ln').textContent=c.l.toUpperCase(); f.querySelector('.ln').title=NAME[c.l]; }
+  function flipDom(c,up){ if(!up&&c.shown&&c.shown!==c.l){ c.shown=c.l; var fr=c.el.querySelector('.front'), keep=[].slice.call(fr.querySelectorAll('.spk,.vrs,.ln'));
+      fr.innerHTML=own(FISH[c.l][c.k],c.i); keep.forEach(function(x){ fr.appendChild(x); }); fr.querySelector('.ln').textContent=c.l.toUpperCase(); fr.querySelector('.ln').title=NAME[c.l]; }
     c.up=up; c.el.classList.toggle('up',up); if(!up) c.el.classList.remove('miss'); label(c); }
-  function tap(c){
-    if(c.up){ swap(c); return; }                  // Ken, 13 Oct: tap again -- the same word in the other language
-    if(open.length===2){ clearTimeout(backTimer); turnBack(); }
-    flip(c,true); open.push(c);
-    if(sayOn) say(c,true);
-    if(open.length<2) return;
-    moves++;
-    var a=open[0], b=open[1];
-    if(a.k===b.k){
-      open=[]; found++;
-      [a,b].forEach(function(x){ x.got=true; x.el.classList.add('got'); label(x); });
-      announce(t('match')+': '+W[a.l][a.k]+' · '+W[b.l][b.k]); pop();
-      score+=10*mult; status();
-      gfTimer=setTimeout(function(){ goFish(a.k,found===PAIRS); },900);
-    } else {
-      a.el.classList.add('miss'); b.el.classList.add('miss');
-      announce(t('nomatch')); status();
-      backTimer=setTimeout(turnBack,1100);
-    }
-  }
   // a turned card shows its own language first; each tap switches it to the same word in the other language and says it
+  function partner(c){ for(var i=0;i<cards.length;i++){ var x=cards[i]; if(x!==c&&x.k===c.k) return x.l; } return c.l===l1?l2:l1; }
   function other(c){ var p=c.l===l1?partner(c):l1; return p===c.l?(c.l===l1?l2:l1):p; }
-  function swap(c){ var to=(c.shown||c.l)===c.l?other(c):c.l; if(!FISH[to]||!FISH[to][c.k]) return;
-    c.shown=to; var f=c.el.querySelector('.front'), keep=[].slice.call(f.querySelectorAll('.spk,.vrs,.ln'));
-    f.innerHTML=own(FISH[to][c.k],c.i+'s'+to); keep.forEach(function(x){ f.appendChild(x); }); f.querySelector('.ln').textContent=to.toUpperCase(); f.querySelector('.ln').title=NAME[to]; f.setAttribute('lang',to);
+  function swap(c){ var to=(c.shown||c.l)===c.l?other(c):c.l; if(!FISH[to]||!FISH[to][c.k]){ need(to).then(function(){ swap(c); },function(){}); return; }
+    c.shown=to; var fr=c.el.querySelector('.front'), keep=[].slice.call(fr.querySelectorAll('.spk,.vrs,.ln'));
+    fr.innerHTML=own(FISH[to][c.k],c.i+'s'+to); keep.forEach(function(x){ fr.appendChild(x); }); fr.querySelector('.ln').textContent=to.toUpperCase(); fr.querySelector('.ln').title=NAME[to]; fr.setAttribute('lang',to);
     say(c,false); }
-  function turnBack(){ open.forEach(function(x){ flip(x,false); }); open=[]; }
-  function won(){
-    var best=+(store('mf-gofish-best')||0); if(score>best){ best=score; store('mf-gofish-best',String(score)); }
-    $('winMsg').textContent=t('won2').replace('{n}',moves).replace('{s}',score).replace('{f}',caught)+' · '+t('best').replace('{b}',best);
-    $('win').hidden=false; announce($('winMsg').textContent); $('againBtn').focus();
+
+  // ── the score line: one player as before; two or more as a row of players, whose turn lit up ──
+  function pname(p){ return p?(p.name||t('you')):''; }
+  function hud(){ if(!G){ return; } var P=G.players;
+    if(P.length<2){ var p=P[0]; $('players').hidden=true;
+      $('stat').innerHTML=esc(t('moves')+' '+G.moves+' · '+found()+'/'+PAIRS+' '+t('pairs'))+' · <span class="score">'+esc(t('score'))+' <b>'+p.score+'</b> · '+esc(t('catch'))+' <b>×'+p.mult+'</b> · 🐟 '+p.caught+'</span>'; }
+    else { $('stat').textContent=t('moves')+' '+G.moves+' · '+found()+'/'+PAIRS+' '+t('pairs'); $('players').hidden=false;
+      set($('players'),P.map(function(p,i){ return '<span class="pchip'+(i===G.turn&&!G.over?' on':'')+(p.gone?' gone':'')+'" style="--pc:'+PC[i%PC.length]+'"><i></i>'+esc(pname(p))+(NET&&p.id===ME.id?' ('+esc(t('you'))+')':'')+' · <b>'+p.score+'</b> · ×'+p.mult+' · 🐟'+p.caught+'</span>'; }).join('')); }
+    $('chat').hidden=!NET; }
+
+  // ── Go fish: after each pair, catch the same word in the pond. 3 tries; each catch raises the multiplier ──
+  // Ken, 18 Oct: "the name should be hidden, he doesn't know what the word is until he catches it" -- the pond fish swim as the
+  // MannaFish card back; a tap reels one in and turns it over to show its word. "something that says no bonus after 3 attempts,
+  // or if one was a match 'catch multiplied' shows, and a number of matches"
+  var pondId='';
+  function pondClose(){ $('goFish').hidden=true; [].slice.call($('pond').querySelectorAll('.gfish')).forEach(function(x){ x.remove(); }); pondId=''; }
+  function pondDraw(ev){ var pd=G.pond;
+    if(!pd){ if(!$('goFish').hidden) pondClose(); return; }
+    var id=G.id+':'+G.moves+':'+pd.k, P=G.players, pl=P[pd.by], mine=isMe(pl)||!NET, pond=$('pond');
+    if(pondId!==id){ pondClose(); pondId=id;
+      $('gfH').textContent=t('gfh'); $('gfSub').innerHTML=t('gfsub').replace('{w}',esc(W[G.l1][pd.k]));
+      $('gfMsg').textContent=''; $('gfMsg').className='gfmsg'; $('gfBob').hidden=true; $('gfLine').firstChild.setAttribute('d',''); $('gfRes').hidden=true;
+      var lanes=pd.fish.length, w=document.documentElement.clientWidth<600?44:30;
+      pd.fish.forEach(function(x,i){ var fe=document.createElement('button'); fe.type='button'; fe.className='gfish'; fe.dataset.i=i; fe.setAttribute('aria-label',t('hidden').replace('{i}',i+1));
+        var top=4+i*(88-w/2)/(lanes-1||1);
+        fe.style.cssText='top:'+top.toFixed(1)+'%;--w:'+w+'%;--t:'+(7+Math.random()*5).toFixed(1)+'s;--d:-'+(Math.random()*9).toFixed(1)+'s';
+        fe.innerHTML='<span class="gfin">'+(POND||BACK)+'</span>';
+        fe.addEventListener('click',function(e){ e.stopPropagation(); if(!G||!G.pond||G.pond.res) return; act({t:'cast',f:i}); });
+        pond.appendChild(fe); });
+      $('goFish').hidden=false; if(mine) $('gfSkip').focus({preventScroll:true}); }
+    $('gfWho').style.setProperty('--pc',PC[pd.by%PC.length]); $('gfWho').textContent=P.length>1?(NET&&pl.id===ME.id?t('yourturn'):f('fishing',{p:pname(pl)})):'';
+    pond.classList.toggle('watch',!mine); $('gfSkip').hidden=!mine;
+    $('gfTries').textContent='🎣'.repeat(Math.max(0,pd.tries))+'◦'.repeat(TRIES-Math.max(0,pd.tries));
+    $('gfStat').innerHTML='<span>'+esc(t('matches'))+' <b>'+found()+'/'+PAIRS+'</b></span><span>'+esc(t('caught'))+' <b>🐟 '+pl.caught+'</b></span><span>'+esc(t('catch'))+' <b>×'+pl.mult+'</b></span><span>'+esc(t('score'))+' <b>'+pl.score+'</b></span>';
+    // the fish already reeled in, turned over
+    var fe=pond.querySelectorAll('.gfish');
+    pd.picked.forEach(function(i){ var e=fe[i]; if(!e||e.classList.contains('shown')) return; var k=pd.fish[i];
+      e.querySelector('.gfin').innerHTML=own(FISH[G.l1][k],'gf'+i); e.setAttribute('aria-label',W[G.l1][k]); e.setAttribute('lang',G.l1); e.classList.add('shown');
+      if(k===pd.k) e.classList.add('caught'); else { e.classList.add('nope'); e.disabled=true; } });
+    if(ev&&ev.t==='cast'){ var e2=fe[ev.f]; if(e2) line(e2); var k2=pd.fish[ev.f];
+      if(k2===pd.k){ try{ if(mine&&navigator.vibrate) navigator.vibrate([60,40,120]); }catch(x){}
+        $('gfMsg').textContent=(P.length>1&&!(NET&&pl.id===ME.id)?f('gfok',{p:pname(pl),w:W[G.l1][pd.k],m:pl.mult}):f('gfokme',{w:W[G.l1][pd.k],m:pl.mult}))+' · +'+pd.bonus; $('gfMsg').className='gfmsg ok';
+        gfShow(true,f('gfmults',{m:pl.mult,b:pd.bonus})); }
+      else if(pd.res==='miss'){ $('gfMsg').textContent=f('gfaway',{m:pl.mult}); $('gfMsg').className='gfmsg no'; gfShow(false,P.length>1?f('gfnob3',{p:pname(pl),m:pl.mult}):f('gfnob2',{m:pl.mult})); }
+      else { $('gfMsg').textContent=f('gfno',{w:W[G.l1][k2],n:pd.tries}); $('gfMsg').className='gfmsg no'; }
+      announce($('gfMsg').textContent); }
   }
+  function gfShow(ok,line2){ var r=$('gfRes'); r.className='gfres'+(ok?'':' no'); r.innerHTML='<b>'+esc(ok?t('gfmult'):t('gfnob'))+'</b><span>'+esc(line2)+'</span>'; r.hidden=false; }
+  function line(el){ var r=$('pond').getBoundingClientRect(), q=el.getBoundingClientRect(), x=((q.left+q.width/2)-r.left)/r.width*100, y=((q.top+q.height/2)-r.top)/r.height*100;
+    x=Math.max(2,Math.min(98,x)); y=Math.max(2,Math.min(98,y));
+    $('gfLine').firstChild.setAttribute('d','M50 -2 Q '+((50+x)/2).toFixed(1)+' '+(y*.6).toFixed(1)+' '+x.toFixed(1)+' '+y.toFixed(1));
+    var b=$('gfBob'); b.hidden=true; void b.offsetWidth; b.style.left=x+'%'; b.style.top=y+'%'; b.hidden=false; }
+  $('gfSkip').addEventListener('click',function(){ act({t:'skip'}); });
+
+  // ── all found ──
+  function winDraw(ev){ if(!G.over){ $('win').hidden=true; return; } if(ev&&ev.t!=='over') return;
+    var P=G.players, msg;
+    if(P.length<2){ var p=P[0], best=+(store('mf-gofish-best')||0); if(p.score>best){ best=p.score; store('mf-gofish-best',String(p.score)); }
+      msg=f('won2',{n:G.moves,s:p.score,f:p.caught})+' · '+f('best',{b:best}); }
+    else { var rank=P.map(function(p,i){ return {p:p,i:i}; }).sort(function(a,b){ return b.p.score-a.p.score; });
+      var top=rank[0].p.score, winners=rank.filter(function(r){ return r.p.score===top; });
+      msg=(winners.length>1?t('tie'):f('wins',{p:pname(winners[0].p)}))+' · '+rank.map(function(r){ return pname(r.p)+' '+r.p.score; }).join(' · '); }
+    $('winMsg').textContent=msg; $('againBtn').disabled=!!(NET&&!NET.host); $('win').hidden=false; announce(msg); }
   $('newBtn').addEventListener('click',deal);
-  function howShow(on){ $('how').hidden=!on; if(on) $('howOk').focus(); }
-  function menu(on){ $('mMenu').hidden=!on; $('moreBtn').setAttribute('aria-expanded',String(on)); }
-  $('moreBtn').addEventListener('click',function(e){ e.stopPropagation(); menu($('mMenu').hidden); });
-  $('howBtn').addEventListener('click',function(){ menu(false); howShow(true); });
-  $('howOk').addEventListener('click',function(){ howShow(false); });
-  $('how').addEventListener('click',function(e){ if(e.target===this) howShow(false); });
-  document.addEventListener('click',function(e){ if(!$('mMenu').hidden&&!e.target.closest('#mMenu,#moreBtn')) menu(false); });
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ if(gf) gfEnd(); howShow(false); menu(false); } });
   $('againBtn').addEventListener('click',deal);
   $('lookBtn').addEventListener('click',function(){ $('win').hidden=true; $('newBtn').focus(); });
+
+  function pop(txt){ var m=$('matchPop'); m.textContent=txt; m.hidden=false; m.classList.remove('go'); void m.offsetWidth; m.classList.add('go'); clearTimeout(pop.t); pop.t=setTimeout(function(){ m.hidden=true; },1100); }
+  function turnPop(txt,col){ var m=$('turnPop'); m.textContent=txt; m.style.setProperty('--pc',col); m.hidden=false; m.classList.remove('go'); void m.offsetWidth; m.classList.add('go'); clearTimeout(turnPop.t); turnPop.t=setTimeout(function(){ m.hidden=true; },1300); }
+  function bubble(txt){ var b=$('bubble'); b.textContent=txt; b.hidden=false; clearTimeout(bubble.t); bubble.t=setTimeout(function(){ b.hidden=true; },3000); }
+
+  // ── menu, how to play ──
+  function sheet(id,on){ $(id).hidden=!on; }
+  function menu(on){ $('mMenu').hidden=!on; $('moreBtn').setAttribute('aria-expanded',String(on)); }
+  $('moreBtn').addEventListener('click',function(e){ e.stopPropagation(); menu($('mMenu').hidden); });
+  $('howBtn').addEventListener('click',function(){ menu(false); sheet('how',true); $('howOk').focus(); });
+  $('howOk').addEventListener('click',function(){ sheet('how',false); });
+  ['how','setup','online'].forEach(function(id){ $(id).addEventListener('click',function(e){ if(e.target===this){ sheet(id,false); if(id==='online') lobbyVisible(); } }); });
+  document.addEventListener('click',function(e){ if(!$('mMenu').hidden&&!e.target.closest('#mMenu,#moreBtn')) menu(false); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ if(G&&G.pond&&isMe(G.players[G.pond.by])) act({t:'skip'}); sheet('how',false); sheet('setup',false); if(!$('online').hidden){ sheet('online',false); lobbyVisible(); } menu(false); } });
+
+  // ═════ players on this device ═════
+  var setupN=+(store('mf-go-local-n')||2);
+  function setupDraw(){ var names=JSON.parse(store('mf-go-local-names')||'[]');
+    $('pCount').innerHTML=[1,2,3,4].map(function(n){ return '<button type="button" class="pill" data-n="'+n+'" aria-pressed="'+(n===setupN)+'">'+n+'</button>'; }).join('');
+    var h=''; for(var i=0;i<setupN;i++) h+='<label class="opt" style="--pc:'+PC[i]+'"><span class="pchip" style="--pc:'+PC[i]+'"><i></i></span><input type="text" data-i="'+i+'" maxlength="16" value="'+esc(names[i]||f('player',{n:i+1}))+'" aria-label="'+esc(f('player',{n:i+1}))+'"></label>';
+    $('pNames').innerHTML=h; $('pNames').hidden=setupN<2; }
+  $('playersBtn').addEventListener('click',function(){ menu(false); setupDraw(); sheet('setup',true); });
+  $('pCount').addEventListener('click',function(e){ var b=e.target.closest('[data-n]'); if(!b) return; setupN=+b.dataset.n; store('mf-go-local-n',String(setupN)); setupDraw(); });
+  $('setupX').addEventListener('click',function(){ sheet('setup',false); });
+  $('setupGo').addEventListener('click',function(){ var names=[].map.call($('pNames').querySelectorAll('input'),function(i,n){ return i.value.trim().slice(0,16)||f('player',{n:n+1}); });
+    store('mf-go-local-names',JSON.stringify(names)); if(NET) netLeave(); LOCAL=setupN>1?names.slice(0,setupN):null; sheet('setup',false); deal(); });
+
+  // ═════ online: a lobby to see who's here, and a room per game ═════
+  // Supabase Realtime (broadcast + presence) carries the moves; nothing is stored. ?nettest=1 uses the browser's own channel (testing).
+  var SB_URL='https://oblttpxqjvaglwfdszdg.supabase.co', SB_KEY='sb_publishable_Nl4EDkBHlrnEqFVcL_oGvQ_J-X-t3Wc', sbP=null;
+  var TEST=/[?&]nettest=1/.test(location.search)||sessionStorage.getItem('mf-nettest')==='1'; if(TEST) try{ sessionStorage.setItem('mf-nettest','1'); }catch(e){}
+  function sbLoad(){ if(sbP) return sbP; sbP=new Promise(function(ok,no){ if(window.supabase&&window.supabase.createClient) return ok();
+      var sc=document.createElement('script'); sc.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2'; sc.onload=ok; sc.onerror=no; document.head.appendChild(sc); })
+    .then(function(){ return window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false,autoRefreshToken:false}}); });
+    sbP.catch(function(){ sbP=null; }); return sbP; }
+  // one channel: send(msg) to everyone else; onMsg(msg); onSync([members]); track(meta)
+  function channel(name,meta,h){ var C={meta:meta,closed:false};
+    if(TEST){ var bc=new BroadcastChannel('mfnet:'+name), seen={}, me=ME.id;
+      function sync(){ var now=Date.now(), list=[]; Object.keys(seen).forEach(function(k){ if(now-seen[k].at>3500) delete seen[k]; else list.push(seen[k].m); }); list.push(C.meta); list.sort(function(a,b){ return a.since-b.since; }); h.onSync(list); }
+      function beat(){ if(!C.closed) bc.postMessage({k:'p',m:C.meta,at:Date.now()}); }
+      bc.onmessage=function(e){ var d=e.data; if(d.k==='m') h.onMsg(d.p); else if(d.k==='p'){ var nw=!seen[d.m.id]; seen[d.m.id]={m:d.m,at:Date.now()}; if(nw) beat(); sync(); } else if(d.k==='bye'){ delete seen[d.id]; sync(); } };
+      var iv=setInterval(function(){ beat(); sync(); },900); setTimeout(function(){ beat(); sync(); if(h.onReady) h.onReady(); },50);
+      C.send=function(m){ bc.postMessage({k:'m',p:m}); }; C.track=function(m){ C.meta=m; beat(); sync(); };
+      C.leave=function(){ C.closed=true; clearInterval(iv); try{ bc.postMessage({k:'bye',id:me}); bc.close(); }catch(e){} };
+      return Promise.resolve(C); }
+    return sbLoad().then(function(sb){ return new Promise(function(ok,no){
+      var ch=sb.channel(name,{config:{broadcast:{self:false},presence:{key:ME.id}}}), done=false;
+      ch.on('broadcast',{event:'m'},function(x){ h.onMsg(x.payload); })
+        .on('presence',{event:'sync'},function(){ var st=ch.presenceState(), list=[]; Object.keys(st).forEach(function(k){ if(st[k][0]) list.push(st[k][0]); }); list.sort(function(a,b){ return a.since-b.since; }); h.onSync(list); })
+        .subscribe(function(status){ if(status==='SUBSCRIBED'&&!done){ done=true; ch.track(C.meta); ok(C); if(h.onReady) setTimeout(h.onReady,0); }
+          else if((status==='CHANNEL_ERROR'||status==='TIMED_OUT')&&!done){ done=true; try{ sb.removeChannel(ch); }catch(e){} no(new Error(status)); } });
+      C.send=function(m){ ch.send({type:'broadcast',event:'m',payload:m}); }; C.track=function(m){ C.meta=m; ch.track(m); };
+      C.leave=function(){ C.closed=true; try{ ch.untrack(); sb.removeChannel(ch); }catch(e){} };
+      setTimeout(function(){ if(!done){ done=true; try{ sb.removeChannel(ch); }catch(e){} no(new Error('timeout')); } },12000); }); }); }
+
+  // my name online: a fish name (anonymous) unless I choose to show my first name
+  function fishName(){ var n=store('mf-go-fishname'); if(!n){ var ks=Object.keys((W&&W.en)||{REST:1}), k=ks[Math.floor(Math.random()*ks.length)]; n=k.charAt(0)+k.slice(1).toLowerCase()+' '+(10+Math.floor(Math.random()*90)); store('mf-go-fishname',n); } return n; }
+  function okName(s){ return /^[\p{L}][\p{L}\p{M} '’.-]{1,19}$/u.test(s.trim()); }
+  function myName(){ var real=store('mf-go-anon')==='0', n=(store('mf-go-name')||'').trim(); return real&&okName(n)?n:fishName(); }
+  function meta(extra){ return Object.assign({id:ME.id,name:myName(),since:meta.since||(meta.since=Date.now())},extra||{}); }
+
+  var LOBBY=null, NET=null, asked={};
+  function netMsg(s,cls){ var m=$('netMsg'); m.textContent=s||''; m.className='note'+(cls?' '+cls:''); }
+  function onlineOpen(){ menu(false); $('anonName').textContent=fishName(); var real=store('mf-go-anon')==='0';
+    $('nmAnon').checked=!real; $('nmName').checked=real; $('myName').hidden=!real; $('myName').value=store('mf-go-name')||''; $('nameErr').hidden=true;
+    roomDraw(); sheet('online',true); lobbyJoin(); }
+  $('onlineBtn').addEventListener('click',onlineOpen);
+  $('onlineX').addEventListener('click',function(){ sheet('online',false); lobbyVisible(); });
+  function nameChanged(){ var real=$('nmName').checked; $('myName').hidden=!real; store('mf-go-anon',real?'0':'1');
+    var v=$('myName').value.trim(); if(real&&v&&!okName(v)){ $('nameErr').textContent=t('nameBad'); $('nameErr').hidden=false; } else { $('nameErr').hidden=true; if(real) store('mf-go-name',v); }
+    if(LOBBY) LOBBY.track(meta({busy:!!NET,vis:$('visible').checked})); if(NET) NET.ch.track(meta()); }
+  $('nmAnon').addEventListener('change',nameChanged); $('nmName').addEventListener('change',function(){ nameChanged(); $('myName').focus(); }); $('myName').addEventListener('input',nameChanged);
+  $('visible').addEventListener('change',function(){ if(LOBBY) LOBBY.track(meta({busy:!!NET,vis:this.checked})); });
+
+  // the lobby: who's here (only while the Play online panel is open, or while waiting for a game)
+  var lobbyList=[];
+  function lobbyJoin(){ if(LOBBY){ LOBBY.track(meta({busy:!!NET,vis:$('visible').checked})); return; } netMsg(t('connecting'));
+    channel('mfgo-lobby',meta({busy:!!NET,vis:$('visible').checked}),{
+      onMsg:function(m){ if(!m||m.to!==ME.id) return;
+        if(m.t==='invite') showInvite(m);
+        else if(m.t==='reply'){ delete asked[m.from]; if(m.yes){ if(NET&&NET.room===m.room&&NET.host){ /* they are coming */ } } else { netMsg(f('declined',{p:m.name})); if(NET&&NET.room===m.room&&NET.roster.length<2) netLeave(); } whoDraw(); } },
+      onSync:function(list){ lobbyList=list; whoDraw(); },
+      onReady:function(){ netMsg(''); }
+    }).then(function(C){ LOBBY=C; whoDraw(); },function(){ netMsg(t('netNo'),'err'); }); }
+  function lobbyVisible(){ if(!LOBBY) return; if($('online').hidden&&!NET){ LOBBY.leave(); LOBBY=null; } else LOBBY.track(meta({busy:!!NET,vis:$('visible').checked})); }
+  function whoDraw(){ var box=$('whoList'); var others=lobbyList.filter(function(m){ return m.id!==ME.id&&m.vis!==false; });
+    set(box,others.length?others.map(function(m){ return '<div><span>'+esc(m.name)+(m.busy?' · <i>'+esc(t('playing'))+'</i>':'')+'</span>'+(m.busy?'':'<button type="button" class="pill" data-ask="'+esc(m.id)+'"'+(asked[m.id]?' disabled':'')+'>'+esc(asked[m.id]?t('asked'):t('ask'))+'</button>')+'</div>'; }).join('')
+      :'<p class="note">'+esc(t('nobody'))+'</p>'); }
+  $('whoList').addEventListener('click',function(e){ var b=e.target.closest('[data-ask]'); if(!b||!LOBBY) return; var id=b.dataset.ask; if(asked[id]) return;
+    asked[id]=1; setTimeout(function(){ delete asked[id]; whoDraw(); },30000); whoDraw();
+    var room=NET&&NET.host?NET.room:rid(6);
+    (NET&&NET.room===room?Promise.resolve():netJoin(room,true,true)).then(function(){ LOBBY.send({t:'invite',to:id,from:ME.id,name:myName(),room:room}); }); });
+  function showInvite(m){ var box=$('invite'); box.innerHTML='<span>'+esc(f('invite',{p:m.name}))+'</span><button class="pill blue" type="button" data-y="1">'+esc(t('accept'))+'</button><button class="pill" type="button" data-y="0">'+esc(t('decline'))+'</button>';
+    box.hidden=false; clearTimeout(showInvite.t); showInvite.t=setTimeout(function(){ box.hidden=true; },30000);
+    box.onclick=function(e){ var b=e.target.closest('[data-y]'); if(!b) return; var yes=b.dataset.y==='1'; box.hidden=true; if(LOBBY) LOBBY.send({t:'reply',to:m.from,from:ME.id,name:myName(),room:m.room,yes:yes});
+      if(yes){ sheet('online',false); netJoin(m.room,false); } }; }
+
+  // a game room: the host keeps the game; the others send their moves
+  function netJoin(room,host,auto){ if(NET&&NET.room===room) return Promise.resolve(); if(NET) netLeave(true); clearTimers();
+    LOCAL=null; var me={room:room,host:!!host,roster:[],auto:!!auto,started:false,hostId:host?ME.id:null};
+    NET=me; fillPickers(); netMsg(t('connecting')); roomDraw();
+    return channel('mfgo-'+room,meta({host:!!host}),{
+      onMsg:function(m){ if(NET!==me||!m) return;
+        if(m.t==='state'&&!me.host){ me.started=true; me.hostId=m.G.players[0]&&m.G.players[0].id; G=m.G; sheet('online',false); render(m.ev); }
+        else if(m.t==='act'&&me.host) hostApply(m.a,m.by);
+        else if(m.t==='hi'&&me.host&&G&&me.started) NET.send({t:'state',G:G,ev:null});
+        else if(m.t==='say'){ var p=me.roster.filter(function(r){ return r.id===m.by; })[0]; if(p) bubble(p.name+': '+(t('msgs')[m.i]||'')); } },
+      onSync:function(list){ if(NET!==me) return; var before=me.roster; me.roster=list.slice(0,8);
+        var h=list.filter(function(x){ return x.host; })[0]; if(h) me.hostId=h.id;
+        if(!me.host&&me.started&&!list.some(function(x){ return x.id===me.hostId; })){ var hn=(before.filter(function(x){ return x.id===me.hostId; })[0]||{}).name||''; bubble(f('hostLeft',{p:hn})); netLeave(); return; }
+        if(me.host&&G&&me.started){ var changed=false; G.players.forEach(function(p,i){ var here=list.some(function(x){ return x.id===p.id; });
+            if(!here&&!p.gone){ p.gone=true; changed=true; bubble(f('left',{p:p.name})); if(G.turn===i){ G.open=[]; G.lock=false; if(G.pond&&G.pond.by===i) G.pond=null; nextTurn(); } } });
+          if(changed) push({t:'turn'}); }
+        if(me.host&&!me.started&&me.auto&&list.length>=2){ startOnline(); }
+        roomDraw(); },
+      onReady:function(){ netMsg(''); if(!me.host) setTimeout(function(){ if(NET===me&&me.send) me.send({t:'hi',by:ME.id}); },60); }
+    }).then(function(C){ if(NET!==me){ C.leave(); return; } me.ch=C; me.send=C.send; lobbyVisible(); roomDraw(); },
+      function(){ if(NET===me){ NET=null; fillPickers(); } netMsg(t('netNo'),'err'); roomDraw(); }); }
+  function startOnline(){ if(!NET||!NET.host) return; NET.started=true; sheet('online',false); deal(); }
+  function netLeave(quiet){ var me=NET; if(!me) return; NET=null; clearTimers(); try{ if(me.ch) me.ch.leave(); }catch(e){} fillPickers(); hud(); roomDraw(); lobbyVisible();
+    if(!quiet){ $('chat').hidden=true; G=null; built=''; deal(); } }
+  function link(room){ return location.origin+'/go/?play='+room+(TEST?'&nettest=1':''); }
+  function roomDraw(){ var box=$('roomBox'); if(!box) return;
+    if(!NET){ set(box,'<button class="pill blue" type="button" id="makeRoom">'+esc(t('makeLink'))+'</button>'); return; }
+    var who=NET.roster.map(function(m,i){ return '<span class="pchip" style="--pc:'+PC[i%PC.length]+'"><i></i>'+esc(m.name)+(m.id===ME.id?' ('+esc(t('you'))+')':'')+'</span>'; }).join(' ');
+    set(box,(NET.host?'<div class="link"><input type="text" readonly value="'+esc(link(NET.room))+'" aria-label="Link"><button class="pill" type="button" id="copyLink">'+esc(t('copy'))+'</button>'+(navigator.share?'<button class="pill" type="button" id="shareLink">'+esc(t('share'))+'</button>':'')+'</div>':'')
+      +'<p class="note">'+esc(t('inRoom'))+' '+who+'</p>'
+      +(NET.host&&!NET.started?(NET.roster.length>=2?'<button class="pill blue" type="button" id="startRoom">'+esc(t('startOnline'))+'</button>':'<p class="note">'+esc(t('needTwo'))+'</p>'):(!NET.host&&!NET.started?'<p class="note">'+esc(f('waithost',{p:(NET.roster.filter(function(x){ return x.host; })[0]||{}).name||''}))+'</p>':''))
+      +' <button class="pill" type="button" id="leaveRoom">'+esc(t('leave'))+'</button>'); }
+  // redraw only when something changed, so a button never disappears under a finger
+  function set(el,h){ if(el._h!==h){ el._h=h; el.innerHTML=h; } }
+  $('online').addEventListener('click',function(e){ var id=e.target.id;
+    if(id==='makeRoom') netJoin(rid(6),true,false);
+    else if(id==='copyLink'){ var v=link(NET.room); (navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(function(){ e.target.textContent=t('copied'); },function(){ var i=$('roomBox').querySelector('input'); i.select(); }); }
+    else if(id==='shareLink'){ navigator.share({title:'Go MannaFish',url:link(NET.room)}).catch(function(){}); }
+    else if(id==='startRoom') startOnline();
+    else if(id==='leaveRoom') netLeave(); });
+  // set messages only, no typing
+  function chatDraw(){ $('chat').innerHTML=t('msgs').map(function(m,i){ return '<button type="button" class="pill" data-m="'+i+'">'+esc(m)+'</button>'; }).join('')+'<button type="button" class="pill" id="chatLeave">'+esc(t('leave'))+'</button>'; }
+  $('chat').addEventListener('click',function(e){ if(e.target.id==='chatLeave'){ netLeave(); return; } var b=e.target.closest('[data-m]'); if(!b||!NET||!NET.send) return; var i=+b.dataset.m;
+    NET.send({t:'say',by:ME.id,i:i}); bubble(myName()+': '+t('msgs')[i]); b.disabled=true; setTimeout(function(){ b.disabled=false; },3000); });
 
   // ── hearing a word: the site's natural voice (/api/tts), else this device's own voice ──
   var CLIP={}, apiOff=false, sp={id:0,audio:null,card:null,next:null,busy:false};
@@ -419,13 +726,11 @@ html,body{overflow-x:hidden}
     if(sp.card) sp.card.el.classList.remove('talk'); sp.card=null;
   }
   // queue=true (a card just flipped): wait for the word being said; otherwise (a tap) say it now
-  // the language the same word has on its partner card (in Mix each pair has its own)
-  function partner(c){ for(var i=0;i<cards.length;i++){ var x=cards[i]; if(x!==c&&x.k===c.k) return x.l; } return c.l===l1?l2:l1; }
   function say(c,queue,both){
     if(queue&&sp.busy){ sp.next=c; return; }
     stopSpeak();
-    var id=sp.id, k=c.k, list, part=both==='verse'?'verse':'word', cur=c.shown||c.l;
-    if(both===true){ var other=c.l===l1?partner(c):c.l; list=[l1,other===l1?(l2==='mix'?partner(c):l2):other]; } else list=[cur];
+    var id=sp.id, k=c.k, list, part=both==='verse'?'verse':'word', cur2=c.shown||c.l;
+    if(both===true){ var oth=c.l===l1?partner(c):c.l; list=[l1,oth===l1?(l2==='mix'?partner(c):l2):oth]; } else list=[cur2];
     sp.busy=true; sp.card=c; c.el.classList.add('talk');
     function done(){ if(id!==sp.id) return; list.shift(); if(list.length){ setTimeout(function(){ if(id===sp.id) one(); },250); return; }
       sp.busy=false; c.el.classList.remove('talk'); sp.card=null;
@@ -447,67 +752,21 @@ html,body{overflow-x:hidden}
     }).catch(function(err){ if(id!==sp.id) return; if(err&&err.name==='NotAllowedError') return done(); device(); });
     }
   }
-  // ── Go fish: after each pair, catch the same word in the pond. 3 tries; each catch raises the multiplier ──
-  // the pond's fish are the cards' own decals in the first language, swimming nose first (right to left, never mirrored)
-  // Ken, 18 Oct: "the name should be hidden, he doesn't know what the word is until he catches it" -- the pond fish swim as the
-  // MannaFish card back; a tap reels one in and turns it over to show its word
-  var gf=null, gfTimer=null, TRIES=3, POND='';
-  fetch('/match/back-pond.svg').then(function(r){ return r.ok?r.text():''; }).then(function(x){ POND=x; }).catch(function(){});
-  function goFish(k,last){
-    var F=FISH[l1]; if(!F||!F[k]){ if(last) won(); return; }
-    var others=shuffle(Object.keys(F).filter(function(x){ return x!==k&&F[x]; })).slice(0,4), list=shuffle([k].concat(others));
-    gf={k:k,last:last,tries:TRIES,done:false};
-    $('gfH').textContent=t('gfh'); $('gfSub').innerHTML=t('gfsub').replace('{w}',esc(W[l1][k]));
-    $('gfMsg').textContent=''; $('gfMsg').className='gfmsg'; $('gfBob').hidden=true; $('gfLine').firstChild.setAttribute('d','');
-    var pond=$('pond'); [].slice.call(pond.querySelectorAll('.gfish')).forEach(function(x){ x.remove(); });
-    var lanes=list.length, w=document.documentElement.clientWidth<600?44:30;
-    list.forEach(function(x,i){
-      var f=document.createElement('button'); f.type='button'; f.className='gfish'; f.dataset.k=x; f.setAttribute('aria-label',t('hidden').replace('{i}',i+1));
-      var top=4+i*(88-w/2)/(lanes-1||1);
-      f.style.cssText='top:'+top.toFixed(1)+'%;--w:'+w+'%;--t:'+(7+Math.random()*5).toFixed(1)+'s;--d:-'+(Math.random()*9).toFixed(1)+'s';
-      f.innerHTML='<span class="gfin">'+(POND||BACK)+'</span>'; f.dataset.i=i;
-      f.addEventListener('click',function(e){ e.stopPropagation(); cast(f,e); });
-      pond.appendChild(f);
-    });
-    $('gfRes').hidden=true; gfStat(); tries(); $('goFish').hidden=false; $('gfSkip').focus({preventScroll:true});
-  }
-  // Ken, 18 Oct: "something that says no bonus after 3 attempts, or if one was a match 'catch multiplied' shows, and a number of matches"
-  function gfStat(){ $('gfStat').innerHTML='<span>'+esc(t('matches'))+' <b>'+found+'/'+PAIRS+'</b></span><span>'+esc(t('caught'))+' <b>🐟 '+caught+'</b></span><span>'+esc(t('catch'))+' <b>×'+mult+'</b></span><span>'+esc(t('score'))+' <b>'+score+'</b></span>'; }
-  function gfShow(ok,line2){ var r=$('gfRes'); r.className='gfres'+(ok?'':' no'); r.innerHTML='<b>'+esc(ok?t('gfmult'):t('gfnob'))+'</b><span>'+esc(line2)+'</span>'; r.hidden=false; gfStat(); }
-  function tries(){ var n=gf?gf.tries:0; $('gfTries').textContent='🎣'.repeat(n)+'◦'.repeat(TRIES-n); }
-  function line(e){ var r=$('pond').getBoundingClientRect(), x=(e.clientX-r.left)/r.width*100, y=(e.clientY-r.top)/r.height*100;
-    if(!e.clientX&&!e.clientY){ x=50; y=50; }
-    $('gfLine').firstChild.setAttribute('d','M50 -2 Q '+((50+x)/2).toFixed(1)+' '+(y*.6).toFixed(1)+' '+x.toFixed(1)+' '+y.toFixed(1));
-    var b=$('gfBob'); b.hidden=true; void b.offsetWidth; b.style.left=x+'%'; b.style.top=y+'%'; b.hidden=false; }
-  function cast(f,e){
-    if(!gf||gf.done||f.disabled) return; line(e);
-    f.querySelector('.gfin').innerHTML=own(FISH[l1][f.dataset.k],'gf'+f.dataset.i); f.setAttribute('aria-label',W[l1][f.dataset.k]); f.setAttribute('lang',l1); f.classList.add('shown');
-    if(f.dataset.k===gf.k){
-      gf.done=true; mult++; caught++; var bonus=10*mult; score+=bonus;
-      f.classList.add('caught'); try{ if(navigator.vibrate) navigator.vibrate([60,40,120]); }catch(x){}
-      $('gfMsg').textContent=t('gfok').replace('{w}',W[l1][gf.k]).replace('{m}',mult)+' · +'+bonus; $('gfMsg').className='gfmsg ok';
-      announce($('gfMsg').textContent); status(); gfShow(true,t('gfmults').replace('{m}',mult).replace('{b}',bonus)); gfTimer=setTimeout(gfEnd,2200); return;
-    }
-    gf.tries--; tries(); f.classList.add('nope'); f.disabled=true;
-    if(gf.tries>0){ $('gfMsg').textContent=t('gfno').replace('{w}',W[l1][f.dataset.k]).replace('{n}',gf.tries); $('gfMsg').className='gfmsg no'; announce($('gfMsg').textContent); return; }
-    gf.done=true; $('gfMsg').textContent=t('gfaway').replace('{m}',mult); $('gfMsg').className='gfmsg no'; announce(t('gfnob')+'. '+$('gfMsg').textContent);
-    gfShow(false,t('gfnob2').replace('{m}',mult)); gfTimer=setTimeout(gfEnd,2200);
-  }
-  function gfClose(){ clearTimeout(gfTimer); $('goFish').hidden=true; [].slice.call($('pond').querySelectorAll('.gfish')).forEach(function(x){ x.remove(); }); var g=gf; gf=null; return g; }
-  function gfEnd(){ var g=gfClose(); if(g&&g.last) setTimeout(won,300); }
-  $('gfSkip').addEventListener('click',gfEnd);
-  $('pond').addEventListener('click',function(e){ if(gf&&!gf.done) line(e); });
 
-  // Ken, 13 Oct: "If a fish is chosen in 1st and 2nd language it's a match!"
-  function pop(){ var m=$('matchPop'); m.textContent=t('match')+'!'; m.hidden=false; m.classList.remove('go'); void m.offsetWidth; m.classList.add('go'); clearTimeout(pop.t); pop.t=setTimeout(function(){ m.hidden=true; },1100); }
-
+  window.MFgoState=function(){ return G; };   // for testing
   var rz; window.addEventListener('resize',function(){ clearTimeout(rz); rz=setTimeout(function(){ fillPickers(); layout(); },80); });
+  window.addEventListener('pagehide',function(){ if(NET&&NET.ch) NET.ch.leave(); if(LOBBY) LOBBY.leave(); });
 
   // ── start ──
-  applyUI();
+  applyUI(); chatDraw();
   $('stat').textContent=t('loading');
+  fetch('/match/back-pond.svg').then(function(r){ return r.ok?r.text():''; }).then(function(x){ POND=x; }).catch(function(){});
   Promise.all([fetch('/match/words.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }),fetch('/match/back.svg').then(function(r){ if(!r.ok) throw 0; return r.text(); })])
-    .then(function(x){ W=x[0]; BACK=x[1]; deal(); fetch('/match/verses.json').then(function(r){ return r.json(); }).then(function(v){ V=v; }).catch(function(){}); })
+    .then(function(x){ W=x[0]; BACK=x[1];
+      var m=/[?&]play=([a-z0-9]{4,12})/.exec(location.search);
+      if(m){ $('anonName').textContent=fishName(); netJoin(m[1],false); $('stat').textContent=t('joining'); }
+      else deal();
+      fetch('/match/verses.json').then(function(r){ return r.json(); }).then(function(v){ V=v; }).catch(function(){}); })
     .catch(function(){ $('stat').textContent=t('oops'); });
 })();
 </script>
