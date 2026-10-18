@@ -81,10 +81,16 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
   <button class="btn ghost" id="undo" type="button">Undo all</button>
   <p class="msg" id="msg" role="status"></p>
 </div></div>
+<script src="/edit/wordtool.js"></script>
 <script>
 (function(){
   'use strict';
   var $=function(id){ return document.getElementById(id); };
+  // Ken, 18 Oct: the word tool (tap, drag, pinch, numbers) and "use this as a learning tool for all fish": 📚 saves a word's
+  // size and place as the rule for every word with that many letters in that language. Fish without their own setting follow it.
+  var RULES={}; try{ RULES=JSON.parse(localStorage.getItem('mf-word-rules')||'{}')||{}; }catch(e){ RULES={}; }
+  function saveRules(){ try{ localStorage.setItem('mf-word-rules',JSON.stringify(RULES)); }catch(e){} }
+  function letters(w){ return Array.from(String(w||'').replace(/[\s\u200f\u200e\u202a-\u202e]/g,'')).length; }
   var F=[['word','Word on the fish'],['ref','Reference'],['top','Verse line 1'],['bot','Verse line 2'],['gkm','Greek meaning (back)'],['hbm','Hebrew meaning (back)']];
   var D=null, show='A', q='', draft={};
   // Ken, 16 Oct: the word in the middle of the fish sometimes needs moving or sizing -- tick as many as apply
@@ -102,7 +108,24 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
     var x=+t.dataset.x, y=+t.dataset.y; t.setAttribute('font-size',(+t.dataset.fs*a.s).toFixed(1)); if(t.dataset.tl) t.setAttribute('textLength',(+t.dataset.tl*a.s).toFixed(1));   /* a word fitted to a width grows with it */
     t.setAttribute('transform','translate('+(x+a.x)+' '+(y+a.y)+') scale('+a.w+' '+a.h+') translate('+(-x)+' '+(-y)+')'); }
   function adjShow(box){ var n=box.dataset.n, code=box.dataset.code, pv=$('pv'+n); if(!pv||pv.dataset.ok) return; pv.dataset.ok='1'; var k=D.words[parseInt(n,10)-1].key;
-    fishOf(code).then(function(m){ pv.innerHTML=m[k]||''; ADJS[n]=adjParse(draft[id(n,'layout')]); adjApply(n); }).catch(function(){ pv.textContent='The fish could not be loaded.'; }); }
+    fishOf(code).then(function(m){ pv.innerHTML=m[k]||''; var t=pv.querySelector('text[fill="#fff"]'), svg=pv.querySelector('svg'); if(!t||!svg) return;
+      ADJS[n]=adjParse(draft[id(n,'layout')]); adjApply(n); var fs0=+t.dataset.fs, word=D.f[n].word, L=D.langs.filter(function(x){ return x.l===n.slice(-1); })[0];
+      function fromRule(){ if(draft[id(n,'layout')]) return null; return MFWordTool.ruleFor(RULES[code],letters(word)); }
+      function show(){ var r=fromRule(); if(r){ ADJS[n]={s:r.size/fs0,w:r.ww,h:1,x:r.dx,y:r.dy}; adjApply(n); } }
+      show(); pv._show=show;
+      MFWordTool.attach({svg:svg,text:function(){ return t; },panel:$('wp'+n),langName:L?L.name:code,
+        n:function(){ return letters(word); },
+        get:function(){ var a=ADJS[n]; return {size:fs0*a.s,dx:a.x,dy:a.y,ww:a.w}; },
+        set:function(v){ var a=ADJS[n]; a.s=Math.round(v.size/fs0*1000)/1000; a.w=Math.round(v.ww*1000)/1000; a.x=Math.round(v.dx); a.y=Math.round(v.dy); adjApply(n); setLay(n,box); },
+        reset:function(){ ADJS[n]={s:1,w:1,h:1,x:0,y:0}; adjApply(n); setLay(n,box); },
+        learned:function(){ return draft[id(n,'layout')]?'set by you':fromRule()?'from your rule':''; },
+        onLearn:function(v){ var c=letters(word); RULES[code]=RULES[code]||{}; RULES[code][c]={size:Math.round(v.size),dx:Math.round(v.dx),dy:Math.round(v.dy),ww:+(+v.ww).toFixed(3),src:n,from:word}; saveRules();
+          [].forEach.call(document.querySelectorAll('.pv'),function(x){ if(x._show&&x!==pv) x._show(); }); bar();
+          return 'Saved: every '+c+'-letter word in '+(L?L.name:code)+' now uses size '+Math.round(v.size)+'.'; }});
+    }).catch(function(){ pv.textContent='The fish could not be loaded.'; }); }
+  function setLay(n,box){ var a=ADJS[n], tx=adjText(a); if(tx) draft[id(n,'layout')]=tx; else delete draft[id(n,'layout')]; save(); $('lay'+n).textContent=tx;
+    var card=box.closest('.card'); box.querySelector('summary').innerHTML='✎ The word in the middle of the fish'+(tx||box.querySelector('input:checked')?' <b>(changed)</b>':'');
+    card.classList.toggle('changed',!!(tx||card.querySelector('textarea.ch')||card.querySelector('.dz input:checked'))); bar(); key(); }
   var DZ=['Make bigger','Make smaller','Move left','Move right','Move up','Move down','Stretch taller (vertically)','Stretch wider (horizontally)','Squeeze narrower','Spelling or letters look wrong'];
   function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function load(){ try{ draft=JSON.parse(localStorage.getItem('mf-edit-draft')||'{}')||{}; }catch(e){ draft={}; } try{ show=localStorage.getItem('mf-edit-show')||'A'; $('who').value=localStorage.getItem('mf-proof-name')||''; }catch(e){} }
@@ -110,7 +133,10 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
   function id(n,f){ return n+'.'+f; }
   function changes(){ var out=[]; Object.keys(draft).forEach(function(k){ var p=k.split('.'), n=p[0], f=p[1], rec=D.f[n]; if(!rec) return; var was=rec[f]||'';
     if(draft[k]!==was){ var w=D.words[parseInt(n,10)-1], L=D.langs.filter(function(x){ return x.l===n.slice(-1); })[0]; out.push({n:n,field:f,was:was,now:draft[k],lang:L?L.name:'',en:w?w.en:''}); } });
-    return out.sort(function(a,b){ return parseInt(a.n,10)-parseInt(b.n,10)||a.n.localeCompare(b.n); }); }
+    out.sort(function(a,b){ return parseInt(a.n,10)-parseInt(b.n,10)||a.n.localeCompare(b.n); });
+    Object.keys(RULES).forEach(function(code){ var L=D.langs.filter(function(x){ return x.code===code; })[0]; Object.keys(RULES[code]).forEach(function(c){ var r=RULES[code][c]; if(r.sent) return;
+      out.push({n:r.src,field:'template',was:'',now:'RULE '+(L?L.name:code)+' word '+c+' letters: size '+r.size+', left/right '+r.dx+', up/down '+r.dy+', width '+Math.round(r.ww*100)+'%',lang:L?L.name:code,en:r.from}); }); });
+    return out; }
   function counts(){ var c={}; changes().forEach(function(x){ var l=x.n.slice(-1); c[l]=(c[l]||0)+1; }); return c; }
   function key(){ var c=counts(); $('key').innerHTML='<button type="button" data-l="all" aria-pressed="'+(show==='all')+'">All languages</button>'+D.langs.map(function(x){
     return '<button type="button" data-l="'+x.l+'" aria-pressed="'+(show===x.l)+'"><i>'+x.l+'</i>'+esc(x.name)+(x.native!==x.name?' · '+esc(x.native):'')+(c[x.l]?'<span class="cnt">'+c[x.l]+'</span>':'')+'</button>'; }).join(''); }
@@ -127,8 +153,7 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
         fields+='<details class="dz"'+(dz||dn||lay?' open':'')+' data-n="'+n+'" data-code="'+L.code+'"><summary>✎ The word in the middle of the fish'+(dsel.length||lay?' <b>(changed)</b>':'')+'</summary>'
           +(L.code==='en'
             ?'<p class="dzh">The English fish are hand-drawn, so tick what should change:</p><div class="dzo">'+DZ.map(function(o){ return '<label class="dzc"><input type="checkbox" data-dz="'+n+'" value="'+esc(o)+'"'+(dsel.indexOf(o)>=0?' checked':'')+'> '+esc(o)+'</label>'; }).join('')+'</div>'
-            :'<p class="dzh">Use the buttons to size and move the word right on the fish. What you see is what gets sent.</p><div class="pv" id="pv'+n+'"></div><div class="adj" data-adj="'+n+'">'
-              +ADJ.map(function(a){ return '<button type="button" data-a="'+a[0]+'" title="'+esc(a[2])+'">'+a[1]+'</button>'; }).join('')+'</div><p class="lay" id="lay'+n+'">'+esc(lay)+'</p>')
+            :'<p class="dzh">Tap the word on the fish to move it, pinch it to size, or type the numbers. What you see is what gets sent.</p><div class="pv" id="pv'+n+'"></div><div class="wpanel" id="wp'+n+'"></div><p class="lay" id="lay'+n+'">'+esc(lay)+'</p>')
           +'<textarea data-n="'+n+'" data-f="dnote" rows="2" placeholder="Anything else about how the fish looks (optional)"'+(dn?' class="ch"':'')+'>'+esc(dn)+'</textarea></details>';
         h+='<article class="card'+(any?' changed':'')+'" id="c'+n+'"><div class="hd"><span class="num">'+n+'</span><b>'+esc(rec.word)+'</b><span>'+esc(w.en)+' · '+esc(L.name)+'</span>'
           +(L.l<='I'?'<img src="/proof/img/'+n+'.jpg" alt="" width="792" height="398" loading="lazy" onerror="this.remove()">':'')+'</div><div class="grid">'+fields+'</div></article>'; }); });
@@ -151,7 +176,7 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
   $('list').addEventListener('click',function(e){ var u=e.target.closest('[data-undo]'); if(!u) return; delete draft[u.dataset.undo]; save(); render(); });
   $('key').addEventListener('click',function(e){ var b=e.target.closest('button[data-l]'); if(!b) return; show=b.dataset.l; try{ localStorage.setItem('mf-edit-show',show); }catch(x){} render(); window.scrollTo(0,0); });
   $('find').addEventListener('input',function(){ q=this.value; render(); });
-  function listText(ch){ var who=$('who').value.trim(); return 'MannaFish edits: '+ch.length+' change'+(ch.length===1?'':'s')+(who?' from '+who:'')+'\n\n'+ch.map(function(x){ var F2={design:'Word in the middle: design fixes',dnote:'Design note',layout:'Word in the middle: size and position'}; F.forEach(function(f){ F2[f[0]]=f[1]; });
+  function listText(ch){ var who=$('who').value.trim(); return 'MannaFish edits: '+ch.length+' change'+(ch.length===1?'':'s')+(who?' from '+who:'')+'\n\n'+ch.map(function(x){ var F2={design:'Word in the middle: design fixes',dnote:'Design note',layout:'Word in the middle: size and position',template:'Rule for all fish'}; F.forEach(function(f){ F2[f[0]]=f[1]; });
     return x.n+' · '+x.en+' · '+x.lang+' · '+F2[x.field]+'\n   was: '+x.was+'\n   now: '+x.now; }).join('\n\n'); }
   $('copy').addEventListener('click',function(){ var ch=changes(); if(!ch.length){ $('msg').textContent='No changes yet.'; return; } var t=listText(ch);
     (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){ $('msg').className='msg'; $('msg').textContent='Copied: paste it to Claude, or anywhere.'; },function(){ $('msg').textContent='Could not copy on this device.'; }); });
@@ -159,7 +184,7 @@ textarea.ch{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
   $('send').addEventListener('click',function(){ var ch=changes(), b=this, who=$('who').value.trim(); if(!ch.length) return; try{ localStorage.setItem('mf-proof-name',who); }catch(e){}
     b.disabled=true; $('msg').className='msg'; $('msg').textContent='Sending…';
     fetch('/api/proof-fix',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({batch:ch,name:who})}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||'Could not send'); return j; }); })
-      .then(function(j){ draft={}; save(); render(); $('msg').className='msg'; $('msg').textContent='Sent: '+j.n+' change'+(j.n===1?'':'s')+'. They are in your email. Paste that email to Claude and they go on the site.'; })
+      .then(function(j){ draft={}; save(); Object.keys(RULES).forEach(function(c){ Object.keys(RULES[c]).forEach(function(n){ RULES[c][n].sent=true; }); }); saveRules(); render(); $('msg').className='msg'; $('msg').textContent='Sent: '+j.n+' change'+(j.n===1?'':'s')+'. They are in your email. Paste that email to Claude and they go on the site.'; })
       .catch(function(e){ b.disabled=false; $('msg').className='msg err'; $('msg').textContent=(e.message||'Could not send')+'. Your changes are still here; try again, or use Copy the list.'; }); });
   load();
   fetch('/edit/data.json',{cache:'no-store'}).then(function(r){ return r.json(); }).then(function(d){ D=d; if(show!=='all'&&!D.langs.some(function(x){ return x.l===show; })) show='A'; render(); })
