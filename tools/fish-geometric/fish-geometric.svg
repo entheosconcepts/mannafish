@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="4in" height="2in" viewBox="0 0 4000 2000" style="shape-rendering:geometricPrecision;fill-rule:evenodd;clip-rule:evenodd">
+ <!-- MannaFish fish, geometric. One 300-wide stroke: body circles R 1766.06 / 1466.06 (centre 1641.63, 1766.06 and mirrored), every straight part at 49 degrees,
+      tail bars continuing straight from the body curves, nose radius 100, tail corners radius 80. Symmetric about y = 1000. -->
+ <path fill="white" fill-rule="evenodd" d="M24.53 934.39L308.76 607.42A1766.06 1766.06 0 0 1 2974.49 607.42L3117 771.36L3753.93 38.66A80 80 0 0 1 3866.79 30.76L3972.45 122.61A80 80 0 0 1 3980.34 235.47L3315.75 1000L3980.34 1764.53A80 80 0 0 1 3972.45 1877.39L3866.79 1969.24A80 80 0 0 1 3753.93 1961.34L3117 1228.64L2974.49 1392.58A1766.06 1766.06 0 0 1 308.76 1392.58L24.53 1065.61A100 100 0 0 1 24.53 934.39ZM365 1000L535.18 804.24A1466.06 1466.06 0 0 1 2748.07 804.24L2918.25 1000L2748.07 1195.76A1466.06 1466.06 0 0 1 535.18 1195.76Z"/>
+</svg>
