@@ -48,6 +48,7 @@ export function emailFor(m, lang, unsub, opts = {}) {
   const word = es ? (ES.titles[m.key] || m.title) : m.title;
   const refEs = (r) => { const mm = r.match(/^(.*?)\s+(\d+:\d+.*)$/); return es && mm ? (ES.books[mm[1]] || mm[1]) + ' ' + mm[2] : r; };
   const ref = refEs(m.ref);
+  // Ken, 19 Oct: in the email the reference stands alone on the first row and the words of the verse on the second, for balance
   const refs = (m.refs || [{ ref: m.ref, snippet: m.snippet, url: m.url }]).map((x) => ({ ref: refEs(x.ref), snip: es ? '' : ' — “' + x.snippet + '”', url: SITE() + x.url + (es ? '&lang=es' : '') }));
   const read = SITE() + m.url + (es ? '&lang=es' : '');
   const img = SITE() + (es ? '/w/img/es/' + m.key.toLowerCase() + '.jpg' : '/w/img/' + m.key.toLowerCase() + '.png');
@@ -133,7 +134,7 @@ ${dbl ? td('padding:6px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;
   + td('padding:6px 30px 14px;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(T.dblNote))) : ''}
 ${dayLine ? td('padding:4px 26px 0;font:bold 13px/1.5 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#8fb3e8', gw(esc(dayLine))) : ''}
 ${weekNote ? td('padding:4px 26px 0;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(weekNote))) : ''}
-${refs.map((x) => td('padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0', gw(`<a href="${x.url}" style="color:#ffffff;text-decoration:none"><b style="color:#ffffff">${esc(x.ref)}</b></a>${esc(x.snip)}`))).join('\n')}
+${refs.map((x) => td('padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0', gw(`<a href="${x.url}" style="color:#ffffff;text-decoration:none"><b style="color:#ffffff">${esc(x.ref)}</b></a>${x.snip ? '<br><span style="color:#eaf0f0">' + esc(x.snip.replace(/^ — /, '')) + '</span>' : ''}`))).join('\n')}
 ${td('padding:16px 12px 6px;font-size:0', button(listen, 'listen', T.listen) + button(read, 'read', T.read))}
 ${td('padding:10px 22px 4px;font:bold 17px/1.5 Arial,sans-serif', gw(`<a href="${resume}" style="color:#ffffff;text-decoration:underline">&#9654;&#xFE0E; ${esc(RL[0])} ›</a>`))}
 ${listRows.length ? td('padding:14px 22px 4px', gw(`<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;font:14px/1.5 Arial,sans-serif">${rowsOf(listRows)}</table>`)) : ''}
