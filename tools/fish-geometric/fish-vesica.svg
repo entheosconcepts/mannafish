@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="4in" height="2in" viewBox="0 0 4000 2000" style="shape-rendering:geometricPrecision;fill-rule:evenodd;clip-rule:evenodd">
+ <!-- MannaFish fish on the vesica piscis: two equal circles (radius 1700 on the middle of the band) each through the other's centre;
+      band 300 wide (circles 1850 and 1550 on the same centres); tail bars 300 wide aimed at the frame corners, their inner edges
+      meeting at the eye's point; nose and tail corners rounded 75 (a quarter of the band). -->
+ <path fill="white" fill-rule="evenodd" d="M19.082 964.085A1850 1850 0 0 1 3141.789 765.273L3754.627 54.811A75 75 0 0 1 3860.405 47.007L3973.987 144.982A75 75 0 0 1 3981.791 250.76L3335.505 1000L3981.791 1749.24A75 75 0 0 1 3973.987 1855.018L3860.405 1952.993A75 75 0 0 1 3754.627 1945.189L3141.789 1234.727A1850 1850 0 0 1 19.082 1035.915A75 75 0 0 1 19.082 964.085ZM347.02 1000A1550 1550 0 0 1 2939.316 1000A1550 1550 0 0 1 347.02 1000Z"/>
+</svg>
