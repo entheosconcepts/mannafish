@@ -3,7 +3,7 @@
 import { getStore } from '@netlify/blobs';
 import webpush from 'web-push';
 import { createHash } from 'node:crypto';
-import { localNow, todaysManna, notificationFor, SEND_HOUR, DEFAULT_TZ, validTz } from './manna.mjs';
+import { localNow, todaysCatch, notificationFor, SEND_HOUR, DEFAULT_TZ, validTz } from './manna.mjs';
 
 export const store = () => getStore('mannafish-push');
 const idFor = endpoint => createHash('sha256').update(endpoint).digest('hex').slice(0, 40);
@@ -36,7 +36,7 @@ export async function sendDue(now = new Date()) {
     if (!rec) continue;
     const tz = rec.tz || DEFAULT_TZ, here = localNow(now, tz);
     if (here.hour < SEND_HOUR || rec.lastSent === here.date) { notYet++; continue; }
-    const m = todaysManna(now, tz);
+    const m = todaysCatch(now, tz);   // Ken, 19 Oct: the catch of the day, a different fish each day
     if (!m) { notYet++; continue; }
     try { await sendTo(rec.sub, notificationFor(m, rec.lang)); sent++; await s.setJSON(b.key, { ...rec, lastSent: here.date }); }
     catch (e) {

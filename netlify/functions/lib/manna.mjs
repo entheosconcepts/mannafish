@@ -4,6 +4,7 @@
 // START (a Sunday) with the first word.
 import WORDS from './words.json';
 import ES from './es.json';
+import FISH from './fishlines.json';
 
 export const START = Date.UTC(2026, 9, 11); // Sunday 11 Oct 2026 (Rest)
 export const DAYS = 6;   // gathering days in a week
@@ -46,6 +47,25 @@ export function todaysManna(now = new Date(), tz = DEFAULT_TZ) {
   };
 }
 
+// Ken, 19 Oct: "For the daily devotional email, send a different fish for each day, it's just catch of the day, not
+// necessarily that person's selected devotional ... one word a day, inbox, 2 on Fridays. Right now I got the same word in
+// my email every morning ... I do not want to become tired of Hope."
+// The catch of the day: everyone gets the same fish, a different one each day -- Sunday to Thursday one, Friday two
+// (the day's and the Sabbath's: a double portion), Saturday nothing. Seven fish a week, going round the words in order;
+// each fish comes with the verse on it.
+function fishOf(k) {
+  const n = WORDS.order.length, key = WORDS.order[((k % n) + n) % n], w = WORDS.words[key], f = FISH.en[key];
+  const i = w.refs.findIndex((r) => r[0] === f.ref);
+  return { key, title: w.title, i, ref: f.ref, snippet: i >= 0 ? w.refs[i][1] : f.top, url: '/?w=' + key.toLowerCase() + (i >= 0 ? '&r=' + i : '') };
+}
+export function catchOn(t) {
+  const dow = new Date(t).getUTCDay(); if (dow === 6) return null;
+  const s = Math.floor(Math.floor((t - START) / 86400000) / 7) * 7 + dow, a = fishOf(s);
+  return { ...a, catch: true, t, friday: dow === 5, refs: [{ i: a.i, ref: a.ref, snippet: a.snippet, url: a.url }], second: dow === 5 ? fishOf(s + 1) : null };
+}
+export function todaysCatch(now = new Date(), tz = DEFAULT_TZ) { return catchOn(localNow(now, tz).t); }
+export function welcomeCatch(now = new Date(), tz = DEFAULT_TZ) { return todaysCatch(now, tz) || todaysCatch(new Date(now.getTime() + 86400000), tz); }
+
 // Ken, 16 Oct: "if it's a monthly I would like to see a list of every day of the month" -- each day of the month of t
 // (a UTC midnight): its fish and verses; Friday is the double portion, Saturday the Sabbath (no verses)
 export function mannaOn(t) {
@@ -86,13 +106,13 @@ export function notificationFor(m, lang = 'en') {
   if (lang === 'es') {
     const ref = (m.refs || [m]).map((x) => { const mm = x.ref.match(/^(.*?)\s+(\d+:\d+.*)$/); return mm ? (ES.books[mm[1]] || mm[1]) + ' ' + mm[2] : x.ref; }).join(' · ');
     return {
-      title: 'MannaFish de hoy: ' + (ES.titles[m.key] || m.title).toUpperCase(),
+      title: 'MannaFish de hoy: ' + (ES.titles[m.key] || m.title).toUpperCase() + (m.second ? ' + ' + (ES.titles[m.second.key] || m.second.title).toUpperCase() : ''),
       body: ref + ' \u2014 toca para leer.' + (m.friday ? '  \u00b7 Porci\u00f3n doble: el vers\u00edculo de hoy y uno para el d\u00eda de reposo.' : ''),
       url: m.url + '&lang=es'
     };
   }
   return {
-    title: 'Today\u2019s MannaFish: ' + m.title.toUpperCase(),
+    title: 'Today\u2019s MannaFish: ' + m.title.toUpperCase() + (m.second ? ' + ' + m.second.title.toUpperCase() : ''),
     body: (m.refs || [m]).map((x) => x.ref).join(' \u00b7 ') + ' \u2014 \u201c' + m.snippet + '\u201d' + (m.friday ? '  \u00b7 A double portion: today\u2019s verse and one for the Sabbath.' : ''),
     url: m.url
   };

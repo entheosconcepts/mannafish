@@ -1,11 +1,11 @@
 // Email devotional subscribers, kept in this site's own Netlify Blobs store (like the phone
-// notifications). Daily = every gathering day (Sunday–Friday, Saturday is rest): the same fish all week,
-// the next two verses from the back of the decal each day; Weekly = Sundays (the week's fish; the devotional
+// notifications). Daily = every gathering day (Sunday–Friday, Saturday is rest): the catch of the day, a different
+// fish each day and two on Friday (Ken, 19 Oct; it was the same fish all week); Weekly = Sundays (the week's fish; the devotional
 // on the site picks up where the person left off); Monthly = the first Sunday of the month. All at 7am where the person is.
 // Text sign-ups are kept too, and start receiving once texting is set up.
 import { getStore } from '@netlify/blobs';
 import { createHash, createHmac, randomBytes } from 'node:crypto';
-import { localNow, todaysManna, welcomeManna, sabbathRest, SEND_HOUR, DEFAULT_TZ, validTz, monthOf, yearOf } from './manna.mjs';
+import { localNow, todaysManna, welcomeManna, todaysCatch, welcomeCatch, sabbathRest, SEND_HOUR, DEFAULT_TZ, validTz, monthOf, yearOf } from './manna.mjs';
 import WORDS from './words.json';
 import { sendMail } from './mail.mjs';
 import FISH from './fishlines.json';
@@ -49,7 +49,9 @@ export function emailFor(m, lang, unsub, opts = {}) {
   const refEs = (r) => { const mm = r.match(/^(.*?)\s+(\d+:\d+.*)$/); return es && mm ? (ES.books[mm[1]] || mm[1]) + ' ' + mm[2] : r; };
   const ref = refEs(m.ref);
   // Ken, 19 Oct: in the email the reference stands alone on the first row and the words of the verse on the second, for balance
-  const refs = (m.refs || [{ ref: m.ref, snippet: m.snippet, url: m.url }]).map((x) => ({ ref: refEs(x.ref), snip: es ? '' : ' — “' + x.snippet + '”', url: SITE() + x.url + (es ? '&lang=es' : '') }));
+  // Ken, 19 Oct: the daily email is the catch of the day (m.catch): the fish, the reference, the words on the fish -- and on Friday a second fish
+  const fishRef = (k, url) => { const g = FISH[es ? 'es' : 'en'][k]; return { ref: g.ref, snip: ' — “' + g.top + ' ' + g.bottom + '”', url: SITE() + url + (es ? '&lang=es' : '') }; };
+  const refs = m.catch ? [fishRef(m.key, m.url)] : (m.refs || [{ ref: m.ref, snippet: m.snippet, url: m.url }]).map((x) => ({ ref: refEs(x.ref), snip: es ? '' : ' — “' + x.snippet + '”', url: SITE() + x.url + (es ? '&lang=es' : '') }));
   const read = SITE() + m.url + (es ? '&lang=es' : '');
   const img = SITE() + (es ? '/w/img/es/' + m.key.toLowerCase() + '.jpg' : '/w/img/' + m.key.toLowerCase() + '.png');
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -91,7 +93,7 @@ export function emailFor(m, lang, unsub, opts = {}) {
   };
   const listRows = monthRows.length ? monthRows : weekRows;
   // Ken, 16 Oct: the whole year, four across, each week's fish a link to that week; this week marked
-  const yr = m.t ? yearOf(m.t) : [], YRH = es ? 'Todo el año' : 'The whole year', WKL = es ? 'Semana ' : 'Week ';
+  const yr = m.t && !m.catch ? yearOf(m.t) : [], YRH = es ? 'Todo el año' : 'The whole year', WKL = es ? 'Semana ' : 'Week ';
   const fmtShort = (ms) => new Date(ms).toLocaleDateString(es ? 'es-US' : 'en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
   const yearGrid = yr.length ? `<table role="presentation" cellpadding="0" cellspacing="0" align="center" width="100%" style="max-width:516px;margin:0 auto;font:12px/1.35 Arial,sans-serif">`
     + Array.from({ length: 13 }, (_, r) => '<tr>' + yr.slice(r * 4, r * 4 + 4).map((w) => `<td width="25%" align="center" style="padding:3px"><a href="${SITE()}/?devo=1&w=${w.key.toLowerCase()}${fq}${es ? '&lang=es' : ''}" style="display:block;text-decoration:none;border:1px solid ${w.now ? '#f5d76e' : '#2b3138'};border-radius:8px;padding:5px 2px;color:${w.now ? '#f5d76e' : (w.past ? '#7d8a8e' : '#c6d2d4')}">`
@@ -105,9 +107,12 @@ export function emailFor(m, lang, unsub, opts = {}) {
   // Ken, 9 Oct: no audio from the email (it felt invasive) -- this button opens the day's fish on the site
   const listen = SITE() + '/?w=' + m.key.toLowerCase() + (es ? '&lang=es' : '');
   // Ken, 11 Oct: Friday is a double portion (Exodus 16:22, 29) -- today's verse, and the verse on the fish for the Sabbath
-  const dbl = !!m.friday;
+  const dbl = !!m.friday, two = m.catch && m.second;
+  const word2 = two ? (es ? (ES.titles[two.key] || two.title) : two.title) : '';
   const fishIdx = WORDS.words[m.key].refs.findIndex((r) => r[0] === FISH.en[m.key].ref);
   const sabLink = SITE() + '/?w=' + m.key.toLowerCase() + (fishIdx >= 0 ? '&r=' + fishIdx : '') + (es ? '&lang=es' : '');
+  // the Friday catch: the second fish, for the Sabbath -- built further down, once the picture helpers are there
+  let catch2 = '';
   // Ken, 11 Oct: Gmail on iPhone (dark mode) flips an email's colours -- black turned white. It leaves pictures alone,
   // so the black is a background picture, the blue headings and the buttons are pictures (tools/email-img), the
   // white lettering goes through Gmail's blend-mode fix (gw), and the grey borders are gone.
@@ -121,6 +126,12 @@ export function emailFor(m, lang, unsub, opts = {}) {
   const head = (k, alt) => pic(k, alt, 'display:block;margin:0 auto;color:#2a5fb0;font:900 15px Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase');
   const button = (href, k, alt) => `<a href="${href}" style="display:inline-block;margin:5px;text-decoration:none">${pic(k, alt, 'display:inline-block;vertical-align:middle;color:#ffffff;font:bold 16px Arial,sans-serif')}</a>`;
   const rule = td('padding:0 22px;font-size:0;line-height:0', `<img src="${P}rule.png" width="516" height="1" alt="" style="display:block;width:100%;height:1px;border:0">`);
+  if (two) { const r2 = fishRef(two.key, two.url), img2 = SITE() + (es ? '/w/img/es/' + two.key.toLowerCase() + '.jpg' : '/w/img/' + two.key.toLowerCase() + '.png'), see2 = SITE() + '/?w=' + two.key.toLowerCase() + (es ? '&lang=es' : '');
+    catch2 = td('padding:20px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;color:#2a5fb0;font:900 19px Arial,sans-serif')) + '\n'
+      + td('padding:6px 30px 4px;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(T.dblNote))) + '\n'
+      + td('padding:12px 18px', `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #3a4148;border-radius:14px;border-collapse:separate"><tr><td bgcolor="#000000" style="${BG}padding:14px;border-radius:14px"><a href="${r2.url}" style="text-decoration:none"><img src="${img2}" width="496" alt="${esc(word2)}" style="width:100%;max-width:496px;height:auto;display:block;border:0;margin:0 auto"></a></td></tr></table>`) + '\n'
+      + td('padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0', gw(`<a href="${r2.url}" style="color:#ffffff;text-decoration:none"><b style="color:#ffffff">${esc(r2.ref)}</b></a><br><span style="color:#eaf0f0">${esc(r2.snip.replace(/^ — /, ''))}</span>`)) + '\n'
+      + td('padding:16px 12px 20px;font-size:0', button(see2, 'listen', T.listen) + button(r2.url, 'read', T.read)); }
   const html = `<!doctype html><html style="background:#000"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="only dark"><meta name="supported-color-schemes" content="dark">
 <style>:root{color-scheme:only dark}body,table,td{background-color:#000000 !important}u + .body .gmail-screen{background:#000;mix-blend-mode:screen}u + .body .gmail-diff{background:#000;mix-blend-mode:difference}</style></head>
 <body class="body" bgcolor="#000000" style="margin:0;padding:0;${BG}font-family:Georgia,serif;color:#eaf0f0">
@@ -130,27 +141,31 @@ ${td('padding:22px 20px 16px', `<a href="${SITE()}${es ? '/?lang=es' : '/'}" sty
 ${rule}
 ${opts.welcome ? td('padding:24px 22px 4px', head('welcome', T.hello)) : ''}
 ${td('padding:16px 18px', `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #3a4148;border-radius:14px;border-collapse:separate"><tr><td bgcolor="#000000" style="${BG}padding:14px;border-radius:14px"><a href="${read}" style="text-decoration:none"><img src="${img}" width="496" alt="${esc(word)}" style="width:100%;max-width:496px;height:auto;display:block;border:0;margin:0 auto"></a></td></tr></table>`)}
-${dbl ? td('padding:6px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;color:#2a5fb0;font:900 19px Arial,sans-serif')) + '\n'
+${dbl && !m.catch ? td('padding:6px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;color:#2a5fb0;font:900 19px Arial,sans-serif')) + '\n'
   + td('padding:6px 30px 14px;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(T.dblNote))) : ''}
 ${dayLine ? td('padding:4px 26px 0;font:bold 13px/1.5 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#8fb3e8', gw(esc(dayLine))) : ''}
 ${weekNote ? td('padding:4px 26px 0;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(weekNote))) : ''}
 ${refs.map((x) => td('padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0', gw(`<a href="${x.url}" style="color:#ffffff;text-decoration:none"><b style="color:#ffffff">${esc(x.ref)}</b></a>${x.snip ? '<br><span style="color:#eaf0f0">' + esc(x.snip.replace(/^ — /, '')) + '</span>' : ''}`))).join('\n')}
 ${td('padding:16px 12px 6px;font-size:0', button(listen, 'listen', T.listen) + button(read, 'read', T.read))}
-${td('padding:10px 22px 4px;font:bold 17px/1.5 Arial,sans-serif', gw(`<a href="${resume}" style="color:#ffffff;text-decoration:underline">&#9654;&#xFE0E; ${esc(RL[0])} ›</a>`))}
+${m.catch ? '' : td('padding:10px 22px 4px;font:bold 17px/1.5 Arial,sans-serif', gw(`<a href="${resume}" style="color:#ffffff;text-decoration:underline">&#9654;&#xFE0E; ${esc(RL[0])} ›</a>`))}
 ${listRows.length ? td('padding:14px 22px 4px', gw(`<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;font:14px/1.5 Arial,sans-serif">${rowsOf(listRows)}</table>`)) : ''}
-${td('padding:8px 22px 20px;font:bold 16px/1.9 Arial,sans-serif', gw(`<a href="${another}" style="color:#ffffff;text-decoration:underline">🎣 ${esc(RL[1])} ›</a>`))}
+${m.catch ? '' : td('padding:8px 22px 20px;font:bold 16px/1.9 Arial,sans-serif', gw(`<a href="${another}" style="color:#ffffff;text-decoration:underline">🎣 ${esc(RL[1])} ›</a>`))}
 ${yearGrid ? td('padding:6px 14px 4px;font:bold 13px/1.5 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8fb3e8', gw(esc(YRH))) + '\n' + td('padding:4px 10px 20px', gw(yearGrid)) : ''}
 ${rule}
-${td('padding:16px 22px 0', head(dbl ? 'sab' : 'fish', dbl ? T.sab : T.fish))}
+${m.catch ? catch2 : `${td('padding:16px 22px 0', head(dbl ? 'sab' : 'fish', dbl ? T.sab : T.fish))}
 ${td(`padding:8px 26px ${dbl ? '0' : '22px'};font:${dbl ? 'normal 19px/1.55' : 'italic 17px/1.55'} Georgia,serif;color:${dbl ? '#eaf0f0' : '#c6d2d4'}`,
   gw(`“${esc(f.top)} ${esc(f.bottom)}”<br><span style="font:${dbl ? 'bold 15px' : 'normal 13px'} Arial,sans-serif;color:${dbl ? '#ffffff' : '#8a9aa0'}">${esc(f.ref)}</span>`))}
-${dbl ? td('padding:16px 12px 24px;font-size:0', button(sabLink, 'sabread', T.sabRead)) : ''}
-${rule}
+${dbl ? td('padding:16px 12px 24px;font-size:0', button(sabLink, 'sabread', T.sabRead)) : ''}`}
+${m.catch && !two ? '' : rule}
 ${td('padding:16px 22px 22px;font:12px/1.7 Arial,sans-serif;color:#8a9aa0', gw(`${esc(T.why)} <a href="${unsub}" style="color:#8a9aa0">${esc(T.stop)}</a> · <a href="${SITE()}/privacy/" style="color:#8a9aa0">${es ? 'Privacidad' : 'Privacy'}</a><br>${esc(ADDRESS())}`))}
 </table></td></tr></table></body></html>`;
-  const text = `${T.hello.replace(/:$/, '')}: ${word}\n\n${dbl ? T.dbl + ' — ' + T.dblNote + '\n\n' : ''}${dayLine ? dayLine + '\n' : ''}${weekNote ? weekNote + '\n' : ''}${refs.map((x) => T.today + ': ' + x.ref + x.snip + '\n' + x.url).join('\n')}\n${T.listen}: ${listen}\n${T.read}: ${read}\n${RL[0]}: ${resume}\n${RL[1]} ${another}\n${YRH}: ${SITE()}/?devo=1&year=1${fq}${es ? '&lang=es' : ''}\n\n${listRows.map((r) => (r.rest ? '☾ ' : r.past ? '✓ ' : r.today ? '▶ ' : '○ ') + r.label + (monthRows.length && !r.rest ? ' (' + r.word + ')' : '') + ' — ' + [r.refs.map((x) => x.ref).join(', '), r.note].filter(Boolean).join(' · ') + (r.today ? ' (' + TODAY + ')' : '')).join('\n')}\n\n${dbl ? T.sab : T.fish}: “${f.top} ${f.bottom}” ${f.ref}${dbl ? '\n' + T.sabRead + ': ' + sabLink : ''}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
+  const text = m.catch
+    ? `${T.hello.replace(/:$/, '')}: ${word}\n\n${refs.map((x) => x.ref + '\n' + x.snip.replace(/^ — /, '') + '\n' + x.url).join('\n')}\n${T.listen}: ${listen}\n${T.read}: ${read}\n`
+      + (two ? `\n${T.dbl}: ${word2}\n${T.dblNote}\n${fishRef(two.key, two.url).ref}\n${fishRef(two.key, two.url).snip.replace(/^ — /, '')}\n${fishRef(two.key, two.url).url}\n` : '')
+      + `\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`
+    : `${T.hello.replace(/:$/, '')}: ${word}\n\n${dbl ? T.dbl + ' — ' + T.dblNote + '\n\n' : ''}${dayLine ? dayLine + '\n' : ''}${weekNote ? weekNote + '\n' : ''}${refs.map((x) => T.today + ': ' + x.ref + x.snip + '\n' + x.url).join('\n')}\n${T.listen}: ${listen}\n${T.read}: ${read}\n${RL[0]}: ${resume}\n${RL[1]} ${another}\n${YRH}: ${SITE()}/?devo=1&year=1${fq}${es ? '&lang=es' : ''}\n\n${listRows.map((r) => (r.rest ? '☾ ' : r.past ? '✓ ' : r.today ? '▶ ' : '○ ') + r.label + (monthRows.length && !r.rest ? ' (' + r.word + ')' : '') + ' — ' + [r.refs.map((x) => x.ref).join(', '), r.note].filter(Boolean).join(' · ') + (r.today ? ' (' + TODAY + ')' : '')).join('\n')}\n\n${dbl ? T.sab : T.fish}: “${f.top} ${f.bottom}” ${f.ref}${dbl ? '\n' + T.sabRead + ': ' + sabLink : ''}\n\n${T.why}\n${T.stop}: ${unsub}\n${ADDRESS()}`;
   LINK = keep;
-  return { subject: T.sub + (dbl ? T.sabSub : ''), html, text };
+  return { subject: T.sub + (two ? ' + ' + word2 : '') + (dbl ? T.sabSub : ''), html, text };
 }
 
 export async function deliver(rec, m, opts) {
@@ -186,6 +201,9 @@ export async function subscribe(f, now = new Date(), site = null) {
   return { rec, key, isNew: !old || old.unsub, was: old && !old.unsub ? old.freq : null };
 }
 
+// Ken, 19 Oct: a Daily sign-up gets the catch of the day (a different fish each day, two on Friday); Weekly and Monthly the week's fish
+export function welcomeFor(rec, now, tz) { return rec.freq === 'Weekly' || rec.freq === 'Monthly' ? welcomeManna(now, tz) : welcomeCatch(now, tz); }
+
 // is today one of this person's days?
 export function dueToday(freq, here) {
   if (freq === 'Weekly') return here.dow === 0;
@@ -219,11 +237,11 @@ export async function sendDue(now = new Date()) {
     const b = { key };
     const tz = rec.tz || DEFAULT_TZ, here = localNow(now, tz);
     if (rec.welcomeDue && !sabbathRest(now, tz)) {
-      try { await deliver(rec, welcomeManna(now, tz), { welcome: true }); rec.welcomeDue = false; await s.setJSON(b.key, rec); sent++; }
+      try { await deliver(rec, welcomeFor(rec, now, tz), { welcome: true }); rec.welcomeDue = false; await s.setJSON(b.key, rec); sent++; }
       catch (e) { failed++; console.log('held welcome failed', b.key, String(e).slice(0, 200)); }
     }
     if (here.hour < SEND_HOUR || rec.lastSent === here.date || !dueToday(rec.freq, here)) { skipped++; continue; }
-    const m = todaysManna(now, tz);
+    const m = rec.freq === 'Weekly' || rec.freq === 'Monthly' ? todaysManna(now, tz) : todaysCatch(now, tz);
     if (!m) { skipped++; continue; }
     try { await deliver(rec, m, { weekly: rec.freq === 'Weekly' }); sent++; await s.setJSON(b.key, { ...rec, lastSent: here.date }); }
     catch (e) { failed++; console.log('devo email failed', b.key, String(e).slice(0, 200)); }
