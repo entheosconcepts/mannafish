@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MannaFish · Bible in a Year</title>
+<meta name="description" content="Read the whole Bible in a year: a day reading and a night reading, and 2 Fish every day: one for me, one to give.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Spectral:ital,wght@0,400;0,500;1,400&family=Archivo:wght@400;600;700;800&display=swap">
+<!-- Ken, 19 Oct: "yes build the reading plan page and rebalance by length - split into day reading and night and use 2Fish"
+     The whole Bible in 52 weeks: Sunday to Friday a day reading and a night reading (about 6 minutes each, balanced by the number
+     of words, whole chapters), Saturday to rest and catch up. Each reading has its own fish: the day fish is "one for me", the
+     night fish is "one for you", to send to someone. The plan is plan.json; the fish are fish/<id>.svg (drawn by the edit sheet);
+     the chapters are /fish-lang/bible/kjv/. Where you are and what you have read stay on this device (mf-read-plan). -->
+<style>
+@font-face{font-family:'MFHobo';src:url(/fish-lang/hobo.woff2) format('woff2');font-display:block}
+:root{--bg:#000;--card:#0d0d0f;--card2:#141418;--line:rgba(200,215,218,.14);--text:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--blue2:#3370ff;--gold:#f5d76e;--ok:#7fd18b;--night:#9db8ff;--hl:rgba(245,215,110,.22);color-scheme:dark}
+:root[data-mode=light]{--bg:#f7f5ef;--card:#fff;--card2:#efece3;--line:rgba(30,40,50,.14);--text:#1c2228;--dim:#5b6670;--blue:#2a5fb0;--blue2:#2a5fb0;--gold:#a87b00;--ok:#2f8a3c;--night:#3b55a8;--hl:rgba(245,200,60,.3);color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font:17px/1.55 'Archivo',system-ui,sans-serif;-webkit-font-smoothing:antialiased;padding-bottom:40px}
+a{color:var(--blue2)}
+button{font:inherit;color:inherit}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 0 4px}
+.brand{font:400 1.7rem/1 'MFHobo',cursive;text-decoration:none;color:var(--text)}.brand b{font-weight:400;color:#3370ff}
+.top .r{display:flex;gap:6px}
+.ib{border:1px solid var(--line);background:none;border-radius:999px;padding:7px 12px;font-weight:700;font-size:.85rem;cursor:pointer;color:var(--text);text-decoration:none}
+h1{font:600 clamp(1.7rem,6vw,2.4rem)/1.1 'Fraunces',Georgia,serif;margin:18px 0 4px;text-align:center}
+.sub{color:var(--dim);text-align:center;margin:0 auto 14px;max-width:560px;font-size:.98rem}
+.two{font-family:'MFHobo',cursive;color:var(--gold);font-size:1.15em}
+.today{display:flex;justify-content:center;align-items:baseline;gap:10px;flex-wrap:wrap;margin:6px 0 12px}
+.today .d{font:600 1.15rem 'Fraunces',Georgia,serif}.today .w{color:var(--dim);font-size:.92rem}
+.nav{display:flex;justify-content:center;gap:8px;margin:0 0 12px}
+.nav button{border:1px solid var(--line);background:none;border-radius:999px;padding:6px 14px;cursor:pointer;font-weight:700;font-size:.85rem}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:700px){.pair{grid-template-columns:1fr}}
+.rd{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 14px 16px;position:relative}
+.rd.done{border-color:color-mix(in srgb,var(--ok) 55%,transparent)}
+.rd .k{display:flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--gold)}
+.rd.pm .k{color:var(--night)}
+.rd .k .for{margin-left:auto;letter-spacing:.02em;text-transform:none;font-family:'MFHobo',cursive;font-weight:400;font-size:1.05rem}
+.rd h2{font:600 1.3rem/1.2 'Fraunces',Georgia,serif;margin:6px 0 2px}
+.rd .m{color:var(--dim);font-size:.88rem;margin:0 0 10px}
+.fish{position:relative;width:100%;aspect-ratio:2/1;background:#000;border-radius:12px;overflow:hidden;cursor:pointer}
+.fish svg{position:absolute;inset:0;width:100%;height:100%}
+.fish .ph{position:absolute;inset:0;display:grid;place-items:center;color:#556;font:400 2rem 'MFHobo',cursive}
+.verse{font:italic 400 1rem/1.5 'Spectral',Georgia,serif;margin:10px 2px 12px;color:var(--text)}
+.verse small{font-style:normal;color:var(--dim);font-family:'Archivo',sans-serif;font-size:.8rem}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.b{border:1px solid var(--line);background:none;border-radius:999px;padding:9px 15px;font-weight:800;font-size:.92rem;cursor:pointer;color:var(--text)}
+.b.p{background:var(--blue);border-color:var(--blue);color:#fff}
+.b.ok[aria-pressed=true]{background:var(--ok);border-color:var(--ok);color:#06210c}
+.rest{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;text-align:center}
+.rest h2{font:600 1.5rem 'Fraunces',Georgia,serif;margin:0 0 6px}
+.rest p{color:var(--dim);margin:6px auto 12px;max-width:520px}
+.catch{list-style:none;padding:0;margin:10px 0 0;text-align:left}
+.catch li{display:flex;align-items:center;gap:10px;padding:9px 4px;border-top:1px solid var(--line)}
+.catch li .t{flex:1;min-width:0}.catch li .t small{display:block;color:var(--dim);font-size:.8rem}
+.prog{margin:18px 0 6px}
+.bar{height:10px;border-radius:999px;background:var(--card2);overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue2),var(--ok));border-radius:999px}
+.prog p{display:flex;justify-content:space-between;color:var(--dim);font-size:.85rem;margin:6px 2px 0;gap:8px;flex-wrap:wrap}
+.start{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;text-align:center;margin:8px 0 14px}
+.start h2{font:600 1.35rem 'Fraunces',Georgia,serif;margin:0 0 6px}.start p{color:var(--dim);margin:4px auto 12px;max-width:540px}
+.start .btns{justify-content:center}
+h3.sec{font:600 1.3rem 'Fraunces',Georgia,serif;margin:28px 0 10px}
+.weeks{display:flex;flex-direction:column;gap:8px}
+details.wk{background:var(--card);border:1px solid var(--line);border-radius:14px}
+details.wk>summary{list-style:none;display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer}
+details.wk>summary::-webkit-details-marker{display:none}
+details.wk>summary .n{font-weight:800;min-width:4.4em;color:var(--dim);font-size:.85rem}
+details.wk>summary .t{flex:1;min-width:0;font-weight:600}
+details.wk>summary .dots{display:flex;gap:3px;flex-shrink:0}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--card2);border:1px solid var(--line)}.dots i.on{background:var(--ok);border-color:var(--ok)}
+details.wk[open]>summary{border-bottom:1px solid var(--line)}
+.dl{list-style:none;margin:0;padding:4px 10px 10px}
+.dl li{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:8px 4px;border-top:1px solid var(--line)}
+.dl li:first-child{border-top:0}
+.dl .day{font-weight:800;font-size:.8rem;color:var(--dim);grid-column:1/-1;padding-top:6px}
+.dl .t{min-width:0}.dl .t b{font-weight:600}.dl .t small{display:block;color:var(--dim);font-size:.8rem}
+.dl .t .w{font-family:'MFHobo',cursive;font-size:1.05rem;color:var(--text)}
+.ck{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);background:none;cursor:pointer;display:grid;place-items:center;font-weight:900;color:transparent}
+.ck[aria-pressed=true]{background:var(--ok);border-color:var(--ok);color:#06210c}
+.ico{font-size:1.05rem}
+.note{color:var(--dim);font-size:.85rem;text-align:center;margin:22px auto 0;max-width:600px}
+/* the reader */
+.rdr{position:fixed;inset:0;z-index:50;background:var(--bg);display:none;flex-direction:column}
+.rdr.open{display:flex}
+.rdr .hd{display:flex;align-items:center;gap:8px;padding:10px 12px calc(10px);border-bottom:1px solid var(--line);padding-top:max(10px,env(safe-area-inset-top))}
+.rdr .hd .tt{flex:1;min-width:0}.rdr .hd .tt b{display:block;font:600 1.05rem 'Fraunces',Georgia,serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rdr .hd .tt small{color:var(--dim);font-size:.8rem}
+.rdr .body{flex:1;overflow:auto;-webkit-overflow-scrolling:touch}
+.rdr .txt{max-width:680px;margin:0 auto;padding:14px 18px 40px;font:400 1.12rem/1.75 'Spectral',Georgia,serif}
+.rdr .txt h4{font:600 1.25rem 'Fraunces',Georgia,serif;margin:22px 0 6px}
+.rdr .txt .vn{font:700 .66rem 'Archivo',sans-serif;color:var(--dim);vertical-align:super;margin:0 3px 0 2px}
+.rdr .txt span.v.fv{background:var(--hl);border-radius:4px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.rdr .txt span.v.say{background:color-mix(in srgb,var(--blue2) 30%,transparent);border-radius:4px}
+.rdr .ft{border-top:1px solid var(--line);padding:10px 12px max(10px,env(safe-area-inset-bottom));display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));max-width:calc(100% - 32px);text-align:center;transform:translateX(-50%);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-weight:700;font-size:.9rem;z-index:60;display:none}
+.toast.on{display:block}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a class="brand" href="/">Manna<b>Fish</b></a><div class="r"><button type="button" class="ib" id="mode" aria-label="Light or dark">&#9728;&#xFE0E;</button><a class="ib" href="/">Home</a></div></div>
+  <h1>Bible in a Year</h1>
+  <p class="sub">A day reading and a night reading, about six minutes each, and <span class="two">2 Fish</span> every day: one for me, one to give. The seventh day is for rest and catching up.</p>
+
+  <section class="start" id="start" hidden>
+    <h2>Start the plan</h2>
+    <p>Genesis to Revelation in 52 weeks. Start with your church on Sunday, or start today: your seventh day is always rest.</p>
+    <div class="btns"><button type="button" class="b p" id="goSun">Start this week</button><button type="button" class="b" id="goToday">Start today</button></div>
+  </section>
+
+  <div id="main" hidden>
+    <div class="today"><span class="d" id="tDate"></span><span class="w" id="tWeek"></span></div>
+    <div class="nav"><button type="button" id="prev" aria-label="Day before">&larr;</button><button type="button" id="now">Today</button><button type="button" id="next" aria-label="Next day">&rarr;</button></div>
+    <div id="day"></div>
+    <div class="prog"><div class="bar"><i id="bar" style="width:0"></i></div><p><span id="pDone"></span><span id="pBehind"></span></p></div>
+  </div>
+
+  <h3 class="sec">The whole plan</h3>
+  <div class="weeks" id="weeks"></div>
+  <p class="note">King James Version. Readings are whole chapters, balanced by length. What you have read is kept on this device. <a href="#" id="restart">Start over or change the start day</a></p>
+</div>
+
+<div class="rdr" id="rdr" role="dialog" aria-modal="true" aria-labelledby="rTitle">
+  <div class="hd"><button type="button" class="ib" id="rClose" aria-label="Close">&#10005;</button><div class="tt"><b id="rTitle"></b><small id="rSub"></small></div><button type="button" class="ib" id="rSay">&#9654;&#xFE0E; Listen</button></div>
+  <div class="body" id="rBody"><div class="txt" id="rTxt"></div></div>
+  <div class="ft"><button type="button" class="b ok" id="rDone" aria-pressed="false">&#10003; I read it</button><button type="button" class="b" id="rNext">Next reading &rarr;</button></div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  var $=function(id){ return document.getElementById(id); };
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
+
+  // light or dark, the same choice as the main site
+  var root=document.documentElement;
+  function mode(l){ if(l) root.setAttribute('data-mode','light'); else root.removeAttribute('data-mode'); $('mode').innerHTML=l?'&#9790;&#xFE0E;':'&#9728;&#xFE0E;';
+    var m=document.querySelector('meta[name=theme-color]'); if(m) m.setAttribute('content',l?'#f7f5ef':'#000000'); }
+  mode(ls('mf-mode')==='light');
+  $('mode').addEventListener('click',function(){ var l=root.getAttribute('data-mode')!=='light'; ls('mf-mode',l?'light':'dark'); mode(l); });
+
+  var P=null, ST={start:'',done:{}};
+  try{ var o=JSON.parse(ls('mf-read-plan')||'null'); if(o&&typeof o==='object') ST={start:o.start||'',done:o.done||{}}; }catch(e){}
+  function save(){ ls('mf-read-plan',JSON.stringify(ST)); }
+  var DAYMS=864e5;
+  function ymd(d){ return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  function parse(s){ var a=s.split('-'); return new Date(+a[0],+a[1]-1,+a[2]); }
+  function midnight(d){ return new Date(d.getFullYear(),d.getMonth(),d.getDate()); }
+  function dayNo(d){ return Math.round((midnight(d)-parse(ST.start))/DAYMS); }   // 0 = the first day of week 1
+  var view=0;   // days from today being shown
+  function key(w,d,h){ return w+'-'+d+'-'+h; }
+  function R(w,d,h){ var W=P.weeks[w-1]; return W&&W.days[d]?W.days[d][h]:null; }
+  var ALLR=[]; // every reading in order: {w,d,h}
+  function fmt(d){ return d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'}); }
+  function mins(r){ return Math.max(2,Math.round(r.words/200)); }
+
+  // ── a fish, drawn from its own file ──
+  var FS={};
+  function fishSvg(id){ if(!FS[id]) FS[id]=fetch('/plan/fish/'+id+'.svg').then(function(r){ if(!r.ok) throw 0; return r.text(); }); return FS[id]; }
+  function putFish(el,f){ el.innerHTML='<div class="ph" aria-hidden="true">'+esc(f.word)+'</div>'; el.setAttribute('aria-label',f.word+' fish: '+f.top+' '+f.bot+' ('+f.ref+')'); el.setAttribute('role','img');
+    fishSvg(f.id).then(function(s){ el.innerHTML=s; var svg=el.querySelector('svg'); if(svg){ svg.removeAttribute('style'); svg.setAttribute('aria-hidden','true'); } }).catch(function(){}); }
+
+  // ── one reading's card ──
+  function card(w,d,h){ var r=R(w,d,h), f=r.f, k=key(w,d,h), done=!!ST.done[k], am=h==='am';
+    var el=document.createElement('article'); el.className='rd '+h+(done?' done':''); el.dataset.k=k;
+    el.innerHTML='<div class="k"><span class="ico" aria-hidden="true">'+(am?'&#9728;&#xFE0E;':'&#9790;&#xFE0E;')+'</span>'+(am?'Day reading':'Night reading')+'<span class="for">'+(am?'One for me':'One for you')+'</span></div>'
+      +'<h2>'+esc(r.label)+'</h2><p class="m">About '+mins(r)+' minutes</p><div class="fish" tabindex="0"></div>'
+      +'<p class="verse">“'+esc(f.verse)+'” <small>'+esc(f.ref)+'</small></p>'
+      +'<div class="btns"><button type="button" class="b p" data-a="read">&#128214;&#xFE0E; Read</button><button type="button" class="b ok" data-a="done" aria-pressed="'+done+'">&#10003; '+(done?'Read':'Mark read')+'</button>'
+      +(am?'':'<button type="button" class="b" data-a="send">&#10148; Send this fish</button>')+'</div>';
+    putFish(el.querySelector('.fish'),f); return el; }
+
+  // ── the day being shown ──
+  function show(){ var day=$('day'); day.innerHTML='';
+    var date=new Date(midnight(new Date()).getTime()+view*DAYMS), n=dayNo(date), w=Math.floor(n/7)+1, d=n%7;
+    $('tDate').textContent=view===0?'Today, '+fmt(date):fmt(date);
+    if(n<0){ $('tWeek').textContent='The plan starts '+fmt(parse(ST.start)); }
+    else if(w>52){ $('tWeek').textContent='You have finished the year. Well done, good and faithful servant.'; }
+    else if(d===6){ $('tWeek').textContent='Week '+w+' · Day 7: rest'; day.appendChild(restCard(n)); }
+    else { $('tWeek').textContent='Week '+w+' · Day '+(d+1)+' · '+P.weeks[w-1].reading; var g=document.createElement('div'); g.className='pair'; g.appendChild(card(w,d,'am')); g.appendChild(card(w,d,'pm')); day.appendChild(g); }
+    $('now').disabled=view===0; progress(); }
+  function behind(n){ var out=[]; ALLR.forEach(function(x){ var at=(x.w-1)*7+x.d; if(at<n&&!ST.done[key(x.w,x.d,x.h)]) out.push(x); }); return out; }
+  function restCard(n){ var el=document.createElement('section'), b=behind(n); el.className='rest';
+    el.innerHTML='<h2>Rest and catch up</h2><p>'+(b.length?'Here is anything you missed. No hurry: one reading at a time.':'You are all caught up. Rest, pray, and go fishing with a friend.')+'</p>'
+      +(b.length?'<ul class="catch">'+b.slice(0,14).map(function(x){ var r=R(x.w,x.d,x.h); return '<li><span class="ico">'+(x.h==='am'?'&#9728;&#xFE0E;':'&#9790;&#xFE0E;')+'</span><span class="t">'+esc(r.label)+'<small>Week '+x.w+' · Day '+(x.d+1)+' · '+esc(r.f.word)+'</small></span><button type="button" class="b" data-open="'+key(x.w,x.d,x.h)+'">Read</button></li>'; }).join('')+'</ul>'+(b.length>14?'<p>…and '+(b.length-14)+' more in the plan below.</p>':''):'')
+      +'<div class="btns" style="justify-content:center;margin-top:12px"><a class="b p" href="/go/" style="text-decoration:none">Go MannaFish</a></div>'; return el; }
+  function progress(){ var t=ALLR.length, n=ALLR.filter(function(x){ return ST.done[key(x.w,x.d,x.h)]; }).length, b=ST.start?behind(dayNo(new Date())).length:0;
+    $('bar').style.width=(100*n/t).toFixed(1)+'%'; $('pDone').textContent=n+' of '+t+' readings'; $('pBehind').textContent=b?b+' to catch up':(n?'Right on track':''); }
+
+  // ── the whole plan ──
+  function weeks(){ var box=$('weeks'), open=+ls('mf-read-open')||0; box.innerHTML='';
+    P.weeks.forEach(function(W){ var el=document.createElement('details'); el.className='wk'; el.dataset.w=W.w; if(W.w===open) el.open=true;
+      el.innerHTML='<summary><span class="n">Week '+W.w+'</span><span class="t">'+esc(W.reading)+'</span><span class="dots">'+W.days.map(function(D,d){ return ['am','pm'].map(function(h){ return '<i class="'+(ST.done[key(W.w,d,h)]?'on':'')+'"></i>'; }).join(''); }).join('')+'</span></summary><ul class="dl"></ul>';
+      el.addEventListener('toggle',function(){ if(el.open){ fill(el,W); ls('mf-read-open',W.w); } });
+      if(el.open) fill(el,W); box.appendChild(el); }); }
+  function fill(el,W){ var ul=el.querySelector('.dl'); if(ul.childNodes.length) return; var h='';
+    W.days.forEach(function(D,d){ h+='<li class="day">Day '+(d+1)+'</li>';
+      ['am','pm'].forEach(function(x){ var r=D[x], k=key(W.w,d,x), on=!!ST.done[k];
+        h+='<li><button type="button" class="ck" data-ck="'+k+'" aria-pressed="'+on+'" aria-label="'+(on?'Read':'Not read yet')+': '+esc(r.label)+'">&#10003;</button><span class="t"><b>'+(x==='am'?'&#9728;&#xFE0E; ':'&#9790;&#xFE0E; ')+esc(r.label)+'</b><small><span class="w">'+esc(r.f.word)+'</span> · '+esc(r.f.ref)+' · '+mins(r)+' min</small></span><button type="button" class="b" data-open="'+k+'">Read</button></li>'; }); });
+    ul.innerHTML=h; }
+  function refreshWeek(w){ var el=document.querySelector('details.wk[data-w="'+w+'"]'); if(!el) return; var W=P.weeks[w-1], i=0, dots=el.querySelectorAll('.dots i');
+    W.days.forEach(function(D,d){ ['am','pm'].forEach(function(h){ dots[i++].className=ST.done[key(w,d,h)]?'on':''; }); });
+    [].forEach.call(el.querySelectorAll('[data-ck]'),function(b){ var on=!!ST.done[b.dataset.ck]; b.setAttribute('aria-pressed',on); }); }
+
+  function setDone(k,on){ if(on) ST.done[k]=Date.now(); else delete ST.done[k]; save(); var a=k.split('-');
+    [].forEach.call(document.querySelectorAll('.rd[data-k="'+k+'"]'),function(c){ c.classList.toggle('done',on); var b=c.querySelector('[data-a=done]'); b.setAttribute('aria-pressed',on); b.innerHTML='&#10003; '+(on?'Read':'Mark read'); });
+    refreshWeek(+a[0]); progress(); if(RD.k===k) $('rDone').setAttribute('aria-pressed',on); }
+
+  function toast(t){ var e=$('toast'); e.textContent=t; e.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(function(){ e.classList.remove('on'); },2600); }
+  function send(k){ var a=k.split('-'), r=R(+a[0],+a[1],a[2]), f=r.f, url=location.origin+'/plan/?r='+k;
+    var text=f.word+': “'+f.verse+'” ('+f.ref+', KJV)';
+    if(navigator.share) navigator.share({title:'MannaFish · '+f.word,text:text,url:url}).catch(function(){});
+    else (navigator.clipboard?navigator.clipboard.writeText(text+' '+url):Promise.reject()).then(function(){ toast('Copied: paste it to a friend'); },function(){ toast('Could not copy on this device'); }); }
+
+  // ── the reader ──
+  var RD={k:''};
+  function bookFile(c){ return c[0].replace(/ /g,'_')+'-'+c[1]; }
+  function openReader(k){ var a=k.split('-'), w=+a[0], d=+a[1], h=a[2], r=R(w,d,h); if(!r) return; stopSay();
+    RD={k:k,r:r}; $('rTitle').textContent=r.label; $('rSub').textContent='Week '+w+' · Day '+(d+1)+' · '+(h==='am'?'Day reading':'Night reading')+' · about '+mins(r)+' min';
+    $('rDone').setAttribute('aria-pressed',!!ST.done[k]); $('rTxt').innerHTML='<p style="color:var(--dim)">Opening…</p>'; $('rdr').classList.add('open'); document.body.style.overflow='hidden'; $('rBody').scrollTop=0;
+    try{ history.replaceState(null,'','?r='+k); }catch(e){}
+    var fm=/^(.+?) (\d+):(\d+)(?:[–-](\d+))?$/.exec(r.f.ref), fb=fm?fm[1]:'', fc=fm?+fm[2]:0, fv1=fm?+fm[3]:0, fv2=fm?+(fm[4]||fm[3]):0;
+    Promise.all(r.ch.map(function(c){ return fetch('/fish-lang/bible/kjv/'+bookFile(c)+'.json').then(function(x){ if(!x.ok) throw 0; return x.json(); }); })).then(function(js){
+      if(RD.k!==k) return; var h2='';
+      js.forEach(function(j,i){ var c=r.ch[i], mine=c[0]===fb&&c[1]===fc; h2+='<h4>'+esc(c[0]+' '+c[1])+'</h4><p>';
+        j.t.forEach(function(t,n){ var v=n+1, fv=mine&&v>=fv1&&v<=fv2; h2+='<span class="vn">'+v+'</span><span class="v'+(fv?' fv':'')+'" data-c="'+i+'" data-v="'+v+'">'+esc(t)+'</span> '; }); h2+='</p>'; });
+      $('rTxt').innerHTML=h2+'<p style="color:var(--dim);font:600 .9rem Archivo,sans-serif;text-align:center;margin-top:26px">The fish for this reading: <b style="font-family:MFHobo;font-weight:400;font-size:1.2rem;color:var(--text)">'+esc(r.f.word)+'</b> · '+esc(r.f.ref)+' (marked above)</p>';
+    }).catch(function(){ $('rTxt').innerHTML='<p>This reading could not be opened. Please check your connection and try again.</p>'; }); }
+  function closeReader(){ stopSay(); $('rdr').classList.remove('open'); document.body.style.overflow=''; RD={k:''}; try{ history.replaceState(null,'',location.pathname); }catch(e){} }
+  $('rClose').addEventListener('click',closeReader);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&RD.k) closeReader(); });
+  $('rDone').addEventListener('click',function(){ var on=this.getAttribute('aria-pressed')!=='true'; setDone(RD.k,on); if(on) toast('Marked as read'); });
+  $('rNext').addEventListener('click',function(){ var i=-1; ALLR.some(function(x,n){ if(key(x.w,x.d,x.h)===RD.k){ i=n; return true; } return false; }); var x=ALLR[i+1]; if(x) openReader(key(x.w,x.d,x.h)); else closeReader(); });
+
+  // read aloud, verse by verse, following along on the page
+  var SAY={on:false,i:0,list:[]};
+  function stopSay(){ SAY.on=false; try{ speechSynthesis.cancel(); }catch(e){} [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); }); $('rSay').innerHTML='&#9654;&#xFE0E; Listen'; }
+  function voice(){ var vs=speechSynthesis.getVoices().filter(function(v){ return /^en/i.test(v.lang); }); var pick=ls('mf-voice'); return vs.filter(function(v){ return v.name===pick; })[0]||vs.filter(function(v){ return /en-(US|GB)/i.test(v.lang)&&/natural|premium|enhanced|samantha|daniel|google/i.test(v.name); })[0]||vs[0]||null; }
+  function sayNext(){ if(!SAY.on) return; [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); });
+    var el=SAY.list[SAY.i]; if(!el){ stopSay(); return; } el.classList.add('say'); var b=$('rBody'), t=el.getBoundingClientRect(), bb=b.getBoundingClientRect(); if(t.top<bb.top+40||t.bottom>bb.bottom-60) b.scrollTop+=t.top-bb.top-bb.height/3;
+    var head=el.dataset.v==='1'?R(+RD.k.split('-')[0],+RD.k.split('-')[1],RD.k.split('-')[2]).ch[+el.dataset.c].join(' chapter ')+'. ':'';
+    var u=new SpeechSynthesisUtterance(head+el.textContent), v=voice(); if(v){ u.voice=v; u.lang=v.lang; } else u.lang='en-US'; u.rate=.95;
+    u.onend=function(){ SAY.i++; sayNext(); }; u.onerror=function(e){ if(e.error!=='interrupted'&&e.error!=='canceled'){ SAY.i++; sayNext(); } }; speechSynthesis.speak(u); }
+  $('rSay').addEventListener('click',function(){ if(!window.speechSynthesis){ toast('This device cannot read aloud'); return; }
+    if(SAY.on){ stopSay(); return; } SAY.list=[].slice.call(document.querySelectorAll('#rTxt .v')); if(!SAY.list.length) return;
+    var b=$('rBody').getBoundingClientRect(); SAY.i=Math.max(0,SAY.list.findIndex(function(e){ return e.getBoundingClientRect().bottom>b.top+10; }));
+    SAY.on=true; this.innerHTML='&#10074;&#10074; Stop'; sayNext(); });
+
+  // ── taps ──
+  document.addEventListener('click',function(e){ var t=e.target, b;
+    if((b=t.closest('[data-open]'))){ openReader(b.dataset.open); return; }
+    if((b=t.closest('[data-ck]'))){ setDone(b.dataset.ck,b.getAttribute('aria-pressed')!=='true'); return; }
+    var c=t.closest('.rd'); if(!c) return; var k=c.dataset.k;
+    if(t.closest('.fish')||t.closest('[data-a=read]')){ openReader(k); return; }
+    if((b=t.closest('[data-a=done]'))){ var on=b.getAttribute('aria-pressed')!=='true'; setDone(k,on); if(on) toast(c.classList.contains('am')?'One for me: take it with you today':'Now send one to someone'); return; }
+    if(t.closest('[data-a=send]')) send(k); });
+  document.addEventListener('keydown',function(e){ if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('fish')){ e.preventDefault(); openReader(e.target.closest('.rd').dataset.k); } });
+  $('prev').addEventListener('click',function(){ view--; show(); });
+  $('next').addEventListener('click',function(){ view++; show(); });
+  $('now').addEventListener('click',function(){ view=0; show(); });
+  function begin(start){ ST.start=ymd(start); save(); $('start').hidden=true; $('main').hidden=false; view=0; show(); }
+  $('goSun').addEventListener('click',function(){ var d=midnight(new Date()); begin(new Date(d.getTime()-d.getDay()*DAYMS)); });
+  $('goToday').addEventListener('click',function(){ begin(midnight(new Date())); });
+  $('restart').addEventListener('click',function(e){ e.preventDefault(); $('start').hidden=false; $('main').hidden=true; $('start').scrollIntoView({behavior:'smooth'});
+    $('start').querySelector('p').textContent='Pick a new start day. What you have marked as read stays marked.'; });
+
+  fetch('/plan/plan.json').then(function(r){ return r.json(); }).then(function(j){ P=j;
+    P.weeks.forEach(function(W){ W.days.forEach(function(D,d){ ['am','pm'].forEach(function(h){ ALLR.push({w:W.w,d:d,h:h}); }); }); });
+    if(ST.start){ $('main').hidden=false; show(); } else { $('start').hidden=false; progress(); }
+    weeks(); var m=/[?&]r=(\d+-\d-(am|pm))/.exec(location.search); if(m&&R(+m[1].split('-')[0],+m[1].split('-')[1],m[2])) openReader(m[1]); })
+    .catch(function(){ $('weeks').innerHTML='<p>The plan could not be loaded. Please reload the page.</p>'; });
+})();
+</script>
+</body>
+</html>

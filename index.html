@@ -1715,6 +1715,7 @@ select option{background:#0b1620;color:#eaf0f0}
     <button type="button" class="hbtn smi" id="smNotes" role="menuitem"><span class="hbi" aria-hidden="true">&#9998;&#xFE0E;</span><span class="hbt"><b id="smNotesLab">My notes</b><small id="smNotesSub">Notes and highlights</small></span></button>
     <button type="button" class="hbtn smi" id="smAcct" role="menuitem"><span class="hbi" aria-hidden="true">&#128100;&#xFE0E;</span><span class="hbt"><b id="smAcctLab">Sign in</b><small id="smAcctSub">Keep your notes on every device</small></span></button>
     <button type="button" class="hbtn smi" id="smMode" role="menuitem"><span class="hbi" aria-hidden="true" id="smModeIco">&#9790;&#xFE0E;</span><span class="hbt"><b id="smModeLab">Dark mode</b></span></button>
+    <button type="button" class="hbtn smi" id="smPlan" role="menuitem"><span class="hbi" aria-hidden="true">&#128214;&#xFE0E;</span><span class="hbt"><b id="smPlLab">Bible in a Year</b><small id="smPlSub">Day and night readings, 2 Fish a day</small></span></button>
     <button type="button" class="hbtn smi" id="smMatch" role="menuitem"><span class="hbi" aria-hidden="true">&#127924;&#xFE0E;</span><span class="hbt"><b id="smMaLab">Go MannaFish</b><small id="smMaSub">Match a pair, then go fish</small></span></button>
     <button type="button" class="hbtn smi" id="smStories" role="menuitem"><span class="hbi" aria-hidden="true">&#128031;&#xFE0E;</span><span class="hbt"><b id="smStLab">Fish stories</b><small id="smStSub">Share your catch</small></span></button>
     <button type="button" class="hbtn smi" id="smResume" role="menuitem" hidden><span class="hbi" aria-hidden="true">&#8634;&#xFE0E;</span><span class="hbt"><b id="smResLab">Pick up where you left off</b><small id="smResSub"></small></span></button>
@@ -3668,6 +3669,10 @@ window.MF=(function(){
     var MA=({en:['Go MannaFish','Match a pair, then go fish'],es:['Go MannaFish','Haz una pareja y ve a pescar'],tl:['Go MannaFish','Magtugma ng pares, saka mangisda'],zh:['Go MannaFish','配成一对，再去钓鱼'],hi:['Go MannaFish','जोड़ी मिलाएँ, फिर मछली पकड़ें'],
       el:['Go MannaFish','Βρες ένα ζευγάρι, μετά ψάρεψε'],de:['Go MannaFish','Finde ein Paar, dann geh fischen'],ko:['Go MannaFish','짝을 맞추고 낚시하러 가요'],he:['Go MannaFish','מצאו זוג, ואז צאו לדוג'],ar:['Go MannaFish','طابِق زوجًا، ثم اذهب للصيد']})[MF.lang]||['Go MannaFish','Match a pair, then go fish'];
     $('smMaLab').textContent=MA[0]; $('smMaSub').textContent=MA[1];
+    // Ken, 19 Oct: the Bible in a year, a day and a night reading with 2 Fish (/plan/)
+    var PLx=({en:['Bible in a Year','Day and night readings, 2 Fish a day'],es:['La Biblia en un año','Lectura de día y de noche, 2 Fish al día'],tl:['Biblia sa Isang Taon','Pagbasa sa araw at gabi, 2 Fish araw-araw'],zh:['一年读完圣经','白天和晚上的读经，每天 2 Fish'],hi:['एक साल में बाइबल','दिन और रात का पाठ, हर दिन 2 Fish'],
+      el:['Η Βίβλος σε έναν χρόνο','Ανάγνωση μέρας και νύχτας, 2 Fish τη μέρα'],de:['Die Bibel in einem Jahr','Lesung am Tag und am Abend, 2 Fish am Tag'],ko:['1년 성경 읽기','낮과 밤의 말씀, 하루 2 Fish'],he:['התנ״ך והברית החדשה בשנה','קריאה ביום ובלילה, 2 Fish ביום'],ar:['الكتاب المقدس في سنة','قراءة في النهار وفي الليل، 2 Fish كل يوم']})[MF.lang]||['Bible in a Year','Day and night readings, 2 Fish a day'];
+    $('smPlLab').textContent=PLx[0]; $('smPlSub').textContent=PLx[1];
     $('fsTitle').textContent=T.title; $('fsH2').textContent=T.h2;
     Array.prototype.forEach.call(document.querySelectorAll('.fstabs button'),function(b){ b.textContent=T[b.dataset.k]; b.setAttribute('aria-selected',b.dataset.k===FS.kind?'true':'false'); });
     $('fsLTitle').textContent=T.lt; $('fsLText').textContent=FS.kind==='text'?T.ltext:T.ltext_m; $('fsLName').textContent=T.lname; $('fsLWord').textContent=T.lword; $('fsLEmail').textContent=T.lemail;
@@ -3763,6 +3768,7 @@ window.MF=(function(){
   $('notesBtn').addEventListener('click',function(){ setTimeout(function(){ if(!$('notesBox').hidden&&!$('acctBox').hidden){ $('acctBox').hidden=true; $('acctBtn').setAttribute('aria-expanded','false'); } },0); });
   $('smAcct').addEventListener('click',function(){ smPanel('acctBtn','acctBox'); });
   $('smMatch').addEventListener('click',function(){ location.href='/go/'; });
+  $('smPlan').addEventListener('click',function(){ location.href='/plan/'; });
   $('smStories').addEventListener('click',function(){ $('stories').scrollIntoView({behavior:'smooth',block:'start'}); });
   $('ptStage').addEventListener('click',function(e){ if(e.target.closest('[data-fs]')) fsOpen(); });
   MF.onChange(fsUI); fsUI();

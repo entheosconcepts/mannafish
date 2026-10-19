@@ -1,0 +1,482 @@
+[
+ {
+  "slot": 1,
+  "word": "Seed",
+  "ref": "Genesis 3:15",
+  "refShort": "Gen. 3:15",
+  "top": "between thy seed and her seed;",
+  "bottom": "it shall bruise thy head, and thou shalt bruise his heel."
+ },
+ {
+  "slot": 3,
+  "word": "Ark",
+  "ref": "Genesis 7:1",
+  "refShort": "Gen. 7:1",
+  "top": "And the LORD said unto Noah,",
+  "bottom": "Come thou and all thy house into the ark..."
+ },
+ {
+  "slot": 5,
+  "word": "Depart",
+  "ref": "Genesis 12:1",
+  "refShort": "Gen. 12:1",
+  "top": "Get thee out of thy country...",
+  "bottom": "unto a land that I will shew thee:"
+ },
+ {
+  "slot": 8,
+  "word": "Judge",
+  "ref": "Genesis 18:25",
+  "refShort": "Gen. 18:25",
+  "top": "Shall not the Judge",
+  "bottom": "of all the earth do right?"
+ },
+ {
+  "slot": 9,
+  "word": "Clasp",
+  "ref": "Genesis 19:16",
+  "refShort": "Gen. 19:16",
+  "top": "the men laid hold upon his hand...",
+  "bottom": "the LORD being merciful unto him..."
+ },
+ {
+  "slot": 13,
+  "word": "Flourish",
+  "ref": "Genesis 26:22",
+  "refShort": "Gen. 26:22",
+  "top": "For now the LORD hath made room for us,",
+  "bottom": "and we shall be fruitful in the land."
+ },
+ {
+  "slot": 14,
+  "word": "Bounty",
+  "ref": "Genesis 27:28",
+  "refShort": "Gen. 27:28",
+  "top": "God give thee of the dew of heaven,",
+  "bottom": "and the fatness of the earth, and plenty of corn and wine:"
+ },
+ {
+  "slot": 16,
+  "word": "Hearken",
+  "ref": "Genesis 30:22",
+  "refShort": "Gen. 30:22",
+  "top": "And God remembered Rachel,",
+  "bottom": "and God hearkened to her..."
+ },
+ {
+  "slot": 17,
+  "word": "Keeper",
+  "ref": "Genesis 31:49",
+  "refShort": "Gen. 31:49",
+  "top": "The LORD watch between me and thee,",
+  "bottom": "when we are absent one from another."
+ },
+ {
+  "slot": 19,
+  "word": "Altar",
+  "ref": "Genesis 35:3",
+  "refShort": "Gen. 35:3",
+  "top": "I will make there an altar unto God,",
+  "bottom": "who answered me in the day of my distress..."
+ },
+ {
+  "slot": 20,
+  "word": "Lineage",
+  "ref": "Genesis 36:1",
+  "refShort": "Gen. 36:1",
+  "top": "Now these are the generations",
+  "bottom": "of Esau, who is Edom."
+ },
+ {
+  "slot": 22,
+  "word": "Humility",
+  "ref": "Genesis 38:26",
+  "refShort": "Gen. 38:26",
+  "top": "And Judah acknowledged them, and said,",
+  "bottom": "She hath been more righteous than I..."
+ },
+ {
+  "slot": 24,
+  "word": "Fruitful",
+  "ref": "Genesis 41:52",
+  "refShort": "Gen. 41:52",
+  "top": "For God hath caused me to be fruitful",
+  "bottom": "in the land of my affliction."
+ },
+ {
+  "slot": 25,
+  "word": "Remorse",
+  "ref": "Genesis 42:21",
+  "refShort": "Gen. 42:21",
+  "top": "We are verily guilty concerning our brother,",
+  "bottom": "in that we saw the anguish of his soul..."
+ },
+ {
+  "slot": 26,
+  "word": "Yearn",
+  "ref": "Genesis 43:30",
+  "refShort": "Gen. 43:30",
+  "top": "for his bowels did yearn upon his brother:",
+  "bottom": "and he sought where to weep..."
+ },
+ {
+  "slot": 27,
+  "word": "Surety",
+  "ref": "Genesis 44:33",
+  "refShort": "Gen. 44:33",
+  "top": "let thy servant abide instead of the lad",
+  "bottom": "a bondman to my lord; and let the lad go up..."
+ },
+ {
+  "slot": 29,
+  "word": "Nourish",
+  "ref": "Genesis 47:12",
+  "refShort": "Gen. 47:12",
+  "top": "And Joseph nourished his father,",
+  "bottom": "and his brethren, and all his father's household..."
+ },
+ {
+  "slot": 30,
+  "word": "Sceptre",
+  "ref": "Genesis 49:10",
+  "refShort": "Gen. 49:10",
+  "top": "The sceptre shall not depart from Judah...",
+  "bottom": "until Shiloh come; and unto him shall the gathering..."
+ },
+ {
+  "slot": 33,
+  "word": "Words",
+  "ref": "Exodus 4:12",
+  "refShort": "Exodus 4:12",
+  "top": "Now therefore go, and I will be with thy mouth,",
+  "bottom": "and teach thee what thou shalt say."
+ },
+ {
+  "slot": 35,
+  "word": "Miracle",
+  "ref": "Exodus 8:19",
+  "refShort": "Exodus 8:19",
+  "top": "Then the magicians said unto Pharaoh,",
+  "bottom": "This is the finger of God..."
+ },
+ {
+  "slot": 37,
+  "word": "Radiance",
+  "ref": "Exodus 10:23",
+  "refShort": "Exodus 10:23",
+  "top": "but all the children of Israel",
+  "bottom": "had light in their dwellings."
+ },
+ {
+  "slot": 38,
+  "word": "Passover",
+  "ref": "Exodus 12:13",
+  "refShort": "Exodus 12:13",
+  "top": "and when I see the blood,",
+  "bottom": "I will pass over you..."
+ },
+ {
+  "slot": 39,
+  "word": "Pillar",
+  "ref": "Exodus 13:21",
+  "refShort": "Exodus 13:21",
+  "top": "And the LORD went before them by day",
+  "bottom": "in a pillar of a cloud, to lead them the way..."
+ },
+ {
+  "slot": 41,
+  "word": "Manna",
+  "ref": "Exodus 16:15",
+  "refShort": "Exodus 16:15",
+  "top": "It is manna... This is the bread",
+  "bottom": "which the LORD hath given you to eat."
+ },
+ {
+  "slot": 42,
+  "word": "Steady",
+  "ref": "Exodus 17:12",
+  "refShort": "Exodus 17:12",
+  "top": "Aaron and Hur stayed up his hands...",
+  "bottom": "and his hands were steady until the going down of the sun."
+ },
+ {
+  "slot": 44,
+  "word": "Master",
+  "ref": "Exodus 21:5",
+  "refShort": "Exodus 21:5",
+  "top": "I love my master, my wife,",
+  "bottom": "and my children; I will not go out free:"
+ },
+ {
+  "slot": 47,
+  "word": "Veil",
+  "ref": "Exodus 26:33",
+  "refShort": "Exodus 26:33",
+  "top": "and the vail shall divide unto you",
+  "bottom": "between the holy place and the most holy."
+ },
+ {
+  "slot": 48,
+  "word": "Shoulder",
+  "ref": "Exodus 28:12",
+  "refShort": "Exodus 28:12",
+  "top": "and Aaron shall bear their names",
+  "bottom": "before the LORD upon his two shoulders for a memorial."
+ },
+ {
+  "slot": 50,
+  "word": "Talent",
+  "ref": "Exodus 31:3",
+  "refShort": "Exodus 31:3",
+  "top": "I have filled him with the spirit of God,",
+  "bottom": "in wisdom... and in all manner of workmanship..."
+ },
+ {
+  "slot": 51,
+  "word": "Rally",
+  "ref": "Exodus 32:26",
+  "refShort": "Exodus 32:26",
+  "top": "Who is on the LORD's side?",
+  "bottom": "let him come unto me..."
+ },
+ {
+  "slot": 54,
+  "word": "Incense",
+  "ref": "Exodus 37:29",
+  "refShort": "Exodus 37:29",
+  "top": "And he made the holy anointing oil,",
+  "bottom": "and the pure incense of sweet spices..."
+ },
+ {
+  "slot": 55,
+  "word": "Complete",
+  "ref": "Exodus 39:43",
+  "refShort": "Exodus 39:43",
+  "top": "and, behold, they had done it",
+  "bottom": "as the LORD had commanded... and Moses blessed them."
+ },
+ {
+  "slot": 57,
+  "word": "Salt",
+  "ref": "Leviticus 2:13",
+  "refShort": "Lev. 2:13",
+  "top": "neither shalt thou suffer the salt",
+  "bottom": "of the covenant of thy God to be lacking..."
+ },
+ {
+  "slot": 60,
+  "word": "Thanks",
+  "ref": "Leviticus 7:12",
+  "refShort": "Lev. 7:12",
+  "top": "If he offer it for a thanksgiving,",
+  "bottom": "then he shall offer with the sacrifice of thanksgiving..."
+ },
+ {
+  "slot": 61,
+  "word": "Sanctify",
+  "ref": "Leviticus 8:12",
+  "refShort": "Lev. 8:12",
+  "top": "And he poured of the anointing oil",
+  "bottom": "upon Aaron's head, and anointed him, to sanctify him."
+ },
+ {
+  "slot": 62,
+  "word": "Bow",
+  "ref": "Leviticus 9:24",
+  "refShort": "Lev. 9:24",
+  "top": "when all the people saw,",
+  "bottom": "they shouted, and fell on their faces."
+ },
+ {
+  "slot": 64,
+  "word": "Clean",
+  "ref": "Leviticus 13:13",
+  "refShort": "Lev. 13:13",
+  "top": "he shall pronounce him clean...",
+  "bottom": "it is all turned white: he is clean."
+ },
+ {
+  "slot": 65,
+  "word": "Liberate",
+  "ref": "Leviticus 14:7",
+  "refShort": "Lev. 14:7",
+  "top": "and shall pronounce him clean,",
+  "bottom": "and shall let the living bird loose into the open field."
+ },
+ {
+  "slot": 66,
+  "word": "Immerse",
+  "ref": "Leviticus 15:13",
+  "refShort": "Lev. 15:13",
+  "top": "and wash his clothes, and bathe his flesh",
+  "bottom": "in running water, and shall be clean."
+ },
+ {
+  "slot": 69,
+  "word": "Stranger",
+  "ref": "Leviticus 19:34",
+  "refShort": "Lev. 19:34",
+  "top": "But the stranger that dwelleth with you...",
+  "bottom": "thou shalt love him as thyself..."
+ },
+ {
+  "slot": 70,
+  "word": "Chosen",
+  "ref": "Leviticus 20:26",
+  "refShort": "Lev. 20:26",
+  "top": "I the LORD am holy, and have severed you",
+  "bottom": "from other people, that ye should be mine."
+ },
+ {
+  "slot": 71,
+  "word": "Hallow",
+  "ref": "Leviticus 22:32",
+  "refShort": "Lev. 22:32",
+  "top": "I will be hallowed among the children of Israel:",
+  "bottom": "I am the LORD which hallow you,"
+ },
+ {
+  "slot": 74,
+  "word": "Sleep",
+  "ref": "Leviticus 26:6",
+  "refShort": "Lev. 26:6",
+  "top": "And I will give peace in the land,",
+  "bottom": "and ye shall lie down, and none shall make you afraid..."
+ },
+ {
+  "slot": 75,
+  "word": "Tithe",
+  "ref": "Leviticus 27:30",
+  "refShort": "Lev. 27:30",
+  "top": "And all the tithe of the land...",
+  "bottom": "is the LORD's: it is holy unto the LORD."
+ },
+ {
+  "slot": 76,
+  "word": "Names",
+  "ref": "Numbers 1:2",
+  "refShort": "Num. 1:2",
+  "top": "Take ye the sum of all the congregation...",
+  "bottom": "with the number of their names..."
+ },
+ {
+  "slot": 77,
+  "word": "Encamp",
+  "ref": "Numbers 2:2",
+  "refShort": "Num. 2:2",
+  "top": "Every man... shall pitch by his own standard...",
+  "bottom": "about the tabernacle of the congregation shall they pitch."
+ },
+ {
+  "slot": 78,
+  "word": "Precious",
+  "ref": "Numbers 3:13",
+  "refShort": "Num. 3:13",
+  "top": "Because all the firstborn are mine...",
+  "bottom": "mine shall they be: I am the LORD."
+ },
+ {
+  "slot": 79,
+  "word": "Burden",
+  "ref": "Numbers 4:49",
+  "refShort": "Num. 4:49",
+  "top": "every one according to his service,",
+  "bottom": "and according to his burden..."
+ },
+ {
+  "slot": 81,
+  "word": "Commune",
+  "ref": "Numbers 7:89",
+  "refShort": "Num. 7:89",
+  "top": "then he heard the voice of one speaking unto him",
+  "bottom": "from off the mercy seat... and he spake unto him."
+ },
+ {
+  "slot": 82,
+  "word": "Journey",
+  "ref": "Numbers 9:18",
+  "refShort": "Num. 9:18",
+  "top": "At the commandment of the LORD",
+  "bottom": "the children of Israel journeyed..."
+ },
+ {
+  "slot": 83,
+  "word": "Invite",
+  "ref": "Numbers 10:29",
+  "refShort": "Num. 10:29",
+  "top": "come thou with us, and we will do thee good:",
+  "bottom": "for the LORD hath spoken good concerning Israel."
+ },
+ {
+  "slot": 84,
+  "word": "Reach",
+  "ref": "Numbers 11:23",
+  "refShort": "Num. 11:23",
+  "top": "Is the LORD's hand waxed short?",
+  "bottom": "thou shalt see now whether my word shall come to pass..."
+ },
+ {
+  "slot": 86,
+  "word": "Honey",
+  "ref": "Numbers 14:8",
+  "refShort": "Num. 14:8",
+  "top": "If the LORD delight in us, then he will bring us",
+  "bottom": "into this land... which floweth with milk and honey."
+ },
+ {
+  "slot": 87,
+  "word": "Reminder",
+  "ref": "Numbers 15:39",
+  "refShort": "Num. 15:39",
+  "top": "that ye may look upon it,",
+  "bottom": "and remember all the commandments of the LORD, and do them..."
+ },
+ {
+  "slot": 88,
+  "word": "Bridge",
+  "ref": "Numbers 16:48",
+  "refShort": "Num. 16:48",
+  "top": "And he stood between the dead and the living;",
+  "bottom": "and the plague was stayed."
+ },
+ {
+  "slot": 90,
+  "word": "Overflow",
+  "ref": "Numbers 20:11",
+  "refShort": "Num. 20:11",
+  "top": "and with his rod he smote the rock twice:",
+  "bottom": "and the water came out abundantly..."
+ },
+ {
+  "slot": 92,
+  "word": "Angel",
+  "ref": "Numbers 22:31",
+  "refShort": "Num. 22:31",
+  "top": "Then the LORD opened the eyes of Balaam,",
+  "bottom": "and he saw the angel of the LORD standing in the way..."
+ },
+ {
+  "slot": 93,
+  "word": "Fulfil",
+  "ref": "Numbers 23:19",
+  "refShort": "Num. 23:19",
+  "top": "hath he said, and shall he not do it?",
+  "bottom": "or hath he spoken, and shall he not make it good?"
+ },
+ {
+  "slot": 94,
+  "word": "Garden",
+  "ref": "Numbers 24:5–6",
+  "refShort": "Num. 24:5–6",
+  "top": "How goodly are thy tents, O Jacob...",
+  "bottom": "as gardens by the river's side..."
+ },
+ {
+  "slot": 95,
+  "word": "Remnant",
+  "ref": "Numbers 26:65",
+  "refShort": "Num. 26:65",
+  "top": "And there was not left a man of them,",
+  "bottom": "save Caleb the son of Jephunneh, and Joshua the son of Nun."
+ }
+]

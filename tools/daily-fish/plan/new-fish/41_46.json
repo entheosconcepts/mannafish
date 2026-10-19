@@ -1,0 +1,354 @@
+[
+ {
+  "slot": 483,
+  "word": "Cure",
+  "ref": "Matthew 8:3",
+  "refShort": "Matt. 8:3",
+  "top": "Jesus put forth his hand, and touched him,",
+  "bottom": "saying, I will; be thou clean."
+ },
+ {
+  "slot": 485,
+  "word": "Gentle",
+  "ref": "Matthew 12:20",
+  "refShort": "Matt. 12:20",
+  "top": "A bruised reed shall he not break,",
+  "bottom": "and smoking flax shall he not quench..."
+ },
+ {
+  "slot": 486,
+  "word": "Pearl",
+  "ref": "Matthew 13:46",
+  "refShort": "Matt. 13:46",
+  "top": "when he had found one pearl of great price,",
+  "bottom": "went and sold all that he had, and bought it."
+ },
+ {
+  "slot": 487,
+  "word": "Lifeline",
+  "ref": "Matthew 14:31",
+  "refShort": "Matt. 14:31",
+  "top": "And immediately Jesus stretched forth",
+  "bottom": "his hand, and caught him..."
+ },
+ {
+  "slot": 489,
+  "word": "Midst",
+  "ref": "Matthew 18:20",
+  "refShort": "Matt. 18:20",
+  "top": "For where two or three are gathered together",
+  "bottom": "in my name, there am I in the midst of them."
+ },
+ {
+  "slot": 490,
+  "word": "Service",
+  "ref": "Matthew 20:28",
+  "refShort": "Matt. 20:28",
+  "top": "the Son of man came not to be ministered unto,",
+  "bottom": "but to minister, and to give his life a ransom for many."
+ },
+ {
+  "slot": 492,
+  "word": "Render",
+  "ref": "Matthew 22:21",
+  "refShort": "Matt. 22:21",
+  "top": "Render therefore unto Cæsar the things...",
+  "bottom": "and unto God the things that are God's."
+ },
+ {
+  "slot": 493,
+  "word": "Stamina",
+  "ref": "Matthew 24:13",
+  "refShort": "Matt. 24:13",
+  "top": "But he that shall endure unto the end,",
+  "bottom": "the same shall be saved."
+ },
+ {
+  "slot": 495,
+  "word": "Consent",
+  "ref": "Matthew 26:39",
+  "refShort": "Matt. 26:39",
+  "top": "O my Father... nevertheless",
+  "bottom": "not as I will, but as thou wilt."
+ },
+ {
+  "slot": 496,
+  "word": "Access",
+  "ref": "Matthew 27:51",
+  "refShort": "Matt. 27:51",
+  "top": "And, behold, the veil of the temple",
+  "bottom": "was rent in twain from the top to the bottom..."
+ },
+ {
+  "slot": 498,
+  "word": "Family",
+  "ref": "Mark 3:35",
+  "refShort": "Mark 3:35",
+  "top": "For whosoever shall do the will of God,",
+  "bottom": "the same is my brother, and my sister, and mother."
+ },
+ {
+  "slot": 500,
+  "word": "Restored",
+  "ref": "Mark 5:34",
+  "refShort": "Mark 5:34",
+  "top": "Daughter, thy faith hath made thee whole;",
+  "bottom": "go in peace, and be whole of thy plague."
+ },
+ {
+  "slot": 501,
+  "word": "Retreat",
+  "ref": "Mark 6:31",
+  "refShort": "Mark 6:31",
+  "top": "Come ye yourselves apart into a desert place,",
+  "bottom": "and rest a while..."
+ },
+ {
+  "slot": 502,
+  "word": "Deny",
+  "ref": "Mark 8:34",
+  "refShort": "Mark 8:34",
+  "top": "Whosoever will come after me, let him deny",
+  "bottom": "himself, and take up his cross, and follow me."
+ },
+ {
+  "slot": 504,
+  "word": "Receive",
+  "ref": "Mark 10:15",
+  "refShort": "Mark 10:15",
+  "top": "Whosoever shall not receive the kingdom of God",
+  "bottom": "as a little child, he shall not enter therein."
+ },
+ {
+  "slot": 505,
+  "word": "House",
+  "ref": "Mark 11:17",
+  "refShort": "Mark 11:17",
+  "top": "My house shall be called of all nations",
+  "bottom": "the house of prayer..."
+ },
+ {
+  "slot": 506,
+  "word": "Adore",
+  "ref": "Mark 12:30",
+  "refShort": "Mark 12:30",
+  "top": "love the Lord thy God with all thy heart,",
+  "bottom": "and with all thy soul, and with all thy mind..."
+ },
+ {
+  "slot": 507,
+  "word": "Publish",
+  "ref": "Mark 13:10",
+  "refShort": "Mark 13:10",
+  "top": "And the gospel must first be published",
+  "bottom": "among all nations."
+ },
+ {
+  "slot": 509,
+  "word": "Announce",
+  "ref": "Mark 16:7",
+  "refShort": "Mark 16:7",
+  "top": "But go your way, tell his disciples and Peter",
+  "bottom": "that he goeth before you into Galilee..."
+ },
+ {
+  "slot": 510,
+  "word": "Handmaid",
+  "ref": "Luke 1:38",
+  "refShort": "Luke 1:38",
+  "top": "Behold the handmaid of the Lord;",
+  "bottom": "be it unto me according to thy word."
+ },
+ {
+  "slot": 512,
+  "word": "Impart",
+  "ref": "Luke 3:11",
+  "refShort": "Luke 3:11",
+  "top": "He that hath two coats, let him impart",
+  "bottom": "to him that hath none..."
+ },
+ {
+  "slot": 513,
+  "word": "Captives",
+  "ref": "Luke 4:18",
+  "refShort": "Luke 4:18",
+  "top": "The Spirit of the Lord is upon me...",
+  "bottom": "to preach deliverance to the captives..."
+ },
+ {
+  "slot": 515,
+  "word": "Lend",
+  "ref": "Luke 6:35",
+  "refShort": "Luke 6:35",
+  "top": "But love ye your enemies, and do good,",
+  "bottom": "and lend, hoping for nothing again..."
+ },
+ {
+  "slot": 516,
+  "word": "Tears",
+  "ref": "Luke 7:38",
+  "refShort": "Luke 7:38",
+  "top": "And stood at his feet behind him weeping,",
+  "bottom": "and began to wash his feet with tears..."
+ },
+ {
+  "slot": 517,
+  "word": "Candle",
+  "ref": "Luke 8:16",
+  "refShort": "Luke 8:16",
+  "top": "No man, when he hath lighted a candle...",
+  "bottom": "setteth it on a candlestick..."
+ },
+ {
+  "slot": 520,
+  "word": "Hallowed",
+  "ref": "Luke 11:2",
+  "refShort": "Luke 11:2",
+  "top": "Our Father which art in heaven,",
+  "bottom": "Hallowed be thy name. Thy kingdom come."
+ },
+ {
+  "slot": 522,
+  "word": "Strive",
+  "ref": "Luke 13:24",
+  "refShort": "Luke 13:24",
+  "top": "Strive to enter in",
+  "bottom": "at the strait gate..."
+ },
+ {
+  "slot": 524,
+  "word": "Mustard",
+  "ref": "Luke 17:6",
+  "refShort": "Luke 17:6",
+  "top": "If ye had faith as a grain of mustard seed,",
+  "bottom": "ye might say unto this sycamine tree..."
+ },
+ {
+  "slot": 525,
+  "word": "Sinner",
+  "ref": "Luke 18:13",
+  "refShort": "Luke 18:13",
+  "top": "...but smote upon his breast, saying,",
+  "bottom": "God be merciful to me a sinner."
+ },
+ {
+  "slot": 527,
+  "word": "Living",
+  "ref": "Luke 20:38",
+  "refShort": "Luke 20:38",
+  "top": "For he is not a God of the dead,",
+  "bottom": "but of the living: for all live unto him."
+ },
+ {
+  "slot": 528,
+  "word": "Upward",
+  "ref": "Luke 21:28",
+  "refShort": "Luke 21:28",
+  "top": "then look up, and lift up your heads;",
+  "bottom": "for your redemption draweth nigh."
+ },
+ {
+  "slot": 529,
+  "word": "Brethren",
+  "ref": "Luke 22:32",
+  "refShort": "Luke 22:32",
+  "top": "I have prayed for thee, that thy faith fail not:",
+  "bottom": "and when thou art converted, strengthen thy brethren."
+ },
+ {
+  "slot": 530,
+  "word": "Paradise",
+  "ref": "Luke 23:43",
+  "refShort": "Luke 23:43",
+  "top": "Verily I say unto thee, To day",
+  "bottom": "shalt thou be with me in paradise."
+ },
+ {
+  "slot": 531,
+  "word": "Kindle",
+  "ref": "Luke 24:32",
+  "refShort": "Luke 24:32",
+  "top": "Did not our heart burn within us,",
+  "bottom": "while he talked with us by the way..."
+ },
+ {
+  "slot": 534,
+  "word": "Eternity",
+  "ref": "John 4:14",
+  "refShort": "John 4:14",
+  "top": "the water that I shall give him shall be in him",
+  "bottom": "a well of water springing up into everlasting life."
+ },
+ {
+  "slot": 535,
+  "word": "Rise",
+  "ref": "John 5:8",
+  "refShort": "John 5:8",
+  "top": "Jesus saith unto him,",
+  "bottom": "Rise, take up thy bed, and walk."
+ },
+ {
+  "slot": 536,
+  "word": "Wanted",
+  "ref": "John 6:37",
+  "refShort": "John 6:37",
+  "top": "and him that cometh to me",
+  "bottom": "I will in no wise cast out."
+ },
+ {
+  "slot": 537,
+  "word": "Drink",
+  "ref": "John 7:37",
+  "refShort": "John 7:37",
+  "top": "If any man thirst,",
+  "bottom": "let him come unto me, and drink."
+ },
+ {
+  "slot": 541,
+  "word": "Wheat",
+  "ref": "John 12:24",
+  "refShort": "John 12:24",
+  "top": "Except a corn of wheat fall into the ground...",
+  "bottom": "if it die, it bringeth forth much fruit."
+ },
+ {
+  "slot": 542,
+  "word": "Mansion",
+  "ref": "John 14:2",
+  "refShort": "John 14:2",
+  "top": "In my Father's house are many mansions...",
+  "bottom": "I go to prepare a place for you."
+ },
+ {
+  "slot": 544,
+  "word": "Sanctity",
+  "ref": "John 17:17",
+  "refShort": "John 17:17",
+  "top": "Sanctify them through thy truth:",
+  "bottom": "thy word is truth."
+ },
+ {
+  "slot": 546,
+  "word": "Tend",
+  "ref": "John 21:17",
+  "refShort": "John 21:17",
+  "top": "Lord, thou knowest all things;",
+  "bottom": "thou knowest that I love thee... Feed my sheep."
+ },
+ {
+  "slot": 549,
+  "word": "Prince",
+  "ref": "Acts 5:31",
+  "refShort": "Acts 5:31",
+  "top": "Him hath God exalted with his right hand",
+  "bottom": "to be a Prince and a Saviour..."
+ },
+ {
+  "slot": 550,
+  "word": "Gaze",
+  "ref": "Acts 7:55",
+  "refShort": "Acts 7:55",
+  "top": "being full of the Holy Ghost, looked up stedfastly",
+  "bottom": "into heaven, and saw the glory of God..."
+ }
+]

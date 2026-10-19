@@ -1,0 +1,6807 @@
+[
+ {
+  "week": 1,
+  "reading": "Genesis 1–23",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Genesis 1",
+      "Genesis 2"
+     ],
+     "label": "Genesis 1–2",
+     "words": 1429,
+     "verses": 56
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 3",
+      "Genesis 4"
+     ],
+     "label": "Genesis 3–4",
+     "words": 1334,
+     "verses": 50
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Genesis 5",
+      "Genesis 6"
+     ],
+     "label": "Genesis 5–6",
+     "words": 1084,
+     "verses": 54
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 7",
+      "Genesis 8"
+     ],
+     "label": "Genesis 7–8",
+     "words": 1175,
+     "verses": 46
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Genesis 9",
+      "Genesis 10"
+     ],
+     "label": "Genesis 9–10",
+     "words": 1155,
+     "verses": 61
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 11",
+      "Genesis 12"
+     ],
+     "label": "Genesis 11–12",
+     "words": 1146,
+     "verses": 52
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Genesis 13",
+      "Genesis 14",
+      "Genesis 15"
+     ],
+     "label": "Genesis 13–15",
+     "words": 1542,
+     "verses": 63
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 16",
+      "Genesis 17"
+     ],
+     "label": "Genesis 16–17",
+     "words": 1092,
+     "verses": 43
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Genesis 18"
+     ],
+     "label": "Genesis 18",
+     "words": 875,
+     "verses": 33
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 19"
+     ],
+     "label": "Genesis 19",
+     "words": 1112,
+     "verses": 38
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Genesis 20",
+      "Genesis 21"
+     ],
+     "label": "Genesis 20–21",
+     "words": 1277,
+     "verses": 52
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 22",
+      "Genesis 23"
+     ],
+     "label": "Genesis 22–23",
+     "words": 1171,
+     "verses": 44
+    }
+   }
+  ]
+ },
+ {
+  "week": 2,
+  "reading": "Genesis 24–40",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Genesis 24"
+     ],
+     "label": "Genesis 24",
+     "words": 1830,
+     "verses": 67
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 25",
+      "Genesis 26"
+     ],
+     "label": "Genesis 25–26",
+     "words": 1599,
+     "verses": 69
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Genesis 27"
+     ],
+     "label": "Genesis 27",
+     "words": 1265,
+     "verses": 46
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 28",
+      "Genesis 29"
+     ],
+     "label": "Genesis 28–29",
+     "words": 1455,
+     "verses": 57
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Genesis 30"
+     ],
+     "label": "Genesis 30",
+     "words": 1024,
+     "verses": 43
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 31"
+     ],
+     "label": "Genesis 31",
+     "words": 1418,
+     "verses": 55
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Genesis 32",
+      "Genesis 33"
+     ],
+     "label": "Genesis 32–33",
+     "words": 1305,
+     "verses": 52
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 34",
+      "Genesis 35"
+     ],
+     "label": "Genesis 34–35",
+     "words": 1457,
+     "verses": 60
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Genesis 36"
+     ],
+     "label": "Genesis 36",
+     "words": 845,
+     "verses": 43
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 37"
+     ],
+     "label": "Genesis 37",
+     "words": 945,
+     "verses": 36
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Genesis 38"
+     ],
+     "label": "Genesis 38",
+     "words": 826,
+     "verses": 30
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 39",
+      "Genesis 40"
+     ],
+     "label": "Genesis 39–40",
+     "words": 1249,
+     "verses": 46
+    }
+   }
+  ]
+ },
+ {
+  "week": 3,
+  "reading": "Genesis 41 – Exodus 8",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Genesis 41"
+     ],
+     "label": "Genesis 41",
+     "words": 1409,
+     "verses": 57
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 42"
+     ],
+     "label": "Genesis 42",
+     "words": 980,
+     "verses": 38
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Genesis 43"
+     ],
+     "label": "Genesis 43",
+     "words": 940,
+     "verses": 34
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 44"
+     ],
+     "label": "Genesis 44",
+     "words": 875,
+     "verses": 34
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Genesis 45",
+      "Genesis 46"
+     ],
+     "label": "Genesis 45–46",
+     "words": 1497,
+     "verses": 62
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 47"
+     ],
+     "label": "Genesis 47",
+     "words": 965,
+     "verses": 31
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Genesis 48",
+      "Genesis 49"
+     ],
+     "label": "Genesis 48–49",
+     "words": 1410,
+     "verses": 55
+    },
+    "pm": {
+     "chapters": [
+      "Genesis 50",
+      "Exodus 1"
+     ],
+     "label": "Genesis 50 – Exodus 1",
+     "words": 1145,
+     "verses": 48
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Exodus 2",
+      "Exodus 3"
+     ],
+     "label": "Exodus 2–3",
+     "words": 1452,
+     "verses": 47
+    },
+    "pm": {
+     "chapters": [
+      "Exodus 4",
+      "Exodus 5"
+     ],
+     "label": "Exodus 4–5",
+     "words": 1496,
+     "verses": 54
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Exodus 6",
+      "Exodus 7"
+     ],
+     "label": "Exodus 6–7",
+     "words": 1457,
+     "verses": 55
+    },
+    "pm": {
+     "chapters": [
+      "Exodus 8"
+     ],
+     "label": "Exodus 8",
+     "words": 945,
+     "verses": 32
+    }
+   }
+  ]
+ },
+ {
+  "week": 4,
+  "reading": "Exodus 9–27",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Exodus 9"
+     ],
+     "label": "Exodus 9",
+     "words": 986,
+     "verses": 35
+    },
+    "pm": {
+     "chapters": [
+      "Exodus 10",
+      "Exodus 11"
+     ],
+     "label": "Exodus 10–11",
+     "words": 1230,
+     "verses": 39
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Exodus 12"
+     ],
+     "label": "Exodus 12",
+     "words": 1501,
+     "verses": 51
+    },
+    "pm": {
+     "chapters": [
+      "Exodus 13",
+      "Exodus 14"
+     ],
+     "label": "Exodus 13–14",
+     "words": 1616,
+     "verses": 53
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Exodus 15"
+     ],
+     "label": "Exodus 15",
+     "words": 722,
+     "verses": 27
+    },
+    "pm": {
+     "chapters": [
+      "Exodus 16"
+     ],
+     "label": "Exodus 16",
+     "words": 1073,
+     "verses": 36
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Exodus 17",
+      "Exodus 18"
+     ],
+     "label": "Exodus 17–18",
+     "words": 1246,
+     "verses": 43
+    },
+    "pm": {
+     "chapters": [
+      "Exodus 19",
+      "Exodus 20"
+     ],
+     "label": "Exodus 19–20",
+     "words": 1271,
+     "verses": 51
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Exodus 21"
+     ],
+     "label": "Exodus 21",
+     "words": 895,
+     "verses": 36
+    },
+    "pm": {
+     "chapters": [
+      "Exodus 22",
+      "Exodus 23"
+     ],
+     "label": "Exodus 22–23",
+     "words": 1620,
+     "verses": 64
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Exodus 24",
+      "Exodus 25"
+     ],
+     "label": "Exodus 24–25",
+     "words": 1425,
+     "verses": 58
+    },
+    "pm": {
+     "chapters": [
+      "Exodus 26",
+      "Exodus 27"
+     ],
+     "label": "Exodus 26–27",
+     "words": 1499,
+     "verses": 58
+    }
+   }
+  ]
+ },
+ {
+  "week": 5,
+  "reading": "Exodus 28 – Leviticus 6",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Exodus 28"
+     ],
+     "label": "Exodus 28",
+     "words": 1240,
+     "verses": 43
+    },
+    "pm": {
+     "chapters": [
+      "Exodus 29"
+     ],
+     "label": "Exodus 29",
+     "words": 1354,
+     "verses": 46
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Exodus 30",
+      "Exodus 31"
+     ],
+     "label": "Exodus 30–31",
+     "words": 1422,
+     "verses": 56
+    },
+    "pm": {
+     "chapters": [
+      "Exodus 32"
+     ],
+     "label": "Exodus 32",
+     "words": 1117,
+     "verses": 35
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Exodus 33",
+      "Exodus 34"
+     ],
+     "label": "Exodus 33–34",
+     "words": 1724,
+     "verses": 58
+    },
+    "pm": {
+     "chapters": [
+      "Exodus 35",
+      "Exodus 36"
+     ],
+     "label": "Exodus 35–36",
+     "words": 1727,
+     "verses": 73
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Exodus 37",
+      "Exodus 38"
+     ],
+     "label": "Exodus 37–38",
+     "words": 1573,
+     "verses": 60
+    },
+    "pm": {
+     "chapters": [
+      "Exodus 39"
+     ],
+     "label": "Exodus 39",
+     "words": 1034,
+     "verses": 43
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Exodus 40",
+      "Leviticus 1"
+     ],
+     "label": "Exodus 40 – Leviticus 1",
+     "words": 1357,
+     "verses": 55
+    },
+    "pm": {
+     "chapters": [
+      "Leviticus 2",
+      "Leviticus 3"
+     ],
+     "label": "Leviticus 2–3",
+     "words": 1014,
+     "verses": 33
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Leviticus 4"
+     ],
+     "label": "Leviticus 4",
+     "words": 1168,
+     "verses": 35
+    },
+    "pm": {
+     "chapters": [
+      "Leviticus 5",
+      "Leviticus 6"
+     ],
+     "label": "Leviticus 5–6",
+     "words": 1633,
+     "verses": 49
+    }
+   }
+  ]
+ },
+ {
+  "week": 6,
+  "reading": "Leviticus 7–22",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Leviticus 7"
+     ],
+     "label": "Leviticus 7",
+     "words": 1067,
+     "verses": 38
+    },
+    "pm": {
+     "chapters": [
+      "Leviticus 8"
+     ],
+     "label": "Leviticus 8",
+     "words": 994,
+     "verses": 36
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Leviticus 9",
+      "Leviticus 10"
+     ],
+     "label": "Leviticus 9–10",
+     "words": 1268,
+     "verses": 44
+    },
+    "pm": {
+     "chapters": [
+      "Leviticus 11",
+      "Leviticus 12"
+     ],
+     "label": "Leviticus 11–12",
+     "words": 1379,
+     "verses": 55
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Leviticus 13"
+     ],
+     "label": "Leviticus 13",
+     "words": 1861,
+     "verses": 59
+    },
+    "pm": {
+     "chapters": [
+      "Leviticus 14"
+     ],
+     "label": "Leviticus 14",
+     "words": 1724,
+     "verses": 57
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Leviticus 15"
+     ],
+     "label": "Leviticus 15",
+     "words": 919,
+     "verses": 33
+    },
+    "pm": {
+     "chapters": [
+      "Leviticus 16"
+     ],
+     "label": "Leviticus 16",
+     "words": 1169,
+     "verses": 34
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Leviticus 17",
+      "Leviticus 18"
+     ],
+     "label": "Leviticus 17–18",
+     "words": 1231,
+     "verses": 46
+    },
+    "pm": {
+     "chapters": [
+      "Leviticus 19"
+     ],
+     "label": "Leviticus 19",
+     "words": 910,
+     "verses": 37
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Leviticus 20",
+      "Leviticus 21"
+     ],
+     "label": "Leviticus 20–21",
+     "words": 1426,
+     "verses": 51
+    },
+    "pm": {
+     "chapters": [
+      "Leviticus 22"
+     ],
+     "label": "Leviticus 22",
+     "words": 892,
+     "verses": 33
+    }
+   }
+  ]
+ },
+ {
+  "week": 7,
+  "reading": "Leviticus 23 – Numbers 10",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Leviticus 23",
+      "Leviticus 24"
+     ],
+     "label": "Leviticus 23–24",
+     "words": 1802,
+     "verses": 67
+    },
+    "pm": {
+     "chapters": [
+      "Leviticus 25"
+     ],
+     "label": "Leviticus 25",
+     "words": 1537,
+     "verses": 55
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Leviticus 26"
+     ],
+     "label": "Leviticus 26",
+     "words": 1249,
+     "verses": 46
+    },
+    "pm": {
+     "chapters": [
+      "Leviticus 27"
+     ],
+     "label": "Leviticus 27",
+     "words": 967,
+     "verses": 34
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Numbers 1"
+     ],
+     "label": "Numbers 1",
+     "words": 1334,
+     "verses": 54
+    },
+    "pm": {
+     "chapters": [
+      "Numbers 2"
+     ],
+     "label": "Numbers 2",
+     "words": 828,
+     "verses": 34
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Numbers 3"
+     ],
+     "label": "Numbers 3",
+     "words": 1300,
+     "verses": 51
+    },
+    "pm": {
+     "chapters": [
+      "Numbers 4"
+     ],
+     "label": "Numbers 4",
+     "words": 1418,
+     "verses": 49
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Numbers 5",
+      "Numbers 6"
+     ],
+     "label": "Numbers 5–6",
+     "words": 1654,
+     "verses": 58
+    },
+    "pm": {
+     "chapters": [
+      "Numbers 7"
+     ],
+     "label": "Numbers 7",
+     "words": 1966,
+     "verses": 89
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Numbers 8",
+      "Numbers 9"
+     ],
+     "label": "Numbers 8–9",
+     "words": 1422,
+     "verses": 49
+    },
+    "pm": {
+     "chapters": [
+      "Numbers 10"
+     ],
+     "label": "Numbers 10",
+     "words": 894,
+     "verses": 36
+    }
+   }
+  ]
+ },
+ {
+  "week": 8,
+  "reading": "Numbers 11–26",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Numbers 11"
+     ],
+     "label": "Numbers 11",
+     "words": 1065,
+     "verses": 35
+    },
+    "pm": {
+     "chapters": [
+      "Numbers 12",
+      "Numbers 13"
+     ],
+     "label": "Numbers 12–13",
+     "words": 1132,
+     "verses": 49
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Numbers 14"
+     ],
+     "label": "Numbers 14",
+     "words": 1194,
+     "verses": 45
+    },
+    "pm": {
+     "chapters": [
+      "Numbers 15"
+     ],
+     "label": "Numbers 15",
+     "words": 1087,
+     "verses": 41
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Numbers 16"
+     ],
+     "label": "Numbers 16",
+     "words": 1355,
+     "verses": 50
+    },
+    "pm": {
+     "chapters": [
+      "Numbers 17",
+      "Numbers 18"
+     ],
+     "label": "Numbers 17–18",
+     "words": 1456,
+     "verses": 45
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Numbers 19",
+      "Numbers 20"
+     ],
+     "label": "Numbers 19–20",
+     "words": 1484,
+     "verses": 51
+    },
+    "pm": {
+     "chapters": [
+      "Numbers 21"
+     ],
+     "label": "Numbers 21",
+     "words": 935,
+     "verses": 35
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Numbers 22"
+     ],
+     "label": "Numbers 22",
+     "words": 1205,
+     "verses": 41
+    },
+    "pm": {
+     "chapters": [
+      "Numbers 23"
+     ],
+     "label": "Numbers 23",
+     "words": 745,
+     "verses": 30
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Numbers 24",
+      "Numbers 25"
+     ],
+     "label": "Numbers 24–25",
+     "words": 1108,
+     "verses": 43
+    },
+    "pm": {
+     "chapters": [
+      "Numbers 26"
+     ],
+     "label": "Numbers 26",
+     "words": 1450,
+     "verses": 65
+    }
+   }
+  ]
+ },
+ {
+  "week": 9,
+  "reading": "Numbers 27 – Deuteronomy 8",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Numbers 27",
+      "Numbers 28"
+     ],
+     "label": "Numbers 27–28",
+     "words": 1405,
+     "verses": 54
+    },
+    "pm": {
+     "chapters": [
+      "Numbers 29",
+      "Numbers 30"
+     ],
+     "label": "Numbers 29–30",
+     "words": 1466,
+     "verses": 56
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Numbers 31"
+     ],
+     "label": "Numbers 31",
+     "words": 1219,
+     "verses": 54
+    },
+    "pm": {
+     "chapters": [
+      "Numbers 32"
+     ],
+     "label": "Numbers 32",
+     "words": 1017,
+     "verses": 42
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Numbers 33",
+      "Numbers 34"
+     ],
+     "label": "Numbers 33–34",
+     "words": 1560,
+     "verses": 85
+    },
+    "pm": {
+     "chapters": [
+      "Numbers 35",
+      "Numbers 36"
+     ],
+     "label": "Numbers 35–36",
+     "words": 1411,
+     "verses": 47
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Deuteronomy 1"
+     ],
+     "label": "Deuteronomy 1",
+     "words": 1272,
+     "verses": 46
+    },
+    "pm": {
+     "chapters": [
+      "Deuteronomy 2"
+     ],
+     "label": "Deuteronomy 2",
+     "words": 1023,
+     "verses": 37
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Deuteronomy 3"
+     ],
+     "label": "Deuteronomy 3",
+     "words": 819,
+     "verses": 29
+    },
+    "pm": {
+     "chapters": [
+      "Deuteronomy 4"
+     ],
+     "label": "Deuteronomy 4",
+     "words": 1513,
+     "verses": 49
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Deuteronomy 5",
+      "Deuteronomy 6"
+     ],
+     "label": "Deuteronomy 5–6",
+     "words": 1572,
+     "verses": 58
+    },
+    "pm": {
+     "chapters": [
+      "Deuteronomy 7",
+      "Deuteronomy 8"
+     ],
+     "label": "Deuteronomy 7–8",
+     "words": 1409,
+     "verses": 46
+    }
+   }
+  ]
+ },
+ {
+  "week": 10,
+  "reading": "Deuteronomy 9–30",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Deuteronomy 9"
+     ],
+     "label": "Deuteronomy 9",
+     "words": 969,
+     "verses": 29
+    },
+    "pm": {
+     "chapters": [
+      "Deuteronomy 10",
+      "Deuteronomy 11"
+     ],
+     "label": "Deuteronomy 10–11",
+     "words": 1558,
+     "verses": 54
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Deuteronomy 12",
+      "Deuteronomy 13"
+     ],
+     "label": "Deuteronomy 12–13",
+     "words": 1686,
+     "verses": 50
+    },
+    "pm": {
+     "chapters": [
+      "Deuteronomy 14",
+      "Deuteronomy 15"
+     ],
+     "label": "Deuteronomy 14–15",
+     "words": 1416,
+     "verses": 52
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Deuteronomy 16",
+      "Deuteronomy 17"
+     ],
+     "label": "Deuteronomy 16–17",
+     "words": 1420,
+     "verses": 42
+    },
+    "pm": {
+     "chapters": [
+      "Deuteronomy 18",
+      "Deuteronomy 19"
+     ],
+     "label": "Deuteronomy 18–19",
+     "words": 1227,
+     "verses": 43
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Deuteronomy 20",
+      "Deuteronomy 21"
+     ],
+     "label": "Deuteronomy 20–21",
+     "words": 1385,
+     "verses": 43
+    },
+    "pm": {
+     "chapters": [
+      "Deuteronomy 22",
+      "Deuteronomy 23"
+     ],
+     "label": "Deuteronomy 22–23",
+     "words": 1586,
+     "verses": 55
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Deuteronomy 24",
+      "Deuteronomy 25"
+     ],
+     "label": "Deuteronomy 24–25",
+     "words": 1250,
+     "verses": 41
+    },
+    "pm": {
+     "chapters": [
+      "Deuteronomy 26",
+      "Deuteronomy 27"
+     ],
+     "label": "Deuteronomy 26–27",
+     "words": 1270,
+     "verses": 45
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Deuteronomy 28"
+     ],
+     "label": "Deuteronomy 28",
+     "words": 2081,
+     "verses": 68
+    },
+    "pm": {
+     "chapters": [
+      "Deuteronomy 29",
+      "Deuteronomy 30"
+     ],
+     "label": "Deuteronomy 29–30",
+     "words": 1521,
+     "verses": 49
+    }
+   }
+  ]
+ },
+ {
+  "week": 11,
+  "reading": "Deuteronomy 31 – Joshua 14",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Deuteronomy 31"
+     ],
+     "label": "Deuteronomy 31",
+     "words": 1048,
+     "verses": 30
+    },
+    "pm": {
+     "chapters": [
+      "Deuteronomy 32"
+     ],
+     "label": "Deuteronomy 32",
+     "words": 1313,
+     "verses": 52
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Deuteronomy 33",
+      "Deuteronomy 34"
+     ],
+     "label": "Deuteronomy 33–34",
+     "words": 1133,
+     "verses": 41
+    },
+    "pm": {
+     "chapters": [
+      "Joshua 1",
+      "Joshua 2"
+     ],
+     "label": "Joshua 1–2",
+     "words": 1343,
+     "verses": 42
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Joshua 3",
+      "Joshua 4"
+     ],
+     "label": "Joshua 3–4",
+     "words": 1276,
+     "verses": 41
+    },
+    "pm": {
+     "chapters": [
+      "Joshua 5",
+      "Joshua 6"
+     ],
+     "label": "Joshua 5–6",
+     "words": 1465,
+     "verses": 42
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Joshua 7"
+     ],
+     "label": "Joshua 7",
+     "words": 931,
+     "verses": 26
+    },
+    "pm": {
+     "chapters": [
+      "Joshua 8"
+     ],
+     "label": "Joshua 8",
+     "words": 1224,
+     "verses": 35
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Joshua 9"
+     ],
+     "label": "Joshua 9",
+     "words": 802,
+     "verses": 27
+    },
+    "pm": {
+     "chapters": [
+      "Joshua 10"
+     ],
+     "label": "Joshua 10",
+     "words": 1393,
+     "verses": 43
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Joshua 11",
+      "Joshua 12"
+     ],
+     "label": "Joshua 11–12",
+     "words": 1204,
+     "verses": 47
+    },
+    "pm": {
+     "chapters": [
+      "Joshua 13",
+      "Joshua 14"
+     ],
+     "label": "Joshua 13–14",
+     "words": 1312,
+     "verses": 48
+    }
+   }
+  ]
+ },
+ {
+  "week": 12,
+  "reading": "Joshua 15 – Judges 8",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Joshua 15",
+      "Joshua 16"
+     ],
+     "label": "Joshua 15–16",
+     "words": 1287,
+     "verses": 73
+    },
+    "pm": {
+     "chapters": [
+      "Joshua 17",
+      "Joshua 18"
+     ],
+     "label": "Joshua 17–18",
+     "words": 1434,
+     "verses": 46
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Joshua 19",
+      "Joshua 20"
+     ],
+     "label": "Joshua 19–20",
+     "words": 1253,
+     "verses": 60
+    },
+    "pm": {
+     "chapters": [
+      "Joshua 21"
+     ],
+     "label": "Joshua 21",
+     "words": 1027,
+     "verses": 45
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Joshua 22"
+     ],
+     "label": "Joshua 22",
+     "words": 1341,
+     "verses": 34
+    },
+    "pm": {
+     "chapters": [
+      "Joshua 23",
+      "Joshua 24"
+     ],
+     "label": "Joshua 23–24",
+     "words": 1641,
+     "verses": 49
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Judges 1"
+     ],
+     "label": "Judges 1",
+     "words": 964,
+     "verses": 36
+    },
+    "pm": {
+     "chapters": [
+      "Judges 2",
+      "Judges 3"
+     ],
+     "label": "Judges 2–3",
+     "words": 1549,
+     "verses": 54
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Judges 4",
+      "Judges 5"
+     ],
+     "label": "Judges 4–5",
+     "words": 1528,
+     "verses": 55
+    },
+    "pm": {
+     "chapters": [
+      "Judges 6"
+     ],
+     "label": "Judges 6",
+     "words": 1305,
+     "verses": 40
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Judges 7"
+     ],
+     "label": "Judges 7",
+     "words": 956,
+     "verses": 25
+    },
+    "pm": {
+     "chapters": [
+      "Judges 8"
+     ],
+     "label": "Judges 8",
+     "words": 994,
+     "verses": 35
+    }
+   }
+  ]
+ },
+ {
+  "week": 13,
+  "reading": "Judges 9 – 1 Samuel 2",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Judges 9"
+     ],
+     "label": "Judges 9",
+     "words": 1670,
+     "verses": 57
+    },
+    "pm": {
+     "chapters": [
+      "Judges 10",
+      "Judges 11"
+     ],
+     "label": "Judges 10–11",
+     "words": 1718,
+     "verses": 58
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Judges 12",
+      "Judges 13"
+     ],
+     "label": "Judges 12–13",
+     "words": 1177,
+     "verses": 40
+    },
+    "pm": {
+     "chapters": [
+      "Judges 14",
+      "Judges 15"
+     ],
+     "label": "Judges 14–15",
+     "words": 1357,
+     "verses": 40
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Judges 16"
+     ],
+     "label": "Judges 16",
+     "words": 1115,
+     "verses": 31
+    },
+    "pm": {
+     "chapters": [
+      "Judges 17",
+      "Judges 18"
+     ],
+     "label": "Judges 17–18",
+     "words": 1423,
+     "verses": 44
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Judges 19"
+     ],
+     "label": "Judges 19",
+     "words": 1106,
+     "verses": 30
+    },
+    "pm": {
+     "chapters": [
+      "Judges 20"
+     ],
+     "label": "Judges 20",
+     "words": 1461,
+     "verses": 48
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Judges 21",
+      "Ruth 1"
+     ],
+     "label": "Judges 21 – Ruth 1",
+     "words": 1391,
+     "verses": 47
+    },
+    "pm": {
+     "chapters": [
+      "Ruth 2",
+      "Ruth 3"
+     ],
+     "label": "Ruth 2–3",
+     "words": 1309,
+     "verses": 41
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Ruth 4",
+      "1Samuel 1"
+     ],
+     "label": "Ruth 4 – 1 Samuel 1",
+     "words": 1421,
+     "verses": 50
+    },
+    "pm": {
+     "chapters": [
+      "1Samuel 2"
+     ],
+     "label": "1 Samuel 2",
+     "words": 1118,
+     "verses": 36
+    }
+   }
+  ]
+ },
+ {
+  "week": 14,
+  "reading": "1 Samuel 3–22",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "1Samuel 3",
+      "1Samuel 4"
+     ],
+     "label": "1 Samuel 3–4",
+     "words": 1304,
+     "verses": 43
+    },
+    "pm": {
+     "chapters": [
+      "1Samuel 5",
+      "1Samuel 6"
+     ],
+     "label": "1 Samuel 5–6",
+     "words": 1207,
+     "verses": 33
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "1Samuel 7",
+      "1Samuel 8"
+     ],
+     "label": "1 Samuel 7–8",
+     "words": 1064,
+     "verses": 39
+    },
+    "pm": {
+     "chapters": [
+      "1Samuel 9"
+     ],
+     "label": "1 Samuel 9",
+     "words": 992,
+     "verses": 27
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "1Samuel 10",
+      "1Samuel 11"
+     ],
+     "label": "1 Samuel 10–11",
+     "words": 1370,
+     "verses": 42
+    },
+    "pm": {
+     "chapters": [
+      "1Samuel 12",
+      "1Samuel 13"
+     ],
+     "label": "1 Samuel 12–13",
+     "words": 1485,
+     "verses": 48
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "1Samuel 14"
+     ],
+     "label": "1 Samuel 14",
+     "words": 1615,
+     "verses": 52
+    },
+    "pm": {
+     "chapters": [
+      "1Samuel 15",
+      "1Samuel 16"
+     ],
+     "label": "1 Samuel 15–16",
+     "words": 1676,
+     "verses": 58
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "1Samuel 17"
+     ],
+     "label": "1 Samuel 17",
+     "words": 1726,
+     "verses": 58
+    },
+    "pm": {
+     "chapters": [
+      "1Samuel 18",
+      "1Samuel 19"
+     ],
+     "label": "1 Samuel 18–19",
+     "words": 1546,
+     "verses": 54
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "1Samuel 20"
+     ],
+     "label": "1 Samuel 20",
+     "words": 1304,
+     "verses": 42
+    },
+    "pm": {
+     "chapters": [
+      "1Samuel 21",
+      "1Samuel 22"
+     ],
+     "label": "1 Samuel 21–22",
+     "words": 1266,
+     "verses": 38
+    }
+   }
+  ]
+ },
+ {
+  "week": 15,
+  "reading": "1 Samuel 23 – 2 Samuel 12",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "1Samuel 23",
+      "1Samuel 24"
+     ],
+     "label": "1 Samuel 23–24",
+     "words": 1499,
+     "verses": 51
+    },
+    "pm": {
+     "chapters": [
+      "1Samuel 25"
+     ],
+     "label": "1 Samuel 25",
+     "words": 1459,
+     "verses": 44
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "1Samuel 26",
+      "1Samuel 27"
+     ],
+     "label": "1 Samuel 26–27",
+     "words": 1242,
+     "verses": 37
+    },
+    "pm": {
+     "chapters": [
+      "1Samuel 28",
+      "1Samuel 29"
+     ],
+     "label": "1 Samuel 28–29",
+     "words": 1261,
+     "verses": 36
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "1Samuel 30",
+      "1Samuel 31"
+     ],
+     "label": "1 Samuel 30–31",
+     "words": 1308,
+     "verses": 44
+    },
+    "pm": {
+     "chapters": [
+      "2Samuel 1",
+      "2Samuel 2"
+     ],
+     "label": "2 Samuel 1–2",
+     "words": 1628,
+     "verses": 59
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "2Samuel 3"
+     ],
+     "label": "2 Samuel 3",
+     "words": 1147,
+     "verses": 39
+    },
+    "pm": {
+     "chapters": [
+      "2Samuel 4",
+      "2Samuel 5"
+     ],
+     "label": "2 Samuel 4–5",
+     "words": 1063,
+     "verses": 37
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "2Samuel 6",
+      "2Samuel 7"
+     ],
+     "label": "2 Samuel 6–7",
+     "words": 1596,
+     "verses": 52
+    },
+    "pm": {
+     "chapters": [
+      "2Samuel 8",
+      "2Samuel 9"
+     ],
+     "label": "2 Samuel 8–9",
+     "words": 863,
+     "verses": 31
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "2Samuel 10",
+      "2Samuel 11"
+     ],
+     "label": "2 Samuel 10–11",
+     "words": 1427,
+     "verses": 46
+    },
+    "pm": {
+     "chapters": [
+      "2Samuel 12"
+     ],
+     "label": "2 Samuel 12",
+     "words": 998,
+     "verses": 31
+    }
+   }
+  ]
+ },
+ {
+  "week": 16,
+  "reading": "2 Samuel 13 – 1 Kings 3",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "2Samuel 13"
+     ],
+     "label": "2 Samuel 13",
+     "words": 1151,
+     "verses": 39
+    },
+    "pm": {
+     "chapters": [
+      "2Samuel 14"
+     ],
+     "label": "2 Samuel 14",
+     "words": 1117,
+     "verses": 33
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "2Samuel 15"
+     ],
+     "label": "2 Samuel 15",
+     "words": 1126,
+     "verses": 37
+    },
+    "pm": {
+     "chapters": [
+      "2Samuel 16",
+      "2Samuel 17"
+     ],
+     "label": "2 Samuel 16–17",
+     "words": 1679,
+     "verses": 52
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "2Samuel 18"
+     ],
+     "label": "2 Samuel 18",
+     "words": 1104,
+     "verses": 33
+    },
+    "pm": {
+     "chapters": [
+      "2Samuel 19"
+     ],
+     "label": "2 Samuel 19",
+     "words": 1475,
+     "verses": 43
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "2Samuel 20",
+      "2Samuel 21"
+     ],
+     "label": "2 Samuel 20–21",
+     "words": 1636,
+     "verses": 48
+    },
+    "pm": {
+     "chapters": [
+      "2Samuel 22"
+     ],
+     "label": "2 Samuel 22",
+     "words": 959,
+     "verses": 51
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "2Samuel 23",
+      "2Samuel 24"
+     ],
+     "label": "2 Samuel 23–24",
+     "words": 1744,
+     "verses": 64
+    },
+    "pm": {
+     "chapters": [
+      "1Kings 1"
+     ],
+     "label": "1 Kings 1",
+     "words": 1504,
+     "verses": 53
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "1Kings 2"
+     ],
+     "label": "1 Kings 2",
+     "words": 1523,
+     "verses": 46
+    },
+    "pm": {
+     "chapters": [
+      "1Kings 3"
+     ],
+     "label": "1 Kings 3",
+     "words": 855,
+     "verses": 28
+    }
+   }
+  ]
+ },
+ {
+  "week": 17,
+  "reading": "1 Kings 4–18",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "1Kings 4",
+      "1Kings 5"
+     ],
+     "label": "1 Kings 4–5",
+     "words": 1234,
+     "verses": 52
+    },
+    "pm": {
+     "chapters": [
+      "1Kings 6"
+     ],
+     "label": "1 Kings 6",
+     "words": 1028,
+     "verses": 38
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "1Kings 7"
+     ],
+     "label": "1 Kings 7",
+     "words": 1493,
+     "verses": 51
+    },
+    "pm": {
+     "chapters": [
+      "1Kings 8"
+     ],
+     "label": "1 Kings 8",
+     "words": 2155,
+     "verses": 66
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "1Kings 9",
+      "1Kings 10"
+     ],
+     "label": "1 Kings 9–10",
+     "words": 1674,
+     "verses": 57
+    },
+    "pm": {
+     "chapters": [
+      "1Kings 11"
+     ],
+     "label": "1 Kings 11",
+     "words": 1256,
+     "verses": 43
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "1Kings 12"
+     ],
+     "label": "1 Kings 12",
+     "words": 1043,
+     "verses": 33
+    },
+    "pm": {
+     "chapters": [
+      "1Kings 13"
+     ],
+     "label": "1 Kings 13",
+     "words": 1164,
+     "verses": 34
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "1Kings 14"
+     ],
+     "label": "1 Kings 14",
+     "words": 996,
+     "verses": 31
+    },
+    "pm": {
+     "chapters": [
+      "1Kings 15"
+     ],
+     "label": "1 Kings 15",
+     "words": 959,
+     "verses": 34
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "1Kings 16",
+      "1Kings 17"
+     ],
+     "label": "1 Kings 16–17",
+     "words": 1725,
+     "verses": 58
+    },
+    "pm": {
+     "chapters": [
+      "1Kings 18"
+     ],
+     "label": "1 Kings 18",
+     "words": 1413,
+     "verses": 46
+    }
+   }
+  ]
+ },
+ {
+  "week": 18,
+  "reading": "1 Kings 19 – 2 Kings 9",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "1Kings 19"
+     ],
+     "label": "1 Kings 19",
+     "words": 739,
+     "verses": 21
+    },
+    "pm": {
+     "chapters": [
+      "1Kings 20"
+     ],
+     "label": "1 Kings 20",
+     "words": 1494,
+     "verses": 43
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "1Kings 21"
+     ],
+     "label": "1 Kings 21",
+     "words": 914,
+     "verses": 29
+    },
+    "pm": {
+     "chapters": [
+      "1Kings 22"
+     ],
+     "label": "1 Kings 22",
+     "words": 1526,
+     "verses": 53
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "2Kings 1",
+      "2Kings 2"
+     ],
+     "label": "2 Kings 1–2",
+     "words": 1526,
+     "verses": 43
+    },
+    "pm": {
+     "chapters": [
+      "2Kings 3"
+     ],
+     "label": "2 Kings 3",
+     "words": 855,
+     "verses": 27
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "2Kings 4"
+     ],
+     "label": "2 Kings 4",
+     "words": 1376,
+     "verses": 44
+    },
+    "pm": {
+     "chapters": [
+      "2Kings 5"
+     ],
+     "label": "2 Kings 5",
+     "words": 980,
+     "verses": 27
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "2Kings 6"
+     ],
+     "label": "2 Kings 6",
+     "words": 1029,
+     "verses": 33
+    },
+    "pm": {
+     "chapters": [
+      "2Kings 7"
+     ],
+     "label": "2 Kings 7",
+     "words": 832,
+     "verses": 20
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "2Kings 8"
+     ],
+     "label": "2 Kings 8",
+     "words": 955,
+     "verses": 29
+    },
+    "pm": {
+     "chapters": [
+      "2Kings 9"
+     ],
+     "label": "2 Kings 9",
+     "words": 1217,
+     "verses": 37
+    }
+   }
+  ]
+ },
+ {
+  "week": 19,
+  "reading": "2 Kings 10 – 1 Chronicles 1",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "2Kings 10"
+     ],
+     "label": "2 Kings 10",
+     "words": 1212,
+     "verses": 36
+    },
+    "pm": {
+     "chapters": [
+      "2Kings 11",
+      "2Kings 12"
+     ],
+     "label": "2 Kings 11–12",
+     "words": 1449,
+     "verses": 42
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "2Kings 13",
+      "2Kings 14"
+     ],
+     "label": "2 Kings 13–14",
+     "words": 1666,
+     "verses": 54
+    },
+    "pm": {
+     "chapters": [
+      "2Kings 15",
+      "2Kings 16"
+     ],
+     "label": "2 Kings 15–16",
+     "words": 1762,
+     "verses": 58
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "2Kings 17"
+     ],
+     "label": "2 Kings 17",
+     "words": 1255,
+     "verses": 41
+    },
+    "pm": {
+     "chapters": [
+      "2Kings 18"
+     ],
+     "label": "2 Kings 18",
+     "words": 1227,
+     "verses": 37
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "2Kings 19"
+     ],
+     "label": "2 Kings 19",
+     "words": 1157,
+     "verses": 37
+    },
+    "pm": {
+     "chapters": [
+      "2Kings 20",
+      "2Kings 21"
+     ],
+     "label": "2 Kings 20–21",
+     "words": 1425,
+     "verses": 47
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "2Kings 22"
+     ],
+     "label": "2 Kings 22",
+     "words": 724,
+     "verses": 20
+    },
+    "pm": {
+     "chapters": [
+      "2Kings 23"
+     ],
+     "label": "2 Kings 23",
+     "words": 1488,
+     "verses": 37
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "2Kings 24",
+      "2Kings 25"
+     ],
+     "label": "2 Kings 24–25",
+     "words": 1575,
+     "verses": 50
+    },
+    "pm": {
+     "chapters": [
+      "1Chronicles 1"
+     ],
+     "label": "1 Chronicles 1",
+     "words": 683,
+     "verses": 54
+    }
+   }
+  ]
+ },
+ {
+  "week": 20,
+  "reading": "1 Chronicles 2–23",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "1Chronicles 2",
+      "1Chronicles 3"
+     ],
+     "label": "1 Chronicles 2–3",
+     "words": 1198,
+     "verses": 79
+    },
+    "pm": {
+     "chapters": [
+      "1Chronicles 4",
+      "1Chronicles 5"
+     ],
+     "label": "1 Chronicles 4–5",
+     "words": 1526,
+     "verses": 69
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "1Chronicles 6"
+     ],
+     "label": "1 Chronicles 6",
+     "words": 1345,
+     "verses": 81
+    },
+    "pm": {
+     "chapters": [
+      "1Chronicles 7",
+      "1Chronicles 8"
+     ],
+     "label": "1 Chronicles 7–8",
+     "words": 1330,
+     "verses": 80
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "1Chronicles 9"
+     ],
+     "label": "1 Chronicles 9",
+     "words": 967,
+     "verses": 44
+    },
+    "pm": {
+     "chapters": [
+      "1Chronicles 10",
+      "1Chronicles 11"
+     ],
+     "label": "1 Chronicles 10–11",
+     "words": 1317,
+     "verses": 61
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "1Chronicles 12",
+      "1Chronicles 13"
+     ],
+     "label": "1 Chronicles 12–13",
+     "words": 1381,
+     "verses": 54
+    },
+    "pm": {
+     "chapters": [
+      "1Chronicles 14",
+      "1Chronicles 15"
+     ],
+     "label": "1 Chronicles 14–15",
+     "words": 1075,
+     "verses": 46
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "1Chronicles 16",
+      "1Chronicles 17"
+     ],
+     "label": "1 Chronicles 16–17",
+     "words": 1652,
+     "verses": 70
+    },
+    "pm": {
+     "chapters": [
+      "1Chronicles 18",
+      "1Chronicles 19"
+     ],
+     "label": "1 Chronicles 18–19",
+     "words": 1033,
+     "verses": 36
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "1Chronicles 20",
+      "1Chronicles 21"
+     ],
+     "label": "1 Chronicles 20–21",
+     "words": 1220,
+     "verses": 38
+    },
+    "pm": {
+     "chapters": [
+      "1Chronicles 22",
+      "1Chronicles 23"
+     ],
+     "label": "1 Chronicles 22–23",
+     "words": 1306,
+     "verses": 51
+    }
+   }
+  ]
+ },
+ {
+  "week": 21,
+  "reading": "1 Chronicles 24 – 2 Chronicles 17",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "1Chronicles 24",
+      "1Chronicles 25"
+     ],
+     "label": "1 Chronicles 24–25",
+     "words": 1112,
+     "verses": 62
+    },
+    "pm": {
+     "chapters": [
+      "1Chronicles 26",
+      "1Chronicles 27"
+     ],
+     "label": "1 Chronicles 26–27",
+     "words": 1522,
+     "verses": 66
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "1Chronicles 28"
+     ],
+     "label": "1 Chronicles 28",
+     "words": 875,
+     "verses": 21
+    },
+    "pm": {
+     "chapters": [
+      "1Chronicles 29",
+      "2Chronicles 1"
+     ],
+     "label": "1 Chronicles 29 – 2 Chronicles 1",
+     "words": 1529,
+     "verses": 47
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "2Chronicles 2",
+      "2Chronicles 3"
+     ],
+     "label": "2 Chronicles 2–3",
+     "words": 1131,
+     "verses": 35
+    },
+    "pm": {
+     "chapters": [
+      "2Chronicles 4",
+      "2Chronicles 5"
+     ],
+     "label": "2 Chronicles 4–5",
+     "words": 1103,
+     "verses": 36
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "2Chronicles 6"
+     ],
+     "label": "2 Chronicles 6",
+     "words": 1403,
+     "verses": 42
+    },
+    "pm": {
+     "chapters": [
+      "2Chronicles 7",
+      "2Chronicles 8"
+     ],
+     "label": "2 Chronicles 7–8",
+     "words": 1296,
+     "verses": 40
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "2Chronicles 9",
+      "2Chronicles 10"
+     ],
+     "label": "2 Chronicles 9–10",
+     "words": 1445,
+     "verses": 50
+    },
+    "pm": {
+     "chapters": [
+      "2Chronicles 11",
+      "2Chronicles 12"
+     ],
+     "label": "2 Chronicles 11–12",
+     "words": 977,
+     "verses": 39
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "2Chronicles 13",
+      "2Chronicles 14"
+     ],
+     "label": "2 Chronicles 13–14",
+     "words": 1098,
+     "verses": 37
+    },
+    "pm": {
+     "chapters": [
+      "2Chronicles 15",
+      "2Chronicles 16",
+      "2Chronicles 17"
+     ],
+     "label": "2 Chronicles 15–17",
+     "words": 1465,
+     "verses": 52
+    }
+   }
+  ]
+ },
+ {
+  "week": 22,
+  "reading": "2 Chronicles 18–35",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "2Chronicles 18",
+      "2Chronicles 19"
+     ],
+     "label": "2 Chronicles 18–19",
+     "words": 1416,
+     "verses": 45
+    },
+    "pm": {
+     "chapters": [
+      "2Chronicles 20"
+     ],
+     "label": "2 Chronicles 20",
+     "words": 1161,
+     "verses": 37
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "2Chronicles 21",
+      "2Chronicles 22"
+     ],
+     "label": "2 Chronicles 21–22",
+     "words": 1069,
+     "verses": 32
+    },
+    "pm": {
+     "chapters": [
+      "2Chronicles 23",
+      "2Chronicles 24"
+     ],
+     "label": "2 Chronicles 23–24",
+     "words": 1745,
+     "verses": 48
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "2Chronicles 25",
+      "2Chronicles 26"
+     ],
+     "label": "2 Chronicles 25–26",
+     "words": 1703,
+     "verses": 51
+    },
+    "pm": {
+     "chapters": [
+      "2Chronicles 27",
+      "2Chronicles 28"
+     ],
+     "label": "2 Chronicles 27–28",
+     "words": 1149,
+     "verses": 36
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "2Chronicles 29"
+     ],
+     "label": "2 Chronicles 29",
+     "words": 1184,
+     "verses": 36
+    },
+    "pm": {
+     "chapters": [
+      "2Chronicles 30",
+      "2Chronicles 31"
+     ],
+     "label": "2 Chronicles 30–31",
+     "words": 1643,
+     "verses": 48
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "2Chronicles 32"
+     ],
+     "label": "2 Chronicles 32",
+     "words": 1086,
+     "verses": 33
+    },
+    "pm": {
+     "chapters": [
+      "2Chronicles 33"
+     ],
+     "label": "2 Chronicles 33",
+     "words": 789,
+     "verses": 25
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "2Chronicles 34"
+     ],
+     "label": "2 Chronicles 34",
+     "words": 1244,
+     "verses": 33
+    },
+    "pm": {
+     "chapters": [
+      "2Chronicles 35"
+     ],
+     "label": "2 Chronicles 35",
+     "words": 908,
+     "verses": 27
+    }
+   }
+  ]
+ },
+ {
+  "week": 23,
+  "reading": "2 Chronicles 36 – Nehemiah 8",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "2Chronicles 36",
+      "Ezra 1"
+     ],
+     "label": "2 Chronicles 36 – Ezra 1",
+     "words": 1117,
+     "verses": 34
+    },
+    "pm": {
+     "chapters": [
+      "Ezra 2"
+     ],
+     "label": "Ezra 2",
+     "words": 998,
+     "verses": 70
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Ezra 3",
+      "Ezra 4"
+     ],
+     "label": "Ezra 3–4",
+     "words": 1330,
+     "verses": 37
+    },
+    "pm": {
+     "chapters": [
+      "Ezra 5",
+      "Ezra 6"
+     ],
+     "label": "Ezra 5–6",
+     "words": 1366,
+     "verses": 39
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Ezra 7"
+     ],
+     "label": "Ezra 7",
+     "words": 868,
+     "verses": 28
+    },
+    "pm": {
+     "chapters": [
+      "Ezra 8"
+     ],
+     "label": "Ezra 8",
+     "words": 994,
+     "verses": 36
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Ezra 9",
+      "Ezra 10"
+     ],
+     "label": "Ezra 9–10",
+     "words": 1545,
+     "verses": 59
+    },
+    "pm": {
+     "chapters": [
+      "Nehemiah 1",
+      "Nehemiah 2"
+     ],
+     "label": "Nehemiah 1–2",
+     "words": 1111,
+     "verses": 31
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Nehemiah 3",
+      "Nehemiah 4"
+     ],
+     "label": "Nehemiah 3–4",
+     "words": 1616,
+     "verses": 55
+    },
+    "pm": {
+     "chapters": [
+      "Nehemiah 5",
+      "Nehemiah 6"
+     ],
+     "label": "Nehemiah 5–6",
+     "words": 1248,
+     "verses": 38
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Nehemiah 7"
+     ],
+     "label": "Nehemiah 7",
+     "words": 1177,
+     "verses": 73
+    },
+    "pm": {
+     "chapters": [
+      "Nehemiah 8"
+     ],
+     "label": "Nehemiah 8",
+     "words": 688,
+     "verses": 18
+    }
+   }
+  ]
+ },
+ {
+  "week": 24,
+  "reading": "Nehemiah 9 – Job 11",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Nehemiah 9"
+     ],
+     "label": "Nehemiah 9",
+     "words": 1332,
+     "verses": 38
+    },
+    "pm": {
+     "chapters": [
+      "Nehemiah 10",
+      "Nehemiah 11"
+     ],
+     "label": "Nehemiah 10–11",
+     "words": 1444,
+     "verses": 75
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Nehemiah 12"
+     ],
+     "label": "Nehemiah 12",
+     "words": 932,
+     "verses": 47
+    },
+    "pm": {
+     "chapters": [
+      "Nehemiah 13"
+     ],
+     "label": "Nehemiah 13",
+     "words": 963,
+     "verses": 31
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Esther 1",
+      "Esther 2"
+     ],
+     "label": "Esther 1–2",
+     "words": 1526,
+     "verses": 45
+    },
+    "pm": {
+     "chapters": [
+      "Esther 3",
+      "Esther 4"
+     ],
+     "label": "Esther 3–4",
+     "words": 1076,
+     "verses": 32
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Esther 5",
+      "Esther 6",
+      "Esther 7"
+     ],
+     "label": "Esther 5–7",
+     "words": 1317,
+     "verses": 38
+    },
+    "pm": {
+     "chapters": [
+      "Esther 8",
+      "Esther 9"
+     ],
+     "label": "Esther 8–9",
+     "words": 1639,
+     "verses": 49
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Esther 10",
+      "Job 1",
+      "Job 2"
+     ],
+     "label": "Esther 10 – Job 2",
+     "words": 1132,
+     "verses": 38
+    },
+    "pm": {
+     "chapters": [
+      "Job 3",
+      "Job 4",
+      "Job 5"
+     ],
+     "label": "Job 3–5",
+     "words": 1219,
+     "verses": 74
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Job 6",
+      "Job 7",
+      "Job 8"
+     ],
+     "label": "Job 6–8",
+     "words": 1221,
+     "verses": 73
+    },
+    "pm": {
+     "chapters": [
+      "Job 9",
+      "Job 10",
+      "Job 11"
+     ],
+     "label": "Job 9–11",
+     "words": 1289,
+     "verses": 77
+    }
+   }
+  ]
+ },
+ {
+  "week": 25,
+  "reading": "Job 12 – Psalm 6",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Job 12",
+      "Job 13",
+      "Job 14"
+     ],
+     "label": "Job 12–14",
+     "words": 1228,
+     "verses": 75
+    },
+    "pm": {
+     "chapters": [
+      "Job 15",
+      "Job 16",
+      "Job 17"
+     ],
+     "label": "Job 15–17",
+     "words": 1190,
+     "verses": 73
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Job 18",
+      "Job 19",
+      "Job 20"
+     ],
+     "label": "Job 18–20",
+     "words": 1341,
+     "verses": 79
+    },
+    "pm": {
+     "chapters": [
+      "Job 21",
+      "Job 22",
+      "Job 23"
+     ],
+     "label": "Job 21–23",
+     "words": 1290,
+     "verses": 81
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Job 24",
+      "Job 25",
+      "Job 26",
+      "Job 27"
+     ],
+     "label": "Job 24–27",
+     "words": 1154,
+     "verses": 68
+    },
+    "pm": {
+     "chapters": [
+      "Job 28",
+      "Job 29",
+      "Job 30"
+     ],
+     "label": "Job 28–30",
+     "words": 1380,
+     "verses": 84
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Job 31",
+      "Job 32"
+     ],
+     "label": "Job 31–32",
+     "words": 1067,
+     "verses": 62
+    },
+    "pm": {
+     "chapters": [
+      "Job 33",
+      "Job 34"
+     ],
+     "label": "Job 33–34",
+     "words": 1142,
+     "verses": 70
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Job 35",
+      "Job 36",
+      "Job 37"
+     ],
+     "label": "Job 35–37",
+     "words": 1157,
+     "verses": 73
+    },
+    "pm": {
+     "chapters": [
+      "Job 38",
+      "Job 39"
+     ],
+     "label": "Job 38–39",
+     "words": 1140,
+     "verses": 71
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Job 40",
+      "Job 41",
+      "Job 42"
+     ],
+     "label": "Job 40–42",
+     "words": 1318,
+     "verses": 75
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 1",
+      "Psalms 2",
+      "Psalms 3",
+      "Psalms 4",
+      "Psalms 5",
+      "Psalms 6"
+     ],
+     "label": "Psalm 1–6",
+     "words": 1063,
+     "verses": 56
+    }
+   }
+  ]
+ },
+ {
+  "week": 26,
+  "reading": "Psalm 7–56",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Psalms 7",
+      "Psalms 8",
+      "Psalms 9",
+      "Psalms 10"
+     ],
+     "label": "Psalm 7–10",
+     "words": 1224,
+     "verses": 64
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 11",
+      "Psalms 12",
+      "Psalms 13",
+      "Psalms 14",
+      "Psalms 15",
+      "Psalms 16",
+      "Psalms 17"
+     ],
+     "label": "Psalm 11–17",
+     "words": 1162,
+     "verses": 59
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Psalms 18",
+      "Psalms 19"
+     ],
+     "label": "Psalm 18–19",
+     "words": 1201,
+     "verses": 64
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 20",
+      "Psalms 21",
+      "Psalms 22",
+      "Psalms 23"
+     ],
+     "label": "Psalm 20–23",
+     "words": 1099,
+     "verses": 59
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Psalms 24",
+      "Psalms 25",
+      "Psalms 26",
+      "Psalms 27",
+      "Psalms 28"
+     ],
+     "label": "Psalm 24–28",
+     "words": 1273,
+     "verses": 67
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 29",
+      "Psalms 30",
+      "Psalms 31",
+      "Psalms 32"
+     ],
+     "label": "Psalm 29–32",
+     "words": 1169,
+     "verses": 58
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Psalms 33",
+      "Psalms 34",
+      "Psalms 35"
+     ],
+     "label": "Psalm 33–35",
+     "words": 1283,
+     "verses": 72
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 36",
+      "Psalms 37",
+      "Psalms 38"
+     ],
+     "label": "Psalm 36–38",
+     "words": 1305,
+     "verses": 74
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Psalms 39",
+      "Psalms 40",
+      "Psalms 41",
+      "Psalms 42"
+     ],
+     "label": "Psalm 39–42",
+     "words": 1210,
+     "verses": 54
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 43",
+      "Psalms 44",
+      "Psalms 45",
+      "Psalms 46",
+      "Psalms 47"
+     ],
+     "label": "Psalm 43–47",
+     "words": 1256,
+     "verses": 68
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Psalms 48",
+      "Psalms 49",
+      "Psalms 50",
+      "Psalms 51"
+     ],
+     "label": "Psalm 48–51",
+     "words": 1290,
+     "verses": 76
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 52",
+      "Psalms 53",
+      "Psalms 54",
+      "Psalms 55",
+      "Psalms 56"
+     ],
+     "label": "Psalm 52–56",
+     "words": 1090,
+     "verses": 58
+    }
+   }
+  ]
+ },
+ {
+  "week": 27,
+  "reading": "Psalm 57–105",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Psalms 57",
+      "Psalms 58",
+      "Psalms 59",
+      "Psalms 60",
+      "Psalms 61"
+     ],
+     "label": "Psalm 57–61",
+     "words": 1138,
+     "verses": 59
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 62",
+      "Psalms 63",
+      "Psalms 64",
+      "Psalms 65",
+      "Psalms 66",
+      "Psalms 67"
+     ],
+     "label": "Psalm 62–67",
+     "words": 1316,
+     "verses": 73
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Psalms 68",
+      "Psalms 69"
+     ],
+     "label": "Psalm 68–69",
+     "words": 1375,
+     "verses": 71
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 70",
+      "Psalms 71",
+      "Psalms 72",
+      "Psalms 73"
+     ],
+     "label": "Psalm 70–73",
+     "words": 1377,
+     "verses": 77
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Psalms 74",
+      "Psalms 75",
+      "Psalms 76",
+      "Psalms 77"
+     ],
+     "label": "Psalm 74–77",
+     "words": 1128,
+     "verses": 65
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 78"
+     ],
+     "label": "Psalm 78",
+     "words": 1230,
+     "verses": 72
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Psalms 79",
+      "Psalms 80",
+      "Psalms 81",
+      "Psalms 82",
+      "Psalms 83"
+     ],
+     "label": "Psalm 79–83",
+     "words": 1292,
+     "verses": 74
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 84",
+      "Psalms 85",
+      "Psalms 86",
+      "Psalms 87",
+      "Psalms 88"
+     ],
+     "label": "Psalm 84–88",
+     "words": 1167,
+     "verses": 67
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Psalms 89",
+      "Psalms 90",
+      "Psalms 91"
+     ],
+     "label": "Psalm 89–91",
+     "words": 1516,
+     "verses": 85
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 92",
+      "Psalms 93",
+      "Psalms 94",
+      "Psalms 95",
+      "Psalms 96",
+      "Psalms 97"
+     ],
+     "label": "Psalm 92–97",
+     "words": 1346,
+     "verses": 79
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Psalms 98",
+      "Psalms 99",
+      "Psalms 100",
+      "Psalms 101",
+      "Psalms 102",
+      "Psalms 103"
+     ],
+     "label": "Psalm 98–103",
+     "words": 1402,
+     "verses": 81
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 104",
+      "Psalms 105"
+     ],
+     "label": "Psalm 104–105",
+     "words": 1241,
+     "verses": 80
+    }
+   }
+  ]
+ },
+ {
+  "week": 28,
+  "reading": "Psalm 106 – Proverbs 10",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Psalms 106",
+      "Psalms 107"
+     ],
+     "label": "Psalm 106–107",
+     "words": 1462,
+     "verses": 91
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 108",
+      "Psalms 109",
+      "Psalms 110",
+      "Psalms 111",
+      "Psalms 112"
+     ],
+     "label": "Psalm 108–112",
+     "words": 1241,
+     "verses": 71
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Psalms 113",
+      "Psalms 114",
+      "Psalms 115",
+      "Psalms 116",
+      "Psalms 117",
+      "Psalms 118"
+     ],
+     "label": "Psalm 113–118",
+     "words": 1346,
+     "verses": 85
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 119"
+     ],
+     "label": "Psalm 119",
+     "words": 2450,
+     "verses": 176
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Psalms 120",
+      "Psalms 121",
+      "Psalms 122",
+      "Psalms 123",
+      "Psalms 124",
+      "Psalms 125",
+      "Psalms 126",
+      "Psalms 127",
+      "Psalms 128",
+      "Psalms 129",
+      "Psalms 130"
+     ],
+     "label": "Psalm 120–130",
+     "words": 1206,
+     "verses": 74
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 131",
+      "Psalms 132",
+      "Psalms 133",
+      "Psalms 134",
+      "Psalms 135",
+      "Psalms 136"
+     ],
+     "label": "Psalm 131–136",
+     "words": 1155,
+     "verses": 74
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Psalms 137",
+      "Psalms 138",
+      "Psalms 139",
+      "Psalms 140",
+      "Psalms 141"
+     ],
+     "label": "Psalm 137–141",
+     "words": 1214,
+     "verses": 64
+    },
+    "pm": {
+     "chapters": [
+      "Psalms 142",
+      "Psalms 143",
+      "Psalms 144",
+      "Psalms 145",
+      "Psalms 146"
+     ],
+     "label": "Psalm 142–146",
+     "words": 1230,
+     "verses": 65
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Psalms 147",
+      "Psalms 148",
+      "Psalms 149",
+      "Psalms 150",
+      "Proverbs 1"
+     ],
+     "label": "Psalm 147 – Proverbs 1",
+     "words": 1267,
+     "verses": 82
+    },
+    "pm": {
+     "chapters": [
+      "Proverbs 2",
+      "Proverbs 3",
+      "Proverbs 4"
+     ],
+     "label": "Proverbs 2–4",
+     "words": 1277,
+     "verses": 84
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Proverbs 5",
+      "Proverbs 6",
+      "Proverbs 7"
+     ],
+     "label": "Proverbs 5–7",
+     "words": 1315,
+     "verses": 85
+    },
+    "pm": {
+     "chapters": [
+      "Proverbs 8",
+      "Proverbs 9",
+      "Proverbs 10"
+     ],
+     "label": "Proverbs 8–10",
+     "words": 1383,
+     "verses": 86
+    }
+   }
+  ]
+ },
+ {
+  "week": 29,
+  "reading": "Proverbs 11 – Ecclesiastes 8",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Proverbs 11",
+      "Proverbs 12",
+      "Proverbs 13"
+     ],
+     "label": "Proverbs 11–13",
+     "words": 1407,
+     "verses": 84
+    },
+    "pm": {
+     "chapters": [
+      "Proverbs 14",
+      "Proverbs 15"
+     ],
+     "label": "Proverbs 14–15",
+     "words": 1123,
+     "verses": 68
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Proverbs 16",
+      "Proverbs 17"
+     ],
+     "label": "Proverbs 16–17",
+     "words": 1028,
+     "verses": 61
+    },
+    "pm": {
+     "chapters": [
+      "Proverbs 18",
+      "Proverbs 19",
+      "Proverbs 20"
+     ],
+     "label": "Proverbs 18–20",
+     "words": 1399,
+     "verses": 83
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Proverbs 21",
+      "Proverbs 22"
+     ],
+     "label": "Proverbs 21–22",
+     "words": 1001,
+     "verses": 60
+    },
+    "pm": {
+     "chapters": [
+      "Proverbs 23",
+      "Proverbs 24"
+     ],
+     "label": "Proverbs 23–24",
+     "words": 1152,
+     "verses": 69
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Proverbs 25",
+      "Proverbs 26"
+     ],
+     "label": "Proverbs 25–26",
+     "words": 981,
+     "verses": 56
+    },
+    "pm": {
+     "chapters": [
+      "Proverbs 27",
+      "Proverbs 28",
+      "Proverbs 29"
+     ],
+     "label": "Proverbs 27–29",
+     "words": 1417,
+     "verses": 82
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Proverbs 30",
+      "Proverbs 31",
+      "Ecclesiastes 1"
+     ],
+     "label": "Proverbs 30 – Ecclesiastes 1",
+     "words": 1494,
+     "verses": 82
+    },
+    "pm": {
+     "chapters": [
+      "Ecclesiastes 2",
+      "Ecclesiastes 3"
+     ],
+     "label": "Ecclesiastes 2–3",
+     "words": 1254,
+     "verses": 48
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Ecclesiastes 4",
+      "Ecclesiastes 5",
+      "Ecclesiastes 6"
+     ],
+     "label": "Ecclesiastes 4–6",
+     "words": 1220,
+     "verses": 48
+    },
+    "pm": {
+     "chapters": [
+      "Ecclesiastes 7",
+      "Ecclesiastes 8"
+     ],
+     "label": "Ecclesiastes 7–8",
+     "words": 1138,
+     "verses": 46
+    }
+   }
+  ]
+ },
+ {
+  "week": 30,
+  "reading": "Ecclesiastes 9 – Isaiah 22",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Ecclesiastes 9",
+      "Ecclesiastes 10",
+      "Ecclesiastes 11"
+     ],
+     "label": "Ecclesiastes 9–11",
+     "words": 1232,
+     "verses": 48
+    },
+    "pm": {
+     "chapters": [
+      "Ecclesiastes 12",
+      "Song 1",
+      "Song 2",
+      "Song 3"
+     ],
+     "label": "Ecclesiastes 12 – Song of Solomon 3",
+     "words": 1339,
+     "verses": 59
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Song 4",
+      "Song 5",
+      "Song 6",
+      "Song 7"
+     ],
+     "label": "Song of Solomon 4–7",
+     "words": 1339,
+     "verses": 58
+    },
+    "pm": {
+     "chapters": [
+      "Song 8",
+      "Isaiah 1"
+     ],
+     "label": "Song of Solomon 8 – Isaiah 1",
+     "words": 1126,
+     "verses": 45
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Isaiah 2",
+      "Isaiah 3",
+      "Isaiah 4"
+     ],
+     "label": "Isaiah 2–4",
+     "words": 1371,
+     "verses": 54
+    },
+    "pm": {
+     "chapters": [
+      "Isaiah 5",
+      "Isaiah 6"
+     ],
+     "label": "Isaiah 5–6",
+     "words": 1234,
+     "verses": 43
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Isaiah 7",
+      "Isaiah 8"
+     ],
+     "label": "Isaiah 7–8",
+     "words": 1258,
+     "verses": 47
+    },
+    "pm": {
+     "chapters": [
+      "Isaiah 9",
+      "Isaiah 10"
+     ],
+     "label": "Isaiah 9–10",
+     "words": 1529,
+     "verses": 55
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Isaiah 11",
+      "Isaiah 12",
+      "Isaiah 13"
+     ],
+     "label": "Isaiah 11–13",
+     "words": 1236,
+     "verses": 44
+    },
+    "pm": {
+     "chapters": [
+      "Isaiah 14",
+      "Isaiah 15",
+      "Isaiah 16"
+     ],
+     "label": "Isaiah 14–16",
+     "words": 1541,
+     "verses": 55
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Isaiah 17",
+      "Isaiah 18",
+      "Isaiah 19"
+     ],
+     "label": "Isaiah 17–19",
+     "words": 1420,
+     "verses": 46
+    },
+    "pm": {
+     "chapters": [
+      "Isaiah 20",
+      "Isaiah 21",
+      "Isaiah 22"
+     ],
+     "label": "Isaiah 20–22",
+     "words": 1266,
+     "verses": 48
+    }
+   }
+  ]
+ },
+ {
+  "week": 31,
+  "reading": "Isaiah 23–48",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Isaiah 23",
+      "Isaiah 24"
+     ],
+     "label": "Isaiah 23–24",
+     "words": 1067,
+     "verses": 41
+    },
+    "pm": {
+     "chapters": [
+      "Isaiah 25",
+      "Isaiah 26",
+      "Isaiah 27"
+     ],
+     "label": "Isaiah 25–27",
+     "words": 1346,
+     "verses": 46
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Isaiah 28",
+      "Isaiah 29"
+     ],
+     "label": "Isaiah 28–29",
+     "words": 1564,
+     "verses": 53
+    },
+    "pm": {
+     "chapters": [
+      "Isaiah 30"
+     ],
+     "label": "Isaiah 30",
+     "words": 1065,
+     "verses": 33
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Isaiah 31",
+      "Isaiah 32",
+      "Isaiah 33"
+     ],
+     "label": "Isaiah 31–33",
+     "words": 1349,
+     "verses": 53
+    },
+    "pm": {
+     "chapters": [
+      "Isaiah 34",
+      "Isaiah 35",
+      "Isaiah 36"
+     ],
+     "label": "Isaiah 34–36",
+     "words": 1494,
+     "verses": 49
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Isaiah 37"
+     ],
+     "label": "Isaiah 37",
+     "words": 1143,
+     "verses": 38
+    },
+    "pm": {
+     "chapters": [
+      "Isaiah 38",
+      "Isaiah 39",
+      "Isaiah 40"
+     ],
+     "label": "Isaiah 38–40",
+     "words": 1675,
+     "verses": 61
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Isaiah 41",
+      "Isaiah 42"
+     ],
+     "label": "Isaiah 41–42",
+     "words": 1493,
+     "verses": 54
+    },
+    "pm": {
+     "chapters": [
+      "Isaiah 43",
+      "Isaiah 44"
+     ],
+     "label": "Isaiah 43–44",
+     "words": 1612,
+     "verses": 56
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Isaiah 45",
+      "Isaiah 46"
+     ],
+     "label": "Isaiah 45–46",
+     "words": 1134,
+     "verses": 38
+    },
+    "pm": {
+     "chapters": [
+      "Isaiah 47",
+      "Isaiah 48"
+     ],
+     "label": "Isaiah 47–48",
+     "words": 1106,
+     "verses": 37
+    }
+   }
+  ]
+ },
+ {
+  "week": 32,
+  "reading": "Isaiah 49 – Jeremiah 8",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Isaiah 49",
+      "Isaiah 50"
+     ],
+     "label": "Isaiah 49–50",
+     "words": 1246,
+     "verses": 37
+    },
+    "pm": {
+     "chapters": [
+      "Isaiah 51",
+      "Isaiah 52"
+     ],
+     "label": "Isaiah 51–52",
+     "words": 1186,
+     "verses": 38
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Isaiah 53",
+      "Isaiah 54",
+      "Isaiah 55"
+     ],
+     "label": "Isaiah 53–55",
+     "words": 1285,
+     "verses": 42
+    },
+    "pm": {
+     "chapters": [
+      "Isaiah 56",
+      "Isaiah 57",
+      "Isaiah 58"
+     ],
+     "label": "Isaiah 56–58",
+     "words": 1468,
+     "verses": 47
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Isaiah 59",
+      "Isaiah 60"
+     ],
+     "label": "Isaiah 59–60",
+     "words": 1264,
+     "verses": 43
+    },
+    "pm": {
+     "chapters": [
+      "Isaiah 61",
+      "Isaiah 62",
+      "Isaiah 63"
+     ],
+     "label": "Isaiah 61–63",
+     "words": 1294,
+     "verses": 42
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Isaiah 64",
+      "Isaiah 65"
+     ],
+     "label": "Isaiah 64–65",
+     "words": 1072,
+     "verses": 37
+    },
+    "pm": {
+     "chapters": [
+      "Isaiah 66",
+      "Jeremiah 1"
+     ],
+     "label": "Isaiah 66 – Jeremiah 1",
+     "words": 1356,
+     "verses": 43
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Jeremiah 2"
+     ],
+     "label": "Jeremiah 2",
+     "words": 1031,
+     "verses": 37
+    },
+    "pm": {
+     "chapters": [
+      "Jeremiah 3",
+      "Jeremiah 4"
+     ],
+     "label": "Jeremiah 3–4",
+     "words": 1686,
+     "verses": 56
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Jeremiah 5",
+      "Jeremiah 6"
+     ],
+     "label": "Jeremiah 5–6",
+     "words": 1724,
+     "verses": 61
+    },
+    "pm": {
+     "chapters": [
+      "Jeremiah 7",
+      "Jeremiah 8"
+     ],
+     "label": "Jeremiah 7–8",
+     "words": 1698,
+     "verses": 56
+    }
+   }
+  ]
+ },
+ {
+  "week": 33,
+  "reading": "Jeremiah 9–30",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Jeremiah 9",
+      "Jeremiah 10"
+     ],
+     "label": "Jeremiah 9–10",
+     "words": 1465,
+     "verses": 51
+    },
+    "pm": {
+     "chapters": [
+      "Jeremiah 11",
+      "Jeremiah 12"
+     ],
+     "label": "Jeremiah 11–12",
+     "words": 1304,
+     "verses": 40
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Jeremiah 13",
+      "Jeremiah 14"
+     ],
+     "label": "Jeremiah 13–14",
+     "words": 1441,
+     "verses": 49
+    },
+    "pm": {
+     "chapters": [
+      "Jeremiah 15",
+      "Jeremiah 16"
+     ],
+     "label": "Jeremiah 15–16",
+     "words": 1418,
+     "verses": 42
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Jeremiah 17",
+      "Jeremiah 18"
+     ],
+     "label": "Jeremiah 17–18",
+     "words": 1508,
+     "verses": 50
+    },
+    "pm": {
+     "chapters": [
+      "Jeremiah 19",
+      "Jeremiah 20"
+     ],
+     "label": "Jeremiah 19–20",
+     "words": 1150,
+     "verses": 33
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Jeremiah 21",
+      "Jeremiah 22"
+     ],
+     "label": "Jeremiah 21–22",
+     "words": 1356,
+     "verses": 44
+    },
+    "pm": {
+     "chapters": [
+      "Jeremiah 23"
+     ],
+     "label": "Jeremiah 23",
+     "words": 1216,
+     "verses": 40
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Jeremiah 24",
+      "Jeremiah 25"
+     ],
+     "label": "Jeremiah 24–25",
+     "words": 1511,
+     "verses": 48
+    },
+    "pm": {
+     "chapters": [
+      "Jeremiah 26"
+     ],
+     "label": "Jeremiah 26",
+     "words": 824,
+     "verses": 24
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Jeremiah 27",
+      "Jeremiah 28"
+     ],
+     "label": "Jeremiah 27–28",
+     "words": 1319,
+     "verses": 39
+    },
+    "pm": {
+     "chapters": [
+      "Jeremiah 29",
+      "Jeremiah 30"
+     ],
+     "label": "Jeremiah 29–30",
+     "words": 1748,
+     "verses": 56
+    }
+   }
+  ]
+ },
+ {
+  "week": 34,
+  "reading": "Jeremiah 31–49",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Jeremiah 31"
+     ],
+     "label": "Jeremiah 31",
+     "words": 1320,
+     "verses": 40
+    },
+    "pm": {
+     "chapters": [
+      "Jeremiah 32"
+     ],
+     "label": "Jeremiah 32",
+     "words": 1451,
+     "verses": 44
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Jeremiah 33"
+     ],
+     "label": "Jeremiah 33",
+     "words": 860,
+     "verses": 26
+    },
+    "pm": {
+     "chapters": [
+      "Jeremiah 34",
+      "Jeremiah 35"
+     ],
+     "label": "Jeremiah 34–35",
+     "words": 1499,
+     "verses": 41
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Jeremiah 36",
+      "Jeremiah 37"
+     ],
+     "label": "Jeremiah 36–37",
+     "words": 1732,
+     "verses": 53
+    },
+    "pm": {
+     "chapters": [
+      "Jeremiah 38",
+      "Jeremiah 39"
+     ],
+     "label": "Jeremiah 38–39",
+     "words": 1537,
+     "verses": 46
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Jeremiah 40",
+      "Jeremiah 41"
+     ],
+     "label": "Jeremiah 40–41",
+     "words": 1352,
+     "verses": 34
+    },
+    "pm": {
+     "chapters": [
+      "Jeremiah 42",
+      "Jeremiah 43"
+     ],
+     "label": "Jeremiah 42–43",
+     "words": 1240,
+     "verses": 35
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Jeremiah 44"
+     ],
+     "label": "Jeremiah 44",
+     "words": 1239,
+     "verses": 30
+    },
+    "pm": {
+     "chapters": [
+      "Jeremiah 45",
+      "Jeremiah 46",
+      "Jeremiah 47"
+     ],
+     "label": "Jeremiah 45–47",
+     "words": 1197,
+     "verses": 40
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Jeremiah 48"
+     ],
+     "label": "Jeremiah 48",
+     "words": 1185,
+     "verses": 47
+    },
+    "pm": {
+     "chapters": [
+      "Jeremiah 49"
+     ],
+     "label": "Jeremiah 49",
+     "words": 1200,
+     "verses": 39
+    }
+   }
+  ]
+ },
+ {
+  "week": 35,
+  "reading": "Jeremiah 50 – Ezekiel 13",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Jeremiah 50"
+     ],
+     "label": "Jeremiah 50",
+     "words": 1477,
+     "verses": 46
+    },
+    "pm": {
+     "chapters": [
+      "Jeremiah 51"
+     ],
+     "label": "Jeremiah 51",
+     "words": 1867,
+     "verses": 64
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Jeremiah 52"
+     ],
+     "label": "Jeremiah 52",
+     "words": 1080,
+     "verses": 34
+    },
+    "pm": {
+     "chapters": [
+      "Lamentations 1",
+      "Lamentations 2"
+     ],
+     "label": "Lamentations 1–2",
+     "words": 1649,
+     "verses": 44
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Lamentations 3",
+      "Lamentations 4"
+     ],
+     "label": "Lamentations 3–4",
+     "words": 1485,
+     "verses": 88
+    },
+    "pm": {
+     "chapters": [
+      "Lamentations 5",
+      "Ezekiel 1"
+     ],
+     "label": "Lamentations 5 – Ezekiel 1",
+     "words": 1172,
+     "verses": 50
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Ezekiel 2",
+      "Ezekiel 3"
+     ],
+     "label": "Ezekiel 2–3",
+     "words": 1087,
+     "verses": 37
+    },
+    "pm": {
+     "chapters": [
+      "Ezekiel 4",
+      "Ezekiel 5"
+     ],
+     "label": "Ezekiel 4–5",
+     "words": 1155,
+     "verses": 34
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Ezekiel 6",
+      "Ezekiel 7"
+     ],
+     "label": "Ezekiel 6–7",
+     "words": 1249,
+     "verses": 41
+    },
+    "pm": {
+     "chapters": [
+      "Ezekiel 8",
+      "Ezekiel 9"
+     ],
+     "label": "Ezekiel 8–9",
+     "words": 1061,
+     "verses": 29
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Ezekiel 10",
+      "Ezekiel 11"
+     ],
+     "label": "Ezekiel 10–11",
+     "words": 1392,
+     "verses": 47
+    },
+    "pm": {
+     "chapters": [
+      "Ezekiel 12",
+      "Ezekiel 13"
+     ],
+     "label": "Ezekiel 12–13",
+     "words": 1568,
+     "verses": 51
+    }
+   }
+  ]
+ },
+ {
+  "week": 36,
+  "reading": "Ezekiel 14–31",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Ezekiel 14",
+      "Ezekiel 15"
+     ],
+     "label": "Ezekiel 14–15",
+     "words": 964,
+     "verses": 31
+    },
+    "pm": {
+     "chapters": [
+      "Ezekiel 16"
+     ],
+     "label": "Ezekiel 16",
+     "words": 1838,
+     "verses": 63
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Ezekiel 17"
+     ],
+     "label": "Ezekiel 17",
+     "words": 784,
+     "verses": 24
+    },
+    "pm": {
+     "chapters": [
+      "Ezekiel 18",
+      "Ezekiel 19"
+     ],
+     "label": "Ezekiel 18–19",
+     "words": 1283,
+     "verses": 46
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Ezekiel 20"
+     ],
+     "label": "Ezekiel 20",
+     "words": 1625,
+     "verses": 49
+    },
+    "pm": {
+     "chapters": [
+      "Ezekiel 21"
+     ],
+     "label": "Ezekiel 21",
+     "words": 957,
+     "verses": 32
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Ezekiel 22"
+     ],
+     "label": "Ezekiel 22",
+     "words": 850,
+     "verses": 31
+    },
+    "pm": {
+     "chapters": [
+      "Ezekiel 23"
+     ],
+     "label": "Ezekiel 23",
+     "words": 1334,
+     "verses": 49
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Ezekiel 24",
+      "Ezekiel 25"
+     ],
+     "label": "Ezekiel 24–25",
+     "words": 1302,
+     "verses": 44
+    },
+    "pm": {
+     "chapters": [
+      "Ezekiel 26",
+      "Ezekiel 27"
+     ],
+     "label": "Ezekiel 26–27",
+     "words": 1647,
+     "verses": 57
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Ezekiel 28",
+      "Ezekiel 29"
+     ],
+     "label": "Ezekiel 28–29",
+     "words": 1545,
+     "verses": 47
+    },
+    "pm": {
+     "chapters": [
+      "Ezekiel 30",
+      "Ezekiel 31"
+     ],
+     "label": "Ezekiel 30–31",
+     "words": 1457,
+     "verses": 44
+    }
+   }
+  ]
+ },
+ {
+  "week": 37,
+  "reading": "Ezekiel 32–47",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Ezekiel 32"
+     ],
+     "label": "Ezekiel 32",
+     "words": 1085,
+     "verses": 32
+    },
+    "pm": {
+     "chapters": [
+      "Ezekiel 33"
+     ],
+     "label": "Ezekiel 33",
+     "words": 1078,
+     "verses": 33
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Ezekiel 34",
+      "Ezekiel 35"
+     ],
+     "label": "Ezekiel 34–35",
+     "words": 1383,
+     "verses": 46
+    },
+    "pm": {
+     "chapters": [
+      "Ezekiel 36"
+     ],
+     "label": "Ezekiel 36",
+     "words": 1204,
+     "verses": 38
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Ezekiel 37",
+      "Ezekiel 38"
+     ],
+     "label": "Ezekiel 37–38",
+     "words": 1666,
+     "verses": 51
+    },
+    "pm": {
+     "chapters": [
+      "Ezekiel 39"
+     ],
+     "label": "Ezekiel 39",
+     "words": 940,
+     "verses": 29
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Ezekiel 40"
+     ],
+     "label": "Ezekiel 40",
+     "words": 1532,
+     "verses": 49
+    },
+    "pm": {
+     "chapters": [
+      "Ezekiel 41",
+      "Ezekiel 42"
+     ],
+     "label": "Ezekiel 41–42",
+     "words": 1377,
+     "verses": 46
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Ezekiel 43"
+     ],
+     "label": "Ezekiel 43",
+     "words": 913,
+     "verses": 27
+    },
+    "pm": {
+     "chapters": [
+      "Ezekiel 44"
+     ],
+     "label": "Ezekiel 44",
+     "words": 1041,
+     "verses": 31
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Ezekiel 45"
+     ],
+     "label": "Ezekiel 45",
+     "words": 898,
+     "verses": 25
+    },
+    "pm": {
+     "chapters": [
+      "Ezekiel 46",
+      "Ezekiel 47"
+     ],
+     "label": "Ezekiel 46–47",
+     "words": 1667,
+     "verses": 47
+    }
+   }
+  ]
+ },
+ {
+  "week": 38,
+  "reading": "Ezekiel 48 – Hosea 6",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Ezekiel 48",
+      "Daniel 1"
+     ],
+     "label": "Ezekiel 48 – Daniel 1",
+     "words": 1646,
+     "verses": 56
+    },
+    "pm": {
+     "chapters": [
+      "Daniel 2"
+     ],
+     "label": "Daniel 2",
+     "words": 1502,
+     "verses": 49
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Daniel 3"
+     ],
+     "label": "Daniel 3",
+     "words": 994,
+     "verses": 30
+    },
+    "pm": {
+     "chapters": [
+      "Daniel 4"
+     ],
+     "label": "Daniel 4",
+     "words": 1294,
+     "verses": 37
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Daniel 5"
+     ],
+     "label": "Daniel 5",
+     "words": 998,
+     "verses": 31
+    },
+    "pm": {
+     "chapters": [
+      "Daniel 6"
+     ],
+     "label": "Daniel 6",
+     "words": 906,
+     "verses": 28
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Daniel 7"
+     ],
+     "label": "Daniel 7",
+     "words": 926,
+     "verses": 28
+    },
+    "pm": {
+     "chapters": [
+      "Daniel 8"
+     ],
+     "label": "Daniel 8",
+     "words": 856,
+     "verses": 27
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Daniel 9",
+      "Daniel 10"
+     ],
+     "label": "Daniel 9–10",
+     "words": 1614,
+     "verses": 48
+    },
+    "pm": {
+     "chapters": [
+      "Daniel 11"
+     ],
+     "label": "Daniel 11",
+     "words": 1535,
+     "verses": 45
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Daniel 12",
+      "Hosea 1",
+      "Hosea 2"
+     ],
+     "label": "Daniel 12 – Hosea 2",
+     "words": 1453,
+     "verses": 47
+    },
+    "pm": {
+     "chapters": [
+      "Hosea 3",
+      "Hosea 4",
+      "Hosea 5",
+      "Hosea 6"
+     ],
+     "label": "Hosea 3–6",
+     "words": 1251,
+     "verses": 50
+    }
+   }
+  ]
+ },
+ {
+  "week": 39,
+  "reading": "Hosea 7 – Nahum 2",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Hosea 7",
+      "Hosea 8",
+      "Hosea 9"
+     ],
+     "label": "Hosea 7–9",
+     "words": 1202,
+     "verses": 47
+    },
+    "pm": {
+     "chapters": [
+      "Hosea 10",
+      "Hosea 11",
+      "Hosea 12"
+     ],
+     "label": "Hosea 10–12",
+     "words": 1051,
+     "verses": 41
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Hosea 13",
+      "Hosea 14",
+      "Joel 1"
+     ],
+     "label": "Hosea 13 – Joel 1",
+     "words": 1175,
+     "verses": 45
+    },
+    "pm": {
+     "chapters": [
+      "Joel 2",
+      "Joel 3"
+     ],
+     "label": "Joel 2–3",
+     "words": 1537,
+     "verses": 53
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Amos 1",
+      "Amos 2",
+      "Amos 3"
+     ],
+     "label": "Amos 1–3",
+     "words": 1322,
+     "verses": 46
+    },
+    "pm": {
+     "chapters": [
+      "Amos 4",
+      "Amos 5"
+     ],
+     "label": "Amos 4–5",
+     "words": 1107,
+     "verses": 40
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Amos 6",
+      "Amos 7",
+      "Amos 8"
+     ],
+     "label": "Amos 6–8",
+     "words": 1299,
+     "verses": 45
+    },
+    "pm": {
+     "chapters": [
+      "Amos 9",
+      "Obadiah 1"
+     ],
+     "label": "Amos 9 – Obadiah 1",
+     "words": 1227,
+     "verses": 36
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Jonah 1",
+      "Jonah 2",
+      "Jonah 3",
+      "Jonah 4"
+     ],
+     "label": "Jonah 1–4",
+     "words": 1346,
+     "verses": 48
+    },
+    "pm": {
+     "chapters": [
+      "Micah 1",
+      "Micah 2",
+      "Micah 3"
+     ],
+     "label": "Micah 1–3",
+     "words": 1213,
+     "verses": 41
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Micah 4",
+      "Micah 5",
+      "Micah 6"
+     ],
+     "label": "Micah 4–6",
+     "words": 1373,
+     "verses": 44
+    },
+    "pm": {
+     "chapters": [
+      "Micah 7",
+      "Nahum 1",
+      "Nahum 2"
+     ],
+     "label": "Micah 7 – Nahum 2",
+     "words": 1364,
+     "verses": 48
+    }
+   }
+  ]
+ },
+ {
+  "week": 40,
+  "reading": "Nahum 3 – Matthew 2",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Nahum 3",
+      "Habakkuk 1",
+      "Habakkuk 2"
+     ],
+     "label": "Nahum 3 – Habakkuk 2",
+     "words": 1512,
+     "verses": 56
+    },
+    "pm": {
+     "chapters": [
+      "Habakkuk 3",
+      "Zephaniah 1"
+     ],
+     "label": "Habakkuk 3 – Zephaniah 1",
+     "words": 1057,
+     "verses": 37
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Zephaniah 2",
+      "Zephaniah 3"
+     ],
+     "label": "Zephaniah 2–3",
+     "words": 1074,
+     "verses": 35
+    },
+    "pm": {
+     "chapters": [
+      "Haggai 1",
+      "Haggai 2"
+     ],
+     "label": "Haggai 1–2",
+     "words": 1144,
+     "verses": 38
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Zechariah 1",
+      "Zechariah 2",
+      "Zechariah 3"
+     ],
+     "label": "Zechariah 1–3",
+     "words": 1245,
+     "verses": 44
+    },
+    "pm": {
+     "chapters": [
+      "Zechariah 4",
+      "Zechariah 5",
+      "Zechariah 6"
+     ],
+     "label": "Zechariah 4–6",
+     "words": 1136,
+     "verses": 40
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Zechariah 7",
+      "Zechariah 8"
+     ],
+     "label": "Zechariah 7–8",
+     "words": 1094,
+     "verses": 37
+    },
+    "pm": {
+     "chapters": [
+      "Zechariah 9",
+      "Zechariah 10"
+     ],
+     "label": "Zechariah 9–10",
+     "words": 954,
+     "verses": 29
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Zechariah 11",
+      "Zechariah 12",
+      "Zechariah 13"
+     ],
+     "label": "Zechariah 11–13",
+     "words": 1311,
+     "verses": 40
+    },
+    "pm": {
+     "chapters": [
+      "Zechariah 14",
+      "Malachi 1"
+     ],
+     "label": "Zechariah 14 – Malachi 1",
+     "words": 1247,
+     "verses": 35
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Malachi 2",
+      "Malachi 3"
+     ],
+     "label": "Malachi 2–3",
+     "words": 1121,
+     "verses": 35
+    },
+    "pm": {
+     "chapters": [
+      "Malachi 4",
+      "Matthew 1",
+      "Matthew 2"
+     ],
+     "label": "Malachi 4 – Matthew 2",
+     "words": 1280,
+     "verses": 54
+    }
+   }
+  ]
+ },
+ {
+  "week": 41,
+  "reading": "Matthew 3–21",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Matthew 3",
+      "Matthew 4"
+     ],
+     "label": "Matthew 3–4",
+     "words": 944,
+     "verses": 42
+    },
+    "pm": {
+     "chapters": [
+      "Matthew 5"
+     ],
+     "label": "Matthew 5",
+     "words": 1084,
+     "verses": 48
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Matthew 6",
+      "Matthew 7"
+     ],
+     "label": "Matthew 6–7",
+     "words": 1422,
+     "verses": 63
+    },
+    "pm": {
+     "chapters": [
+      "Matthew 8",
+      "Matthew 9"
+     ],
+     "label": "Matthew 8–9",
+     "words": 1619,
+     "verses": 72
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Matthew 10",
+      "Matthew 11"
+     ],
+     "label": "Matthew 10–11",
+     "words": 1590,
+     "verses": 72
+    },
+    "pm": {
+     "chapters": [
+      "Matthew 12"
+     ],
+     "label": "Matthew 12",
+     "words": 1171,
+     "verses": 50
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Matthew 13"
+     ],
+     "label": "Matthew 13",
+     "words": 1371,
+     "verses": 58
+    },
+    "pm": {
+     "chapters": [
+      "Matthew 14",
+      "Matthew 15"
+     ],
+     "label": "Matthew 14–15",
+     "words": 1512,
+     "verses": 75
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Matthew 16",
+      "Matthew 17"
+     ],
+     "label": "Matthew 16–17",
+     "words": 1309,
+     "verses": 55
+    },
+    "pm": {
+     "chapters": [
+      "Matthew 18"
+     ],
+     "label": "Matthew 18",
+     "words": 870,
+     "verses": 35
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Matthew 19",
+      "Matthew 20"
+     ],
+     "label": "Matthew 19–20",
+     "words": 1509,
+     "verses": 64
+    },
+    "pm": {
+     "chapters": [
+      "Matthew 21"
+     ],
+     "label": "Matthew 21",
+     "words": 1131,
+     "verses": 46
+    }
+   }
+  ]
+ },
+ {
+  "week": 42,
+  "reading": "Matthew 22 – Mark 9",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Matthew 22",
+      "Matthew 23"
+     ],
+     "label": "Matthew 22–23",
+     "words": 1669,
+     "verses": 85
+    },
+    "pm": {
+     "chapters": [
+      "Matthew 24"
+     ],
+     "label": "Matthew 24",
+     "words": 1050,
+     "verses": 51
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Matthew 25"
+     ],
+     "label": "Matthew 25",
+     "words": 998,
+     "verses": 46
+    },
+    "pm": {
+     "chapters": [
+      "Matthew 26"
+     ],
+     "label": "Matthew 26",
+     "words": 1635,
+     "verses": 75
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Matthew 27"
+     ],
+     "label": "Matthew 27",
+     "words": 1366,
+     "verses": 66
+    },
+    "pm": {
+     "chapters": [
+      "Matthew 28",
+      "Mark 1"
+     ],
+     "label": "Matthew 28 – Mark 1",
+     "words": 1353,
+     "verses": 65
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Mark 2",
+      "Mark 3"
+     ],
+     "label": "Mark 2–3",
+     "words": 1391,
+     "verses": 63
+    },
+    "pm": {
+     "chapters": [
+      "Mark 4"
+     ],
+     "label": "Mark 4",
+     "words": 925,
+     "verses": 41
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Mark 5"
+     ],
+     "label": "Mark 5",
+     "words": 953,
+     "verses": 43
+    },
+    "pm": {
+     "chapters": [
+      "Mark 6"
+     ],
+     "label": "Mark 6",
+     "words": 1328,
+     "verses": 56
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Mark 7",
+      "Mark 8"
+     ],
+     "label": "Mark 7–8",
+     "words": 1658,
+     "verses": 75
+    },
+    "pm": {
+     "chapters": [
+      "Mark 9"
+     ],
+     "label": "Mark 9",
+     "words": 1165,
+     "verses": 50
+    }
+   }
+  ]
+ },
+ {
+  "week": 43,
+  "reading": "Mark 10 – Luke 6",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Mark 10"
+     ],
+     "label": "Mark 10",
+     "words": 1225,
+     "verses": 52
+    },
+    "pm": {
+     "chapters": [
+      "Mark 11"
+     ],
+     "label": "Mark 11",
+     "words": 783,
+     "verses": 33
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Mark 12"
+     ],
+     "label": "Mark 12",
+     "words": 1065,
+     "verses": 44
+    },
+    "pm": {
+     "chapters": [
+      "Mark 13"
+     ],
+     "label": "Mark 13",
+     "words": 832,
+     "verses": 37
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Mark 14"
+     ],
+     "label": "Mark 14",
+     "words": 1601,
+     "verses": 72
+    },
+    "pm": {
+     "chapters": [
+      "Mark 15",
+      "Mark 16"
+     ],
+     "label": "Mark 15–16",
+     "words": 1368,
+     "verses": 67
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Luke 1"
+     ],
+     "label": "Luke 1",
+     "words": 1588,
+     "verses": 80
+    },
+    "pm": {
+     "chapters": [
+      "Luke 2"
+     ],
+     "label": "Luke 2",
+     "words": 1097,
+     "verses": 52
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Luke 3"
+     ],
+     "label": "Luke 3",
+     "words": 1017,
+     "verses": 38
+    },
+    "pm": {
+     "chapters": [
+      "Luke 4"
+     ],
+     "label": "Luke 4",
+     "words": 1021,
+     "verses": 44
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Luke 5"
+     ],
+     "label": "Luke 5",
+     "words": 950,
+     "verses": 39
+    },
+    "pm": {
+     "chapters": [
+      "Luke 6"
+     ],
+     "label": "Luke 6",
+     "words": 1232,
+     "verses": 49
+    }
+   }
+  ]
+ },
+ {
+  "week": 44,
+  "reading": "Luke 7–20",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Luke 7"
+     ],
+     "label": "Luke 7",
+     "words": 1215,
+     "verses": 50
+    },
+    "pm": {
+     "chapters": [
+      "Luke 8"
+     ],
+     "label": "Luke 8",
+     "words": 1438,
+     "verses": 56
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Luke 9"
+     ],
+     "label": "Luke 9",
+     "words": 1463,
+     "verses": 62
+    },
+    "pm": {
+     "chapters": [
+      "Luke 10"
+     ],
+     "label": "Luke 10",
+     "words": 997,
+     "verses": 42
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Luke 11"
+     ],
+     "label": "Luke 11",
+     "words": 1333,
+     "verses": 54
+    },
+    "pm": {
+     "chapters": [
+      "Luke 12"
+     ],
+     "label": "Luke 12",
+     "words": 1411,
+     "verses": 59
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Luke 13"
+     ],
+     "label": "Luke 13",
+     "words": 868,
+     "verses": 35
+    },
+    "pm": {
+     "chapters": [
+      "Luke 14",
+      "Luke 15"
+     ],
+     "label": "Luke 14–15",
+     "words": 1545,
+     "verses": 67
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Luke 16",
+      "Luke 17"
+     ],
+     "label": "Luke 16–17",
+     "words": 1569,
+     "verses": 68
+    },
+    "pm": {
+     "chapters": [
+      "Luke 18"
+     ],
+     "label": "Luke 18",
+     "words": 875,
+     "verses": 43
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Luke 19"
+     ],
+     "label": "Luke 19",
+     "words": 1052,
+     "verses": 48
+    },
+    "pm": {
+     "chapters": [
+      "Luke 20"
+     ],
+     "label": "Luke 20",
+     "words": 960,
+     "verses": 47
+    }
+   }
+  ]
+ },
+ {
+  "week": 45,
+  "reading": "Luke 21 – John 10",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Luke 21"
+     ],
+     "label": "Luke 21",
+     "words": 822,
+     "verses": 38
+    },
+    "pm": {
+     "chapters": [
+      "Luke 22"
+     ],
+     "label": "Luke 22",
+     "words": 1401,
+     "verses": 71
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Luke 23"
+     ],
+     "label": "Luke 23",
+     "words": 1124,
+     "verses": 56
+    },
+    "pm": {
+     "chapters": [
+      "Luke 24"
+     ],
+     "label": "Luke 24",
+     "words": 1057,
+     "verses": 53
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "John 1"
+     ],
+     "label": "John 1",
+     "words": 1005,
+     "verses": 51
+    },
+    "pm": {
+     "chapters": [
+      "John 2",
+      "John 3"
+     ],
+     "label": "John 2–3",
+     "words": 1278,
+     "verses": 61
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "John 4"
+     ],
+     "label": "John 4",
+     "words": 1095,
+     "verses": 54
+    },
+    "pm": {
+     "chapters": [
+      "John 5"
+     ],
+     "label": "John 5",
+     "words": 1003,
+     "verses": 47
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "John 6"
+     ],
+     "label": "John 6",
+     "words": 1507,
+     "verses": 71
+    },
+    "pm": {
+     "chapters": [
+      "John 7"
+     ],
+     "label": "John 7",
+     "words": 1005,
+     "verses": 53
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "John 8"
+     ],
+     "label": "John 8",
+     "words": 1312,
+     "verses": 59
+    },
+    "pm": {
+     "chapters": [
+      "John 9",
+      "John 10"
+     ],
+     "label": "John 9–10",
+     "words": 1701,
+     "verses": 83
+    }
+   }
+  ]
+ },
+ {
+  "week": 46,
+  "reading": "John 11 – Acts 8",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "John 11"
+     ],
+     "label": "John 11",
+     "words": 1161,
+     "verses": 57
+    },
+    "pm": {
+     "chapters": [
+      "John 12"
+     ],
+     "label": "John 12",
+     "words": 1065,
+     "verses": 50
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "John 13",
+      "John 14"
+     ],
+     "label": "John 13–14",
+     "words": 1562,
+     "verses": 69
+    },
+    "pm": {
+     "chapters": [
+      "John 15",
+      "John 16"
+     ],
+     "label": "John 15–16",
+     "words": 1403,
+     "verses": 60
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "John 17",
+      "John 18"
+     ],
+     "label": "John 17–18",
+     "words": 1591,
+     "verses": 66
+    },
+    "pm": {
+     "chapters": [
+      "John 19"
+     ],
+     "label": "John 19",
+     "words": 1018,
+     "verses": 42
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "John 20",
+      "John 21"
+     ],
+     "label": "John 20–21",
+     "words": 1447,
+     "verses": 56
+    },
+    "pm": {
+     "chapters": [
+      "Acts 1",
+      "Acts 2"
+     ],
+     "label": "Acts 1–2",
+     "words": 1687,
+     "verses": 73
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Acts 3",
+      "Acts 4"
+     ],
+     "label": "Acts 3–4",
+     "words": 1504,
+     "verses": 63
+    },
+    "pm": {
+     "chapters": [
+      "Acts 5",
+      "Acts 6"
+     ],
+     "label": "Acts 5–6",
+     "words": 1389,
+     "verses": 57
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Acts 7"
+     ],
+     "label": "Acts 7",
+     "words": 1438,
+     "verses": 60
+    },
+    "pm": {
+     "chapters": [
+      "Acts 8"
+     ],
+     "label": "Acts 8",
+     "words": 886,
+     "verses": 40
+    }
+   }
+  ]
+ },
+ {
+  "week": 47,
+  "reading": "Acts 9–24",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Acts 9"
+     ],
+     "label": "Acts 9",
+     "words": 1048,
+     "verses": 43
+    },
+    "pm": {
+     "chapters": [
+      "Acts 10"
+     ],
+     "label": "Acts 10",
+     "words": 1113,
+     "verses": 48
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Acts 11",
+      "Acts 12"
+     ],
+     "label": "Acts 11–12",
+     "words": 1333,
+     "verses": 55
+    },
+    "pm": {
+     "chapters": [
+      "Acts 13"
+     ],
+     "label": "Acts 13",
+     "words": 1277,
+     "verses": 52
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Acts 14",
+      "Acts 15"
+     ],
+     "label": "Acts 14–15",
+     "words": 1557,
+     "verses": 69
+    },
+    "pm": {
+     "chapters": [
+      "Acts 16"
+     ],
+     "label": "Acts 16",
+     "words": 947,
+     "verses": 40
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Acts 17",
+      "Acts 18"
+     ],
+     "label": "Acts 17–18",
+     "words": 1526,
+     "verses": 62
+    },
+    "pm": {
+     "chapters": [
+      "Acts 19"
+     ],
+     "label": "Acts 19",
+     "words": 978,
+     "verses": 41
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Acts 20"
+     ],
+     "label": "Acts 20",
+     "words": 885,
+     "verses": 38
+    },
+    "pm": {
+     "chapters": [
+      "Acts 21"
+     ],
+     "label": "Acts 21",
+     "words": 1068,
+     "verses": 40
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Acts 22"
+     ],
+     "label": "Acts 22",
+     "words": 775,
+     "verses": 30
+    },
+    "pm": {
+     "chapters": [
+      "Acts 23",
+      "Acts 24"
+     ],
+     "label": "Acts 23–24",
+     "words": 1568,
+     "verses": 62
+    }
+   }
+  ]
+ },
+ {
+  "week": 48,
+  "reading": "Acts 25 – 1 Corinthians 6",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Acts 25",
+      "Acts 26"
+     ],
+     "label": "Acts 25–26",
+     "words": 1497,
+     "verses": 59
+    },
+    "pm": {
+     "chapters": [
+      "Acts 27"
+     ],
+     "label": "Acts 27",
+     "words": 1038,
+     "verses": 44
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Acts 28",
+      "Romans 1"
+     ],
+     "label": "Acts 28 – Romans 1",
+     "words": 1535,
+     "verses": 63
+    },
+    "pm": {
+     "chapters": [
+      "Romans 2",
+      "Romans 3"
+     ],
+     "label": "Romans 2–3",
+     "words": 1169,
+     "verses": 60
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Romans 4",
+      "Romans 5"
+     ],
+     "label": "Romans 4–5",
+     "words": 1030,
+     "verses": 46
+    },
+    "pm": {
+     "chapters": [
+      "Romans 6",
+      "Romans 7"
+     ],
+     "label": "Romans 6–7",
+     "words": 1091,
+     "verses": 48
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Romans 8",
+      "Romans 9"
+     ],
+     "label": "Romans 8–9",
+     "words": 1631,
+     "verses": 72
+    },
+    "pm": {
+     "chapters": [
+      "Romans 10",
+      "Romans 11"
+     ],
+     "label": "Romans 10–11",
+     "words": 1283,
+     "verses": 57
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Romans 12",
+      "Romans 13",
+      "Romans 14"
+     ],
+     "label": "Romans 12–14",
+     "words": 1286,
+     "verses": 58
+    },
+    "pm": {
+     "chapters": [
+      "Romans 15",
+      "Romans 16"
+     ],
+     "label": "Romans 15–16",
+     "words": 1246,
+     "verses": 60
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "1Corinthians 1",
+      "1Corinthians 2",
+      "1Corinthians 3"
+     ],
+     "label": "1 Corinthians 1–3",
+     "words": 1487,
+     "verses": 70
+    },
+    "pm": {
+     "chapters": [
+      "1Corinthians 4",
+      "1Corinthians 5",
+      "1Corinthians 6"
+     ],
+     "label": "1 Corinthians 4–6",
+     "words": 1299,
+     "verses": 54
+    }
+   }
+  ]
+ },
+ {
+  "week": 49,
+  "reading": "1 Corinthians 7 – Galatians 4",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "1Corinthians 7",
+      "1Corinthians 8"
+     ],
+     "label": "1 Corinthians 7–8",
+     "words": 1271,
+     "verses": 53
+    },
+    "pm": {
+     "chapters": [
+      "1Corinthians 9",
+      "1Corinthians 10"
+     ],
+     "label": "1 Corinthians 9–10",
+     "words": 1345,
+     "verses": 60
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "1Corinthians 11",
+      "1Corinthians 12"
+     ],
+     "label": "1 Corinthians 11–12",
+     "words": 1314,
+     "verses": 65
+    },
+    "pm": {
+     "chapters": [
+      "1Corinthians 13",
+      "1Corinthians 14"
+     ],
+     "label": "1 Corinthians 13–14",
+     "words": 1161,
+     "verses": 53
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "1Corinthians 15"
+     ],
+     "label": "1 Corinthians 15",
+     "words": 1167,
+     "verses": 58
+    },
+    "pm": {
+     "chapters": [
+      "1Corinthians 16",
+      "2Corinthians 1"
+     ],
+     "label": "1 Corinthians 16 – 2 Corinthians 1",
+     "words": 1040,
+     "verses": 48
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "2Corinthians 2",
+      "2Corinthians 3",
+      "2Corinthians 4"
+     ],
+     "label": "2 Corinthians 2–4",
+     "words": 1201,
+     "verses": 53
+    },
+    "pm": {
+     "chapters": [
+      "2Corinthians 5",
+      "2Corinthians 6",
+      "2Corinthians 7"
+     ],
+     "label": "2 Corinthians 5–7",
+     "words": 1302,
+     "verses": 55
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "2Corinthians 8",
+      "2Corinthians 9",
+      "2Corinthians 10"
+     ],
+     "label": "2 Corinthians 8–10",
+     "words": 1369,
+     "verses": 57
+    },
+    "pm": {
+     "chapters": [
+      "2Corinthians 11",
+      "2Corinthians 12"
+     ],
+     "label": "2 Corinthians 11–12",
+     "words": 1313,
+     "verses": 54
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "2Corinthians 13",
+      "Galatians 1",
+      "Galatians 2"
+     ],
+     "label": "2 Corinthians 13 – Galatians 2",
+     "words": 1342,
+     "verses": 59
+    },
+    "pm": {
+     "chapters": [
+      "Galatians 3",
+      "Galatians 4"
+     ],
+     "label": "Galatians 3–4",
+     "words": 1262,
+     "verses": 60
+    }
+   }
+  ]
+ },
+ {
+  "week": 50,
+  "reading": "Galatians 5 – 2 Timothy 3",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "Galatians 5",
+      "Galatians 6",
+      "Ephesians 1"
+     ],
+     "label": "Galatians 5 – Ephesians 1",
+     "words": 1312,
+     "verses": 67
+    },
+    "pm": {
+     "chapters": [
+      "Ephesians 2",
+      "Ephesians 3",
+      "Ephesians 4"
+     ],
+     "label": "Ephesians 2–4",
+     "words": 1483,
+     "verses": 75
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Ephesians 5",
+      "Ephesians 6"
+     ],
+     "label": "Ephesians 5–6",
+     "words": 1037,
+     "verses": 57
+    },
+    "pm": {
+     "chapters": [
+      "Philippians 1",
+      "Philippians 2"
+     ],
+     "label": "Philippians 1–2",
+     "words": 1234,
+     "verses": 60
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Philippians 3",
+      "Philippians 4"
+     ],
+     "label": "Philippians 3–4",
+     "words": 951,
+     "verses": 44
+    },
+    "pm": {
+     "chapters": [
+      "Colossians 1",
+      "Colossians 2"
+     ],
+     "label": "Colossians 1–2",
+     "words": 1163,
+     "verses": 52
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Colossians 3",
+      "Colossians 4",
+      "1Thessalonians 1"
+     ],
+     "label": "Colossians 3 – 1 Thessalonians 1",
+     "words": 1075,
+     "verses": 53
+    },
+    "pm": {
+     "chapters": [
+      "1Thessalonians 2",
+      "1Thessalonians 3",
+      "1Thessalonians 4"
+     ],
+     "label": "1 Thessalonians 2–4",
+     "words": 1172,
+     "verses": 51
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "1Thessalonians 5",
+      "2Thessalonians 1",
+      "2Thessalonians 2"
+     ],
+     "label": "1 Thessalonians 5 – 2 Thessalonians 2",
+     "words": 1092,
+     "verses": 57
+    },
+    "pm": {
+     "chapters": [
+      "2Thessalonians 3",
+      "1Timothy 1",
+      "1Timothy 2",
+      "1Timothy 3"
+     ],
+     "label": "2 Thessalonians 3 – 1 Timothy 3",
+     "words": 1354,
+     "verses": 69
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "1Timothy 4",
+      "1Timothy 5",
+      "1Timothy 6"
+     ],
+     "label": "1 Timothy 4–6",
+     "words": 1242,
+     "verses": 62
+    },
+    "pm": {
+     "chapters": [
+      "2Timothy 1",
+      "2Timothy 2",
+      "2Timothy 3"
+     ],
+     "label": "2 Timothy 1–3",
+     "words": 1249,
+     "verses": 61
+    }
+   }
+  ]
+ },
+ {
+  "week": 51,
+  "reading": "2 Timothy 4 – 1 John 1",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "2Timothy 4",
+      "Titus 1",
+      "Titus 2",
+      "Titus 3"
+     ],
+     "label": "2 Timothy 4 – Titus 3",
+     "words": 1324,
+     "verses": 68
+    },
+    "pm": {
+     "chapters": [
+      "Philemon 1",
+      "Hebrews 1",
+      "Hebrews 2"
+     ],
+     "label": "Philemon 1 – Hebrews 2",
+     "words": 1244,
+     "verses": 57
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "Hebrews 3",
+      "Hebrews 4",
+      "Hebrews 5"
+     ],
+     "label": "Hebrews 3–5",
+     "words": 1090,
+     "verses": 49
+    },
+    "pm": {
+     "chapters": [
+      "Hebrews 6",
+      "Hebrews 7",
+      "Hebrews 8"
+     ],
+     "label": "Hebrews 6–8",
+     "words": 1425,
+     "verses": 61
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Hebrews 9",
+      "Hebrews 10"
+     ],
+     "label": "Hebrews 9–10",
+     "words": 1469,
+     "verses": 67
+    },
+    "pm": {
+     "chapters": [
+      "Hebrews 11"
+     ],
+     "label": "Hebrews 11",
+     "words": 928,
+     "verses": 40
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Hebrews 12",
+      "Hebrews 13"
+     ],
+     "label": "Hebrews 12–13",
+     "words": 1203,
+     "verses": 54
+    },
+    "pm": {
+     "chapters": [
+      "James 1",
+      "James 2",
+      "James 3"
+     ],
+     "label": "James 1–3",
+     "words": 1454,
+     "verses": 71
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "James 4",
+      "James 5",
+      "1Peter 1"
+     ],
+     "label": "James 4 – 1 Peter 1",
+     "words": 1452,
+     "verses": 62
+    },
+    "pm": {
+     "chapters": [
+      "1Peter 2",
+      "1Peter 3"
+     ],
+     "label": "1 Peter 2–3",
+     "words": 1104,
+     "verses": 47
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "1Peter 4",
+      "1Peter 5",
+      "2Peter 1"
+     ],
+     "label": "1 Peter 4 – 2 Peter 1",
+     "words": 1273,
+     "verses": 54
+    },
+    "pm": {
+     "chapters": [
+      "2Peter 2",
+      "2Peter 3",
+      "1John 1"
+     ],
+     "label": "2 Peter 2 – 1 John 1",
+     "words": 1316,
+     "verses": 50
+    }
+   }
+  ]
+ },
+ {
+  "week": 52,
+  "reading": "1 John 2 – Revelation 22",
+  "days": [
+   {
+    "day": "Sun",
+    "am": {
+     "chapters": [
+      "1John 2",
+      "1John 3"
+     ],
+     "label": "1 John 2–3",
+     "words": 1273,
+     "verses": 53
+    },
+    "pm": {
+     "chapters": [
+      "1John 4",
+      "1John 5"
+     ],
+     "label": "1 John 4–5",
+     "words": 1000,
+     "verses": 42
+    }
+   },
+   {
+    "day": "Mon",
+    "am": {
+     "chapters": [
+      "2John 1",
+      "3John 1",
+      "Jude 1"
+     ],
+     "label": "2 John 1 – Jude 1",
+     "words": 1202,
+     "verses": 52
+    },
+    "pm": {
+     "chapters": [
+      "Revelation 1",
+      "Revelation 2"
+     ],
+     "label": "Revelation 1–2",
+     "words": 1395,
+     "verses": 49
+    }
+   },
+   {
+    "day": "Tue",
+    "am": {
+     "chapters": [
+      "Revelation 3",
+      "Revelation 4",
+      "Revelation 5"
+     ],
+     "label": "Revelation 3–5",
+     "words": 1442,
+     "verses": 47
+    },
+    "pm": {
+     "chapters": [
+      "Revelation 6",
+      "Revelation 7",
+      "Revelation 8"
+     ],
+     "label": "Revelation 6–8",
+     "words": 1429,
+     "verses": 47
+    }
+   },
+   {
+    "day": "Wed",
+    "am": {
+     "chapters": [
+      "Revelation 9",
+      "Revelation 10",
+      "Revelation 11"
+     ],
+     "label": "Revelation 9–11",
+     "words": 1528,
+     "verses": 51
+    },
+    "pm": {
+     "chapters": [
+      "Revelation 12",
+      "Revelation 13"
+     ],
+     "label": "Revelation 12–13",
+     "words": 1036,
+     "verses": 35
+    }
+   },
+   {
+    "day": "Thu",
+    "am": {
+     "chapters": [
+      "Revelation 14",
+      "Revelation 15",
+      "Revelation 16"
+     ],
+     "label": "Revelation 14–16",
+     "words": 1471,
+     "verses": 49
+    },
+    "pm": {
+     "chapters": [
+      "Revelation 17",
+      "Revelation 18"
+     ],
+     "label": "Revelation 17–18",
+     "words": 1270,
+     "verses": 42
+    }
+   },
+   {
+    "day": "Fri",
+    "am": {
+     "chapters": [
+      "Revelation 19",
+      "Revelation 20"
+     ],
+     "label": "Revelation 19–20",
+     "words": 1112,
+     "verses": 36
+    },
+    "pm": {
+     "chapters": [
+      "Revelation 21",
+      "Revelation 22"
+     ],
+     "label": "Revelation 21–22",
+     "words": 1323,
+     "verses": 48
+    }
+   }
+  ]
+ }
+]
