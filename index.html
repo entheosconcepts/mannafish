@@ -5,6 +5,7 @@
 <title>MannaFish</title>
 <script>document.documentElement.setAttribute("translate","no");document.documentElement.classList.add("notranslate");</script>
 <script>try{if(localStorage.getItem("mf-mode")==="light")document.documentElement.setAttribute("data-mode","light");}catch(e){}</script>
+<script src="/fish-lang/spell/spell.js" defer onload="MFspell.watch('#notesText,#psT,#psB,#ptCNote,#fsText')"></script>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1816,7 +1817,7 @@ select option{background:#0b1620;color:#eaf0f0}
     <!-- Ken, 12 Oct: search my notes; sort them; see every note, not just this word's -->
     <div class="ntools"><input type="search" id="nSearch" placeholder="Search my notes" aria-label="Search my notes" autocomplete="off">
       <select id="nSort" aria-label="Sort"><option value="old">Oldest first</option><option value="new">Newest first</option><option value="word">Word A–Z</option><option value="edit">Recently edited</option></select>
-      <button type="button" class="toolbtn" id="nScope" aria-pressed="false">All my notes</button></div>
+      <button type="button" class="toolbtn" id="nScope" aria-pressed="false">All my notes</button><button type="button" class="toolbtn" id="nExport">⬇ Export</button></div>
     <div class="nlist" id="notesList"></div>
     <div class="nlist" id="nAll" hidden></div>
     <textarea id="notesText" rows="3" placeholder="What is God showing you in this word?"></textarea>
@@ -3151,6 +3152,17 @@ window.MF=(function(){
   var EDL={en:['Edit','Edit prayer'],es:['Editar','Editar oración'],tl:['I-edit','I-edit ang panalangin'],zh:['编辑','编辑祷告'],hi:['बदलें','प्रार्थना बदलें'],el:['Επεξεργασία','Επεξεργασία προσευχής'],de:['Bearbeiten','Gebet bearbeiten'],ko:['수정','기도 수정'],he:['עריכה','עריכת תפילה'],ar:['تعديل','تعديل الصلاة']};
   function edT(){ return EDL[PT.l]||EDL.en; }
   function prOpen(){ return PR.filter(function(x){ return x.status==='open'; }); }
+  // Ken, 20 Oct: "Prayer and notes need ability to export" -- a plain text file, on a phone through the share sheet (Files, Notes, Mail...)
+  function mfExport(name,text,title){ var f=null; try{ f=new File([text],name,{type:'text/plain'}); }catch(e){}
+    if(f&&navigator.canShare&&navigator.canShare({files:[f]})){ navigator.share({files:[f],title:title}).catch(function(){}); return; }
+    var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type:'text/plain'})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },1500); }
+  window.MFexport=mfExport;
+  var EXL={en:['Export my prayers','My prayers','Open','Answered','Archived','Added','Answered on','Exported'],es:['Exportar mis oraciones','Mis oraciones','Abiertas','Contestadas','Archivadas','Añadida','Contestada el','Exportado']};
+  function prExport(){ var L=EXL[PT.l]||EXL[MF.lang]||EXL.en, d=function(t){ try{ return new Date(t).toLocaleDateString(PT.l||'en',{year:'numeric',month:'long',day:'numeric'}); }catch(e){ return ''; } };
+    var out='MannaFish · '+L[1]+'\n'+L[7]+' '+d(Date.now())+'\n';
+    [['open',L[2]],['answered',L[3]],['archived',L[4]]].forEach(function(g){ var xs=PR.filter(function(x){ return x.status===g[0]; }); if(!xs.length) return;
+      out+='\n'+g[1].toUpperCase()+' ('+xs.length+')\n'; xs.forEach(function(x){ out+='\n• '+x.title+'\n'+(x.body?x.body.replace(/^/gm,'  ')+'\n':'')+'  '+L[5]+' '+d(x.at)+(g[0]==='answered'&&x.done?' · '+L[6]+' '+d(x.done):'')+'\n'; }); });
+    mfExport('MannaFish-prayers-'+new Date().toISOString().slice(0,10)+'.txt',out,'MannaFish · '+L[1]); }
   // Ken, 11 Oct: after the catch, "go into the fish" -- the word in Greek and Hebrew, how many places in Scripture
   // carry this One Word, then each one (the reference, the verse, the verse in its context); then "give it in their
   // language": feed yourself first, give a MannaFish to someone else, and in time teach them to do the same.
@@ -3521,7 +3533,7 @@ window.MF=(function(){
         +'<div class="ptrow" style="justify-content:flex-end;margin-top:12px"><button type="button" class="ptlink" data-s="'+(PT.editFrom==='list'?'tolist':'x')+'">'+esc(T.cancel)+'</button><button type="button" class="ptbtn ptmain" data-s="saveedit">'+esc(T.save)+'</button></div><p class="psnote">🔒 '+esc(T.private)+'</p>';
     else if(kind==='add') h=head(T.new)+'<input id="psT" type="text" maxlength="120" placeholder="'+esc(T.t_ph)+'"><textarea id="psB" maxlength="2000" placeholder="'+esc(T.b_ph)+'"></textarea>'
       +'<div class="ptrow" style="justify-content:flex-end;margin-top:12px"><button type="button" class="ptlink" data-s="x">'+esc(T.cancel)+'</button><button type="button" class="ptbtn ptmain" data-s="save">'+esc(T.save)+'</button></div><p class="psnote">🔒 '+esc(T.private)+'</p>';
-    else if(kind==='list'){ var op=prOpen(); h=head(T.m_list,1)+(op.length?op.map(function(x){ return '<div class="psrow" data-id="'+esc(x.id)+'"><div class="pst"><b>'+esc(x.title)+'</b>'+(x.body?'<span>'+esc(x.body)+'</span>':'')+prPubHTML(x)+'</div><div class="psacts"><button type="button" data-s="edit">✎ '+esc(edT()[0])+'</button><button type="button" data-s="ans">✓</button><button type="button" data-s="arc">'+esc(T.archive)+'</button><button type="button" data-s="del">'+esc(T.del)+'</button></div></div>'; }).join(''):'<p class="psnote">'+esc(T.no_open)+'</p>')+'<p class="psnote">🔒 '+esc(T.private)+'</p>'; }
+    else if(kind==='list'){ var op=prOpen(); h=head(T.m_list,1)+(op.length?op.map(function(x){ return '<div class="psrow" data-id="'+esc(x.id)+'"><div class="pst"><b>'+esc(x.title)+'</b>'+(x.body?'<span>'+esc(x.body)+'</span>':'')+prPubHTML(x)+'</div><div class="psacts"><button type="button" data-s="edit">✎ '+esc(edT()[0])+'</button><button type="button" data-s="ans">✓</button><button type="button" data-s="arc">'+esc(T.archive)+'</button><button type="button" data-s="del">'+esc(T.del)+'</button></div></div>'; }).join(''):'<p class="psnote">'+esc(T.no_open)+'</p>')+(PR.length?'<div class="ptrow" style="justify-content:center;margin-top:10px"><button type="button" class="ptlink" data-s="export">⬇ '+esc((EXL[PT.l]||EXL.en)[0])+'</button></div>':'')+'<p class="psnote">🔒 '+esc(T.private)+'</p>'; }
     else if(kind==='answered'){ var an=PR.filter(function(x){ return x.status==='answered'; }); h=head(T.m_answered,1)+(an.length?an.map(function(x){ return '<div class="psrow" data-id="'+esc(x.id)+'"><div class="pst"><b>'+esc(x.title)+'</b>'+(x.body?'<span>'+esc(x.body)+'</span>':'')+prPubHTML(x)+'</div><small>✓ '+when(x.done||x.at)+'</small></div>'; }).join(''):'<p class="psnote">'+esc(T.no_answered)+'</p>'); }
     sh.innerHTML=h; sh.hidden=false; sh.dataset.kind=kind; var f=$('psT'); if(f) setTimeout(function(){ f.focus(); },60); }
   // Ken, 12 Oct: "keep prayers private, or make them public ... a checkbox ... at any given time"
@@ -3541,6 +3553,7 @@ window.MF=(function(){
     if(a==='yr'){ var yk=b.dataset.k; $('ptSheet').hidden=true; if(!DATA[yk]) return; PT.dayOv=null; planSet(yk); if(yk!==cur) pick(yk,false); PT.steps=ptSteps(); PT.i=0; ptRender(); return; }
     if(a==='add'){ ptSheet('add'); return; }
     if(a==='tolist'){ ptSheet('list'); return; }
+    if(a==='export'){ prExport(); return; }
     if(a==='edit'&&x){ PT.editId=x.id; PT.editFrom='list'; ptSheet('edit'); return; }
     if(a==='saveedit'){ var ex=PR.filter(function(y){ return String(y.id)===String(PT.editId); })[0], et=$('psT').value.trim(), eb=$('psB').value.trim();
       if(!ex) return; if(!et&&!eb){ $('psT').focus(); return; } prEdit(ex,et||eb.split('\n')[0].slice(0,80),et?eb:eb.split('\n').slice(1).join('\n')); toast(T.saved);
@@ -4320,6 +4333,14 @@ window.MF=(function(){
   $('notesList').addEventListener('click',noteClick); $('nAll').addEventListener('click',noteClick);
   // search, sort, every note
   var nst=null; $('nSearch').addEventListener('input',function(){ clearTimeout(nst); nst=setTimeout(showNotes,200); });
+  $('nExport').addEventListener('click',function(){ var es=MF.lang==='es', b=this; b.disabled=true;
+    allNotes().then(function(list){ b.disabled=false; if(!list.length){ $('notesMsg').textContent=es?'Aún no hay notas.':'No notes yet.'; return; }
+      var d=function(t){ try{ return new Date(t).toLocaleString(es?'es':'en',{year:'numeric',month:'long',day:'numeric',hour:'numeric',minute:'2-digit'}); }catch(e){ return ''; } }, by={};
+      list.forEach(function(n){ (by[n.k]=by[n.k]||[]).push(n); });
+      var out='MannaFish · '+(es?'Mis notas':'My notes')+'\n'+(es?'Exportado ':'Exported ')+d(Date.now())+'\n';
+      Object.keys(by).sort(function(a,b){ return String(wordName(a)).localeCompare(String(wordName(b))); }).forEach(function(k){ out+='\n== '+(DATA[k]?wordName(k):k)+' ==\n';
+        by[k].sort(function(a,b){ return a.at-b.at; }).forEach(function(n){ out+='\n'+d(n.at)+(n.ed&&n.ed!==n.at?' ('+(es?'editada ':'edited ')+d(n.ed)+')':'')+'\n'+n.text+'\n'; }); });
+      MFexport('MannaFish-notes-'+new Date().toISOString().slice(0,10)+'.txt',out,'MannaFish · '+(es?'Mis notas':'My notes')); }).catch(function(){ b.disabled=false; }); });
   $('nSort').addEventListener('change',function(){ try{ localStorage.setItem('mf-nsort',this.value); }catch(e){} showNotes(); });
   try{ var so=localStorage.getItem('mf-nsort'); if(so) $('nSort').value=so; }catch(e){}
   $('nScope').addEventListener('click',function(){ this.setAttribute('aria-pressed',this.getAttribute('aria-pressed')==='true'?'false':'true'); showNotes(); });
