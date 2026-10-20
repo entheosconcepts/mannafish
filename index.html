@@ -1244,6 +1244,12 @@ section.section.bundles{display:block;margin-top:0}
 .ptchips button{border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.3);color:#fff;border-radius:999px;padding:7px 12px;font:600 .88rem 'Archivo',sans-serif;cursor:pointer}
 .ptctx{border-top:1px solid rgba(255,255,255,.15);padding-top:12px;margin-top:4px}
 .ptctx[hidden]{display:none}
+.ptcxp .vn{font:700 .62rem 'Archivo',sans-serif;opacity:.6;vertical-align:super;margin:0 2px 0 4px}
+.ptcxp .cxv{cursor:pointer;border-radius:4px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.ptcxp .cxv.cxme{font-weight:600;opacity:1}.ptcxp .cxv.cxhl{color:#14181c;opacity:1}
+.ptcxt{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:8px 0 2px}.ptcxt small{opacity:.65;font-size:.8rem}
+.ptcxt .hlc button{width:26px;height:26px}
+.ptbible{position:absolute;inset:0;z-index:60;background:#000}.ptbible[hidden]{display:none}.ptbible iframe{border:0;width:100%;height:100%;display:block;background:#000}
 .ptctxh{font:800 .75rem 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.75;margin-bottom:6px}
 .ptctx .ptp{font:1.02rem/1.6 'Spectral',Georgia,serif;opacity:.88}
 .ptlenq{font:700 .8rem 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.8;margin:6px 0 8px}
@@ -1723,6 +1729,7 @@ select option{background:#0b1620;color:#eaf0f0}
     <button type="button" class="hbtn smi" id="smNotes" role="menuitem"><span class="hbi" aria-hidden="true">&#9998;&#xFE0E;</span><span class="hbt"><b id="smNotesLab">My notes</b><small id="smNotesSub">Notes and highlights</small></span></button>
     <button type="button" class="hbtn smi" id="smAcct" role="menuitem"><span class="hbi" aria-hidden="true">&#128100;&#xFE0E;</span><span class="hbt"><b id="smAcctLab">Sign in</b><small id="smAcctSub">Keep your notes on every device</small></span></button>
     <button type="button" class="hbtn smi" id="smMode" role="menuitem"><span class="hbi" aria-hidden="true" id="smModeIco">&#9790;&#xFE0E;</span><span class="hbt"><b id="smModeLab">Dark mode</b></span></button>
+    <button type="button" class="hbtn smi" id="smBible" role="menuitem"><span class="hbi" aria-hidden="true">&#10013;&#xFE0E;</span><span class="hbt"><b id="smBiLab">Bible</b><small id="smBiSub">Every book and chapter</small></span></button>
     <button type="button" class="hbtn smi" id="smPlan" role="menuitem"><span class="hbi" aria-hidden="true">&#128214;&#xFE0E;</span><span class="hbt"><b id="smPlLab">Bible in a Year</b><small id="smPlSub">Day and night readings, 2 Fish a day</small></span></button>
     <button type="button" class="hbtn smi" id="smMatch" role="menuitem"><span class="hbi" aria-hidden="true">&#127924;&#xFE0E;</span><span class="hbt"><b id="smMaLab">Go MannaFish</b><small id="smMaSub">Match a pair, then go fish</small></span></button>
     <button type="button" class="hbtn smi" id="smStories" role="menuitem"><span class="hbi" aria-hidden="true">&#128031;&#xFE0E;</span><span class="hbt"><b id="smStLab">Fish stories</b><small id="smStSub">Share your catch</small></span></button>
@@ -2206,6 +2213,7 @@ select option{background:#0b1620;color:#eaf0f0}
   <div class="ptstage" id="ptStage"></div>
   <div class="ptnav"><button type="button" class="ptnb" id="ptBack"></button><div class="ptdots" id="ptDots" aria-hidden="true"></div><button type="button" class="ptnb ptnext" id="ptNext"></button></div>
   <div class="ptsheet" id="ptSheet" hidden></div>
+  <div class="ptbible" id="ptBible" hidden><iframe id="ptBibleF" title="Bible"></iframe></div>
 </div>
 <div class="tour" id="tour" hidden translate="no"><div class="tring" id="tRing"></div>
   <div class="tcard" id="tCard" role="dialog" aria-live="polite"><div class="thd"><span id="tK"></span><button type="button" class="tsb" id="tSpk" aria-pressed="false" aria-label="Listen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button><button type="button" class="tsb ptpause" id="tPause" aria-label="Pause" hidden></button><button type="button" class="tsb" id="tX" aria-label="Close">&times;</button></div>
@@ -3253,6 +3261,18 @@ window.MF=(function(){
   // Ken, 13 Oct: "give me ability to highlight scripture from here so that it saves" -- the verse on a devotional step
   // goes into My highlights (and the account when signed in), the same as a verse highlighted in the reader
   // Ken, 14 Oct: "I would like to be able to change bible versions not just KJV here" -- the version is a picker under the verse
+  // the context's tools: the colour for highlighting; a tap on a verse highlights it (and a second tap takes it off)
+  var BIBL={en:['Read the whole chapter','Tap a verse to highlight it','Bible','Every book and chapter'],es:['Leer todo el capítulo','Toca un versículo para resaltarlo','Biblia','Todos los libros y capítulos'],
+    tl:['Basahin ang buong kabanata','Pindutin ang talata para i-highlight','Biblia','Lahat ng aklat at kabanata'],zh:['阅读整章','点按经文即可标记','圣经','所有书卷和章节'],hi:['पूरा अध्याय पढ़ें','हाइलाइट करने के लिए पद पर टैप करें','बाइबल','हर पुस्तक और अध्याय'],
+    el:['Διάβασε όλο το κεφάλαιο','Πάτησε ένα εδάφιο για επισήμανση','Βίβλος','Όλα τα βιβλία και τα κεφάλαια'],de:['Das ganze Kapitel lesen','Tippe auf einen Vers, um ihn zu markieren','Bibel','Alle Bücher und Kapitel'],
+    ko:['장 전체 읽기','구절을 눌러 형광펜 표시','성경','모든 책과 장'],he:['קרא את כל הפרק','הקש על פסוק כדי לסמן אותו','התנ״ך','כל הספרים והפרקים'],ar:['اقرأ الأصحاح كله','انقر على آية لتمييزها','الكتاب المقدس','كل الأسفار والأصحاحات']};
+  function bibT(){ return BIBL[PT.l]||BIBL[MF.lang]||BIBL.en; }
+  function ptCxTools(){ var col=hlColor(); return '<div class="ptcxt"><span class="hlc" role="group" aria-label="Highlight colour">'+Object.keys(HLC).map(function(c){ return '<button type="button" data-a="cxc" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c]+'"></button>'; }).join('')+'</span><small>'+esc(bibT()[1])+'</small></div>'; }
+  function ptCxPaint(){ var c=PT.cx, h=hls(); if(!c) return; [].forEach.call($('ptStage').querySelectorAll('.cxv'),function(e){ var x=h[hlKey(c,+e.dataset.cv)], col=x&&(HLC[x.c]?x.c:'gold');
+    e.classList.toggle('cxhl',!!x); e.style.background=x?HLC[col]:''; }); }
+  $('ptStage').addEventListener('click',function(e){ var sp=e.target.closest('.cxv'); if(!sp||!PT.cx) return; var c=PT.cx, v=+sp.dataset.cv, key=hlKey(c,v), h=hls();
+    if(h[key]) hlToggle(key,h[key]); else hlToggle(key,{kind:'verse',ref:c.book+' '+c.ch+':'+v,ver:c.ver,k:c.k,i:c.i,l:c.l,v:v,c:hlColor(),text:sp.textContent.slice(0,220)});
+    ptCxPaint(); });
   function ptHlRow(){ var cv=curVer().k, col=hlColor();
     return '<div class="penbar ptpenbar" hidden></div><div class="ptrow pthl"><button type="button" class="ptbtn" data-a="hl" aria-pressed="false" hidden></button><button type="button" class="ptbtn" data-a="hlpen" aria-pressed="false" hidden></button>'
       +'<button type="button" class="ptbtn rhlmore" data-a="hlmore" aria-expanded="false">⋯</button><span class="hlc" role="group" aria-label="Highlight colour">'+Object.keys(HLC).map(function(c){ return '<button type="button" data-a="hlc" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('')+'</span>'
@@ -3291,7 +3311,7 @@ window.MF=(function(){
         +'<p class="ptprompt ptcp">👉 '+esc(C.p_cast)+'</p>'; if(window.MFcastNoteReset) MFcastNoteReset(); }
     else if(s.k==='hear'){ t=[P[2],sy[2],sy[1],T.sink,T.think];
       h=kick(T.k_hear+' · '+w)+'<p class="ptp ptsoft">'+sp1(1,P[2])+'</p><blockquote class="ptq">'+sp1(3,sy[1])+'<cite>'+sp1(2,sy[2])+'</cite></blockquote>'+ptHlRow()
-        +'<p class="ptp">'+sp1(4,T.sink)+'</p><p class="ptp">'+sp1(5,T.think)+'</p><div class="ptrow"><button type="button" class="ptbtn" data-a="note">✎ '+esc(T.note)+'</button></div>'+prm('p_hear'); }
+        +'<p class="ptp">'+sp1(4,T.sink)+'</p><p class="ptp">'+sp1(5,T.think)+'</p><div class="ptrow"><button type="button" class="ptbtn" data-a="note">✎ '+esc(T.note)+'</button><button type="button" class="ptlink" data-a="bible" data-ref="'+esc(SAY.en[k][2])+'">📖 '+esc(bibT()[0])+'</button></div>'+prm('p_hear'); }
     if(s.k==='hear'){ var hp=parseRef(SAY.en[k][2]), hi=hp?DATA[k].refs.findIndex(function(r){ return r[0]===SAY.en[k][2]; }):-1, me2=PT.i;
       if(hp) setTimeout(function(){ if(PT.i!==me2) return;
         if(l==='en'&&curVer().k!=='kjv') chGet(hp,'en').then(function(ct){ var v=ct[+hp.vs-1]; if(PT.i!==me2||!v) return; var sv=$('ptStage').querySelector('.ptq [data-v="3"]'); if(sv) sv.textContent=v; if(PT.t) PT.t[2]=v; ptHlSet(hp,k,hi,l,v); }).catch(function(){ ptHlSet(hp,k,hi,l,sy[1]); });
@@ -3307,14 +3327,18 @@ window.MF=(function(){
       h=kick(T.k_trace)+'<h2 class="pth">'+sp1(1,cl)+'</h2><div class="ptchips">'+DATA[k].refs.map(function(r,i){ var td=planRefs(k,ptDay(k)), dn=planDone(k), at=td.indexOf(i)>=0, was=i<td[0]||dn>=PLAN_DAYS;
         return at?'<button type="button" data-a="goref" data-i="'+i+'" class="today">'+esc(refLab(l,k,i))+'</button>':'<button type="button" disabled class="'+(was?'was':'later')+'">'+(was?'✓ ':'')+esc(refLab(l,k,i))+'</button>'; }).join('')+'</div>'+prm('p_orig'); }
     else if(s.k==='ref'){ var lab=refLab(l,k,s.i), pr=parseRef(DATA[k].refs[s.i][0]);
-      h=kick(T.k_trace+' · '+w,esc(plF(plT().day,{d:ptDay(k)+1,n:PLAN_DAYS}))+' · '+(s.j+1)+' / '+s.n)+'<h2 class="pth ptref">'+sp1(1,lab)+'</h2><blockquote class="ptq"><span data-v="2">…</span></blockquote>'+ptHlRow()
-        +'<div class="ptctx" hidden><div class="ptctxh">'+sp1(3,T.in_context)+'</div><p class="ptp">'+sp1(4,'')+'</p></div>'+prm('p_ref');
+      h=kick(T.k_trace+' · '+w,esc(plF(plT().day,{d:ptDay(k)+1,n:PLAN_DAYS}))+' · '+(s.j+1)+' / '+s.n)+'<h2 class="pth ptref">'+sp1(1,lab)+'</h2><blockquote class="ptq"><span data-v="2">…</span></blockquote>'
+        +'<div class="ptctx" hidden><div class="ptctxh">'+sp1(3,T.in_context)+'</div><p class="ptp ptcxp"></p>'+ptCxTools()+'</div>'
+        +'<div class="ptrow"><button type="button" class="ptlink" data-a="bible" data-ref="'+esc(pr?pr.book+' '+pr.ch+':'+pr.vs:'')+'">📖 '+esc(bibT()[0])+'</button></div>'+prm('p_ref');
       t=null; var me=PT.i;
       ready=(pr?chGet(pr,l):Promise.reject()).then(function(ct){ var v=+pr.vs, a=Math.max(1,v-2), z=Math.min(ct.length,v+2), cx=[];
-          for(var x=a;x<=z;x++) if(ct[x-1]) cx.push(ct[x-1]); return {v:ct[v-1]||refSnip(l,k,s.i),cx:cx.length>1?cx.join(' '):''}; })
-        .catch(function(){ return {v:refSnip(l,k,s.i),cx:''}; })
-        .then(function(o){ if(PT.i!==me) return; var st=$('ptStage'); st.querySelector('.ptq [data-v="2"]').textContent=o.v; ptHlSet(pr,k,s.i,l,o.v);
-          if(o.cx){ st.querySelector('.ptctx').hidden=false; st.querySelector('.ptctx [data-v="4"]').textContent=o.cx; PT.t=[lab,o.v,T.in_context,o.cx]; } else PT.t=[lab,o.v]; });
+          for(var x=a;x<=z;x++) if(ct[x-1]) cx.push({n:x,t:ct[x-1]}); return {v:ct[v-1]||refSnip(l,k,s.i),cx:cx.length>1?cx:null}; })
+        .catch(function(){ return {v:refSnip(l,k,s.i),cx:null}; })
+        .then(function(o){ if(PT.i!==me) return; var st=$('ptStage'); st.querySelector('.ptq [data-v="2"]').textContent=o.v;
+          // Ken, 20 Oct: the highlighting is in the context now -- each verse there is tapped to highlight it
+          if(o.cx){ st.querySelector('.ptctx').hidden=false; PT.cx={book:pr.book,ch:pr.ch,ver:verCode(l,false),k:k,i:s.i,l:l};
+            st.querySelector('.ptcxp').innerHTML=o.cx.map(function(c,j){ return '<sup class="vn">'+c.n+'</sup><span class="cxv'+(c.n===+pr.vs?' cxme':'')+'" data-v="'+(4+j)+'" data-cv="'+c.n+'">'+esc(c.t)+'</span> '; }).join('');
+            ptCxPaint(); PT.t=[lab,o.v,T.in_context].concat(o.cx.map(function(c){ return c.t; })); } else PT.t=[lab,o.v]; });
       var ns=PT.steps[PT.i+1]; if(ns&&ns.k==='ref'){ var nx=parseRef(DATA[k].refs[ns.i][0]); if(nx) chGet(nx,l).catch(function(){}); } }
     else if(s.k==='prayer'){ if(s.i===0) t=[T.list_intro];
       h=kick(T.k_list,(s.i+1)+' / '+s.n)+(s.i===0?'<p class="ptp ptsoft">'+sp1(1,T.list_intro)+'</p>':'')+'<h2 class="pth">'+esc(s.x.title)+'</h2>'+(s.x.body?'<p class="ptp" style="white-space:pre-wrap">'+esc(s.x.body)+'</p>':'')
@@ -3360,6 +3384,11 @@ window.MF=(function(){
   function spToggle(){ if(!sp.on) return; if(spPaused()){ if(sp.audio) sp.audio.play(); else speechSynthesis.resume(); } else { if(sp.audio) sp.audio.pause(); else speechSynthesis.pause(); } setTimeout(MFpauseUI,60); }
   $('ptPause').addEventListener('click',spToggle); $('tPause').addEventListener('click',spToggle);
   function ptGo(i){ PT.i=Math.max(0,Math.min(PT.steps.length-1,i)); $('ptMenu').hidden=true; ptRender(); ptSay(); }
+  // Ken, 20 Oct: "the scripture chapters before and after ... other chapters or books of the Bible if they choose" -- the whole Bible
+  // opens over the devotional, at this chapter; ‹ Devotional brings the person back to the same step
+  function ptBible(ref){ PT.listen=false; stopSpeak(); $('pt').classList.remove('guided'); if(window.MFptModeUI) MFptModeUI();
+    $('ptBibleF').src='/bible/?embed=1&r='+encodeURIComponent(ref||''); $('ptBible').hidden=false; }
+  window.addEventListener('message',function(e){ if(e.origin!==location.origin||!e.data||e.data.mf!=='bible-close') return; $('ptBible').hidden=true; $('ptBibleF').src='about:blank'; if(PT.on) ptRender(); });
   function ptOpen(){ if(window.MFplClose&&!$('mfPlayer').hidden) MFplClose(); stopSpeak(); PT.l=DEVO[MF.lang]?MF.lang:'en'; PT.on=true; PT.listen=false;
     var pt=$('pt'); pt.dir=/^(he|ar)$/.test(PT.l)?'rtl':'ltr'; pt.setAttribute('lang',PT.l); PR=prLocal().filter(function(x){ return prCloud()||!x.c; });
     PT.l2=null; CA.done=false; PT.pickOpen=false; PT.len=dLen(); PT.marked={}; PT.dayOv=null; var pf=planFish(); if(pf!==cur) pick(pf,false); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; document.documentElement.style.overflow='hidden'; ptRender();
@@ -3372,7 +3401,7 @@ window.MF=(function(){
     if(sk==='fish') on=false;   /* that step shows the fish itself, turning */
     if(!on){ if(a) a.remove(); return; } if(a) return;
     st.insertAdjacentHTML('afterbegin','<div class="ptanchor"><div class="ptak">'+esc(ptT().k_welcome)+'</div><span class="pttf" role="img" aria-label="'+esc(titleIn(PT.l,cur))+'">'+(fishFor(PT.l,cur)||FISH[cur]||'')+'</span></div>'); }
-  function ptClose(){ caStop(); PT.on=false; PT.listen=false; stopSpeak(); $('pt').hidden=true; $('ptSheet').hidden=true; $('ptMenu').hidden=true; document.documentElement.style.overflow=''; }
+  function ptClose(){ $('ptBible').hidden=true; caStop(); PT.on=false; PT.listen=false; stopSpeak(); $('pt').hidden=true; $('ptSheet').hidden=true; $('ptMenu').hidden=true; document.documentElement.style.overflow=''; }
   function ptRebuild(keep){ PT.steps=ptSteps(); var j=PT.steps.findIndex(function(s){ return s.k===keep; }); if(j>=0&&keep!=='prayer') PT.i=j; PT.i=Math.min(PT.i,PT.steps.length-1); ptRender(); }
   $('ptBtn').addEventListener('click',ptOpen);
   $('ptX').addEventListener('click',ptClose);
@@ -3408,6 +3437,8 @@ window.MF=(function(){
     if(a==='hlmore'){ var mn=$('ptStage').querySelector('.pthlmenu'), c3=PT.hlc&&PT.hlc.info; if(mn) MFhlMenu(mn,b,c3?{book:parseRef(c3.ref).book,ch:parseRef(c3.ref).ch,ver:c3.ver}:null); return; }
     if(a==='hl'){ var c=PT.hlc; if(!c) return; var inf=JSON.parse(JSON.stringify(c.info)); inf.c=hlColor(); ptHlUI(hlToggle(c.key,inf)); return; }
     // a colour: it becomes the one used from now on; the verse is highlighted in it (or re-coloured if it already is)
+    if(a==='cxc'){ try{ localStorage.setItem('mf-hl-color',b.dataset.c); }catch(er){} [].forEach.call($('ptStage').querySelectorAll('[data-a=cxc]'),function(x){ x.setAttribute('aria-pressed',String(x===b)); }); return; }
+    if(a==='bible'){ ptBible(b.dataset.ref); return; }
     if(a==='hlc'){ try{ localStorage.setItem('mf-hl-color',b.dataset.c); }catch(er){} var c2=PT.hlc; if(!c2){ ptHlUI(false); return; }
       var h2=hls(); if(h2[c2.key]){ h2[c2.key].c=b.dataset.c; saveHls(h2); ptHlUI(true); if(window.MFcloudHl&&MFcloudHl.on()) MFcloudHl.add(h2[c2.key].ref,h2[c2.key].ver,b.dataset.c); }
       else { var inf2=JSON.parse(JSON.stringify(c2.info)); inf2.c=b.dataset.c; ptHlUI(hlToggle(c2.key,inf2)); } return; }
@@ -3706,6 +3737,7 @@ window.MF=(function(){
     var PLx=({en:['Bible in a Year','Day and night readings, 2 Fish a day'],es:['La Biblia en un año','Lectura de día y de noche, 2 Fish al día'],tl:['Biblia sa Isang Taon','Pagbasa sa araw at gabi, 2 Fish araw-araw'],zh:['一年读完圣经','白天和晚上的读经，每天 2 Fish'],hi:['एक साल में बाइबल','दिन और रात का पाठ, हर दिन 2 Fish'],
       el:['Η Βίβλος σε έναν χρόνο','Ανάγνωση μέρας και νύχτας, 2 Fish τη μέρα'],de:['Die Bibel in einem Jahr','Lesung am Tag und am Abend, 2 Fish am Tag'],ko:['1년 성경 읽기','낮과 밤의 말씀, 하루 2 Fish'],he:['התנ״ך והברית החדשה בשנה','קריאה ביום ובלילה, 2 Fish ביום'],ar:['الكتاب المقدس في سنة','قراءة في النهار وفي الليل، 2 Fish كل يوم']})[MF.lang]||['Bible in a Year','Day and night readings, 2 Fish a day'];
     $('smPlLab').textContent=PLx[0]; $('smPlSub').textContent=PLx[1];
+    var BIx=BIBL[MF.lang]||BIBL.en; $('smBiLab').textContent=BIx[2]; $('smBiSub').textContent=BIx[3];
     $('fsTitle').textContent=T.title; $('fsH2').textContent=T.h2;
     Array.prototype.forEach.call(document.querySelectorAll('.fstabs button'),function(b){ b.textContent=T[b.dataset.k]; b.setAttribute('aria-selected',b.dataset.k===FS.kind?'true':'false'); });
     $('fsLTitle').textContent=T.lt; $('fsLText').textContent=FS.kind==='text'?T.ltext:T.ltext_m; $('fsLName').textContent=T.lname; $('fsLWord').textContent=T.lword; $('fsLEmail').textContent=T.lemail;
@@ -3802,6 +3834,7 @@ window.MF=(function(){
   $('smAcct').addEventListener('click',function(){ smPanel('acctBtn','acctBox'); });
   $('smMatch').addEventListener('click',function(){ location.href='/go/'; });
   $('smPlan').addEventListener('click',function(){ location.href='/plan/'; });
+  $('smBible').addEventListener('click',function(){ location.href='/bible/'; });
   $('smStories').addEventListener('click',function(){ $('stories').scrollIntoView({behavior:'smooth',block:'start'}); });
   $('ptStage').addEventListener('click',function(e){ if(e.target.closest('[data-fs]')) fsOpen(); });
   MF.onChange(fsUI); fsUI();
@@ -3844,6 +3877,9 @@ window.MF=(function(){
     if(curVer().k!==$('rVer').value) $('rVer').value=curVer().k; }).catch(function(){});
   // an English chapter in the chosen version: {t:[verses], note}
   function enText(p){ var v=curVer();
+    // the KJV comes from this site's own copy of every chapter (/fish-lang/bible/kjv/): quicker, and there when bible-api.com is not
+    if(v.k==='kjv') return fetch('/fish-lang/bible/kjv/'+p.book.replace(/ /g,'_')+'-'+p.ch+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return {t:j.t,note:'King James Version · public domain'}; })
+      .catch(function(){ return fetch('https://bible-api.com/'+encodeURIComponent(p.book+' '+p.ch)+'?translation=kjv').then(function(r){ return r.json(); }).then(function(j){ var t=[]; (j.verses||[]).forEach(function(x){ t[x.verse-1]=x.text.trim(); }); return {t:t,note:v.n+' · public domain'}; }); });
     if(v.api) return fetch('/api/bible?v='+v.k+'&b='+encodeURIComponent(p.book)+'&c='+p.ch).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return {t:j.t||[],note:j.note||v.n}; });
     return fetch('https://bible-api.com/'+encodeURIComponent(p.book+' '+p.ch)+'?translation='+v.k).then(function(r){ return r.json(); })
       .then(function(j){ var t=[]; (j.verses||[]).forEach(function(x){ t[x.verse-1]=x.text.trim(); }); return {t:t,note:v.n+' · public domain'}; }); }
@@ -4485,7 +4521,7 @@ window.MF=(function(){
       return '<div class="nb mk" data-hk="'+esc(key)+'"><button type="button" class="nref" data-open="'+esc(key)+'">'+esc(String(x.ref).replace(/#.*$/,''))+' · '+esc(verLabel(x.ver||''))+' ›</button>'+(x.text?'<div class="nt">'+esc(x.text)+'</div>':'')+'<div class="nm"><span>'+esc(stamp(x.at))+'</span><button type="button" data-a="unhl">🖍 '+(es?'Quitar':'Unhighlight')+'</button></div></div>';
     }).join(''):'<p class="hlhint">'+(es?'Aún no hay resaltados.':'No highlights yet.')+'</p>'; }
   // open a highlighted verse: the word's reader for that chapter, scrolled to the verse
-  function openHl(x){ if(!x||!DATA[x.k]) return; pick(x.k,false); if(!DATA[x.k].refs[x.i]){ var fb=$('fishbox'); if(fb) fb.scrollIntoView({block:'center',behavior:'smooth'}); return; } var l=x.ver&&x.ver.indexOf('en:')===0?'en':(x.ver==='orig'?'en':x.l||'en');
+  function openHl(x){ if(x&&!DATA[x.k]&&x.ref){ location.href='/bible/?r='+encodeURIComponent(String(x.ref).replace(/#.*$/,'')); return; } if(!x||!DATA[x.k]) return; pick(x.k,false); if(!DATA[x.k].refs[x.i]){ var fb=$('fishbox'); if(fb) fb.scrollIntoView({block:'center',behavior:'smooth'}); return; } var l=x.ver&&x.ver.indexOf('en:')===0?'en':(x.ver==='orig'?'en':x.l||'en');
     if(x.ver&&x.ver.indexOf('en:')===0){ try{ localStorage.setItem(VKEY,x.ver.slice(3)); }catch(e){} if($('rVer')) $('rVer').value=x.ver.slice(3); }
     openReader(x.k,x.i,l);
     var t0=Date.now(); (function find(){ var sp=$('rChapter').querySelector('span[data-v="'+x.v+'"]'); if(sp&&RD){ (x.ver==='orig'&&!RO)?$('rOrig').click():0; setTimeout(function(){ var s2=$('rChapter').querySelector('span[data-v="'+x.v+'"]'); if(s2) s2.scrollIntoView({block:'center',behavior:'smooth'}); },x.ver==='orig'?700:50); return; } if(Date.now()-t0<8000) setTimeout(find,150); })(); }
@@ -4580,7 +4616,7 @@ window.MF=(function(){
         if(row.version==='note') return;   // a highlighted note from another device: shown with its note
         var m=row.verse_ref.match(/^(.*)\s+(\d+):(\d+)(?:#(\d+)-(\d+))?$/); if(!m) return; var k=null,i=0;
         Object.keys(DATA).some(function(w){ return DATA[w].refs.some(function(rf,j){ var p=parseRef(rf[0]); if(p&&p.book===m[1]&&p.ch===m[2]){ k=w; i=j; return true; } }); });
-        if(!k) return; var l=row.version.indexOf('en:')===0||row.version==='orig'?'en':row.version;
+        if(!k&&row.version.indexOf('en:')!==0) return; k=k||''; var l=row.version.indexOf('en:')===0||row.version==='orig'?'en':row.version;   /* a verse highlighted in the Bible (/bible/) has no fish */
         h[row.verse_ref+'|'+row.version]={kind:m[4]?'phrase':'verse',ref:row.verse_ref,ver:row.version,k:k,i:i,l:l,v:+m[3],s:m[4]?+m[4]:undefined,e:m[5]?+m[5]:undefined,c:row.color==='yellow'?'gold':row.color,text:'',at:Date.parse(row.created_at)}; });
       // Ken, 16 Oct: highlights came back gold -- the colour was never sent; now it is, and this device's colour wins
       Object.keys(mine).forEach(function(id){ var x=h[mine[id]], c=x.kind==='note'?'gold':(x.c||'gold'); if(!got[id]||got[id]!==c) MFcloudHl.add(x.kind==='note'?mine[id]:x.ref,x.kind==='note'?'note':x.ver,c); });
