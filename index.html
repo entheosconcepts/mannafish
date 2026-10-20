@@ -6,6 +6,7 @@
 <script>document.documentElement.setAttribute("translate","no");document.documentElement.classList.add("notranslate");</script>
 <script>try{if(localStorage.getItem("mf-mode")==="light")document.documentElement.setAttribute("data-mode","light");}catch(e){}</script>
 <script src="/fish-lang/spell/spell.js" defer onload="MFspell.watch('#notesText,#psT,#psB,#ptCNote,#fsText')"></script>
+<script src="/fish-lang/tabbar.js" defer></script>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -4236,7 +4237,8 @@ window.MF=(function(){
     return n; }
   function saveAll(n){ try{ localStorage.setItem(N2,JSON.stringify(n)); return true; }catch(e){ return false; } }
   window.MFlocalNotes=notesAll;
-  function wordName(k){ return MF.lang==='es'&&MF.es&&MF.es.titles?(MF.es.titles[k]||DATA[k].title):DATA[k].title; }
+  // a note written in the Bible (/bible/) is kept under BIBLE:<reference> (Ken, 20 Oct: one set of notes)
+  function wordName(k){ if(/^BIBLE:/.test(k)) return '📖 '+k.slice(6); if(!DATA[k]) return String(k); return MF.lang==='es'&&MF.es&&MF.es.titles?(MF.es.titles[k]||DATA[k].title):DATA[k].title; }
   function cloudOn(){ return !!(window.MFcloudNotes&&MFcloudNotes.on()); }
   function stamp(t){ try{ return new Date(t).toLocaleString(MF.lang==='en'?'en-US':MF.lang,{weekday:'short',month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}); }catch(e){ return ''; } }
   function noteList(k){ return cloudOn()?MFcloudNotes.list(k):Promise.resolve((notesAll()[k]||[]).slice()); }
@@ -4315,7 +4317,7 @@ window.MF=(function(){
   $('nReadAll').addEventListener('click',function(){ nRead(1,NL.length,this); });
   MF.onChange(nReadUI); nReadUI();
   function noteClick(e){ var nb=e.target.closest('.nb'); if(!nb) return; var id=nb.dataset.id, es=MF.lang==='es', nk=nb.dataset.k||cur;
-    var rf=e.target.closest('.nref'); if(rf){ if(rf.dataset.k!==cur) pick(rf.dataset.k,false); return; }
+    var rf=e.target.closest('.nref'); if(rf){ if(/^BIBLE:/.test(rf.dataset.k)){ location.href='/bible/?r='+encodeURIComponent(rf.dataset.k.slice(6).replace(/[–-]\d+$/,'').replace(/,.*$/,'')); return; } if(rf.dataset.k!==cur&&DATA[rf.dataset.k]) pick(rf.dataset.k,false); return; }
     var b=e.target.closest('[data-a]'); if(!b) return;
     if(b.dataset.a==='pub'){ var on=b.checked, txt=nb.querySelector('.nt').textContent; b.disabled=true;
       pubSet(id,on,{kind:'note',title:'',text:txt,word:wordName(nk)}).then(function(url){ showNotes(); if(on&&url) shareLink(url,'MannaFish · '+wordName(nk)); else toast(es?'Ahora es privada':'Now private'); },
@@ -4338,7 +4340,7 @@ window.MF=(function(){
       var d=function(t){ try{ return new Date(t).toLocaleString(es?'es':'en',{year:'numeric',month:'long',day:'numeric',hour:'numeric',minute:'2-digit'}); }catch(e){ return ''; } }, by={};
       list.forEach(function(n){ (by[n.k]=by[n.k]||[]).push(n); });
       var out='MannaFish · '+(es?'Mis notas':'My notes')+'\n'+(es?'Exportado ':'Exported ')+d(Date.now())+'\n';
-      Object.keys(by).sort(function(a,b){ return String(wordName(a)).localeCompare(String(wordName(b))); }).forEach(function(k){ out+='\n== '+(DATA[k]?wordName(k):k)+' ==\n';
+      Object.keys(by).sort(function(a,b){ return String(wordName(a)).localeCompare(String(wordName(b))); }).forEach(function(k){ out+='\n== '+wordName(k)+' ==\n';
         by[k].sort(function(a,b){ return a.at-b.at; }).forEach(function(n){ out+='\n'+d(n.at)+(n.ed&&n.ed!==n.at?' ('+(es?'editada ':'edited ')+d(n.ed)+')':'')+'\n'+n.text+'\n'; }); });
       MFexport('MannaFish-notes-'+new Date().toISOString().slice(0,10)+'.txt',out,'MannaFish · '+(es?'Mis notas':'My notes')); }).catch(function(){ b.disabled=false; }); });
   $('nSort').addEventListener('change',function(){ try{ localStorage.setItem('mf-nsort',this.value); }catch(e){} showNotes(); });
@@ -4580,7 +4582,7 @@ window.MF=(function(){
   function when(d){ try{ return new Date(d).toLocaleDateString(MF.lang==='es'?'es':'en',{month:'short',day:'numeric',year:'numeric'}); }catch(e){ return ''; } }
   function fillAcct(){ if(!me||!sb) return;
     sb.from('notes').select('word_key,body,updated_at').eq('site',SITE).order('updated_at',{ascending:false}).limit(20).then(function(r){
-      var rows=(r.data||[]).filter(function(n){return n.body&&DATA[n.word_key];});
+      var rows=(r.data||[]).filter(function(n){return n.body&&(DATA[n.word_key]||/^BIBLE:/.test(n.word_key));});
       $('acctNotes').innerHTML=rows.length?rows.map(function(n){return '<div class="it"><button type="button" data-k="'+n.word_key+'">'+esc2(wordName(n.word_key))+'</button> <span class="mu">'+when(n.updated_at)+'</span><br>'+esc2(n.body.length>140?n.body.slice(0,140)+'…':n.body)+'</div>';}).join(''):'<div class="mu">'+T('No notes yet.','Aún no hay notas.')+'</div>'; });
     hlSync().then(function(){ var h=window.MFhls?MFhls():{}, ks=Object.keys(h).filter(function(x){ return h[x].kind==='verse'; }).sort(function(a,b){ return (h[b].at||0)-(h[a].at||0); }).slice(0,30);
       $('acctHl').innerHTML=ks.length?ks.map(function(x){ var y=h[x]; return '<div class="it"><button type="button" data-hl="'+esc2(x)+'">'+esc2(y.ref)+'</button> <span class="mu">'+when(y.at)+'</span>'+(y.text?'<br>'+esc2(y.text.length>140?y.text.slice(0,140)+'…':y.text):'')+'</div>'; }).join(''):'<div class="mu">'+T('No highlights yet. Tap a word in the reader, then Highlight verse.','Aún no hay resaltados. Toca una palabra en el lector y luego Resaltar versículo.')+'</div>'; });
@@ -4598,7 +4600,7 @@ window.MF=(function(){
       if(row) return text.trim()? sb.from('notes').update({body:text}).eq('id',row.id) : sb.from('notes').delete().eq('id',row.id);
       if(text.trim()) return sb.from('notes').insert({site:SITE,word_key:k,body:text}); }); }
   // device notes and highlights move into the account at sign-in (each note once; the same words are not copied twice)
-  function moveDeviceNotes(){ var n=window.MFlocalNotes?MFlocalNotes():{}, ks=Object.keys(n).filter(function(k){ return (n[k]||[]).length && DATA[k]; });
+  function moveDeviceNotes(){ var n=window.MFlocalNotes?MFlocalNotes():{}, ks=Object.keys(n).filter(function(k){ return (n[k]||[]).length && (DATA[k]||/^BIBLE:/.test(k)); });
     // a highlighted note keeps its highlight under the note's account id
     var h=window.MFhls?MFhls():{};
     var a=Promise.all(ks.map(function(k){ return sb.from('notes').select('id,body').eq('site',SITE).eq('word_key',k).then(function(r){ var have={}; (r.data||[]).forEach(function(x){ have[x.body]=x.id; });
@@ -4656,7 +4658,7 @@ window.MF=(function(){
     sb.auth.verifyOtp({email:$('acctEmail').value.trim(),token:code,type:'email'}).then(function(r){ if(r.error) throw r.error; $('acctMsg').textContent=''; $('acctCodeF').hidden=true; $('acctCode').value=''; })
       .catch(function(){ $('acctMsg').textContent=T('That code did not work. Check it, or send a new one.','Ese código no funcionó. Revísalo o pide uno nuevo.'); }); });
   $('acctOutBtn').addEventListener('click',function(){ sb&&sb.auth.signOut(); });
-  ['acctNotes','acctAct'].forEach(function(id){ $(id).addEventListener('click',function(e){ var b=e.target.closest('button[data-k]'); if(b){ pick(b.dataset.k,true); } }); });
+  ['acctNotes','acctAct'].forEach(function(id){ $(id).addEventListener('click',function(e){ var b=e.target.closest('button[data-k]'); if(!b) return; if(/^BIBLE:/.test(b.dataset.k)){ location.href='/bible/?r='+encodeURIComponent(b.dataset.k.slice(6).replace(/[–-]\d+$/,'').replace(/,.*$/,'')); return; } if(DATA[b.dataset.k]) pick(b.dataset.k,true); }); });
   $('acctHl').addEventListener('click',function(e){ var b=e.target.closest('button[data-hl]'); if(b&&window.MFopenHl) MFopenHl(b.dataset.hl); });
   // one tap from the email: the link carries a one-time key that is used only here, on the page,
   // so mail programs that open links early to check them cannot use it up
