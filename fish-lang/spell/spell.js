@@ -73,7 +73,7 @@
     if(!bad.length){ b.hidden=true; b.innerHTML=''; return; }
     b.innerHTML='<span class="h">'+L[0]+'</span>'+bad.map(function(x){ return '<span class="x"><s>'+esc(x.w)+'</s>'+x.sug.map(function(s){ return '<button type="button" data-w="'+esc(x.w)+'" data-to="'+esc(s)+'">'+esc(s)+'</button>'; }).join('')
       +'<button type="button" class="k" data-w="'+esc(x.w)+'" aria-label="'+L[1]+' '+esc(x.w)+'">'+L[1]+'</button></span>'; }).join(''); b.hidden=false; }
-  function watch(sel){ var T=new WeakMap();
+  function watch(sel){ var T=new WeakMap(); try{ if((JSON.parse(localStorage.getItem('mf-set')||'{}')||{}).spell===false) return; }catch(e){}
     function hook(el){ if(el._mfspw) return; el._mfspw=1; el.setAttribute('spellcheck','true'); el.setAttribute('autocorrect','on'); if(el.tagName==='TEXTAREA') el.setAttribute('autocapitalize','sentences');
       load(); el.addEventListener('input',function(){ clearTimeout(T.get(el)); T.set(el,setTimeout(function(){ run(el); },650)); });
       el.addEventListener('blur',function(){ setTimeout(function(){ run(el); },50); }); if(el.value) run(el); }

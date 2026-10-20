@@ -14,7 +14,9 @@
     '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9h16M9 3v4M15 3v4"/><path d="m9 14 2 2 4-4"/>',
     '<path d="M3 14c3-3 6-3 9 0s6 3 9 0"/><path d="M3 18c3-3 6-3 9 0s6 3 9 0"/><path d="M8 9c2-3 6-3 8 0-2 3-6 3-8 0zM16 9l3-2v4z"/>',
     '<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>'];
-  var H=['/','/bible/','/plan/','/go/','/you/'];
+  // the Bible tab opens the contents (books, versions, recent), unless the person chose "where I left off" (You → Settings)
+  var SET={}; try{ SET=JSON.parse(localStorage.getItem('mf-set')||'{}')||{}; }catch(e){}
+  var H=['/',SET.tab==='last'?'/bible/':'/bible/?toc=1','/plan/','/go/','/you/'];
   var css='.mftabs{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(8px + env(safe-area-inset-bottom));z-index:21;display:flex;gap:2px;padding:5px;border-radius:999px;'
     +'background:rgba(20,22,26,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 30px -10px rgba(0,0,0,.7);width:min(460px,calc(100% - 16px))}'
     +'.mftabs a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 2px 6px;border-radius:999px;color:#c9d3d6;text-decoration:none;font:700 .7rem Archivo,system-ui,sans-serif;letter-spacing:.01em}'

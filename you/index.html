@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Spectral:ital,wght@0,400;1,400&family=Archivo:wght@400;600;700;800&display=swap">
 <script src="/fish-lang/spell/spell.js" defer onload="MFspell.watch('#pT,#pB,.pedit input,.pedit textarea')"></script>
 <script src="/fish-lang/tabbar.js" defer></script>
+<script src="/fish-lang/account.js" defer></script>
 <!-- Ken, 20 Oct: "If somebody just wanted to open the Bible and read any scripture and highlight and save highlights, or create notes, or prayers"
      -- the You tab: everything a person keeps in MannaFish in one place. My prayers (add, edit, answered), My notes (from the fish and from the
      Bible), My highlights, Saved verses, My links, and Export. What is kept on this device; signed in on Today, it goes to the account too. -->
@@ -51,6 +52,31 @@ section{display:none}section.on{display:block}
 details>summary{cursor:pointer;color:var(--dim);font-weight:700;margin:14px 0 8px}
 .toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-weight:700;font-size:.9rem;z-index:60;display:none}
 .toast.on{display:block}
+.acct{background:var(--card2);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin:0 0 14px}
+.acct h2{margin:0 0 4px;font:600 1.2rem 'Fraunces',Georgia,serif}.acct p{margin:0 0 10px;color:var(--dim);font-size:.92rem}
+.acct form{display:flex;gap:8px;flex-wrap:wrap}.acct input{flex:1 1 200px;min-width:0;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 12px;color:var(--text)}
+.acct .msg{margin:8px 0 0;font-size:.88rem;color:var(--dim)}.acct .me{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.acct .me b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.ok{color:var(--ok)}
+.chk{width:22px;height:22px;flex:none;accent-color:#e8735c;margin:0 8px 0 0}
+.selrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:0 0 10px}.selrow .sp{flex:1}
+.b.red{border-color:#e8735c;color:#e8735c}.b.redf{background:#e8735c;border-color:#e8735c;color:#fff}
+.cf{display:flex;gap:6px;margin:0 0 10px;flex-wrap:wrap}.cf button{width:34px;height:34px;border-radius:50%;border:2px solid transparent;cursor:pointer}.cf button.all{width:auto;border-radius:999px;padding:0 12px;background:none;border-color:var(--line);font-weight:700;font-size:.85rem}
+.cf button[aria-pressed=true]{border-color:var(--text)}
+.day{margin:14px 2px 6px;font:800 .72rem 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.hist{display:flex;flex-wrap:wrap;gap:6px}.hist a{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 12px;font-weight:600;font-size:.9rem;color:var(--text);text-decoration:none}
+/* settings */
+.set h3{margin:18px 2px 8px;font:800 .72rem 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.opt{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 6px}
+.opt .l{flex:1;min-width:0}.opt .l b{display:block;font-weight:700}.opt .l small{display:block;color:var(--dim);font-size:.82rem}
+.opt select{border:1px solid var(--line);background:var(--card2);border-radius:10px;padding:8px;max-width:52%;color:var(--text)}
+.tg{position:relative;width:50px;height:30px;flex:none;appearance:none;-webkit-appearance:none;background:rgba(128,128,128,.35);border-radius:999px;cursor:pointer;transition:background .2s;margin:0}
+.tg::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .2s}
+.tg:checked{background:var(--blue2)}.tg:checked::after{transform:translateX(20px)}
+.segs{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}.segs button{border:1px solid var(--line);background:none;border-radius:999px;padding:7px 11px;font-weight:700;font-size:.84rem;cursor:pointer}
+.segs button[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+.prev{font-family:var(--ff,'Spectral',Georgia,serif);font-size:var(--fs,1.18rem);line-height:var(--lh,1.85);background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 6px}
+.prev sup{font:700 .66rem 'Archivo',sans-serif;color:var(--dim);margin-right:3px}.novn .prev sup{display:none}
+input[type=range]{width:46%;accent-color:var(--blue2)}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -58,13 +84,23 @@ details>summary{cursor:pointer;color:var(--dim);font-weight:700;margin:14px 0 8p
 <div class="wrap">
   <div class="top"><a class="brand" href="/">Manna<b>Fish</b></a><button type="button" class="ib" id="exp">&#11015;&#xFE0E; Export all</button></div>
   <h1>You</h1>
-  <p class="lead">Your prayers, notes, highlights and saved verses, all in one place.</p>
+  <p class="lead">Your prayers, notes, highlights, saved verses, history and settings, all in one place.</p>
+  <div class="acct" id="acct">
+    <div id="acOut"><h2>Your free account</h2><p>Keep your notes, prayers, highlights, saved verses, history and settings safe, and on every phone and computer. No password: we email you a code.</p>
+      <form id="acF"><input id="acE" type="email" autocomplete="email" placeholder="Your email" required><button type="submit" class="b p">Email me a code</button></form>
+      <form id="acC" hidden style="margin-top:8px"><input id="acK" inputmode="numeric" autocomplete="one-time-code" placeholder="Code from the email"><button type="submit" class="b p">Sign in</button></form>
+      <p class="msg" id="acM" aria-live="polite"></p></div>
+    <div id="acIn" hidden><div class="me"><span class="ok">&#10003;</span><b id="acWho"></b><button type="button" class="b" id="acSync">Sync now</button><button type="button" class="b" id="acX">Sign out</button></div>
+      <p class="msg" id="acS" aria-live="polite"></p></div>
+  </div>
   <div class="tabs" role="tablist">
     <button type="button" data-t="pr" aria-pressed="true">Prayers<small id="nPr"></small></button>
     <button type="button" data-t="no" aria-pressed="false">Notes<small id="nNo"></small></button>
     <button type="button" data-t="hl" aria-pressed="false">Highlights<small id="nHl"></small></button>
     <button type="button" data-t="sv" aria-pressed="false">Saved<small id="nSv"></small></button>
     <button type="button" data-t="li" aria-pressed="false">Links<small id="nLi"></small></button>
+    <button type="button" data-t="hi" aria-pressed="false">History</button>
+    <button type="button" data-t="st" aria-pressed="false">&#9881;&#xFE0E; Settings</button>
   </div>
 
   <section id="pr" class="on">
@@ -74,11 +110,13 @@ details>summary{cursor:pointer;color:var(--dim);font-weight:700;margin:14px 0 8p
     <details id="prDone"><summary></summary><div id="prDoneList"></div></details>
   </section>
   <section id="no"><input class="find" id="noFind" type="search" placeholder="Search my notes" autocomplete="off"><div id="noList"></div></section>
-  <section id="hl"><div id="hlList"></div></section>
+  <section id="hl"><div class="cf" id="hlCol"></div><div class="selrow" id="hlBar"></div><div id="hlList"></div></section>
   <section id="sv"><div id="svList"></div></section>
   <section id="li"><div id="liList"></div></section>
+  <section id="hi"><div id="hiList"></div></section>
+  <section id="st" class="set"><div id="stBox"></div></section>
 
-  <p class="foot">Kept on this device. Signed in on <a href="/">Today</a> (••• &rarr; My stuff), your notes, prayers and highlights go to your account too, and come back on any phone or computer.</p>
+  <p class="foot" id="foot">Kept on this device. With a free account (at the top), it goes to your account too, and comes back on any phone or computer.</p>
 </div>
 <div class="toast" id="toast" role="status"></div>
 <script>
@@ -89,6 +127,8 @@ details>summary{cursor:pointer;color:var(--dim);font-weight:700;margin:14px 0 8p
   function put(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
   if((function(){ try{ return localStorage.getItem('mf-mode'); }catch(e){} })()==='light') document.documentElement.setAttribute('data-mode','light');
   function toast(t){ var e=$('toast'); e.textContent=t; e.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(function(){ e.classList.remove('on'); },2200); }
+  function touch(name){ if(window.MFacct) MFacct.touch(name); }
+  function SET(k,d){ var o=get('mf-set',{}); return o[k]!==undefined&&o[k]!==null?o[k]:d; }
   function day(t){ try{ return new Date(t).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}); }catch(e){ return ''; } }
   var HLC={gold:'#f5d76e',green:'#8ddca4',blue:'#93bff5',pink:'#f5a9cb',orange:'#f8b273'};
   function bible(ref){ return '/bible/?r='+encodeURIComponent(String(ref||'').replace(/#.*$/,'').replace(/[–-]\d+$/,'').replace(/,.*$/,'')); }
@@ -97,7 +137,7 @@ details>summary{cursor:pointer;color:var(--dim);font-weight:700;margin:14px 0 8p
   document.querySelector('.tabs').addEventListener('click',function(e){ var b=e.target.closest('[data-t]'); if(!b) return;
     [].forEach.call(this.querySelectorAll('button'),function(x){ x.setAttribute('aria-pressed',String(x===b)); }); [].forEach.call(document.querySelectorAll('section'),function(s){ s.classList.toggle('on',s.id===b.dataset.t); });
     try{ sessionStorage.setItem('mf-you-tab',b.dataset.t); }catch(er){} });
-  try{ var t0=sessionStorage.getItem('mf-you-tab')||(location.hash||'').slice(1); var tb=t0&&document.querySelector('.tabs [data-t="'+t0+'"]'); if(tb) tb.click(); }catch(e){}
+  try{ var t0=(location.hash&&location.hash!=='#acct'?location.hash.slice(1):'')||sessionStorage.getItem('mf-you-tab'); var tb=t0&&document.querySelector('.tabs [data-t="'+t0+'"]'); if(tb) tb.click(); }catch(e){}
 
   // ── prayers (the same list as the devotional's) ──
   var EDIT=null;
@@ -113,13 +153,14 @@ details>summary{cursor:pointer;color:var(--dim);font-weight:700;margin:14px 0 8p
       +(x.status==='open'?'<button type="button" class="b" data-a="arc">Archive</button>':'')+'<button type="button" class="b" data-a="del">Delete</button>'+(/^Pray · /.test(x.title)?'<a class="b" href="'+bible(x.title.slice(7))+'">📖 Open</a>':'')+'</div></div>'; }
   $('pAdd').addEventListener('click',function(){ var t=$('pT').value.trim(), b=$('pB').value.trim(); if(!t&&!b){ $('pT').focus(); return; }
     var P=prayers(); P.unshift({id:'p'+Date.now(),title:t||b.split('\n')[0].slice(0,80),body:t?b:b.split('\n').slice(1).join('\n'),status:'open',at:Date.now()}); put('mf-prayers',P);
-    $('pT').value=''; $('pB').value=''; toast('Added to your prayers'); drawPr(); });
+    $('pT').value=''; $('pB').value=''; touch(); toast('Added to your prayers'); drawPr(); });
   $('pr').addEventListener('click',function(e){ var b=e.target.closest('[data-a]'); if(!b) return; var c=b.closest('.card'), id=c&&c.dataset.id, P=prayers(), x=P.filter(function(y){ return String(y.id)===id; })[0], a=b.dataset.a; if(!x) return;
     if(a==='edit'){ EDIT=x.id; drawPr(); return; } if(a==='cancel'){ EDIT=null; drawPr(); return; }
     if(a==='save'){ var t=c.querySelector('input').value.trim(), bd=c.querySelector('textarea').value.trim(); if(!t&&!bd) return; x.title=t||bd.split('\n')[0].slice(0,80); x.body=t?bd:bd.split('\n').slice(1).join('\n'); x.edited=Date.now(); EDIT=null; toast('Saved'); }
     if(a==='ans'){ x.status='answered'; x.done=Date.now(); toast('✓ Answered'); } if(a==='arc'){ x.status='archived'; x.done=Date.now(); } if(a==='open'){ x.status='open'; }
-    if(a==='del'){ if(!confirm('Delete this prayer?')) return; P=P.filter(function(y){ return y!==x; }); }
-    put('mf-prayers',P); drawPr(); });
+    if(a==='del'){ if(!confirm('Delete this prayer?')) return; P=P.filter(function(y){ return y!==x; }); if(window.MFacct) MFacct.prayerGone(x); }
+    else if(x.c) x.dirty=1;
+    put('mf-prayers',P); touch(); drawPr(); });
 
   // ── notes: from the fish and from the Bible (My notes) ──
   function allNotes(){ var N=get('mf-notes2',{}), out=[]; Object.keys(N).forEach(function(k){ (N[k]||[]).forEach(function(n){ if(n&&n.text) out.push({k:k,n:n}); }); });
@@ -128,22 +169,119 @@ details>summary{cursor:pointer;color:var(--dim);font-weight:700;margin:14px 0 8p
     L=L.filter(function(x){ return !q||x.n.text.toLowerCase().indexOf(q)>=0||x.k.toLowerCase().indexOf(q)>=0; });
     $('noList').innerHTML=L.length?L.map(function(x){ var bi=x.k.indexOf('BIBLE:')===0, name=bi?x.k.slice(6):word(x.k);
       return '<div class="card"><div class="h"><b class="t">'+(bi?'📖 ':'🐟 ')+esc(name)+'</b><span class="d">'+esc(day(x.n.at))+(x.n.ed?' · edited':'')+'</span></div>'+(x.n.words?'<p class="q">“'+esc(x.n.words)+'”</p>':'')+'<p>'+esc(x.n.text)+'</p>'
-        +'<div class="row"><a class="b" href="'+(bi?bible(name):'/?w='+x.k.toLowerCase())+'">'+(bi?'📖 Open in the Bible':'🐟 Open the fish')+'</a></div></div>'; }).join(''):'<p class="empty">'+(q?'No notes match.':'No notes yet. Write one on a fish, or tap Note on a verse in the Bible.')+'</p>'; }
+        +'<div class="row"><a class="b" href="'+(bi?bible(name):'/?w='+x.k.toLowerCase())+'">'+(bi?'📖 Open in the Bible':'🐟 Open the fish')+'</a><button type="button" class="b" data-nd="'+esc(x.k)+'|'+esc(String(x.n.id))+'">Delete</button></div></div>'; }).join(''):'<p class="empty">'+(q?'No notes match.':'No notes yet. Write one on a fish, or tap Note on a verse in the Bible.')+'</p>'; }
   $('noFind').addEventListener('input',drawNo);
+  $('noList').addEventListener('click',function(e){ var b=e.target.closest('[data-nd]'); if(!b||!confirm('Delete this note?')) return; var i=b.dataset.nd.lastIndexOf('|'), k=b.dataset.nd.slice(0,i), id=b.dataset.nd.slice(i+1), N=get('mf-notes2',{});
+    N[k]=(N[k]||[]).filter(function(n){ return String(n.id)!==id; }); if(!N[k].length) delete N[k]; put('mf-notes2',N); if(window.MFacct) MFacct.noteGone(id); toast('Note deleted'); drawNo(); });
 
-  // ── highlights, saved verses, links ──
-  function drawHl(){ var H=get('mf-hl',{}), L=Object.keys(H).map(function(k){ return H[k]; }).filter(function(x){ return x.kind==='verse'||x.kind==='phrase'; }).sort(function(a,b){ return (b.at||0)-(a.at||0); });
-    $('nHl').textContent=L.length||'';
+  // ── highlights (Ken, 20 Oct: "I need to be able to remove all highlights, or click and remove only selected highlights") ──
+  var HSEL=null, HCOL='';
+  function hlAll(){ var H=get('mf-hl',{}); return Object.keys(H).map(function(k){ var x=H[k]; x._k=k; return x; }).filter(function(x){ return x.kind==='verse'||x.kind==='phrase'; }).sort(function(a,b){ return (b.at||0)-(a.at||0); }); }
+  function hlRemove(keys){ var H=get('mf-hl',{}); keys.forEach(function(k){ var x=H[k]; if(!x) return; delete H[k]; if(window.MFacct) MFacct.hlGone(x); else { var L=get('mf-hl-del',[]); L.push([x.ref,x.ver]); put('mf-hl-del',L); } }); put('mf-hl',H); touch(); }
+  function drawHl(){ var A=hlAll(), L=A.filter(function(x){ return !HCOL||(x.c||'gold')===HCOL; }); $('nHl').textContent=A.length||'';
+    var cols={}; A.forEach(function(x){ cols[x.c||'gold']=1; });
+    $('hlCol').innerHTML=A.length?'<button type="button" class="all" data-col="" aria-pressed="'+(!HCOL)+'">All colours</button>'+Object.keys(HLC).filter(function(c){ return cols[c]; }).map(function(c){ return '<button type="button" data-col="'+c+'" aria-label="Only '+c+'" aria-pressed="'+(HCOL===c)+'" style="background:'+HLC[c]+'"></button>'; }).join(''):'';
+    var n=HSEL?Object.keys(HSEL).length:0;
+    $('hlBar').innerHTML=!A.length?'':HSEL?'<button type="button" class="b" data-h="all">'+(L.length&&L.every(function(x){ return HSEL[x._k]; })?'Select none':'Select all'+(HCOL?' '+HCOL:''))+'</button><span class="sp"></span><button type="button" class="b" data-h="cancel">Cancel</button><button type="button" class="b redf" data-h="rm"'+(n?'':' disabled')+'>Remove '+(n||'')+'</button>'
+      :'<button type="button" class="b" data-h="pick">&#9745;&#xFE0E; Choose to remove</button><span class="sp"></span><button type="button" class="b red" data-h="wipe">Remove all highlights</button>';
     $('hlList').innerHTML=L.length?L.map(function(x){ var ref=String(x.ref).replace(/#.*$/,''), v=String(x.ver||'').replace(/^en:/,'').toUpperCase();
-      return '<div class="card"><div class="h"><b class="t"><span class="sw" style="background:'+(HLC[x.c]||HLC.gold)+'"></span>'+esc(ref)+(v&&v!=='ORIG'?' · '+esc(v):'')+'</b><span class="d">'+esc(day(x.at))+'</span></div>'+(x.text?'<p class="q">'+(x.kind==='phrase'?'“'+esc(x.text)+'”':esc(x.text))+'</p>':'')
-        +'<div class="row"><a class="b" href="'+bible(ref)+'">📖 Open</a></div></div>'; }).join(''):'<p class="empty">No highlights yet. In the Bible, tap a verse or drag across words and pick a colour.</p>'; }
+      return '<div class="card" data-k="'+esc(x._k)+'"><div class="h">'+(HSEL?'<input type="checkbox" class="chk" aria-label="Choose '+esc(ref)+'"'+(HSEL[x._k]?' checked':'')+'>':'')+'<b class="t" style="flex:1"><span class="sw" style="background:'+(HLC[x.c]||HLC.gold)+'"></span>'+esc(ref)+(v&&v!=='ORIG'?' · '+esc(v):'')+'</b><span class="d">'+esc(day(x.at))+'</span></div>'+(x.text?'<p class="q">'+(x.kind==='phrase'?'“'+esc(x.text)+'”':esc(x.text))+'</p>':'')
+        +(HSEL?'':'<div class="row"><a class="b" href="'+bible(ref)+'">📖 Open</a><button type="button" class="b" data-one="1">&#10005; Remove</button></div>')+'</div>'; }).join(''):'<p class="empty">'+(A.length?'No highlights in this colour.':'No highlights yet. In the Bible, tap a verse or drag across words and pick a colour.')+'</p>'; }
+  $('hlCol').addEventListener('click',function(e){ var b=e.target.closest('[data-col]'); if(!b) return; HCOL=b.dataset.col; drawHl(); });
+  $('hlBar').addEventListener('click',function(e){ var b=e.target.closest('[data-h]'); if(!b) return; var a=b.dataset.h, L=hlAll().filter(function(x){ return !HCOL||(x.c||'gold')===HCOL; });
+    if(a==='pick') HSEL={}; if(a==='cancel') HSEL=null;
+    if(a==='all'){ var every=L.length&&L.every(function(x){ return HSEL[x._k]; }); HSEL={}; if(!every) L.forEach(function(x){ HSEL[x._k]=1; }); }
+    if(a==='rm'){ var ks=Object.keys(HSEL); if(!ks.length) return; hlRemove(ks); toast(ks.length+' highlight'+(ks.length===1?'':'s')+' removed'); HSEL=null; }
+    if(a==='wipe'){ var all=hlAll(); if(!confirm('Remove all '+all.length+' highlights? This cannot be undone.')) return; hlRemove(all.map(function(x){ return x._k; })); toast('All highlights removed'); HCOL=''; }
+    drawHl(); });
+  $('hlList').addEventListener('click',function(e){ var c=e.target.closest('.card'); if(!c) return;
+    if(HSEL){ if(e.target.closest('a')) return; var k=c.dataset.k; if(HSEL[k]) delete HSEL[k]; else HSEL[k]=1; drawHl(); return; }
+    if(e.target.closest('[data-one]')){ hlRemove([c.dataset.k]); toast('Highlight removed'); drawHl(); } });
   function drawSv(){ var L=get('mf-bible-saved',[]); $('nSv').textContent=L.length||'';
     $('svList').innerHTML=L.length?L.map(function(x,i){ return '<div class="card"><div class="h"><b class="t">🔖 '+esc(x.ref)+' · '+esc(x.ver||'')+'</b><span class="d">'+esc(day(x.at))+'</span></div><p class="q">'+esc(x.text)+'</p><div class="row"><a class="b" href="'+bible(x.ref)+'">📖 Open</a><button type="button" class="b" data-un="'+i+'">Remove</button></div></div>'; }).join(''):'<p class="empty">Nothing saved yet. Tap Save on a verse in the Bible.</p>'; }
-  $('svList').addEventListener('click',function(e){ var b=e.target.closest('[data-un]'); if(!b) return; var L=get('mf-bible-saved',[]); L.splice(+b.dataset.un,1); put('mf-bible-saved',L); drawSv(); });
+  $('svList').addEventListener('click',function(e){ var b=e.target.closest('[data-un]'); if(!b) return; var L=get('mf-bible-saved',[]); L.splice(+b.dataset.un,1); put('mf-bible-saved',L); touch('saved'); drawSv(); });
   function drawLi(){ var L=get('mf-bible-links',[]); $('nLi').textContent=L.length||'';
     $('liList').innerHTML=L.length?L.map(function(l){ return '<div class="card"><div class="h"><b class="t">🔗 '+esc(l.a.ref)+' → '+esc(l.z.ref)+'</b><span class="d">'+esc(day(l.at))+'</span></div>'+(l.a.words?'<p class="q">on “'+esc(l.a.words)+'”</p>':'')+(l.note?'<p>'+esc(l.note)+'</p>':'')
       +'<div class="row"><a class="b" href="'+bible(l.a.ref)+'">📖 '+esc(l.a.ref)+'</a><a class="b" href="'+bible(l.z.ref)+'">📖 '+esc(l.z.ref)+'</a><button type="button" class="b" data-del="'+esc(l.id)+'">Remove</button></div></div>'; }).join(''):'<p class="empty">No links yet. In the Bible, pick a verse or some words and tap Link to join them to another passage.</p>'; }
-  $('liList').addEventListener('click',function(e){ var b=e.target.closest('[data-del]'); if(!b) return; put('mf-bible-links',get('mf-bible-links',[]).filter(function(l){ return l.id!==b.dataset.del; })); drawLi(); });
+  $('liList').addEventListener('click',function(e){ var b=e.target.closest('[data-del]'); if(!b) return; put('mf-bible-links',get('mf-bible-links',[]).filter(function(l){ return l.id!==b.dataset.del; })); touch('links'); drawLi(); });
+
+  // ── history: the chapters read, newest first (Ken, 20 Oct: "see your recent and history") ──
+  var BK=["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther","Job","Psalm","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi","Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"];
+  function drawHi(){ var L=get('mf-bible-hist',[]).filter(function(x){ return BK[x.b]; }), out='', d0='';
+    if(!SET('hist',true)) out+='<p class="empty">History is off (Settings → Remember what I read).</p>';
+    L.forEach(function(x){ var d=day(x.at); if(d!==d0){ out+=(d0?'</div>':'')+'<div class="day">'+esc(d===day(Date.now())?'Today':d)+'</div><div class="hist">'; d0=d; }
+      out+='<a href="/bible/?r='+encodeURIComponent(BK[x.b]+' '+x.c)+'">'+esc(BK[x.b]+' '+x.c)+'</a>'; });
+    if(d0) out+='</div>';
+    var P=get('mf-read-plan',null), pd=P&&P.done?Object.keys(P.done).length:0;
+    $('hiList').innerHTML=(L.length?'<a class="b p" href="/bible/?r='+encodeURIComponent(BK[L[0].b]+' '+L[0].c)+'" style="margin:0 0 6px">&#128214;&#xFE0E; Continue: '+esc(BK[L[0].b]+' '+L[0].c)+'</a>':'')+(pd?' <a class="b" href="/plan/" style="margin:0 0 6px">Bible in a Year: '+pd+' read</a>':'')
+      +(out||'<p class="empty">Nothing read yet. Open the Bible tab and pick a book.</p>')+(L.length?'<div class="row" style="margin-top:16px"><button type="button" class="b red" id="hiClear">Clear history</button></div>':''); }
+  $('hiList').addEventListener('click',function(e){ if(!e.target.closest('#hiClear')||!confirm('Clear your reading history?')) return; put('mf-bible-hist',[]); try{ localStorage.setItem('mf-bible-hist-cut',String(Date.now())); }catch(er){} touch('hist'); drawHi(); });
+
+  // ── settings (Ken, 20 Oct: "I want the user's experience to be highly customizable in a settings tab, and most things already in place as default features") ──
+  var VERS=[['kjv','King James Version (KJV)'],['web','World English Bible (WEB)'],['asv','American Standard Version (ASV)'],['ylt','Young’s Literal Translation (YLT)'],['darby','Darby Translation'],['bbe','Bible in Basic English (BBE)'],['dra','Douay-Rheims'],['net','New English Translation (NET)']];
+  var FONTS={serif:"'Spectral',Georgia,serif",sans:"'Archivo',system-ui,sans-serif",classic:"Georgia,'Times New Roman',serif"}, LH={compact:1.6,normal:1.85,roomy:2.15};
+  function setV(k,v){ var o=get('mf-set',{}); if(v===undefined) delete o[k]; else o[k]=v; put('mf-set',o); touch('set'); preview(); }
+  function raw(k,d){ try{ return localStorage.getItem(k)||d; }catch(e){ return d; } }
+  function rawSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} touch('set'); }
+  function mode(){ if(raw('mf-mode','dark')==='light') document.documentElement.setAttribute('data-mode','light'); else document.documentElement.removeAttribute('data-mode'); }
+  function preview(){ var st=document.documentElement.style, z=SET('size',0); if(z) st.setProperty('--fs',z+'px'); else st.removeProperty('--fs');
+    st.setProperty('--ff',FONTS[SET('font','serif')]||FONTS.serif); st.setProperty('--lh',LH[SET('line','normal')]||1.85); document.body.classList.toggle('novn',!SET('vnum',true)); mode(); }
+  function tg(k,d,title,sub){ var on=k==='layout_lines'?SET('layout','para')==='lines':SET(k,d);   // "each verse on its own line" is kept as layout: "lines"
+    return '<label class="opt"><span class="l"><b>'+title+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</span><input type="checkbox" class="tg" data-k="'+k+'"'+(on?' checked':'')+'></label>'; }
+  function seg(k,d,title,opts,sub,store){ var cur=store?raw(store,d):SET(k,d); return '<div class="opt"><span class="l"><b>'+title+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</span><span class="segs">'+opts.map(function(o){ return '<button type="button" data-seg="'+k+'" data-v="'+o[0]+'"'+(store?' data-store="'+store+'"':'')+' aria-pressed="'+(String(cur)===String(o[0]))+'">'+o[1]+'</button>'; }).join('')+'</span></div>'; }
+  function drawSt(){ var z=SET('size',0)||19, hc=raw('mf-hl-color','gold');
+    $('stBox').innerHTML='<h3>Reading</h3><div class="prev"><sup>1</sup>In the beginning was the Word, and the Word was with God, and the Word was God. <sup>2</sup>The same was in the beginning with God.</div>'
+      +'<div class="opt"><span class="l"><b>Text size</b><small id="szV">'+(SET('size',0)?z+' px':'Standard')+'</small></span><input type="range" id="sz" min="14" max="30" step="1" value="'+z+'" aria-label="Text size"></div>'
+      +seg('font','serif','Font',[['serif','Book'],['sans','Clean'],['classic','Classic']])
+      +seg('line','normal','Line spacing',[['compact','Tight'],['normal','Normal'],['roomy','Roomy']])
+      +tg('vnum',true,'Verse numbers')
+      +tg('layout_lines',false,'Each verse on its own line','Instead of paragraphs')
+      +seg('mode','dark','Light or dark',[['dark','Dark'],['light','Light']],'',"mf-mode")
+      +'<h3>Bible</h3><div class="opt"><span class="l"><b>My Bible version</b></span><select id="stVer">'+VERS.map(function(v){ return '<option value="'+v[0]+'"'+(raw('mf-bible-version','kjv')===v[0]?' selected':'')+'>'+v[1]+'</option>'; }).join('')+'</select></div>'
+      +seg('tab','toc','The Bible tab opens',[['toc','Books'],['last','Where I left off']],'The list of books, versions and recent chapters, or straight to the page')
+      +tg('orig',true,'Greek and Hebrew','The words behind the English, for anything you pick')
+      +tg('xref',true,'Cross references','Under “Swipe up for more”')
+      +tg('marks',true,'Note and link marks','Small 💬 and 🔗 after a verse')
+      +tg('hist',true,'Remember what I read','History and Recent')
+      +'<h3>Highlights</h3><div class="opt"><span class="l"><b>Highlight colour</b><small>The one a tap uses first</small></span><span class="cf" style="margin:0">'+Object.keys(HLC).map(function(c){ return '<button type="button" data-hc="'+c+'" aria-label="'+c+'" aria-pressed="'+(hc===c)+'" style="background:'+HLC[c]+'"></button>'; }).join('')+'</span></div>'
+      +'<div class="opt"><span class="l"><b>Remove highlights</b><small>All of them, or the ones you choose</small></span><button type="button" class="b red" id="stHl">Open</button></div>'
+      +'<h3>Listening</h3><div class="opt"><span class="l"><b>Voice</b><small>The voices on this device</small></span><select id="stVoice"><option value="">Best on this device</option></select></div>'
+      +seg('rate',0.95,'Speed',[[0.8,'Slow'],[0.95,'Normal'],[1.1,'Quick'],[1.25,'Fast']])
+      +tg('cont',true,'Keep going into the next chapter')
+      +'<div class="opt"><span class="l"><b>Hear it</b></span><button type="button" class="b" id="stTry">&#9654;&#xFE0E; Try</button></div>'
+      +'<h3>Writing</h3>'+tg('spell',true,'Spelling help','Suggestions under notes and prayers, on this device, no AI')
+      +'<h3>This device</h3><div class="opt"><span class="l"><b>Export everything</b><small>Prayers, notes, highlights, saved, links</small></span><button type="button" class="b" id="stExp">&#11015;&#xFE0E; Export</button></div>'
+      +'<div class="opt"><span class="l"><b>Back to the standard settings</b></span><button type="button" class="b" id="stReset">Reset</button></div>';
+    voices(); preview(); }
+  function voices(){ var sel=$('stVoice'); if(!sel||!window.speechSynthesis) return; var want=SET('voice',''), vs=speechSynthesis.getVoices().filter(function(v){ return /^en/i.test(v.lang); });
+    sel.innerHTML='<option value="">Best on this device</option>'+vs.map(function(v){ return '<option value="'+esc(v.voiceURI)+'"'+(v.voiceURI===want?' selected':'')+'>'+esc(v.name)+' ('+esc(v.lang)+')</option>'; }).join(''); }
+  if(window.speechSynthesis) speechSynthesis.addEventListener('voiceschanged',voices);
+  $('stBox').addEventListener('change',function(e){ var t=e.target;
+    if(t.classList.contains('tg')){ if(t.dataset.k==='layout_lines') setV('layout',t.checked?'lines':undefined); else setV(t.dataset.k,t.checked?undefined:false); if(t.dataset.k==='hist') drawHi(); return; }
+    if(t.id==='stVer'){ rawSet('mf-bible-version',t.value); return; } if(t.id==='stVoice'){ setV('voice',t.value||undefined); } });
+  $('stBox').addEventListener('input',function(e){ if(e.target.id!=='sz') return; var v=+e.target.value; setV('size',v===19?undefined:v); $('szV').textContent=v===19?'Standard':v+' px'; });
+  $('stBox').addEventListener('click',function(e){ var t=e.target.closest('button'); if(!t) return;
+    if(t.dataset.seg){ var v=t.dataset.v; if(t.dataset.store){ rawSet(t.dataset.store,v); } else setV(t.dataset.seg,t.dataset.seg==='rate'?+v:v); [].forEach.call(t.parentNode.children,function(b){ b.setAttribute('aria-pressed',String(b===t)); }); preview(); return; }
+    if(t.dataset.hc){ rawSet('mf-hl-color',t.dataset.hc); [].forEach.call(t.parentNode.children,function(b){ b.setAttribute('aria-pressed',String(b===t)); }); return; }
+    if(t.id==='stHl'){ document.querySelector('.tabs [data-t="hl"]').click(); window.scrollTo(0,0); return; }
+    if(t.id==='stExp'){ $('exp').click(); return; }
+    if(t.id==='stReset'){ if(!confirm('Go back to the standard settings? Your notes, prayers and highlights stay.')) return; put('mf-set',{}); touch('set'); drawSt(); toast('Standard settings'); return; }
+    if(t.id==='stTry'&&window.speechSynthesis){ speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance('In the beginning was the Word, and the Word was with God, and the Word was God.'), want=SET('voice',''), vs=speechSynthesis.getVoices(), w=vs.filter(function(v){ return v.voiceURI===want; })[0]; if(w){ u.voice=w; u.lang=w.lang; } else u.lang='en-US'; u.rate=+SET('rate',0.95)||0.95; speechSynthesis.speak(u); } });
+
+  // ── the free account ──
+  function acctUI(){ var u=window.MFacct&&MFacct.me(); $('acOut').hidden=!!u; $('acIn').hidden=!u; if(u){ $('acWho').textContent=u.email||'Signed in'; var t=+raw('mf-synced',0); $('acS').textContent=t?'Synced '+new Date(t).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Syncing…'; }
+    $('foot').textContent=u?'Kept on this device and in your account; it comes back on any phone or computer when you sign in there.':'Kept on this device. With a free account (at the top), it goes to your account too, and comes back on any phone or computer.'; }
+  $('acF').addEventListener('submit',function(e){ e.preventDefault(); var em=$('acE').value.trim(); if(!em) return; $('acM').textContent='Sending…';
+    if(!window.MFacct){ $('acM').textContent='Still opening. Try again in a moment.'; return; }
+    MFacct.send(em).then(function(){ $('acC').hidden=false; $('acK').focus(); $('acM').textContent='Check your email: tap the link in it, or type the code here.'; })
+      .catch(function(err){ $('acM').textContent='Could not send the email'+(err&&err.message?': '+err.message:'')+'.'; }); });
+  $('acC').addEventListener('submit',function(e){ e.preventDefault(); var k=$('acK').value.replace(/\s/g,''); if(!k) return; $('acM').textContent='Signing in…';
+    MFacct.verify($('acE').value.trim(),k).then(function(){ $('acM').textContent=''; $('acC').hidden=true; $('acK').value=''; toast('Signed in · your things are coming across'); })
+      .catch(function(){ $('acM').textContent='That code did not work. Check it, or send a new one.'; }); });
+  $('acX').addEventListener('click',function(){ if(!confirm('Sign out? What is on this device stays here.')) return; MFacct.out().then(acctUI); });
+  $('acSync').addEventListener('click',function(){ $('acS').textContent='Syncing…'; MFacct.sync().then(function(){ acctUI(); all(); toast('Up to date'); }); });
+  (function hook(n){ if(!window.MFacct){ if(n<50) setTimeout(function(){ hook(n+1); },200); return; } MFacct.on(function(u,what){ acctUI(); all(); }); acctUI(); })(0);
+  if(location.hash==='#acct') setTimeout(function(){ $('acct').scrollIntoView({block:'start'}); if(!(window.MFacct&&MFacct.me())) $('acE').focus(); },300);
 
   // ── export everything, one text file ──
   $('exp').addEventListener('click',function(){ var o='MannaFish · You\nExported '+day(Date.now())+'\n', P=prayers();
@@ -156,7 +294,7 @@ details>summary{cursor:pointer;color:var(--dim);font-weight:700;margin:14px 0 8p
     if(f&&navigator.canShare&&navigator.canShare({files:[f]})){ navigator.share({files:[f],title:'MannaFish'}).catch(function(){}); return; }
     var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([o],{type:'text/plain'})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(function(){ a.remove(); },1500); });
 
-  function all(){ drawPr(); drawNo(); drawHl(); drawSv(); drawLi(); }
+  function all(){ drawPr(); drawNo(); drawHl(); drawSv(); drawLi(); drawHi(); if(!document.activeElement||!$('stBox').contains(document.activeElement)) drawSt(); }
   all(); window.addEventListener('pageshow',all); window.addEventListener('storage',all);
 })();
 </script>

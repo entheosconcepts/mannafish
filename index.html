@@ -4406,6 +4406,7 @@ window.MF=(function(){
   function hlToggle(key,info){ var h=hls(), on=!h[key], es=MF.lang==='es', ver=info.kind==='note'?'note':info.ver, ref=info.kind==='note'?key:info.ref;
     if(on){ info.at=Date.now(); h[key]=info; } else delete h[key]; saveHls(h);
     if(window.MFcloudHl&&MFcloudHl.on()) (on?MFcloudHl.add(ref,ver,info.c):MFcloudHl.del(ref,ver));
+    else if(!on&&info.kind!=='note'){ try{ var G=JSON.parse(localStorage.getItem('mf-hl-del')||'[]'); G.push([ref,ver]); localStorage.setItem('mf-hl-del',JSON.stringify(G.slice(-2000))); }catch(e){} }
     toast(on?(es?'Resaltado · en Mis resaltados':'Highlighted · saved to My highlights'):(es?'Resaltado quitado':'Highlight removed')); return on; }
   // where a verse in a reader comes from: the word's reference, the language and the Bible version
   function verCode(l,orig){ return orig?'orig':l==='en'?'en:'+curVer().k:l; }
@@ -4612,7 +4613,7 @@ window.MF=(function(){
     list:function(k){ return sb.from('notes').select('id,body,created_at,updated_at').eq('site',SITE).eq('word_key',k).order('created_at',{ascending:true}).then(function(r){
       if(r.error) throw r.error; return (r.data||[]).filter(function(x){ return x.body; }).map(cnRow); }); },
     // Ken, 12 Oct: search and sort across every note, not just this word's
-    all:function(){ return sb.from('notes').select('id,body,word_key,created_at,updated_at').eq('site',SITE).not('word_key','like','PRAYER:%').order('created_at',{ascending:true}).then(function(r){
+    all:function(){ return sb.from('notes').select('id,body,word_key,created_at,updated_at').eq('site',SITE).not('word_key','like','PRAYER:%').not('word_key','like','SYNC:%').order('created_at',{ascending:true}).then(function(r){
       if(r.error) throw r.error; return (r.data||[]).filter(function(x){ return x.body; }).map(function(x){ var n=cnRow(x); n.k=x.word_key; return n; }); }); },
     add:function(k,text,spoken,at){ var row={site:SITE,word_key:k,body:text,spoken:!!spoken}; if(at) row.created_at=new Date(at).toISOString();
       return sb.from('notes').insert(row).select('id,created_at').then(function(r){ if(r.error&&at) return window.MFcloudNotes.add(k,text,spoken); if(r.error) throw r.error; var x=(r.data||[])[0]||{}; return {id:x.id,at:Date.parse(x.created_at)}; }); },
@@ -4632,10 +4633,12 @@ window.MF=(function(){
     add:function(ref,ver,col){ return sb.from('highlights').upsert({site:SITE,verse_ref:ref,version:ver,color:col||'gold'},{onConflict:'user_id,site,verse_ref,version'}).then(function(){}); },
     del:function(ref,ver){ return sb.from('highlights').delete().eq('site',SITE).eq('verse_ref',ref).eq('version',ver).then(function(){}); } };
   // highlights: the account's list joins this device's (a verse highlighted on another device opens from its chapter here)
-  function hlSync(){ if(!(me&&sb)||!window.MFhls) return Promise.resolve(); var h=MFhls(), mine={};
+  // highlights taken off in the Bible or on the You page (mf-hl-del): the account forgets them first, so they do not come back
+  function hlSync(){ if(!(me&&sb)||!window.MFhls) return Promise.resolve(); var h=MFhls(), mine={}, gone=[], off={};
+    try{ gone=JSON.parse(localStorage.getItem('mf-hl-del')||'[]')||[]; }catch(e){} gone.forEach(function(d){ off[d[0]+'|'+d[1]]=1; });
     Object.keys(h).forEach(function(key){ var x=h[key]; mine[(x.kind==='note'?key:x.ref)+'|'+(x.kind==='note'?'note':x.ver)]=key; });
-    return sb.from('highlights').select('verse_ref,version,color,created_at').eq('site',SITE).then(function(r){ var got={};
-      (r.data||[]).forEach(function(row){ got[row.verse_ref+'|'+row.version]=row.color==='yellow'?'gold':(row.color||'gold'); if(mine[row.verse_ref+'|'+row.version]) return;
+    return Promise.all(gone.map(function(d){ return MFcloudHl.del(d[0],d[1]); })).then(function(){ try{ localStorage.setItem('mf-hl-del','[]'); }catch(e){} return sb.from('highlights').select('verse_ref,version,color,created_at').eq('site',SITE); }).then(function(r){ var got={}; h=MFhls();
+      (r.data||[]).forEach(function(row){ got[row.verse_ref+'|'+row.version]=row.color==='yellow'?'gold':(row.color||'gold'); if(mine[row.verse_ref+'|'+row.version]||off[row.verse_ref+'|'+row.version]) return;
         if(row.version==='note') return;   // a highlighted note from another device: shown with its note
         var m=row.verse_ref.match(/^(.*)\s+(\d+):(\d+)(?:#(\d+)-(\d+))?$/); if(!m) return; var k=null,i=0;
         Object.keys(DATA).some(function(w){ return DATA[w].refs.some(function(rf,j){ var p=parseRef(rf[0]); if(p&&p.book===m[1]&&p.ch===m[2]){ k=w; i=j; return true; } }); });
