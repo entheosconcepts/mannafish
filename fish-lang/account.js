@@ -5,7 +5,7 @@
 //   notes (mf-notes2: a note whose id is not "d<digits>" is the account's row, the same rule as the Today page)
 //   prayers (mf-prayers: c:true is the account's copy; the same as the Today page)
 //   highlights (mf-hl; mf-hl-del lists the ones taken off, so the account forgets them too)
-//   saved verses, my links, settings (one row each, "SYNC:<name>", the newest wins) and reading history (joined)
+//   saved verses, my links, settings, my pace (one row each, "SYNC:<name>", the newest wins) and reading history (joined)
 // MFacct.on(fn) hears sign-in and sign-out; MFacct.sync() runs soon after a change (MFacct.touch('saved'|'links'|'set'|'hist')).
 (function(){
   var SB_URL='https://oblttpxqjvaglwfdszdg.supabase.co', SB_KEY='sb_publishable_Nl4EDkBHlrnEqFVcL_oGvQ_J-X-t3Wc', SITE='mannafish';
@@ -77,7 +77,7 @@
       Object.keys(pull).forEach(function(id){ if(!H[id]&&!off2[id]) H[id]=pull[id]; }); put('mf-hl',H); return Promise.all(jobs); }); }
 
   // ── saved verses, my links, settings (newest wins), reading history (joined) ──
-  var BLOBS={saved:['mf-bible-saved',[]],links:['mf-bible-links',[]],set:['mf-set',{}],hist:['mf-bible-hist',[]]};
+  var BLOBS={saved:['mf-bible-saved',[]],links:['mf-bible-links',[]],set:['mf-set',{}],hist:['mf-bible-hist',[]],pace:['mf-pace',{}]};
   function setPack(){ var s=get('mf-set',{}); s._mode=raw('mf-mode')||''; s._ver=raw('mf-bible-version')||''; s._hlc=raw('mf-hl-color')||''; return s; }
   function setUnpack(s){ s=s||{}; [['_mode','mf-mode'],['_ver','mf-bible-version'],['_hlc','mf-hl-color']].forEach(function(p){ if(s[p[0]]) try{ localStorage.setItem(p[1],s[p[0]]); }catch(e){} delete s[p[0]]; }); put('mf-set',s); }
   function syncBlobs(){ return sb.from('notes').select('id,word_key,body').eq('site',SITE).like('word_key','SYNC:%').then(function(r){ if(r.error) throw r.error; var have={}, S=get('mf-sync-at',{}), jobs=[];

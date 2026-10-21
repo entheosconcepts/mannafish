@@ -99,15 +99,75 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
 .rdr .ft{border-top:1px solid var(--line);padding:10px 12px max(10px,env(safe-area-inset-bottom));display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));max-width:calc(100% - 32px);text-align:center;transform:translateX(-50%);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-weight:700;font-size:.9rem;z-index:60;display:none}
 .toast.on{display:block}
+/* my pace (Ken, 21 Oct: "a go at your own pace, random read the Bible in a year option ... what you have already read, and what is
+   left to read, with a suggestion bubble in case someone gets stuck ... choose a fish, or random inbox: 1 fish per 2 chapters") */
+.seg{display:flex;gap:6px;justify-content:center;margin:4px auto 16px;max-width:420px}.seg button{flex:1;border:1px solid var(--line);background:none;border-radius:999px;padding:10px 12px;font-weight:800;font-size:.92rem;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+.tip{position:relative;background:var(--card2);border:1px solid var(--line);border-radius:20px;padding:14px 16px;margin:4px 0 22px}
+.tip::after{content:'';position:absolute;left:34px;bottom:-9px;width:16px;height:16px;background:var(--card2);border-right:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg)}
+.tip .q{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--gold)}
+.tip h2{font:600 1.35rem/1.2 'Fraunces',Georgia,serif;margin:4px 0 2px}.tip p{color:var(--dim);margin:0 0 10px;font-size:.92rem}
+.center{justify-content:center}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 4px}.stat div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center}
+.stat b{display:block;font:600 1.4rem 'Fraunces',Georgia,serif}.stat small{color:var(--dim);font-size:.78rem}
+.opt{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin:14px 0 0}
+.opt .l{flex:1;min-width:150px}.opt .l b{display:block}.opt .l small{color:var(--dim);font-size:.82rem}
+.opt .seg{margin:0;max-width:none;flex:none}.opt .seg button{padding:8px 12px;font-size:.85rem}
+.inbox{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.inbox button{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:6px;cursor:pointer;text-align:center}
+.inbox .fish{pointer-events:none}.inbox small{display:block;color:var(--dim);font-size:.75rem;margin-top:4px}.inbox b{font-family:'MFHobo',cursive;font-weight:400;font-size:1.1rem}
+.flt{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}.flt button{border:1px solid var(--line);background:none;border-radius:999px;padding:7px 12px;font-weight:700;font-size:.85rem;cursor:pointer}
+.flt button[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+.bk{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 6px}
+.bk>button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;padding:10px 14px;cursor:pointer;text-align:left}
+.bk>button b{flex:1;font-weight:700}.bk>button small{color:var(--dim);font-size:.82rem;min-width:4.5em;text-align:right}
+.bk .mini{width:70px;height:6px;border-radius:999px;background:var(--card2);overflow:hidden;flex:none}.bk .mini i{display:block;height:100%;background:var(--ok)}
+.bk.all>button b::after{content:' ✓';color:var(--ok)}
+.chg{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:5px;padding:0 12px 12px}
+.chg button{border:1px solid var(--line);background:var(--card2);border-radius:8px;padding:8px 0;font-weight:700;font-size:.85rem;cursor:pointer}
+.chg button.on{background:var(--ok);border-color:var(--ok);color:#06210c}
+.sheet{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center}
+.sheet .in{background:var(--bg);border:1px solid var(--line);border-radius:22px 22px 0 0;width:100%;max-width:720px;max-height:92vh;overflow:auto;padding:18px 16px max(16px,env(safe-area-inset-bottom));text-align:center}
+@media (min-width:700px){.sheet{align-items:center}.sheet .in{border-radius:22px}}
+.sheet h2{font:600 1.5rem 'Fraunces',Georgia,serif;margin:0 0 4px}.sheet p{color:var(--dim);margin:0 0 12px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:0 0 12px;text-align:left}
+.fgrid button{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:8px;cursor:pointer;text-align:left}
+.fgrid button .fish{pointer-events:none}.fgrid b{display:block;font-family:'MFHobo',cursive;font-weight:400;font-size:1.2rem;margin-top:6px}.fgrid small{color:var(--dim);font-size:.74rem;line-height:1.35;display:block}
+.fgrid .why{display:inline-block;background:var(--hl);border-radius:999px;padding:1px 8px;font-size:.72rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.big .fish{max-width:560px;margin:0 auto}
 [hidden]{display:none!important}
 </style>
 <script src="/fish-lang/tabbar.js" defer></script>
+<script src="/fish-lang/account.js" defer></script>
 </head>
 <body>
 <div class="wrap">
   <div class="top"><a class="brand" href="/">Manna<b>Fish</b></a><div class="r"><button type="button" class="ib" id="mode" aria-label="Light or dark">&#9728;&#xFE0E;</button><a class="ib" href="/">Home</a></div></div>
   <h1>Bible in a Year</h1>
-  <p class="sub">A day reading and a night reading, about six minutes each, and <span class="two">2 Fish</span> every day: one for me, one to give. The seventh day is for rest and catching up.</p>
+  <p class="sub" id="lead">A day reading and a night reading, about six minutes each, and <span class="two">2 Fish</span> every day: one for me, one to give. The seventh day is for rest and catching up.</p>
+  <div class="seg" role="group" aria-label="How to read"><button type="button" data-view="plan" aria-pressed="true">Day by day</button><button type="button" data-view="pace" aria-pressed="false">My pace</button></div>
+
+  <div id="paceView" hidden>
+    <section class="start" id="pStart" hidden>
+      <h2>Read at your own pace</h2>
+      <p>The whole Bible, in any order you like. Pick any chapter, or tap Surprise me. You can see what you have read and what is left, and if you get stuck we will suggest something. Every 2 chapters you read, you catch a fish.</p>
+      <div class="btns center"><button type="button" class="b p" id="pGo">Start reading</button></div>
+    </section>
+    <div id="pMain" hidden>
+      <div class="tip" id="pTip" aria-live="polite"></div>
+      <div class="stat"><div><b id="sRead">0</b><small>chapters read</small></div><div><b id="sLeft">1,189</b><small>left to read</small></div><div><b id="sFish">0</b><small>fish caught</small></div></div>
+      <div class="prog"><div class="bar"><i id="pBar" style="width:0"></i></div><p><span id="pPct"></span><span id="pRate"></span></p></div>
+      <div class="opt"><span class="l"><b>Your fish</b><small id="fWhy">One for every 2 chapters</small></span><div class="seg" role="group" aria-label="Your fish"><button type="button" data-fm="pick" aria-pressed="true">I&rsquo;ll choose</button><button type="button" data-fm="random" aria-pressed="false">&#127922;&#xFE0E; Surprise me</button></div></div>
+      <p id="pWait" hidden style="text-align:center;margin:12px 0 0"><button type="button" class="b p" id="pClaim"></button></p>
+      <h3 class="sec">Your fish inbox <small id="nBox" style="color:var(--dim);font:700 .9rem Archivo,sans-serif"></small></h3>
+      <div class="inbox" id="pBox"></div>
+      <h3 class="sec">The whole Bible</h3>
+      <div class="flt" role="group" aria-label="Show"><button type="button" data-f="all" aria-pressed="true">All</button><button type="button" data-f="left" aria-pressed="false">Left to read</button><button type="button" data-f="read" aria-pressed="false">What I&rsquo;ve read</button></div>
+      <div id="pMap"></div>
+      <p class="note">King James Version. Tap a book to see its chapters; tap a chapter to read it. Chapters you mark as read in the Bible tab count here too. <a href="#" id="pReset">Start over</a></p>
+    </div>
+  </div>
+  <div id="planView">
 
   <section class="start" id="start" hidden>
     <h2>Start the plan</h2>
@@ -125,7 +185,9 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
   <h3 class="sec">The whole plan</h3>
   <div class="weeks" id="weeks"></div>
   <p class="note">King James Version. Readings are whole chapters, balanced by length. What you have read is kept on this device. <a href="#" id="restart">Start over or change the start day</a></p>
+  </div>
 </div>
+<div class="sheet" id="fsh" hidden><div class="in" id="fIn"></div></div>
 
 <div class="rdr" id="rdr" role="dialog" aria-modal="true" aria-labelledby="rTitle">
   <div class="hd"><button type="button" class="ib" id="rClose" aria-label="Close">&#10005;</button><div class="tt"><b id="rTitle"></b><small id="rSub"></small></div><button type="button" class="ib" id="rSay">&#9654;&#xFE0E; Listen</button></div>
@@ -223,7 +285,7 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
   // ── the reader ──
   var RD={k:''};
   function bookFile(c){ return c[0].replace(/ /g,'_')+'-'+c[1]; }
-  function openReader(k){ var a=k.split('-'), w=+a[0], d=+a[1], h=a[2], r=R(w,d,h); if(!r) return; stopSay();
+  function openReader(k){ var a=k.split('-'), w=+a[0], d=+a[1], h=a[2], r=R(w,d,h); if(!r) return; stopSay(); $('rDone').innerHTML='&#10003; I read it'; $('rNext').innerHTML='Next reading &rarr;';
     RD={k:k,r:r}; $('rTitle').textContent=r.label; $('rSub').textContent='Week '+w+' · Day '+(d+1)+' · '+(h==='am'?'Day reading':'Night reading')+' · about '+mins(r)+' min';
     $('rDone').setAttribute('aria-pressed',!!ST.done[k]); $('rTxt').innerHTML='<p style="color:var(--dim)">Opening…</p>'; $('rdr').classList.add('open'); document.body.style.overflow='hidden'; $('rBody').scrollTop=0;
     try{ history.replaceState(null,'','?r='+k); }catch(e){}
@@ -234,11 +296,18 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
         j.t.forEach(function(t,n){ var v=n+1, fv=mine&&v>=fv1&&v<=fv2; h2+='<span class="vn">'+v+'</span><span class="v'+(fv?' fv':'')+'" data-c="'+i+'" data-v="'+v+'">'+esc(t)+'</span> '; }); h2+='</p>'; });
       $('rTxt').innerHTML=h2+'<p style="color:var(--dim);font:600 .9rem Archivo,sans-serif;text-align:center;margin-top:26px">The fish for this reading: <b style="font-family:MFHobo;font-weight:400;font-size:1.2rem;color:var(--text)">'+esc(r.f.word)+'</b> · '+esc(r.f.ref)+' (marked above)</p>';
     }).catch(function(){ $('rTxt').innerHTML='<p>This reading could not be opened. Please check your connection and try again.</p>'; }); }
-  function closeReader(){ stopSay(); $('rdr').classList.remove('open'); document.body.style.overflow=''; RD={k:''}; try{ history.replaceState(null,'',location.pathname); }catch(e){} }
+  function openChapters(chs){ stopSay(); RD={k:'pace',chs:chs}; var lab=chs.length>1&&chs[0][0]===chs[chs.length-1][0]?chs[0][0]+' '+chs[0][1]+'–'+chs[chs.length-1][1]:chs.map(function(c){ return c[0]+' '+c[1]; }).join(', ');
+    $('rTitle').textContent=lab; $('rSub').textContent='My pace · '+chs.length+' chapter'+(chs.length>1?'s':''); $('rDone').innerHTML='&#10003; I read '+(chs.length>1?'these':'it'); $('rNext').innerHTML='Suggest the next &rarr;';
+    $('rDone').setAttribute('aria-pressed',String(chs.every(function(c){ return PC.read[ci(c)]; }))); $('rTxt').innerHTML='<p style="color:var(--dim)">Opening…</p>'; $('rdr').classList.add('open'); document.body.style.overflow='hidden'; $('rBody').scrollTop=0;
+    Promise.all(chs.map(function(c){ return fetch('/fish-lang/bible/kjv/'+bookFile(c)+'.json').then(function(x){ if(!x.ok) throw 0; return x.json(); }); })).then(function(js){ if(RD.chs!==chs) return; var h2='';
+      js.forEach(function(j,i){ h2+='<h4>'+esc(chs[i][0]+' '+chs[i][1])+'</h4><p>'; j.t.forEach(function(t,n){ h2+='<span class="vn">'+(n+1)+'</span><span class="v" data-c="'+i+'" data-v="'+(n+1)+'">'+esc(t)+'</span> '; }); h2+='</p>'; });
+      $('rTxt').innerHTML=h2+'<p style="color:var(--dim);font:600 .9rem Archivo,sans-serif;text-align:center;margin-top:26px">Done? Tap &ldquo;I read '+(chs.length>1?'these':'it')+'&rdquo; below. Every 2 chapters, a fish.</p>'; })
+      .catch(function(){ $('rTxt').innerHTML='<p>This could not be opened. Please check your connection and try again.</p>'; }); }
+  function closeReader(){ stopSay(); $('rdr').classList.remove('open'); document.body.style.overflow=''; if(RD.k==='pace'){ $('rDone').innerHTML='&#10003; I read it'; $('rNext').innerHTML='Next reading &rarr;'; } RD={k:''}; try{ history.replaceState(null,'',location.pathname); }catch(e){} }
   $('rClose').addEventListener('click',closeReader);
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&RD.k) closeReader(); });
-  $('rDone').addEventListener('click',function(){ var on=this.getAttribute('aria-pressed')!=='true'; setDone(RD.k,on); if(on) toast('Marked as read'); });
-  $('rNext').addEventListener('click',function(){ var i=-1; ALLR.some(function(x,n){ if(key(x.w,x.d,x.h)===RD.k){ i=n; return true; } return false; }); var x=ALLR[i+1]; if(x) openReader(key(x.w,x.d,x.h)); else closeReader(); });
+  $('rDone').addEventListener('click',function(){ var on=this.getAttribute('aria-pressed')!=='true'; if(RD.k==='pace'){ paceMark(RD.chs,on); this.setAttribute('aria-pressed',on); return; } setDone(RD.k,on); if(on) toast('Marked as read'); });
+  $('rNext').addEventListener('click',function(){ if(RD.k==='pace'){ var t=tips()[0]; if(t) openChapters(t.ch); else closeReader(); return; } var i=-1; ALLR.some(function(x,n){ if(key(x.w,x.d,x.h)===RD.k){ i=n; return true; } return false; }); var x=ALLR[i+1]; if(x) openReader(key(x.w,x.d,x.h)); else closeReader(); });
 
   // read aloud, verse by verse, following along on the page
   var SAY={on:false,i:0,list:[]};
@@ -246,7 +315,7 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
   function voice(){ var vs=speechSynthesis.getVoices().filter(function(v){ return /^en/i.test(v.lang); }); var pick=ls('mf-voice'); return vs.filter(function(v){ return v.name===pick; })[0]||vs.filter(function(v){ return /en-(US|GB)/i.test(v.lang)&&/natural|premium|enhanced|samantha|daniel|google/i.test(v.name); })[0]||vs[0]||null; }
   function sayNext(){ if(!SAY.on) return; [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); });
     var el=SAY.list[SAY.i]; if(!el){ stopSay(); return; } el.classList.add('say'); var b=$('rBody'), t=el.getBoundingClientRect(), bb=b.getBoundingClientRect(); if(t.top<bb.top+40||t.bottom>bb.bottom-60) b.scrollTop+=t.top-bb.top-bb.height/3;
-    var head=el.dataset.v==='1'?R(+RD.k.split('-')[0],+RD.k.split('-')[1],RD.k.split('-')[2]).ch[+el.dataset.c].join(' chapter ')+'. ':'';
+    var head=el.dataset.v==='1'?(RD.k==='pace'?RD.chs:R(+RD.k.split('-')[0],+RD.k.split('-')[1],RD.k.split('-')[2]).ch)[+el.dataset.c].join(' chapter ')+'. ':'';
     var u=new SpeechSynthesisUtterance(head+el.textContent), v=voice(); if(v){ u.voice=v; u.lang=v.lang; } else u.lang='en-US'; u.rate=.95;
     u.onend=function(){ SAY.i++; sayNext(); }; u.onerror=function(e){ if(e.error!=='interrupted'&&e.error!=='canceled'){ SAY.i++; sayNext(); } }; speechSynthesis.speak(u); }
   $('rSay').addEventListener('click',function(){ if(!window.speechSynthesis){ toast('This device cannot read aloud'); return; }
@@ -255,7 +324,7 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
     SAY.on=true; this.innerHTML='&#10074;&#10074; Stop'; sayNext(); });
 
   // ── taps ──
-  document.addEventListener('click',function(e){ var t=e.target, b;
+  document.addEventListener('click',function(e){ var t=e.target, b; if(t.closest('#paceView')||t.closest('#fsh')) return;
     if((b=t.closest('[data-open]'))){ openReader(b.dataset.open); return; }
     if((b=t.closest('[data-ck]'))){ setDone(b.dataset.ck,b.getAttribute('aria-pressed')!=='true'); return; }
     var c=t.closest('.rd'); if(!c) return; var k=c.dataset.k;
@@ -272,7 +341,103 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
   $('restart').addEventListener('click',function(e){ e.preventDefault(); $('start').hidden=false; $('main').hidden=true; $('start').scrollIntoView({behavior:'smooth'});
     $('start').querySelector('p').textContent='Pick a new start day. What you have marked as read stays marked.'; });
 
-  fetch('/plan/plan.json').then(function(r){ return r.json(); }).then(function(j){ P=j;
+
+  // ── my pace: any chapter, any order; what is read and what is left; a suggestion when stuck; a fish for every 2 chapters ──
+  var BK=[["Genesis",50],["Exodus",40],["Leviticus",27],["Numbers",36],["Deuteronomy",34],["Joshua",24],["Judges",21],["Ruth",4],["1 Samuel",31],["2 Samuel",24],["1 Kings",22],["2 Kings",25],["1 Chronicles",29],["2 Chronicles",36],["Ezra",10],["Nehemiah",13],["Esther",10],["Job",42],["Psalm",150],["Proverbs",31],["Ecclesiastes",12],["Song of Solomon",8],["Isaiah",66],["Jeremiah",52],["Lamentations",5],["Ezekiel",48],["Daniel",12],["Hosea",14],["Joel",3],["Amos",9],["Obadiah",1],["Jonah",4],["Micah",7],["Nahum",3],["Habakkuk",3],["Zephaniah",3],["Haggai",2],["Zechariah",14],["Malachi",4],["Matthew",28],["Mark",16],["Luke",24],["John",21],["Acts",28],["Romans",16],["1 Corinthians",16],["2 Corinthians",13],["Galatians",6],["Ephesians",6],["Philippians",4],["Colossians",4],["1 Thessalonians",5],["2 Thessalonians",3],["1 Timothy",6],["2 Timothy",4],["Titus",3],["Philemon",1],["Hebrews",13],["James",5],["1 Peter",5],["2 Peter",3],["1 John",5],["2 John",1],["3 John",1],["Jude",1],["Revelation",22]];
+  var BI={}; BK.forEach(function(x,i){ BI[x[0]]=i; });
+  var TOTAL=1189, PC={on:0,read:{},fish:'pick',catch:[],last:null,view:'plan',start:0};
+  function pload(){ try{ var o=JSON.parse(ls('mf-pace')||'null'); if(o&&typeof o==='object'){ PC=Object.assign(PC,o); PC.read=PC.read||{}; PC.catch=PC.catch||[]; } }catch(e){} }
+  pload();
+  function psave(){ ls('mf-pace',JSON.stringify(PC)); if(window.MFacct) MFacct.touch('pace'); }
+  function ci(c){ return BI[c[0]]+':'+c[1]; }
+  function nRead(){ return Object.keys(PC.read).length; }
+  function owed(){ return Math.max(0,Math.floor(nRead()/2)-(PC.catch.length-(PC.base||0))); }   // base: the fish kept from before a start over
+  var FISH=[], FBYCH={};   // every reading's fish; the fish of the reading each chapter is in
+  function paceIndex(){ P.weeks.forEach(function(W){ W.days.forEach(function(D){ ['am','pm'].forEach(function(h){ var r=D[h]; FISH.push(r.f); r.ch.forEach(function(c){ (FBYCH[ci(c)]=FBYCH[ci(c)]||[]).push(r.f); }); }); }); }); }
+  function fishById(id){ for(var i=0;i<FISH.length;i++) if(FISH[i].id===id) return FISH[i]; return null; }
+  function unread(b){ var out=[]; for(var c=1;c<=BK[b][1];c++) if(!PC.read[b+':'+c]) out.push(c); return out; }
+  function two(b,c){ var out=[[BK[b][0],c]]; if(c+1<=BK[b][1]&&!PC.read[b+':'+(c+1)]) out.push([BK[b][0],c+1]); return out; }
+  function rnd(a){ return a[Math.floor(Math.random()*a.length)]; }
+  // ideas for what to read next, the likeliest first
+  var TIPN=0;
+  function tips(){ var out=[], seen={}; function add(t){ var k=t.ch.map(ci).join(); if(seen[k]||!t.ch.length) return; seen[k]=1; out.push(t); }
+    var L=PC.last; if(L&&BK[L.b]){ var u=unread(L.b).filter(function(c){ return c>L.c; })[0]||unread(L.b)[0]; if(u) add({q:'Keep going',why:'You were reading '+BK[L.b][0]+'.',ch:two(L.b,u)}); }
+    var part=BK.map(function(x,b){ var u=unread(b).length; return u&&u<x[1]?b:-1; }).filter(function(b){ return b>=0&&(!L||b!==L.b); });
+    if(part.length){ var pb=rnd(part); add({q:'Finish what you started',why:BK[pb][0]+': '+unread(pb).length+' chapter'+(unread(pb).length>1?'s':'')+' left.',ch:two(pb,unread(pb)[0])}); }
+    var gos=[39,40,41,42].filter(function(b){ return unread(b).length; }); if(gos.length){ var g=rnd(gos), gc=unread(g)[0]; add({q:'Walk with Jesus',why:'The life of Jesus, in '+BK[g][0]+'.',ch:two(g,gc)}); }
+    var ps=unread(18); if(ps.length){ var pc=rnd(ps), out2=[['Psalm',pc]], pr=unread(19); if(pr.length) out2.push(['Proverbs',rnd(pr)]); add({q:'A psalm and a proverb',why:'Short, and good for a busy day.',ch:out2}); }
+    var sh=BK.map(function(x,b){ return x[1]<=6&&unread(b).length===x[1]?b:-1; }).filter(function(b){ return b>=0; }); if(sh.length){ var s0=rnd(sh); add({q:'Short and sweet',why:BK[s0][0]+' is only '+BK[s0][1]+' chapter'+(BK[s0][1]>1?'s':'')+'. Finish a whole book today.',ch:two(s0,1)}); }
+    var left=[]; BK.forEach(function(x,b){ unread(b).forEach(function(c){ left.push([b,c]); }); }); if(left.length){ var x=rnd(left); add({q:'Something new',why:'Anywhere in the Bible.',ch:two(x[0],x[1])}); }
+    return out; }
+  function drawTip(){ var T=tips(), box=$('pTip'); if(!T.length){ box.innerHTML='<div class="q">All done</div><h2>You have read the whole Bible!</h2><p>Every chapter, Genesis to Revelation. Well done, good and faithful servant.</p>'; return; }
+    var t=T[TIPN%T.length], idle=PC.lastAt&&Date.now()-PC.lastAt>3*864e5, lab=t.ch.length>1&&t.ch[0][0]===t.ch[1][0]?t.ch[0][0]+' '+t.ch[0][1]+'–'+t.ch[1][1]:t.ch.map(function(c){ return c[0]+' '+c[1]; }).join(' and ');
+    box.innerHTML='<div class="q">'+(idle?'Stuck? Here is an easy one':(nRead()?'Not sure what to read next?':'Not sure where to start?'))+' · '+esc(t.q)+'</div><h2>'+esc(lab)+'</h2><p>'+esc(t.why)+'</p>'
+      +'<div class="btns"><button type="button" class="b p" data-tipgo="'+esc(JSON.stringify(t.ch))+'">&#128214;&#xFE0E; Read it</button><button type="button" class="b" id="tipNext">Another idea</button><button type="button" class="b" id="tipRand">&#127922;&#xFE0E; Surprise me</button></div>'; }
+  function paceStats(){ var n=nRead(); $('sRead').textContent=n.toLocaleString(); $('sLeft').textContent=(TOTAL-n).toLocaleString(); $('sFish').textContent=PC.catch.length; $('pBar').style.width=(100*n/TOTAL).toFixed(1)+'%';
+    $('pPct').textContent=(100*n/TOTAL).toFixed(n&&n<TOTAL/100?1:0)+'% of the Bible';
+    var days=PC.start?Math.max(1,(Date.now()-PC.start)/864e5):0, per=days?n/days:0;
+    $('pRate').textContent=n&&days>=2?'About '+(per>=1?per.toFixed(1)+' chapters a day':Math.round(per*7)+' chapters a week')+(per>0?' · done around '+new Date(Date.now()+(TOTAL-n)/per*864e5).toLocaleDateString(undefined,{month:'short',year:'numeric'}):''):'About 4 chapters a day reads it all in a year';
+    var o=owed(); $('pWait').hidden=!o; $('pClaim').textContent='🐟 '+o+' fish waiting · choose '+(o>1?'them':'it'); }
+  var FLT='all', OPENB=-1;
+  function drawMap(){ var h=''; BK.forEach(function(x,b){ var u=unread(b).length, r=x[1]-u; if(FLT==='left'&&!u) return; if(FLT==='read'&&!r) return;
+      h+='<div class="bk'+(u?'':' all')+'" data-b="'+b+'"><button type="button" aria-expanded="'+(OPENB===b)+'"><b>'+esc(x[0])+'</b><span class="mini"><i style="width:'+(100*r/x[1]).toFixed(0)+'%"></i></span><small>'+r+' / '+x[1]+'</small></button>'
+        +(OPENB===b?'<div class="chg">'+Array.from({length:x[1]},function(_,i){ var c=i+1, on=PC.read[b+':'+c]; return (FLT==='left'&&on)||(FLT==='read'&&!on)?'':'<button type="button" data-ch="'+c+'" class="'+(on?'on':'')+'" aria-label="'+esc(x[0])+' '+c+(on?', read':'')+'">'+c+'</button>'; }).join('')+'</div>':'')+'</div>'; });
+    $('pMap').innerHTML=h||'<p class="note">'+(FLT==='read'?'Nothing read yet. Pick any chapter, or tap Surprise me.':'Nothing left. You have read it all!')+'</p>'; }
+  function drawBox(){ $('nBox').textContent=PC.catch.length?'('+PC.catch.length+')':'';
+    $('pBox').innerHTML=PC.catch.length?PC.catch.slice().reverse().map(function(x,i){ var f=fishById(x.id); if(!f) return ''; return '<button type="button" data-fv="'+esc(f.id)+'"><div class="fish" data-fid="'+esc(f.id)+'"></div><b>'+esc(f.word)+'</b><small>'+esc(f.ref)+'</small></button>'; }).join('')
+      :'<p class="note" style="grid-column:1/-1;margin:0">Read 2 chapters to catch your first fish.</p>';
+    [].forEach.call($('pBox').querySelectorAll('.fish[data-fid]'),function(el){ var f=fishById(el.dataset.fid); if(f) putFish(el,f); }); }
+  function paceAll(){ if(!PC.on){ $('pStart').hidden=false; $('pMain').hidden=true; return; } $('pStart').hidden=true; $('pMain').hidden=false; drawTip(); paceStats(); drawMap(); drawBox(); fmUI(); }
+  function fmUI(){ [].forEach.call(document.querySelectorAll('[data-fm]'),function(b){ b.setAttribute('aria-pressed',String(b.dataset.fm===PC.fish)); });
+    $('fWhy').textContent=PC.fish==='random'?'A random fish drops into your inbox for every 2 chapters':'For every 2 chapters, you choose your fish'; }
+  // reading counts: mark chapters read (here, or in the Bible tab), then the fish
+  function paceMark(chs,on){ chs.forEach(function(c){ var k=ci(c); if(on) PC.read[k]=Date.now(); else delete PC.read[k]; }); if(on){ var c=chs[chs.length-1]; PC.last={b:BI[c[0]],c:c[1]}; PC.lastAt=Date.now(); }
+    psave(); paceAll(); if(on){ toast('✓ '+nRead()+' of '+TOTAL+' chapters'); setTimeout(function(){ claim(chs); },400); } }
+  function freshFish(n,not){ var have={}; PC.catch.forEach(function(x){ have[x.id]=1; }); (not||[]).forEach(function(id){ have[id]=1; }); var pool=FISH.filter(function(f){ return !have[f.id]; }); if(pool.length<n) pool=FISH.slice();
+    var out=[]; while(out.length<n&&pool.length){ out.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]); } return out; }
+  function claim(chs){ var o=owed(); if(!o) return;
+    if(PC.fish==='random'){ var got=freshFish(o); got.forEach(function(f){ PC.catch.push({id:f.id,at:Date.now()}); }); psave(); paceAll(); toast('🐟 '+(got.length>1?got.length+' new fish':'A new fish: '+got[0].word)+' · in your fish inbox'); return; }
+    pickSheet(chs||[]); }
+  function pickSheet(chs){ var mine=[], seen={}; chs.forEach(function(c){ (FBYCH[ci(c)]||[]).forEach(function(f){ if(!seen[f.id]){ seen[f.id]=1; mine.push(f); } }); });
+    var opts=mine.slice(0,2).map(function(f){ return {f:f,why:'From what you read'}; }); freshFish(4-opts.length,Object.keys(seen)).forEach(function(f){ opts.push({f:f,why:''}); });
+    var o=owed();
+    $('fIn').innerHTML='<h2>You caught a fish!</h2><p>'+(o>1?o+' fish to choose. ':'')+'Two chapters read. Choose the fish you want to keep.</p><div class="fgrid">'+opts.map(function(x){ return '<button type="button" data-pick="'+esc(x.f.id)+'">'+(x.why?'<span class="why">'+x.why+'</span>':'')+'<div class="fish" data-fid="'+esc(x.f.id)+'"></div><b>'+esc(x.f.word)+'</b><small>“'+esc(x.f.top+' '+x.f.bot)+'” '+esc(x.f.ref)+'</small></button>'; }).join('')+'</div>'
+      +'<div class="btns center"><button type="button" class="b" data-more="1">Show me others</button><button type="button" class="b" data-rand="1">&#127922;&#xFE0E; Surprise me</button><button type="button" class="b" data-later="1">Later</button></div>';
+    [].forEach.call($('fIn').querySelectorAll('.fish[data-fid]'),function(el){ putFish(el,fishById(el.dataset.fid)); }); $('fsh').hidden=false; $('fsh').dataset.chs=JSON.stringify(chs); }
+  function viewFish(f){ $('fIn').innerHTML='<div class="big"><div class="fish" data-fid="'+esc(f.id)+'"></div></div><h2 style="font-family:MFHobo,cursive;font-weight:400;margin-top:10px">'+esc(f.word)+'</h2><p class="verse" style="color:var(--text)">“'+esc(f.verse)+'” <small>'+esc(f.ref)+' KJV</small></p>'
+      +'<div class="btns center"><button type="button" class="b p" data-send="'+esc(f.id)+'">&#10148; Send this fish</button><button type="button" class="b" data-later="1">Close</button></div>';
+    putFish($('fIn').querySelector('.fish'),f); $('fsh').hidden=false; }
+  $('fsh').addEventListener('click',function(e){ var t=e.target, b;
+    if(t===this||t.closest('[data-later]')){ this.hidden=true; return; }
+    if((b=t.closest('[data-pick]'))){ var f=fishById(b.dataset.pick); PC.catch.push({id:f.id,at:Date.now()}); psave(); this.hidden=true; paceAll(); toast('🐟 '+f.word+' · in your fish inbox'); if(owed()) setTimeout(function(){ pickSheet([]); },300); return; }
+    if(t.closest('[data-more]')){ pickSheet([]); return; }
+    if(t.closest('[data-rand]')){ var g=freshFish(1)[0]; PC.catch.push({id:g.id,at:Date.now()}); psave(); this.hidden=true; paceAll(); toast('🐟 '+g.word+' · in your fish inbox'); if(owed()) setTimeout(function(){ pickSheet([]); },300); return; }
+    if((b=t.closest('[data-send]'))){ var f2=fishById(b.dataset.send), text=f2.word+': “'+f2.verse+'” ('+f2.ref+', KJV)', url=location.origin+'/plan/';
+      if(navigator.share) navigator.share({title:'MannaFish · '+f2.word,text:text,url:url}).catch(function(){}); else (navigator.clipboard?navigator.clipboard.writeText(text+' '+url):Promise.reject()).then(function(){ toast('Copied: paste it to a friend'); },function(){}); } });
+  $('paceView').addEventListener('click',function(e){ var t=e.target, b;
+    if(t.closest('#pGo')){ PC.on=1; PC.start=PC.start||Date.now(); psave(); paceAll(); return; }
+    if((b=t.closest('[data-tipgo]'))){ openChapters(JSON.parse(b.dataset.tipgo)); return; }
+    if(t.closest('#tipNext')){ TIPN++; drawTip(); return; }
+    if(t.closest('#tipRand')){ var L=[]; BK.forEach(function(x,bb){ unread(bb).forEach(function(c){ L.push([bb,c]); }); }); if(L.length){ var x=rnd(L); openChapters(two(x[0],x[1])); } return; }
+    if((b=t.closest('[data-fm]'))){ PC.fish=b.dataset.fm; psave(); fmUI(); return; }
+    if(t.closest('#pClaim')){ if(PC.fish==='random') claim([]); else pickSheet([]); return; }
+    if((b=t.closest('[data-fv]'))){ viewFish(fishById(b.dataset.fv)); return; }
+    if((b=t.closest('[data-f]'))){ FLT=b.dataset.f; [].forEach.call(b.parentNode.children,function(x){ x.setAttribute('aria-pressed',String(x===b)); }); drawMap(); return; }
+    if((b=t.closest('[data-ch]'))){ var bk=+b.closest('.bk').dataset.b; openChapters([[BK[bk][0],+b.dataset.ch]]); return; }
+    if((b=t.closest('.bk>button'))){ var n=+b.parentNode.dataset.b; OPENB=OPENB===n?-1:n; drawMap(); return; }
+    if(t.closest('#pReset')){ e.preventDefault(); if(!confirm('Start over? Your chapters read are cleared; your fish stay in your inbox.')) return; PC.read={}; PC.last=null; PC.start=Date.now(); PC.base=PC.catch.length; psave(); paceAll(); } });
+  // day by day, or my pace
+  function setView(v){ PC.view=v; ls('mf-pace',JSON.stringify(PC)); [].forEach.call(document.querySelectorAll('[data-view]'),function(b){ b.setAttribute('aria-pressed',String(b.dataset.view===v)); });
+    $('planView').hidden=v==='pace'; $('paceView').hidden=v!=='pace';
+    $('lead').innerHTML=v==='pace'?'Read the whole Bible at your own pace, in any order. See what you have read and what is left, and catch a fish for every 2 chapters.':'A day reading and a night reading, about six minutes each, and <span class="two">2 Fish</span> every day: one for me, one to give. The seventh day is for rest and catching up.';
+    if(v==='pace') paceAll(); }
+  document.querySelector('.seg[aria-label="How to read"]').addEventListener('click',function(e){ var b=e.target.closest('[data-view]'); if(b) setView(b.dataset.view); });
+  // chapters marked read in the Bible tab, or on another device
+  window.addEventListener('storage',function(e){ if(e.key==='mf-pace'){ pload(); if(PC.view==='pace') paceAll(); } });
+  window.addEventListener('pageshow',function(){ pload(); if(P&&PC.view==='pace') paceAll(); });
+  (function hook(n){ if(!window.MFacct){ if(n<50) setTimeout(function(){ hook(n+1); },200); return; } MFacct.on(function(){ pload(); if(P&&PC.view==='pace') paceAll(); }); })(0);
+
+  fetch('/plan/plan.json').then(function(r){ return r.json(); }).then(function(j){ P=j; paceIndex(); if(PC.view==='pace'||/[?&]pace=1/.test(location.search)) setView('pace');
     P.weeks.forEach(function(W){ W.days.forEach(function(D,d){ ['am','pm'].forEach(function(h){ ALLR.push({w:W.w,d:d,h:h}); }); }); });
     if(ST.start){ $('main').hidden=false; show(); } else { $('start').hidden=false; progress(); }
     weeks(); var m=/[?&]r=(\d+-\d-(am|pm))/.exec(location.search); if(m&&R(+m[1].split('-')[0],+m[1].split('-')[1],m[2])) openReader(m[1]); })
