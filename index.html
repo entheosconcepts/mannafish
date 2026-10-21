@@ -1337,8 +1337,9 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 .smdot[hidden]{display:none}
 .sitemenu{position:absolute;top:calc(100% + 6px);right:10px;z-index:60;display:flex;flex-direction:column;gap:6px;background:var(--ink2,#0b1620);border:1px solid var(--line,#333);border-radius:20px;padding:8px;min-width:240px;max-width:calc(100vw - 20px);box-shadow:0 20px 50px -12px rgba(0,0,0,.7)}
 .sitemenu[hidden]{display:none}
-.sitemenu .smi{max-width:none;width:100%;border-color:transparent;padding:7px 12px 7px 7px;border-radius:14px;text-align:center;justify-content:center}
-.sitemenu .smi .hbt{align-items:center}
+.sitemenu .smi{max-width:none;width:100%;border-color:transparent;padding:7px 12px 7px 7px;border-radius:14px;text-align:left;justify-content:flex-start;gap:12px}
+.sitemenu .smi .hbt{align-items:flex-start}
+.sitemenu .smsep{height:1px;background:var(--line,#333);margin:2px 8px}
 .sitemenu .smi:hover{background:rgba(42,95,176,.18)}
 .sitemenu .smi[hidden]{display:none}
 .sitemenu .smi b{font-size:.95rem}.sitemenu .smi small{font-size:.74rem;white-space:normal}
@@ -1733,12 +1734,15 @@ select option{background:#0b1620;color:#eaf0f0}
     <button type="button" class="hbtn smi" id="tourBtn" role="menuitem"><span class="hbi" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M15.5 8.5 13.4 13.4 8.5 15.5 10.6 10.6z" fill="currentColor"></path></svg></span><span class="hbt"><b id="tourLab">Take a tour</b><small id="tourSub">How it works</small></span></button>
     <button type="button" class="hbtn smi" id="trnBtn" role="menuitem"><span class="hbi" aria-hidden="true">&#128172;&#xFE0E;</span><span class="hbt"><b id="trnLab">Translator</b><small id="trnSub">Talk with anyone</small></span></button>
     <button type="button" class="hbtn smi" id="smNotes" role="menuitem"><span class="hbi" aria-hidden="true">&#9998;&#xFE0E;</span><span class="hbt"><b id="smNotesLab">My notes</b><small id="smNotesSub">Notes and highlights</small></span></button>
-    <button type="button" class="hbtn smi" id="smAcct" role="menuitem"><span class="hbi" aria-hidden="true">&#128100;&#xFE0E;</span><span class="hbt"><b id="smAcctLab">Sign in</b><small id="smAcctSub">Keep your notes on every device</small></span></button>
     <button type="button" class="hbtn smi" id="smMode" role="menuitem"><span class="hbi" aria-hidden="true" id="smModeIco">&#9790;&#xFE0E;</span><span class="hbt"><b id="smModeLab">Dark mode</b></span></button>
     <button type="button" class="hbtn smi" id="smBible" role="menuitem"><span class="hbi" aria-hidden="true">&#10013;&#xFE0E;</span><span class="hbt"><b id="smBiLab">Bible</b><small id="smBiSub">Every book and chapter</small></span></button>
     <button type="button" class="hbtn smi" id="smPlan" role="menuitem"><span class="hbi" aria-hidden="true">&#128214;&#xFE0E;</span><span class="hbt"><b id="smPlLab">Bible in a Year</b><small id="smPlSub">Day and night readings, 2 Fish a day</small></span></button>
     <button type="button" class="hbtn smi" id="smMatch" role="menuitem"><span class="hbi" aria-hidden="true">&#127924;&#xFE0E;</span><span class="hbt"><b id="smMaLab">Go MannaFish</b><small id="smMaSub">Match a pair, then go fish</small></span></button>
     <button type="button" class="hbtn smi" id="smStories" role="menuitem"><span class="hbi" aria-hidden="true">&#128031;&#xFE0E;</span><span class="hbt"><b id="smStLab">Fish stories</b><small id="smStSub">Share your catch</small></span></button>
+    <div class="smsep" role="separator"></div>
+    <button type="button" class="hbtn smi" id="smProf" role="menuitem"><span class="hbi" aria-hidden="true">&#128100;&#xFE0E;</span><span class="hbt"><b id="smProfLab">Profile</b><small id="smProfSub">Your prayers, notes, highlights, history</small></span></button>
+    <button type="button" class="hbtn smi" id="smSet" role="menuitem"><span class="hbi" aria-hidden="true">&#9881;&#xFE0E;</span><span class="hbt"><b id="smSetLab">Settings</b><small id="smSetSub">Your plan, language, reading, listening</small></span></button>
+    <button type="button" class="hbtn smi" id="smAcct" role="menuitem"><span class="hbi" aria-hidden="true" id="smAcctIco">&#128273;&#xFE0E;</span><span class="hbt"><b id="smAcctLab">Sign in</b><small id="smAcctSub">Keep your notes on every device</small></span></button>
     <button type="button" class="hbtn smi" id="smResume" role="menuitem" hidden><span class="hbi" aria-hidden="true">&#8634;&#xFE0E;</span><span class="hbt"><b id="smResLab">Pick up where you left off</b><small id="smResSub"></small></span></button>
   </div>
 </div></header>
@@ -3834,9 +3838,15 @@ window.MF=(function(){
   $('fsShare').addEventListener('click',fsOpen);
   $('fsX').addEventListener('click',fsClose);
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('fs').hidden) fsClose(); });
-  var SML={en:[['Talk with anyone'],['Write, save and hear them'],['Keep your notes on every device'],['Notes, highlights, history']],es:[['Habla con cualquiera'],['Escribe, guarda y escucha'],['Guarda tus notas en todos tus dispositivos'],['Notas, resaltados, historial']]};
-  function smLabels(){ var L=SML[MF.lang]||SML.en; $('smNotesLab').textContent=$('notesLab').textContent; $('smAcctLab').textContent=$('acctLab').textContent;
-    $('trnSub').textContent=L[0][0]; $('smNotesSub').textContent=L[1][0]; $('smAcctSub').textContent=/Sign in|Iniciar/.test($('acctLab').textContent)?L[2][0]:L[3][0]; }
+  var SML={en:[['Talk with anyone'],['Write, save and hear them'],['Keep your notes on every device'],['Notes, highlights, history'],['Profile','Your prayers, notes, highlights, history'],['Settings','Your plan, language, reading, listening'],['Sign out','Sign in'],['Bible in a Year','Day and night readings, 2 Fish a day','My pace: any order, a fish every 2 chapters','One Word: one word, four chapters a day']],
+    es:[['Habla con cualquiera'],['Escribe, guarda y escucha'],['Guarda tus notas en todos tus dispositivos'],['Notas, resaltados, historial'],['Perfil','Tus oraciones, notas, resaltados, historial'],['Ajustes','Tu plan, idioma, lectura, audio'],['Cerrar sesión','Iniciar sesión'],['La Biblia en un año','Lectura de día y de noche, 2 peces al día','A mi ritmo: en cualquier orden','Una palabra: una palabra, cuatro capítulos al día']]};
+  // Ken, 21 Oct: Profile, Settings, and Sign in / Sign out in the menu
+  function smSigned(){ return !/Sign in|Iniciar/.test($('acctLab').textContent); }
+  function smLabels(){ var L=SML[MF.lang]||SML.en, inn=smSigned(); $('smNotesLab').textContent=$('notesLab').textContent;
+    $('trnSub').textContent=L[0][0]; $('smNotesSub').textContent=L[1][0];
+    $('smProfLab').textContent=L[4][0]; $('smProfSub').textContent=L[4][1]; $('smSetLab').textContent=L[5][0]; $('smSetSub').textContent=L[5][1];
+    $('smAcctLab').textContent=inn?L[6][0]:L[6][1]; $('smAcctSub').textContent=inn?($('acctMe').textContent||L[3][0]):L[2][0]; $('smAcctIco').innerHTML=inn?'&#8617;&#xFE0E;':'&#128273;&#xFE0E;';
+    var pl='plan'; try{ pl=(JSON.parse(localStorage.getItem('mf-set')||'{}')||{}).plan||'plan'; }catch(e){} if(pl==='pace'||pl==='word') $('smPlSub').textContent=pl==='pace'?L[7][2]:L[7][3]; }
   $('siteMore').addEventListener('click',smLabels); MF.onChange(smLabels); smLabels();
   function smPanel(btn,box){ $(btn).click(); setTimeout(function(){ var b=$(box); if(b&&!b.hidden) b.scrollIntoView({behavior:'smooth',block:'start'}); },60); }
   function msSync(){ var on=!$('notesBox').hidden||!$('acctBox').hidden; document.documentElement.classList.toggle('mssheet',on); if(on) document.documentElement.style.overflow='hidden'; else if($('pt').hidden&&$('vs').hidden&&$('fs').hidden) document.documentElement.style.overflow=''; }
@@ -3851,7 +3861,10 @@ window.MF=(function(){
   // one sheet at a time
   $('acctBtn').addEventListener('click',function(){ setTimeout(function(){ if(!$('acctBox').hidden&&!$('notesBox').hidden){ $('notesBox').hidden=true; $('notesBtn').setAttribute('aria-expanded','false'); } },0); });
   $('notesBtn').addEventListener('click',function(){ setTimeout(function(){ if(!$('notesBox').hidden&&!$('acctBox').hidden){ $('acctBox').hidden=true; $('acctBtn').setAttribute('aria-expanded','false'); } },0); });
-  $('smAcct').addEventListener('click',function(){ smPanel('acctBtn','acctBox'); });
+  $('smAcct').addEventListener('click',function(){ if(!smSigned()){ smPanel('acctBtn','acctBox'); return; }
+    if(confirm(MF.lang==='es'?'¿Cerrar sesión? Lo que está en este dispositivo se queda aquí.':'Sign out? What is on this device stays here.')) $('acctOutBtn').click(); });
+  $('smProf').addEventListener('click',function(){ location.href='/you/#acct'; });
+  $('smSet').addEventListener('click',function(){ location.href='/you/#st'; });
   $('smMatch').addEventListener('click',function(){ location.href='/go/'; });
   $('smPlan').addEventListener('click',function(){ location.href='/plan/'; });
   $('smBible').addEventListener('click',function(){ location.href='/bible/'; });

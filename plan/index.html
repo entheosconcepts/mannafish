@@ -506,7 +506,10 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
   function owAll(){ if(!OD){ fetch('/plan/oneword.json').then(function(r){ return r.json(); }).then(function(j){ OD=j.days; owAll(); }).catch(function(){ $('oWeeks').innerHTML='<p class="note">The plan could not be loaded. Please reload the page.</p>'; }); return; }
     $('oStart').hidden=!!OW.start; $('oMain').hidden=!OW.start; owShow(); owWeeks(); }
   // day by day, my pace, or one word
-  function setView(v){ PC.view=v; ls('mf-pace',JSON.stringify(PC)); [].forEach.call(document.querySelectorAll('[data-view]'),function(b){ b.setAttribute('aria-pressed',String(b.dataset.view===v)); });
+  // the plan chosen is the person's own setting (You → Settings → My plan), kept with the account
+  function setPlan(v){ var o={}; try{ o=JSON.parse(ls('mf-set')||'{}')||{}; }catch(e){} if(o.plan===v||(!o.plan&&v==='plan')) return; if(v==='plan') delete o.plan; else o.plan=v; ls('mf-set',JSON.stringify(o)); if(window.MFacct) MFacct.touch('set'); }
+  function myPlan(){ try{ return (JSON.parse(ls('mf-set')||'{}')||{}).plan||''; }catch(e){ return ''; } }
+  function setView(v,keep){ PC.view=v; ls('mf-pace',JSON.stringify(PC)); if(!keep) setPlan(v); [].forEach.call(document.querySelectorAll('[data-view]'),function(b){ b.setAttribute('aria-pressed',String(b.dataset.view===v)); });
     $('planView').hidden=v!=='plan'; $('paceView').hidden=v!=='pace'; $('wordView').hidden=v!=='word'; if(v==='word') owAll();
     $('lead').innerHTML=v==='word'?'One word a day, found in four chapters. Read each one in context, and every chapter of the Bible in a year.':v==='pace'?'Read the whole Bible at your own pace, in any order. See what you have read and what is left, and catch a fish for every 2 chapters.':'A day reading and a night reading, about six minutes each, and <span class="two">2 Fish</span> every day: one for me, one to give. The seventh day is for rest and catching up.';
     if(v==='pace') paceAll(); }
@@ -516,7 +519,8 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
   window.addEventListener('pageshow',function(){ pload(); if(P&&PC.view==='pace') paceAll(); });
   (function hook(n){ if(!window.MFacct){ if(n<50) setTimeout(function(){ hook(n+1); },200); return; } MFacct.on(function(){ pload(); if(P&&PC.view==='pace') paceAll(); }); })(0);
 
-  fetch('/plan/plan.json').then(function(r){ return r.json(); }).then(function(j){ P=j; paceIndex(); if(/[?&]word=1/.test(location.search)) setView('word'); else if(PC.view==='pace'||/[?&]pace=1/.test(location.search)) setView('pace'); else if(PC.view==='word') setView('word');
+  fetch('/plan/plan.json').then(function(r){ return r.json(); }).then(function(j){ P=j; paceIndex(); var mp=myPlan()||(PC.view!=='plan'?PC.view:'');
+    if(/[?&]word=1/.test(location.search)) setView('word',true); else if(/[?&]pace=1/.test(location.search)) setView('pace',true); else if(/[?&]plan=1/.test(location.search)) setView('plan',true); else if(mp==='pace'||mp==='word') setView(mp,true);
     P.weeks.forEach(function(W){ W.days.forEach(function(D,d){ ['am','pm'].forEach(function(h){ ALLR.push({w:W.w,d:d,h:h}); }); }); });
     if(ST.start){ $('main').hidden=false; show(); } else { $('start').hidden=false; progress(); }
     weeks(); var m=/[?&]r=(\d+-\d-(am|pm))/.exec(location.search); if(m&&R(+m[1].split('-')[0],+m[1].split('-')[1],m[2])) openReader(m[1]); })

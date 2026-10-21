@@ -67,7 +67,7 @@ details>summary{cursor:pointer;color:var(--dim);font-weight:700;margin:14px 0 8p
 /* settings */
 .set h3{margin:18px 2px 8px;font:800 .72rem 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
 .opt{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 6px}
-.opt .l{flex:1;min-width:0}.opt .l b{display:block;font-weight:700}.opt .l small{display:block;color:var(--dim);font-size:.82rem}
+.opt{flex-wrap:wrap}.opt .l{flex:1 1 170px;min-width:0}.opt .segs{flex:0 1 auto;margin-left:auto}.opt .l b{display:block;font-weight:700}.opt .l small{display:block;color:var(--dim);font-size:.82rem}
 .opt select{border:1px solid var(--line);background:var(--card2);border-radius:10px;padding:8px;max-width:52%;color:var(--text)}
 .tg{position:relative;width:50px;height:30px;flex:none;appearance:none;-webkit-appearance:none;background:rgba(128,128,128,.35);border-radius:999px;cursor:pointer;transition:background .2s;margin:0}
 .tg::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .2s}
@@ -230,7 +230,17 @@ input[type=range]{width:46%;accent-color:var(--blue2)}
     return '<label class="opt"><span class="l"><b>'+title+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</span><input type="checkbox" class="tg" data-k="'+k+'"'+(on?' checked':'')+'></label>'; }
   function seg(k,d,title,opts,sub,store){ var cur=store?raw(store,d):SET(k,d); return '<div class="opt"><span class="l"><b>'+title+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</span><span class="segs">'+opts.map(function(o){ return '<button type="button" data-seg="'+k+'" data-v="'+o[0]+'"'+(store?' data-store="'+store+'"':'')+' aria-pressed="'+(String(cur)===String(o[0]))+'">'+o[1]+'</button>'; }).join('')+'</span></div>'; }
   function drawSt(){ var z=SET('size',0)||19, hc=raw('mf-hl-color','gold');
-    $('stBox').innerHTML='<h3>Reading</h3><div class="prev"><sup>1</sup>In the beginning was the Word, and the Word was with God, and the Word was God. <sup>2</sup>The same was in the beginning with God.</div>'
+    var LANGS=[['en','English'],['es','Español'],['tl','Tagalog'],['zh','中文 (Chinese)'],['hi','हिन्दी (Hindi)'],['el','Ελληνικά (Greek)'],['de','Deutsch'],['ko','한국어 (Korean)'],['he','עברית (Hebrew)'],['ar','العربية (Arabic)']];
+    var VOX=[['sage','Sage — calm'],['coral','Coral — warm'],['nova','Nova — bright'],['shimmer','Shimmer — soft'],['alloy','Alloy — even'],['ash','Ash — gentle'],['ballad','Ballad — expressive'],['echo','Echo — clear'],['fable','Fable — storyteller'],['onyx','Onyx — deep'],['verse','Verse — lively'],['device','This device’s own voice']];
+    $('stBox').innerHTML='<h3>Profile</h3><div class="opt"><span class="l"><b>Your name</b><small>So MannaFish can greet you</small></span><input id="stName" type="text" maxlength="40" autocomplete="given-name" placeholder="First name" value="'+esc(SET('name',''))+'" style="width:46%;border:1px solid var(--line);background:var(--card2);border-radius:10px;padding:8px;color:var(--text)"></div>'
+      +'<div class="opt"><span class="l"><b>Account</b><small>'+(window.MFacct&&MFacct.me()?esc(MFacct.me().email||'Signed in'):'Not signed in: kept on this device')+'</small></span><button type="button" class="b" id="stAcct">'+(window.MFacct&&MFacct.me()?'Sign out':'Sign in')+'</button></div>'
+      +'<h3>My plan</h3>'+seg('plan','plan','Bible in a Year',[['plan','Day by day'],['pace','My pace'],['word','One Word']],'What the Plans tab opens to')
+      +'<div class="opt"><span class="l"><b>Open my plan</b></span><a class="b" href="/plan/">Plans &rarr;</a></div>'
+      +'<h3>Devotional</h3><div class="opt"><span class="l"><b>Language</b><small>The devotional, the fish and the site</small></span><select id="stLang">'+LANGS.map(function(x){ return '<option value="'+x[0]+'"'+(raw('mf-lang','en')===x[0]?' selected':'')+'>'+x[1]+'</option>'; }).join('')+'</select></div>'
+      +seg('devlen','quick','How long',[['quick','3 min'],['std','6 min'],['full','10 min']],'Quick, standard or a deep dive','mf-devlen')
+      +'<div class="opt"><span class="l"><b>Reading voice</b><small>The voice that reads the devotional to you</small></span><select id="stVox">'+VOX.map(function(x){ return '<option value="'+x[0]+'"'+(raw('mf-voice','sage')===x[0]?' selected':'')+'>'+x[1]+'</option>'; }).join('')+'</select></div>'
+      +seg('speed','1.25','Listening speed',[['0.75','0.75x'],['1','1x'],['1.25','1.25x'],['1.5','1.5x']],'','mf-speed')
+      +'<h3>Reading</h3><div class="prev"><sup>1</sup>In the beginning was the Word, and the Word was with God, and the Word was God. <sup>2</sup>The same was in the beginning with God.</div>'
       +'<div class="opt"><span class="l"><b>Text size</b><small id="szV">'+(SET('size',0)?z+' px':'Standard')+'</small></span><input type="range" id="sz" min="14" max="30" step="1" value="'+z+'" aria-label="Text size"></div>'
       +seg('font','serif','Font',[['serif','Book'],['sans','Clean'],['classic','Classic']])
       +seg('line','normal','Line spacing',[['compact','Tight'],['normal','Normal'],['roomy','Roomy']])
@@ -258,18 +268,21 @@ input[type=range]{width:46%;accent-color:var(--blue2)}
   if(window.speechSynthesis) speechSynthesis.addEventListener('voiceschanged',voices);
   $('stBox').addEventListener('change',function(e){ var t=e.target;
     if(t.classList.contains('tg')){ if(t.dataset.k==='layout_lines') setV('layout',t.checked?'lines':undefined); else setV(t.dataset.k,t.checked?undefined:false); if(t.dataset.k==='hist') drawHi(); return; }
-    if(t.id==='stVer'){ rawSet('mf-bible-version',t.value); return; } if(t.id==='stVoice'){ setV('voice',t.value||undefined); } });
+    if(t.id==='stVer'){ rawSet('mf-bible-version',t.value); return; }
+    if(t.id==='stLang'){ rawSet('mf-lang',t.value); toast('Language saved'); return; } if(t.id==='stVox'){ rawSet('mf-voice',t.value); return; }
+    if(t.id==='stName'){ setV('name',t.value.trim()||undefined); acctUI(); return; } if(t.id==='stVoice'){ setV('voice',t.value||undefined); } });
   $('stBox').addEventListener('input',function(e){ if(e.target.id!=='sz') return; var v=+e.target.value; setV('size',v===19?undefined:v); $('szV').textContent=v===19?'Standard':v+' px'; });
   $('stBox').addEventListener('click',function(e){ var t=e.target.closest('button'); if(!t) return;
     if(t.dataset.seg){ var v=t.dataset.v; if(t.dataset.store){ rawSet(t.dataset.store,v); } else setV(t.dataset.seg,t.dataset.seg==='rate'?+v:v); [].forEach.call(t.parentNode.children,function(b){ b.setAttribute('aria-pressed',String(b===t)); }); preview(); return; }
     if(t.dataset.hc){ rawSet('mf-hl-color',t.dataset.hc); [].forEach.call(t.parentNode.children,function(b){ b.setAttribute('aria-pressed',String(b===t)); }); return; }
+    if(t.id==='stAcct'){ if(window.MFacct&&MFacct.me()){ if(confirm('Sign out? What is on this device stays here.')) MFacct.out().then(function(){ acctUI(); drawSt(); }); } else { window.scrollTo({top:0,behavior:'smooth'}); $('acE').focus(); } return; }
     if(t.id==='stHl'){ document.querySelector('.tabs [data-t="hl"]').click(); window.scrollTo(0,0); return; }
     if(t.id==='stExp'){ $('exp').click(); return; }
     if(t.id==='stReset'){ if(!confirm('Go back to the standard settings? Your notes, prayers and highlights stay.')) return; put('mf-set',{}); touch('set'); drawSt(); toast('Standard settings'); return; }
     if(t.id==='stTry'&&window.speechSynthesis){ speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance('In the beginning was the Word, and the Word was with God, and the Word was God.'), want=SET('voice',''), vs=speechSynthesis.getVoices(), w=vs.filter(function(v){ return v.voiceURI===want; })[0]; if(w){ u.voice=w; u.lang=w.lang; } else u.lang='en-US'; u.rate=+SET('rate',0.95)||0.95; speechSynthesis.speak(u); } });
 
   // ── the free account ──
-  function acctUI(){ var u=window.MFacct&&MFacct.me(); $('acOut').hidden=!!u; $('acIn').hidden=!u; if(u){ $('acWho').textContent=u.email||'Signed in'; var t=+raw('mf-synced',0); $('acS').textContent=t?'Synced '+new Date(t).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Syncing…'; }
+  function acctUI(){ var u=window.MFacct&&MFacct.me(); $('acOut').hidden=!!u; $('acIn').hidden=!u; if(u){ $('acWho').textContent=(SET('name','')?SET('name','')+' · ':'')+(u.email||'Signed in'); var t=+raw('mf-synced',0); $('acS').textContent=t?'Synced '+new Date(t).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Syncing…'; }
     $('foot').textContent=u?'Kept on this device and in your account; it comes back on any phone or computer when you sign in there.':'Kept on this device. With a free account (at the top), it goes to your account too, and comes back on any phone or computer.'; }
   $('acF').addEventListener('submit',function(e){ e.preventDefault(); var em=$('acE').value.trim(); if(!em) return; $('acM').textContent='Sending…';
     if(!window.MFacct){ $('acM').textContent='Still opening. Try again in a moment.'; return; }
