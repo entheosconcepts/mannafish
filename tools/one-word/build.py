@@ -36,7 +36,9 @@ for w,L in days.items():
     if info['src']=='daily' and os.path.exists(S+'plan/fish/%s.svg'%info.get('k')): svg='/plan/fish/%s.svg'%info['k']
     elif w in yid and os.path.exists(S+'tools/year-fish/svg/%s.svg'%yid[w]):
         shutil.copy(S+'tools/year-fish/svg/%s.svg'%yid[w],S+'plan/fish/%s.svg'%yid[w]); svg='/plan/fish/%s.svg'%yid[w]
-    out.append({'word':info['w'],'src':info['src'],'svg':svg,'forms':sorted(seen,key=len,reverse=True),'ch':ch,'_k':min(L)})
+    fk=info.get('k') if info['src'] in ('main','daily') else yid.get(w)
+    if info['src']=='main' and not info.get('ref'): info['ref']=(json.load(open(W+'DATA.json')).get(fk,{}).get('refs') or [['']])[0][0]
+    out.append({'word':info['w'],'src':info['src'],'k':fk,'ref':info.get('ref',''),'svg':svg,'forms':sorted(seen,key=len,reverse=True),'ch':ch,'_k':min(L)})
 out.sort(key=lambda d:d['_k'])
 for d in out: del d['_k']
 json.dump({'note':'One Word: one MannaFish word a day, four KJV chapters where it is found; every chapter of the Bible once. Built by tools/one-word.','days':out},open(S+'plan/oneword.json','w'),ensure_ascii=False,separators=(',',':'))

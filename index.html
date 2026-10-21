@@ -7,6 +7,7 @@
 <script>try{if(localStorage.getItem("mf-mode")==="light")document.documentElement.setAttribute("data-mode","light");}catch(e){}</script>
 <script src="/fish-lang/spell/spell.js" defer onload="MFspell.watch('#notesText,#psT,#psB,#ptCNote,#fsText')"></script>
 <script src="/fish-lang/tabbar.js" defer></script>
+<script src="/fish-lang/basket.js" defer></script>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -5053,13 +5054,15 @@ window.MF=(function(){
   function bkT(){ return BKT[MF.lang]||BKT.en; }
   function bkGet(){ try{ var a=JSON.parse(localStorage.getItem('mf-basket')||'[]'); return Array.isArray(a)?a.filter(function(x){ return x&&DATA[x.k]; }):[]; }catch(e){ return []; } }
   function bkPut(a){ try{ localStorage.setItem('mf-basket',JSON.stringify(a)); }catch(e){} bkFab(); }
-  function bkFab(){ var n=bkGet().length, f=$('bkFab'); f.hidden=!n; f.textContent='🧺 '+n; f.setAttribute('aria-label',bkT()[0]+': '+n); }
-  function bkAdd(k){ var a=bkGet(); if(!a.some(function(x){ return x.k===k; })) a.push({k:k,l:DEVO[MF.lang]?MF.lang:'en'}); bkPut(a); toast(bkT()[4].replace('{w}',titleIn(MF.lang,k))); }
+  // Ken, 21 Oct: the basket is everywhere now (fish-lang/basket.js): any fish, how many, for me, a gift or a church
+  function bkFab(){ $('bkFab').hidden=true; if(window.MFbasket) MFbasket.refresh(); }
+  function bkAdd(k){ if(window.MFbasket){ var r=(DATA[k].refs||[])[0]; MFbasket.add({id:'M:'+k,word:DATA[k].title,ref:r?r[0]:'',main:true,l:DEVO[MF.lang]?MF.lang:'en'}); return; } bkAdd0(k); }
+  function bkAdd0(k){ var a=bkGet(); if(!a.some(function(x){ return x.k===k; })) a.push({k:k,l:DEVO[MF.lang]?MF.lang:'en'}); bkPut(a); toast(bkT()[4].replace('{w}',titleIn(MF.lang,k))); }
   window.MFbkAdd=bkAdd;
   function bkShow(){ var T=bkT(), a=bkGet(); $('bkH').textContent=T[0]; $('bkSub').textContent=T[1]; $('bkGo').textContent=T[2]; $('bkKeep').textContent=T[3]; $('bkNote').textContent=T[5];
     $('bkList').innerHTML=a.length?a.map(function(x,i){ return '<div class="bkrow" data-i="'+i+'"><span class="bkf">'+(FISH[x.k]||'')+'</span><b>'+esc(titleIn(MF.lang,x.k))+'</b><select aria-label="Language">'+Object.keys(BKL).map(function(l){ return '<option value="'+l+'"'+(l===x.l?' selected':'')+'>'+BKL[l]+'</option>'; }).join('')+'</select><button type="button" class="bkx" aria-label="Remove">×</button></div>'; }).join(''):'<p class="bknote">'+esc(T[6])+'</p>';
     $('bkGo').hidden=!a.length; $('bkBox').hidden=false; }
-  $('bkFab').addEventListener('click',bkShow);
+  $('bkFab').addEventListener('click',function(){ if(window.MFbasket) MFbasket.open(); else bkShow(); });
   $('bkKeep').addEventListener('click',function(){ $('bkBox').hidden=true; });
   $('bkBox').addEventListener('click',function(e){ if(e.target===this){ this.hidden=true; return; } var x=e.target.closest('.bkx'); if(!x) return; var a=bkGet(); a.splice(+x.closest('.bkrow').dataset.i,1); bkPut(a); bkShow(); });
   $('bkBox').addEventListener('change',function(e){ var r=e.target.closest('.bkrow'); if(!r) return; var a=bkGet(); if(a[+r.dataset.i]){ a[+r.dataset.i].l=e.target.value; bkPut(a); } });
