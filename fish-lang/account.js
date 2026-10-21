@@ -29,7 +29,7 @@
   function isLocal(id){ return /^d\d+$/.test(String(id)); }
   function syncNotes(){ var gone=get('mf-notes-del',[]);
     return Promise.all(gone.map(function(id){ return sb.from('notes').delete().eq('id',id).eq('site',SITE); })).then(function(){ put('mf-notes-del',[]);
-      return sb.from('notes').select('id,body,word_key,created_at,updated_at').eq('site',SITE).not('word_key','like','PRAYER:%').not('word_key','like','SYNC:%'); })
+      return sb.from('notes').select('id,body,word_key,created_at,updated_at').eq('site',SITE).not('word_key','like','PRAYER:%').not('word_key','like','SYNC:%').neq('word_key','TR'); })   // TR: the Translator's history
     .then(function(r){ if(r.error) throw r.error; var rows=(r.data||[]).filter(function(x){ return x.body; }), byId={}, byText={}, N=get('mf-notes2',{}), jobs=[], seen={};
       var newId={}, drop={}, text={};   // what changes here, applied to the notes as they are when the account answers
       rows.forEach(function(x){ byId[x.id]=x; byText[x.word_key+'\n'+x.body]=x; });

@@ -2,8 +2,11 @@
 // to Spanish, real quick and real easy". The page records a few seconds of speech and sends it here; this turns it
 // into text with OpenAI's speech-to-text (works the same on every phone, and hears which language was spoken).
 //   POST /api/hear[?lang=es]   body: the recording (audio/webm, audio/mp4, audio/ogg ...)  ->  {text}
+//   ...&pair=en,es (or &to=es)  -> {text, tr:{text,from,to}}: heard and translated in one trip (Ken, 21 Oct: "a great delay")
+//   GET  /api/hear?warm=1      -> 204, so the first sentence does not wait for the function to wake up
 // Only the site's own pages may call it, recordings up to 4 MB (about a minute), with an hourly limit per visitor.
 import { getStore } from '@netlify/blobs';
+import { NAMES, translatePair, translateTo } from './lib/tr.mjs';
 const MODEL = process.env.MF_HEAR_MODEL || 'gpt-4o-mini-transcribe';
 const LANGS = ['en', 'es', 'tl', 'zh', 'hi', 'el', 'de', 'ko', 'he', 'ar', 'tr'];
 const PER_HOUR = 150, MAX = 4 * 1024 * 1024;
@@ -20,6 +23,7 @@ async function limited(ip) {
 }
 const EXT = { 'audio/webm': 'webm', 'audio/ogg': 'ogg', 'audio/mp4': 'm4a', 'audio/x-m4a': 'm4a', 'audio/aac': 'm4a', 'audio/mpeg': 'mp3', 'audio/wav': 'wav', 'audio/x-wav': 'wav' };
 export default async (req, context) => {
+  if (req.method === 'GET' && new URL(req.url).searchParams.get('warm')) return new Response(null, { status: 204, headers: { 'cache-control': 'no-store' } });
   if (req.method !== 'POST') return bad('POST only', 405);
   if (!okOrigin(req.headers.get('origin'))) return bad('Not allowed', 403);
   const apiKey = process.env.OPENAI_TRANSLATE_KEY || process.env.OPENAI_API_KEY;
@@ -38,7 +42,16 @@ export default async (req, context) => {
   const r = await fetch('https://api.openai.com/v1/audio/transcriptions', { method: 'POST', headers: { authorization: 'Bearer ' + apiKey }, body: fd });
   if (r.status === 401 || r.status === 403) return bad('Key not allowed', 503, 'key');
   if (!r.ok) return bad('Speech service error', 502);
-  const j = await r.json();
-  return Response.json({ text: String(j.text || '').trim() });
+  const j = await r.json(), text = String(j.text || '').trim(), q = new URL(req.url).searchParams;
+  // and translated straight away, when the page says into what
+  const pair = String(q.get('pair') || '').split(','), to = q.get('to');
+  if (text && text.length <= 300 && ((pair.length === 2 && NAMES[pair[0]] && NAMES[pair[1]] && pair[0] !== pair[1]) || NAMES[to])) {
+    const H = { authorization: 'Bearer ' + apiKey, 'content-type': 'application/json' };
+    try {
+      const o = NAMES[to] ? await translateTo(H, text, LANGS.includes(lang) ? lang : null, to) : await translatePair(H, text, pair[0], pair[1]);
+      if (!o.error) return Response.json({ text, tr: NAMES[to] ? { text: o.text, from: LANGS.includes(lang) ? lang : null, to } : o });
+    } catch (e) { /* the page asks /api/translate itself */ }
+  }
+  return Response.json({ text });
 };
 export const config = { path: '/api/hear' };

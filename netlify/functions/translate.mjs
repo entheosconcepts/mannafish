@@ -7,9 +7,7 @@
 // {error:'key'} and the page says what to change. Only the site's own pages may call it, with short texts and
 // an hourly limit per visitor, so it cannot be used as a free translator by others.
 import { getStore } from '@netlify/blobs';
-const NAMES = { en: 'English', es: 'Spanish', tl: 'Tagalog (Filipino)', zh: 'Simplified Chinese (Mandarin)', hi: 'Hindi',
-  el: 'Modern Greek', de: 'German', ko: 'Korean', he: 'Modern Hebrew', ar: 'Modern Standard Arabic', tr: 'Turkish' };
-const MODEL = process.env.MF_TRANSLATE_MODEL || 'gpt-4.1-mini';
+import { NAMES, MODEL, translatePair, translateTo } from './lib/tr.mjs';
 const VOICE = process.env.MF_TTS_VOICE || 'sage';
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];
 const MAX = 300, PER_HOUR = 80, SAY_PER_HOUR = 400;  // the Bible reader reads a chapter verse by verse
@@ -124,6 +122,15 @@ export default async (req, context) => {
           instructions: `Speak warmly, clearly and a little slowly, like a kind friend talking face to face, in ${NAMES[lang]}.` }) });
       if (r.status === 401 || r.status === 403) return bad('Key not allowed', 503, 'key');
       if (!r.ok) return bad('Voice service error', 502);
+      // Ken, 21 Oct: "there is a great delay" -- the sound goes to the phone as it is made, not after the whole clip is done;
+      // a copy is kept (in the background) so the same words come back at once next time
+      if (r.body && context && context.waitUntil) {
+        const [toPhone, toStore] = r.body.tee();
+        context.waitUntil(new Response(toStore).arrayBuffer().then((buf) => buf.byteLength > 1000 ? store.set(id, buf) : null).catch(() => {}));
+        return new Response(toPhone, { headers: get
+          ? { 'content-type': 'audio/mpeg', 'cache-control': 'public, max-age=31536000, immutable', 'netlify-cdn-cache-control': 'public, max-age=31536000, durable', 'netlify-vary': 'query' }
+          : { 'content-type': 'audio/mpeg', 'cache-control': 'private, max-age=86400' } });
+      }
       audio = await r.arrayBuffer();
       await store.set(id, audio);
     }
@@ -133,36 +140,11 @@ export default async (req, context) => {
       : { 'content-type': 'audio/mpeg', 'cache-control': 'private, max-age=86400' } });
   }
 
-  // the Translator's one microphone: the words are in one of two languages; find which, and give the other
+  // the Translator's one microphone: the words are in one of two languages; find which, and give the other (lib/tr.mjs)
+  const fail = (o) => o.error === 'key' ? bad('Key not allowed', 503, 'key') : bad(o.error === 'empty' ? 'No translation' : 'Translation service error', 502);
   const pair = Array.isArray(b.pair) && b.pair.length === 2 && NAMES[b.pair[0]] && NAMES[b.pair[1]] && b.pair[0] !== b.pair[1] ? b.pair : null;
-  if (pair && !NAMES[b.to]) {
-    const [A, B] = pair;
-    const r = await fetch('https://api.openai.com/v1/chat/completions', { method: 'POST', headers: H,
-      body: JSON.stringify({ model: MODEL, temperature: 0.2, max_tokens: 500, response_format: { type: 'json_object' }, messages: [
-        { role: 'system', content: `You translate for a Christian sharing the gospel face to face with someone who speaks another language. `
-          + `The user's message is in ${NAMES[A]} (code "${A}") or ${NAMES[B]} (code "${B}"). Decide which, then translate it into the other one. `
-          + `Keep the meaning and the warmth; use natural, polite, everyday wording, and the usual Bible words of the churches that speak that language. `
-          + `Reply with JSON only: {"from":"<code of the message's language>","to":"<code of the other>","text":"<the translation>"}.` },
-        { role: 'user', content: text }] }) });
-    if (r.status === 401 || r.status === 403) return bad('Key not allowed', 503, 'key');
-    if (!r.ok) return bad('Translation service error', 502);
-    let o = {}; try { o = JSON.parse((((await r.json()).choices || [])[0] || {}).message.content || '{}'); } catch (e) { o = {}; }
-    const fr = o.from === B ? B : A, out = String(o.text || '').trim();
-    if (!out) return bad('No translation', 502);
-    return Response.json({ text: out, from: fr, to: fr === A ? B : A });
-  }
+  if (pair && !NAMES[b.to]) { const o = await translatePair(H, text, pair[0], pair[1]); return o.error ? fail(o) : Response.json(o); }
   const to = NAMES[b.to] ? b.to : 'es', from = NAMES[b.from] ? b.from : null;
-  const r = await fetch('https://api.openai.com/v1/chat/completions', { method: 'POST', headers: H,
-    body: JSON.stringify({ model: MODEL, temperature: 0.2, max_tokens: 400, messages: [
-      { role: 'system', content: `You translate for a Christian sharing the gospel face to face with someone who speaks another language. `
-        + `Translate the user's message ${from ? 'from ' + NAMES[from] + ' ' : ''}into ${NAMES[to]}. Keep the meaning and the warmth; `
-        + `use natural, polite, everyday wording, and the usual Bible words of ${NAMES[to]}-speaking churches for God, Jesus, prayer, sin, grace and the like. `
-        + `Reply with the translation only: no notes, quotes or explanations. If the message is already in ${NAMES[to]}, return it unchanged.` },
-      { role: 'user', content: text }] }) });
-  if (r.status === 401 || r.status === 403) return bad('Key not allowed', 503, 'key');
-  if (!r.ok) return bad('Translation service error', 502);
-  const j = await r.json(), out = String((((j.choices || [])[0] || {}).message || {}).content || '').trim();
-  if (!out) return bad('No translation', 502);
-  return Response.json({ text: out, to });
+  const o = await translateTo(H, text, from, to); return o.error ? fail(o) : Response.json(o);
 };
 export const config = { path: ['/api/translate', '/api/say'] };
