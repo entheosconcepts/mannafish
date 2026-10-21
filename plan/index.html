@@ -135,6 +135,16 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
 .fgrid button .fish{pointer-events:none}.fgrid b{display:block;font-family:'MFHobo',cursive;font-weight:400;font-size:1.2rem;margin-top:6px}.fgrid small{color:var(--dim);font-size:.74rem;line-height:1.35;display:block}
 .fgrid .why{display:inline-block;background:var(--hl);border-radius:999px;padding:1px 8px;font-size:.72rem;font-weight:700;color:var(--text);margin-bottom:4px}
 .big .fish{max-width:560px;margin:0 auto}
+/* one word (Ken, 21 Oct: "a year version with that one word can be found in four different chapters per day") */
+.oday{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 14px 16px}
+.oday .ow{font:400 clamp(2.4rem,11vw,3.4rem)/1 'MFHobo',cursive;text-align:center;margin:6px 0 2px}
+.oday .om{color:var(--dim);text-align:center;font-size:.9rem;margin:0 0 12px}
+.oday .fish{margin:0 auto 12px;max-width:520px}
+.och{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:10px 2px;border-top:1px solid var(--line)}
+.och b{font:600 1.08rem 'Fraunces',Georgia,serif}.och q{display:block;font:italic 400 .98rem/1.45 'Spectral',Georgia,serif;color:var(--dim);quotes:none;margin-top:2px}
+.och q mark,.rdr .txt mark.ow{background:var(--hl);color:inherit;border-radius:3px;padding:0 1px;font-style:normal;font-weight:600}
+.och q small{font-style:normal;font-family:'Archivo',sans-serif;font-size:.75rem}
+.find{width:100%;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 12px;margin:0 0 10px;color:var(--text);font:inherit}
 [hidden]{display:none!important}
 </style>
 <script src="/fish-lang/tabbar.js" defer></script>
@@ -145,7 +155,25 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
   <div class="top"><a class="brand" href="/">Manna<b>Fish</b></a><div class="r"><button type="button" class="ib" id="mode" aria-label="Light or dark">&#9728;&#xFE0E;</button><a class="ib" href="/">Home</a></div></div>
   <h1>Bible in a Year</h1>
   <p class="sub" id="lead">A day reading and a night reading, about six minutes each, and <span class="two">2 Fish</span> every day: one for me, one to give. The seventh day is for rest and catching up.</p>
-  <div class="seg" role="group" aria-label="How to read"><button type="button" data-view="plan" aria-pressed="true">Day by day</button><button type="button" data-view="pace" aria-pressed="false">My pace</button></div>
+  <div class="seg" role="group" aria-label="How to read"><button type="button" data-view="plan" aria-pressed="true">Day by day</button><button type="button" data-view="pace" aria-pressed="false">My pace</button><button type="button" data-view="word" aria-pressed="false">One Word</button></div>
+
+  <div id="wordView" hidden>
+    <section class="start" id="oStart" hidden>
+      <h2>One Word a day</h2>
+      <p>Each day, one MannaFish word and four chapters where that word is found, read in context. Every chapter of the Bible, Genesis to Revelation, once: 297 readings, six days a week, the seventh to rest and catch up.</p>
+      <div class="btns center"><button type="button" class="b p" id="oSun">Start this week</button><button type="button" class="b" id="oToday">Start today</button></div>
+    </section>
+    <div id="oMain" hidden>
+      <div class="today"><span class="d" id="oDate"></span><span class="w" id="oWeek"></span></div>
+      <div class="nav"><button type="button" id="oPrev" aria-label="Day before">&larr;</button><button type="button" id="oNow">Today</button><button type="button" id="oNext" aria-label="Next day">&rarr;</button></div>
+      <div id="oDay"></div>
+      <div class="prog"><div class="bar"><i id="oBar" style="width:0"></i></div><p><span id="oDone"></span><span id="oBehind"></span></p></div>
+    </div>
+    <h3 class="sec">All 297 words</h3>
+    <input class="find" id="oFind" type="search" placeholder="Find a word or a chapter" autocomplete="off">
+    <div class="weeks" id="oWeeks"></div>
+    <p class="note">King James Version. Each word was checked in every chapter to mean the same thing there. <a href="#" id="oRestart">Start over or change the start day</a></p>
+  </div>
 
   <div id="paceView" hidden>
     <section class="start" id="pStart" hidden>
@@ -296,18 +324,24 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
         j.t.forEach(function(t,n){ var v=n+1, fv=mine&&v>=fv1&&v<=fv2; h2+='<span class="vn">'+v+'</span><span class="v'+(fv?' fv':'')+'" data-c="'+i+'" data-v="'+v+'">'+esc(t)+'</span> '; }); h2+='</p>'; });
       $('rTxt').innerHTML=h2+'<p style="color:var(--dim);font:600 .9rem Archivo,sans-serif;text-align:center;margin-top:26px">The fish for this reading: <b style="font-family:MFHobo;font-weight:400;font-size:1.2rem;color:var(--text)">'+esc(r.f.word)+'</b> · '+esc(r.f.ref)+' (marked above)</p>';
     }).catch(function(){ $('rTxt').innerHTML='<p>This reading could not be opened. Please check your connection and try again.</p>'; }); }
-  function openChapters(chs){ stopSay(); RD={k:'pace',chs:chs}; var lab=chs.length>1&&chs[0][0]===chs[chs.length-1][0]?chs[0][0]+' '+chs[0][1]+'–'+chs[chs.length-1][1]:chs.map(function(c){ return c[0]+' '+c[1]; }).join(', ');
-    $('rTitle').textContent=lab; $('rSub').textContent='My pace · '+chs.length+' chapter'+(chs.length>1?'s':''); $('rDone').innerHTML='&#10003; I read '+(chs.length>1?'these':'it'); $('rNext').innerHTML='Suggest the next &rarr;';
-    $('rDone').setAttribute('aria-pressed',String(chs.every(function(c){ return PC.read[ci(c)]; }))); $('rTxt').innerHTML='<p style="color:var(--dim)">Opening…</p>'; $('rdr').classList.add('open'); document.body.style.overflow='hidden'; $('rBody').scrollTop=0;
+  function openChapters(chs,opt){ stopSay(); opt=opt||{}; RD={k:opt.mode||'pace',chs:chs,opt:opt}; var lab=chs.length>1&&chs[0][0]===chs[chs.length-1][0]?chs[0][0]+' '+chs[0][1]+'–'+chs[chs.length-1][1]:chs.map(function(c){ return c[0]+' '+c[1]; }).join(', ');
+    $('rTitle').textContent=lab; $('rSub').textContent=opt.sub||('My pace · '+chs.length+' chapter'+(chs.length>1?'s':'')); $('rDone').innerHTML='&#10003; I read '+(chs.length>1?'these':'it'); $('rNext').innerHTML=opt.mode==='word'?'Next chapter &rarr;':'Suggest the next &rarr;';
+    $('rDone').setAttribute('aria-pressed',String(opt.mode==='word'?chs.every(function(c,i){ return OW.done[opt.day+':'+opt.idx[i]]; }):chs.every(function(c){ return PC.read[ci(c)]; }))); $('rTxt').innerHTML='<p style="color:var(--dim)">Opening…</p>'; $('rdr').classList.add('open'); document.body.style.overflow='hidden'; $('rBody').scrollTop=0;
     Promise.all(chs.map(function(c){ return fetch('/fish-lang/bible/kjv/'+bookFile(c)+'.json').then(function(x){ if(!x.ok) throw 0; return x.json(); }); })).then(function(js){ if(RD.chs!==chs) return; var h2='';
-      js.forEach(function(j,i){ h2+='<h4>'+esc(chs[i][0]+' '+chs[i][1])+'</h4><p>'; j.t.forEach(function(t,n){ h2+='<span class="vn">'+(n+1)+'</span><span class="v" data-c="'+i+'" data-v="'+(n+1)+'">'+esc(t)+'</span> '; }); h2+='</p>'; });
-      $('rTxt').innerHTML=h2+'<p style="color:var(--dim);font:600 .9rem Archivo,sans-serif;text-align:center;margin-top:26px">Done? Tap &ldquo;I read '+(chs.length>1?'these':'it')+'&rdquo; below. Every 2 chapters, a fish.</p>'; })
+      var re=opt.forms?new RegExp('\\b('+opt.forms.join('|')+')\\b','gi'):null;
+      js.forEach(function(j,i){ h2+='<h4>'+esc(chs[i][0]+' '+chs[i][1])+'</h4><p>'; j.t.forEach(function(t,n){ var fv=opt.fv&&opt.fv[i]===n+1, x=esc(t); if(re) x=x.replace(re,'<mark class="ow">$1</mark>');
+        h2+='<span class="vn">'+(n+1)+'</span><span class="v'+(fv?' fv':'')+'" data-c="'+i+'" data-v="'+(n+1)+'">'+x+'</span> '; }); h2+='</p>'; });
+      $('rTxt').innerHTML=h2+(opt.mode==='word'?'<p style="color:var(--dim);font:600 .9rem Archivo,sans-serif;text-align:center;margin-top:26px">Today&rsquo;s word, <b style="font-family:MFHobo;font-weight:400;font-size:1.2rem;color:var(--text)">'+esc(opt.word)+'</b>, is marked wherever it is found.</p>'
+        :'<p style="color:var(--dim);font:600 .9rem Archivo,sans-serif;text-align:center;margin-top:26px">Done? Tap &ldquo;I read '+(chs.length>1?'these':'it')+'&rdquo; below. Every 2 chapters, a fish.</p>');
+      var lt=$('rTxt').querySelector('.v.fv'); if(lt&&opt.mode==='word'&&chs.length===1) setTimeout(function(){ var b=$('rBody'); b.scrollTop+=lt.getBoundingClientRect().top-b.getBoundingClientRect().top-b.clientHeight/3; },60); })
       .catch(function(){ $('rTxt').innerHTML='<p>This could not be opened. Please check your connection and try again.</p>'; }); }
-  function closeReader(){ stopSay(); $('rdr').classList.remove('open'); document.body.style.overflow=''; if(RD.k==='pace'){ $('rDone').innerHTML='&#10003; I read it'; $('rNext').innerHTML='Next reading &rarr;'; } RD={k:''}; try{ history.replaceState(null,'',location.pathname); }catch(e){} }
+  function closeReader(){ stopSay(); $('rdr').classList.remove('open'); document.body.style.overflow=''; if(RD.k==='pace'||RD.k==='word'){ $('rDone').innerHTML='&#10003; I read it'; $('rNext').innerHTML='Next reading &rarr;'; } RD={k:''}; try{ history.replaceState(null,'',location.pathname); }catch(e){} }
   $('rClose').addEventListener('click',closeReader);
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&RD.k) closeReader(); });
-  $('rDone').addEventListener('click',function(){ var on=this.getAttribute('aria-pressed')!=='true'; if(RD.k==='pace'){ paceMark(RD.chs,on); this.setAttribute('aria-pressed',on); return; } setDone(RD.k,on); if(on) toast('Marked as read'); });
-  $('rNext').addEventListener('click',function(){ if(RD.k==='pace'){ var t=tips()[0]; if(t) openChapters(t.ch); else closeReader(); return; } var i=-1; ALLR.some(function(x,n){ if(key(x.w,x.d,x.h)===RD.k){ i=n; return true; } return false; }); var x=ALLR[i+1]; if(x) openReader(key(x.w,x.d,x.h)); else closeReader(); });
+  $('rDone').addEventListener('click',function(){ var on=this.getAttribute('aria-pressed')!=='true'; if(RD.k==='pace'){ paceMark(RD.chs,on); this.setAttribute('aria-pressed',on); return; }
+    if(RD.k==='word'){ RD.opt.idx.forEach(function(i){ owSet(RD.opt.day,i,on); }); this.setAttribute('aria-pressed',on); if(on) toast(owDayDone(RD.opt.day)?'All four read. Well done.':'Marked as read'); return; } setDone(RD.k,on); if(on) toast('Marked as read'); });
+  $('rNext').addEventListener('click',function(){ if(RD.k==='word'){ var o=RD.opt, d=OD[o.day], nx=-1; for(var j=1;j<=d.ch.length;j++){ var c=(o.idx[o.idx.length-1]+j)%d.ch.length; if(!OW.done[o.day+':'+c]){ nx=c; break; } } if(nx<0) closeReader(); else owOpen(o.day,[nx]); return; }
+    if(RD.k==='pace'){ var t=tips()[0]; if(t) openChapters(t.ch); else closeReader(); return; } var i=-1; ALLR.some(function(x,n){ if(key(x.w,x.d,x.h)===RD.k){ i=n; return true; } return false; }); var x=ALLR[i+1]; if(x) openReader(key(x.w,x.d,x.h)); else closeReader(); });
 
   // read aloud, verse by verse, following along on the page
   var SAY={on:false,i:0,list:[]};
@@ -324,7 +358,7 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
     SAY.on=true; this.innerHTML='&#10074;&#10074; Stop'; sayNext(); });
 
   // ── taps ──
-  document.addEventListener('click',function(e){ var t=e.target, b; if(t.closest('#paceView')||t.closest('#fsh')) return;
+  document.addEventListener('click',function(e){ var t=e.target, b; if(t.closest('#paceView')||t.closest('#fsh')||t.closest('#wordView')) return;
     if((b=t.closest('[data-open]'))){ openReader(b.dataset.open); return; }
     if((b=t.closest('[data-ck]'))){ setDone(b.dataset.ck,b.getAttribute('aria-pressed')!=='true'); return; }
     var c=t.closest('.rd'); if(!c) return; var k=c.dataset.k;
@@ -426,10 +460,55 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
     if((b=t.closest('[data-ch]'))){ var bk=+b.closest('.bk').dataset.b; openChapters([[BK[bk][0],+b.dataset.ch]]); return; }
     if((b=t.closest('.bk>button'))){ var n=+b.parentNode.dataset.b; OPENB=OPENB===n?-1:n; drawMap(); return; }
     if(t.closest('#pReset')){ e.preventDefault(); if(!confirm('Start over? Your chapters read are cleared; your fish stay in your inbox.')) return; PC.read={}; PC.last=null; PC.start=Date.now(); PC.base=PC.catch.length; psave(); paceAll(); } });
-  // day by day, or my pace
+  // ── one word: one MannaFish word a day, and four chapters where it is found (every chapter once; plan/oneword.json, tools/one-word) ──
+  var OD=null, OW={start:'',done:{}}, OV=0;
+  try{ var o2=JSON.parse(ls('mf-oneword')||'null'); if(o2&&typeof o2==='object') OW={start:o2.start||'',done:o2.done||{}}; }catch(e){}
+  function owSave(){ ls('mf-oneword',JSON.stringify(OW)); if(window.MFacct) MFacct.touch('oneword'); }
+  function owNo(date){ var n=Math.round((midnight(date)-parse(OW.start))/DAYMS); if(n<0) return {n:n,r:-1}; var w=Math.floor(n/7), d=n%7; return {n:n,w:w+1,d:d,r:d===6?-1:w*6+d}; }
+  function owDayDone(i){ return OD[i].ch.every(function(c,j){ return OW.done[i+':'+j]; }); }
+  function owSet(i,j,on){ if(on) OW.done[i+':'+j]=Date.now(); else delete OW.done[i+':'+j]; owSave(); owShow(); owWeeks(); }
+  function lit(t,forms){ var re=new RegExp('\\b('+forms.join('|')+')\\b','gi'); return esc(t).replace(re,'<mark>$1</mark>'); }
+  function owOpen(i,idx){ var d=OD[i]; openChapters(idx.map(function(j){ return [d.ch[j][0],d.ch[j][1]]; }),{mode:'word',day:i,idx:idx,word:d.word,forms:d.forms,fv:idx.map(function(j){ return d.ch[j][2]; }),sub:'One Word · Day '+(i+1)+' · '+d.word}); }
+  function owCard(i){ var d=OD[i], el=document.createElement('article'); el.className='oday'; el.dataset.i=i;
+    el.innerHTML=(d.svg?'<div class="fish"></div>':'')+'<div class="ow">'+esc(d.word)+'</div><p class="om">Found in these four chapters. Read each one, and look for the word.</p>'
+      +d.ch.map(function(c,j){ var on=!!OW.done[i+':'+j]; return '<div class="och"><button type="button" class="ck" data-ock="'+j+'" aria-pressed="'+on+'" aria-label="'+(on?'Read':'Not read yet')+': '+esc(c[0]+' '+c[1])+'">&#10003;</button><div><b>'+esc(c[0]+' '+c[1])+'</b><q>“'+lit(c[3],d.forms)+'” <small>'+esc(c[0]+' '+c[1]+':'+c[2])+'</small></q></div><button type="button" class="b" data-ord="'+j+'">Read</button></div>'; }).join('')
+      +'<div class="btns center" style="margin-top:12px"><button type="button" class="b p" data-oall="1">&#128214;&#xFE0E; Read all '+(d.ch.length===5?'five':'four')+'</button></div>';
+    if(d.svg){ var f=el.querySelector('.fish'); f.innerHTML='<div class="ph" aria-hidden="true">'+esc(d.word)+'</div>'; fetch(d.svg).then(function(r){ if(!r.ok) throw 0; return r.text(); }).then(function(x){ f.innerHTML=x; var sv=f.querySelector('svg'); if(sv){ sv.removeAttribute('style'); sv.setAttribute('aria-hidden','true'); } }).catch(function(){}); }
+    return el; }
+  function owBehind(r){ var out=[]; for(var i=0;i<Math.min(r,OD.length);i++) if(!owDayDone(i)) out.push(i); return out; }
+  function owShow(){ if(!OD||!OW.start) return; var box=$('oDay'); box.innerHTML=''; var date=new Date(midnight(new Date()).getTime()+OV*DAYMS), x=owNo(date);
+    $('oDate').textContent=OV===0?'Today, '+fmt(date):fmt(date);
+    if(x.n<0){ $('oWeek').textContent='Starts '+fmt(parse(OW.start)); }
+    else if(x.r<0){ $('oWeek').textContent='Week '+x.w+' · rest'; var b=owBehind(x.w*6), el=document.createElement('section'); el.className='rest';
+      el.innerHTML='<h2>Rest and catch up</h2><p>'+(b.length?'The words you have not finished yet:':'You are all caught up. Rest, pray, and go fishing with a friend.')+'</p>'+(b.length?'<ul class="catch">'+b.slice(0,12).map(function(i){ return '<li><span class="t"><b style="font-family:MFHobo;font-weight:400;font-size:1.2rem">'+esc(OD[i].word)+'</b><small>Day '+(i+1)+' · '+esc(OD[i].ch.map(function(c){ return c[0]+' '+c[1]; }).join(', '))+'</small></span><button type="button" class="b" data-oday="'+i+'">Open</button></li>'; }).join('')+'</ul>':''); box.appendChild(el); }
+    else if(x.r>=OD.length){ $('oWeek').textContent='You have read every chapter of the Bible. Well done, good and faithful servant.'; }
+    else { $('oWeek').textContent='Day '+(x.r+1)+' of '+OD.length+' · Week '+x.w; box.appendChild(owCard(x.r)); }
+    $('oNow').disabled=OV===0; var n=0; OD.forEach(function(d,i){ if(owDayDone(i)) n++; }); var bh=x.r>0?owBehind(x.r).length:(x.n>0&&x.r<0?owBehind(x.w*6).length:0);
+    $('oBar').style.width=(100*n/OD.length).toFixed(1)+'%'; $('oDone').textContent=n+' of '+OD.length+' words'; $('oBehind').textContent=bh?bh+' to catch up':(n?'Right on track':''); }
+  function owWeeks(){ if(!OD) return; var q=($('oFind').value||'').trim().toLowerCase(), box=$('oWeeks'), h='';
+    for(var w=0;w*6<OD.length;w++){ var rows='', any=false, dots='';
+      for(var i=w*6;i<Math.min(OD.length,w*6+6);i++){ var d=OD[i], label=d.ch.map(function(c){ return c[0]+' '+c[1]; }).join(' · '); dots+='<i class="'+(owDayDone(i)?'on':'')+'"></i>';
+        if(q&&d.word.toLowerCase().indexOf(q)<0&&label.toLowerCase().indexOf(q)<0) continue; any=true;
+        rows+='<li><button type="button" class="ck" data-oday-ck="'+i+'" aria-pressed="'+owDayDone(i)+'" aria-label="Day '+(i+1)+'">&#10003;</button><span class="t"><b class="w" style="font-family:MFHobo;font-weight:400;font-size:1.15rem">'+esc(d.word)+'</b><small>Day '+(i+1)+' · '+esc(label)+'</small></span><button type="button" class="b" data-oday="'+i+'">Open</button></li>'; }
+      if(!any) continue; h+='<details class="wk"'+(q?' open':'')+'><summary><span class="n">Week '+(w+1)+'</span><span class="t">'+esc(OD.slice(w*6,w*6+6).map(function(d){ return d.word; }).join(', '))+'</span><span class="dots">'+dots+'</span></summary><ul class="dl">'+rows+'</ul></details>'; }
+    box.innerHTML=h||'<p class="note">No word or chapter matches.</p>'; }
+  $('oFind').addEventListener('input',owWeeks);
+  $('wordView').addEventListener('click',function(e){ var t=e.target, b, c=t.closest('.oday'), i=c?+c.dataset.i:-1;
+    if((b=t.closest('[data-ord]'))){ owOpen(i,[+b.dataset.ord]); return; }
+    if(t.closest('[data-oall]')){ owOpen(i,OD[i].ch.map(function(x,j){ return j; })); return; }
+    if((b=t.closest('[data-ock]'))){ owSet(i,+b.dataset.ock,b.getAttribute('aria-pressed')!=='true'); return; }
+    if((b=t.closest('[data-oday-ck]'))){ var k=+b.dataset.odayCk, on=!owDayDone(k); OD[k].ch.forEach(function(x,j){ if(on) OW.done[k+':'+j]=Date.now(); else delete OW.done[k+':'+j]; }); owSave(); owShow(); owWeeks(); return; }
+    if((b=t.closest('[data-oday]'))){ var k2=+b.dataset.oday, at=OW.start?owNo(new Date()):null; if(at&&at.n>=0){ OV=(Math.floor(k2/6)*7+k2%6)-at.n; owShow(); window.scrollTo({top:$('oMain').offsetTop-10,behavior:'smooth'}); } else owOpen(k2,OD[k2].ch.map(function(x,j){ return j; })); return; }
+    if(t.closest('#oPrev')){ OV--; owShow(); return; } if(t.closest('#oNext')){ OV++; owShow(); return; } if(t.closest('#oNow')){ OV=0; owShow(); return; }
+    if(t.closest('#oSun')){ var d0=midnight(new Date()); owBegin(new Date(d0.getTime()-d0.getDay()*DAYMS)); return; } if(t.closest('#oToday')){ owBegin(midnight(new Date())); return; }
+    if(t.closest('#oRestart')){ e.preventDefault(); $('oStart').hidden=false; $('oMain').hidden=true; $('oStart').querySelector('p').textContent='Pick a new start day. What you have marked as read stays marked.'; $('oStart').scrollIntoView({behavior:'smooth'}); } });
+  function owBegin(d){ OW.start=ymd(d); owSave(); OV=0; owAll(); }
+  function owAll(){ if(!OD){ fetch('/plan/oneword.json').then(function(r){ return r.json(); }).then(function(j){ OD=j.days; owAll(); }).catch(function(){ $('oWeeks').innerHTML='<p class="note">The plan could not be loaded. Please reload the page.</p>'; }); return; }
+    $('oStart').hidden=!!OW.start; $('oMain').hidden=!OW.start; owShow(); owWeeks(); }
+  // day by day, my pace, or one word
   function setView(v){ PC.view=v; ls('mf-pace',JSON.stringify(PC)); [].forEach.call(document.querySelectorAll('[data-view]'),function(b){ b.setAttribute('aria-pressed',String(b.dataset.view===v)); });
-    $('planView').hidden=v==='pace'; $('paceView').hidden=v!=='pace';
-    $('lead').innerHTML=v==='pace'?'Read the whole Bible at your own pace, in any order. See what you have read and what is left, and catch a fish for every 2 chapters.':'A day reading and a night reading, about six minutes each, and <span class="two">2 Fish</span> every day: one for me, one to give. The seventh day is for rest and catching up.';
+    $('planView').hidden=v!=='plan'; $('paceView').hidden=v!=='pace'; $('wordView').hidden=v!=='word'; if(v==='word') owAll();
+    $('lead').innerHTML=v==='word'?'One word a day, found in four chapters. Read each one in context, and every chapter of the Bible in a year.':v==='pace'?'Read the whole Bible at your own pace, in any order. See what you have read and what is left, and catch a fish for every 2 chapters.':'A day reading and a night reading, about six minutes each, and <span class="two">2 Fish</span> every day: one for me, one to give. The seventh day is for rest and catching up.';
     if(v==='pace') paceAll(); }
   document.querySelector('.seg[aria-label="How to read"]').addEventListener('click',function(e){ var b=e.target.closest('[data-view]'); if(b) setView(b.dataset.view); });
   // chapters marked read in the Bible tab, or on another device
@@ -437,7 +516,7 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
   window.addEventListener('pageshow',function(){ pload(); if(P&&PC.view==='pace') paceAll(); });
   (function hook(n){ if(!window.MFacct){ if(n<50) setTimeout(function(){ hook(n+1); },200); return; } MFacct.on(function(){ pload(); if(P&&PC.view==='pace') paceAll(); }); })(0);
 
-  fetch('/plan/plan.json').then(function(r){ return r.json(); }).then(function(j){ P=j; paceIndex(); if(PC.view==='pace'||/[?&]pace=1/.test(location.search)) setView('pace');
+  fetch('/plan/plan.json').then(function(r){ return r.json(); }).then(function(j){ P=j; paceIndex(); if(/[?&]word=1/.test(location.search)) setView('word'); else if(PC.view==='pace'||/[?&]pace=1/.test(location.search)) setView('pace'); else if(PC.view==='word') setView('word');
     P.weeks.forEach(function(W){ W.days.forEach(function(D,d){ ['am','pm'].forEach(function(h){ ALLR.push({w:W.w,d:d,h:h}); }); }); });
     if(ST.start){ $('main').hidden=false; show(); } else { $('start').hidden=false; progress(); }
     weeks(); var m=/[?&]r=(\d+-\d-(am|pm))/.exec(location.search); if(m&&R(+m[1].split('-')[0],+m[1].split('-')[1],m[2])) openReader(m[1]); })

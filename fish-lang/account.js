@@ -77,7 +77,7 @@
       Object.keys(pull).forEach(function(id){ if(!H[id]&&!off2[id]) H[id]=pull[id]; }); put('mf-hl',H); return Promise.all(jobs); }); }
 
   // ── saved verses, my links, settings (newest wins), reading history (joined) ──
-  var BLOBS={saved:['mf-bible-saved',[]],links:['mf-bible-links',[]],set:['mf-set',{}],hist:['mf-bible-hist',[]],pace:['mf-pace',{}]};
+  var BLOBS={saved:['mf-bible-saved',[]],links:['mf-bible-links',[]],set:['mf-set',{}],hist:['mf-bible-hist',[]],pace:['mf-pace',{}],oneword:['mf-oneword',{}]};
   function setPack(){ var s=get('mf-set',{}); s._mode=raw('mf-mode')||''; s._ver=raw('mf-bible-version')||''; s._hlc=raw('mf-hl-color')||''; return s; }
   function setUnpack(s){ s=s||{}; [['_mode','mf-mode'],['_ver','mf-bible-version'],['_hlc','mf-hl-color']].forEach(function(p){ if(s[p[0]]) try{ localStorage.setItem(p[1],s[p[0]]); }catch(e){} delete s[p[0]]; }); put('mf-set',s); }
   function syncBlobs(){ return sb.from('notes').select('id,word_key,body').eq('site',SITE).like('word_key','SYNC:%').then(function(r){ if(r.error) throw r.error; var have={}, S=get('mf-sync-at',{}), jobs=[];
