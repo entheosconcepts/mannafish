@@ -468,6 +468,9 @@ a{color:inherit}
 #readerSlot{width:100%}
 .reader.inline{position:static;transform:none;height:auto;width:100%;display:none;border-radius:6px;box-shadow:none}
 .reader.inline.open{display:flex}
+.reader.inline{scroll-margin-top:10px}
+.reader.inline.justin{animation:rin 1.4s ease}
+@keyframes rin{0%{box-shadow:0 0 0 3px #3370ff}100%{box-shadow:0 0 0 0 rgba(51,112,255,0)}}
 .reader.inline .reader-body{max-height:440px}
 .reader.inline .rmode{display:none}
 @media(min-width:861px){.reader.inline .rmode{display:inline-block}}
@@ -658,6 +661,7 @@ section.section.bundles{display:block;margin-top:0}
 /* the basket */
 .bkfab{position:fixed;right:16px;bottom:max(16px,env(safe-area-inset-bottom));z-index:80;border:0;border-radius:999px;background:#f5d76e;color:#111;font:800 1rem 'Archivo',sans-serif;padding:10px 16px;cursor:pointer;box-shadow:0 10px 30px -8px #000}
 .bkfab[hidden]{display:none}
+body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;padding:8px 14px}
 .bkbox{position:fixed;inset:0;z-index:110;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:16px}.bkbox[hidden]{display:none}
 .bkin{background:#0e1116;border:1px solid rgba(255,255,255,.16);border-radius:20px;max-width:460px;width:100%;max-height:88vh;overflow:auto;padding:20px;text-align:center;color:#eaf0f0}
 .bkin h3{font:400 1.9rem 'MFHobo',cursive;margin:0}.bkin .bksub{font:italic .92rem 'Spectral',Georgia,serif;color:#c6d2d4;margin:6px 0 14px}
@@ -2481,6 +2485,7 @@ window.MF=(function(){
   var RKEY='mf-reader-place';
   function placePref(){try{return localStorage.getItem(RKEY)||'side';}catch(e){return 'side';}}
   var landing=false;  // opened from an email link: the verse sits under the fish and the page stays on the fish
+  var landed=false;   // ...for that first verse only: a verse the person taps after that scrolls into view (Ken, 21 Oct: "user may miss that")
   function inlineNow(){return landing || window.matchMedia('(max-width:860px)').matches || placePref()==='below';}
   // Ken, 9 Oct: "stacked ... like a deck of cards" -- a verse or Strong's entry opened from the back of the fish lies
   // on top of the word-study card, the same size, instead of opening a panel under or beside it. Close it to see the card.
@@ -2506,7 +2511,8 @@ window.MF=(function(){
   });
   window.addEventListener('resize',function(){if(reader.classList.contains('open'))placeReader();});
   function closeReader(){ rStop(); unbig(); if(window.MFplSource&&MFplSource()===$('rSpk')) MFplClose(); if(sheet){ sheet=false; listenUI(); setTimeout(placeReader,350); } if(landing){ landing=false; setTimeout(placeReader,350); } window.MFreader=null; if(window.MFsave) MFsave(); reader.classList.remove('open');scrim.classList.remove('open');reader.setAttribute('aria-hidden','true');}
-  $('rClose').addEventListener('click',closeReader);
+  // ✕ on a verse that opened under the fish goes back up to the fish
+  $('rClose').addEventListener('click',function(){ var inl=reader.classList.contains('inline'), st=$('stage'); closeReader(); if(inl&&st&&st.getBoundingClientRect().bottom<0) setTimeout(function(){ st.scrollIntoView({behavior:'smooth',block:'center'}); },30); });
   scrim.addEventListener('click',closeReader);
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closeReader();});
 
@@ -2514,7 +2520,7 @@ window.MF=(function(){
     reader.classList.add('open');reader.setAttribute('aria-hidden','false');
     placeReader(); setTimeout(readerFit,80); if(reader.classList.contains('stacked')){ sizeStage(); setTimeout(function(){ $('stage').scrollIntoView({behavior:'smooth',block:'nearest'}); },30); return; }
     if(!inlineNow()) scrim.classList.add('open');
-    else if(!landing && !sheet) setTimeout(function(){reader.scrollIntoView({behavior:'smooth',block:'start'});},30);
+    else if((!landing||landed) && !sheet) setTimeout(function(){ reader.scrollIntoView({behavior:'smooth',block:'start'}); reader.classList.remove('justin'); void reader.offsetWidth; reader.classList.add('justin'); },30);
   }
   // Ken, 9 Oct: the Strong's entry is a card of its own -- laid on top of the deck, the same size, with a speaker
   // that reads it aloud (each word lit as it is read). The parts that are read are the spans marked data-v.
@@ -5084,7 +5090,7 @@ window.MF=(function(){
       openReader(cur,+m[1]); want=window.MFreader;
       (function wait(){ if(window.MFreader!==want) return; if(RD){ startListen(); return; } if(Date.now()-t0<12000) setTimeout(wait,150); })(); }
     else openReader(cur,+m[1]);
-    setTimeout(function(){ window.scrollTo(0,0); },60);} })();
+    landed=true; setTimeout(function(){ window.scrollTo(0,0); },60);} })();
 })();
 
 </script>
