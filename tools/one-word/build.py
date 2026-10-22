@@ -14,7 +14,7 @@ import json,os,re,shutil,sys
 W=sys.argv[1]; S=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','..')+'/'
 src=open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'inc.py')).read(); g={}
 exec(src[:src.index('INC={}')],g)
-CH,B,words,forms,TOK=g['CH'],g['B'],g['words'],g['forms'],g['TOK']
+CH,B,words,forms,TOK,ALIAS=g['CH'],g['B'],g['words'],g['forms'],g['TOK'],g.get('ALIAS',{})
 days=json.load(open(W+'days.json')); R=json.load(open(W+'reviewed.json'))
 bad=[w+'|'+str(i) for w,L in days.items() for i in L if not R.get(w+'|'+str(i),{}).get('ok')]
 if bad and '--draft' not in sys.argv: print('NOT CHECKED OR NOT OK:',bad); sys.exit(1)
@@ -38,7 +38,9 @@ for w,L in days.items():
         shutil.copy(S+'tools/year-fish/svg/%s.svg'%yid[w],S+'plan/fish/%s.svg'%yid[w]); svg='/plan/fish/%s.svg'%yid[w]
     fk=info.get('k') if info['src'] in ('main','daily') else yid.get(w)
     if info['src']=='main' and not info.get('ref'): info['ref']=(json.load(open(W+'DATA.json')).get(fk,{}).get('refs') or [['']])[0][0]
-    out.append({'word':info['w'],'src':info['src'],'k':fk,'ref':info.get('ref',''),'svg':svg,'forms':sorted(seen,key=len,reverse=True),'ch':ch,'_k':min(L)})
+    kjv=sorted({x for x in seen if x in ALIAS.get(w,[])},key=lambda x:ALIAS[w].index(x))   # the King James word in these chapters, when it is not the fish word
+    out.append({'word':info['w'],'src':info['src'],'k':fk,'ref':info.get('ref',''),'svg':svg,'forms':sorted(seen,key=lambda x:(-len(x),x)),'ch':ch,'_k':min(L)})
+    if kjv: out[-1]['kjv']=kjv
 out.sort(key=lambda d:d['_k'])
 for d in out: del d['_k']
 json.dump({'note':'One Word: one MannaFish word a day, four KJV chapters where it is found; every chapter of the Bible once. Built by tools/one-word.','days':out},open(S+'plan/oneword.json','w'),ensure_ascii=False,separators=(',',':'))

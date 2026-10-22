@@ -9,7 +9,9 @@ The result is `plan/oneword.json`, the **One Word** tab of Bible in a Year (`/pl
 - each day: four KJV chapters that all contain that word (one day has five), with the best verse in each
 - every one of the 1,189 chapters exactly once
 - most days one New Testament chapter and three from the Old (a few words, like Knock and Faith, live mostly in the New)
-- all the main fish words except Listen (the KJV says "hearken")
+- all 24 main fish words. Listen came in on 22 Oct: the KJV says "hear" and "hearken", so `inc.py` counts those as Listen (`ALIAS`),
+  and the day shows "In the King James: hear". The same for the renamed fish: Urge (KJV "beseech") and Stay (KJV "tarry").
+  Re-solving with `keep.json` (the year as it was, a big bonus in `solve.py`) changed one day: Favour became Listen.
 - the days run in order of where each day's first chapter is, so the year starts in Genesis and ends in Revelation
 
 How it was made (`build.py` has the steps): every fish word and its KJV forms counted in every chapter (`inc.py`); an integer

@@ -27,9 +27,11 @@ IRR={'give':['gave','given','giveth','givest','giving','gives','gavest'],'seek':
  'pray':['prayed','prayeth','prayer','prayers','praying'],'believe':['believed','believeth','believing','belief'],'love':['loved','loveth','lovest','loving'],'hope':['hoped','hopeth','hoping'],'trust':['trusted','trusteth','trusting'],
  'live':['lived','liveth','living','lives','alive','life'],'grow':['grew','grown','groweth'],'breathe':['breath','breathed'],'laugh':['laughed','laughter','laugheth'],'honor':['honour','honoured','honoureth','honourable'],
  'rejoice':['rejoiced','rejoiceth','rejoicing','joy'],'shepherd':['shepherds'],'child':['children'],'man':['men'],'woman':['women'],'brother':['brethren','brothers']}
+# modern fish words whose King James words are different (Ken, 22 Oct: Hearken became Listen, Beseech Urge, Tarry Stay)
+ALIAS={'listen':['hearken','hearkened','hearkeneth','hearkening','hear'],'urge':['beseech','beseeching','besought','beseecheth'],'stay':['tarry','tarried','tarrieth','tarrying']}
 TOK=re.compile(r"[a-z]+")
 def forms(w):
-    w=w.lower(); f={w}
+    w=w.lower(); f={w}|set(ALIAS.get(w,[]))
     if w in IRR: f|=set(IRR[w])
     if ' ' in w: return f
     f|={w+'s',w+'es',w+'ed',w+'eth',w+'est',w+'ing',w+'d',w+'th',w+'st'}

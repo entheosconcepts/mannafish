@@ -9,6 +9,7 @@ import os
 BAN=set(tuple(x) for x in json.load(open(W+'ban.json'))) if os.path.exists(W+'ban.json') else set()
 BANW=set(json.load(open(W+'banwords.json'))) if os.path.exists(W+'banwords.json') else set()
 GOOD=set(tuple(x) for x in json.load(open(W+'good.json'))) if os.path.exists(W+'good.json') else set()
+KEEP=set((w,int(i)) for w,L in json.load(open(W+'keep.json')).items() for i in L) if os.path.exists(W+'keep.json') else set()   # the year as it is: change as little as possible
 pairs=[]   # (word idx, chapter idx, score)
 for wi,w in enumerate(words):
     m=INC[w]; df=len(m)
@@ -17,7 +18,7 @@ for wi,w in enumerate(words):
     bonus={'main':1.0,'year':0.6,'daily':0.3}[WD[w]['src']]
     for i,(n,fv) in m.items():
         if (w,int(i)) in BAN: continue
-        pairs.append((wi,int(i),math.log(1+n)*(0.5+idf)+bonus+(1.5 if (w,int(i)) in GOOD else 0)))
+        pairs.append((wi,int(i),math.log(1+n)*(0.5+idf)+bonus+(1.5 if (w,int(i)) in GOOD else 0)+(8 if (w,int(i)) in KEEP else 0)))
 P=len(pairs); print('pairs',P,'words',nw)
 # variables: x (P) | y (nw) | e (nw) | z (nw): a second New Testament chapter on that day (allowed, but costs)
 nv=P+3*nw
