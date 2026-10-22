@@ -255,7 +255,7 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
 
   // ── a fish, drawn from its own file ──
   var FS={};
-  function fishSvg(id){ if(!FS[id]) FS[id]=fetch('/plan/fish/'+id+'.svg').then(function(r){ if(!r.ok) throw 0; return r.text(); }); return FS[id]; }
+  function fishSvg(id){ if(!FS[id]) FS[id]=fetch('/fish/'+id+'.svg').then(function(r){ if(!r.ok) throw 0; return r.text(); }); return FS[id]; }
   function putFish(el,f){ el.innerHTML='<div class="ph" aria-hidden="true">'+esc(f.word)+'</div>'; el.setAttribute('aria-label',f.word+' fish: '+f.top+' '+f.bot+' ('+f.ref+')'); el.setAttribute('role','img');
     fishSvg(f.id).then(function(s){ el.innerHTML=s; var svg=el.querySelector('svg'); if(svg){ svg.removeAttribute('style'); svg.setAttribute('aria-hidden','true'); } }).catch(function(){}); }
 
@@ -368,7 +368,7 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
     if(t.closest('[data-a=send]')) send(k);
     if(t.closest('[data-a=basket]')){ var a2=k.split('-'), f2=R(+a2[0],+a2[1],a2[2]).f; bk(f2); } });
   // the basket (fish-lang/basket.js): a fish from any plan
-  function bk(f){ if(!f||!window.MFbasket) return; MFbasket.add({id:/^W\d/.test(f.id)?'Y:'+f.id:'D:'+f.id,word:f.word,ref:f.ref,svg:f.svg||('/plan/fish/'+f.id+'.svg')}); }
+  function bk(f){ if(!f||!window.MFbasket) return; MFbasket.add({id:/^W\d/.test(f.id)?'Y:'+f.id:'D:'+f.id,word:f.word,ref:f.ref,svg:f.svg||('/fish/'+f.id+'.svg')}); }
   document.addEventListener('keydown',function(e){ if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('fish')){ e.preventDefault(); openReader(e.target.closest('.rd').dataset.k); } });
   $('prev').addEventListener('click',function(){ view--; show(); });
   $('next').addEventListener('click',function(){ view++; show(); });

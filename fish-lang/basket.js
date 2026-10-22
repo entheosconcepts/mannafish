@@ -28,8 +28,8 @@
       +':root[data-mode=light] .mfbk .in{background:#fbfaf6;color:#1c2228;border-color:rgba(0,0,0,.12)}'
       +'.mfbk .hd{display:flex;align-items:center;gap:10px}.mfbk h3{flex:1;margin:0;font:400 1.9rem MFHobo,cursive}.mfbk .x{border:1px solid rgba(128,128,128,.4);background:none;color:inherit;border-radius:50%;width:38px;height:38px;font-size:1rem;cursor:pointer}'
       +'.mfbk .sub{font:italic .95rem Spectral,Georgia,serif;opacity:.8;margin:4px 0 12px}'
-      +'.mfbk .row{display:grid;grid-template-columns:84px 1fr;gap:4px 10px;align-items:center;border:1px solid rgba(128,128,128,.28);border-radius:14px;padding:8px;margin:0 0 8px}'
-      +'.mfbk .th{position:relative;width:84px;aspect-ratio:2/1;border-radius:8px;overflow:hidden;background:#000;grid-row:span 2}.mfbk .th svg{position:absolute;inset:0;width:100%;height:100%}'
+      +'.mfbk .row{display:grid;grid-template-columns:116px 1fr;gap:4px 10px;align-items:center;border:1px solid rgba(128,128,128,.28);border-radius:14px;padding:8px;margin:0 0 8px}'
+      +'.mfbk .th{position:relative;width:116px;aspect-ratio:2/1;border-radius:8px;overflow:hidden;background:#000;grid-row:span 2}.mfbk .th svg{position:absolute;inset:0;width:100%;height:100%}'
       +'.mfbk .nm{display:flex;align-items:baseline;gap:8px;min-width:0}.mfbk .nm b{font:400 1.25rem MFHobo,cursive}.mfbk .nm small{opacity:.65;font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
       +'.mfbk .ct{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.mfbk select,.mfbk input,.mfbk textarea{font:inherit;color:inherit;background:rgba(128,128,128,.12);border:1px solid rgba(128,128,128,.35);border-radius:10px;padding:7px 9px}'
       +'.mfbk .ct select{max-width:120px;font-size:.85rem;padding:5px 6px}.mfbk .qt{display:inline-flex;align-items:center;border:1px solid rgba(128,128,128,.35);border-radius:999px}'
@@ -45,11 +45,19 @@
       +'.mfbk .tot{display:flex;justify-content:space-between;gap:10px;font-weight:700;margin:10px 2px 0}.mfbk .tot small{font-weight:400;opacity:.7}'
       +'.mfbk .msg{margin:8px 0 0;font-size:.9rem}.mfbk .ok{text-align:center;padding:10px 4px}.mfbk .ok .big{font-size:3rem}.mfbk .ok h3{margin:4px 0}'
       +'.mfbk .empty{opacity:.75;text-align:center;padding:16px 4px}.mfbk a{color:#6f9bff}';
+    s.textContent+=[['MFHobo','hobo'],['ZCOOL KuaiLe','zh'],['Baloo 2','hi'],['Ubuntu','el'],['Jua','ko'],['Fredoka','he'],['Cairo','ar']].map(function(f){ return "@font-face{font-family:'"+f[0]+"';src:url(/fish-lang/"+f[1]+".woff2) format('woff2');font-weight:100 900;font-display:swap}"; }).join('');   // the letters on the fish
     document.head.appendChild(s); }
-  // a fish's picture: its own drawing when it has one, else its word in the outline
-  var SV={};
+  // a fish's picture: the real fish, from /fish/ where every fish picture lives (Ken, 22 Oct: "the fish are not actual images");
+  // the outline with its word only shows while it loads. The main fish come in the language chosen for them.
+  var SV={}, UQ=0;
+  function src(x){ var id=String(x.id||''), k=id.slice(2);
+    if(id.indexOf('M:')===0) return '/fish/'+(x.l||'en')+'/'+k+'.svg';
+    if(/^[DY]:[WD]\d/.test(id)) return '/fish/'+k+'.svg';
+    return x.svg||''; }
+  // two fish on one page must not share the names inside them (the curve each verse line runs along)
+  function uniq(t){ var p='bk'+(++UQ)+'_'; return t.replace(/\bid="([^"]+)"/g,'id="'+p+'$1"').replace(/href="#([^"]+)"/g,'href="#'+p+'$1"').replace(/url\(#([^)]+)\)/g,'url(#'+p+'$1)'); }
   function outline(w){ return '<svg viewBox="0 0 200 100" aria-hidden="true"><path d="M8 50 C48 6 120 6 152 50 C120 94 48 94 8 50 Z M152 50 L192 18 M152 50 L192 82" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><text x="80" y="60" text-anchor="middle" font-family="MFHobo,Arial Black,sans-serif" font-size="'+(w.length>7?20:26)+'" fill="#fff">'+esc(w)+'</text></svg>'; }
-  function thumb(el,x){ el.innerHTML=outline(x.word); if(!x.svg) return; (SV[x.svg]||(SV[x.svg]=fetch(x.svg).then(function(r){ if(!r.ok) throw 0; return r.text(); }))).then(function(t){ el.innerHTML=t; var s=el.querySelector('svg'); if(s){ s.removeAttribute('style'); s.setAttribute('aria-hidden','true'); } }).catch(function(){}); }
+  function thumb(el,x){ el.innerHTML=outline(x.word); var u=src(x); if(!u) return; (SV[u]||(SV[u]=fetch(u).then(function(r){ if(!r.ok) throw 0; return r.text(); }))).then(function(t){ el.innerHTML=uniq(t); var s=el.querySelector('svg'); if(s){ s.removeAttribute('style'); s.setAttribute('aria-hidden','true'); } }).catch(function(){}); }
 
   // ── the button ──
   var FAB=null;
@@ -101,7 +109,7 @@
     if(act==='up'&&a[i]){ keepForm(); a[i].q=Math.min(MAXQ,a[i].q+1); save(a); draw(); return; }
     if(act==='dn'&&a[i]){ keepForm(); a[i].q=Math.max(1,a[i].q-1); save(a); draw(); return; }
     if(act==='rm'&&a[i]){ keepForm(); a.splice(i,1); save(a); draw(); return; } }
-  function change(e){ var r=e.target.closest('.row'); if(r&&e.target.dataset.f==='l'){ var a=items(); a[+r.dataset.i].l=e.target.value; save(a); } }
+  function change(e){ var r=e.target.closest('.row'); if(r&&e.target.dataset.f==='l'){ var a=items(), x=a[+r.dataset.i]; x.l=e.target.value; save(a); thumb(r.querySelector('.th'),x); } }   // the picture follows the language
   // what was typed stays when the list is drawn again
   function keepForm(){ if(!BOX||!BOX.querySelector('#bkName')) return; var S=get(SHIP,{}); S.name=val('bkName')||S.name; S.email=val('bkEmail')||S.email;
     if(FOR!=='gift'){ ['street','city','zip','country'].forEach(function(k){ var v=val('bk'+{street:'Street',city:'City',zip:'Zip',country:'Country'}[k]); if(v) S[k]=v; }); }

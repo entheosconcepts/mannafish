@@ -21,5 +21,5 @@ fish: the day fish is "one for me", the night fish "one for you", to send to som
 - plan/place.py: puts the 364 daily fish on the reading their verse is in (slots.json); 260 land, 55 share a reading with another and stay as spares
 - plan/new-fish/: the 315 new fish for the other readings (D365 on); plan/verify2.py checks them against the KJV and the reading
 - plan/build_plan.py: writes /plan/plan.json and edit/daily/data.json (679 fish: 624 in the plan, 55 spare)
-- export.js: draws each plan fish the way the edit sheet does and saves /plan/fish/<id>.svg (run it again after fish are edited)
+- export.js: draws each plan fish the way the edit sheet does and saves /fish/<id>.svg (every fish picture is in /fish/, see tools/fish/sync.py) (run it again after fish are edited)
 - The chapters themselves are /fish-lang/bible/kjv/<Book>-<chapter>.json

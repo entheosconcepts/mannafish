@@ -11,3 +11,4 @@
 /go-mannafish  /go/  301
 /bible-in-a-year  /plan/  301
 /readingplan  /plan/  301
+/plan/fish/*  /fish/:splat  301

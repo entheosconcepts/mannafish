@@ -10,7 +10,7 @@ The steps (the work folder W holds the in-between files):
   merge.py   the checks -> ban.json (left out next time) and good.json (kept); solve again until every chapter passes
   build.py   this: the days in order (by where each day's first chapter is, Genesis to Revelation) -> plan/oneword.json
 """
-import json,os,re,shutil,sys
+import json,os,re,sys
 W=sys.argv[1]; S=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','..')+'/'
 src=open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'inc.py')).read(); g={}
 exec(src[:src.index('INC={}')],g)
@@ -18,7 +18,7 @@ CH,B,words,forms,TOK,ALIAS=g['CH'],g['B'],g['words'],g['forms'],g['TOK'],g.get('
 days=json.load(open(W+'days.json')); R=json.load(open(W+'reviewed.json'))
 bad=[w+'|'+str(i) for w,L in days.items() for i in L if not R.get(w+'|'+str(i),{}).get('ok')]
 if bad and '--draft' not in sys.argv: print('NOT CHECKED OR NOT OK:',bad); sys.exit(1)
-# the fish pictures: Bible-in-a-Year fish are drawn already (plan/fish/D###.svg); year fish are copied in from tools/year-fish/svg
+# the fish pictures, all in /fish/ (tools/fish/sync.py): fish/en/<KEY>.svg for the main fish, fish/W01a.svg year, fish/D001.svg Bible in a year
 yid={}
 for wk in json.load(open(S+'tools/year-fish/weeks.json'))['weeks']:
     for j,p in enumerate(wk['p']): yid.setdefault(p[0].lower(),'W%02d%s'%(wk['w'],'abcdefgh'[j]))
@@ -33,9 +33,9 @@ for w,L in days.items():
             if x: seen|={y for y in TOK.findall(x.lower()) if y in F}
         ch.append([B[c['b']][0],c['c'],v,t[v-1]])
     svg=None
-    if info['src']=='daily' and os.path.exists(S+'plan/fish/%s.svg'%info.get('k')): svg='/plan/fish/%s.svg'%info['k']
-    elif w in yid and os.path.exists(S+'tools/year-fish/svg/%s.svg'%yid[w]):
-        shutil.copy(S+'tools/year-fish/svg/%s.svg'%yid[w],S+'plan/fish/%s.svg'%yid[w]); svg='/plan/fish/%s.svg'%yid[w]
+    if info['src']=='main' and os.path.exists(S+'fish/en/%s.svg'%info.get('k')): svg='/fish/en/%s.svg'%info['k']
+    elif info['src']=='daily' and os.path.exists(S+'fish/%s.svg'%info.get('k')): svg='/fish/%s.svg'%info['k']
+    elif w in yid and os.path.exists(S+'fish/%s.svg'%yid[w]): svg='/fish/%s.svg'%yid[w]
     fk=info.get('k') if info['src'] in ('main','daily') else yid.get(w)
     if info['src']=='main' and not info.get('ref'): info['ref']=(json.load(open(W+'DATA.json')).get(fk,{}).get('refs') or [['']])[0][0]
     kjv=sorted({x for x in seen if x in ALIAS.get(w,[])},key=lambda x:ALIAS[w].index(x))   # the King James word in these chapters, when it is not the fish word
