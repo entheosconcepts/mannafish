@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Time with God · MannaFish</title>
+<meta name="description" content="A few quiet minutes with God every day: be still, honor Him, give thanks, bring your concerns and your prayer list, pray for someone, listen, and go in peace.">
+<meta name="theme-color" content="#1b1a1f">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Spectral:ital,wght@0,500;1,400&family=Archivo:wght@400;600;700;800&display=swap">
+<script src="/fish-lang/account.js" defer></script>
+<script src="/fish-lang/spell/spell.js" defer onload="MFspell.watch('#cT,#cB,#thanksIn,#heardIn,#updIn')"></script>
+<!-- Ken, 22 Oct: "I would like to mimic this 'time with God' part of YouVersion ... the prayers need to change every day ... let's top it off,
+     help create something better. I like how it incorporated my prayers, but maybe give an option for the user to listen here as well, and
+     make a button to record prayers, with a little AI help to make sure it comes out correct with word spelling and punctuation."
+     Ten steps, one screen each (swipe up): Be still (breathe), Honor God, Today's word (the day's MannaFish), Give thanks, My concerns,
+     From my prayer list (three a day, the ones prayed for least lately), Pray for someone (one fish to give), My response, Listen, Go in peace.
+     The words change every day (content.json: pools of different lengths, so the mix is new each day; verses from the Berean Standard Bible,
+     public domain). Listen reads each step aloud and moves on by itself; background sound is made in the browser (no recordings to license).
+     Prayers are the same list as everywhere else (mf-prayers, and the account). Record a prayer: /api/hear?polish=1 tidies the spelling
+     and punctuation, keeping the person's words. -->
+<style>
+@font-face{font-family:'MFHobo';src:url(/fish-lang/hobo.woff2) format('woff2');font-display:block}
+:root{--a:#3b2f35;--b:#6e5a5c;--c:#d08a5e;--sea:#2c3a44;--text:#fff;--dim:rgba(255,255,255,.72);--line:rgba(255,255,255,.22);--card:rgba(20,18,22,.55)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#1b1a1f;color:var(--text);overflow:hidden}
+body{font:17px/1.5 'Archivo',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+/* the sky and the sea: a new light each day */
+.sky{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,var(--a) 0%,var(--b) 48%,var(--c) 62%,var(--sea) 72%,#141a20 100%)}
+.sky::before{content:'';position:absolute;left:50%;top:58%;width:70vmax;height:70vmax;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(255,214,170,.42),rgba(255,214,170,0));animation:glow 14s ease-in-out infinite alternate}
+@keyframes glow{from{opacity:.55;transform:translate(-50%,-50%) scale(.92)}to{opacity:1;transform:translate(-50%,-52%) scale(1.04)}}
+.sky svg{position:absolute;left:0;width:200%;height:18vh;opacity:.5}.sky .w1{bottom:16vh;animation:drift 38s linear infinite}.sky .w2{bottom:8vh;opacity:.35;animation:drift 26s linear infinite reverse}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.veil{position:fixed;inset:0;z-index:1;background:rgba(10,8,12,.28)}
+@media (prefers-reduced-motion:reduce){.sky::before,.sky svg,.breath i{animation:none!important}}
+/* the bar */
+.top{position:fixed;left:0;right:0;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:max(14px,env(safe-area-inset-top)) 16px 8px;pointer-events:none}
+.top>*{pointer-events:auto}
+.rb{width:46px;height:46px;border-radius:50%;border:0;background:rgba(15,13,16,.85);color:#fff;font-size:1.25rem;cursor:pointer;display:grid;place-items:center}
+.rb svg{width:22px;height:22px}
+.rb[aria-pressed=true]{background:#fff;color:#111}
+.mid{display:flex;align-items:center;gap:8px}
+.ring{width:52px;height:52px;border-radius:50%;border:3px solid rgba(255,255,255,.55);display:grid;place-items:center;color:rgba(255,255,255,.75);opacity:0;transition:opacity .4s}
+.ring.on{opacity:1}.ring svg{width:26px;height:26px}
+/* the steps: one screen each, swipe up */
+.steps{position:fixed;inset:0;z-index:5;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.steps::-webkit-scrollbar{display:none}
+.st{min-height:100vh;min-height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;padding:84px 26px 96px;max-width:640px;margin:0 auto}
+.eb{font:800 .78rem 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin:0 0 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.eb small{letter-spacing:0;text-transform:none;font-weight:600;font-size:.9rem;opacity:.85}
+.big{font:800 clamp(1.7rem,7vw,2.3rem)/1.22 'Archivo',sans-serif;margin:0}
+.big.prayer{font-size:clamp(1.55rem,6.2vw,2.05rem)}
+.big.prayer.long{font-size:clamp(1.3rem,5.3vw,1.75rem)}
+@media (max-height:700px){.st{padding:70px 22px 84px}.vq p{font-size:1.3rem}.vq.long p{font-size:1.12rem}.vq{margin-bottom:14px}.gd{font-size:1.02rem;line-height:1.5}.breath{width:110px;height:110px;margin-bottom:16px}.big.prayer{font-size:1.4rem}.big.prayer.long{font-size:1.2rem}textarea.field{min-height:72px}}
+.vq{border-left:4px solid #fff;padding:2px 0 2px 18px;margin:0 0 20px}
+.vq p{font:600 clamp(1.45rem,6vw,1.9rem)/1.3 'Spectral',Georgia,serif;margin:0}
+.vq.long p{font-size:clamp(1.18rem,4.9vw,1.5rem)}
+.vq small{display:block;margin-top:12px;font:800 .78rem 'Archivo',sans-serif;letter-spacing:.06em;text-transform:uppercase;opacity:.9}
+.gd{font-size:1.12rem;line-height:1.55;margin:0 0 14px;color:#fff;opacity:.95}
+.pill{display:inline-flex;align-items:center;gap:8px;border:2px solid #fff;background:none;border-radius:999px;padding:10px 20px;font-weight:800;font-size:.98rem;cursor:pointer;color:#fff;text-decoration:none}
+.pill.fill{background:#fff;color:#151316}
+.pill.sm{padding:7px 14px;font-size:.88rem;border-width:1.5px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.link{border:0;background:none;color:#fff;opacity:.8;font-weight:700;cursor:pointer;padding:8px}
+.center{text-align:center;justify-content:center}
+.field{width:100%;border:1.5px solid rgba(255,255,255,.45);background:rgba(15,13,16,.35);border-radius:14px;padding:12px 14px;font-size:1.05rem;color:#fff;margin:6px 0 0}
+.field::placeholder{color:rgba(255,255,255,.6)}
+textarea.field{min-height:92px;resize:vertical}
+.saved{font-size:.9rem;opacity:.85;margin-top:8px;min-height:1.2em}
+/* be still */
+.breath{width:150px;height:150px;margin:6px auto 26px;position:relative}
+.breath i{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(255,255,255,.75);background:radial-gradient(circle,rgba(255,255,255,.22),rgba(255,255,255,0) 70%);animation:breathe 10s ease-in-out infinite}
+@keyframes breathe{0%{transform:scale(.55)}40%{transform:scale(1)}55%{transform:scale(1)}100%{transform:scale(.55)}}
+.breath b{position:absolute;inset:0;display:grid;place-items:center;font:700 .95rem 'Archivo',sans-serif;letter-spacing:.08em;text-transform:uppercase}
+/* today's word */
+.fishw{position:relative;width:min(100%,420px);aspect-ratio:2/1;margin:0 auto 18px}
+.fishw svg{position:absolute;inset:0;width:100%;height:100%}
+.fishw .w{position:absolute;left:0;right:20%;top:0;bottom:0;display:grid;place-items:center;font:400 clamp(2.4rem,11vw,3.4rem)/1 'MFHobo',cursive}
+/* prayer cards */
+.cards{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -26px;padding:0 26px}
+.cards::-webkit-scrollbar{display:none}
+.pc{flex:0 0 100%;scroll-snap-align:center}
+.pc h3{font:800 clamp(1.7rem,7vw,2.3rem)/1.18 'Archivo',sans-serif;margin:0 0 12px}
+.pc p{font-size:1.12rem;line-height:1.55;margin:0 0 14px;white-space:pre-wrap;max-height:34vh;overflow:hidden;mask-image:linear-gradient(#000 80%,transparent)}
+.pc .acts{display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:18px}
+.pc .n{font-size:.85rem;opacity:.8}
+/* the dots */
+.dots{position:fixed;right:12px;top:50%;transform:translateY(-50%);z-index:15;background:rgba(15,13,16,.75);border-radius:999px;padding:10px 7px;display:flex;flex-direction:column;gap:8px}
+.dots button{width:9px;height:9px;border-radius:999px;border:0;padding:0;background:rgba(255,255,255,.5);cursor:pointer;transition:height .25s}
+.dots button.on{height:30px;background:#fff}
+/* sheets */
+.sheet{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
+.sheet[hidden]{display:none}
+.sheet .in{width:100%;max-width:560px;max-height:90vh;overflow:auto;background:#1d1a1e;border-radius:24px 24px 0 0;padding:18px 18px max(20px,env(safe-area-inset-bottom));border:1px solid rgba(255,255,255,.1)}
+@media (min-width:640px){.sheet{align-items:center}.sheet .in{border-radius:24px}}
+.sheet h2{font:800 1.6rem 'Archivo',sans-serif;margin:4px 0 10px}
+.sheet .x{float:right;position:relative;z-index:2;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:none;color:#fff;cursor:pointer}
+.mi{display:flex;align-items:center;gap:14px;width:100%;border:0;background:none;color:#fff;font:600 1.08rem 'Archivo',sans-serif;padding:12px 6px;cursor:pointer;text-align:left;border-radius:12px}
+.mi:hover{background:rgba(255,255,255,.06)}.mi .i{width:26px;text-align:center;font-size:1.15rem}
+.mh{font:700 .82rem 'Archivo',sans-serif;opacity:.6;margin:14px 6px 4px;text-transform:uppercase;letter-spacing:.12em}
+.sep{height:1px;background:rgba(255,255,255,.1);margin:8px 0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 6px}
+.chips button{border:1px solid var(--line);background:none;color:#fff;border-radius:999px;padding:8px 13px;font-weight:700;font-size:.9rem;cursor:pointer}
+.chips button[aria-pressed=true]{background:#fff;color:#111}
+.dbody{white-space:pre-wrap;font-size:1.08rem;line-height:1.55;margin:8px 0 14px;opacity:.95}
+.dact{display:flex;flex-direction:column;gap:8px}
+.dact button{border:0;border-radius:999px;background:#2b282c;color:#fff;font:700 1.02rem 'Archivo',sans-serif;padding:13px;cursor:pointer}
+.dact .red{color:#ff7a70}
+.rec{display:flex;align-items:center;gap:10px;margin-top:10px}
+.recb{width:58px;height:58px;border-radius:50%;border:0;background:#e5484d;color:#fff;font-size:1.3rem;cursor:pointer;flex:none}
+.recb.on{animation:pulse 1.2s ease-in-out infinite}@keyframes pulse{50%{box-shadow:0 0 0 10px rgba(229,72,77,.25)}}
+.small{font-size:.86rem;opacity:.8}
+.done .ck{width:110px;height:110px;margin:0 auto 22px;border-radius:50%;border:4px solid #fff;display:grid;place-items:center}.done .ck svg{width:56px;height:56px}
+.week{display:flex;gap:8px;justify-content:center;margin:16px 0}.week span{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.75rem;opacity:.85}
+.week i{width:14px;height:14px;border-radius:50%;border:2px solid #fff}.week i.on{background:#fff}
+.toast{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:60;background:#fff;color:#111;border-radius:999px;padding:10px 18px;font-weight:700;font-size:.92rem;display:none;max-width:calc(100% - 32px);text-align:center}
+.toast.on{display:block}
+.credit{font-size:.75rem;opacity:.6;margin-top:22px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true">
+  <svg class="w1" viewBox="0 0 1200 100" preserveAspectRatio="none"><path d="M0 60 Q75 30 150 60 T300 60 T450 60 T600 60 T750 60 T900 60 T1050 60 T1200 60 V100 H0Z" fill="rgba(20,26,32,.65)"/></svg>
+  <svg class="w2" viewBox="0 0 1200 100" preserveAspectRatio="none"><path d="M0 50 Q100 20 200 50 T400 50 T600 50 T800 50 T1000 50 T1200 50 V100 H0Z" fill="rgba(14,18,24,.8)"/></svg>
+</div>
+<div class="veil" aria-hidden="true"></div>
+
+<div class="top">
+  <button type="button" class="rb" id="xBtn" aria-label="Close">&#10005;</button>
+  <div class="mid"><div class="ring" id="ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div></div>
+  <div class="mid"><button type="button" class="rb" id="sayBtn" aria-pressed="false" aria-label="Listen: read each step aloud"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button>
+    <button type="button" class="rb" id="moreBtn" aria-label="More">&#8226;&#8226;&#8226;</button></div>
+</div>
+
+<main class="steps" id="steps"><section class="st"><p class="gd">Opening…</p></section></main>
+<nav class="dots" id="dots" aria-label="Steps"></nav>
+
+<!-- ••• -->
+<div class="sheet" id="menu" hidden><div class="in">
+  <button type="button" class="x" data-close aria-label="Close">&#10005;</button><h2>Time with God</h2>
+  <button type="button" class="mi" data-m="add"><span class="i">&#8853;</span>Add a prayer</button>
+  <a class="mi" href="/you/#pr"><span class="i">&#9776;</span>My prayer list</a>
+  <a class="mi" href="/you/#pr" data-m="answered"><span class="i">&#10003;</span>Answered prayers</a>
+  <button type="button" class="mi" data-m="remind"><span class="i">&#128276;&#xFE0E;</span>Prayer reminder</button>
+  <div class="sep"></div>
+  <div class="mh">Read aloud</div>
+  <div class="chips" id="sayChips"><button type="button" data-say="off">Off</button><button type="button" data-say="on">Read each step</button><button type="button" data-say="auto">Read and move on by itself</button></div>
+  <div class="mh">Background sound</div>
+  <div class="chips" id="sndChips"></div>
+  <div class="row" style="margin:6px 4px"><span class="small">Volume</span><input type="range" id="vol" min="0" max="100" value="45" style="flex:1"></div>
+  <div class="sep"></div>
+  <button type="button" class="mi" data-m="restart"><span class="i">&#8634;</span>Start again from the top</button>
+</div></div>
+
+<!-- add or record a prayer -->
+<div class="sheet" id="compose" hidden><div class="in">
+  <button type="button" class="x" data-close aria-label="Close">&#10005;</button><h2 id="cH">Add a prayer</h2>
+  <input class="field" id="cT" maxlength="120" placeholder="A prayer, in a few words">
+  <textarea class="field" id="cB" maxlength="3000" placeholder="Tell God about it (or tap the red button and say it)"></textarea>
+  <div class="rec"><button type="button" class="recb" id="recBtn" aria-label="Record a prayer">&#127908;&#xFE0E;</button><span class="small" id="recMsg">Tap to say your prayer. A little AI help fixes the spelling and punctuation; your words stay yours.</span></div>
+  <div class="row" style="justify-content:space-between;margin-top:12px"><button type="button" class="pill sm" id="tidyBtn">&#10024; Fix spelling</button><span><button type="button" class="link" id="undoTidy" hidden>Undo</button><button type="button" class="pill fill" id="cSave">Save prayer</button></span></div>
+</div></div>
+
+<!-- a prayer, all of it -->
+<div class="sheet" id="detail" hidden><div class="in">
+  <button type="button" class="x" data-close aria-label="Close">&#10005;</button>
+  <div class="small" id="dDate"></div><h2 id="dTitle"></h2><div class="small" id="dCount"></div>
+  <div class="dbody" id="dBody"></div>
+  <div id="updBox" hidden><textarea class="field" id="updIn" placeholder="What has God done? What are you asking now?"></textarea><div class="row" style="justify-content:flex-end"><button type="button" class="pill fill sm" id="updSave">Post update</button></div></div>
+  <div class="dact"><button type="button" data-d="prayed">&#128591;&#xFE0E; I prayed for this</button><button type="button" data-d="update">Post an update</button><button type="button" data-d="answered">Mark as answered</button><button type="button" data-d="share">Share with a friend</button><button type="button" data-d="archive">Archive</button><button type="button" data-d="delete" class="red">Delete</button></div>
+</div></div>
+
+<!-- reminder -->
+<div class="sheet" id="remind" hidden><div class="in">
+  <button type="button" class="x" data-close aria-label="Close">&#10005;</button><h2>Prayer reminder</h2>
+  <p class="gd">Pick a time. Your phone's calendar will remind you every day, with a link straight back here.</p>
+  <input class="field" type="time" id="rTime" value="06:30" style="max-width:180px">
+  <div class="row" style="margin-top:14px"><button type="button" class="pill fill" id="rGo">Add to my calendar</button></div>
+</div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  var $=function(id){ return document.getElementById(id); };
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function get(k,d){ try{ var v=JSON.parse(localStorage.getItem(k)||'null'); return v==null?d:v; }catch(e){ return d; } }
+  function put(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+  function touch(n){ if(window.MFacct) MFacct.touch(n); }
+  function toast(t){ var e=$('toast'); e.textContent=t; e.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(function(){ e.classList.remove('on'); },2400); }
+  var now=new Date(), DAY=Math.floor((Date.UTC(now.getFullYear(),now.getMonth(),now.getDate()))/864e5), TODAY=new Date(DAY*864e5).toISOString().slice(0,10);
+  function pick(a,o){ return a[(DAY+(o||0))%a.length]; }
+  // a new light each day
+  var SKIES=[['#3b2f35','#6e5a5c','#d08a5e','#2c3a44'],['#24304a','#4f5f86','#e0a777','#22313d'],['#2d3a3a','#5f7a72','#d9b27c','#1f2e33'],['#3a2a3e','#7a5878','#e19a86','#2a2f45'],['#1f2a3a','#3f5a7a','#9cc3d8','#1c2b38'],['#3a3226','#7a6a4f','#e8b76c','#2b3236']];
+  (function(){ var s=pick(SKIES), r=document.documentElement.style; r.setProperty('--a',s[0]); r.setProperty('--b',s[1]); r.setProperty('--c',s[2]); r.setProperty('--sea',s[3]); })();
+
+  // ── the prayer list: the same as the devotional's and My stuff's ──
+  function prayers(){ return get('mf-prayers',[]); }
+  function savePrayers(P){ put('mf-prayers',P); touch(); }
+  var PRAYED=get('mf-prayed',{});
+  function prayedOne(id){ var x=PRAYED[id]||{n:0}; x.n++; x.last=Date.now(); PRAYED[id]=x; put('mf-prayed',PRAYED); }
+  // three a day: the ones prayed for least lately (the same three all day)
+  function todays(){ var open=prayers().filter(function(x){ return x.status==='open'; }), D=get('mf-twg-day',{});
+    if(D.d===TODAY){ var keep=D.ids.map(function(id){ return open.filter(function(x){ return String(x.id)===String(id); })[0]; }).filter(Boolean); if(keep.length||!open.length) return keep.concat(open.filter(function(x){ return D.extra&&D.extra.indexOf(String(x.id))>=0&&keep.indexOf(x)<0; })); }
+    var L=open.slice().sort(function(a,b){ return ((PRAYED[a.id]||{}).last||0)-((PRAYED[b.id]||{}).last||0)||(a.at||0)-(b.at||0); }).slice(0,3);
+    put('mf-twg-day',{d:TODAY,ids:L.map(function(x){ return String(x.id); })}); return L; }
+  function findP(id){ return prayers().filter(function(x){ return String(x.id)===String(id); })[0]; }
+  function changeP(id,f){ var P=prayers(), x=P.filter(function(y){ return String(y.id)===String(id); })[0]; if(!x) return; var r=f(x,P); if(r==='del'){ P=P.filter(function(y){ return y!==x; }); if(window.MFacct) MFacct.prayerGone(x); } else if(x.c) x.dirty=1; savePrayers(P); }
+
+  // ── today's word: the same fish as the daily email (one of the 24 main words, a new one each week, Friday's double portion) ──
+  var WORDS=null;
+  function catchToday(){ if(!WORDS) return null; var START=Date.UTC(2026,9,11), t=DAY*864e5, dow=new Date(t).getUTCDay(), s=Math.floor(Math.floor((t-START)/864e5)/7)*7+(dow===6?5:dow), n=WORDS.length; return WORDS[((s%n)+n)%n]; }
+
+  // ── the steps ──
+  var C=null, STEPS=[];
+  function vq(v){ return v&&v.t?'<div class="vq'+(v.t.length>150?' long':'')+'" data-say="v"><p>'+esc(v.t)+'</p><small>'+esc(v.ref)+' BSB</small></div>':''; }
+  function build(){ var a=pick(C.arrive), h=pick(C.honor,3), th=pick(C.thanks,5), co=pick(C.concerns,7), ot=pick(C.others,11), re=pick(C.response,13), li=pick(C.listen,17), cl=pick(C.closing,19), w=catchToday();
+    var dd=new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'}), T=todays();
+    STEPS=[
+      {k:'start',h:'<div class="center" style="text-align:center"><p class="eb" style="justify-content:center">'+esc(dd)+'</p><h1 class="big" data-say>Time with God</h1><p class="gd" style="margin-top:14px" data-say>A few quiet minutes. Be still, honor Him, bring Him what is on your heart, and listen.</p>'
+        +'<div class="row center" style="margin-top:18px"><button type="button" class="pill fill" data-go="1">Begin</button><button type="button" class="pill" data-go="listen">&#127911;&#xFE0E; Begin, read to me</button></div>'+week()+'<p class="small">Swipe up to go on. About 8 minutes.</p></div>',wait:0},
+      {k:'arrive',h:'<p class="eb">Be still</p><div class="breath" aria-hidden="true"><i></i><b id="bLab">Breathe in</b></div><p class="gd" data-say>'+esc(a.text)+'</p>'+vq(a.v),wait:24},
+      {k:'honor',h:'<p class="eb">Honor God</p><p class="big prayer'+(h.prayer.length>260?' long':'')+'" data-say>'+esc(h.prayer)+'</p>',wait:5},
+      {k:'word',h:w?'<p class="eb">Today&rsquo;s word</p><div class="fishw" aria-hidden="true"><svg viewBox="0 0 200 100"><path d="M8 50 C48 4 122 4 154 50 C122 96 48 96 8 50 Z M154 50 L194 16 M154 50 L194 84" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="w">'+esc(w.title)+'</span></div>'
+        +'<div class="vq" data-say="v"><p>'+esc(w.snippet)+'</p><small>'+esc(w.ref)+' KJV</small></div><p class="gd" data-say>'+esc('Pray today’s word over your day: Lord, teach me to '+w.title.toLowerCase()+'. Let this word go with me today, and give me someone to share it with.')+'</p>'
+        +'<div class="row"><a class="pill sm" href="'+esc(w.url)+'">Open the fish &rarr;</a></div>':'',wait:10},
+      {k:'thanks',h:'<p class="eb">Give thanks</p>'+vq(th.v)+'<p class="gd" data-say>'+esc(th.prompt)+'</p><input class="field" id="thanksIn" placeholder="Today I am thankful for…" maxlength="200"><div class="row"><button type="button" class="pill sm" data-a="thanks">Keep it</button></div><div class="saved" id="thanksMsg"></div>',wait:16},
+      {k:'concerns',h:'<p class="eb">My concerns</p>'+vq(co.v)+'<p class="gd" data-say>'+esc(co.guide)+'</p><p class="gd" data-say>'+esc(co.ask)+'</p><div class="row"><button type="button" class="pill" data-a="add">Add a prayer</button><button type="button" class="pill" data-a="record">&#127908;&#xFE0E; Say it</button></div>',wait:20},
+      {k:'list',h:listHTML(T),wait:8,list:T},
+      {k:'others',h:'<p class="eb">Pray for someone</p>'+vq(ot.v)+'<p class="gd" data-say>'+esc(ot.guide)+'</p><input class="field" id="whoIn" placeholder="Their name" maxlength="60"><div class="row"><button type="button" class="pill sm" data-a="who">Add to my prayer list</button>'+(w?'<button type="button" class="pill sm" data-a="send">&#10148; Send them today&rsquo;s fish</button>':'')+'</div><div class="saved" id="whoMsg"></div>',wait:20},
+      {k:'response',h:'<p class="eb">My response</p>'+vq(re.v)+'<p class="gd" data-say>'+esc(re.guide)+'</p>',wait:16},
+      {k:'listen',h:'<p class="eb">Listen</p>'+vq(li.v)+'<p class="gd" data-say>'+esc(li.guide)+'</p><textarea class="field" id="heardIn" placeholder="What I hear God saying…"></textarea><div class="row"><button type="button" class="pill sm" data-a="heard">Keep it in My notes</button></div><div class="saved" id="heardMsg"></div>',wait:30,ref:li.ref},
+      {k:'close',h:'<p class="eb">Go in peace</p><p class="big" data-say>'+esc(cl.text)+'</p><div class="row" style="margin-top:22px"><button type="button" class="pill fill" data-a="done">Amen</button></div>',wait:6},
+      {k:'done',h:'<div class="done" style="text-align:center"><div class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div><h2 class="big" style="font-size:1.8rem">You spent time with God today</h2><div id="weekDone">'+week()+'</div>'
+        +'<div class="row center"><a class="pill" href="/">Today&rsquo;s devotional</a><button type="button" class="pill" data-a="remind">&#128276;&#xFE0E; Remind me tomorrow</button></div><p class="credit">Scripture from the Berean Standard Bible (public domain) and the King James Version.</p></div>',wait:0}];
+    STEPS=STEPS.filter(function(s){ return s.h; });
+    $('steps').innerHTML=STEPS.map(function(s,i){ return '<section class="st" data-i="'+i+'" data-k="'+s.k+'">'+s.h+'</section>'; }).join('');
+    $('dots').innerHTML=STEPS.map(function(s,i){ return '<button type="button" data-dot="'+i+'" aria-label="Step '+(i+1)+'"></button>'; }).join('');
+    watchSteps(); breathe(); }
+  function listHTML(T){ if(!T.length) return '<p class="eb">From my prayer list</p><p class="big" style="font-size:1.6rem" data-say>Your prayer list is empty.</p><p class="gd" data-say>Add the people and things you want to bring to God. They will come back here, a few each day.</p><div class="row"><button type="button" class="pill" data-a="add">Add a prayer</button><button type="button" class="pill" data-a="record">&#127908;&#xFE0E; Say it</button></div>';
+    return '<p class="eb">From my prayer list <a class="pill sm" href="/you/#pr" style="letter-spacing:0;text-transform:none">See all</a></p><div class="cards" id="cards">'+T.map(function(x,i){ var n=(PRAYED[x.id]||{}).n||0;
+      return '<div class="pc" data-id="'+esc(x.id)+'"><div class="small" style="margin-bottom:6px">'+(i+1)+' of '+T.length+'</div><h3 data-say>'+esc(x.title)+'</h3>'+(x.body?'<p data-say>'+esc(x.body)+'</p>':'')
+        +'<div class="row"><button type="button" class="pill sm" data-p="prayed">&#128591;&#xFE0E; '+(n?'Prayed '+n+'×':'I prayed')+'</button><button type="button" class="pill sm" data-p="view">View details</button></div>'
+        +'<div class="acts"><button type="button" class="link" data-p="archive">Archive</button><button type="button" class="link" data-p="answered" style="opacity:1">Mark as answered</button></div></div>'; }).join('')+'</div>';
+  }
+  function week(){ var L=get('mf-twg-log',{}), out='<div class="week">', d=new Date(), dow=d.getDay();
+    for(var i=0;i<7;i++){ var t=new Date(d.getFullYear(),d.getMonth(),d.getDate()-dow+i), k=new Date(Date.UTC(t.getFullYear(),t.getMonth(),t.getDate())).toISOString().slice(0,10);
+      out+='<span><i class="'+(L[k]?'on':'')+'"></i>'+'SMTWTFS'[i]+'</span>'; } return out+'</div>'; }
+  // breathing words in time with the circle (in 4 s, hold, out 4.5 s)
+  var BT=null; function breathe(){ clearInterval(BT); var lab=$('bLab'); if(!lab) return; var t0=Date.now(); BT=setInterval(function(){ var p=((Date.now()-t0)%10000)/10000; lab.textContent=p<.4?'Breathe in':p<.55?'Hold':'Breathe out'; },250); }
+
+  // ── where we are ──
+  var AT=0;
+  function watchSteps(){ var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting&&e.intersectionRatio>.55){ AT=+e.target.dataset.i; uiAt(); } }); },{root:$('steps'),threshold:[.55,.8]});
+    [].forEach.call(document.querySelectorAll('.st'),function(s){ io.observe(s); }); uiAt(); }
+  function uiAt(){ [].forEach.call($('dots').children,function(b,i){ b.classList.toggle('on',i===AT); }); var k=STEPS[AT]&&STEPS[AT].k; $('ring').classList.toggle('on',k==='close'||k==='done'); $('dots').hidden=k==='start'||k==='done';
+    if(SAY.mode!=='off'&&unlock.done&&SAY.at!==AT) sayStep(AT); }   // the phone lets it speak only after a tap
+  function goTo(i){ i=Math.max(0,Math.min(STEPS.length-1,i)); var s=document.querySelector('.st[data-i="'+i+'"]'); if(s) s.scrollIntoView({behavior:'smooth'}); }
+  $('dots').addEventListener('click',function(e){ var b=e.target.closest('[data-dot]'); if(b) goTo(+b.dataset.dot); });
+  document.addEventListener('keydown',function(e){ if(e.target.closest('input,textarea')) return; if(e.key==='ArrowDown'||e.key==='PageDown'){ e.preventDefault(); goTo(AT+1); } if(e.key==='ArrowUp'||e.key==='PageUp'){ e.preventDefault(); goTo(AT-1); } if(e.key==='Escape') closeSheets(); });
+
+  // ── read aloud: each step, sentence by sentence, in the person's voice of choice; "move on by itself" for hands-free ──
+  var SAY={mode:get('mf-twg-say','off'),at:-1,q:[],tm:null,run:0}, player=new Audio();
+  function sentences(t){ return String(t).replace(/\s+/g,' ').match(/[^.!?;:]+[.!?;:”’"]*\s*/g)||[]; }   // no look-behind: older iPhones
+  function chunks(t){ var out=[], cur=''; sentences(t).map(function(x){ return x.trim(); }).forEach(function(s){ if((cur+' '+s).length>260&&cur){ out.push(cur); cur=s; } else cur=cur?cur+' '+s:s; }); if(cur) out.push(cur); return out.filter(function(x){ return /\w/.test(x); }); }
+  function sayStop(){ SAY.run++; clearTimeout(SAY.tm); try{ player.pause(); }catch(e){} try{ speechSynthesis.cancel(); }catch(e){} SAY.at=-1; duck(false); }
+  function sayStep(i){ sayStop(); var run=SAY.run, sec=document.querySelector('.st[data-i="'+i+'"]'); if(!sec) return; SAY.at=i;
+    var parts=[]; [].forEach.call(sec.querySelectorAll('[data-say]'),function(e){ var t=e.dataset.say==='v'?(e.querySelector('p').textContent+' '+e.querySelector('small').textContent.replace(/ (BSB|KJV)$/,'')):e.textContent; parts=parts.concat(chunks(t)); });
+    var k=STEPS[i].k; if(k==='list'){ var c=sec.querySelector('.pc'); parts=['From my prayer list.'].concat(parts); }
+    duck(true); (function next(){ if(run!==SAY.run) return; var t=parts.shift(); if(!t){ duck(false); if(SAY.mode==='auto'&&i<STEPS.length-1&&STEPS[i].wait) SAY.tm=setTimeout(function(){ if(run===SAY.run) goTo(i+1); },STEPS[i].wait*1000); return; } speak(t,next,run); })(); }
+  function raw(k){ try{ return localStorage.getItem(k)||''; }catch(e){ return ''; } }   // the voice and speed are kept as plain text by the other pages
+  function speak(t,cb,run){ var v=raw('mf-voice')||'sage', r=parseFloat(raw('mf-speed'))||1; r=Math.min(1.25,r); var fell=0;
+    var dev=function(){ if(fell++) return; if(!window.speechSynthesis){ cb(); return; } var u=new SpeechSynthesisUtterance(t); u.lang='en-US'; u.rate=.95; u.onend=function(){ if(run===SAY.run) cb(); }; u.onerror=u.onend; speechSynthesis.speak(u); };
+    if(v==='device'){ dev(); return; }
+    player.src='/api/say?t='+encodeURIComponent(t)+'&l=en&v='+encodeURIComponent(v); player.playbackRate=r; player.onended=function(){ if(run===SAY.run) setTimeout(cb,350); }; player.onerror=function(){ if(run===SAY.run) dev(); };
+    var p=player.play(); if(p&&p.catch) p.catch(function(){ if(run===SAY.run) dev(); }); }
+  function setSay(m){ SAY.mode=m; put('mf-twg-say',m); $('sayBtn').setAttribute('aria-pressed',String(m!=='off')); [].forEach.call($('sayChips').children,function(b){ b.setAttribute('aria-pressed',String(b.dataset.say===m)); }); if(m==='off') sayStop(); else if(unlock.done) sayStep(AT); }
+  $('sayBtn').addEventListener('click',function(){ unlock(); setSay(SAY.mode==='off'?'auto':'off'); toast(SAY.mode==='off'?'Reading aloud is off':'Reading aloud, and moving on by itself'); });
+  $('sayChips').addEventListener('click',function(e){ var b=e.target.closest('[data-say]'); if(b){ unlock(); setSay(b.dataset.say); } });
+  function unlock(){ if(unlock.done) return; unlock.done=1; try{ player.src='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA='; player.play().catch(function(){}); }catch(e){} snd.ctx(); }
+
+  // ── background sound, made here (no recordings): ocean, rain, warm pad, soft piano ──
+  var SND={kind:get('mf-twg-snd','off'),vol:+get('mf-twg-vol',45)}, snd=(function(){ var A=null, out=null, nodes=[], timers=[];
+    function ctx(){ if(!A){ var AC=window.AudioContext||window.webkitAudioContext; if(!AC) return null; A=new AC(); out=A.createGain(); out.gain.value=0; out.connect(A.destination); } if(A.state==='suspended') A.resume(); return A; }
+    function noise(color){ var n=A.sampleRate*4, b=A.createBuffer(1,n,A.sampleRate), d=b.getChannelData(0), last=0; for(var i=0;i<n;i++){ var w=Math.random()*2-1; if(color==='brown'){ last=(last+0.02*w)/1.02; d[i]=last*3.5; } else d[i]=w; } var s=A.createBufferSource(); s.buffer=b; s.loop=true; return s; }
+    function reverb(){ var len=A.sampleRate*3, b=A.createBuffer(2,len,A.sampleRate); for(var c=0;c<2;c++){ var d=b.getChannelData(c); for(var i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.4); } var r=A.createConvolver(); r.buffer=b; return r; }
+    function stop(){ timers.forEach(clearInterval); timers=[]; nodes.forEach(function(n){ try{ n.stop&&n.stop(); }catch(e){} try{ n.disconnect(); }catch(e){} }); nodes=[]; }
+    function start(kind){ if(!ctx()) return; stop(); if(kind==='off') return; if(kind==='random') kind=['ocean','rain','pad','piano'][DAY%4];
+      var g=A.createGain(); g.connect(out); nodes.push(g);
+      if(kind==='ocean'){ var s=noise('brown'), f=A.createBiquadFilter(); f.type='lowpass'; f.frequency.value=500; var sw=A.createGain(); sw.gain.value=.35; var l=A.createOscillator(), lg=A.createGain(); l.frequency.value=0.09; lg.gain.value=.3; l.connect(lg); lg.connect(sw.gain); s.connect(f); f.connect(sw); sw.connect(g); s.start(); l.start(); nodes.push(s,l,f,sw,lg); g.gain.value=1.4; }
+      if(kind==='rain'){ var s2=noise('white'), hp=A.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=900; var lp=A.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=6000; s2.connect(hp); hp.connect(lp); lp.connect(g); g.gain.value=.16; s2.start(); nodes.push(s2,hp,lp); }
+      if(kind==='pad'){ var rv=reverb(); rv.connect(g); nodes.push(rv); var CH=[[261.6,329.6,392,493.9],[220,277.2,329.6,415.3],[174.6,261.6,349.2,440],[196,246.9,293.7,392]], ci=0, vs=[];
+        for(var i=0;i<4;i++){ var o=A.createOscillator(), og=A.createGain(); o.type=i%2?'triangle':'sine'; o.frequency.value=CH[0][i]; o.detune.value=(i-1.5)*4; og.gain.value=.05; o.connect(og); og.connect(rv); og.connect(g); o.start(); vs.push(o); nodes.push(o,og); }
+        timers.push(setInterval(function(){ ci=(ci+1)%CH.length; vs.forEach(function(o,i){ o.frequency.setTargetAtTime(CH[ci][i],A.currentTime,2.5); }); },11000)); g.gain.value=.9; }
+      if(kind==='piano'){ var rv2=reverb(); rv2.connect(g); nodes.push(rv2); var SC=[261.6,293.7,329.6,392,440,523.3,587.3,659.3];
+        var note=function(){ var t=A.currentTime, f=SC[Math.floor(Math.random()*SC.length)]*(Math.random()<.25?.5:1); [1,2].forEach(function(h,j){ var o=A.createOscillator(), og=A.createGain(); o.type=j?'sine':'triangle'; o.frequency.value=f*h; og.gain.setValueAtTime(0,t); og.gain.linearRampToValueAtTime(j?.03:.12,t+.01); og.gain.exponentialRampToValueAtTime(.0005,t+3.2); o.connect(og); og.connect(rv2); og.connect(g); o.start(t); o.stop(t+3.3); }); };
+        timers.push(setInterval(function(){ if(Math.random()<.8) note(); },1400)); note(); g.gain.value=.8; }
+      level(); }
+    function level(d){ if(!A) return; out.gain.setTargetAtTime(SND.kind==='off'?0:(SND.vol/100)*(d?.35:1),A.currentTime,.4); }
+    return {ctx:ctx,start:start,level:level}; })();
+  function duck(on){ snd.level(on); }
+  var KINDS=[['off','Off'],['ocean','Ocean'],['rain','Rain'],['pad','Warm pad'],['piano','Soft piano'],['random','Random']];
+  $('sndChips').innerHTML=KINDS.map(function(k){ return '<button type="button" data-snd="'+k[0]+'">'+k[1]+'</button>'; }).join('');
+  function sndUI(){ [].forEach.call($('sndChips').children,function(b){ b.setAttribute('aria-pressed',String(b.dataset.snd===SND.kind)); }); $('vol').value=SND.vol; }
+  $('sndChips').addEventListener('click',function(e){ var b=e.target.closest('[data-snd]'); if(!b) return; SND.kind=b.dataset.snd; put('mf-twg-snd',SND.kind); snd.start(SND.kind); sndUI(); });
+  $('vol').addEventListener('input',function(){ SND.vol=+this.value; put('mf-twg-vol',SND.vol); snd.level(); });
+  sndUI();
+
+  // ── sheets ──
+  function open(id){ closeSheets(); $(id).hidden=false; }
+  function closeSheets(){ ['menu','compose','detail','remind'].forEach(function(id){ $(id).hidden=true; }); stopRec(); }
+  [].forEach.call(document.querySelectorAll('.sheet'),function(s){ s.addEventListener('click',function(e){ if(e.target===s||e.target.closest('[data-close]')) closeSheets(); }); });
+  $('moreBtn').addEventListener('click',function(){ unlock(); open('menu'); });
+  $('menu').addEventListener('click',function(e){ var b=e.target.closest('[data-m]'); if(!b) return; var m=b.dataset.m;
+    if(m==='add') compose(); if(m==='remind') open('remind'); if(m==='restart'){ closeSheets(); goTo(0); }
+    if(m==='answered'){ try{ sessionStorage.setItem('mf-you-tab','pr'); }catch(er){} } });
+  $('xBtn').addEventListener('click',function(){ sayStop(); snd.start('off'); if(document.referrer&&new URL(document.referrer).origin===location.origin) history.back(); else location.href='/'; });
+
+  // add a prayer: typed, or said and tidied
+  var EDITING=null;
+  function compose(prefill){ EDITING=null; $('cH').textContent='Add a prayer'; $('cT').value=prefill&&prefill.title||''; $('cB').value=prefill&&prefill.body||''; $('recMsg').textContent='Tap to say your prayer. A little AI help fixes the spelling and punctuation; your words stay yours.'; $('undoTidy').hidden=true; open('compose'); setTimeout(function(){ $('cT').focus(); },200); }
+  $('cSave').addEventListener('click',function(){ var t=$('cT').value.trim(), b=$('cB').value.trim(); if(!t&&!b){ $('cT').focus(); return; }
+    if(!t){ var f=(sentences(b)[0]||b).trim(); t=f.length>70?f.slice(0,68)+'…':f; }
+    var P=prayers(), x={id:'p'+Date.now(),title:t,body:b,status:'open',at:Date.now()}; P.unshift(x); savePrayers(P);
+    var D=get('mf-twg-day',{}); if(D.d===TODAY){ D.extra=(D.extra||[]).concat([x.id]); put('mf-twg-day',D); }
+    closeSheets(); toast('Added to your prayer list'); refreshList(); });
+  // recording: the microphone, then speech-to-text with the tidy-up
+  var R=null;
+  function stopRec(){ if(R&&R.rec&&R.rec.state!=='inactive'){ R.cancel=true; R.rec.stop(); } }
+  $('recBtn').addEventListener('click',function(){ if(R&&R.rec&&R.rec.state==='recording'){ R.rec.stop(); return; }
+    if(!navigator.mediaDevices||!window.MediaRecorder){ $('recMsg').textContent='This phone cannot record here. Type it, or use the keyboard’s microphone.'; return; }
+    navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}}).then(function(st){ var m=['audio/webm;codecs=opus','audio/mp4','audio/webm'].filter(function(x){ return MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(x); })[0]||'';
+      var rec=m?new MediaRecorder(st,{mimeType:m}):new MediaRecorder(st), parts=[]; R={rec:rec}; rec.ondataavailable=function(e){ if(e.data&&e.data.size) parts.push(e.data); };
+      rec.onstop=function(){ st.getTracks().forEach(function(t){ t.stop(); }); $('recBtn').classList.remove('on'); $('recBtn').innerHTML='&#127908;&#xFE0E;'; if(R&&R.cancel){ R=null; return; } R=null;
+        var type=(rec.mimeType||m||'audio/webm').split(';')[0], blob=new Blob(parts,{type:type}); if(!blob.size) return; $('recMsg').textContent='Writing it down…';
+        fetch('/api/hear?polish=1&lang=en',{method:'POST',headers:{'content-type':type},body:blob}).then(function(r){ if(!r.ok) throw r.status; return r.json(); }).then(function(j){
+          var t=String(j.text||'').trim(); if(!t){ $('recMsg').textContent='I could not hear that. Try again a little closer to the phone.'; return; }
+          var cur=$('cB').value.trim(); $('cB').value=(cur?cur+' ':'')+t; $('recMsg').textContent='✓ Written down, with the spelling and punctuation fixed. Change anything you like.';
+          if(!$('cT').value.trim()){ var f=(sentences(t)[0]||t).trim(); $('cT').value=f.length>70?f.slice(0,68)+'…':f; if(!cur&&f===t&&f.length<=70) $('cB').value=''; } })
+          .catch(function(){ $('recMsg').textContent='It could not be written down just now. Please try again, or type it.'; }); };
+      rec.start(); $('recBtn').classList.add('on'); $('recBtn').innerHTML='&#9632;'; $('recMsg').textContent='Listening… tap the red button when you are done.'; })
+      .catch(function(){ $('recMsg').textContent='The microphone is not allowed. Check this site’s microphone setting, or type it.'; }); });
+  // typed with thumbs: the same tidy-up
+  var BEFORE=null;
+  $('tidyBtn').addEventListener('click',function(){ var t=$('cB').value.trim(); if(!t){ $('cB').focus(); return; } this.disabled=true; var me=this; $('recMsg').textContent='Fixing the spelling and punctuation…';
+    fetch('/api/translate',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({polish:1,text:t})}).then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .then(function(j){ BEFORE=t; $('cB').value=j.text; $('undoTidy').hidden=false; $('recMsg').textContent='✓ Spelling and punctuation fixed. Your words are the same.'; })
+      .catch(function(){ $('recMsg').textContent='It could not be fixed just now. You can still save it.'; }).then(function(){ me.disabled=false; }); });
+  $('undoTidy').addEventListener('click',function(){ if(BEFORE!=null) $('cB').value=BEFORE; this.hidden=true; });
+
+  // a prayer: all of it, and what to do with it
+  var DID=null;
+  function detail(id){ var x=findP(id); if(!x) return; DID=id; $('dDate').textContent=x.at>9e11?new Date(x.at).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):''; $('dTitle').textContent=x.title;
+    var n=(PRAYED[id]||{}).n||0; $('dCount').textContent=n?'You have prayed for this '+n+' time'+(n===1?'':'s')+'.':''; $('dBody').textContent=x.body||''; $('updBox').hidden=true; $('updIn').value=''; open('detail'); }
+  $('detail').addEventListener('click',function(e){ var b=e.target.closest('[data-d]'); if(!b||!DID) return; var d=b.dataset.d, x=findP(DID); if(!x) return;
+    if(d==='prayed'){ prayedOne(DID); toast('🙏 Prayed'); detail(DID); refreshList(); }
+    if(d==='update'){ $('updBox').hidden=false; $('updIn').focus(); }
+    if(d==='answered'){ changeP(DID,function(y){ y.status='answered'; y.done=Date.now(); }); closeSheets(); toast('✓ Answered. Praise God!'); refreshList(); }
+    if(d==='archive'){ changeP(DID,function(y){ y.status='archived'; y.done=Date.now(); }); closeSheets(); toast('Archived'); refreshList(); }
+    if(d==='delete'){ if(!confirm('Delete this prayer?')) return; changeP(DID,function(){ return 'del'; }); closeSheets(); toast('Deleted'); refreshList(); }
+    if(d==='share'){ var t=x.title+(x.body?'\n\n'+x.body:'')+'\n\nWill you pray with me? (MannaFish)'; if(navigator.share) navigator.share({title:'Pray with me',text:t}).catch(function(){}); else (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){ toast('Copied'); },function(){}); } });
+  $('updSave').addEventListener('click',function(){ var t=$('updIn').value.trim(); if(!t||!DID) return; var d=new Date().toLocaleDateString(undefined,{month:'numeric',day:'numeric',year:'2-digit'});
+    changeP(DID,function(y){ y.body=(y.body?y.body+'\n\n':'')+d+' — '+t; y.edited=Date.now(); }); toast('Update posted'); detail(DID); refreshList(); });
+  function refreshList(){ var i=STEPS.findIndex(function(s){ return s.k==='list'; }); if(i<0) return; var T=todays(); STEPS[i].h=listHTML(T); var sec=document.querySelector('.st[data-i="'+i+'"]'); if(sec) sec.innerHTML=STEPS[i].h; }
+
+  // taps inside the steps
+  $('steps').addEventListener('click',function(e){ var b=e.target.closest('[data-go],[data-a],[data-p]'); if(!b) return; unlock();
+    if(b.dataset.go){ if(b.dataset.go==='listen') SAY.mode='auto', setSay('auto'); if(SND.kind!=='off') snd.start(SND.kind); goTo(1); return; }
+    var a=b.dataset.a, card=b.closest('.pc'), id=card&&card.dataset.id;
+    if(b.dataset.p==='prayed'){ prayedOne(id); b.innerHTML='&#128591;&#xFE0E; Prayed '+PRAYED[id].n+'×'; toast('🙏 Prayed'); return; }
+    if(b.dataset.p==='view'){ detail(id); return; }
+    if(b.dataset.p==='answered'){ changeP(id,function(y){ y.status='answered'; y.done=Date.now(); }); toast('✓ Answered. Praise God!'); refreshList(); return; }
+    if(b.dataset.p==='archive'){ changeP(id,function(y){ y.status='archived'; y.done=Date.now(); }); toast('Archived'); refreshList(); return; }
+    if(a==='add') compose(); if(a==='record'){ compose(); setTimeout(function(){ $('recBtn').click(); },300); }
+    if(a==='thanks'){ var t=$('thanksIn').value.trim(); if(!t) return; var L=get('mf-thanks',[]); L.unshift({at:Date.now(),text:t}); put('mf-thanks',L.slice(0,1000)); $('thanksIn').value=''; $('thanksMsg').textContent='✓ Kept. Thank You, Lord, for '+t.replace(/[.!]+$/,'')+'.'; }
+    if(a==='who'){ var w=$('whoIn').value.trim(); if(!w){ $('whoIn').focus(); return; } var P=prayers(); P.unshift({id:'p'+Date.now(),title:'Pray for '+w,body:'',status:'open',at:Date.now()}); savePrayers(P); $('whoMsg').textContent='✓ '+w+' is on your prayer list.'; }
+    if(a==='send'){ var w2=catchToday(), nm=$('whoIn').value.trim(); if(!w2) return; var url=location.origin+w2.url, t2=(nm?nm+', ':'')+'I prayed for you today. Here is a word from God’s Word for you: '+w2.title+'. “'+w2.snippet+'” ('+w2.ref+')';
+      if(navigator.share) navigator.share({title:'MannaFish · '+w2.title,text:t2,url:url}).catch(function(){}); else (navigator.clipboard?navigator.clipboard.writeText(t2+' '+url):Promise.reject()).then(function(){ toast('Copied: paste it to them'); },function(){}); }
+    if(a==='heard'){ var h=$('heardIn').value.trim(); if(!h) return; var ref=STEPS[AT].ref||''; var N=get('mf-notes2',{}), k='BIBLE:'+ref, m=/^(.+?)\s+(\d+):(\d+)/.exec(ref);
+      var B=["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther","Job","Psalm","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi","Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"];
+      (N[k]=N[k]||[]).push({id:'d'+Date.now(),text:'Time with God, '+new Date().toLocaleDateString()+': '+h,at:Date.now(),ed:0,b:m?B.indexOf(m[1]):-1,c:m?+m[2]:0,vs:m?[+m[3]]:[]}); put('mf-notes2',N); touch(); $('heardIn').value=''; $('heardMsg').textContent='✓ Kept in My notes, with '+ref+'.'; }
+    if(a==='done'){ var Lg=get('mf-twg-log',{}); Lg[TODAY]=Date.now(); put('mf-twg-log',Lg); touch('twg'); var wd=$('weekDone'); if(wd) wd.innerHTML=week(); goTo(STEPS.length-1); if(SAY.mode!=='off') setTimeout(function(){ speak('Amen. Go in peace.',function(){},SAY.run); },600); }
+    if(a==='remind') open('remind'); });
+
+  // a daily reminder in the phone's own calendar, with the way back here
+  $('rGo').addEventListener('click',function(){ var tm=($('rTime').value||'06:30').split(':'), d=new Date(); d.setDate(d.getDate()+1); d.setHours(+tm[0],+tm[1],0,0);
+    var p=function(n){ return ('0'+n).slice(-2); }, dt=d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'T'+p(d.getHours())+p(d.getMinutes())+'00', end=new Date(d.getTime()+10*60000), de=end.getFullYear()+p(end.getMonth()+1)+p(end.getDate())+'T'+p(end.getHours())+p(end.getMinutes())+'00';
+    var ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//MannaFish//Time with God//EN','BEGIN:VEVENT','UID:twg-'+Date.now()+'@manna-fish.com','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z','DTSTART:'+dt,'DTEND:'+de,'RRULE:FREQ=DAILY',
+      'SUMMARY:Time with God','DESCRIPTION:A few quiet minutes with God. '+location.origin+'/pray/','URL:'+location.origin+'/pray/','BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:Time with God','TRIGGER:PT0M','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
+    var f=null; try{ f=new File([ics],'time-with-god.ics',{type:'text/calendar'}); }catch(e){}
+    if(f&&navigator.canShare&&navigator.canShare({files:[f]})) navigator.share({files:[f],title:'Time with God'}).catch(function(){});
+    else { var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'})); a.download='time-with-god.ics'; document.body.appendChild(a); a.click(); setTimeout(function(){ a.remove(); },1500); }
+    put('mf-twg-remind',$('rTime').value); closeSheets(); toast('Open it to add the daily reminder to your calendar'); });
+  try{ var rt=get('mf-twg-remind',''); if(rt) $('rTime').value=rt; }catch(e){}
+
+  // start: the words for today, and the day's fish
+  setSay(SAY.mode==='off'?'off':SAY.mode); SAY.at=-1;
+  Promise.all([fetch('/pray/content.json').then(function(r){ return r.json(); }),fetch('/pray/words.json').then(function(r){ return r.json(); }).catch(function(){ return []; })])
+    .then(function(r){ C=r[0]; WORDS=r[1]; build(); if(/[?&]listen=1/.test(location.search)) setSay('auto'); })
+    .catch(function(){ $('steps').innerHTML='<section class="st"><p class="gd">Time with God could not open just now. Check the connection and try again.</p></section>'; });
+  window.addEventListener('storage',function(e){ if(e.key==='mf-prayers') refreshList(); });
+})();
+</script>
+</body>
+</html>

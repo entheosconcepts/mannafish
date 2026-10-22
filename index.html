@@ -1734,6 +1734,7 @@ select option{background:#0b1620;color:#eaf0f0}
   <div class="sitemenu" id="siteMenu" role="menu" hidden translate="no">
     <button type="button" class="hbtn smi" id="smResume" role="menuitem" hidden><span class="hbi" aria-hidden="true">&#8634;&#xFE0E;</span><span class="hbt"><b id="smResLab">Pick up where you left off</b><small id="smResSub"></small></span></button>
     <button type="button" class="hbtn smi" id="smBible" role="menuitem"><span class="hbi" aria-hidden="true">&#10013;&#xFE0E;</span><span class="hbt"><b id="smBiLab">Bible</b><small id="smBiSub">Every book and chapter</small></span></button>
+    <button type="button" class="hbtn smi" id="smPray" role="menuitem"><span class="hbi" aria-hidden="true">&#128330;&#xFE0E;</span><span class="hbt"><b id="smPrLab">Time with God</b><small id="smPrSub">A few quiet minutes of prayer</small></span></button>
     <button type="button" class="hbtn smi" id="vsBtn" role="menuitem"><span class="hbi" aria-hidden="true">&#9654;&#xFE0E;</span><span class="hbt"><b id="vsLab">The vision</b><small id="vsSub">Listen · 3 min</small></span></button>
     <button type="button" class="hbtn smi" id="smPlan" role="menuitem"><span class="hbi" aria-hidden="true">&#128214;&#xFE0E;</span><span class="hbt"><b id="smPlLab">Bible in a Year</b><small id="smPlSub">Day and night readings, 2 Fish a day</small></span></button>
     <button type="button" class="hbtn smi" id="trnBtn" role="menuitem"><span class="hbi" aria-hidden="true">&#128172;&#xFE0E;</span><span class="hbt"><b id="trnLab">Translator</b><small id="trnSub">Talk with anyone</small></span></button>
@@ -3850,7 +3851,8 @@ window.MF=(function(){
     $('trnSub').textContent=L[0][0]; $('smNotesSub').textContent=L[1][0];
     $('smProfLab').textContent=L[4][0]; $('smProfSub').textContent=L[4][1]; $('smSetLab').textContent=L[5][0]; $('smSetSub').textContent=L[5][1];
     $('smAcctLab').textContent=inn?L[6][0]:L[6][1]; $('smAcctSub').textContent=inn?($('acctMe').textContent||L[3][0]):L[2][0]; $('smAcctIco').innerHTML=inn?'&#8617;&#xFE0E;':'&#128273;&#xFE0E;';
-    var pl='plan'; try{ pl=(JSON.parse(localStorage.getItem('mf-set')||'{}')||{}).plan||'plan'; }catch(e){} if(pl==='pace'||pl==='word') $('smPlSub').textContent=pl==='pace'?L[7][2]:L[7][3]; }
+    var pl='plan'; try{ pl=(JSON.parse(localStorage.getItem('mf-set')||'{}')||{}).plan||'plan'; }catch(e){} if(pl==='pace'||pl==='word') $('smPlSub').textContent=pl==='pace'?L[7][2]:L[7][3];
+    if(MF.lang==='es'){ $('smPrLab').textContent='Tiempo con Dios'; $('smPrSub').textContent='Unos minutos de oración en calma'; } else { $('smPrLab').textContent='Time with God'; $('smPrSub').textContent='A few quiet minutes of prayer'; } }
   $('siteMore').addEventListener('click',smLabels); MF.onChange(smLabels); smLabels();
   function smPanel(btn,box){ $(btn).click(); setTimeout(function(){ var b=$(box); if(b&&!b.hidden) b.scrollIntoView({behavior:'smooth',block:'start'}); },60); }
   function msSync(){ var on=!$('notesBox').hidden||!$('acctBox').hidden; document.documentElement.classList.toggle('mssheet',on); if(on) document.documentElement.style.overflow='hidden'; else if($('pt').hidden&&$('vs').hidden&&$('fs').hidden) document.documentElement.style.overflow=''; }
@@ -3874,6 +3876,8 @@ window.MF=(function(){
   $('smMatch').addEventListener('click',function(){ location.href='/go/'; });
   $('smPlan').addEventListener('click',function(){ location.href='/plan/'; });
   $('smBible').addEventListener('click',function(){ location.href='/bible/'; });
+  // Ken, 22 Oct: Time with God (/pray/), like the Bible App's guided prayer, and more
+  $('smPray').addEventListener('click',function(){ location.href='/pray/'; });
   $('smStories').addEventListener('click',function(){ $('stories').scrollIntoView({behavior:'smooth',block:'start'}); });
   $('ptStage').addEventListener('click',function(e){ if(e.target.closest('[data-fs]')) fsOpen(); });
   MF.onChange(fsUI); fsUI();

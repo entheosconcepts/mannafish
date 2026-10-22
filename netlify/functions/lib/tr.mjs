@@ -31,3 +31,18 @@ export async function translateTo(H, text, from, to) {
   const j = await r.json(), out = String((((j.choices || [])[0] || {}).message || {}).content || '').trim();
   return out ? { text: out, to } : { error: 'empty' };
 }
+// a prayer said aloud (or typed with thumbs): spelling, punctuation and capitals made right, the person's own words kept
+// (Ken, 22 Oct: "a button to record prayers, with a little AI help to make sure it comes out correct with word spelling and punctuation")
+export async function polish(H, text) {
+  const r = await fetch('https://api.openai.com/v1/chat/completions', { method: 'POST', headers: H,
+    body: JSON.stringify({ model: MODEL, temperature: 0, max_tokens: 1200, messages: [
+      { role: 'system', content: 'You tidy up a prayer or a note that someone spoke into their phone or typed quickly. Fix spelling, punctuation, '
+        + 'capital letters, and words that speech-to-text clearly misheard. Keep the person’s own words, voice, language and meaning: do not add, remove, '
+        + 'reword or explain anything, and do not make it more formal. Capitalize You, Your, He and His when they clearly refer to God. Keep Bible '
+        + 'references as references (e.g. "John 3:16"). Reply with the corrected text only.' },
+      { role: 'user', content: text }] }) });
+  if (r.status === 401 || r.status === 403) return { error: 'key', status: r.status };
+  if (!r.ok) return { error: 'service', status: r.status };
+  const j = await r.json(), out = String((((j.choices || [])[0] || {}).message || {}).content || '').trim();
+  return out ? { text: out } : { error: 'empty' };
+}

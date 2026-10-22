@@ -3,10 +3,11 @@
 // into text with OpenAI's speech-to-text (works the same on every phone, and hears which language was spoken).
 //   POST /api/hear[?lang=es]   body: the recording (audio/webm, audio/mp4, audio/ogg ...)  ->  {text}
 //   ...&pair=en,es (or &to=es)  -> {text, tr:{text,from,to}}: heard and translated in one trip (Ken, 21 Oct: "a great delay")
+//   ...&polish=1               -> {text, raw}: a spoken prayer, its spelling and punctuation made right (Time with God)
 //   GET  /api/hear?warm=1      -> 204, so the first sentence does not wait for the function to wake up
 // Only the site's own pages may call it, recordings up to 4 MB (about a minute), with an hourly limit per visitor.
 import { getStore } from '@netlify/blobs';
-import { NAMES, translatePair, translateTo } from './lib/tr.mjs';
+import { NAMES, translatePair, translateTo, polish } from './lib/tr.mjs';
 const MODEL = process.env.MF_HEAR_MODEL || 'gpt-4o-mini-transcribe';
 const LANGS = ['en', 'es', 'tl', 'zh', 'hi', 'el', 'de', 'ko', 'he', 'ar', 'tr'];
 const PER_HOUR = 150, MAX = 4 * 1024 * 1024;
@@ -43,6 +44,11 @@ export default async (req, context) => {
   if (r.status === 401 || r.status === 403) return bad('Key not allowed', 503, 'key');
   if (!r.ok) return bad('Speech service error', 502);
   const j = await r.json(), text = String(j.text || '').trim(), q = new URL(req.url).searchParams;
+  // a prayer said aloud: tidied (spelling, punctuation, capitals), the person's words kept
+  if (text && q.get('polish')) {
+    try { const o = await polish({ authorization: 'Bearer ' + apiKey, 'content-type': 'application/json' }, text.slice(0, 2000)); if (!o.error) return Response.json({ text: o.text, raw: text }); } catch (e) {}
+    return Response.json({ text, raw: text });
+  }
   // and translated straight away, when the page says into what
   const pair = String(q.get('pair') || '').split(','), to = q.get('to');
   if (text && text.length <= 300 && ((pair.length === 2 && NAMES[pair[0]] && NAMES[pair[1]] && pair[0] !== pair[1]) || NAMES[to])) {

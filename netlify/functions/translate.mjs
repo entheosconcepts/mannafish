@@ -7,7 +7,7 @@
 // {error:'key'} and the page says what to change. Only the site's own pages may call it, with short texts and
 // an hourly limit per visitor, so it cannot be used as a free translator by others.
 import { getStore } from '@netlify/blobs';
-import { NAMES, MODEL, translatePair, translateTo } from './lib/tr.mjs';
+import { NAMES, MODEL, translatePair, translateTo, polish } from './lib/tr.mjs';
 const VOICE = process.env.MF_TTS_VOICE || 'sage';
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];
 const MAX = 300, PER_HOUR = 80, SAY_PER_HOUR = 400;  // the Bible reader reads a chapter verse by verse
@@ -42,7 +42,7 @@ export default async (req, context) => {
   else { try { b = await req.json(); } catch (e) { return bad('Bad request', 400); } }
   const text = String(b.text || '').trim();
   if (!text) return bad('Nothing to say', 400);
-  if (text.length > MAX) return bad('Too long', 413, 'long');
+  if (text.length > (b.polish ? 2000 : MAX)) return bad('Too long', 413, 'long');
   const apiKey = process.env.OPENAI_TRANSLATE_KEY || process.env.OPENAI_API_KEY;
   if (!apiKey) return bad('No key yet', 501, 'nokey');
   const say = new URL(req.url).pathname.endsWith('/say');
@@ -140,6 +140,8 @@ export default async (req, context) => {
       : { 'content-type': 'audio/mpeg', 'cache-control': 'private, max-age=86400' } });
   }
 
+  //   POST /api/translate {polish:1, text} -> {text}  a prayer or note with its spelling and punctuation made right (lib/tr.mjs)
+  if (b.polish) { const o = await polish(H, text); return o.error ? (o.error === 'key' ? bad('Key not allowed', 503, 'key') : bad('Could not tidy it', 502)) : Response.json(o); }
   // the Translator's one microphone: the words are in one of two languages; find which, and give the other (lib/tr.mjs)
   const fail = (o) => o.error === 'key' ? bad('Key not allowed', 503, 'key') : bad(o.error === 'empty' ? 'No translation' : 'Translation service error', 502);
   const pair = Array.isArray(b.pair) && b.pair.length === 2 && NAMES[b.pair[0]] && NAMES[b.pair[1]] && b.pair[0] !== b.pair[1] ? b.pair : null;
