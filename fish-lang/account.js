@@ -77,7 +77,7 @@
       Object.keys(pull).forEach(function(id){ if(!H[id]&&!off2[id]) H[id]=pull[id]; }); put('mf-hl',H); return Promise.all(jobs); }); }
 
   // ── saved verses, my links, settings (newest wins), reading history (joined) ──
-  var BLOBS={saved:['mf-bible-saved',[]],links:['mf-bible-links',[]],set:['mf-set',{}],hist:['mf-bible-hist',[]],pace:['mf-pace',{}],oneword:['mf-oneword',{}],basket:['mf-basket',[]],basketSent:['mf-basket-sent',[]],twg:['mf-twg-log',{}],thanks:['mf-thanks',[]],prayed:['mf-prayed',{}]};
+  var BLOBS={saved:['mf-bible-saved',[]],links:['mf-bible-links',[]],set:['mf-set',{}],hist:['mf-bible-hist',[]],pace:['mf-pace',{}],oneword:['mf-oneword',{}],basket:['mf-basket',[]],basketSent:['mf-basket-sent',[]],twg:['mf-twg-log',{}],thanks:['mf-thanks',[]],prayed:['mf-prayed',{}],prhl:['mf-hl-pr',{}]};
   // settings kept under their own keys go with the account too: light or dark, Bible version, highlight colour, language, devotional length, voice, speed
   var KEYS=[['_mode','mf-mode'],['_ver','mf-bible-version'],['_hlc','mf-hl-color'],['_lang','mf-lang'],['_len','mf-devlen'],['_voice','mf-voice'],['_speed','mf-speed']];
   function setPack(){ var s=get('mf-set',{}); KEYS.forEach(function(p){ s[p[0]]=raw(p[1])||''; }); return s; }

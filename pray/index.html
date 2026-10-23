@@ -10,6 +10,7 @@
 <link rel="apple-touch-icon" href="/icon-180.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Spectral:ital,wght@0,500;1,400&family=Archivo:wght@400;600;700;800&display=swap">
 <script src="/fish-lang/account.js" defer></script>
+<script src="/fish-lang/prhl.js" defer></script>
 <script src="/fish-lang/spell/spell.js" defer onload="MFspell.watch('#cT,#cB,#thanksIn,#heardIn,#updIn')"></script>
 <!-- Ken, 22 Oct: "I would like to mimic this 'time with God' part of YouVersion ... the prayers need to change every day ... let's top it off,
      help create something better. I like how it incorporated my prayers, but maybe give an option for the user to listen here as well, and
@@ -238,7 +239,14 @@ textarea.field{min-height:92px;resize:vertical}
     STEPS=STEPS.filter(function(s){ return s.h; });
     $('steps').innerHTML=STEPS.map(function(s,i){ return '<section class="st" data-i="'+i+'" data-k="'+s.k+'">'+s.h+'</section>'; }).join('');
     $('dots').innerHTML=STEPS.map(function(s,i){ return '<button type="button" data-dot="'+i+'" aria-label="Step '+(i+1)+'"></button>'; }).join('');
+    // Ken, 23 Oct: highlight a prayer or a verse here, as in the Bible (fish-lang/prhl.js; kept in My stuff -> Highlights)
+    [].forEach.call($('steps').querySelectorAll('.st'),function(sec){ var k=sec.dataset.k, ref=(sec.querySelector('.vq small')||{}).textContent||'';
+      [].forEach.call(sec.querySelectorAll('.big,.gd,.vq p'),function(e){ e.setAttribute('data-hl',e.closest('.vq')?ref.replace(/ (BSB|KJV)$/,'')||'Verse':(e.classList.contains('prayer')||k==='close'?'Prayer':'Time with God')+' · Time with God');
+        e.setAttribute('data-hl-link','/pray/'); }); });
+    hlOn();
     watchSteps(); breathe(); }
+  function hlOn(){ if(!window.MFprhl||hlOn.done) return; hlOn.done=1; MFprhl.bubble(); MFprhl.paint(); window.MFprhlSaid=function(on){ toast(on?'Highlighted · saved to My highlights':'Highlight removed'); }; }
+  document.addEventListener('DOMContentLoaded',hlOn);
   function listHTML(T){ if(!T.length) return '<p class="eb">From my prayer list</p><p class="big" style="font-size:1.6rem" data-say>Your prayer list is empty.</p><p class="gd" data-say>Add the people and things you want to bring to God. They will come back here, a few each day.</p><div class="row"><button type="button" class="pill" data-a="add">Add a prayer</button><button type="button" class="pill" data-a="record">&#127908;&#xFE0E; Say it</button></div>';
     return '<p class="eb">From my prayer list <a class="pill sm" href="/you/#pr" style="letter-spacing:0;text-transform:none">See all</a></p><div class="cards" id="cards">'+T.map(function(x,i){ var n=(PRAYED[x.id]||{}).n||0;
       return '<div class="pc" data-id="'+esc(x.id)+'"><div class="small" style="margin-bottom:6px">'+(i+1)+' of '+T.length+'</div><h3 data-say>'+esc(x.title)+'</h3>'+(x.body?'<p data-say>'+esc(x.body)+'</p>':'')

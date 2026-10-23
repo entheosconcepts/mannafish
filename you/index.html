@@ -182,17 +182,22 @@ input[type=range]{width:46%;accent-color:var(--blue2)}
 
   // ── highlights (Ken, 20 Oct: "I need to be able to remove all highlights, or click and remove only selected highlights") ──
   var HSEL=null, HCOL='';
-  function hlAll(){ var H=get('mf-hl',{}); return Object.keys(H).map(function(k){ var x=H[k]; x._k=k; return x; }).filter(function(x){ return x.kind==='verse'||x.kind==='phrase'; }).sort(function(a,b){ return (b.at||0)-(a.at||0); }); }
-  function hlRemove(keys){ var H=get('mf-hl',{}); keys.forEach(function(k){ var x=H[k]; if(!x) return; delete H[k]; if(window.MFacct) MFacct.hlGone(x); else { var L=get('mf-hl-del',[]); L.push([x.ref,x.ver]); put('mf-hl-del',L); } }); put('mf-hl',H); touch(); }
+  function hlAll(){ var H=get('mf-hl',{}), P=get('mf-hl-pr',{}); return Object.keys(H).map(function(k){ var x=H[k]; x._k=k; return x; }).filter(function(x){ return x.kind==='verse'||x.kind==='phrase'; })
+    .concat(Object.keys(P).map(function(k){ var x=P[k]; x._k='pr:'+k; x.kind='prayer'; return x; }))   /* prayers and devotional words (fish-lang/prhl.js) */
+    .sort(function(a,b){ return (b.at||0)-(a.at||0); }); }
+  function hlRemove(keys){ var H=get('mf-hl',{}), P=get('mf-hl-pr',{}), pn=0; keys.forEach(function(k){ if(k.indexOf('pr:')===0){ if(P[k.slice(3)]){ delete P[k.slice(3)]; pn++; } return; } var x=H[k]; if(!x) return; delete H[k]; if(window.MFacct) MFacct.hlGone(x); else { var L=get('mf-hl-del',[]); L.push([x.ref,x.ver]); put('mf-hl-del',L); } }); put('mf-hl',H); if(pn){ put('mf-hl-pr',P); if(window.MFacct) MFacct.touch('prhl'); } touch(); }
   function drawHl(){ var A=hlAll(), L=A.filter(function(x){ return !HCOL||(x.c||'gold')===HCOL; }); $('nHl').textContent=A.length||'';
     var cols={}; A.forEach(function(x){ cols[x.c||'gold']=1; });
     $('hlCol').innerHTML=A.length?'<button type="button" class="all" data-col="" aria-pressed="'+(!HCOL)+'">All colours</button>'+Object.keys(HLC).filter(function(c){ return cols[c]; }).map(function(c){ return '<button type="button" data-col="'+c+'" aria-label="Only '+c+'" aria-pressed="'+(HCOL===c)+'" style="background:'+HLC[c]+'"></button>'; }).join(''):'';
     var n=HSEL?Object.keys(HSEL).length:0;
     $('hlBar').innerHTML=!A.length?'':HSEL?'<button type="button" class="b" data-h="all">'+(L.length&&L.every(function(x){ return HSEL[x._k]; })?'Select none':'Select all'+(HCOL?' '+HCOL:''))+'</button><span class="sp"></span><button type="button" class="b" data-h="cancel">Cancel</button><button type="button" class="b redf" data-h="rm"'+(n?'':' disabled')+'>Remove '+(n||'')+'</button>'
       :'<button type="button" class="b" data-h="pick">&#9745;&#xFE0E; Choose to remove</button><span class="sp"></span><button type="button" class="b red" data-h="wipe">Remove all highlights</button>';
-    $('hlList').innerHTML=L.length?L.map(function(x){ var ref=String(x.ref).replace(/#.*$/,''), v=String(x.ver||'').replace(/^en:/,'').toUpperCase();
+    $('hlList').innerHTML=L.length?L.map(function(x){
+      if(x.kind==='prayer') return '<div class="card" data-k="'+esc(x._k)+'"><div class="h">'+(HSEL?'<input type="checkbox" class="chk" aria-label="Choose"'+(HSEL[x._k]?' checked':'')+'>':'')+'<b class="t" style="flex:1"><span class="sw" style="background:'+(HLC[x.c]||HLC.gold)+'"></span>'+esc(x.src||'Prayer')+'</b><span class="d">'+esc(day(x.at))+'</span></div><p class="q">“'+esc(x.text)+'”</p>'
+        +(HSEL?'':'<div class="row">'+(x.link?'<a class="b" href="'+esc(x.link)+'">Open</a>':'')+'<button type="button" class="b" data-one="1">&#10005; Remove</button></div>')+'</div>';
+      var ref=String(x.ref).replace(/#.*$/,''), v=String(x.ver||'').replace(/^en:/,'').toUpperCase();
       return '<div class="card" data-k="'+esc(x._k)+'"><div class="h">'+(HSEL?'<input type="checkbox" class="chk" aria-label="Choose '+esc(ref)+'"'+(HSEL[x._k]?' checked':'')+'>':'')+'<b class="t" style="flex:1"><span class="sw" style="background:'+(HLC[x.c]||HLC.gold)+'"></span>'+esc(ref)+(v&&v!=='ORIG'?' · '+esc(v):'')+'</b><span class="d">'+esc(day(x.at))+'</span></div>'+(x.text?'<p class="q">'+(x.kind==='phrase'?'“'+esc(x.text)+'”':esc(x.text))+'</p>':'')
-        +(HSEL?'':'<div class="row"><a class="b" href="'+bible(ref)+'">📖 Open</a><button type="button" class="b" data-one="1">&#10005; Remove</button></div>')+'</div>'; }).join(''):'<p class="empty">'+(A.length?'No highlights in this colour.':'No highlights yet. In the Bible, tap a verse or drag across words and pick a colour.')+'</p>'; }
+        +(HSEL?'':'<div class="row"><a class="b" href="'+bible(ref)+'">📖 Open</a><button type="button" class="b" data-one="1">&#10005; Remove</button></div>')+'</div>'; }).join(''):'<p class="empty">'+(A.length?'No highlights in this colour.':'No highlights yet. In the Bible, tap a verse or drag across words and pick a colour. In the devotional or Time with God, select the words of a prayer and tap Highlight.')+'</p>'; }
   $('hlCol').addEventListener('click',function(e){ var b=e.target.closest('[data-col]'); if(!b) return; HCOL=b.dataset.col; drawHl(); });
   $('hlBar').addEventListener('click',function(e){ var b=e.target.closest('[data-h]'); if(!b) return; var a=b.dataset.h, L=hlAll().filter(function(x){ return !HCOL||(x.c||'gold')===HCOL; });
     if(a==='pick') HSEL={}; if(a==='cancel') HSEL=null;

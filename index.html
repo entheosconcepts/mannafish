@@ -8,6 +8,7 @@
 <script src="/fish-lang/spell/spell.js" defer onload="MFspell.watch('#notesText,#psT,#psB,#ptCNote,#fsText')"></script>
 <script src="/fish-lang/tabbar.js" defer></script>
 <script src="/fish-lang/basket.js" defer></script>
+<script src="/fish-lang/prhl.js" defer></script>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1635,9 +1636,9 @@ select option{background:#0b1620;color:#eaf0f0}
 .okcard #okDone{display:inline-flex;align-items:center;justify-content:center;margin-top:16px;min-width:180px;height:48px;padding:0 28px;border-radius:999px;border:0;background:var(--brass);color:#fff;font:600 1rem 'Archivo',sans-serif;cursor:pointer}
 @keyframes okfade{from{opacity:0}to{opacity:1}}
 @keyframes okpop{from{transform:scale(.85);opacity:0}to{transform:none;opacity:1}}
-.hearsel{position:fixed;z-index:66;display:flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:var(--brass);color:#fff;font:600 .85rem 'Archivo',sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.45);cursor:pointer}
+.hearsel{position:fixed;z-index:125;display:flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:var(--brass);color:#fff;font:600 .85rem 'Archivo',sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.45);cursor:pointer}
 .hearsel[hidden],.hearbox[hidden]{display:none}
-.hearbox{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:57;width:min(520px,calc(100vw - 32px));max-height:50vh;overflow:auto;background:var(--ink2,#0b1620);color:var(--foam);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.55);padding:16px 48px 14px 16px;text-align:center}
+.hearbox{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:124;width:min(520px,calc(100vw - 32px));max-height:50vh;overflow:auto;background:var(--ink2,#0b1620);color:var(--foam);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.55);padding:16px 48px 14px 16px;text-align:center}
 .hearbox .etx{position:absolute;top:8px;right:8px}
 .hearbox .etbig{font-size:1.2rem}
 .hearbox .etrow button{height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--foam);cursor:pointer}
@@ -3390,7 +3391,9 @@ window.MF=(function(){
     else if(s.k==='amen'){ t=[P[5]]; h=kick(T.k_amen)+'<h2 class="pth ptpr">'+sp1(1,P[5])+'</h2><div class="ptrow"><button type="button" class="ptbtn ptmain" data-a="amen">'+esc(T.amen_btn)+'</button>'
         +((PT.len||dLen())!=='full'?'<button type="button" class="ptbtn" data-a="deeper">'+esc((DLEN[l]||DLEN.en).deeper.replace('{w}',w))+' ›</button>':'')+'</div>'
         +planEnd()+'<div class="ptrow"><button type="button" class="ptlink" data-fs="1">🐟 '+esc((FSL[l]||FSL.en)[0])+'</button></div>'+prm('p_amen'); }
-    var st=$('ptStage'); st.style.animation='none'; void st.offsetWidth; st.style.animation=''; st.innerHTML=h; st.scrollTop=0; if(s.k==='cast') caAnim(); PT.t=t; PT.ready=ready||Promise.resolve();
+    var st=$('ptStage'); st.style.animation='none'; void st.offsetWidth; st.style.animation=''; st.innerHTML=h; st.scrollTop=0; if(s.k==='cast') caAnim();
+    // Ken, 23 Oct: highlight a prayer (or any line) of the devotional, like a verse in the Bible -- fish-lang/prhl.js
+    [].forEach.call(st.querySelectorAll('.ptp,.pth'),function(e){ if(e.closest('label,button')) return; e.setAttribute('data-hl',(e.classList.contains('ptpr')||s.k==='pray'||s.k==='amen'?(l==='es'?'Oración':'Prayer'):(l==='es'?'Devocional':'Devotional'))+' · '+w); e.setAttribute('data-hl-link','/?devo=1'); }); PT.t=t; PT.ready=ready||Promise.resolve();
     $('ptDots').innerHTML='<i style="width:'+Math.round((PT.i+1)/PT.steps.length*100)+'%"></i>';
     $('pt').classList.toggle('guided',!!PT.listen);
     $('ptBack').disabled=PT.i===0; $('ptNext').hidden=PT.i===PT.steps.length-1; $('ptNext').disabled=false;
@@ -4247,13 +4250,19 @@ window.MF=(function(){
     b.style.top=top+'px'; b.style.left=Math.max(8,Math.min(innerWidth-w-8,r.left+r.width/2-w/2))+'px';
     // inside a Bible chapter the same selection can be highlighted
     var ch=el.closest('.chapter'), hb=$('hlSel'); hlSelRange=null; hb.hidden=true;
+    var pr=!ch&&window.MFprhl?MFprhl.sel():null;   // a prayer or a line of the devotional (fish-lang/prhl.js)
+    if(pr){ hlSelRange={pr:pr}; $('hlSelLab').textContent=MFprhl.over(pr).length?(MF.lang==='es'?'Quitar resaltado':'Remove highlight'):(HLS[MF.lang]||HLS.en); hb.hidden=false;
+      var w3=hb.offsetWidth; hb.style.top=top+'px'; var L3=parseFloat(b.style.left); if(L3+w+8+w3<innerWidth-8){ hb.style.left=(L3+w+8)+'px'; } else { hb.style.left=Math.max(8,L3-w3-8)+'px'; } }
     if(ch&&window.MFhlRangeOk&&MFhlRangeOk(ch)){ hlSelRange={r:sel.getRangeAt(0).cloneRange(),root:ch}; $('hlSelLab').textContent=HLS[MF.lang]||HLS.en; hb.hidden=false;
       var w2=hb.offsetWidth; hb.style.top=top+'px'; var L2=parseFloat(b.style.left); if(L2+w+8+w2<innerWidth-8){ hb.style.left=(L2+w+8)+'px'; } else { hb.style.left=Math.max(8,L2-w2-8)+'px'; } } }
   document.addEventListener('selectionchange',function(){ clearTimeout(hearT); hearT=setTimeout(hearPlace,350); });
   window.addEventListener('scroll',hearHide,{passive:true});
   $('hearSel').addEventListener('pointerdown',function(e){ e.preventDefault(); });
   $('hlSel').addEventListener('pointerdown',function(e){ e.preventDefault(); });
-  $('hlSel').addEventListener('click',function(){ var x=hlSelRange; hearHide(); if(x&&window.MFhlRange) MFhlRange(x.r,x.root); try{ getSelection().removeAllRanges(); }catch(e){} });
+  $('hlSel').addEventListener('click',function(){ var x=hlSelRange; hearHide();
+    if(x&&x.pr&&window.MFprhl){ var on=MFprhl.toggle(x.pr), es=MF.lang==='es', tb=$('mfToast'); try{ getSelection().removeAllRanges(); }catch(e){}
+      if(tb){ tb.textContent=on?(es?'Resaltado · en Mis resaltados':'Highlighted · saved to My highlights'):(es?'Resaltado quitado':'Highlight removed'); tb.hidden=false; clearTimeout(tb._t); tb._t=setTimeout(function(){ tb.hidden=true; },1800); } return; }
+    if(x&&window.MFhlRange) MFhlRange(x.r,x.root); try{ getSelection().removeAllRanges(); }catch(e){} });
   $('hearSel').addEventListener('click',function(){ var l=MF.lang, text=hearText.slice(0,300), T=etT();
     if(hearText.length>300){ var cut=text.search(/[.!?。！？।][^.!?。！？।]*$/); if(cut>80) text=text.slice(0,cut+1); }
     hearHide(); $('hearBox').hidden=false; $('hearMine').textContent=''; $('hearTxt').setAttribute('lang',l); $('hearTxt').textContent=T.wait;
