@@ -31,7 +31,7 @@ let LINK = null;
 const SITE = () => (process.env.MF_LINK_URL || LINK || process.env.URL || 'https://manna-fish.com').replace(/\/$/, '');
 export function siteOf(origin) { try { const u = new URL(origin);
   return u.protocol === 'https:' && /(^|\.)(manna-fish\.com|netlify\.app)$/.test(u.hostname) ? u.origin : null; } catch (e) { return null; } }
-const ADDRESS = () => process.env.MF_MAIL_ADDRESS || 'MannaFish · Yadah Collaborative · 4563 Technology Dr, Unit 6, Wilmington, NC 28405';
+const ADDRESS = () => process.env.MF_MAIL_ADDRESS || 'MannaFish · Entheos Concepts · 4563 Technology Dr, Unit 6, Wilmington, NC 28405';
 const FREQS = ['Daily', 'Weekly', 'Monthly'];
 
 async function secret() {
