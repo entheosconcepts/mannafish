@@ -5005,7 +5005,7 @@ window.MF=(function(){
     if(id==='devoForm'||id==='signup'){ title=T('You’re signed up!','¡Ya está inscrito!');
       h+='<p class="okwhat">'+esc(es?'Devocional '+oft.toLowerCase():oft+' devotional')+' · '+(byText?T('by text','por mensaje de texto'):T('by email','por correo'))+'</p>';
       h+='<p class="okto">'+esc(byText?(fd.phone||''):(fd.email||''))+'</p>';
-      h+=byText?'<p>'+T('Texting is being switched on now. Your first text arrives as soon as it is ready — you don’t need to sign up again.','Los mensajes de texto se están activando. Su primer mensaje llegará en cuanto esté listo; no necesita inscribirse de nuevo.')+'</p>'
+      h+=byText?'<p>'+T('Watch for a text from MannaFish and reply YES to start. Then the devotional comes every morning at 7. Reply STOP any time to end it.','Espere un mensaje de MannaFish y responda SÍ para empezar. Luego el devocional llegará cada mañana a las 7. Responda STOP cuando quiera para cancelar.')+'</p>'
         // Ken, 11 Oct: welcome emails rest over the Sabbath (6pm Friday to 9pm Saturday, by the visitor's own clock)
         :(function(){ var d=new Date(), w=d.getDay(), hr=d.getHours(); return (w===5&&hr>=18)||(w===6&&hr<21); })()
         ?'<p>'+T('We rest on the Sabbath, so your welcome email with your first MannaFish arrives <b>Saturday evening at 9 pm</b>. “The LORD hath given you the sabbath” (Exodus 16:29).','Descansamos en el día de reposo, así que su correo de bienvenida con su primer MannaFish llegará <b>el sábado a las 9 de la noche</b>. “Mirad que Jehová os dio el sábado” (Éxodo 16:29).')+'</p>'

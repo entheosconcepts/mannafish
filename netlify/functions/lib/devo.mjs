@@ -2,12 +2,13 @@
 // notifications). Daily = every gathering day (Sunday–Friday, Saturday is rest): the catch of the day, a different
 // fish each day and two on Friday (Ken, 19 Oct; it was the same fish all week); Weekly = Sundays (the week's fish; the devotional
 // on the site picks up where the person left off); Monthly = the first Sunday of the month. All at 7am where the person is.
-// Text sign-ups are kept too, and start receiving once texting is set up.
+// Text sign-ups are kept here too; the texts themselves are lib/devotext.mjs (Twilio).
 import { getStore } from '@netlify/blobs';
 import { createHash, createHmac, randomBytes } from 'node:crypto';
 import { localNow, todaysManna, welcomeManna, todaysCatch, welcomeCatch, sabbathRest, SEND_HOUR, DEFAULT_TZ, validTz, monthOf, yearOf } from './manna.mjs';
 import WORDS from './words.json';
 import { sendMail } from './mail.mjs';
+import { e164 } from './sms.mjs';
 import FISH from './fishlines.json';
 import ES from './es.json';
 import IMG from './email-img.json';
@@ -179,7 +180,7 @@ export async function deliver(rec, m, opts) {
 // save or update a sign-up; returns { rec, isNew }
 export async function subscribe(f, now = new Date(), site = null) {
   const by = f['send-by'] === 'Text' ? 'Text' : 'Email';
-  const email = String(f.email || '').trim().slice(0, 200), phone = String(f.phone || '').replace(/[^\d+]/g, '').slice(0, 20);
+  const email = String(f.email || '').trim().slice(0, 200), phone = by === 'Text' ? e164(f.phone).slice(0, 16) : String(f.phone || '').replace(/[^\d+]/g, '').slice(0, 20);
   if (by === 'Email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) throw new Error('email');
   if (by === 'Text' && phone.replace(/\D/g, '').length < 10) throw new Error('phone');
   const key = by === 'Email' ? idFor(email) : 'text/' + createHash('sha256').update(phone).digest('hex').slice(0, 40);

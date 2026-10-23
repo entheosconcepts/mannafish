@@ -78,7 +78,7 @@ footer{max-width:760px;margin:0 auto;padding:20px 16px 40px;border-top:1px solid
     <p><span class="key">Your number stays with us:</span> no mobile information will be shared with third parties or affiliates for marketing or promotional purposes. Text messaging opt-in data and consent are not shared with any third parties.</p>
     <p class="small">Carriers are not liable for delayed or undelivered messages.</p>
   </div>
-  <p>You sign up by choosing "Text message" on the devotional form at manna-fish.com and entering your mobile number. You will only receive texts you asked for.</p>
+  <p>You sign up by choosing "Text message" on the devotional form at manna-fish.com and entering your mobile number. We then send one text asking you to reply <b>YES</b>; nothing more comes until you do. You will only receive texts you asked for: one message on each devotional day, at about 7am where you are. If you reply with anything else, such as a prayer request, it goes to the MannaFish team.</p>
 
   <h2 id="email">Email</h2>
   <p>Devotional emails come from MannaFish &lt;2fish@manna-fish.com&gt;. Every email has an "Unsubscribe" link that stops them with one click. Sign-in emails are sent only when you ask for one.</p>
@@ -88,7 +88,8 @@ footer{max-width:760px;margin:0 auto;padding:20px 16px 40px;border-top:1px solid
   <ul>
     <li><span class="key">Netlify</span> hosts the website and receives the forms.</li>
     <li><span class="key">Supabase</span> keeps MannaFish accounts, notes and decal requests.</li>
-    <li><span class="key">Brevo</span> sends the devotional emails and texts.</li>
+    <li><span class="key">Brevo</span> sends the devotional emails.</li>
+    <li><span class="key">Twilio</span> sends and receives the devotional text messages.</li>
     <li><span class="key">OpenAI</span> provides the natural voices and the MannaFish Translator.</li>
     <li><span class="key">bible-api.com</span> provides the English Bible chapters in the reader; <span class="key">Google Fonts</span> provides the lettering.</li>
   </ul>
@@ -116,6 +117,7 @@ footer{max-width:760px;margin:0 auto;padding:20px 16px 40px;border-top:1px solid
   <div class="box" lang="es">
     <p><span class="key">Programa:</span> Devocional diario MannaFish. Un texto breve con un versículo y un enlace, diario (de domingo a viernes), semanal (domingos) o mensual (el primer domingo), según elija.</p>
     <p>El devocional es gratis. Pueden aplicarse tarifas de mensajes y datos.</p>
+    <p>Al inscribirse le enviamos un mensaje pidiéndole que responda <b>SÍ</b>; no recibirá nada más hasta que lo haga.</p>
     <p>Responda <b>STOP</b> para cancelar en cualquier momento, o <b>HELP</b> para ayuda. También puede escribir a <a href="mailto:2fish@manna-fish.com">2fish@manna-fish.com</a>.</p>
     <p>No compartimos su número móvil con terceros ni afiliados para fines de mercadeo o promoción. Los datos de inscripción y consentimiento para mensajes de texto no se comparten con terceros. Nunca vendemos su información.</p>
   </div>
