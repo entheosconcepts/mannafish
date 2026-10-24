@@ -40,7 +40,7 @@
   --parch-dim:#6b5f47;
   --sea:#4f9bb8;          /* link / cool accent */
   --wm-manna:#ffffff;     /* wordmark: "Manna" white (manna was white) */
-  --wm-fish:#3370ff;      /* wordmark: "Fish" -- Ken, 12 Oct: brighter than #2a5fb0 so the letters pop on black like the filled buttons */
+  --wm-fish:#448ff1;      /* wordmark: "Fish" -- Ken, 24 Oct: the light blue of the MannaFish logo he sent (brand/) */
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -397,6 +397,7 @@ a{color:inherit}
 @media(max-width:480px){.beneficiaries{grid-template-columns:1fr}}
 /* ---- bicolor wordmark + splash ---- */
 .wm-m{color:var(--wm-manna)}
+.wm-m{-webkit-text-stroke:.07em #14181d;paint-order:stroke fill}   /* Ken, 24 Oct: the MannaFish he sent -- Manna white with a thin black line round it, Fish light blue #448FF1 */
 .wm-f{color:var(--wm-fish)}
 @keyframes mfSplash{0%{transform:scale(.92);opacity:.2}60%{opacity:1}100%{transform:scale(1);opacity:1}}
 @keyframes mfRipple{0%{transform:translate(-50%,-50%) scale(.25);opacity:.55}100%{transform:translate(-50%,-50%) scale(1.7);opacity:0}}
@@ -847,7 +848,7 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
   --ink:#f7f5ef; --ink2:#ffffff; --deep:#ffffff; --deep2:#f7f5ef;
   --foam:#14181d; --foam-dim:#4b5560; --line:rgba(20,24,29,.16);
   --brass:#0038b8; --brass-soft:#0038b8; --sea:#0b5c8f;
-  --wm-manna:#14181d; --wm-fish:#0038b8; color-scheme:light}
+  --wm-manna:#ffffff; --wm-fish:#448ff1; color-scheme:light}
 :root[data-mode="light"] body{background:var(--ink)}
 :root[data-mode="light"] .nav{background:rgba(247,245,239,.9)}
 :root[data-mode="light"] .purpose .p2,
