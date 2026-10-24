@@ -17,16 +17,17 @@
   function save(a){ put(KEY,a); fab(); if(window.MFacct) MFacct.touch('basket'); try{ window.dispatchEvent(new CustomEvent('mf-basket')); }catch(e){} }
   function total(a){ return (a||items()).reduce(function(t,x){ return t+(+x.q||0); },0); }
 
-  // ── look ──
+  // ── look ── (Ken, 24 Oct: "The x at top right on mobile view cannot be reached without scrolling down": the sheet fits the screen a phone
+  // really shows (dvh), and its title and ✕ stay at the top while the rest scrolls)
   function css(){ if(document.getElementById('mfBkCss')) return; var s=document.createElement('style'); s.id='mfBkCss';
     s.textContent='.mfbkfab{position:fixed;right:14px;bottom:max(16px,env(safe-area-inset-bottom));z-index:80;border:0;border-radius:999px;background:#f5d76e;color:#111;font:800 1rem Archivo,system-ui,sans-serif;padding:10px 16px;cursor:pointer;box-shadow:0 10px 30px -8px #000}'
       +'.mfbkfab[hidden]{display:none}body.mftabbed .mfbkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;padding:8px 14px}'
       +'.mfbkfab.bump{animation:mfbump .5s ease}@keyframes mfbump{40%{transform:scale(1.18)}}'
       +'.mfbk{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.66);display:flex;align-items:flex-end;justify-content:center}.mfbk[hidden]{display:none}'
-      +'.mfbk .in{background:#0e1116;color:#eaf0f0;border:1px solid rgba(255,255,255,.14);border-radius:22px 22px 0 0;width:100%;max-width:560px;max-height:92vh;overflow:auto;padding:16px 16px max(18px,env(safe-area-inset-bottom));font:16px/1.45 Archivo,system-ui,sans-serif;text-align:left}'
+      +'.mfbk .in{background:#0e1116;color:#eaf0f0;border:1px solid rgba(255,255,255,.14);border-radius:22px 22px 0 0;width:100%;max-width:560px;max-height:92vh;max-height:calc(100dvh - 12px);overflow:auto;overscroll-behavior:contain;padding:0 16px max(18px,env(safe-area-inset-bottom));font:16px/1.45 Archivo,system-ui,sans-serif;text-align:left}'
       +'@media(min-width:640px){.mfbk{align-items:center}.mfbk .in{border-radius:22px}}'
       +':root[data-mode=light] .mfbk .in{background:#fbfaf6;color:#1c2228;border-color:rgba(0,0,0,.12)}'
-      +'.mfbk .hd{display:flex;align-items:center;gap:10px}.mfbk h3{flex:1;margin:0;font:400 1.9rem MFHobo,cursive}.mfbk .x{border:1px solid rgba(128,128,128,.4);background:none;color:inherit;border-radius:50%;width:38px;height:38px;font-size:1rem;cursor:pointer}'
+      +'.mfbk .hd{display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:3;background:inherit;margin:0 -16px;padding:14px 16px 8px;border-radius:22px 22px 0 0}.mfbk h3{flex:1;margin:0;font:400 1.9rem MFHobo,cursive}.mfbk .x{border:1px solid rgba(128,128,128,.4);background:none;color:inherit;border-radius:50%;width:38px;height:38px;font-size:1rem;cursor:pointer}'
       +'.mfbk .sub{font:italic .95rem Spectral,Georgia,serif;opacity:.8;margin:4px 0 12px}'
       +'.mfbk .row{display:grid;grid-template-columns:116px 1fr;gap:4px 10px;align-items:center;border:1px solid rgba(128,128,128,.28);border-radius:14px;padding:8px;margin:0 0 8px}'
       +'.mfbk .th{position:relative;width:116px;aspect-ratio:2/1;border-radius:8px;overflow:hidden;background:#000;grid-row:span 2}.mfbk .th svg{position:absolute;inset:0;width:100%;height:100%}'
