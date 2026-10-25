@@ -30,12 +30,22 @@ body{font:17px/1.5 'Archivo',system-ui,sans-serif;-webkit-font-smoothing:antiali
 button,input,textarea,select{font:inherit;color:inherit}
 /* the sky and the sea: a new light each day */
 .sky{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,var(--a) 0%,var(--b) 48%,var(--c) 62%,var(--sea) 72%,#141a20 100%)}
-.sky::before{content:'';position:absolute;left:50%;top:58%;width:70vmax;height:70vmax;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(255,214,170,.42),rgba(255,214,170,0));animation:glow 14s ease-in-out infinite alternate}
+.sky::before{content:'';position:absolute;left:50%;top:58%;width:70vmax;height:70vmax;transform:translate(-50%,-50%);background:radial-gradient(closest-side,var(--glow,rgba(255,214,170,.42)),transparent);animation:glow 14s ease-in-out infinite alternate}
 @keyframes glow{from{opacity:.55;transform:translate(-50%,-50%) scale(.92)}to{opacity:1;transform:translate(-50%,-52%) scale(1.04)}}
 .sky svg{position:absolute;left:0;width:200%;height:18vh;opacity:.5}.sky .w1{bottom:16vh;animation:drift 38s linear infinite}.sky .w2{bottom:8vh;opacity:.35;animation:drift 26s linear infinite reverse}
 @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.veil{position:fixed;inset:0;z-index:1;background:rgba(10,8,12,.28)}
-@media (prefers-reduced-motion:reduce){.sky::before,.sky svg,.breath i{animation:none!important}}
+.veil{position:fixed;inset:0;z-index:1;background:rgba(6,10,16,var(--veil,.28))}
+/* Ken, 25 Oct: "we need to be able to pick different backgrounds ... water related, soothing tones" -- each a sky over water,
+   chosen in ••• (Background); light shafts under the deep sea, stars over the night sea */
+.sky .w1 path{fill:var(--w1,rgba(20,26,32,.65))}.sky .w2 path{fill:var(--w2,rgba(14,18,24,.8))}
+.sky::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .6s}
+.sky.rays::after{opacity:1;inset:-10% -20% 35%;background:repeating-linear-gradient(104deg,transparent 0 46px,rgba(150,215,255,.07) 46px 84px,transparent 84px 130px);animation:rays 16s ease-in-out infinite alternate;-webkit-mask:linear-gradient(#000,transparent);mask:linear-gradient(#000,transparent)}
+@keyframes rays{from{transform:translateX(-3%)}to{transform:translateX(3%)}}
+.sky.stars::after{opacity:1;bottom:40%;background:radial-gradient(1.4px 1.4px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 28% 32%,#fff,transparent),radial-gradient(1.6px 1.6px at 44% 12%,#fff,transparent),radial-gradient(1px 1px at 61% 26%,#fff,transparent),radial-gradient(1.3px 1.3px at 77% 14%,#fff,transparent),radial-gradient(1px 1px at 88% 36%,#fff,transparent),radial-gradient(1.2px 1.2px at 35% 48%,#fff,transparent),radial-gradient(1px 1px at 70% 50%,#fff,transparent),radial-gradient(1.5px 1.5px at 6% 42%,#fff,transparent),radial-gradient(1px 1px at 52% 40%,#fff,transparent);animation:twinkle 6s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.55}to{opacity:1}}
+.bgs button{display:inline-flex;align-items:center;gap:8px}.bgs i{width:22px;height:22px;border-radius:50%;flex:none;border:1px solid rgba(255,255,255,.4)}
+.vox{display:flex;gap:8px;align-items:center;margin:4px 0 6px}.vox select{flex:1;min-width:0;border:1px solid var(--line);background:#2b282c;color:#fff;border-radius:999px;padding:9px 12px;font-weight:700}
+@media (prefers-reduced-motion:reduce){.sky::before,.sky::after,.sky svg,.breath i{animation:none!important}}
 /* the bar */
 .top{position:fixed;left:0;right:0;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:max(14px,env(safe-area-inset-top)) 16px 8px;pointer-events:none}
 .top>*{pointer-events:auto}
@@ -49,6 +59,7 @@ button,input,textarea,select{font:inherit;color:inherit}
 .steps{position:fixed;inset:0;z-index:5;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .steps::-webkit-scrollbar{display:none}
 .st{min-height:100vh;min-height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;padding:84px 26px 96px;max-width:640px;margin:0 auto}
+@media (max-width:700px){.st{padding-right:48px}}
 .eb{font:800 .78rem 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin:0 0 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .eb small{letter-spacing:0;text-transform:none;font-weight:600;font-size:.9rem;opacity:.85}
 .big{font:800 clamp(1.7rem,7vw,2.3rem)/1.22 'Archivo',sans-serif;margin:0}
@@ -77,7 +88,8 @@ textarea.field{min-height:92px;resize:vertical}
 .breath b{position:absolute;inset:0;display:grid;place-items:center;font:700 .95rem 'Archivo',sans-serif;letter-spacing:.08em;text-transform:uppercase}
 /* today's word */
 .fishw{position:relative;width:min(100%,420px);aspect-ratio:2/1;margin:0 auto 18px}
-.fishw svg{position:absolute;inset:0;width:100%;height:100%}
+.fishw{background:#000;border-radius:16px;box-shadow:0 14px 40px -14px rgba(0,0,0,.7)}   /* Ken, 25 Oct: the real MannaFish fish for today's word, as on the decal */
+.fishw svg{position:absolute;inset:4%;width:92%;height:92%}
 .fishw .w{position:absolute;left:0;right:20%;top:0;bottom:0;display:grid;place-items:center;font:400 clamp(2.4rem,11vw,3.4rem)/1 'MFHobo',cursive}
 /* prayer cards */
 .cards{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -26px;padding:0 26px}
@@ -149,6 +161,10 @@ textarea.field{min-height:92px;resize:vertical}
   <div class="sep"></div>
   <div class="mh">Read aloud</div>
   <div class="chips" id="sayChips"><button type="button" data-say="off">Off</button><button type="button" data-say="on">Read each step</button><button type="button" data-say="auto">Read and move on by itself</button></div>
+  <div class="mh">Voice</div>
+  <div class="vox"><select id="voxSel" aria-label="The voice that reads to you"></select><button type="button" class="pill sm" id="voxTry">&#9654;&#xFE0E; Hear it</button></div>
+  <div class="mh">Background</div>
+  <div class="chips bgs" id="bgChips"></div>
   <div class="mh">Background sound</div>
   <div class="chips" id="sndChips"></div>
   <div class="row" style="margin:6px 4px"><span class="small">Volume</span><input type="range" id="vol" min="0" max="100" value="45" style="flex:1"></div>
@@ -194,8 +210,19 @@ textarea.field{min-height:92px;resize:vertical}
   var now=new Date(), DAY=Math.floor((Date.UTC(now.getFullYear(),now.getMonth(),now.getDate()))/864e5), TODAY=new Date(DAY*864e5).toISOString().slice(0,10);
   function pick(a,o){ return a[(DAY+(o||0))%a.length]; }
   // a new light each day
-  var SKIES=[['#3b2f35','#6e5a5c','#d08a5e','#2c3a44'],['#24304a','#4f5f86','#e0a777','#22313d'],['#2d3a3a','#5f7a72','#d9b27c','#1f2e33'],['#3a2a3e','#7a5878','#e19a86','#2a2f45'],['#1f2a3a','#3f5a7a','#9cc3d8','#1c2b38'],['#3a3226','#7a6a4f','#e8b76c','#2b3236']];
-  (function(){ var s=pick(SKIES), r=document.documentElement.style; r.setProperty('--a',s[0]); r.setProperty('--b',s[1]); r.setProperty('--c',s[2]); r.setProperty('--sea',s[3]); })();
+  // the sky and the water behind the prayer: chosen in ••• → Background, or a different one each day
+  var BGS=[
+    {k:'galilee',n:'Sea of Galilee',c:['#1b2b45','#42618a','#e6bb8e','#1d3a4b'],g:'rgba(255,220,180,.38)',w:['rgba(16,34,46,.7)','rgba(10,24,34,.85)']},
+    {k:'still',n:'Still waters',c:['#123036','#3a7473','#a8d4c8','#173c43'],g:'rgba(200,245,235,.32)',w:['rgba(12,40,44,.7)','rgba(8,28,32,.85)']},
+    {k:'deep',n:'Deep sea',c:['#04101c','#0a2944','#13597a','#06192a'],g:'rgba(120,200,240,.22)',w:['rgba(4,16,28,.75)','rgba(2,10,20,.9)'],x:'rays'},
+    {k:'mist',n:'Morning mist',c:['#43586a','#7f9bad','#d4e2e6','#56747f'],g:'rgba(255,255,255,.36)',w:['rgba(40,60,72,.6)','rgba(30,46,56,.8)'],v:.38},
+    {k:'shore',n:'Evening shore',c:['#24233f','#575a88','#e0a48e','#22334a'],g:'rgba(255,200,180,.34)',w:['rgba(20,28,44,.7)','rgba(14,20,34,.85)']},
+    {k:'night',n:'Night sea',c:['#04060e','#0e1a33','#283a66','#081222'],g:'rgba(210,225,255,.2)',w:['rgba(6,12,24,.75)','rgba(4,8,18,.9)'],x:'stars'}];
+  function bgKey(){ var k=''; try{ k=localStorage.getItem('mf-twg-bg')||''; }catch(e){} return k==='daily'||BGS.some(function(b){ return b.k===k; })?k:'galilee'; }
+  function setBg(k){ var b=k==='daily'?pick(BGS):BGS.filter(function(x){ return x.k===k; })[0]||BGS[0], r=document.documentElement.style;
+    ['--a','--b','--c','--sea'].forEach(function(v,i){ r.setProperty(v,b.c[i]); }); r.setProperty('--glow',b.g); r.setProperty('--w1',b.w[0]); r.setProperty('--w2',b.w[1]); r.setProperty('--veil',b.v||.28);
+    var sk=document.querySelector('.sky'); sk.classList.toggle('rays',b.x==='rays'); sk.classList.toggle('stars',b.x==='stars'); }
+  setBg(bgKey());
 
   // ── the prayer list: the same as the devotional's and My stuff's ──
   function prayers(){ return get('mf-prayers',[]); }
@@ -224,7 +251,7 @@ textarea.field{min-height:92px;resize:vertical}
         +'<div class="row center" style="margin-top:18px"><button type="button" class="pill fill" data-go="1">Begin</button><button type="button" class="pill" data-go="listen">&#127911;&#xFE0E; Begin, read to me</button></div>'+week()+'<p class="small">Swipe up to go on. About 8 minutes.</p></div>',wait:0},
       {k:'arrive',h:'<p class="eb">Be still</p><div class="breath" aria-hidden="true"><i></i><b id="bLab">Breathe in</b></div><p class="gd" data-say>'+esc(a.text)+'</p>'+vq(a.v),wait:24},
       {k:'honor',h:'<p class="eb">Honor God</p><p class="big prayer'+(h.prayer.length>260?' long':'')+'" data-say>'+esc(h.prayer)+'</p>',wait:5},
-      {k:'word',h:w?'<p class="eb">Today&rsquo;s word</p><div class="fishw" aria-hidden="true"><svg viewBox="0 0 200 100"><path d="M8 50 C48 4 122 4 154 50 C122 96 48 96 8 50 Z M154 50 L194 16 M154 50 L194 84" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="w">'+esc(w.title)+'</span></div>'
+      {k:'word',h:w?'<p class="eb">Today&rsquo;s word</p><div class="fishw" data-fish="'+esc(w.key)+'" role="img" aria-label="'+esc(w.title)+'"></div>'
         +'<div class="vq" data-say="v"><p>'+esc(w.snippet)+'</p><small>'+esc(w.ref)+' KJV</small></div><p class="gd" data-say>'+esc('Pray today’s word over your day: Lord, teach me to '+w.title.toLowerCase()+'. Let this word go with me today, and give me someone to share it with.')+'</p>'
         +'<div class="row"><a class="pill sm" href="'+esc(w.url)+'">Open the fish &rarr;</a></div>':'',wait:10},
       {k:'thanks',h:'<p class="eb">Give thanks</p>'+vq(th.v)+'<p class="gd" data-say>'+esc(th.prompt)+'</p><input class="field" id="thanksIn" placeholder="Today I am thankful for…" maxlength="200"><div class="row"><button type="button" class="pill sm" data-a="thanks">Keep it</button></div><div class="saved" id="thanksMsg"></div>',wait:16},
@@ -239,6 +266,10 @@ textarea.field{min-height:92px;resize:vertical}
     STEPS=STEPS.filter(function(s){ return s.h; });
     $('steps').innerHTML=STEPS.map(function(s,i){ return '<section class="st" data-i="'+i+'" data-k="'+s.k+'">'+s.h+'</section>'; }).join('');
     $('dots').innerHTML=STEPS.map(function(s,i){ return '<button type="button" data-dot="'+i+'" aria-label="Step '+(i+1)+'"></button>'; }).join('');
+    // today's word on its real MannaFish fish (/fish/, where every fish picture lives)
+    [].forEach.call(document.querySelectorAll('.fishw[data-fish]'),function(el){ fetch('/fish/en/'+el.dataset.fish+'.svg').then(function(r){ if(!r.ok) throw 0; return r.text(); })
+      .then(function(t){ el.innerHTML=t; var sv=el.querySelector('svg'); if(sv){ sv.removeAttribute('style'); sv.setAttribute('aria-hidden','true'); } })
+      .catch(function(){ el.innerHTML='<span class="w">'+esc(el.getAttribute('aria-label'))+'</span>'; }); });
     // Ken, 23 Oct: highlight a prayer or a verse here, as in the Bible (fish-lang/prhl.js; kept in My stuff -> Highlights)
     [].forEach.call($('steps').querySelectorAll('.st'),function(sec){ var k=sec.dataset.k, ref=(sec.querySelector('.vq small')||{}).textContent||'';
       [].forEach.call(sec.querySelectorAll('.big,.gd,.vq p'),function(e){ e.setAttribute('data-hl',e.closest('.vq')?ref.replace(/ (BSB|KJV)$/,'')||'Verse':(e.classList.contains('prayer')||k==='close'?'Prayer':'Time with God')+' · Time with God');
@@ -286,6 +317,15 @@ textarea.field{min-height:92px;resize:vertical}
     var p=player.play(); if(p&&p.catch) p.catch(function(){ if(run===SAY.run) dev(); }); }
   function setSay(m){ SAY.mode=m; put('mf-twg-say',m); $('sayBtn').setAttribute('aria-pressed',String(m!=='off')); [].forEach.call($('sayChips').children,function(b){ b.setAttribute('aria-pressed',String(b.dataset.say===m)); }); if(m==='off') sayStop(); else if(unlock.done) sayStep(AT); }
   $('sayBtn').addEventListener('click',function(){ unlock(); setSay(SAY.mode==='off'?'auto':'off'); toast(SAY.mode==='off'?'Reading aloud is off':'Reading aloud, and moving on by itself'); });
+  // the voice that reads (the same choice as the rest of MannaFish: mf-voice), and the background
+  var VOX=[['sage','Sage — calm'],['coral','Coral — warm'],['nova','Nova — bright'],['shimmer','Shimmer — soft'],['alloy','Alloy — even'],['ash','Ash — gentle'],['ballad','Ballad — expressive'],['echo','Echo — clear'],['fable','Fable — storyteller'],['onyx','Onyx — deep'],['verse','Verse — lively'],['device','This device’s own voice']];
+  $('voxSel').innerHTML=VOX.map(function(v){ return '<option value="'+v[0]+'"'+((raw('mf-voice')||'sage')===v[0]?' selected':'')+'>'+v[1]+'</option>'; }).join('');
+  $('voxSel').addEventListener('change',function(){ try{ localStorage.setItem('mf-voice',this.value); }catch(e){} if(window.MFacct&&MFacct.touch) MFacct.touch('set'); voxTry(); });
+  function voxTry(){ unlock(); sayStop(); var run=SAY.run; speak('The Lord is my shepherd; I shall not want. He leadeth me beside the still waters.',function(){},run); }
+  $('voxTry').addEventListener('click',voxTry);
+  function bgUI(){ var k=bgKey(); $('bgChips').innerHTML=BGS.map(function(b){ return '<button type="button" data-bg="'+b.k+'" aria-pressed="'+(k===b.k)+'"><i style="background:linear-gradient(180deg,'+b.c[0]+','+b.c[1]+' 45%,'+b.c[2]+' 62%,'+b.c[3]+')"></i>'+b.n+'</button>'; }).join('')
+    +'<button type="button" data-bg="daily" aria-pressed="'+(k==='daily')+'">&#127749;&#xFE0E; A new one each day</button>'; }
+  bgUI(); $('bgChips').addEventListener('click',function(e){ var b=e.target.closest('[data-bg]'); if(!b) return; try{ localStorage.setItem('mf-twg-bg',b.dataset.bg); }catch(er){} setBg(b.dataset.bg); bgUI(); });
   $('sayChips').addEventListener('click',function(e){ var b=e.target.closest('[data-say]'); if(b){ unlock(); setSay(b.dataset.say); } });
   function unlock(){ if(unlock.done) return; unlock.done=1; try{ player.src='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA='; player.play().catch(function(){}); }catch(e){} snd.ctx(); }
 
