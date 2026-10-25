@@ -2,6 +2,8 @@
 // Today · Bible · Plans · Pond · You, on every main page. Not inside the devotional's Bible window (?embed=1) or another frame.
 (function(){
   if(/[?&]embed=1\b/.test(location.search)||window.top!==window.self) return;
+  // "Tell us what you think" (fish-lang/feedback.js), on every page with the tabs
+  if(!window.MFfeedback){ var fb=document.createElement('script'); fb.src='/fish-lang/feedback.js'; fb.defer=true; document.head.appendChild(fb); }
   var L='en'; try{ L=localStorage.getItem('mf-lang')||'en'; }catch(e){}
   var T={en:['Today','Bible','Plans','Pond','You'],es:['Hoy','Biblia','Planes','Estanque','Tú'],tl:['Ngayon','Biblia','Plano','Lawa','Ikaw'],zh:['今天','圣经','计划','鱼塘','我'],
     hi:['आज','बाइबल','योजनाएँ','तालाब','आप'],el:['Σήμερα','Βίβλος','Πλάνα','Λίμνη','Εσύ'],de:['Heute','Bibel','Pläne','Teich','Du'],ko:['오늘','성경','계획','연못','나'],

@@ -188,7 +188,7 @@ html,body{overflow-x:hidden}
   <a class="pill home" href="/">⌂ <span data-t="home">Home</span></a>
   <h1 class="wm"><span class="m">Manna</span><span class="f">Fish</span><small data-t="sub">Go MannaFish</small></h1>
   <span class="topr"><button class="pill blue" id="newBtn" type="button" data-t="new">New game</button><button class="pill more" id="moreBtn" type="button" aria-label="More" aria-expanded="false">&bull;&bull;&bull;</button>
-    <span class="mmenu" id="mMenu" hidden><button type="button" id="howBtn">❓ <span data-t="how">How to play</span></button><button type="button" id="playersBtn">👥 <span data-t="mPlayers">Players on this device</span></button><button type="button" id="onlineBtn">🌐 <span data-t="mOnline">Play online</span></button></span></span>
+    <span class="mmenu" id="mMenu" hidden><button type="button" id="howBtn">❓ <span data-t="how">How to play</span></button><button type="button" id="playersBtn">👥 <span data-t="mPlayers">Players on this device</span></button><button type="button" id="onlineBtn">🌐 <span data-t="mOnline">Play online</span></button><button type="button" id="fbBtn" onclick="document.getElementById('mMenu').hidden=true;window.MFfeedback&&MFfeedback.open()">💬 <span data-t="mFb">Tell us what you think</span></button></span></span>
 </header>
 <div class="wrapw opts">
   <label class="pick"><span data-t="first">First language</span><select id="l1"></select></label>
@@ -286,7 +286,7 @@ html,body{overflow-x:hidden}
   var T={
     en:{home:'Home',sub:'Go MannaFish',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',pickl:'Choose languages…',pickls:'Choose…',pickh:'Tap the languages to play with:',none:'None (one language only)',nones:'None (one language)',
       say:'Say words when flipped',moves:'Moves',pairs:'pairs',winsub:'Tap any card to hear its verse.',
-      again:'Play again',look:'See the cards',how:'How to play',howok:'Let’s play',
+      again:'Play again',look:'See the cards',how:'How to play',mFb:'Tell us what you think',howok:'Let’s play',
       gfh:'Go fish!',hidden:'Hidden fish {i}',gfmult:'Catch multiplied!',gfnob:'No bonus',gfnob2:'Your catch stays ×{m}',gfnob3:'{p}’s catch stays ×{m}',gfmults:'Now ×{m} · +{b} points',matches:'Matches',caught:'Caught',gfsub:'Catch <b>{w}</b>. Every fish is hidden until you catch it: pick one!',gfskip:'Skip',gfok:'{p} caught {w}! Catch ×{m}',gfokme:'You caught {w}! Catch ×{m}',gfno:'That was {w}. {n} left',gfaway:'It got away. Catch stays ×{m}',score:'Score',catch:'Catch',fish:'fish',
       won2:'All 12 found in {n} moves · Score {s} · {f} fish caught',best:'Your best: {b}',wins:'{p} wins!',tie:'A tie!',
       fishing:'{p} is fishing…',turn:'{p}’s turn',yourturn:'Your turn!',notyours:'It’s {p}’s turn',waithost:'Waiting for {p} to start…',
@@ -308,7 +308,7 @@ html,body{overflow-x:hidden}
       down:'Card {i}, face down',matched:'matched',match:'Match',verse:'Hear the verse',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
     es:{home:'Inicio',sub:'Go MannaFish',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',pickl:'Elegir idiomas…',pickls:'Elegir…',pickh:'Toca los idiomas para jugar:',none:'Ninguno (un solo idioma)',nones:'Ninguno (un idioma)',
       say:'Decirlas al voltear',moves:'Jugadas',pairs:'pares',winsub:'Toca cualquier carta para oír su versículo.',
-      again:'Jugar otra vez',look:'Ver las cartas',how:'Cómo se juega',howok:'¡A jugar!',
+      again:'Jugar otra vez',look:'Ver las cartas',how:'Cómo se juega',mFb:'Cuéntanos qué piensas',howok:'¡A jugar!',
       gfh:'¡A pescar!',hidden:'Pez escondido {i}',gfmult:'¡Pesca multiplicada!',gfnob:'Sin bono',gfnob2:'Tu pesca sigue ×{m}',gfnob3:'La pesca de {p} sigue ×{m}',gfmults:'Ahora ×{m} · +{b} puntos',matches:'Parejas',caught:'Atrapados',gfsub:'Atrapa <b>{w}</b>. Cada pez está escondido hasta que lo atrapes: ¡elige uno!',gfskip:'Saltar',gfok:'¡{p} atrapó {w}! Pesca ×{m}',gfokme:'¡Atrapaste {w}! Pesca ×{m}',gfno:'Era {w}. Quedan {n}',gfaway:'Se escapó. La pesca sigue ×{m}',score:'Puntos',catch:'Pesca',fish:'peces',
       won2:'Las 12 en {n} jugadas · {s} puntos · {f} peces',best:'Tu mejor: {b}',wins:'¡Gana {p}!',tie:'¡Empate!',
       fishing:'{p} está pescando…',turn:'Turno de {p}',yourturn:'¡Tu turno!',notyours:'Es el turno de {p}',waithost:'Esperando a que {p} empiece…',

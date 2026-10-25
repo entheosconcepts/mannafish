@@ -749,7 +749,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
       +[['hl','&#128397;&#xFE0E;','Highlights'],['notes','&#128221;&#xFE0E;','Notes'],['saved','&#128278;&#xFE0E;','Saved'],['links','&#128279;&#xFE0E;','Links'],['hist','&#128337;&#xFE0E;','History']].map(function(x){ return '<button type="button" data-st="'+x[0]+'"><span class="ic">'+x[1]+'</span>'+x[2]+'<small>'+n[x[0]]+'</small></button>'; }).join('')
       +'<a href="/you/" target="_top"><span class="ic">&#128100;&#xFE0E;</span>You<small>Everything</small></a></div>'
       +'<hr><div class="mi" style="cursor:default"><span class="ic">Aa</span><span class="tx">Text size</span><span class="mts"><button type="button" data-fs="-1" aria-label="Smaller">A&minus;</button><button type="button" data-fs="1" aria-label="Bigger">A+</button></span></div>'
-      +'<a class="mi" href="/you/#st" target="_top"><span class="ic">&#9881;&#xFE0E;</span><span class="tx">Settings<small>Font, spacing, verse numbers, voice and more</small></span></a>'; }
+      +'<a class="mi" href="/you/#st" target="_top"><span class="ic">&#9881;&#xFE0E;</span><span class="tx">Settings<small>Font, spacing, verse numbers, voice and more</small></span></a>'
+      +(window.MFfeedback?'<button type="button" class="mi" data-m="fb"><span class="ic">&#128172;&#xFE0E;</span><span class="tx">Tell us what you think<small>What you like, what confused you</small></span></button>':''); }
   $('dots').addEventListener('click',function(e){ e.stopPropagation(); if(menuOpen()){ closeMenu(); return; } closeAct(); closeWc(); menuUI(); $('menu').hidden=false; $('menu').scrollTop=0; $('dots').setAttribute('aria-expanded','true'); });
   document.addEventListener('click',function(e){ if(menuOpen()&&!e.target.closest('#menu,#dots')) closeMenu(); });
   $('menu').addEventListener('change',function(e){ if(e.target.id==='mPar'){ putSet('par',e.target.value); go(AT.b,AT.c,0,true); menuUI(); } });
@@ -761,7 +762,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     else if(k==='find'){ closeMenu(); openPick(); setTimeout(function(){ var p=$('pFind'); if(p) p.focus(); },60); }
     else if(k==='study'){ setStudy(!studyOn()); menuUI(); }
     else if(k==='par'){ putSet('par',parVer()?undefined:(ver().k==='kjv'?'web':'kjv')); go(AT.b,AT.c,0,true); menuUI(); }
-    else if(k==='pen'){ closeMenu(); setPen(!PEN); } });
+    else if(k==='pen'){ closeMenu(); setPen(!PEN); }
+    else if(k==='fb'){ closeMenu(); MFfeedback.open(); } });
 
   // My stuff: highlights, notes, saved, links and history, in one place, each a tap away from its verse
   var STAB='hl', SHC='';

@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Spectral:ital,wght@0,500;1,400&family=Archivo:wght@400;600;700;800&display=swap">
 <script src="/fish-lang/account.js" defer></script>
 <script src="/fish-lang/prhl.js" defer></script>
+<script src="/fish-lang/feedback.js" defer></script>
 <script src="/fish-lang/spell/spell.js" defer onload="MFspell.watch('#cT,#cB,#thanksIn,#heardIn,#updIn')"></script>
 <!-- Ken, 22 Oct: "I would like to mimic this 'time with God' part of YouVersion ... the prayers need to change every day ... let's top it off,
      help create something better. I like how it incorporated my prayers, but maybe give an option for the user to listen here as well, and
@@ -170,6 +171,7 @@ textarea.field{min-height:92px;resize:vertical}
   <div class="row" style="margin:6px 4px"><span class="small">Volume</span><input type="range" id="vol" min="0" max="100" value="45" style="flex:1"></div>
   <div class="sep"></div>
   <button type="button" class="mi" data-m="restart"><span class="i">&#8634;</span>Start again from the top</button>
+  <button type="button" class="mi" data-m="fb"><span class="i">&#128172;&#xFE0E;</span>Tell us what you think</button>
 </div></div>
 
 <!-- add or record a prayer -->
@@ -362,7 +364,7 @@ textarea.field{min-height:92px;resize:vertical}
   [].forEach.call(document.querySelectorAll('.sheet'),function(s){ s.addEventListener('click',function(e){ if(e.target===s||e.target.closest('[data-close]')) closeSheets(); }); });
   $('moreBtn').addEventListener('click',function(){ unlock(); open('menu'); });
   $('menu').addEventListener('click',function(e){ var b=e.target.closest('[data-m]'); if(!b) return; var m=b.dataset.m;
-    if(m==='add') compose(); if(m==='remind') open('remind'); if(m==='restart'){ closeSheets(); goTo(0); }
+    if(m==='add') compose(); if(m==='remind') open('remind'); if(m==='restart'){ closeSheets(); goTo(0); } if(m==='fb'){ closeSheets(); if(window.MFfeedback) MFfeedback.open(); }
     if(m==='answered'){ try{ sessionStorage.setItem('mf-you-tab','pr'); }catch(er){} } });
   $('xBtn').addEventListener('click',function(){ sayStop(); snd.start('off'); if(document.referrer&&new URL(document.referrer).origin===location.origin) history.back(); else location.href='/'; });
 

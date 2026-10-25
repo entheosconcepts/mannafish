@@ -1751,6 +1751,7 @@ select option{background:#0b1620;color:#eaf0f0}
     <button type="button" class="hbtn smi" id="smSet" role="menuitem"><span class="hbi" aria-hidden="true">&#9881;&#xFE0E;</span><span class="hbt"><b id="smSetLab">Settings</b><small id="smSetSub">Plan, language, light or dark, listening</small></span></button>
     <button type="button" class="hbtn smi" id="smAcct" role="menuitem"><span class="hbi" aria-hidden="true" id="smAcctIco">&#128273;&#xFE0E;</span><span class="hbt"><b id="smAcctLab">Sign in</b><small id="smAcctSub">Keep your notes on every device</small></span></button>
     <button type="button" class="hbtn smi" id="smNotes" role="menuitem" hidden><span class="hbi" aria-hidden="true">&#9998;&#xFE0E;</span><span class="hbt"><b id="smNotesLab">My notes</b><small id="smNotesSub">Notes and highlights</small></span></button>
+    <button type="button" class="hbtn smi" id="smFb" role="menuitem"><span class="hbi" aria-hidden="true">&#128172;&#xFE0E;</span><span class="hbt"><b id="smFbLab">Tell us what you think</b><small id="smFbSub">What you like, what confused you</small></span></button>
     <button type="button" class="hbtn smi" id="smMode" role="menuitem" hidden><span class="hbi" aria-hidden="true" id="smModeIco">&#9790;&#xFE0E;</span><span class="hbt"><b id="smModeLab">Dark mode</b></span></button>
   </div>
 </div></header>
@@ -3883,6 +3884,7 @@ window.MF=(function(){
   // /?notes=1 opens My notes for today's fish (from You -> Notes: Write a note)
   if(/[?&]notes=1\b/.test(location.search)) setTimeout(function(){ smPanel('notesBtn','notesBox'); },700);
   $('smSet').addEventListener('click',function(){ location.href='/you/#st'; });
+  $('smFb').addEventListener('click',function(){ $('siteMenu').hidden=true; if(window.MFfeedback) MFfeedback.open(); });
   $('smMatch').addEventListener('click',function(){ location.href='/go/'; });
   $('smPlan').addEventListener('click',function(){ location.href='/plan/'; });
   $('smBible').addEventListener('click',function(){ location.href='/bible/'; });
