@@ -45,6 +45,9 @@
       +'.mfbk .keep{display:block;margin:8px auto 0;border:0;background:none;color:inherit;opacity:.75;font:600 .9rem Archivo,sans-serif;text-decoration:underline;cursor:pointer}'
       +'.mfbk .tot{display:flex;justify-content:space-between;gap:10px;font-weight:700;margin:10px 2px 0}.mfbk .tot small{font-weight:400;opacity:.7}'
       +'.mfbk .msg{margin:8px 0 0;font-size:.9rem}.mfbk .ok{text-align:center;padding:10px 4px}.mfbk .ok .big{font-size:3rem}.mfbk .ok h3{margin:4px 0}'
+      +'.mfbk .th{cursor:zoom-in}.mfbkz{position:fixed;inset:0;z-index:130;background:rgba(0,0,0,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px;color:#eaf0f0;font:16px/1.4 Archivo,system-ui,sans-serif;text-align:center;cursor:zoom-out}'
+      +'.mfbkz .zf{position:relative;width:min(94vw,760px);aspect-ratio:2/1;background:#000;border-radius:14px;overflow:hidden}.mfbkz .zf svg{position:absolute;inset:0;width:100%;height:100%}'
+      +'.mfbkz p{margin:6px 0 0}.mfbkz b{font:400 1.6rem MFHobo,cursive}.mfbkz small{opacity:.6}.mfbkz .zx{position:absolute;top:max(14px,env(safe-area-inset-top));right:14px;border:1px solid rgba(255,255,255,.4);background:none;color:#fff;border-radius:50%;width:42px;height:42px;font-size:1.1rem;cursor:pointer}'
       +'.mfbk .empty{opacity:.75;text-align:center;padding:16px 4px}.mfbk a{color:#6f9bff}';
     s.textContent+=[['MFHobo','hobo'],['ZCOOL KuaiLe','zh'],['Baloo 2','hi'],['Ubuntu','el'],['Jua','ko'],['Fredoka','he'],['Cairo','ar']].map(function(f){ return "@font-face{font-family:'"+f[0]+"';src:url(/fish-lang/"+f[1]+".woff2) format('woff2');font-weight:100 900;font-display:swap}"; }).join('');   // the letters on the fish
     document.head.appendChild(s); }
@@ -76,7 +79,7 @@
   // ── the sheet ──
   var BOX=null, FOR='me', DONE=null;
   function open(){ css(); if(!BOX){ BOX=document.createElement('div'); BOX.className='mfbk'; BOX.setAttribute('role','dialog'); BOX.setAttribute('aria-modal','true'); BOX.setAttribute('aria-label','Your basket'); BOX.innerHTML='<div class="in"></div>'; document.body.appendChild(BOX);
-      BOX.addEventListener('click',click); BOX.addEventListener('change',change); BOX.addEventListener('submit',function(e){ e.preventDefault(); send(); }); document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!BOX.hidden) close(); }); }
+      BOX.addEventListener('click',click); BOX.addEventListener('change',change); BOX.addEventListener('submit',function(e){ e.preventDefault(); send(); }); document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&ZM){ unzoom(); return; } if(e.key==='Escape'&&!BOX.hidden) close(); if(e.key==='Enter'&&e.target.dataset&&e.target.dataset.a==='zoom') e.target.click(); }); }
     DONE=null; draw(); BOX.hidden=false; document.documentElement.style.overflow='hidden'; }
   function close(){ if(BOX) BOX.hidden=true; document.documentElement.style.overflow=''; }
   function val(id){ var e=BOX.querySelector('#'+id); return e?e.value.trim():''; }
@@ -85,7 +88,7 @@
         +'<p><a href="/you/#or">See it under You &rarr; Orders</a></p><button type="button" class="go" data-a="close">Keep fishing</button></div>'; BOX.firstChild.innerHTML=h; return; }
     h='<div class="hd"><h3>Your basket</h3><button type="button" class="x" data-a="close" aria-label="Close">&#10005;</button></div><p class="sub">Five loaves, two fish, and twelve baskets left over (John 6:9–13). MannaFish is always free.</p>';
     if(!a.length){ BOX.firstChild.innerHTML=h+'<p class="empty">Your basket is empty. Tap 🧺 on any fish to put it in.</p><button type="button" class="keep" data-a="close">Keep looking</button>'; return; }
-    h+=a.map(function(x,i){ return '<div class="row" data-i="'+i+'"><span class="th"></span><span class="nm"><b>'+esc(x.word)+'</b><small>'+esc(x.ref||'')+'</small></span>'
+    h+=a.map(function(x,i){ return '<div class="row" data-i="'+i+'"><span class="th" data-a="zoom" role="button" tabindex="0" aria-label="See '+esc(x.word)+' bigger"></span><span class="nm"><b>'+esc(x.word)+'</b><small>'+esc(x.ref||'')+'</small></span>'
       +'<span class="ct">'+(x.main?'<select data-f="l" aria-label="Language">'+LANGS.map(function(L){ return '<option value="'+L[0]+'"'+(L[0]===x.l?' selected':'')+'>'+L[1]+'</option>'; }).join('')+'</select>':'')
       +'<span class="qt"><button type="button" data-a="dn" aria-label="One less">&minus;</button><span>'+x.q+'</span><button type="button" data-a="up" aria-label="One more">+</button></span><button type="button" class="rm" data-a="rm" aria-label="Take out">&#10005;</button></span></div>'; }).join('');
     h+='<div class="tot"><span>'+n+' MannaFish decal'+(n===1?'':'s')+'</span><small>free, postage included</small></div>'
@@ -102,11 +105,19 @@
       +'<button type="submit" class="go" id="bkGo">'+(FOR==='church'?'Ask for these baskets · free':'Request these MannaFish · free')+'</button><p class="msg" id="bkMsg" aria-live="polite"></p></form>'
       +'<button type="button" class="keep" data-a="close">Keep looking</button>';
     BOX.firstChild.innerHTML=h; [].forEach.call(BOX.querySelectorAll('.row'),function(r){ thumb(r.querySelector('.th'),a[+r.dataset.i]); }); }
+  // tap a fish to see it big (Ken, 25 Oct: "click on the fish and it blows it up so the user can see it better"); a tap anywhere closes it
+  var ZM=null;
+  function zoom(x){ unzoom(); var lang=(LANGS.filter(function(l){ return l[0]===(x.l||'en'); })[0]||[])[1]||'';
+    ZM=document.createElement('div'); ZM.className='mfbkz'; ZM.setAttribute('role','dialog'); ZM.setAttribute('aria-label',x.word);
+    ZM.innerHTML='<button type="button" class="zx" aria-label="Close">&#10005;</button><div class="zf"></div><p><b>'+esc(x.word)+'</b>'+(x.ref?' · '+esc(x.ref):'')+(String(x.id).indexOf('M:')===0&&lang?' · '+esc(lang):'')+'</p><small>Tap anywhere to close</small>';
+    document.body.appendChild(ZM); var f=ZM.querySelector('.zf'); thumb(f,x); ZM.addEventListener('click',unzoom); }
+  function unzoom(){ if(ZM){ ZM.remove(); ZM=null; } }
   function click(e){ var t=e.target, b=t.closest('[data-a],[data-for]');
     if(t===BOX){ close(); return; } if(!b) return;
     if(b.dataset.for){ keepForm(); FOR=b.dataset.for; draw(); return; }
     var a=items(), r=b.closest('.row'), i=r?+r.dataset.i:-1, act=b.dataset.a;
     if(act==='close'){ close(); return; }
+    if(act==='zoom'&&a[i]){ zoom(a[i]); return; }
     if(act==='up'&&a[i]){ keepForm(); a[i].q=Math.min(MAXQ,a[i].q+1); save(a); draw(); return; }
     if(act==='dn'&&a[i]){ keepForm(); a[i].q=Math.max(1,a[i].q-1); save(a); draw(); return; }
     if(act==='rm'&&a[i]){ keepForm(); a.splice(i,1); save(a); draw(); return; } }
