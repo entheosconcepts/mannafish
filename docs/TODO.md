@@ -222,13 +222,13 @@ Also check the small alternate-language fish and its "English ⇄" label the sam
   challenge, a closing prayer -- in all 9 languages. The non-English scripts want a fluent reader's check.
 - Today's devotional is now full screen, one step at a time (like the Bible App's prayer time): welcome, Pray, Hear,
   my prayer list (one prayer per screen; Mark as answered / Archive; ••• Add prayer, Prayer list, Answered,
-  Daily reminder, Speed), Do (the 2 Fish challenge: "Pray for them" adds that person to the list; Share today's fish), Amen.
+  Daily reminder, Speed), Do (the 2 Fish Challenge: "Pray for them" adds that person to the list; Share today's fish), Amen.
   Prayers are private: localStorage `mf-prayers`, and in the account as `notes` rows with word_key PRAYER:open|answered|archived
   (no new table). Prayers are never sent to the voice service. Later: background music (needs licensed audio).
 - Devotional, longer (Ken, 11 Oct): after Hear it goes "into the fish" (the fish turns), the word in Greek and Hebrew,
   "Here are N Scripture references for this One Word", then each reference (reference, verse, then the verses around it
   "In context", from bible-api for English and fish-lang/bible for the others), the prayer list, "Give it in their language"
-  (the second fish, any language; See it in … opens two fish), the 2 Fish challenge, Amen. Starts with a choice:
+  (the second fish, any language; See it in … opens two fish), the 2 Fish Challenge, Amen. Starts with a choice:
   Guide me (audio, moves on by itself) or my own pace (written 👉 prompt on each step).
 - Guided tour ("How it works · Take a tour" under the devotional button): 12 steps, a ring around each part of the page and
   a card that says it (or reads it aloud and moves on). Ends with "Start today's devotional". All 9 languages, want a fluent check.
@@ -239,7 +239,7 @@ Also check the small alternate-language fish and its "English ⇄" label the sam
 - "🐟 Just one fish" (left) and "Two fish 🐟🐟" (right, the tail side) under the fish; the buttons above the fish are gone.
 - Both fish can be the same language (a twin fish "For someone else").
 - The vision, at the top of the "Choose who it reaches" section: Why give? / A free gift is never free / Receive first,
-  then give / The 2 Fish challenge / Who pays the price / Why gather? (English and Spanish). Sponsor examples are kept
+  then give / The 2 Fish Challenge / Who pays the price / Why gather? (English and Spanish). Sponsor examples are kept
   generic until real sponsors agree to be named.
 - Notes dictation keeps going until Pause (iPhone stops listening by itself) and keeps the words heard so far.
 - Next to discuss: a page for each sponsor (the QR on every gift: who gave it, their invitation); the shop page prices
