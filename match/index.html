@@ -65,6 +65,8 @@ button,select,input{font:inherit;color:inherit}
 
 /* ── language pickers ── */
 .opts{display:flex;justify-content:center;gap:8px;padding-top:4px}
+.pickl{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;padding:8px 0 2px}.pickl span{flex-basis:100%;text-align:center;font-size:.72rem;color:var(--dim)}
+.pickl button{border:1px solid var(--line);background:var(--bg2);color:var(--text);border-radius:999px;padding:6px 11px;font:700 .8rem inherit;font-family:inherit;cursor:pointer}.pickl button[aria-pressed=true]{background:#2a5fb0;border-color:#2a5fb0;color:#fff}
 .pick{flex:1 1 0;min-width:0;max-width:260px;display:flex;flex-direction:column;align-items:center;gap:2px}
 .pick span{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
 .pick select{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:6px 10px;
@@ -192,6 +194,7 @@ html,body{overflow-x:hidden}
   <label class="pick"><span data-t="first">First language</span><select id="l1"></select></label>
   <label class="pick"><span data-t="second">Second language</span><select id="l2"></select></label>
 </div>
+<div class="wrapw pickl" id="pickL" hidden></div>
 <div class="wrapw bar">
   <span id="stat" aria-live="off"></span>
   <label class="say"><input type="checkbox" id="sayChk" checked> <span>🔊 <span data-t="say">Say words when flipped</span></span></label>
@@ -281,7 +284,7 @@ html,body{overflow-x:hidden}
   var VOICES=['alloy','ash','ballad','coral','echo','fable','nova','onyx','sage','shimmer','verse'];
   var PAIRS=12, TRIES=3, MAXP=4, PC=['#3370FF','#f5d76e','#7fd18b','#e8735c'];
   var T={
-    en:{home:'Home',sub:'Go MannaFish',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',
+    en:{home:'Home',sub:'Go MannaFish',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',pickl:'Choose languages…',pickls:'Choose…',pickh:'Tap the languages to play with:',none:'None (one language only)',nones:'None (one language)',
       say:'Say words when flipped',moves:'Moves',pairs:'pairs',winsub:'Tap any card to hear its verse.',
       again:'Play again',look:'See the cards',how:'How to play',howok:'Let’s play',
       gfh:'Go fish!',hidden:'Hidden fish {i}',gfmult:'Catch multiplied!',gfnob:'No bonus',gfnob2:'Your catch stays ×{m}',gfnob3:'{p}’s catch stays ×{m}',gfmults:'Now ×{m} · +{b} points',matches:'Matches',caught:'Caught',gfsub:'Catch <b>{w}</b>. Every fish is hidden until you catch it: pick one!',gfskip:'Skip',gfok:'{p} caught {w}! Catch ×{m}',gfokme:'You caught {w}! Catch ×{m}',gfno:'That was {w}. {n} left',gfaway:'It got away. Catch stays ×{m}',score:'Score',catch:'Catch',fish:'fish',
@@ -295,7 +298,7 @@ html,body{overflow-x:hidden}
       netNo:'Online play isn’t available right now. Try again later.',connecting:'Connecting…',hostLeft:'{p} left, so the game ended.',left:'{p} left the game.',leave:'Leave game',you:'you',
       safeNote:'No typing to other players: only set messages like “Good catch!”. Your email is never shown.',
       msgs:['👋 Hello!','🎣 Good catch!','👏 Well done!','🙏 God bless','😄 Ha!','🏁 Good game!'],
-      h1:'Pick a first and a second language at the top (or Mix).',h2:'Tap two fish to turn them over.',
+      h1:'Pick a first and a second language at the top. Second language None plays in one language only; Choose languages lets you pick several; Mix uses any.',h2:'Tap two fish to turn them over.',
       h3:'The same word is a match, even in two different languages: REST and DESCANSA are a pair. A match stays face up.',
       h4:'Not a match? They turn back over. Remember where each word was.',
       h5:'Find all 12 pairs. With “Say words when flipped” checked, you hear each fish’s word once as it turns over. Tap a turned fish again to hear its verse, or tap its tail to see the same word in the other language.',
@@ -303,7 +306,7 @@ html,body{overflow-x:hidden}
       h6:'Every pair lets you go fish for the same word. The fish are hidden: tap one to reel it in and see its word. You have 3 tries. Each catch raises your catch multiplier (×2, ×3 …), and every pair scores 10 × your multiplier.',
       h7:'More players? ⋯ → Players on this device (take turns), or Play online with a friend. A match lets you go again.',
       down:'Card {i}, face down',matched:'matched',match:'Match',verse:'Hear the verse',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
-    es:{home:'Inicio',sub:'Go MannaFish',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',
+    es:{home:'Inicio',sub:'Go MannaFish',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',pickl:'Elegir idiomas…',pickls:'Elegir…',pickh:'Toca los idiomas para jugar:',none:'Ninguno (un solo idioma)',nones:'Ninguno (un idioma)',
       say:'Decirlas al voltear',moves:'Jugadas',pairs:'pares',winsub:'Toca cualquier carta para oír su versículo.',
       again:'Jugar otra vez',look:'Ver las cartas',how:'Cómo se juega',howok:'¡A jugar!',
       gfh:'¡A pescar!',hidden:'Pez escondido {i}',gfmult:'¡Pesca multiplicada!',gfnob:'Sin bono',gfnob2:'Tu pesca sigue ×{m}',gfnob3:'La pesca de {p} sigue ×{m}',gfmults:'Ahora ×{m} · +{b} puntos',matches:'Parejas',caught:'Atrapados',gfsub:'Atrapa <b>{w}</b>. Cada pez está escondido hasta que lo atrapes: ¡elige uno!',gfskip:'Saltar',gfok:'¡{p} atrapó {w}! Pesca ×{m}',gfokme:'¡Atrapaste {w}! Pesca ×{m}',gfno:'Era {w}. Quedan {n}',gfaway:'Se escapó. La pesca sigue ×{m}',score:'Puntos',catch:'Pesca',fish:'peces',
@@ -317,7 +320,7 @@ html,body{overflow-x:hidden}
       netNo:'El juego en línea no está disponible ahora. Inténtalo más tarde.',connecting:'Conectando…',hostLeft:'{p} se fue, así que el juego terminó.',left:'{p} dejó el juego.',leave:'Salir del juego',you:'tú',
       safeNote:'No se escribe a otros jugadores: solo mensajes fijos como “¡Buena pesca!”. Tu correo nunca se muestra.',
       msgs:['👋 ¡Hola!','🎣 ¡Buena pesca!','👏 ¡Bien hecho!','🙏 Dios te bendiga','😄 ¡Ja!','🏁 ¡Buen juego!'],
-      h1:'Elige un primer y un segundo idioma arriba (o Mezcla).',h2:'Toca dos peces para darles la vuelta.',
+      h1:'Elige un primer y un segundo idioma arriba. Con Ninguno juegas en un solo idioma; Elegir idiomas te deja escoger varios; Mezcla usa cualquiera.',h2:'Toca dos peces para darles la vuelta.',
       h3:'La misma palabra es pareja, aunque esté en dos idiomas: REST y DESCANSA son pareja. Una pareja queda boca arriba.',
       h4:'¿No son pareja? Se vuelven a voltear. Recuerda dónde estaba cada palabra.',
       h5:'Encuentra las 12 parejas. Con «Decirlas al voltear» marcado, oyes la palabra de cada pez una vez al voltearlo. Toca otra vez un pez volteado para oír su versículo, o toca su cola para ver la misma palabra en el otro idioma.',
@@ -345,13 +348,24 @@ html,body{overflow-x:hidden}
   // ── languages ──
   var site=store('mf-lang'), s1=store('mf-match-l1'), s2=store('mf-match-l2');
   l1=LANGS.indexOf(s1)>=0?s1:(LANGS.indexOf(site)>=0?site:'en');
-  l2=(s2==='mix'||LANGS.indexOf(s2)>=0)&&s2!==l1?s2:(l1==='en'?'es':'en');
+  l2=(s2==='mix'||s2==='none'||s2==='pick'||LANGS.indexOf(s2)>=0)&&s2!==l1?s2:(l1==='en'?'es':'en');
+  // Ken, 25 Oct: "What if I just want to do one language ... Or if we want to choose multiple, we can choose multiple languages":
+  // second language None (each pair is the same fish twice, in the first language), or Choose languages (each pair's second fish
+  // in one of the languages ticked)
+  var PICK=(store('mf-match-pick')||'').split(',').filter(function(l){ return LANGS.indexOf(l)>=0; });
+  function picks(){ var p=PICK.filter(function(l){ return l!==l1; }); return p.length?p:[l1==='en'?'es':'en']; }
+  function oneLang(){ return l2==='none'; }
+  function lock0(){ return !!(NET&&!NET.host); }
   function narrow(){ return document.documentElement.clientWidth<600; }
   function fillPickers(){
     $('l1').innerHTML=LANGS.map(function(l){ return '<option value="'+l+'"'+(l===l1?' selected':'')+'>'+NAME[l]+'</option>'; }).join('');
     $('l2').innerHTML=LANGS.map(function(l){ return '<option value="'+l+'"'+(l===l2?' selected':'')+(l===l1?' disabled':'')+'>'+NAME[l]+'</option>'; }).join('')+
-      '<option value="mix" title="'+esc(t('mix'))+'"'+(l2==='mix'?' selected':'')+'>'+esc(narrow()?t('mixs'):t('mix'))+'</option>';
-    var lock=!!(NET&&!NET.host); $('l1').disabled=lock; $('l2').disabled=lock; $('newBtn').disabled=lock;
+      '<option value="mix" title="'+esc(t('mix'))+'"'+(l2==='mix'?' selected':'')+'>'+esc(narrow()?t('mixs'):t('mix'))+'</option>'+
+      '<option value="pick"'+(l2==='pick'?' selected':'')+'>'+esc(narrow()?t('pickls'):t('pickl'))+'</option>'+
+      '<option value="none"'+(l2==='none'?' selected':'')+'>'+esc(narrow()?t('nones'):t('none'))+'</option>';
+    var pk=$('pickL'); pk.hidden=l2!=='pick'; if(l2==='pick'){ var on=picks();
+      pk.innerHTML='<span>'+esc(t('pickh'))+'</span>'+LANGS.filter(function(l){ return l!==l1; }).map(function(l){ return '<button type="button" data-l="'+l+'" aria-pressed="'+(on.indexOf(l)>=0)+'"'+(lock0()?' disabled':'')+'>'+NAME[l]+'</button>'; }).join(''); }
+    var lock=lock0(); $('l1').disabled=lock; $('l2').disabled=lock; $('newBtn').disabled=lock;
   }
   function applyUI(){
     ui=l1==='es'?'es':'en'; document.documentElement.lang=ui;
@@ -360,7 +374,9 @@ html,body{overflow-x:hidden}
     fillPickers(); hud();
   }
   $('l1').addEventListener('change',function(){ l1=this.value; if(l2===l1) l2=l1==='es'?'en':'es'; store('mf-match-l1',l1); store('mf-match-l2',l2); applyUI(); deal(); });
-  $('l2').addEventListener('change',function(){ l2=this.value; store('mf-match-l2',l2); deal(); });
+  $('l2').addEventListener('change',function(){ l2=this.value; store('mf-match-l2',l2); if(l2==='pick'&&!PICK.length){ PICK=picks(); store('mf-match-pick',PICK.join(',')); } fillPickers(); deal(); });
+  $('pickL').addEventListener('click',function(e){ var b=e.target.closest('[data-l]'); if(!b) return; var l=b.dataset.l, on=picks(), i=on.indexOf(l);
+    if(i>=0){ if(on.length===1) return; on.splice(i,1); } else on.push(l); PICK=on; store('mf-match-pick',PICK.join(',')); fillPickers(); deal(); });
   $('sayChk').checked=sayOn;
   $('sayChk').addEventListener('change',function(){ sayOn=this.checked; store('mf-match-say',sayOn?'on':'off'); });
 
@@ -387,9 +403,9 @@ html,body{overflow-x:hidden}
   function deal(){
     if(!W||!BACK) return; if(NET&&!NET.host) return;
     clearTimers(); stopSpeak();
-    var keys=shuffle(Object.keys(W.en)).slice(0,PAIRS), others=LANGS.filter(function(l){ return l!==l1; }), pool=[];
+    var keys=shuffle(Object.keys(W.en)).slice(0,PAIRS), others=l2==='pick'?picks():LANGS.filter(function(l){ return l!==l1; }), pool=[];
     while(pool.length<PAIRS) pool=pool.concat(shuffle(others));
-    var list=[]; keys.forEach(function(k,i){ list.push({k:k,l:l1}); list.push({k:k,l:l2==='mix'?pool[i]:l2}); });
+    var list=[]; keys.forEach(function(k,i){ list.push({k:k,l:l1}); list.push({k:k,l:l2==='mix'||l2==='pick'?pool[i]:oneLang()?l1:l2}); });
     var deck=shuffle(list);
     G={id:rid(8),l1:l1,l2:l2,deck:deck,got:deck.map(function(){ return -1; }),open:[],moves:0,turn:0,lock:false,pond:null,over:false,
       players:players0().map(function(p){ return {id:p.id,name:p.name,score:0,mult:1,caught:0,pairs:0,gone:false}; })};
@@ -462,7 +478,7 @@ html,body{overflow-x:hidden}
       c.el=el; c.btn=el.querySelector('.card');
       c.btn.addEventListener('click',function(e){
         if(c.up){ var r=c.btn.getBoundingClientRect();
-          if(e.clientX>r.left+r.width*.72){ swap(c); return; }   // Ken, 25 Oct: the tail -- the same fish in the other language (again: back)
+          if(!oneLang()&&e.clientX>r.left+r.width*.72){ swap(c); return; }   // Ken, 25 Oct: the tail -- the same fish in the other language (again: back)
           if(sp.card===c&&c.el.classList.contains('talkv')) stopSpeak(); else say(c,false,'verse'); return; }   // the rest of the fish: its verse (again to stop)
         act({t:'flip',i:c.i}); });
       label(c); b.appendChild(el);
@@ -489,10 +505,10 @@ html,body{overflow-x:hidden}
     c.up=up; c.el.classList.toggle('up',up); if(!up) c.el.classList.remove('miss'); label(c); }
   // a turned card shows its own language; a tap on its tail turns it to the same word in the game's other language, and says it
   // (if words are said); it is back in its own language when it is turned face down
-  function partner(c){ for(var i=0;i<cards.length;i++){ var x=cards[i]; if(x!==c&&x.k===c.k) return x.l; } return c.l===l1?l2:l1; }
+  function partner(c){ for(var i=0;i<cards.length;i++){ var x=cards[i]; if(x!==c&&x.k===c.k) return x.l; } return c.l===l1&&LANGS.indexOf(l2)>=0?l2:l1; }
   function other(c){ var p=c.l===l1?partner(c):l1; return p===c.l?(c.l===l1?l2:l1):p; }
   function show(c,to){ c.shown=to; var fr=c.el.querySelector('.front'); fr.innerHTML=own(FISH[to][c.k],c.i+'s'+to); fr.setAttribute('lang',to); label(c); }
-  function swap(c){ var to=(c.shown||c.l)===c.l?other(c):c.l; if(!to||to==='mix') return;
+  function swap(c){ var to=(c.shown||c.l)===c.l?other(c):c.l; if(!to||LANGS.indexOf(to)<0||to===(c.shown||c.l)) return;
     if(!FISH[to]||!FISH[to][c.k]){ need(to).then(function(){ swap(c); },function(){}); return; }
     if(sp.card===c) stopSpeak(); var fr=c.el.querySelector('.front'); fr.classList.remove('turn'); void fr.offsetWidth; fr.classList.add('turn');
     setTimeout(function(){ show(c,to); },140); setTimeout(function(){ fr.classList.remove('turn'); },320);
@@ -737,7 +753,7 @@ html,body{overflow-x:hidden}
     if(queue&&sp.busy){ sp.next=c; return; }
     stopSpeak();
     var id=sp.id, k=c.k, list, part=both==='verse'?'verse':'word', cur2=c.shown||c.l;
-    if(both===true){ var oth=c.l===l1?partner(c):c.l; list=[l1,oth===l1?(l2==='mix'?partner(c):l2):oth]; } else list=[cur2];
+    if(both===true){ var oth=c.l===l1?partner(c):c.l; list=[l1,oth===l1?(LANGS.indexOf(l2)>=0?l2:partner(c)):oth]; } else list=[cur2];
     sp.busy=true; sp.card=c; c.el.classList.add(part==='verse'?'talkv':'talk');
     function done(){ if(id!==sp.id) return; list.shift(); if(list.length){ setTimeout(function(){ if(id===sp.id) one(); },250); return; }
       sp.busy=false; c.el.classList.remove('talk','talkv'); sp.card=null;
