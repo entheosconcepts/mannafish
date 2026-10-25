@@ -4100,7 +4100,7 @@ window.MF=(function(){
   // Ken, 11 Oct: "a delay" before a fish is heard -- the Word and Verse of each fish on screen are fetched in the background
   var FISHC={};
   function fishClip(l,k,part){ var v=aiVoice(), key=l+'|'+k+'|'+part+'|'+v; if(FISHC[key]) return FISHC[key];
-    var pr=fetch('/api/tts?w='+k+'&lang='+l+'&part='+part+'&v='+v).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){ return URL.createObjectURL(b); });
+    var pr=fetch('/api/tts?w='+k+'&lang='+l+'&part='+part+'&v='+v+(part==='word'?'&r=2':'')).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){ return URL.createObjectURL(b); });
     pr.catch(function(){ delete FISHC[key]; }); return FISHC[key]=pr; }
   function fishPrefetch(){ clearTimeout(fishPrefetch.t); fishPrefetch.t=setTimeout(function(){ if(!aiVoice()||!cur) return;
       var ls=cmpShown()?cmpLangs():[MF.lang]; ls.forEach(function(l){ if(!(SAY[l]||{})[cur]) return; fishClip(l,cur,'verse').catch(function(){}); fishClip(l,cur,'word').catch(function(){}); });

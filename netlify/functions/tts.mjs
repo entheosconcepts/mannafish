@@ -11,6 +11,10 @@ const VOICE = process.env.MF_TTS_VOICE || 'sage';
 // the listener may pick another natural voice (Ken, 9 Oct)
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];
 const HOW = { en: 'Read calmly and warmly, like a devotional.', es: 'Lee con calma y calidez, como un devocional.' };
+const NAME = { en: 'English', es: 'Spanish', tl: 'Tagalog', zh: 'Chinese', hi: 'Hindi', el: 'Greek', de: 'German', ko: 'Korean', he: 'Hebrew', ar: 'Arabic' };
+// one word on its own: the voice could say another word (Ken, 25 Oct: Spanish "Cree" was heard as "Pray"), so it is told to say just
+// that word, as written, in its own language
+const ONE = (lang, w) => `Say only this one ${NAME[lang] || ''} word, exactly as written, pronounced in ${NAME[lang] || 'its own language'}: "${w}". Do not translate it and do not add any other word. Say it calmly and warmly.`;
 export default async (req) => {
   const u = new URL(req.url), lang = String(u.searchParams.get('lang') || 'en'), key = String(u.searchParams.get('w') || '').toUpperCase();
   const part = u.searchParams.get('part') === 'word' ? 'word' : 'verse';
@@ -22,14 +26,15 @@ export default async (req) => {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) return new Response('No voice key yet', { status: 501 });
   // the clip's name carries a short fingerprint of its words, so a corrected line is recorded afresh
-  const fp = createHash('sha256').update(text).digest('hex').slice(0, 8);
+  const how = pid ? 'Speak warmly, clearly and a little slowly, like a kind friend talking face to face, in the language of the text.' : part === 'word' ? ONE(lang, text) : HOW[lang] || 'Read calmly and warmly, like a devotional, in the language of the text.';
+  const fp = createHash('sha256').update(text + (part === 'word' && !pid ? '|one' : '')).digest('hex').slice(0, 8);
   const store = getStore('mannafish-tts'), id = pid ? `${lang}/tongue-${pid}-${voice}-${fp}.mp3` : `${lang}/${key}-${part}-${voice}-${fp}.mp3`;
   let audio = await store.get(id, { type: 'arrayBuffer' });
   if (!audio) {
     const r = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST',
       headers: { 'authorization': 'Bearer ' + apiKey, 'content-type': 'application/json' },
-      body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice, input: text, response_format: 'mp3',
-        instructions: pid ? 'Speak warmly, clearly and a little slowly, like a kind friend talking face to face, in the language of the text.' : HOW[lang] || 'Read calmly and warmly, like a devotional, in the language of the text.' }) });
+      body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice, input: part === 'word' && !pid ? text + '.' : text, response_format: 'mp3',
+        instructions: how }) });
     if (!r.ok) return new Response('Voice service error', { status: 502 });
     audio = await r.arrayBuffer();
     await store.set(id, audio);
