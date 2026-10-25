@@ -94,18 +94,16 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
    lips at the fish's mouth that appear the same way, and move while the verse is read */
 .front .spk{left:42%;width:max(22px,19%);margin:calc(max(22px,19%) / -2) 0 0 calc(max(22px,19%) / -2);background:rgba(0,0,0,.5);color:#fff}
 .front .vrs{left:7.5%;width:max(22px,15%);margin:calc(max(22px,15%) / -2) 0 0 calc(max(22px,15%) / -2);background:#f6f5f2}
-.front .vrs svg{width:84%!important;height:84%!important}
 .front .spk svg,.front .vrs svg{position:static;width:62%;height:62%}
 .cell.up .card:hover .spk,.cell.up .card:hover .vrs{opacity:.3}
 .cell.up .front .spk:hover,.cell.up .front .vrs:hover{opacity:.95}
 @media (hover:none){.cell.up .front .spk,.cell.up .front .vrs{opacity:.4}}
 .cell.talk .front .spk{opacity:.9!important}
 .cell.talkv .front .vrs{opacity:1!important}
-/* Ken, 25 Oct: "the lips being more sideways" -- lips seen from the side, facing the way the fish faces, opening from the corner of the mouth */
-.lipU,.lipL,.lipM{transform-box:view-box;transform-origin:21px 12px}
-.cell.talkv .lipU{animation:lipU .22s ease-in-out infinite alternate}@keyframes lipU{from{transform:rotate(1deg)}to{transform:rotate(10deg)}}
-.cell.talkv .lipL{animation:lipL .22s ease-in-out infinite alternate}@keyframes lipL{from{transform:rotate(-1deg)}to{transform:rotate(-12deg)}}
-.cell.talkv .lipM{animation:lipM .22s ease-in-out infinite alternate}@keyframes lipM{from{transform:scaleY(.6)}to{transform:scaleY(2.8)}}
+/* Ken, 25 Oct: his own lips, seen from the side (brand/lips-talk.webp: closed, half open, open, half open), at the fish's mouth;
+   they move while the verse is read */
+.front .vrs .lips{display:block;width:88%;height:88%;background:url(/brand/lips-talk.webp) 0 0/400% 100% no-repeat}
+.cell.talkv .lips{animation:lipsT .5s steps(4) infinite}@keyframes lipsT{from{background-position:0 0}to{background-position:133.333% 0}}
 .face img.bk{position:absolute;inset:3%;width:94%;height:94%;object-fit:contain;pointer-events:none}
 .gfin img.bk{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
 .front .ln{position:absolute;right:1%;bottom:2%;max-width:24%;letter-spacing:.06em;font-size:clamp(7px,2.1vw,12px);font-weight:700;line-height:1.1;color:#fff;background:rgba(0,0,0,.65);border-radius:4px;padding:0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}
@@ -118,7 +116,7 @@ main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(
   100%{box-shadow:inset 0 0 0 1px var(--glow),0 0 14px 1px color-mix(in srgb,var(--glow) 55%,transparent)}}
 @media (prefers-reduced-motion:reduce){
   .inner{transition:none}
-  .cell.got .front,.cell.talk .spk,.cell.talkv .lipU,.cell.talkv .lipL,.cell.talkv .lipM{animation:none}
+  .cell.got .front,.cell.talk .spk,.cell.talkv .lips{animation:none}
 }
 
 /* a match: a short "Match!" over the board */
@@ -377,7 +375,7 @@ html,body{overflow-x:hidden}
   $('sayChk').checked=sayOn;
   $('sayChk').addEventListener('change',function(){ sayOn=this.checked; store('mf-match-say',sayOn?'on':'off'); });
 
-  var BOOK='<svg viewBox="0 0 24 24" aria-hidden="true"><g transform="translate(12 12) scale(1.14) translate(-12 -12)"><path class="lipM" fill="#5b1620" d="M21 12 L6.2 11.3 Q4.6 12 6.2 12.7 Z"/><path class="lipL" fill="#d4604e" stroke="#9b3a30" stroke-width=".45" stroke-linejoin="round" d="M21 12 L6.4 12.2 C4.3 12.4 3.3 13.8 3.8 15.3 C4.5 17.4 7.7 17.7 10.5 16.5 C14.2 14.9 17.6 13.1 21 12 Z"/><path class="lipL" fill="#fff" opacity=".45" d="M6.5 14.6 C7.6 15.6 9.4 15.5 10.6 14.9 C9.4 15.1 7.8 15 6.5 14.6 Z"/><path class="lipU" fill="#e27a66" stroke="#9b3a30" stroke-width=".45" stroke-linejoin="round" d="M21 12 C17.6 11 13.2 8.3 9.6 7.1 C6.7 6.2 3.7 6.8 3.4 9.2 C3.2 10.8 4.6 11.9 6.4 12 Z"/><path class="lipU" fill="#fff" opacity=".5" d="M5.4 8.4 C6.6 7.6 8.6 7.7 10.2 8.5 C8.6 8.3 6.8 8.2 5.4 8.4 Z"/></g></svg>', V={}, BACK='', POND='', FISH={}, SPK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+  var BOOK='<span class="lips" aria-hidden="true"></span>', V={}, BACK='', POND='', FISH={}, SPK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
   // the decals: English and Spanish from /match, the other eight from the site's own fish files
   function need(l){ if(FISH[l]) return Promise.resolve(FISH[l]).then(function(x){ return x; }); var u=(l==='en'||l==='es')?'/match/fish-'+l+'.json':'/fish-lang/'+l+'.json';
     return FISH[l]=fetch(u).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(d){ FISH[l]=d; return d; },function(e){ delete FISH[l]; throw e; }); }
