@@ -14,7 +14,10 @@ const SB_PUB = 'sb_publishable_Nl4EDkBHlrnEqFVcL_oGvQ_J-X-t3Wc';
 const KEY = () => process.env.MF_ADMIN_KEY || process.env.PROOF_KEY || '';
 const TO = () => process.env.MF_BASKET_TO || process.env.MF_STORIES_TO || process.env.MF_PROOF_TO || FROM.email;
 const db = () => getStore({ name: 'mannafish-basket', consistency: 'strong' });
-const STATUS = ['requested', 'packed', 'sent', 'delivered', 'cancelled'];
+const STATUS = ['requested', 'packed', 'sent', 'delivered', 'cancelled', 'waitlist'];
+// Until decals can be sent (Ken, 25 Oct: launch the devotional first, decals "coming soon"), every request is a waitlist entry:
+// name, email and the fish wanted, no address, nothing promised. Netlify setting MF_BASKET_OPEN=1 opens real requests again.
+const OPEN = () => process.env.MF_BASKET_OPEN === '1';
 const LANG = { en: 'English', es: 'Español', tl: 'Tagalog', zh: '中文', hi: 'हिन्दी', el: 'Ελληνικά', de: 'Deutsch', ko: '한국어', he: 'עברית', ar: 'العربية' };
 const clean = (v, n) => String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, n);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -63,6 +66,28 @@ async function sbStatus(sbid, status) {
 }
 function lines(r) { return r.items.map((x) => `${x.q} × ${x.word}${x.l && x.l !== 'en' ? ' (' + (LANG[x.l] || x.l) + ')' : ''}${x.ref ? ' — ' + x.ref : ''}`); }
 function shipTo(r) { return [r.for === 'gift' ? r.to : r.for === 'church' ? r.org + ' (' + r.name + ')' : r.name, r.street, r.city + ' ' + r.zip, r.country].filter(Boolean).join('\n'); }
+// on the waitlist: MannaFish hears who wants which fish; the person is told nothing is mailed yet
+async function notifyWait(r) {
+  if (!hasMail()) return;
+  const site = process.env.URL || 'https://manna-fish.com', n = r.items.reduce((t, x) => t + x.q, 0);
+  const kind = { me: 'for themselves', gift: 'as a gift', church: 'for ' + (r.org || 'a church') + (r.baskets ? ' (' + r.baskets + ' baskets)' : '') }[r.for];
+  try {
+    await sendMail({ to: TO(), name: 'MannaFish', tag: 'basket-wait', subject: `🧺 Waitlist: ${n} MannaFish ${kind}`,
+      text: `${r.name} <${r.email}>${r.phone ? ' · ' + r.phone : ''} joined the decal waitlist: ${n} MannaFish ${kind}.\n\n${lines(r).join('\n')}\n\n${r.note ? 'Note:\n' + r.note + '\n\n' : ''}All requests: ${site}/basket/admin/`,
+      html: `<p style="font:16px Arial,sans-serif"><b>${esc(r.name)}</b> &lt;${esc(r.email)}&gt;${r.phone ? ' · ' + esc(r.phone) : ''} joined the decal waitlist: <b>${n} MannaFish</b> ${esc(kind)}.</p>`
+        + `<ul style="font:16px Arial,sans-serif">${lines(r).map((l) => '<li>' + esc(l) + '</li>').join('')}</ul>`
+        + (r.note ? `<p style="font:16px/1.5 Georgia,serif;white-space:pre-wrap"><b>Note</b><br>${esc(r.note)}</p>` : '')
+        + `<p style="font:16px Arial,sans-serif"><a href="${site}/basket/admin/">All requests</a></p>` });
+  } catch (e) { console.log('waitlist email failed', String(e).slice(0, 200)); }
+  try {
+    await sendMail({ to: r.email, name: r.name, tag: 'basket-wait-thanks', subject: 'You are on the MannaFish decal waitlist',
+      text: `Thank you, ${r.name}! You are on the waitlist for ${n} MannaFish decals:\n\n${lines(r).join('\n')}\n\nThe decals are not ready to send yet. We will email you when they are, and nothing will be mailed until then.\n\nIn the meantime, today's fish is waiting for you at ${site}\n\nMannaFish`,
+      html: `<p style="font:17px/1.5 Georgia,serif">Thank you, ${esc(r.name)}! You are on the waitlist for <b>${n} MannaFish decals</b>:</p>`
+        + `<ul style="font:16px Arial,sans-serif">${lines(r).map((l) => '<li>' + esc(l) + '</li>').join('')}</ul>`
+        + `<p style="font:17px/1.5 Georgia,serif">The decals are not ready to send yet. We will email you when they are, and nothing will be mailed until then.</p>`
+        + `<p style="font:17px/1.5 Georgia,serif">In the meantime, <a href="${site}">today's fish</a> is waiting for you.</p>` });
+  } catch (e) { console.log('waitlist thanks failed', String(e).slice(0, 200)); }
+}
 async function notify(r) {
   if (!hasMail()) return;
   const site = process.env.URL || 'https://manna-fish.com', n = r.items.reduce((t, x) => t + x.q, 0);
@@ -120,16 +145,18 @@ export default async (req, context) => {
   const r = { id: Date.now().toString(36) + rid(6), at: new Date().toISOString(), status: 'requested', for: kind,
     name: clean(b.name, 80), email: clean(b.email, 160), phone: clean(b.phone, 40), to: clean(b.to, 80), org: clean(b.org, 120), baskets: Math.max(0, Math.min(12, parseInt(b.baskets, 10) || 0)),
     street: clean(b.street, 160), city: clean(b.city, 80), zip: clean(b.zip, 40), country: clean(b.country, 60) || 'United States', note: clean(b.note, 600), lang: LANG[b.lang] ? b.lang : 'en', items };
-  if (!r.name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(r.email) || !r.street || !r.city || !r.zip) return bad('Name, email and address, please', 400);
-  if (kind === 'gift' && !r.to) return bad('Who is the gift for?', 400);
+  const wait = !OPEN() || !!b.wait; if (wait) { r.status = 'waitlist'; r.wait = true; r.street = r.city = r.zip = ''; }
+  if (!r.name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(r.email)) return bad('Name and email, please', 400);
+  if (!wait && (!r.street || !r.city || !r.zip)) return bad('Name, email and address, please', 400);
+  if (kind === 'gift' && !r.to && !wait) return bad('Who is the gift for?', 400);
   if (kind === 'church' && !r.org) return bad('Which church or ministry?', 400);
   const n = items.reduce((t, x) => t + x.q, 0);
   if (n > (kind === 'church' ? 400 : 60)) return bad('That is more than one request can hold', 400);
   if (await limited(context && context.ip, 6)) return bad('Please wait a little', 429);
   const user = await userOf(req);
-  try { r.sbid = await toSupabase(r, user); } catch (e) { console.log('basket supabase', String(e).slice(0, 200)); }
+  if (!wait) try { r.sbid = await toSupabase(r, user); } catch (e) { console.log('basket supabase', String(e).slice(0, 200)); }
   await s.setJSON('b/' + r.id, r);
-  await notify(r);
-  return Response.json({ ok: true, id: r.id });
+  await (wait ? notifyWait(r) : notify(r));
+  return Response.json({ ok: true, id: r.id, wait });
 };
 export const config = { path: ['/api/basket', '/api/basket/*'] };

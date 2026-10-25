@@ -8,6 +8,7 @@ export default async (req) => {
   if (!key) return new Response('Not set up yet', { status: 501 });
   let f; try { f = Object.fromEntries(new URLSearchParams(await req.text())); } catch (e) { return new Response('Bad request', { status: 400 }); }
   if (f['bot-field'] || f['form-name'] !== 'free-gift') return Response.json({ ok: true });
+  if (f.waitlist === 'yes') return Response.json({ ok: true, waitlist: true });   // decals coming soon: a waitlist entry, not an order
   const email = String(f.email || '').trim().slice(0, 200);
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return new Response('Email needed', { status: 400 });
   const cut = (v) => String(v || '').slice(0, 300);

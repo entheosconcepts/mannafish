@@ -7,6 +7,9 @@
 (function(){
   if(window.MFbasket) return;
   var KEY='mf-basket', SENT='mf-basket-sent', SHIP='mf-ship', MAXQ=12, MAXN=60;
+  // decals are not ready to send yet (Ken, 25 Oct: launch the devotional first): the basket is a waitlist -- the fish wanted, a name and
+  // an email, no address, nothing promised. false (with MF_BASKET_OPEN=1 in Netlify) opens real requests again.
+  var WAIT=true;
   var LANGS=[['en','English'],['es','Español'],['tl','Tagalog'],['zh','中文'],['hi','हिन्दी'],['el','Ελληνικά'],['de','Deutsch'],['ko','한국어'],['he','עברית'],['ar','العربية']];
   function get(k,d){ try{ var v=JSON.parse(localStorage.getItem(k)||'null'); return v==null?d:v; }catch(e){ return d; } }
   function put(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
@@ -84,25 +87,27 @@
   function close(){ if(BOX) BOX.hidden=true; document.documentElement.style.overflow=''; }
   function val(id){ var e=BOX.querySelector('#'+id); return e?e.value.trim():''; }
   function draw(){ var a=items(), S=get(SHIP,{}), me=window.MFacct&&MFacct.me&&MFacct.me(), n=total(a), h;
+    if(DONE&&DONE.wait){ BOX.firstChild.innerHTML='<div class="ok"><div class="big">🧺</div><h3>You are on the list!</h3><p>MannaFish decals are coming soon. We will email you when they are ready to send; nothing is mailed until then.</p><p style="opacity:.75;font-size:.9rem">In the meantime, today&rsquo;s fish is free to read, hear and share.</p>'
+        +'<button type="button" class="go" data-a="close">Keep fishing</button></div>'; return; }
     if(DONE){ h='<div class="ok"><div class="big">🧺</div><h3>Thank you!</h3><p>Your request for '+DONE.n+' MannaFish is in. '+(DONE.for==='gift'?'We will send them to '+esc(DONE.to)+', with your note.':DONE.for==='church'?'We will be in touch about your baskets.':'We will mail them to you.')+'</p><p style="opacity:.75;font-size:.9rem">Free, postage included. Someone already paid for it.</p>'
         +'<p><a href="/you/#or">See it under You &rarr; Orders</a></p><button type="button" class="go" data-a="close">Keep fishing</button></div>'; BOX.firstChild.innerHTML=h; return; }
-    h='<div class="hd"><h3>Your basket</h3><button type="button" class="x" data-a="close" aria-label="Close">&#10005;</button></div><p class="sub">Five loaves, two fish, and twelve baskets left over (John 6:9–13). MannaFish is always free.</p>';
+    h='<div class="hd"><h3>Your basket</h3><button type="button" class="x" data-a="close" aria-label="Close">&#10005;</button></div><p class="sub">Five loaves, two fish, and twelve baskets left over (John 6:9–13). MannaFish is always free.</p>'+(WAIT?'<p class="sub" style="font-style:normal;opacity:1"><b>Decals are coming soon.</b> Pick the fish you would like, add your name and email, and we will let you know when they are ready.</p>':'');
     if(!a.length){ BOX.firstChild.innerHTML=h+'<p class="empty">Your basket is empty. Tap 🧺 on any fish to put it in.</p><button type="button" class="keep" data-a="close">Keep looking</button>'; return; }
     h+=a.map(function(x,i){ return '<div class="row" data-i="'+i+'"><span class="th" data-a="zoom" role="button" tabindex="0" aria-label="See '+esc(x.word)+' bigger"></span><span class="nm"><b>'+esc(x.word)+'</b><small>'+esc(x.ref||'')+'</small></span>'
       +'<span class="ct">'+(x.main?'<select data-f="l" aria-label="Language">'+LANGS.map(function(L){ return '<option value="'+L[0]+'"'+(L[0]===x.l?' selected':'')+'>'+L[1]+'</option>'; }).join('')+'</select>':'')
       +'<span class="qt"><button type="button" data-a="dn" aria-label="One less">&minus;</button><span>'+x.q+'</span><button type="button" data-a="up" aria-label="One more">+</button></span><button type="button" class="rm" data-a="rm" aria-label="Take out">&#10005;</button></span></div>'; }).join('');
-    h+='<div class="tot"><span>'+n+' MannaFish decal'+(n===1?'':'s')+'</span><small>free, postage included</small></div>'
+    h+='<div class="tot"><span>'+n+' MannaFish decal'+(n===1?'':'s')+'</span><small>'+(WAIT?'free · coming soon':'free, postage included')+'</small></div>'
       +'<h4>Who is it for?</h4><div class="seg" role="group"><button type="button" data-for="me" aria-pressed="'+(FOR==='me')+'">For me</button><button type="button" data-for="gift" aria-pressed="'+(FOR==='gift')+'">A gift for a friend</button><button type="button" data-for="church" aria-pressed="'+(FOR==='church')+'">A church or Free Fish Embassy</button></div>'
       +'<form novalidate><div class="f">'
       +'<label>Your name<input id="bkName" autocomplete="name" value="'+esc(S.name||'')+'" required></label><label>Your email<input id="bkEmail" type="email" autocomplete="email" value="'+esc(S.email||(me&&me.email)||'')+'" required></label>'
       +(FOR==='church'?'<label class="w">Church or ministry<input id="bkOrg" value="'+esc(S.org||'')+'" required></label><label>How many baskets?<select id="bkBaskets">'+[1,2,3,4,5,6,7,8,9,10,11,12].map(function(k){ return '<option'+(k===2?' selected':'')+'>'+k+'</option>'; }).join('')+'</select></label><label>Phone (optional)<input id="bkPhone" type="tel" autocomplete="tel" value="'+esc(S.phone||'')+'"></label>':'')
-      +(FOR==='gift'?'<label class="w">Your friend&rsquo;s name<input id="bkTo" autocomplete="off" required></label>':'')
-      +'<label class="w">'+(FOR==='gift'?'Their street address':'Street address')+'<input id="bkStreet" autocomplete="'+(FOR==='gift'?'off':'street-address')+'" value="'+esc(FOR==='gift'?'':S.street||'')+'" required></label>'
+      +(FOR==='gift'&&!WAIT?'<label class="w">Your friend&rsquo;s name<input id="bkTo" autocomplete="off" required></label>':'')
+      +(WAIT?'':'<label class="w">'+(FOR==='gift'?'Their street address':'Street address')+'<input id="bkStreet" autocomplete="'+(FOR==='gift'?'off':'street-address')+'" value="'+esc(FOR==='gift'?'':S.street||'')+'" required></label>'
       +'<label>City<input id="bkCity" autocomplete="'+(FOR==='gift'?'off':'address-level2')+'" value="'+esc(FOR==='gift'?'':S.city||'')+'" required></label><label>State and ZIP<input id="bkZip" autocomplete="'+(FOR==='gift'?'off':'postal-code')+'" value="'+esc(FOR==='gift'?'':S.zip||'')+'" required></label>'
-      +'<label class="w">Country<input id="bkCountry" value="'+esc(FOR==='gift'?'United States':S.country||'United States')+'"></label>'
-      +(FOR!=='me'?'<label class="w">'+(FOR==='gift'?'A note to go in the envelope':'Tell us about it (where the baskets will be, who they are for)')+'<textarea id="bkNote" rows="3" maxlength="600"></textarea></label>':'')
+      +'<label class="w">Country<input id="bkCountry" value="'+esc(FOR==='gift'?'United States':S.country||'United States')+'"></label>')
+      +(FOR==='church'||(FOR==='gift'&&!WAIT)?'<label class="w">'+(FOR==='gift'?'A note to go in the envelope':'Tell us about it (where the baskets will be, who they are for)')+'<textarea id="bkNote" rows="3" maxlength="600"></textarea></label>':'')
       +'</div><input type="text" id="bkHp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">'
-      +'<button type="submit" class="go" id="bkGo">'+(FOR==='church'?'Ask for these baskets · free':'Request these MannaFish · free')+'</button><p class="msg" id="bkMsg" aria-live="polite"></p></form>'
+      +'<button type="submit" class="go" id="bkGo">'+(WAIT?'Join the waitlist':FOR==='church'?'Ask for these baskets · free':'Request these MannaFish · free')+'</button><p class="msg" id="bkMsg" aria-live="polite"></p></form>'
       +'<button type="button" class="keep" data-a="close">Keep looking</button>';
     BOX.firstChild.innerHTML=h; [].forEach.call(BOX.querySelectorAll('.row'),function(r){ thumb(r.querySelector('.th'),a[+r.dataset.i]); }); }
   // tap a fish to see it big (Ken, 25 Oct: "click on the fish and it blows it up so the user can see it better"); a tap anywhere closes it
@@ -127,19 +132,19 @@
     if(FOR!=='gift'){ ['street','city','zip','country'].forEach(function(k){ var v=val('bk'+{street:'Street',city:'City',zip:'Zip',country:'Country'}[k]); if(v) S[k]=v; }); }
     if(FOR==='church'){ S.org=val('bkOrg')||S.org; S.phone=val('bkPhone')||S.phone; } put(SHIP,S); }
   function send(){ var a=items(), m=BOX.querySelector('#bkMsg'), go=BOX.querySelector('#bkGo'); if(!a.length) return;
-    var need=['bkName','bkEmail','bkStreet','bkCity','bkZip'].concat(FOR==='gift'?['bkTo']:[]).concat(FOR==='church'?['bkOrg']:[]);
+    var need=['bkName','bkEmail'].concat(WAIT?[]:['bkStreet','bkCity','bkZip']).concat(FOR==='gift'&&!WAIT?['bkTo']:[]).concat(FOR==='church'?['bkOrg']:[]);
     for(var i=0;i<need.length;i++){ if(!val(need[i])){ var el=BOX.querySelector('#'+need[i]); el.focus(); m.textContent='Please fill this in.'; return; } }
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val('bkEmail'))){ BOX.querySelector('#bkEmail').focus(); m.textContent='Please check your email address.'; return; }
     if(total(a)>MAXN&&FOR!=='church'){ m.textContent='That is a lot of fish! For more than '+MAXN+', choose “A church or Free Fish Embassy”.'; return; }
-    keepForm(); var body={for:FOR,name:val('bkName'),email:val('bkEmail'),street:val('bkStreet'),city:val('bkCity'),zip:val('bkZip'),country:val('bkCountry'),note:val('bkNote'),to:val('bkTo'),org:val('bkOrg'),baskets:val('bkBaskets'),phone:val('bkPhone'),hp:val('bkHp'),
+    keepForm(); var body={for:FOR,name:val('bkName'),email:val('bkEmail'),street:val('bkStreet'),city:val('bkCity'),zip:val('bkZip'),country:val('bkCountry'),note:val('bkNote'),to:val('bkTo'),org:val('bkOrg'),baskets:val('bkBaskets'),phone:val('bkPhone'),hp:val('bkHp'),wait:WAIT,
       lang:(function(){ try{ return localStorage.getItem('mf-lang')||'en'; }catch(e){ return 'en'; } })(),
       items:a.map(function(x){ return {id:x.id,word:x.word,ref:x.ref||'',l:x.main?x.l:'en',q:x.q}; })};
     go.disabled=true; m.textContent='Sending…';
     (window.MFacct&&MFacct.token?MFacct.token():Promise.resolve('')).then(function(tok){ var H={'content-type':'application/json'}; if(tok) H.authorization='Bearer '+tok;
       return fetch('/api/basket',{method:'POST',headers:H,body:JSON.stringify(body)}); })
       .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(!r.ok||!j.ok) throw new Error(j.error||('HTTP '+r.status)); return j; }); })
-      .then(function(j){ var L=get(SENT,[]); L.unshift({id:j.id,at:Date.now(),for:FOR,to:FOR==='gift'?body.to:FOR==='church'?body.org:body.name,city:body.city,items:body.items,status:'requested'}); put(SENT,L.slice(0,100));
-        DONE={n:total(a),for:FOR,to:body.to}; save([]); draw(); if(window.MFacct) MFacct.touch('basketSent'); })
+      .then(function(j){ var L=get(SENT,[]); L.unshift({id:j.id,at:Date.now(),for:FOR,to:FOR==='gift'?body.to:FOR==='church'?body.org:body.name,city:body.city,items:body.items,status:j.wait||WAIT?'waitlist':'requested'}); put(SENT,L.slice(0,100));
+        DONE={n:total(a),for:FOR,to:body.to,wait:!!(j.wait||WAIT)}; save([]); draw(); if(window.MFacct) MFacct.touch('basketSent'); })
       .catch(function(err){ go.disabled=false; m.textContent='It could not be sent just now. Please try again in a moment.'+(err&&err.message?' ('+err.message+')':''); }); }
 
   window.MFbasket={add:add,open:open,close:close,items:items,count:function(){ return items().length; },sent:function(){ return get(SENT,[]); },refresh:fab};
