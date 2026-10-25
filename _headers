@@ -1,4 +1,4 @@
-# Test site only: keep it out of Google, and never let a phone hold on to an old copy.
+# Never let a phone hold on to an old copy. (Keeping the test site out of Google is done by netlify/edge-functions/noindex.js,
+# only on netlify.app addresses, so manna-fish.com can be found.)
 /*
-  X-Robots-Tag: noindex
   Cache-Control: no-cache
