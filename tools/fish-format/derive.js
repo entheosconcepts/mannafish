@@ -6,6 +6,7 @@ function derive(K,picks,base){ const R=JSON.parse(JSON.stringify(base)), P=picks
   if(long.length) R.word.fill=+med(long.map(v=>v.fill)).toFixed(3);
   R.word.min=longest.n>=7?longest.size:Math.min(R.word.min,longest.size);
   R.word.sx=+med(P.map(v=>v.sx)).toFixed(3); R.word.cx=Math.round(med(P.map(v=>v.cx))); R.word.cy=Math.round(med(P.map(v=>v.cy)));
+  R.word.room=Math.round(med(P.map(v=>v.clr.min)));
   const full=[]; P.forEach(v=>['top','bot'].forEach(t=>{ if(v[t].cover>=0.9) full.push(v[t]); }));
   if(full.length){ R.verse.start=+med(full.map(l=>l.start)).toFixed(3); R.verse.end=+med(full.map(l=>l.end)).toFixed(3); }
   return R; }
