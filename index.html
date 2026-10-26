@@ -1642,6 +1642,11 @@ select option{background:#0b1620;color:#eaf0f0}
 @keyframes okpop{from{transform:scale(.85);opacity:0}to{transform:none;opacity:1}}
 .hearsel{position:fixed;z-index:125;display:flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:var(--brass);color:#fff;font:600 .85rem 'Archivo',sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.45);cursor:pointer}
 .hearsel[hidden],.hearbox[hidden]{display:none}
+/* Ken, 26 Oct: scripture in the devotional gets what the Bible has -- a note, share, and the verse in the MannaFish Bible */
+.scrsel{position:fixed;z-index:125;display:flex;gap:6px}.scrsel[hidden]{display:none}.scrsel button{display:flex;align-items:center;gap:5px;height:38px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:#1c2430;color:#fff;font:600 .82rem 'Archivo',sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.45);cursor:pointer}
+.scrnote{position:fixed;inset:0;z-index:140;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center}.scrnote .in{width:100%;max-width:520px;background:#12161c;color:#eaf0f0;border-radius:22px 22px 0 0;padding:18px 18px max(18px,env(safe-area-inset-bottom));font:16px/1.45 'Archivo',sans-serif}
+.scrnote b{display:block;margin:0 0 4px}.scrnote q{display:block;font:italic 1rem/1.5 'Spectral',Georgia,serif;opacity:.85;margin:0 0 10px}.scrnote textarea{width:100%;min-height:110px;box-sizing:border-box;font:inherit;color:inherit;background:rgba(128,128,128,.12);border:1px solid rgba(128,128,128,.35);border-radius:12px;padding:10px}
+.scrnote .row{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}.scrnote .row button{border:1px solid rgba(128,128,128,.45);background:none;color:inherit;border-radius:999px;padding:9px 16px;font:700 .95rem 'Archivo',sans-serif;cursor:pointer}.scrnote .row .p{background:#2a5fb0;border-color:#2a5fb0;color:#fff}
 .hearbox{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:124;width:min(520px,calc(100vw - 32px));max-height:50vh;overflow:auto;background:var(--ink2,#0b1620);color:var(--foam);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.55);padding:16px 48px 14px 16px;text-align:center}
 .hearbox .etx{position:absolute;top:8px;right:8px}
 .hearbox .etbig{font-size:1.2rem}
@@ -2249,6 +2254,7 @@ select option{background:#0b1620;color:#eaf0f0}
   <div class="wpc" id="wpC" role="group" aria-label="Highlight colour"></div>
   <div class="wpin"><label for="wpIn" id="wpInL">See it in</label><select id="wpIn"></select><div class="wpinr" id="wpInR" aria-live="polite"></div><button type="button" class="wpsay" id="wpInSay" aria-label="Hear it" hidden>&#128266;</button></div></div>
 <button class="hearsel hlsel" type="button" id="hlSel" hidden><span aria-hidden="true">&#128397;</span> <span id="hlSelLab">Highlight</span></button>
+<div class="scrsel" id="scrSel" hidden><button type="button" data-sc="note">&#128221;&#xFE0E; <span>Note</span></button><button type="button" data-sc="share">&#8599;&#xFE0E; <span>Share</span></button><button type="button" data-sc="bible">&#128214;&#xFE0E; <span>Bible</span></button></div>
 <button class="hearsel" type="button" id="hearSel" hidden><span aria-hidden="true">&#128266;</span> <span id="hearLab">Hear it</span></button>
 <div class="hearbox" id="hearBox" role="status" hidden><button class="etx" type="button" id="hearX" aria-label="Close">&times;</button><div class="etbig" id="hearTxt"></div><div class="etmine" id="hearMine"></div><div class="etrow"><button type="button" id="hearPlay">&#128266;</button></div></div>
 <div class="okbox" id="okBox" role="dialog" aria-modal="true" aria-labelledby="okTitle" hidden><div class="okcard"><div class="okcheck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><h2 id="okTitle"></h2><div id="okBody"></div><button class="btn" type="button" id="okDone">Done</button></div></div>
@@ -2628,7 +2634,7 @@ window.MF=(function(){
     RD=null; rsayUI(l);
     if(l!=='en'){ readOther(k,i,l); return; }
     $('rVer').style.display=''; $('rYouV').style.display=''; $('rYouVHint').style.display=''; $('rGate').style.display=''; var g0=$('rGate'); g0.setAttribute('target','_blank'); g0.textContent=MF.t('fullch'); g0.onclick=null; $('rYouV').textContent=MF.t('bibleapp'); $('rYouVHint').textContent=MF.t('hint');
-    var d=DATA[k], ref=d.refs[i], p=parseRef(ref[0]);
+    var d=DATA[k], ref=d.refs[i], p=parseRef(ref[0]); RREF=p?{book:p.book,ch:p.ch,l:l}:null;
     $('rKicker').textContent=wordTitle(k)+MF.t('study');
     $('rRef').textContent= l==='es' ? esRef(ref[0]) : ref[0];
     if(l==='es' && p){
@@ -2648,7 +2654,8 @@ window.MF=(function(){
     if(p){
       var code=USFM[p.book]||'';
       $('rYouV').href = code ? ('https://www.bible.com/bible/1/'+code+'.'+p.ch+'.'+p.vs) : '#';
-      $('rGate').href = 'https://www.biblegateway.com/passage/?search='+encodeURIComponent(p.book+' '+p.ch)+'&version=KJV';
+      // the whole chapter in the MannaFish Bible, with its highlights, notes, sharing and word study (Ken, 26 Oct)
+      $('rGate').href = '/bible/?r='+encodeURIComponent(p.book+' '+p.ch+':'+p.vs); $('rGate').removeAttribute('target');
       loadChapter(p);
     }
   }
@@ -2656,7 +2663,7 @@ window.MF=(function(){
   // Bible as the fish (fish-lang/bible/<lang>/), with the verse marked. The English versions and Bible App links are hidden.
   function readOther(k,i,l){ var es=l==='es', w=es?null:studyOf(l,k);
     if(!es && !w){ loadLang(l).then(function(){ if(studyOf(l,k)) readOther(k,i,l); }).catch(function(){}); return; }
-    var ref=DATA[k].refs[i], r=es?[esRef(ref[0]),'']:w.refs[i], p=parseRef(ref[0]);
+    var ref=DATA[k].refs[i], r=es?[esRef(ref[0]),'']:w.refs[i], p=parseRef(ref[0]); RREF=p?{book:p.book,ch:p.ch,l:l}:null;
     $('rVer').style.display='none'; $('rYouV').style.display='none'; $('rYouVHint').style.display='none'; $('rGate').style.display='none';
     $('rKicker').textContent=titleIn(l,k)+(l!==MF.lang?' \u00b7 '+wordTitle(k):''); $('rKicker').setAttribute('lang',l);
     $('rRef').textContent=r[0]; $('rRef').setAttribute('lang',l);
@@ -2664,6 +2671,7 @@ window.MF=(function(){
     // Spanish: the fish quote the RVR1960 (not free to show in full); the chapter here is the Reina-Valera 1909, with a link to the 1960
     if(es && p){ var g=$('rGate'); g.style.display=''; g.textContent='Leer en RVR1960'; g.onclick=null; g.setAttribute('target','_blank');
       g.href='https://www.biblegateway.com/passage/?search='+encodeURIComponent(p.book+' '+p.ch)+'&version=RVR1960'; }
+    else if(p&&BV[l]){ var g2=$('rGate'); g2.style.display=''; g2.textContent=MF.t('fullch'); g2.onclick=null; g2.removeAttribute('target'); g2.href='/bible/?r='+encodeURIComponent(p.book+' '+p.ch+':'+p.vs)+'&v='+BV[l]; }   // the whole chapter, in this language, in the MannaFish Bible
     showPanel(); if(!p) return; var want=window.MFreader;
     fetch('/fish-lang/bible/'+l+'/'+p.book.replace(/ /g,'_')+'-'+p.ch+'.json').then(function(x){ if(!x.ok) throw 0; return x.json(); }).then(function(j){
       if(window.MFreader!==want) return; var vs=+p.vs, h='<p>';
@@ -3956,7 +3964,7 @@ window.MF=(function(){
   window.MFverSwitch=verSwitch;
   function setLinks(p){var v=curVer(), code=USFM[p.book]||'';
     $('rYouV').href = code ? ('https://www.bible.com/bible/'+v.yv+'/'+code+'.'+p.ch+'.'+p.vs) : '#';
-    $('rGate').href = 'https://www.biblegateway.com/passage/?search='+encodeURIComponent(p.book+' '+p.ch)+'&version='+v.bg;}
+    $('rGate').href = '/bible/?r='+encodeURIComponent(p.book+' '+p.ch+':'+p.vs)+(v.k?'&v='+v.k:''); $('rGate').removeAttribute('target'); }   // the whole chapter in the MannaFish Bible (Ken, 26 Oct)
   function loadChapter(p){
     lastP=p; setLinks(p); var ver=curVer();
     var done=false;
@@ -4246,7 +4254,13 @@ window.MF=(function(){
   var HEAR={en:'Hear it',es:'Escuchar',tl:'Pakinggan sa Tagalog',zh:'用中文听',hi:'हिन्दी में सुनें',el:'Ακούστε στα ελληνικά',de:'Auf Deutsch hören',ko:'한국어로 듣기',he:'האזינו בעברית',ar:'استمعوا بالعربية'};
   var hearText='', hearT=null;
   var HLS={en:'Highlight',es:'Resaltar',tl:'I-highlight',zh:'标记',hi:'हाइलाइट',el:'Επισήμανση',de:'Markieren',ko:'표시',he:'סימון',ar:'تمييز'}, hlSelRange=null;
-  function hearHide(){ $('hearSel').hidden=true; $('hlSel').hidden=true; hlSelRange=null; }
+  function hearHide(){ $('hearSel').hidden=true; $('hlSel').hidden=true; $('scrSel').hidden=true; hlSelRange=null; }
+  // the scripture the selected words are in: a chapter in the reader, or a verse of the devotional (data-hl="John 3:16")  -> {ref, quote, l}
+  var RREF=null, SCR=null, BV={es:'rv1909',tl:'ab1905',zh:'cuv',hi:'irv',el:'fpb',de:'elb',ko:'krv',he:'hmt',ar:'svd'};
+  function scrOf(el,t){ var ch=el.closest('#rChapter'), v=el.closest('[data-v]');
+    if(ch&&RREF&&v&&!el.closest('.orig,.ilin')) return {ref:RREF.book+' '+RREF.ch+':'+v.dataset.v,quote:t,l:RREF.l};
+    var h=el.closest('[data-hl]'), r=h&&h.getAttribute('data-hl'); if(r&&/\d+:\d+/.test(r)) return {ref:r.replace(/\s*\(?(KJV|RVR|RV)[^)]*\)?\s*$/,''),quote:t,l:MF.lang};
+    return null; }
   function hearPlace(){ var sel=window.getSelection&&getSelection(); var t=sel&&sel.rangeCount?sel.toString().replace(/\s+/g,' ').trim():'';
     var n=sel&&sel.anchorNode, el=n&&(n.nodeType===1?n:n.parentElement);
     if(t.length<2 || !el || el.closest('input,textarea,select,#etBox,#hearBox,#hearSel,.cmpmenu,#mfEditBar')){ hearHide(); return; }
@@ -4259,11 +4273,25 @@ window.MF=(function(){
     var pr=!ch&&window.MFprhl?MFprhl.sel():null;   // a prayer or a line of the devotional (fish-lang/prhl.js)
     if(pr){ hlSelRange={pr:pr}; $('hlSelLab').textContent=MFprhl.over(pr).length?(MF.lang==='es'?'Quitar resaltado':'Remove highlight'):(HLS[MF.lang]||HLS.en); hb.hidden=false;
       var w3=hb.offsetWidth; hb.style.top=top+'px'; var L3=parseFloat(b.style.left); if(L3+w+8+w3<innerWidth-8){ hb.style.left=(L3+w+8)+'px'; } else { hb.style.left=Math.max(8,L3-w3-8)+'px'; } }
+    SCR=scrOf(el,t); var sc=$('scrSel'); sc.hidden=!SCR; if(SCR){ var sl=$('scrSel').querySelectorAll('span'), es=MF.lang==='es'; sl[0].textContent=es?'Nota':'Note'; sl[1].textContent=es?'Compartir':'Share'; sl[2].textContent=es?'Biblia':'Bible';
+      var st=top+48; if(st+42>innerHeight) st=Math.max(8,top-48); sc.style.top=st+'px'; sc.style.left=Math.max(8,Math.min(innerWidth-sc.offsetWidth-8,r.left+r.width/2-sc.offsetWidth/2))+'px'; }
     if(ch&&window.MFhlRangeOk&&MFhlRangeOk(ch)){ hlSelRange={r:sel.getRangeAt(0).cloneRange(),root:ch}; $('hlSelLab').textContent=HLS[MF.lang]||HLS.en; hb.hidden=false;
       var w2=hb.offsetWidth; hb.style.top=top+'px'; var L2=parseFloat(b.style.left); if(L2+w+8+w2<innerWidth-8){ hb.style.left=(L2+w+8)+'px'; } else { hb.style.left=Math.max(8,L2-w2-8)+'px'; } } }
   document.addEventListener('selectionchange',function(){ clearTimeout(hearT); hearT=setTimeout(hearPlace,350); });
   window.addEventListener('scroll',hearHide,{passive:true});
   $('hearSel').addEventListener('pointerdown',function(e){ e.preventDefault(); });
+  $('scrSel').addEventListener('pointerdown',function(e){ e.preventDefault(); });
+  $('scrSel').addEventListener('click',function(e){ var b=e.target.closest('[data-sc]'), x=SCR; if(!b||!x) return; hearHide(); try{ getSelection().removeAllRanges(); }catch(er){}
+    var es=MF.lang==='es', url=location.origin+'/bible/?r='+encodeURIComponent(x.ref)+(BV[x.l]?'&v='+BV[x.l]:''), line='“'+x.quote+'” '+x.ref;
+    if(b.dataset.sc==='bible'){ location.href=url; return; }
+    if(b.dataset.sc==='share'){ if(navigator.share) navigator.share({title:'MannaFish · '+x.ref,text:line,url:url}).catch(function(){}); else (navigator.clipboard?navigator.clipboard.writeText(line+' '+url):Promise.reject()).then(function(){ var tb=$('mfToast'); if(tb){ tb.textContent=es?'Copiado':'Copied'; tb.hidden=false; setTimeout(function(){ tb.hidden=true; },1600); } },function(){}); return; }
+    // a note on it, kept with the Bible's notes (My notes, the account), and shown in the Bible at that verse
+    var d=document.createElement('div'); d.className='scrnote'; d.innerHTML='<div class="in"><b>'+esc(x.ref)+'</b><q>'+esc(x.quote.slice(0,300))+'</q><textarea placeholder="'+(es?'¿Qué te está mostrando Dios aquí?':'What is God showing you here?')+'"></textarea><div class="row"><button type="button" data-n="x">'+(es?'Cancelar':'Cancel')+'</button><button type="button" class="p" data-n="ok">'+(es?'Guardar nota':'Save note')+'</button></div></div>';
+    document.body.appendChild(d); setTimeout(function(){ d.querySelector('textarea').focus(); },100);
+    d.addEventListener('click',function(ev){ var n=ev.target.closest('[data-n]'); if(ev.target===d||(n&&n.dataset.n==='x')){ d.remove(); return; } if(!n) return;
+      var txt=d.querySelector('textarea').value.trim(); if(!txt){ d.querySelector('textarea').focus(); return; } var N={}; try{ N=JSON.parse(localStorage.getItem('mf-notes2')||'{}')||{}; }catch(er){}
+      var k='BIBLE:'+x.ref; (N[k]=N[k]||[]).push({id:'d'+Date.now(),text:txt,at:Date.now(),ed:0,words:x.quote.slice(0,200)}); try{ localStorage.setItem('mf-notes2',JSON.stringify(N)); }catch(er){} if(window.MFacct) MFacct.touch();
+      d.remove(); var tb=$('mfToast'); if(tb){ tb.textContent=es?'Nota guardada · en Mis notas':'Note saved · in My notes'; tb.hidden=false; clearTimeout(tb._t); tb._t=setTimeout(function(){ tb.hidden=true; },1800); } }); });
   $('hlSel').addEventListener('pointerdown',function(e){ e.preventDefault(); });
   $('hlSel').addEventListener('click',function(){ var x=hlSelRange; hearHide();
     if(x&&x.pr&&window.MFprhl){ var on=MFprhl.toggle(x.pr), es=MF.lang==='es', tb=$('mfToast'); try{ getSelection().removeAllRanges(); }catch(e){}

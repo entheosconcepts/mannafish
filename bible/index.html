@@ -310,6 +310,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     {k:'krv',l:'ko',f:'ko',n:'개역성경',s:'한국어'},{k:'hmt',l:'he',f:'he',n:'המקרא',s:'עברית',rtl:1},{k:'svd',l:'ar',f:'ar',n:'فاندايك',s:'العربية',rtl:1}];
   function ver(){ var k=ls('mf-bible-version')||'kjv'; return VERS.filter(function(v){ return v.k===k; })[0]||VERS[0]; }
   function vlang(v){ return (v||ver()).l||'en'; }
+  (function(){ var v0=new URLSearchParams(location.search).get('v'); if(v0&&VERS.some(function(x){ return x.k===v0; })) ls('mf-bible-version',v0); })();   // ?v=rv1909: open in that version (the devotional's Bible button)
   function verOpts(){ var en=VERS.filter(function(v){ return !v.l; }), ot=VERS.filter(function(v){ return v.l; }), o=function(v){ return '<option value="'+v.k+'" title="'+esc(v.n)+'">'+esc(v.s)+'</option>'; };
     $('ver').innerHTML='<optgroup label="English">'+en.map(o).join('')+'</optgroup><optgroup label="Other languages">'+ot.map(o).join('')+'</optgroup>'; $('ver').value=ver().k; }
   verOpts();
