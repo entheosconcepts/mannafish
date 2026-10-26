@@ -6,7 +6,7 @@ import json,os,re,sys,contextlib,io
 sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
 with contextlib.redirect_stdout(io.StringIO()): import study_build as sb
 OUT=sys.argv[1]
-NAMES={'tl':'Ang Biblia (1905)','de':'Elberfelder (1905)','ko':'개역성경','hi':'इंडियन रिवाइज्ड वर्जन (IRV) हिंदी 2019',
+NAMES={'tl':'Ang Biblia (1905)','de':'Elberfelder (1905)','ko':'개역한글 (1961)','hi':'इंडियन रिवाइज्ड वर्जन (IRV) हिंदी 2019',
  'zh':'和合本（新标点·神版）','zh2':'和合本','el':'Η Αγία Γραφή (FPB)','el2':'Η Αγία Γραφή (Βάμβας, 1850)','he':'המקרא — נוסח המסורה; הברית החדשה בתרגום דליטש',
  'ar':'ترجمة فاندايك (1865) · Arabic Bible Outreach Ministry · STEPBible.org (CC BY-SA 4.0)','es':'Reina-Valera (1909)'}
 sb.SRC['es']=[sb.numbered('es/SpaRV.json')]  # Reina-Valera 1909, public domain
