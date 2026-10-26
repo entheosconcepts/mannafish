@@ -302,16 +302,23 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 
   // ── versions: the same list and the same choice as the main site's reader ──
   var VERS=[{k:'kjv',n:'King James Version',s:'KJV'},{k:'web',n:'World English Bible',s:'WEB'},{k:'asv',n:'American Standard Version',s:'ASV'},{k:'ylt',n:'Young’s Literal Translation',s:'YLT'},
-    {k:'darby',n:'Darby Translation',s:'Darby'},{k:'bbe',n:'Bible in Basic English',s:'BBE'},{k:'dra',n:'Douay-Rheims',s:'Douay-Rheims'},{k:'net',n:'New English Translation',s:'NET',api:1}];
+    {k:'darby',n:'Darby Translation',s:'Darby'},{k:'bbe',n:'Bible in Basic English',s:'BBE'},{k:'dra',n:'Douay-Rheims',s:'Douay-Rheims'},{k:'net',n:'New English Translation',s:'NET',api:1},
+    // the whole Bible in each fish language (Ken, 26 Oct: "all scripture to have these options available on the bible in any version and language"):
+    // each language's own public-domain Bible, every chapter in fish-lang/bible/<l>/ (tools/more-languages/all_chapters.py)
+    {k:'rv1909',l:'es',f:'es',n:'Reina-Valera (1909)',s:'Español'},{k:'ab1905',l:'tl',f:'tl',n:'Ang Biblia (1905)',s:'Tagalog'},{k:'cuv',l:'zh',f:'zh',n:'和合本',s:'中文'},
+    {k:'irv',l:'hi',f:'hi',n:'इंडियन रिवाइज्ड वर्जन (IRV)',s:'हिन्दी'},{k:'fpb',l:'el',f:'el',n:'Η Αγία Γραφή',s:'Ελληνικά'},{k:'elb',l:'de',f:'de',n:'Elberfelder (1905)',s:'Deutsch'},
+    {k:'krv',l:'ko',f:'ko',n:'개역성경',s:'한국어'},{k:'hmt',l:'he',f:'he',n:'המקרא',s:'עברית',rtl:1},{k:'svd',l:'ar',f:'ar',n:'فاندايك',s:'العربية',rtl:1}];
   function ver(){ var k=ls('mf-bible-version')||'kjv'; return VERS.filter(function(v){ return v.k===k; })[0]||VERS[0]; }
-  VERS.forEach(function(v){ var o=document.createElement('option'); o.value=v.k; o.textContent=v.s; o.title=v.n; $('ver').appendChild(o); }); $('ver').value=ver().k;
-  fetch('/api/bible?list=1').then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(!j||!(j.versions||[]).includes('esv')) return; VERS.push({k:'esv',n:'English Standard Version',s:'ESV',api:1});
-    var o=document.createElement('option'); o.value='esv'; o.textContent='ESV'; $('ver').appendChild(o); $('ver').value=ver().k; }).catch(function(){});
+  function vlang(v){ return (v||ver()).l||'en'; }
+  function verOpts(){ var en=VERS.filter(function(v){ return !v.l; }), ot=VERS.filter(function(v){ return v.l; }), o=function(v){ return '<option value="'+v.k+'" title="'+esc(v.n)+'">'+esc(v.s)+'</option>'; };
+    $('ver').innerHTML='<optgroup label="English">'+en.map(o).join('')+'</optgroup><optgroup label="Other languages">'+ot.map(o).join('')+'</optgroup>'; $('ver').value=ver().k; }
+  verOpts();
+  fetch('/api/bible?list=1').then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(!j||!(j.versions||[]).includes('esv')) return; VERS.splice(8,0,{k:'esv',n:'English Standard Version',s:'ESV',api:1}); verOpts(); }).catch(function(){});
   $('ver').addEventListener('change',function(){ ls('mf-bible-version',this.value); go(AT.b,AT.c,AT.sel,true); if(window.MFacct) MFacct.touch('set'); });
   var CH={};
   function kjv(b,c){ return fetch('/fish-lang/bible/kjv/'+B[b][0].replace(/ /g,'_')+'-'+c+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return {t:j.t,note:'King James Version · public domain'}; }); }
   function chapter(b,c,v){ v=v||ver(); var key=v.k+'|'+b+'|'+c; if(CH[key]) return CH[key];
-    var p=v.k==='kjv'?kjv(b,c):v.api?fetch('/api/bible?v='+v.k+'&b='+encodeURIComponent(B[b][0])+'&c='+c).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return {t:j.t||[],note:j.note||v.n}; })
+    var p=v.k==='kjv'?kjv(b,c):v.f?fetch('/fish-lang/bible/'+v.f+'/'+B[b][0].replace(/ /g,'_')+'-'+c+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return {t:j.t||[],note:(j.v||v.n)+({es:1,tl:1,de:1,he:1}[v.l]?' · public domain':v.l==='hi'?' · CC BY-SA 4.0':'')}; }):v.api?fetch('/api/bible?v='+v.k+'&b='+encodeURIComponent(B[b][0])+'&c='+c).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return {t:j.t||[],note:j.note||v.n}; })
       :fetch('https://bible-api.com/'+encodeURIComponent(B[b][0]+' '+c)+'?translation='+v.k).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ var t=[]; (j.verses||[]).forEach(function(x){ t[x.verse-1]=x.text.replace(/\s+/g,' ').trim(); }); return {t:t,note:v.n+' · public domain'}; });
     return CH[key]=p.catch(function(e){ delete CH[key]; if(v.k!=='kjv') return kjv(b,c).then(function(o){ o.note='King James Version (the '+v.s+' could not be reached just now)'; return o; }); throw e; }); }
 
@@ -321,7 +328,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function saveHls(h){ try{ localStorage.setItem('mf-hl',JSON.stringify(h)); }catch(e){} }
   function unHl(h,k){ var x=h[k]; if(!x) return; delete h[k]; if(window.MFacct) MFacct.hlGone(x); else { try{ var L=JSON.parse(localStorage.getItem('mf-hl-del')||'[]'); L.push([x.ref,x.ver]); localStorage.setItem('mf-hl-del',JSON.stringify(L)); }catch(e){} } }
   function hlTouched(){ if(window.MFacct) MFacct.touch(); }
-  function vcode(){ return 'en:'+ver().k; }
+  function vcode(){ return vlang()+':'+ver().k; }
   function hkey(b,c,v){ return plain(b,c,v)+'|'+vcode(); }
   function pkey(b,c,v,s,e){ return plain(b,c,v)+'#'+s+'-'+e+'|'+vcode(); }
   function colour(){ var c=ls('mf-hl-color')||'gold'; return HLC[c]?c:'gold'; }
@@ -380,11 +387,12 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function parVer(){ var k=SET('par',''); if(!k||k===ver().k) return null; return VERS.filter(function(x){ return x.k===k; })[0]||null; }
   function parOpts(){ return VERS.filter(function(x){ return x.k!==ver().k; }).map(function(x){ return '<option value="'+x.k+'"'+(x.k===SET('par','')?' selected':'')+'>'+esc(x.s)+'</option>'; }).join(''); }
   function verseH(n){ return '<span class="v" data-v="'+n+'"><span class="vn">'+n+'</span><span class="vt"></span></span><span class="nis" data-after="'+n+'"></span>'; }
-  function draw(P2){ var num=function(a,b){ return a-b; }, ns=Object.keys(VT).map(Number).sort(num); document.body.classList.toggle('par',!!P2);
+  function draw(P2){ var num=function(a,b){ return a-b; }, ns=Object.keys(VT).map(Number).sort(num), V1=ver(); document.body.classList.toggle('par',!!P2);
+    $('txt').setAttribute('lang',vlang(V1)); $('txt').dir=!P2&&V1.rtl?'rtl':'ltr';   // Hebrew and Arabic read right to left
     if(!P2){ $('txt').innerHTML='<p>'+ns.map(function(n){ return verseH(n)+' '; }).join('')+'</p>'; return; }
     var all=ns.concat(Object.keys(VT2).map(Number)).filter(function(x,i,a){ return a.indexOf(x)===i; }).sort(num);
     $('txt').innerHTML='<div class="phd"><span>'+esc(ver().s)+'</span><span class="p2"><select id="par2" aria-label="The version beside it">'+parOpts()+'</select><button type="button" class="ib sm" id="parX" aria-label="Close side by side">&#10005;</button></span></div>'
-      +all.map(function(n){ return '<div class="pr"><div class="c1">'+(VT[n]?verseH(n):'')+'</div><div class="v2" data-v="'+n+'">'+(VT2[n]?'<span class="vn">'+n+'</span>'+esc(VT2[n]):'')+'</div></div>'; }).join(''); }
+      +all.map(function(n){ return '<div class="pr"><div class="c1" lang="'+vlang(V1)+'" dir="'+(V1.rtl?'rtl':'ltr')+'">'+(VT[n]?verseH(n):'')+'</div><div class="v2" data-v="'+n+'" lang="'+vlang(P2)+'" dir="'+(P2.rtl?'rtl':'ltr')+'">'+(VT2[n]?'<span class="vn">'+n+'</span>'+esc(VT2[n]):'')+'</div></div>'; }).join(''); }
   $('txt').addEventListener('change',function(e){ if(e.target.id==='par2'){ putSet('par',e.target.value); go(AT.b,AT.c,0,true); } });
   // the book and chapter at the top; on a narrow phone, a long book name shortened so it is not cut off
   var SHORT={'Deuteronomy':'Deut.','1 Chronicles':'1 Chron.','2 Chronicles':'2 Chron.','Ecclesiastes':'Eccles.','Song of Solomon':'Song','Lamentations':'Lam.','Zephaniah':'Zeph.','Zechariah':'Zech.','Habakkuk':'Hab.',
@@ -420,7 +428,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     [].forEach.call($('txt').querySelectorAll('.v'),function(sp){ var vt=sp.querySelector('.vt'), v=+sp.dataset.v, t=VT[v]||''; if(!r.intersectsNode(vt)) return;
       var a=vt.contains(r.startContainer)?offIn(vt,r.startContainer,r.startOffset):0, z=vt.contains(r.endContainer)?offIn(vt,r.endContainer,r.endOffset):t.length;
       if(!vt.contains(r.startContainer)&&sp.compareDocumentPosition(r.startContainer)&Node.DOCUMENT_POSITION_FOLLOWING) return;
-      while(a<z&&/[\s"“”'‘’(,.;:]/.test(t[a])) a++; while(z>a&&/[\s"“”'‘’),.;:!?]/.test(t[z-1])) z--; if(z>a) out.push({v:v,s:a,e:z}); });
+      while(a<z&&/[\s\p{P}]/u.test(t[a])) a++; while(z>a&&/[\s\p{P}]/u.test(t[z-1])) z--; if(z>a) out.push({v:v,s:a,e:z}); });
     return out.length?out:null; }
   var DRAG=0;
   function takeDrag(){ var d=dragged(); if(!d) return false; PHS=d; SEL=d.map(function(x){ return x.v; }); DRAG=Date.now(); if(PEN) penApply(); else selUI(); return true; }
@@ -461,16 +469,16 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
       +Object.keys(HLC).map(function(c){ return '<button type="button" data-c="'+c+'" aria-label="Highlight '+c+'" aria-pressed="'+(on===c)+'" style="background:'+HLC[c]+'"></button>'; }).join(''); }
   $('aDots').addEventListener('click',function(e){ var b=e.target.closest('[data-c]'); if(!b||!SEL.length) return; applyHl(b.dataset.c); });
   // a few words, in one colour, with the same colour next to it joined on (a word at a time with the pen makes one highlight)
-  function addPh(h,v,s,e,c){ var t=VT[v]||'', G=/^[\s,.;:!?"“”'‘’()-]*$/; while(s<e&&/[\s"“”'‘’(,.;:]/.test(t[s])) s++; while(e>s&&/[\s"“”'‘’),.;:!?]/.test(t[e-1])) e--; if(e-s<1) return;
+  function addPh(h,v,s,e,c){ var t=VT[v]||'', G=/^[\s\p{P}]*$/u; while(s<e&&/[\s\p{P}]/u.test(t[s])) s++; while(e>s&&/[\s\p{P}]/u.test(t[e-1])) e--; if(e-s<1) return;
     phrases(v,h).forEach(function(x){ if(x.c!==c) return; if((x.s<=e&&x.e>=s)||(x.e<=s&&G.test(t.slice(x.e,s)))||(x.s>=e&&G.test(t.slice(e,x.s)))){ s=Math.min(s,x.s); e=Math.max(e,x.e); unHl(h,x.k); } });
-    h[pkey(AT.b,AT.c,v,s,e)]={kind:'phrase',ref:plain(AT.b,AT.c,v)+'#'+s+'-'+e,ver:vcode(),k:'',i:0,l:'en',v:v,s:s,e:e,c:c,text:t.slice(s,e).slice(0,220),at:Date.now(),bible:1}; }
+    h[pkey(AT.b,AT.c,v,s,e)]={kind:'phrase',ref:plain(AT.b,AT.c,v)+'#'+s+'-'+e,ver:vcode(),k:'',i:0,l:vlang(),v:v,s:s,e:e,c:c,text:t.slice(s,e).slice(0,220),at:Date.now(),bible:1}; }
   function applyHl(c){ var h=hls();
     if(PHS){ PHS.forEach(function(p){ var vk=hkey(AT.b,AT.c,p.v), vx=h[vk];
         if(vx&&c){ var vc=HLC[vx.c]?vx.c:'gold'; unHl(h,vk); addPh(h,p.v,0,p.s,vc); addPh(h,p.v,p.e,(VT[p.v]||'').length,vc); }   // a verse in one colour, some of its words in another
         phrases(p.v,h).forEach(function(x){ if(x.s<p.e&&x.e>p.s){ unHl(h,x.k); if(c){ addPh(h,p.v,x.s,p.s,x.c); addPh(h,p.v,p.e,x.e,x.c); } } });
         if(c) addPh(h,p.v,p.s,p.e,c); }); }
     else SEL.forEach(function(v){ var k=hkey(AT.b,AT.c,v); Object.keys(h).forEach(function(x){ if(h[x].kind==='phrase'&&h[x].ver===vcode()&&String(h[x].ref).indexOf(plain(AT.b,AT.c,v)+'#')===0) unHl(h,x); });
-      if(!c) unHl(h,k); else h[k]={kind:'verse',ref:plain(AT.b,AT.c,v),ver:vcode(),k:'',i:0,l:'en',v:v,c:c,text:(VT[v]||'').slice(0,220),at:Date.now(),bible:1}; });
+      if(!c) unHl(h,k); else h[k]={kind:'verse',ref:plain(AT.b,AT.c,v),ver:vcode(),k:'',i:0,l:vlang(),v:v,c:c,text:(VT[v]||'').slice(0,220),at:Date.now(),bible:1}; });
     if(c) ls('mf-hl-color',c); saveHls(h); hlTouched(); paint(); toast(c?'Highlighted · saved to My highlights':'Highlight removed'); closeAct(); }
   // save: a bookmark, kept on this device (Saved, in the book list and under You)
   function saved(){ try{ return JSON.parse(ls('mf-bible-saved')||'[]')||[]; }catch(e){ return []; } }
@@ -540,7 +548,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function lexOf(st){ var m=/^([HG])(\d+)/.exec(st||''); if(!m) return Promise.resolve(null); var f=m[1]+Math.floor(+m[2]/250);
     return (LXC[f]||(LXC[f]=fetch('/fish-lang/bible/lex/'+f+'.json').then(function(r){ return r.ok?r.json():{}; }).catch(function(){ delete LXC[f]; return {}; }))).then(function(d){ return d[st]||d[st.replace(/[A-Za-z]$/,'')]||null; }); }
   function strongN(st){ var m=/^([HG])0*(\d+)/.exec(st||''); return m?m[1]+m[2]:''; }
-  function toks(t){ var out=[], m; TOKRE.lastIndex=0; while((m=TOKRE.exec(t))) out.push({s:m.index,e:m.index+m[0].length,w:m[0]}); return out; }
+  var UNIRE=/[\u3400-\u9fff\uf900-\ufaff]|[\p{L}\p{M}\p{N}]+(?:['’][\p{L}\p{M}]+)*/gu;
+  function toks(t,re){ re=re||(ver().k==='kjv'?TOKRE:UNIRE); var out=[], m; re.lastIndex=0; while((m=re.exec(t))) out.push({s:m.index,e:m.index+m[0].length,w:m[0]}); return out; }
   function ogLang(){ return AT.b<39?{n:'Hebrew',l:'he',d:'rtl',i:'&#1488;'}:{n:'Greek',l:'el',d:'ltr',i:'&alpha;'}; }
   function ogTile(){ var L=ogLang(); $('aOrigL').textContent=L.n; $('aOrigI').innerHTML=L.i; }
   // which original words: the ones the words picked translate (KJV), else every word of the verse
@@ -597,14 +606,16 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 
   // ── listen: the device's own voice, verse by verse, following along on the page ──
   var SAY={on:false,i:0};
-  function voice(){ var vs=(window.speechSynthesis?speechSynthesis.getVoices():[]).filter(function(v){ return /^en/i.test(v.lang); }), want=SET('voice','');
+  var LC={en:'en-US',es:'es-ES',tl:'fil-PH',zh:'zh-CN',hi:'hi-IN',el:'el-GR',de:'de-DE',ko:'ko-KR',he:'he-IL',ar:'ar-SA'};
+  function voice(){ var L=vlang(), vs=(window.speechSynthesis?speechSynthesis.getVoices():[]).filter(function(v){ return new RegExp('^'+(L==='tl'?'(fil|tl)':L),'i').test(v.lang); }), want=SET('voice','');
+    if(L!=='en') return vs.filter(function(v){ return /natural|premium|enhanced|google/i.test(v.name); })[0]||vs[0]||null;
     if(want){ var w=vs.filter(function(v){ return v.voiceURI===want||v.name===want; })[0]; if(w) return w; }
     return vs.filter(function(v){ return /en-(US|GB)/i.test(v.lang)&&/natural|premium|enhanced|samantha|daniel|google/i.test(v.name); })[0]||vs[0]||null; }
   function stopSay(){ SAY.on=false; try{ speechSynthesis.cancel(); }catch(e){} [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); }); $('say').setAttribute('aria-pressed','false'); }
   function startSay(v){ if(!window.speechSynthesis){ toast('This device cannot read aloud'); return; } stopSay(); SAY={on:true,i:Math.max(0,(v||1)-1)}; $('say').setAttribute('aria-pressed','true'); next(); }
   function next(){ if(!SAY.on) return; var L=[].slice.call($('txt').querySelectorAll('.v')); [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); });
     var el=L[SAY.i]; if(!el){ var nb=$('next').dataset.to; stopSay(); if(SET('cont',true)&&nb){ AUTOSAY=1; $('next').click(); } return; } el.classList.add('say'); var r=el.getBoundingClientRect(); if(r.top<70||r.bottom>innerHeight-80) window.scrollBy({top:r.top-innerHeight/3,behavior:'smooth'});
-    var u=new SpeechSynthesisUtterance((SAY.i===0?B[AT.b][0]+' chapter '+AT.c+'. ':'')+el.querySelector('.vt').textContent), vv=voice(); if(vv){ u.voice=vv; u.lang=vv.lang; } else u.lang='en-US'; u.rate=+SET('rate',0.95)||0.95;
+    var u=new SpeechSynthesisUtterance((SAY.i===0&&vlang()==='en'?B[AT.b][0]+' chapter '+AT.c+'. ':'')+el.querySelector('.vt').textContent), vv=voice(); if(vv){ u.voice=vv; u.lang=vv.lang; } else u.lang=LC[vlang()]||'en-US'; u.rate=+SET('rate',0.95)||0.95;
     u.onend=function(){ SAY.i++; next(); }; u.onerror=function(e){ if(e.error!=='interrupted'&&e.error!=='canceled'){ SAY.i++; next(); } }; speechSynthesis.speak(u); }
   $('say').addEventListener('click',function(){ if(SAY.on) stopSay(); else { var L=[].slice.call($('txt').querySelectorAll('.v')), i=L.findIndex(function(s){ return s.getBoundingClientRect().bottom>80; }); startSay(i>=0?i+1:1); } });
 
@@ -716,7 +727,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
       +(ks.length>1?'<div class="bks"><button type="button" data-bk="" aria-pressed="'+(bk==='')+'">All</button>'+ks.map(function(b){ return '<button type="button" data-bk="'+b+'" aria-pressed="'+(String(b)===String(bk))+'">'+esc(B[b][0])+' '+bks[b]+'</button>'; }).join('')+'</div>':'')
       +list.slice(0,n).map(function(r,q){ return '<button type="button" class="cv" data-go="'+r[0]+','+r[1]+','+r[2]+'"><b>'+esc(plain(r[0],r[1],r[2]))+(r[0]===AT.b&&r[1]===AT.c&&r[2]===me.v?' · here':'')+'</b><span data-q="'+q+'">…</span></button>'; }).join('')
       +(list.length>n?'<div class="row" style="justify-content:center;margin-top:8px"><button type="button" class="chip" data-more="'+(n+24)+'" data-bk2="'+bk+'">Show more ('+(list.length-n).toLocaleString()+')</button></div>':'');
-    list.slice(0,n).forEach(function(r,q){ chapter(r[0],r[1],VERS[0]).then(function(o){ var t=o.t[r[2]-1]||'', T=toks(t), out='', at=0;
+    list.slice(0,n).forEach(function(r,q){ chapter(r[0],r[1],VERS[0]).then(function(o){ var t=o.t[r[2]-1]||'', T=toks(t,TOKRE), out='', at=0;
       r.slice(3).sort(function(a,b){ return a-b; }).forEach(function(j){ var x=T[j]; if(!x||x.s<at) return; out+=esc(t.slice(at,x.s))+'<b>'+esc(x.w)+'</b>'; at=x.e; }); out+=esc(t.slice(at));
       var sp=box.querySelector('span[data-q="'+q+'"]'); if(sp&&WC===me) sp.innerHTML=out; }).catch(function(){}); }); }); }
   function wcWords(){ var me=WC, T=tk(me.v), js=[]; if(me.j!=null) js=[me.j]; else T.forEach(function(t,q){ if(OGJ&&OGJ.v[String(me.v)]&&OGJ.v[String(me.v)].a[q]===me.i) js.push(q); });
