@@ -159,7 +159,47 @@
       +GEO.base+wordPath(E,f.word,P.word,R.word.stroke)+linePath(E,f.top,'top',P.top,R.verse.stroke)+linePath(E,f.bot,'bot',P.bot,R.verse.stroke)+refPath(E,P.ref,R.ref.stroke)+'</svg>'; }
   function svg(E,f,R){ E=eng(E); return draw(E,f,layout(E,f,R),R); }
 
-  var API={setGeo:setGeo,RULE:RULE,HOBOCAP:HOBOCAP,otEngine:otEngine,svg:svg,draw:draw,layout:layout,wordLayout:wordLayout,lineLayout:lineLayout,refLayout:refLayout,refText:refText,
+  // ── the edit sheet (edit/index.html) ──
+  // The sheet draws the fish with live text so Ken can drag and pinch, in its own terms; these turn its numbers into a
+  // layout and back, so what he sees there is what the builder draws (and exports).
+  //  Bible-in-a-year and year fish: word {size, dx, dy, ww, hh} from the eye's centre (1705, 993.6), the text centred on its
+  //  advance and its ink centred up and down; a line {size, slide (% of the curve), lw (width, 1 = natural)}
+  var SHEET={cx:1705,cy:993.6};
+  function inkUD(E,text,size){ var b=box(runCmds(E,text,size).cmds); return {asc:-b.y1,desc:b.y2}; }
+  function toSheet(E,f,P,R){ E=eng(E); R=R||RULE; var V=R.verse, w=P.word, adv=E.run(f.word,w.size).adv, m=inkUD(E,f.word,w.size), out={};
+    out.wl={size:w.size,dx:w.ox+adv*w.sx/2-SHEET.cx,dy:w.oy-SHEET.cy-(m.asc-m.desc)/2,ww:w.sx,hh:w.hh||1};
+    ['top','bot'].forEach(function(t){ var l=P[t], c=GEO[t], span=(V.end-V.start)*c.L, filled=l.used>=span-0.5;
+      out[t==='top'?'tl':'bl']={size:l.size,lw:filled?1:l.k,slide:((l.start+l.used/2)/c.L-(V.start+V.end)/2)*100}; });
+    return out; }
+  function fromSheet(E,f,o,R,auto){ E=eng(E); R=R||RULE; var V=R.verse, P=auto||layout(E,f,R), Q={word:P.word,top:P.top,bot:P.bot,ref:P.ref};
+    if(o.wl){ var v=o.wl, adv=E.run(f.word,v.size).adv, m=inkUD(E,f.word,v.size), my=SHEET.cy+v.dy, yb=SHEET.cy+(m.asc-m.desc)/2+v.dy, hh=v.hh||1;
+      Q.word={size:v.size,sx:v.ww,hh:hh,ox:SHEET.cx+v.dx-adv*v.ww/2,oy:my+(yb-my)*hh}; }
+    ['top','bot'].forEach(function(t){ var v=o[t==='top'?'tl':'bl']; if(!v) return; var c=GEO[t], L=c.L, span=L*(V.end-V.start), len=E.run(f[t],v.size).adv;
+      var want=Math.min(span,Math.min(len,span)*(v.lw||1)), mid=L*((V.start+V.end)/2+(v.slide||0)/100), lo=L*V.start+want/2, hi=L*V.end-want/2; mid=Math.max(lo,Math.min(hi,mid));
+      Q[t]={size:v.size,k:want/len,start:mid-want/2,used:want,lift:0}; });
+    return Q; }
+  //  the main 24 in the other languages: word {s, w, h, x, y} (size, width, height, moved), a line {size, slide, w}, all
+  //  relative to the fish as built (the sheet's text copies, edit/lang/<code>.json)
+  function applyRel(E,f,P,o){ E=eng(E); var Q={word:P.word,top:P.top,bot:P.bot,ref:P.ref};
+    if(o.wl){ var a=o.wl, w=P.word, adv=E.run(f.word,w.size).adv, X0=w.ox+adv*w.sx/2, size=w.size*(a.s||1), sx=w.sx*(a.w||1);
+      Q.word={size:size,sx:sx,hh:(w.hh||1)*(a.h||1),ox:X0+(a.x||0)-adv*(a.s||1)*sx/2,oy:w.oy+(a.y||0)}; }
+    ['top','bot'].forEach(function(t){ var a=o[t==='top'?'tl':'bl']; if(!a) return; var l=P[t];
+      Q[t]={size:a.size,k:l.k*(a.w||1),start:l.start+(a.slide||0),used:l.used*(a.size/l.size)*(a.w||1),lift:l.lift*(a.size/l.size)}; });
+    return Q; }
+  // the same layout as live text in the sheet: base is edit/new/base.svg (with its g_top / g_bot curves); fam/weight the face
+  function textSvg(E,f,P,R,base,fam,weight,rtl){ E=eng(E); R=R||RULE; function x(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+    function t(s){ return x(rtl?'\u202b'+s+'\u202c':s); }
+    var ff=' font-family="'+fam+'"'+(weight?' font-weight="'+weight+'"':''), w=P.word, adv=E.run(f.word,w.size).adv, g=GEO.ref, rr=P.ref, radv=E.run(rr.text,rr.size).adv;
+    var inner=base.replace(/^[\s\S]*?<svg[^>]*>/,'').replace(/<\/svg>\s*$/,'').replace(/<\/g>\s*$/,'');
+    var out='<svg viewBox="0 0 4000 2000" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="width:100%;height:100%;display:block;shape-rendering:geometricPrecision;fill-rule:evenodd;clip-rule:evenodd">'+inner;
+    out+='<text'+ff+' fill="#fff" stroke="#fff" stroke-width="'+R.word.stroke+'" stroke-linejoin="round" text-anchor="middle" font-size="'+f1(w.size)+'" x="'+f1(w.ox+adv*w.sx/2)+'" y="'+f1(w.oy)+'" textLength="'+f1(adv*w.sx)+'" lengthAdjust="spacingAndGlyphs">'+t(f.word)+'</text>';
+    ['top','bot'].forEach(function(k){ var l=P[k];
+      out+='<text'+ff+' fill="#000" stroke="#000" stroke-width="'+R.verse.stroke+'" font-size="'+f1(l.size)+'"'+(l.lift?' dy="'+f1(-l.lift)+'"':'')+'><textPath href="#g_'+k+'" text-anchor="start" startOffset="'+f1(l.start)+'" textLength="'+f1(l.used)+'" lengthAdjust="spacingAndGlyphs">'+t(f[k])+'</textPath></text>'; });
+    out+='<text'+ff+' fill="#000" stroke="#000" stroke-width="'+R.ref.stroke+'" stroke-linejoin="round" text-anchor="middle" x="'+g.x+'" y="'+f1(g.y-(rr.lift||0))+'" transform="rotate('+g.rot+' '+g.ox+' '+g.oy+')" font-size="'+f1(rr.size)+'" textLength="'+f1(radv*rr.k)+'" lengthAdjust="spacingAndGlyphs">'+t(rr.text)+'</text>';
+    return out+'</g></svg>'; }
+  function f1(n){ return Math.round(n*10)/10; }
+
+  var API={setGeo:setGeo,toSheet:toSheet,fromSheet:fromSheet,applyRel:applyRel,textSvg:textSvg,RULE:RULE,HOBOCAP:HOBOCAP,otEngine:otEngine,svg:svg,draw:draw,layout:layout,wordLayout:wordLayout,lineLayout:lineLayout,refLayout:refLayout,refText:refText,
     runBox:function(E,text,size){ return box(runCmds(eng(E),text,size).cmds); }};
   if(typeof module!=='undefined'&&module.exports) module.exports=API; else root.MFfmt=API;
 })(this);

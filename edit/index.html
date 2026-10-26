@@ -152,6 +152,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 </div></div>
 
 <script src="/edit/wordtool.js"></script>
+<script src="/fish-lang/opentype.min.js"></script>
+<script src="/fish-lang/fishfmt.js"></script>
 <script>
 (function(){
   'use strict';
@@ -163,8 +165,14 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   var FIELD={word:'Word',top:'Verse line 1',bot:'Verse line 2',ref:'Reference',gkm:'Greek meaning',hbm:'Hebrew meaning',design:'Word in the middle: design fixes',dnote:'Design note',layout:'Size and position',vlayout:'Verse lines: size and position',template:'Rule for all fish'};
   var DZ=['Make bigger','Make smaller','Move left','Move right','Move up','Move down','Stretch taller (vertically)','Stretch wider (horizontally)','Squeeze narrower','Spelling or letters look wrong'];
   // the new fish: Ken's HOPE body and tail, drawn here (eye centre, usable width, the reference on the lower tail)
-  var G={cx:1705,cy:993.6,eyeW:1900,cap:867,ref:{x:3550.39,y:1562.6,rot:'rotate(49.97 3550.386836451912 1494.7294054190638)',size:167.7,avail:1000}};   // avail: the room on the lower tail, tip to the fold
-  var V={start:0.02,end:0.98,min:170,max:230};
+  var G={cx:1705,cy:993.6,eyeW:1900,cap:867,ref:{x:3550.39,y:1562.6,rot:'rotate(49.97 3550.386836451912 1494.7294054190638)',size:192,avail:980}};   // avail: the room on the lower tail, tip to the fold
+  var V={start:0.027,end:0.978,min:170,max:230};
+  // Ken, 26 Oct: the year and Bible-in-a-year fish are laid out by the format builder (tools/fish-format, /fish-lang/fishfmt.js):
+  // room from the eye's edge, balance, tall letters. Here it gives each fish its starting place; a fish's own setting or a
+  // letter-count rule saved here still wins, and the fish is exported as outlines exactly as it is shown (MFeditSvg).
+  var FE=null, FR=null;
+  function fishF(X){ return {word:val(X,'word'),top:val(X,'top'),bot:val(X,'bot'),ref:val(X,'ref'),refShort:X.nf&&val(X,'ref')===X.base.ref?X.nf.refShort:''}; }
+  function autoP(X){ var f=fishF(X), k=JSON.stringify(f); if(X._ak!==k){ X._ak=k; X._ap=MFfmt.layout(FE,f,FR); X._as=MFfmt.toSheet(FE,f,X._ap,FR); } return X._as; }
   var FONTFILE={'MFHobo':'hobo','ZCOOL KuaiLe':'zh','Baloo 2':'hi','Ubuntu':'el','Jua':'ko','Fredoka':'he','Cairo':'ar'};
 
   // ═════ what's been changed, kept on this device ═════
@@ -241,7 +249,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 
   // ═════ the fish ═════
   var D=null, N=null, DY=null, BASE='', FJ={}, set=ls('mf-edit-set')||'24', lang=ls('mf-edit-show')||'B', q='', show='all', F={}, LIST=[];
-  function fishJson(code){ if(!FJ[code]) FJ[code]=fetch(code==='en'||code==='es'?'/match/fish-'+code+'.json':'/fish-lang/'+code+'.json').then(function(r){ return r.json(); }); return FJ[code]; }
+  // the English 24 are Ken's own drawings; the other languages are the builder's fish as live text (edit/lang/, made with them)
+  function fishJson(code){ if(!FJ[code]) FJ[code]=fetch(code==='en'?'/match/fish-en.json':'/edit/lang/'+code+'.json').then(function(r){ return r.json(); }); return FJ[code]; }
   function langOf(l){ return D.langs.filter(function(x){ return x.l===l; })[0]; }
   function make24(n){ var num=parseInt(n,10), L=langOf(n.slice(-1)), w=D.words[num-1];
     return {id:n,set:'24',code:L.code,langName:L.name,key:w.key,title:D.f[n].word,sub:w.en+' · '+L.name,base:D.f[n],drawn:L.code==='en',num:num}; }
@@ -261,6 +270,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   function wordGet(X){ if(X.set==='24'){ var a=rel24(X); return {size:X.B.fs0*a.s,dx:a.x,dy:a.y,ww:a.w,hh:a.h}; }
     var o=(S.d[X.id]||{}).wl; if(o) return Object.assign({hh:1},o); var word=val(X,'word'), r=ruleWord(X);
     if(r){ var v={size:r.size,dx:r.dx,dy:r.dy,ww:r.ww,hh:r.hh||1}, max=100*G.eyeW*1.03/(meas(word,100).ink*v.ww); if(v.size>max) v.size=max; return v; }
+    if(FE){ var au=autoP(X).wl; return {size:au.size,dx:au.dx,dy:au.dy,ww:au.ww,hh:au.hh}; }
     return {size:fitWord(word),dx:0,dy:0,ww:1,hh:1}; }
   function wordFrom(X){ return (S.d[X.id]||{}).wl?'set by you':ruleWord(X)?'from your rule':''; }
   function wordPut(X,v){ var o=own(X.id); if(X.set==='24') o.wl={s:+(v.size/X.B.fs0).toFixed(4),w:+(+v.ww).toFixed(3),h:+(+(v.hh||1)).toFixed(3),x:Math.round(v.dx),y:Math.round(v.dy)};
@@ -274,6 +284,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     if(X.set==='24'){ var b=X.B&&X.B[w]; if(!b) return null; return o?{size:o.size,slide:o.slide,w:o.w}:{size:b.fs0,slide:0,w:1}; }
     if(o) return {size:o.size,slide:o.slide||0,w:o.lw||1};
     var txt=val(X,w), r=lineRule(X,w,txt.length); if(r) return {size:r.size,slide:r.slide,w:r.lw};
+    if(FE){ var au=autoP(X)[w==='top'?'tl':'bl']; return {size:au.size,slide:au.slide,w:au.lw}; }
     var span=X.plen[w]*(V.end-V.start); return {size:Math.max(V.min,Math.min(V.max,100*span/meas(txt,100).w)),slide:0,w:1}; }
   function linePut(X,w,v){ var o=own(X.id), k=w==='top'?'tl':'bl'; v.size=Math.round(v.size*10)/10; v.w=Math.max(.4,Math.min(1.8,Math.round(v.w*100)/100));
     o[k]=X.set==='24'?{size:v.size,slide:Math.round(v.slide),w:v.w}:{size:v.size,slide:Math.round(v.slide*10)/10,lw:v.w}; }
@@ -284,7 +295,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
       function t(){ var e=document.createElementNS(NS,'text'); e.setAttribute('font-family','MFHobo'); g.appendChild(e); return e; }
       var E={word:t(),top:t(),bot:t(),ref:t()};
       ['top','bot'].forEach(function(w){ var tp=document.createElementNS(NS,'textPath'); tp.setAttribute('href','#'+X.id+'g_'+w); tp.setAttribute('text-anchor','start'); E[w].appendChild(tp); E[w].setAttribute('fill','#000'); });
-      E.word.setAttribute('fill','#fff'); E.word.setAttribute('text-anchor','middle');
+      E.word.setAttribute('fill','#fff'); E.word.setAttribute('text-anchor','middle'); E.word.setAttribute('stroke','#fff'); E.word.setAttribute('stroke-width',FR?FR.word.stroke:27.8); E.word.setAttribute('stroke-linejoin','round');
+      ['top','bot'].forEach(function(w){ E[w].setAttribute('stroke','#000'); E[w].setAttribute('stroke-width',FR?FR.verse.stroke:3); E[w].setAttribute('stroke-linejoin','round'); });
       E.ref.setAttribute('fill','#000'); E.ref.setAttribute('stroke','#000'); E.ref.setAttribute('stroke-width','7'); E.ref.setAttribute('stroke-linejoin','round'); E.ref.setAttribute('text-anchor','middle'); E.ref.setAttribute('x',G.ref.x); E.ref.setAttribute('y',G.ref.y); E.ref.setAttribute('transform',G.ref.rot); E.ref.setAttribute('font-size',G.ref.size);
       X.svg=svg; X.E=E; X.plen={top:svg.querySelector('[id="'+X.id+'g_top"]').getTotalLength(),bot:svg.querySelector('[id="'+X.id+'g_bot"]').getTotalLength()};
       draw(X); tool(X); return Promise.resolve(); }
@@ -314,7 +326,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
       // Ken, 19 Oct: "some scripture refs do not need to be abbreviated, like Kings, Ruth, Ezra" -- a short book name (6 letters or
       // fewer) is always written out and narrowed a little if it must; a long one is shortened only when it doesn't fit
       var ref=val(X,'ref'), book=ref.replace(/\s*\d+[:.,]\d.*$/,'').replace(/^\d\s*/,''), r=ref+' (KJV)';
-      if(book.length>6&&meas(r,G.ref.size).w>G.ref.avail&&ref===X.base.ref) r=X.nf.refShort+' (KJV)'; E.ref.textContent=r;
+      if(book.length>6&&meas(r,G.ref.size).w>G.ref.avail&&ref===X.base.ref) r=X.nf.refShort+' (KJV)'; if(FE) r=MFfmt.refText(FE,ref,ref===X.base.ref?X.nf.refShort:'',FR); E.ref.textContent=r;
       if(meas(r,G.ref.size).w>G.ref.avail){ E.ref.setAttribute('textLength',G.ref.avail); E.ref.setAttribute('lengthAdjust','spacingAndGlyphs'); } else { E.ref.removeAttribute('textLength'); E.ref.removeAttribute('lengthAdjust'); }
     } else if(!X.drawn){ var B=X.B, E2=X.E, a=rel24(X), o=S.d[X.id]||{};
       E2.word.textContent=rtl(X,val(X,'word'));
@@ -354,7 +366,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
         +(X.drawn?'<div class="p-look"><p class="hint" style="text-align:left">The English fish are hand-drawn, so tick what should change:</p><div class="dzo">'+DZ.map(function(o){ return '<label class="dzc"><input type="checkbox" data-dz value="'+esc(o)+'"> '+esc(o)+'</label>'; }).join('')+'</div>'
             +txBox('word','The word')+txBox('top','Verse line 1')+txBox('bot','Verse line 2')+txBox('ref','Reference')+txBox('dnote','Anything else about how the fish looks',2)+'</div>'
           :'<div class="p-word">'+txBox('word','The word')+'<div class="wpanel"></div></div><div class="p-top">'+lineBox(X,'top')+'</div><div class="p-bot">'+lineBox(X,'bot')+'</div>'
-            +'<div class="p-ref">'+txBox('ref','Reference')+'<p class="hint" style="text-align:left">The reference and the MannaFish™ logo are always size 168 on every fish. A long reference is shortened, never made smaller.'+(X.set==='24'?' A new reference shows on the fish after Claude rebuilds it.':'')+'</p></div>')
+            +'<div class="p-ref">'+txBox('ref','Reference')+'<p class="hint" style="text-align:left">The reference is always size 192 on every fish. A long reference is shortened, never made smaller.'+(X.set==='24'?' A new reference shows on the fish after Claude rebuilds it.':'')+'</p></div>')
       +'</div>';
     [].forEach.call(el.querySelectorAll('[data-f]'),function(i){ i.value=val(X,i.dataset.f); mark(X,i); });
     if(X.drawn){ var dz=val(X,'design'); [].forEach.call(el.querySelectorAll('[data-dz]'),function(c){ c.checked=dz.split('; ').indexOf(c.value)>=0; }); }
@@ -430,9 +442,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   var FONT64={};
   function font64(fam){ var f=FONTFILE[fam]; if(!f) return Promise.resolve(''); if(!FONT64[fam]) FONT64[fam]=fetch('/fish-lang/'+f+'.woff2').then(function(r){ return r.arrayBuffer(); }).then(function(b){ var s='', u=new Uint8Array(b); for(var i=0;i<u.length;i+=32768) s+=String.fromCharCode.apply(null,u.subarray(i,i+32768)); return "@font-face{font-family:'"+fam+"';src:url(data:font/woff2;base64,"+btoa(s)+") format('woff2');font-weight:100 900}"; }); return FONT64[fam]; }
   // the fish as it is drawn here, for the reading plan's pictures (tools/daily-fish/export.js)
-  window.MFeditSvg=function(id){ var X=F[id]; if(!X) return Promise.reject(new Error('not on the sheet: '+id)); return ensure(X).then(function(){ var svg=X.svg.cloneNode(true);
+  function builderSvg(X){ var f=fishF(X), w=wordGet(X), o={wl:w}; ['top','bot'].forEach(function(t){ var l=lineGet(X,t); o[t==='top'?'tl':'bl']={size:l.size,slide:l.slide,lw:l.w}; });
+    return MFfmt.draw(FE,f,MFfmt.fromSheet(FE,f,o,FR,MFfmt.layout(FE,f,FR)),FR); }
+  window.MFeditSvg=function(id){ var X=F[id]; if(!X) return Promise.reject(new Error('not on the sheet: '+id)); return ensure(X).then(function(){ if(X.set==='new'&&FE) return builderSvg(X); var svg=X.svg.cloneNode(true);
     [].forEach.call(svg.querySelectorAll('.wtsel,.wth'),function(x){ x.remove(); }); svg.removeAttribute('style'); svg.setAttribute('xmlns','http://www.w3.org/2000/svg'); return new XMLSerializer().serializeToString(svg); }); };
-  function pngBlob(X,px){ return ensure(X).then(function(){ var svg=X.svg.cloneNode(true); [].forEach.call(svg.querySelectorAll('.wtsel,.wth'),function(x){ x.remove(); });
+  function pngBlob(X,px){ return ensure(X).then(function(){ var svg=X.set==='new'&&FE?new DOMParser().parseFromString(builderSvg(X),'image/svg+xml').documentElement:X.svg.cloneNode(true); [].forEach.call(svg.querySelectorAll('.wtsel,.wth'),function(x){ x.remove(); });
       var fams={}; [].forEach.call(svg.querySelectorAll('[font-family]'),function(e){ fams[e.getAttribute('font-family').replace(/['"]/g,'').split(',')[0].trim()]=1; });
       return Promise.all(Object.keys(fams).map(font64)).then(function(css){ var w=px, h=Math.round(px/2);
         svg.setAttribute('width',w); svg.setAttribute('height',h); svg.setAttribute('preserveAspectRatio','none'); svg.removeAttribute('style'); svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
@@ -539,8 +553,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 
   // ═════ start ═════
   $('who').value=ls('mf-proof-name')||''; primeSigs(); pull();
-  Promise.all([fetch('/edit/data.json',{cache:'no-store'}).then(function(r){ return r.json(); }),fetch('/edit/new/data.json').then(function(r){ return r.json(); }),fetch('/edit/new/base.svg').then(function(r){ return r.text(); }),document.fonts.load('100px MFHobo'),fetch('/edit/daily/data.json').then(function(r){ return r.json(); }).catch(function(){ return {fish:[]}; })])
-    .then(function(x){ D=x[0]; N=x[1]; BASE=x[2]; DY=x[4]; if(!DY.fish.length){ document.querySelector('[data-set=daily]').hidden=true; if(set==='daily') set='new'; } var qs=/[?&]set=(new|daily)/.exec(location.search); if(qs&&(qs[1]!=='daily'||DY.fish.length)) set=qs[1]; if(set==='24'&&lang!=='all'&&!D.langs.some(function(l){ return l.l===lang; })) lang='B';
+  Promise.all([fetch('/edit/data.json',{cache:'no-store'}).then(function(r){ return r.json(); }),fetch('/edit/new/data.json').then(function(r){ return r.json(); }),fetch('/edit/new/base.svg').then(function(r){ return r.text(); }),document.fonts.load('100px MFHobo'),fetch('/edit/daily/data.json').then(function(r){ return r.json(); }).catch(function(){ return {fish:[]}; }),
+      Promise.all([fetch('/fish-lang/fishgeo.json').then(function(r){ return r.json(); }),fetch('/fish-lang/hobo.otf').then(function(r){ return r.arrayBuffer(); })]).catch(function(){ return null; })])
+    .then(function(x){ D=x[0]; N=x[1]; BASE=x[2]; DY=x[4];
+      if(x[5]&&window.MFfmt&&window.opentype){ try{ MFfmt.setGeo(x[5][0]); FR=x[5][0].rule; FE=MFfmt.otEngine(opentype.parse(x[5][1])); }catch(e){ FE=null; } } if(!DY.fish.length){ document.querySelector('[data-set=daily]').hidden=true; if(set==='daily') set='new'; } var qs=/[?&]set=(new|daily)/.exec(location.search); if(qs&&(qs[1]!=='daily'||DY.fish.length)) set=qs[1]; if(set==='24'&&lang!=='all'&&!D.langs.some(function(l){ return l.l===lang; })) lang='B';
       // straight to one fish (Ken, 26 Oct: from a fish whose design needs fixing): /edit/?find=Trust&code=tl
       var qf=new URLSearchParams(location.search); if(qf.get('find')){ set='24'; q=qf.get('find'); $('find').value=q; var L0=D.langs.filter(function(l){ return l.code===qf.get('code'); })[0]; lang=L0?L0.l:'all'; }
       render(); })

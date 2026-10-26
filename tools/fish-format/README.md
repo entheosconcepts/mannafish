@@ -26,4 +26,27 @@ Each is measured from the letters, with their white outline, to the eye's inside
 
 `node build.js` (OPENTYPE, HOBO as above) redraws fish/<id>.svg for the 128 year fish and Tend from `net-lines.json`,
 with the nine recommended standards (or PICKS=REST,LOVE,...). Their pictures need no font.
-Note: tools/daily-fish/export.js draws fish the edit sheet's older way; running it for these ids would undo this.
+## Every fish now (26 Oct)
+
+| fish | how | command |
+| --- | --- | --- |
+| Ken's English 24 | his own drawings, untouched | |
+| 128 year fish + Tend (Go Fish net) | Hobo, this rule | `node build.js` |
+| 623 Bible-in-a-year fish in the plan | Hobo, this rule | `node build.js daily-lines.json` |
+| the 24 in es, tl, de | Hobo, this rule | `node build-lang.js` |
+| the 24 in el, zh, ko, he, ar, hi | their own faces (fonts/), shaped by HarfBuzz (`hbengine.js`) | `node build-lang.js` |
+
+Environment: OPENTYPE (opentype.js), HOBO (Hobo as OTF; the site has it at fish-lang/hobo.otf), HARFBUZZ (harfbuzzjs index.mjs).
+After build-lang: `python3 tools/fish/sync.py` (the copies in index.html, match/, fish-lang/, fish-es/).
+
+Every picture is outlines, written compactly. Verse words carry data-part / data-s / data-e, so the read-aloud lights them
+up (index.html fishHi). Other scripts: letters matched to Hobo's capital height (capChars), verse letters kept on the white
+band (lifted and made a little smaller where they reach far below the line), thinner outlines for close-stroked scripts.
+
+## The edit sheet
+
+edit/index.html runs the same builder (/fish-lang/fishfmt.js, /fish-lang/fishgeo.json with the rule, /fish-lang/opentype.min.js,
+/fish-lang/hobo.otf; build.js keeps the first two in step). For the year and Bible-in-a-year fish the builder gives each fish its
+starting place (a fish's own setting or a saved letter-count rule still wins), and MFeditSvg / the PNG / tools/daily-fish/export.js
+give the builder's outlines of exactly what is shown. The other-language 24 are edited as live text from edit/lang/<l>.json,
+which build-lang.js writes from the same layout; their edits come back by email and go into lang-lines.json as "edit".

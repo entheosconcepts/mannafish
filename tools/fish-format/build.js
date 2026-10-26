@@ -9,6 +9,9 @@ F.setGeo(JSON.parse(fs.readFileSync(path.join(__dirname,'geo.json'))));
 const PICKS=(process.env.PICKS||'REST,GROW,LOVE,TRUST,LISTEN,LAUGH,BELIEVE,BREATHE,REMEMBER').split(',');
 const R=derive(JSON.parse(fs.readFileSync(path.join(__dirname,'ken24.json'))),PICKS,F.RULE);
 // each fish's own lines, as they were on its last picture (so edits made on the edit sheet are kept)
+// the edit sheet runs the same builder: /fish-lang/fishfmt.js and /fish-lang/fishgeo.json (the shape, and this rule)
+fs.copyFileSync(path.join(__dirname,'fishfmt.js'),path.join(ROOT,'fish-lang','fishfmt.js'));
+fs.writeFileSync(path.join(ROOT,'fish-lang','fishgeo.json'),JSON.stringify(Object.assign({},JSON.parse(fs.readFileSync(path.join(__dirname,'geo.json'))),{rule:R})));
 const lines=JSON.parse(fs.readFileSync(path.join(__dirname,process.argv[2]||'net-lines.json')));
 for(const f of lines){ fs.writeFileSync(path.join(ROOT,'fish',f.k+'.svg'),F.svg(font,f,R)); }
 console.log(lines.length,'fish drawn', JSON.stringify(R.word));
