@@ -1,7 +1,13 @@
 // MannaFish format builder (Ken, 26 Oct: "all fish like the other 24 in Hobo, positioned and proper size ... printable").
 // Draws a fish from {word, top, bot, ref} with Ken's body and MannaFish(TM) tail, and every letter as an outline
 // (no font needed to show it or print it). The rule (sizes and places) comes from the standard fish Ken picks of his 24.
-// Works in the browser (window.MFfmt) and in node (module.exports). Needs an opentype.js Font of Hobo.
+// Works in the browser (window.MFfmt) and in node (module.exports).
+//
+// The letters come from a text engine: MFfmt.otEngine(font) for an opentype.js font (Hobo: English, Spanish, Tagalog,
+// German), or tools/fish-format/hbengine.js (HarfBuzz) for the languages whose letters join or reorder (Arabic, Hindi) and
+// for every other script. An engine gives: run(text,size) -> {glyphs:[{x,adv,cmds}],adv} (cmds: opentype-style path
+// commands at the glyph's origin, y down, in visual order), capH (the script's letter height per unit of size: Hobo's
+// capital H), and tall(ch) (true for a tall Latin letter; only Hobo has the tall-letter rule).
 (function(root){
   // Ken's fish, measured: the eye (the black middle), the two verse curves (sampled), the tail reference spot
   var GEO=null;
@@ -10,12 +16,15 @@
   // word.min (smallest letters; a longer word is narrowed instead), word.sx (Ken's usual widening), word.cx/cy (centre),
   // word.stroke (the white outline that makes his letters bold); verse.size, verse.cond (his usual narrowing),
   // verse.start/end (how far along each curve the line may run), verse.mid (its centre), verse.stroke; ref.*
+  // band: where letters may reach, from the line they sit on (minus a margin): the white ring reaches about 218 out and
+  // 60 in from each verse curve, the tail about 218 and 84 from the reference's line. Hobo stays well inside.
   var RULE={word:{size:880,fill:0.80,min:560,sx:1,cx:1677,cy:975,stroke:27.8,room:40,tall:0.15},
-    verse:{size:222,cond:0.95,start:0.027,end:0.978,mid:0.5,stroke:3},
-    ref:{size:192,avail:980,stroke:7,cond:1}};
+    verse:{size:222,cond:0.95,start:0.027,end:0.978,mid:0.5,stroke:3,up:200,down:42},
+    ref:{size:192,avail:980,stroke:7,cond:1,up:200,down:66}};
+  var HOBOCAP=832.3333333333333/1000;   // Hobo's capital H, per unit of size: every script's letters are matched to this height
 
   function f1(n){ return Math.round(n*10)/10; }
-  // an opentype path's commands, each point moved by fn(x,y) -> [x,y], as SVG path data
+  // path commands, each point moved by fn(x,y) -> [x,y], as SVG path data
   function pathD(cmds,fn){ var s='';
     cmds.forEach(function(c){ var p;
       if(c.type==='M'||c.type==='L'){ p=fn(c.x,c.y); s+=c.type+f1(p[0])+' '+f1(p[1]); }
@@ -23,12 +32,28 @@
       else if(c.type==='Q'){ var q=fn(c.x1,c.y1); p=fn(c.x,c.y); s+='Q'+f1(q[0])+' '+f1(q[1])+' '+f1(p[0])+' '+f1(p[1]); }
       else if(c.type==='Z') s+='Z'; });
     return s; }
-  // each glyph of a run: its outline at the origin, where it starts and how wide it is
-  function glyphs(font,text,size){ var out=[];
-    font.forEachGlyph(text,0,0,size,{kerning:true},function(g,x,y,fs){ out.push({x:x,adv:g.advanceWidth*fs/font.unitsPerEm,cmds:g.getPath(0,0,fs).commands}); });
+  // the outline of a path as points (each curve at quarter steps)
+  function points(cmds){ var out=[], px=0, py=0;
+    cmds.forEach(function(c){
+      if(c.type==='M'||c.type==='L'){ px=c.x; py=c.y; out.push([px,py]); }
+      else if(c.type==='C'){ for(var i=1;i<=4;i++){ var t=i/4,u=1-t; out.push([u*u*u*px+3*u*u*t*c.x1+3*u*t*t*c.x2+t*t*t*c.x, u*u*u*py+3*u*u*t*c.y1+3*u*t*t*c.y2+t*t*t*c.y]); } px=c.x; py=c.y; }
+      else if(c.type==='Q'){ for(var j=1;j<=4;j++){ var s=j/4,v=1-s; out.push([v*v*px+2*v*s*c.x1+s*s*c.x, v*v*py+2*v*s*c.y1+s*s*c.y]); } px=c.x; py=c.y; } });
     return out; }
-  function advance(font,text,size){ return font.getAdvanceWidth(text,size,{kerning:true}); }
-  function inkBox(font,text,size){ var b=font.getPath(text,0,0,size,{kerning:true}).getBoundingBox(); return b; }
+  function shift(cmds,dx){ return cmds.map(function(c){ var o={type:c.type}; ['x','x1','x2'].forEach(function(k){ if(c[k]!=null) o[k]=c[k]+dx; }); ['y','y1','y2'].forEach(function(k){ if(c[k]!=null) o[k]=c[k]; }); return o; }); }
+  // a whole run as one list of commands, and its ink box
+  function runCmds(E,text,size){ var r=E.run(text,size), out=[]; r.glyphs.forEach(function(g){ out=out.concat(shift(g.cmds,g.x)); }); return {cmds:out,adv:r.adv,glyphs:r.glyphs}; }
+  function box(cmds){ var b={x1:1e9,y1:1e9,x2:-1e9,y2:-1e9}; points(cmds).forEach(function(p){ if(p[0]<b.x1) b.x1=p[0]; if(p[0]>b.x2) b.x2=p[0]; if(p[1]<b.y1) b.y1=p[1]; if(p[1]>b.y2) b.y2=p[1]; });
+    if(b.x1>b.x2) b={x1:0,y1:0,x2:0,y2:0}; return b; }
+
+  // opentype.js as an engine (Hobo)
+  function otEngine(font,opt){ opt=opt||{}; var upm=font.unitsPerEm;
+    return {name:opt.name||'hobo', hobo:opt.hobo!==false,
+      capH:opt.capH||font.charToGlyph('H').getBoundingBox().y2/upm,
+      run:function(text,size){ var gl=[]; font.forEachGlyph(text,0,0,size,{kerning:true},function(g,x){ gl.push({x:x,adv:g.advanceWidth*size/upm,cmds:g.getPath(0,0,size).commands}); });
+        return {glyphs:gl,adv:font.getAdvanceWidth(text,size,{kerning:true})}; },
+      tall:function(ch){ return font.charToGlyph(ch).getBoundingBox().y2>750*upm/1000; }}; }
+  function eng(x){ return x&&typeof x.run==='function'?x:otEngine(x); }   // a plain opentype font still works
+
   // a point and direction along a sampled curve, at length s
   function along(c,s){ var n=c.pts.length-1, t=Math.max(0,Math.min(n-1e-6,s/c.L*n)), i=Math.floor(t), f=t-i, a=c.pts[i], b=c.pts[Math.min(n,i+1)];
     var j=Math.max(0,Math.min(n-1,i)), p=c.pts[j], q=c.pts[j+1];
@@ -40,19 +65,12 @@
   // So the word is placed by rules, each measured from the letters (with their white outline) to the eye's inside edge:
   //  1. size: as big as the rule allows (short words: the standards' letter height; longer: fill the eye's width; too long: narrowed)
   //  2. tall letters: a word made mostly of tall letters (With: W, i, t, h) looks bigger, so it is set smaller, by up to
-  //     word.tall (15%) when every letter is tall; half or fewer tall letters (Rest, Love, Hope) are not changed
+  //     word.tall (15%) when every letter is tall; half or fewer tall letters (Rest, Love, Hope) are not changed (Hobo only)
   //  3. balance: as much room on the left as on the right, and above as below
   //  4. room: no letter closer than word.room to the inside edge; if one is, the word gets smaller until none is
   //     (a long word at its smallest letters is narrowed instead)
-  var TALLAT=750;   // a letter reaching above this (Hobo units of 1000) is tall: capitals, b d f h i j k l t; not a c e m n o r s u v w x z
-  function tallShare(font,word){ var n=0,t=0; Array.from(word).forEach(function(ch){ if(!/\S/.test(ch)||/[.,;:!?'"’‘“”…-]/.test(ch)) return; n++; if(font.charToGlyph(ch).getBoundingBox().y2>TALLAT) t++; }); return n?t/n:0; }
-  // the outline of a path as points (each curve at quarter steps), in font units at the origin
-  function points(cmds){ var out=[], px=0, py=0;
-    cmds.forEach(function(c){
-      if(c.type==='M'||c.type==='L'){ px=c.x; py=c.y; out.push([px,py]); }
-      else if(c.type==='C'){ for(var i=1;i<=4;i++){ var t=i/4,u=1-t; out.push([u*u*u*px+3*u*u*t*c.x1+3*u*t*t*c.x2+t*t*t*c.x, u*u*u*py+3*u*u*t*c.y1+3*u*t*t*c.y2+t*t*t*c.y]); } px=c.x; py=c.y; }
-      else if(c.type==='Q'){ for(var j=1;j<=4;j++){ var s=j/4,v=1-s; out.push([v*v*px+2*v*s*c.x1+s*s*c.x, v*v*py+2*v*s*c.y1+s*s*c.y]); } px=c.x; py=c.y; } });
-    return out; }
+  function tallShare(E,word){ if(!E.hobo||!E.tall) return 0; var n=0,t=0;
+    Array.from(word).forEach(function(ch){ if(!/\S/.test(ch)||/[.,;:!?'"’‘“”…-]/.test(ch)) return; n++; if(E.tall(ch)) t++; }); return n?t/n:0; }
   // the eye's inside edge: across each row, and down each column
   function rowAt(y){ var E=GEO.eye, i=Math.round((y-E.y0)/E.step); return E.rows[i]||null; }
   function colAt(x){ var E=GEO.eye, i=Math.round((x-E.x0)/E.step); return E.cols[i]||null; }
@@ -68,47 +86,66 @@
       for(var i=0;i<n;i++){ var a=poly[i], b=poly[(i+1)%n], dx=b[0]-a[0], dy=b[1]-a[1], l2=dx*dx+dy*dy||1, t=((p[0]-a[0])*dx+(p[1]-a[1])*dy)/l2;
         t=t<0?0:t>1?1:t; var ex=a[0]+t*dx-p[0], ey=a[1]+t*dy-p[1], d=ex*ex+ey*ey; if(d<best*best) best=Math.sqrt(d); } });
     return out?-1:best; }
-  function wordLayout(font,word,R){ R=R||RULE; var W=R.word, b=inkBox(font,word,100), iw=(b.x2-b.x1)/100;
-    var share=tallShare(font,word), tf=share>0.5?1-(W.tall||0)*(share-0.5)/0.5:1;
-    var fillW=W.fill*GEO.eyeW-W.stroke, size0=Math.min(W.size*tf,fillW/(iw*W.sx)), sx0=W.sx;
-    if(size0<W.min){ size0=W.min; sx0=fillW/(iw*size0); }       // a long word keeps its letter height and is narrowed instead
-    var raw=points(font.getPath(word,0,0,100,{kerning:true}).commands), mx=(b.x1+b.x2)/2, half=W.stroke/2;
+  function wordLayout(E,word,R){ E=eng(E); R=R||RULE; var W=R.word, run=runCmds(E,word,100), b=box(run.cmds), iw=(b.x2-b.x1)/100;
+    var k=HOBOCAP/E.capH;   // another script's letters are matched to Hobo's letter height
+    var share=tallShare(E,word), tf=share>0.5?1-(W.tall||0)*(share-0.5)/0.5:1, min=W.min*k;
+    var fillW=W.fill*GEO.eyeW-W.stroke, size0=Math.min(W.size*k*tf,fillW/(iw*W.sx)), sx0=W.sx;
+    if(size0<min){ size0=min; sx0=fillW/(iw*size0); }       // a long word keeps its letter height and is narrowed instead
+    var raw=points(run.cmds), mx=(b.x1+b.x2)/2, half=W.stroke/2;
     // the word at a given size, balanced left/right and top/bottom
-    function place(size,sx){ var s=size/100, cap=font.charToGlyph('H').getBoundingBox().y2/font.unitsPerEm*size, base=W.cy+cap/2, dx=0, dy=0, P;
+    function place(size,sx){ var s=size/100, base=W.cy+E.capH*size/2, dx=0, dy=0, P;
       function at(){ return raw.map(function(p){ return [W.cx+(p[0]-mx)*s*sx+dx, base+p[1]*s+dy]; }); }
-      for(var k=0;k<4;k++){ P=at(); var S=sides(P); if(S.L<-1e8) break; dx+=(S.R-S.L)/2; P=at(); S=sides(P); dy+=(S.B-S.T)/2; }
-      P=at(); return {size:size,sx:sx,dx:dx,dy:dy,base:base,room:nearest(P,(W.room||0)+200)-half}; }
-    var f=1, best=place(size0,sx0);
-    function scaled(f){ var sz=size0*f, sx=sx0; if(sz<W.min){ sx=sx0*sz/W.min; sz=W.min; } return place(sz,sx); }
+      for(var i=0;i<4;i++){ P=at(); var S=sides(P); if(S.L<-1e8) break; dx+=(S.R-S.L)/2; P=at(); S=sides(P); dy+=(S.B-S.T)/2; }
+      P=at(); return {size:size,sx:sx,hh:1,ox:W.cx-mx*s*sx+dx,oy:base+dy,room:nearest(P,(W.room||0)+200)-half}; }
+    var best=place(size0,sx0);
+    function scaled(f){ var sz=size0*f, sx=sx0; if(sz<min){ sx=sx0*sz/min; sz=min; } return place(sz,sx); }
     if(W.room&&best.room<W.room){ var lo=0.5, hi=1; for(var i=0;i<14;i++){ var m=(lo+hi)/2, t=scaled(m); if(t.room>=W.room){ lo=m; best=t; } else hi=m; } if(best.room<W.room) best=scaled(lo); }
-    best.box=b; best.mx=mx; best.tall=share; best.tf=tf; return best; }
-  function wordSvg(font,word,R){ R=R||RULE; var W=R.word, L=wordLayout(font,word,R), s=L.size/100;
-    var d=pathD(font.getPath(word,0,0,L.size,{kerning:true}).commands,function(x,y){ return [W.cx+(x-L.mx*s)*L.sx+L.dx,L.base+y+L.dy]; });
-    return '<path fill-rule="nonzero" fill="#fff" stroke="#fff" stroke-width="'+W.stroke+'" stroke-linejoin="round" d="'+d+'"/>'; }
+    best.tall=share; best.tf=tf; return best; }
 
   // ── a verse line along its curve ──
-  function lineLayout(font,text,which,R){ R=R||RULE; var V=R.verse, c=GEO[which], span=(V.end-V.start)*c.L, nat=advance(font,text,V.size);
+  // the same letter height as Hobo; a script whose letters reach further above or below the line than the white band allows
+  // (Arabic, Hindi) is set a little smaller and lifted, so every letter stays on the white
+  function fitBand(E,text,size0,Z){ var b=box(runCmds(E,text,size0).cmds), up=-b.y1, dn=Math.max(0,b.y2), size=size0;
+    if(up+dn>Z.up+Z.down){ var f=(Z.up+Z.down)/(up+dn); size*=f; up*=f; dn*=f; }
+    var lift=dn>Z.down?dn-Z.down:0; if(up+lift>Z.up) lift=Math.max(0,Z.up-up);
+    return {size:size,lift:lift}; }
+  function lineLayout(E,text,which,R){ E=eng(E); R=R||RULE; var V=R.verse, c=GEO[which], fb=fitBand(E,text,V.size*HOBOCAP/E.capH,V);
+    var span=(V.end-V.start)*c.L, nat=E.run(text,fb.size).adv;
     var k=nat*V.cond>span?span/nat:V.cond, used=nat*k, st=(V.mid*c.L)-used/2; st=Math.max(V.start*c.L,Math.min(V.end*c.L-used,st));
-    return {k:k,used:used,start:st,nat:nat,cover:used/c.L}; }
-  function lineSvg(font,text,which,R){ R=R||RULE; var V=R.verse, c=GEO[which], L=lineLayout(font,text,which,R), d='';
-    glyphs(font,text,V.size).forEach(function(g){ var mid=L.start+(g.x+g.adv/2)*L.k, P=along(c,mid), co=Math.cos(P.ang), si=Math.sin(P.ang), ox=g.adv/2;
-      d+=pathD(g.cmds,function(x,y){ var lx=(x-ox)*L.k; return [P.x+lx*co-y*si, P.y+lx*si+y*co]; }); });
-    return '<path fill-rule="nonzero" fill="#000" stroke="#000" stroke-width="'+V.stroke+'" stroke-linejoin="round" d="'+d+'"/>'; }
+    return {size:fb.size,lift:fb.lift,k:k,used:used,start:st,nat:nat,cover:used/c.L}; }
 
-  // ── the reference on the lower tail, with (KJV) ──
-  // Ken, 19 Oct: a short book name (6 letters or fewer) is always written out; a long one is shortened only when it doesn't fit
-  function refText(font,ref,short,R){ R=R||RULE; var r=ref+' (KJV)', book=ref.replace(/\s*\d+[:.,]\d.*$/,'').replace(/^\d\s*/,'');
-    if(short&&book.length>6&&advance(font,r,R.ref.size)*R.ref.cond>R.ref.avail) r=short+' (KJV)'; return r; }
-  function refSvg(font,ref,short,R){ R=R||RULE; var F=R.ref, t=refText(font,ref,short,R), nat=advance(font,t,F.size), k=Math.min(F.cond,F.avail/nat);
-    var g=GEO.ref, a=g.rot*Math.PI/180, co=Math.cos(a), si=Math.sin(a), half=nat*k/2;
-    var d=pathD(font.getPath(t,0,0,F.size,{kerning:true}).commands,function(x,y){ var lx=x*k-half, X=g.x+lx, Y=g.y+y;   // laid out flat, then turned with the tail
+  // ── the reference on the lower tail ──
+  // Ken, 19 Oct: a short book name (6 letters or fewer) is always written out; a long one is shortened only when it doesn't fit.
+  // f.tag is added after it (" (KJV)" unless the fish says otherwise; the other languages carry their version in the reference)
+  function refText(E,ref,short,R,tag){ E=eng(E); R=R||RULE; tag=tag==null?' (KJV)':tag; var r=ref+tag, book=ref.replace(/\s*\d+[:.,]\d.*$/,'').replace(/^\d\s*/,'');
+    if(short&&book.length>6&&E.run(r,R.ref.size).adv*R.ref.cond>R.ref.avail) r=short+tag; return r; }
+  function refLayout(E,f,R){ E=eng(E); R=R||RULE; var F=R.ref, t=refText(E,f.ref,f.refShort,R,f.tag), fb=fitBand(E,t,F.size*HOBOCAP/E.capH,F), nat=E.run(t,fb.size).adv;
+    return {text:t,size:fb.size,lift:fb.lift,k:Math.min(F.cond,F.avail/nat)}; }
+
+  // ── the whole layout, then the drawing ──
+  // A layout says exactly where everything goes, so the edit sheet can hand over its own (a fish Ken adjusted by hand):
+  //   word {size, sx, hh, ox, oy}: a letter's point (x,y) at that size lands at (ox + x*sx, oy + y*hh)
+  //   top / bot {size, k, start, lift}: each letter's middle sits at start + (its place in the line)*k along the curve, lifted out
+  //   ref {text, size, k, lift}: centred on the tail
+  function layout(E,f,R){ E=eng(E); R=R||RULE;
+    return {word:wordLayout(E,f.word,R),top:lineLayout(E,f.top,'top',R),bot:lineLayout(E,f.bot,'bot',R),ref:refLayout(E,f,R)}; }
+  function wordPath(E,word,L,stroke){ var run=runCmds(E,word,L.size);
+    var d=pathD(run.cmds,function(x,y){ return [L.ox+x*L.sx, L.oy+y*(L.hh||1)]; });
+    return '<path fill-rule="nonzero" fill="#fff" stroke="#fff" stroke-width="'+stroke+'" stroke-linejoin="round" d="'+d+'"/>'; }
+  function linePath(E,text,which,L,stroke){ var c=GEO[which], d='';
+    E.run(text,L.size).glyphs.forEach(function(g){ var mid=L.start+(g.x+g.adv/2)*L.k, P=along(c,mid), co=Math.cos(P.ang), si=Math.sin(P.ang), ox=g.adv/2, up=L.lift||0;
+      d+=pathD(g.cmds,function(x,y){ var lx=(x-ox)*L.k, ly=y-up; return [P.x+lx*co-ly*si, P.y+lx*si+ly*co]; }); });
+    return '<path fill-rule="nonzero" fill="#000" stroke="#000" stroke-width="'+stroke+'" stroke-linejoin="round" d="'+d+'"/>'; }
+  function refPath(E,L,stroke){ var g=GEO.ref, a=g.rot*Math.PI/180, co=Math.cos(a), si=Math.sin(a), run=runCmds(E,L.text,L.size), half=run.adv*L.k/2, up=L.lift||0;
+    var d=pathD(run.cmds,function(x,y){ var X=g.x+x*L.k-half, Y=g.y+y-up;   // laid out flat, then turned with the tail
       var dx=X-g.ox, dy=Y-g.oy; return [g.ox+dx*co-dy*si, g.oy+dx*si+dy*co]; });
-    return '<path fill-rule="nonzero" fill="#000" stroke="#000" stroke-width="'+F.stroke+'" stroke-linejoin="round" d="'+d+'"/>'; }
+    return '<path fill-rule="nonzero" fill="#000" stroke="#000" stroke-width="'+stroke+'" stroke-linejoin="round" d="'+d+'"/>'; }
+  function draw(E,f,P,R){ E=eng(E); R=R||RULE;
+    return '<svg viewBox="0 0 4000 2000" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;shape-rendering:geometricPrecision;fill-rule:evenodd;clip-rule:evenodd" role="img" aria-label="'+String(f.word).replace(/[&<>"‪-‮]/g,'')+' fish">'
+      +GEO.base+wordPath(E,f.word,P.word,R.word.stroke)+linePath(E,f.top,'top',P.top,R.verse.stroke)+linePath(E,f.bot,'bot',P.bot,R.verse.stroke)+refPath(E,P.ref,R.ref.stroke)+'</svg>'; }
+  function svg(E,f,R){ E=eng(E); return draw(E,f,layout(E,f,R),R); }
 
-  // the whole fish, as one SVG (Ken's body and tail from GEO.base)
-  function svg(font,f,R){ R=R||RULE;
-    return '<svg viewBox="0 0 4000 2000" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;shape-rendering:geometricPrecision;fill-rule:evenodd;clip-rule:evenodd" role="img" aria-label="'+String(f.word).replace(/[&<>"]/g,'')+' fish">'+GEO.base+wordSvg(font,f.word,R)+lineSvg(font,f.top,'top',R)+lineSvg(font,f.bot,'bot',R)+refSvg(font,f.ref,f.refShort,R)+'</svg>'; }
-
-  var API={setGeo:setGeo,RULE:RULE,svg:svg,wordLayout:wordLayout,lineLayout:lineLayout,refText:refText,inkBox:inkBox,advance:advance};
+  var API={setGeo:setGeo,RULE:RULE,HOBOCAP:HOBOCAP,otEngine:otEngine,svg:svg,draw:draw,layout:layout,wordLayout:wordLayout,lineLayout:lineLayout,refLayout:refLayout,refText:refText,
+    runBox:function(E,text,size){ return box(runCmds(eng(E),text,size).cmds); }};
   if(typeof module!=='undefined'&&module.exports) module.exports=API; else root.MFfmt=API;
 })(this);
