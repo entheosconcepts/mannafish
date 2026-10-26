@@ -20,7 +20,9 @@ Each is measured from the letters, with their white outline, to the eye's inside
 1. size from the rule (short words: the standards' letter height; longer: fill the eye's width; too long: narrowed, like Remember)
 2. tall letters: more than half the letters tall (capitals, b d f h i j k l t) and the word is set smaller, up to 15% (`word.tall`)
 3. balance: as much room left as right, and above as below
-4. room: no letter closer than `word.room` (the middle of the standards' closest approach, 40 of 4,000) to the edge; else smaller
+4. short words (Ken, 26 Oct: "not so much bigger than all the other words"): letters at most `word.steps` times a 7-letter
+   word's (`word.base`, 583): 3 letters ×1.25, 4 ×1.2, 5 ×1.12, 6 ×1.06, 7+ ×1.03; Hebrew, Chinese and Korean count as all-tall letters
+5. room: no letter closer than `word.room` (the middle of the standards' closest approach, 40 of 4,000) to the edge; else smaller
 
 ## The Go Fish net (fish/net.json): drawn by this rule
 

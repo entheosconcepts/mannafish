@@ -62,7 +62,7 @@ async function load(fontPath, opt = {}) {
     return (cache[text] = { glyphs, adv: pen });
   }
   const E = {
-    name: opt.name || path.basename(fontPath), hobo: false, rtl: !!opt.rtl,
+    name: opt.name || path.basename(fontPath), hobo: false, rtl: !!opt.rtl, tallAll: !!opt.tallAll,
     run(text, size) {
       const r = shape1(text);
       return { adv: r.adv * size, glyphs: r.glyphs.map((g) => ({ x: g.x * size, adv: g.adv * size, cmds: scaled(outline(g.gid), size, 0, g.y * size) })) };

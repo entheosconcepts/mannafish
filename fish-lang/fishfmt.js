@@ -18,7 +18,11 @@
   // verse.start/end (how far along each curve the line may run), verse.mid (its centre), verse.stroke; ref.*
   // band: where letters may reach, from the line they sit on (minus a margin): the white ring reaches about 218 out and
   // 60 in from each verse curve, the tail about 218 and 84 from the reference's line. Hobo stays well inside.
-  var RULE={word:{size:880,fill:0.80,min:560,sx:1,cx:1677,cy:975,stroke:27.8,room:40,tall:0.15},
+  // word.base / word.steps (Ken, 26 Oct: "just because it's a four-letter word or a five-letter word doesn't mean you need to fill
+  // the entire space inside the fish ... a rule for the four and five letter words and three so that it's not so much bigger than
+  // all the other words"): a short word's letters may be at most this much taller than a 7-letter word's (base: the size the
+  // builder gives the middle 7-letter word); longer words are mostly set by the eye's width, never above 1.03 of it
+  var RULE={word:{size:880,fill:0.80,min:560,sx:1,cx:1677,cy:975,stroke:27.8,room:40,tall:0.15,base:583,steps:{3:1.25,4:1.2,5:1.12,6:1.06,7:1.03}},
     verse:{size:222,cond:0.95,start:0.027,end:0.978,mid:0.5,stroke:3,up:200,down:42},
     ref:{size:192,avail:980,stroke:7,cond:1,up:200,down:66}};
   var HOBOCAP=832.3333333333333/1000;   // Hobo's capital H, per unit of size: every script's letters are matched to this height
@@ -72,7 +76,8 @@
   //  3. balance: as much room on the left as on the right, and above as below
   //  4. room: no letter closer than word.room to the inside edge; if one is, the word gets smaller until none is
   //     (a long word at its smallest letters is narrowed instead)
-  function tallShare(E,word){ if(!E.hobo||!E.tall) return 0; var n=0,t=0;
+  // scripts whose letters all stand at full height (Hebrew, Chinese, Korean) count as all tall, like With
+  function tallShare(E,word){ if(E.tallAll) return 1; if(!E.hobo||!E.tall) return 0; var n=0,t=0;
     Array.from(word).forEach(function(ch){ if(!/\S/.test(ch)||/[.,;:!?'"’‘“”…-]/.test(ch)) return; n++; if(E.tall(ch)) t++; }); return n?t/n:0; }
   // the eye's inside edge: across each row, and down each column
   function rowAt(y){ var E=GEO.eye, i=Math.round((y-E.y0)/E.step); return E.rows[i]||null; }
@@ -89,10 +94,14 @@
       for(var i=0;i<n;i++){ var a=poly[i], b=poly[(i+1)%n], dx=b[0]-a[0], dy=b[1]-a[1], l2=dx*dx+dy*dy||1, t=((p[0]-a[0])*dx+(p[1]-a[1])*dy)/l2;
         t=t<0?0:t>1?1:t; var ex=a[0]+t*dx-p[0], ey=a[1]+t*dy-p[1], d=ex*ex+ey*ey; if(d<best*best) best=Math.sqrt(d); } });
     return out?-1:best; }
+  // letters in a word, not counting spaces, marks above or below (Arabic vowels, Hindi signs) or punctuation
+  function letterCount(word){ return Array.from(String(word).replace(/[\u202a-\u202e]/g,'')).filter(function(ch){ return /\S/.test(ch)&&!/[\u0300-\u036f\u0591-\u05c7\u0610-\u061a\u064b-\u065f\u0670\u06d6-\u06ed\u0900-\u0903\u093a-\u094f\u0951-\u0957\u0962\u0963.,;:!?'"’‘“”…-]/.test(ch); }).length; }
   function wordLayout(E,word,R){ E=eng(E); R=R||RULE; var W=R.word, run=runCmds(E,word,100), b=box(run.cmds), iw=(b.x2-b.x1)/100;
     var k=HOBOCAP/E.capH;   // another script's letters are matched to Hobo's letter height
     var share=tallShare(E,word), tf=share>0.5?1-(W.tall||0)*(share-0.5)/0.5:1, min=W.min*k;
-    var fillW=W.fill*GEO.eyeW-W.stroke, size0=Math.min(W.size*k*tf,fillW/(iw*W.sx)), sx0=W.sx;
+    var n=letterCount(word), step=W.steps?W.steps[Math.min(7,Math.max(3,n))]:null, top=W.size;
+    if(step&&W.base) top=Math.min(top,W.base*step);    // short words: not much bigger than the long ones
+    var fillW=W.fill*GEO.eyeW-W.stroke, size0=Math.min(top*k*tf,fillW/(iw*W.sx)), sx0=W.sx;
     if(size0<min){ size0=min; sx0=fillW/(iw*size0); }       // a long word keeps its letter height and is narrowed instead
     var raw=points(run.cmds), mx=(b.x1+b.x2)/2, half=W.stroke/2;
     // the word at a given size, balanced left/right and top/bottom

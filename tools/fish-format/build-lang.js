@@ -14,8 +14,8 @@ const LINES=JSON.parse(fs.readFileSync(path.join(__dirname,'lang-lines.json')));
 // Ken's bold white outline on the word, and the thin black one on the verse, suit Hobo; letters with many close strokes
 // (Chinese, Korean, Hindi) fill in under them, so those get thinner outlines, and their verse letters a little smaller
 // (wstroke: the word's outline; vstroke / rstroke: the verse's and reference's; vsize: verse letter height against Hobo's)
-const FACE={el:{f:'el.ttf',cap:'ΑΗΙΤΠ',fam:'Ubuntu',w:700}, zh:{f:'zh.ttf',cap:'安息爱',wstroke:8,vstroke:0,rstroke:2,vsize:0.85,fam:'ZCOOL KuaiLe'},
-  ko:{f:'ko.ttf',cap:'가나다라',wstroke:14,vstroke:1,rstroke:2,vsize:0.9,fam:'Jua'}, he:{f:'he.ttf',cap:'הבמנח',rtl:true,vsize:0.92,fam:'Fredoka',w:700},
+const FACE={el:{f:'el.ttf',cap:'ΑΗΙΤΠ',fam:'Ubuntu',w:700}, zh:{f:'zh.ttf',cap:'安息爱',tallAll:true,wstroke:8,vstroke:0,rstroke:2,vsize:0.85,fam:'ZCOOL KuaiLe'},
+  ko:{f:'ko.ttf',cap:'가나다라',tallAll:true,wstroke:14,vstroke:1,rstroke:2,vsize:0.9,fam:'Jua'}, he:{f:'he.ttf',cap:'הבמנח',tallAll:true,rtl:true,vsize:0.92,fam:'Fredoka',w:700},
   ar:{f:'ar.ttf',cap:'اكل',rtl:true,fam:'Cairo',w:800}, hi:{f:'hi.ttf',cap:'कमरन',wstroke:12,vstroke:0,rstroke:2,vsize:0.92,fam:'Baloo 2',w:800}};
 const BASE=fs.readFileSync(path.join(ROOT,'edit','new','base.svg'),'utf8');
 function ruleFor(fc){ const r=JSON.parse(JSON.stringify(R)); if(!fc) return r;
@@ -25,7 +25,7 @@ function ruleFor(fc){ const r=JSON.parse(JSON.stringify(R)); if(!fc) return r;
   const want=(process.argv[2]||Object.keys(LINES).join(',')).split(',');
   const hobo=F.otEngine(ot.parse(fs.readFileSync(process.env.HOBO).buffer.slice(0)));
   for(const l of want){ const fc=FACE[l];
-    const E=fc?await HB.load(path.join(__dirname,'fonts',fc.f),{rtl:!!fc.rtl,capChars:fc.cap,name:l}):hobo;
+    const E=fc?await HB.load(path.join(__dirname,'fonts',fc.f),{rtl:!!fc.rtl,capChars:fc.cap,name:l,tallAll:!!fc.tallAll}):hobo;
     const RL=ruleFor(fc), TX={};
     for(const [key,f0] of Object.entries(LINES[l])){ const f=Object.assign({tag:''},f0); let P=F.layout(E,f,RL); if(f.edit) P=F.applyRel(E,f,P,f.edit);
       fs.writeFileSync(path.join(ROOT,'fish',l,key+'.svg'),F.draw(E,f,P,RL));
