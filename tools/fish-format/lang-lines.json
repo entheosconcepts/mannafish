@@ -1,0 +1,1316 @@
+{
+"es": {
+"ACCEPT": {
+"word": "Recibe",
+"top": "Recibíos los unos a los otros,",
+"bot": "como también Cristo nos recibió, para gloria de Dios.",
+"ref": "Rom. 15:7 (RVR60)"
+},
+"ASK": {
+"word": "Pide",
+"top": "¿Cuánto más vuestro Padre celestial dará",
+"bot": "el Espíritu Santo a los que se lo pidan?",
+"ref": "Luc. 11:13 (RVR60)"
+},
+"BELIEVE": {
+"word": "Cree",
+"top": "No se turbe vuestro corazón;",
+"bot": "creéis en Dios, creed también en mí.",
+"ref": "Jn. 14:1 (RVR60)"
+},
+"BREATHE": {
+"word": "Respira",
+"top": "Espíritu, ven de los cuatro vientos,",
+"bot": "y sopla sobre estos muertos, y vivirán.",
+"ref": "Ez. 37:9 (RVR60)"
+},
+"CHOOSE": {
+"word": "Escoge",
+"top": "Os he puesto delante la vida y la muerte...",
+"bot": "escoge, pues, la vida.",
+"ref": "Deut. 30:19 (RVR60)"
+},
+"ENJOY": {
+"word": "Goza",
+"top": "Que todo hombre coma y beba, y goce el bien",
+"bot": "de toda su labor, es don de Dios.",
+"ref": "Ecl. 3:13 (RVR60)"
+},
+"FOLLOW": {
+"word": "Sigue",
+"top": "Si alguno quiere venir en pos de mí,",
+"bot": "niéguese a sí mismo, tome su cruz cada día, y sígame.",
+"ref": "Luc. 9:23 (RVR60)"
+},
+"FORGIVE": {
+"word": "Perdona",
+"top": "Porque si perdonáis a los hombres sus ofensas,",
+"bot": "os perdonará también a vosotros vuestro Padre celestial.",
+"ref": "Mat. 6:14 (RVR60)"
+},
+"GATHER": {
+"word": "Reúnete",
+"top": "Donde están dos o tres congregados en mi nombre,",
+"bot": "allí estoy yo en medio de ellos.",
+"ref": "Mat. 18:20 (RVR60)"
+},
+"GIVE": {
+"word": "Da",
+"top": "Dad, y se os dará;",
+"bot": "medida buena, apretada, remecida y rebosando...",
+"ref": "Luc. 6:38 (RVR60)"
+},
+"GROW": {
+"word": "Crece",
+"top": "Creced en la gracia y el conocimiento",
+"bot": "de nuestro Señor y Salvador Jesucristo.",
+"ref": "2 Ped. 3:18 (RVR60)"
+},
+"HONOR": {
+"word": "Honra",
+"top": "Honra a tu padre y a tu madre,",
+"bot": "que es el primer mandamiento con promesa.",
+"ref": "Ef. 6:2 (RVR60)"
+},
+"HOPE": {
+"word": "Espera",
+"top": "Espera en Dios;",
+"bot": "porque aún he de alabarle...",
+"ref": "Sal. 42:5 (RVR60)"
+},
+"KNOCK": {
+"word": "Llama",
+"top": "Llamad, y se os abrirá.",
+"bot": "Porque todo aquel que pide, recibe...",
+"ref": "Mat. 7:7-8 (RVR60)"
+},
+"LAUGH": {
+"word": "Ríe",
+"top": "Tiempo de llorar, y tiempo de reír;",
+"bot": "tiempo de endechar, y tiempo de bailar.",
+"ref": "Ecl. 3:4 (RVR60)"
+},
+"LISTEN": {
+"word": "Escucha",
+"top": "Mas el que me oyere, habitará confiadamente",
+"bot": "y vivirá tranquilo, sin temor del mal.",
+"ref": "Prov. 1:33 (RVR60)"
+},
+"LIVE": {
+"word": "Vive",
+"top": "No moriré, sino que viviré,",
+"bot": "y contaré las obras de JAH.",
+"ref": "Sal. 118:17 (RVR60)"
+},
+"LOVE": {
+"word": "Ama",
+"top": "Este es mi mandamiento: Que os améis",
+"bot": "unos a otros, como yo os he amado.",
+"ref": "Jn. 15:12 (RVR60)"
+},
+"PRAY": {
+"word": "Ora",
+"top": "Cuando oréis, decid: Padre nuestro",
+"bot": "que estás en los cielos, santificado sea tu nombre.",
+"ref": "Luc. 11:2 (RVR60)"
+},
+"REMEMBER": {
+"word": "Recuerda",
+"top": "Esto es mi cuerpo, que por vosotros es dado;",
+"bot": "haced esto en memoria de mí.",
+"ref": "Luc. 22:19 (RVR60)"
+},
+"REST": {
+"word": "Descansa",
+"top": "Venid a mí todos los que estáis trabajados",
+"bot": "y cargados, y yo os haré descansar.",
+"ref": "Mat. 11:28 (RVR60)"
+},
+"SEEK": {
+"word": "Busca",
+"top": "Mas buscad primeramente el reino de Dios",
+"bot": "y su justicia...",
+"ref": "Mat. 6:33 (RVR60)"
+},
+"SING": {
+"word": "Canta",
+"top": "Cantad a Jehová cántico nuevo;",
+"bot": "cantad a Jehová, toda la tierra.",
+"ref": "Sal. 96:1 (RVR60)"
+},
+"TRUST": {
+"word": "Confía",
+"top": "Encomienda a Jehová tu camino,",
+"bot": "y confía en él; y él hará.",
+"ref": "Sal. 37:5 (RVR60)"
+}
+},
+"tl": {
+"ACCEPT": {
+"word": "Tumanggap",
+"top": "Sa ganito’y mangagtanggapan kayo,",
+"bot": "gaya naman ni Cristo na tinanggap kayo sa kaluwalhatian ng Dios.",
+"ref": "Roma 15:7 (ABTAG)"
+},
+"ASK": {
+"word": "Humingi",
+"top": "Gaano pa kaya ang inyong Ama sa kalangitan",
+"bot": "na magbibigay ng Espiritu Santo sa nagsisihingi sa kaniya?",
+"ref": "Luc. 11:13 (ABTAG)"
+},
+"BELIEVE": {
+"word": "Sumampalataya",
+"top": "Huwag magulumihanan ang inyong puso:",
+"bot": "magsisampalataya kayo sa Dios, magsisampalataya naman kayo sa akin.",
+"ref": "Juan 14:1 (ABTAG)"
+},
+"BREATHE": {
+"word": "Huminga",
+"top": "Manggaling ka sa apat na hangin, Oh hinga,",
+"bot": "at humihip ka sa mga patay na ito, upang sila’y mangabuhay.",
+"ref": "Ezek. 37:9 (ABTAG)"
+},
+"CHOOSE": {
+"word": "Pumili",
+"top": "...ilagay sa harap mo ang buhay at ang kamatayan...",
+"bot": "kaya’t piliin mo ang buhay.",
+"ref": "Deut. 30:19 (ABTAG)"
+},
+"ENJOY": {
+"word": "Magalak",
+"top": "Ang bawa’t tao rin naman ay marapat kumain at uminom,",
+"bot": "at magalak sa kabutihan sa lahat niyang gawa, siyang kaloob ng Dios.",
+"ref": "Ecl. 3:13 (ABTAG)"
+},
+"FOLLOW": {
+"word": "Sumunod",
+"top": "Kung ang sinomang tao ay ibig sumunod sa akin,",
+"bot": "ay tumanggi sa kaniyang sarili, at pasanin sa araw-araw ang kaniyang krus...",
+"ref": "Luc. 9:23 (ABTAG)"
+},
+"FORGIVE": {
+"word": "Magpatawad",
+"top": "Kung ipatawad ninyo sa mga tao ang kanilang mga kasalanan,",
+"bot": "ay patatawarin naman kayo ng inyong Ama sa kalangitan.",
+"ref": "Mat. 6:14 (ABTAG)"
+},
+"GATHER": {
+"word": "Magtipon",
+"top": "Kung saan nagkakatipon ang dalawa o tatlo sa aking pangalan,",
+"bot": "ay naroroon ako sa gitna nila.",
+"ref": "Mat. 18:20 (ABTAG)"
+},
+"GIVE": {
+"word": "Magbigay",
+"top": "Mangagbigay kayo, at kayo’y bibigyan;",
+"bot": "takal na mabuti, pikpik, liglig, at umaapaw...",
+"ref": "Luc. 6:38 (ABTAG)"
+},
+"GROW": {
+"word": "Lumago",
+"top": "Datapuwa’t magsilago kayo sa biyaya at sa pagkakilala",
+"bot": "sa ating Panginoon at Tagapagligtas na si Jesucristo.",
+"ref": "2 Ped. 3:18 (ABTAG)"
+},
+"HONOR": {
+"word": "Igalang",
+"top": "Igalang mo ang iyong ama at ina",
+"bot": "(na siyang unang utos na may pangako).",
+"ref": "Efe. 6:2 (ABTAG)"
+},
+"HOPE": {
+"word": "Umasa",
+"top": "Umasa ka sa Dios:",
+"bot": "sapagka’t pupuri pa ako sa kaniya...",
+"ref": "Awit 42:5 (ABTAG)"
+},
+"KNOCK": {
+"word": "Kumatok",
+"top": "Magsituktok kayo, at kayo’y bubuksan:",
+"bot": "Sapagka’t ang bawa’t humihingi ay tumatanggap...",
+"ref": "Mat. 7:7-8 (ABTAG)"
+},
+"LAUGH": {
+"word": "Tumawa",
+"top": "Panahon ng pagiyak, at panahon ng pagtawa;",
+"bot": "panahon ng pagtangis, at panahon ng pagsayaw;",
+"ref": "Ecl. 3:4 (ABTAG)"
+},
+"LISTEN": {
+"word": "Makinig",
+"top": "Nguni’t ang nakikinig sa akin ay tatahang tiwasay.",
+"bot": "At tatahimik na walang takot sa kasamaan.",
+"ref": "Kaw. 1:33 (ABTAG)"
+},
+"LIVE": {
+"word": "Mabuhay",
+"top": "Hindi ako mamamatay, kundi mabubuhay,",
+"bot": "At magpapahayag ng mga gawa ng Panginoon.",
+"ref": "Awit 118:17 (ABTAG)"
+},
+"LOVE": {
+"word": "Umibig",
+"top": "Ito ang aking utos, na kayo’y mangagibigan",
+"bot": "sa isa’t isa, na gaya ng pagibig ko sa inyo.",
+"ref": "Juan 15:12 (ABTAG)"
+},
+"PRAY": {
+"word": "Manalangin",
+"top": "Pagka kayo’y nagsisipanalangin, inyong sabihin,",
+"bot": "Ama, Sambahin nawa ang pangalan mo.",
+"ref": "Luc. 11:2 (ABTAG)"
+},
+"REMEMBER": {
+"word": "Alalahanin",
+"top": "Ito’y aking katawan, na ibinibigay dahil sa inyo:",
+"bot": "gawin ninyo ito sa pagaalaala sa akin.",
+"ref": "Luc. 22:19 (ABTAG)"
+},
+"REST": {
+"word": "Magpahinga",
+"top": "Magsiparito sa akin, kayong lahat na nangapapagal",
+"bot": "at nangabibigatang lubha, at kayo’y aking papagpapahingahin.",
+"ref": "Mat. 11:28 (ABTAG)"
+},
+"SEEK": {
+"word": "Humanap",
+"top": "Datapuwa’t hanapin muna ninyo ang kaniyang kaharian,",
+"bot": "at ang kaniyang katuwiran...",
+"ref": "Mat. 6:33 (ABTAG)"
+},
+"SING": {
+"word": "Umawit",
+"top": "Oh magsiawit kayo sa Panginoon ng bagong awit:",
+"bot": "Magsiawit kayo sa Panginoon, buong lupa.",
+"ref": "Awit 96:1 (ABTAG)"
+},
+"TRUST": {
+"word": "Magtiwala",
+"top": "Ihabilin mo ang iyong lakad sa Panginoon;",
+"bot": "Tumiwala ka rin naman sa kaniya, at kaniyang papangyayarihin.",
+"ref": "Awit 37:5 (ABTAG)"
+}
+},
+"de": {
+"ACCEPT": {
+"word": "Nimm an",
+"top": "Deshalb nehmet einander auf,",
+"bot": "gleichwie auch der Christus euch aufgenommen hat, zu Gottes Herrlichkeit.",
+"ref": "Röm. 15,7 (ELB)"
+},
+"ASK": {
+"word": "Bitte",
+"top": "...wieviel mehr wird der Vater, der vom Himmel ist,",
+"bot": "den Heiligen Geist geben denen, die ihn bitten!",
+"ref": "Lk. 11,13 (ELB)"
+},
+"BELIEVE": {
+"word": "Glaube",
+"top": "Euer Herz werde nicht bestürzt.",
+"bot": "Ihr glaubet an Gott, glaubet auch an mich.",
+"ref": "Joh. 14,1 (ELB)"
+},
+"BREATHE": {
+"word": "Atme",
+"top": "Komm von den vier Winden her, du Odem,",
+"bot": "und hauche diese Getöteten an, daß sie lebendig werden!",
+"ref": "Hes. 37,9 (ELB)"
+},
+"CHOOSE": {
+"word": "Wähle",
+"top": "Das Leben und den Tod habe ich euch vorgelegt...",
+"bot": "So wähle das Leben.",
+"ref": "5. Mo. 30,19 (ELB)"
+},
+"ENJOY": {
+"word": "Genieße",
+"top": "...daß er esse und trinke und Gutes sehe bei all seiner Mühe,",
+"bot": "ist für jeden Menschen eine Gabe Gottes.",
+"ref": "Pred. 3,13 (ELB)"
+},
+"FOLLOW": {
+"word": "Folge",
+"top": "Wenn jemand mir nachkommen will,",
+"bot": "der verleugne sich selbst und nehme sein Kreuz auf täglich und folge mir nach.",
+"ref": "Lk. 9,23 (ELB)"
+},
+"FORGIVE": {
+"word": "Vergib",
+"top": "Denn wenn ihr den Menschen ihre Vergehungen vergebet,",
+"bot": "so wird euer himmlischer Vater auch euch vergeben;",
+"ref": "Mt. 6,14 (ELB)"
+},
+"GATHER": {
+"word": "Versammelt euch",
+"top": "Denn wo zwei oder drei versammelt sind in meinem Namen,",
+"bot": "da bin ich in ihrer Mitte.",
+"ref": "Mt. 18,20 (ELB)"
+},
+"GIVE": {
+"word": "Gib",
+"top": "Gebet, und es wird euch gegeben werden:",
+"bot": "ein gutes, gedrücktes und gerütteltes und überlaufendes Maß...",
+"ref": "Lk. 6,38 (ELB)"
+},
+"GROW": {
+"word": "Wachse",
+"top": "Wachset aber in der Gnade und Erkenntnis",
+"bot": "unseres Herrn und Heilandes Jesus Christus.",
+"ref": "2. Petr. 3,18 (ELB)"
+},
+"HONOR": {
+"word": "Ehre",
+"top": "»Ehre deinen Vater und deine Mutter«,",
+"bot": "welches das erste Gebot mit Verheißung ist.",
+"ref": "Eph. 6,2 (ELB)"
+},
+"HOPE": {
+"word": "Hoffe",
+"top": "Harre auf Gott!",
+"bot": "Denn ich werde ihn noch preisen...",
+"ref": "Ps. 42,5 (ELB)"
+},
+"KNOCK": {
+"word": "Klopfe",
+"top": "Klopfet an, und es wird euch aufgetan werden.",
+"bot": "Denn jeder Bittende empfängt...",
+"ref": "Mt. 7,7-8 (ELB)"
+},
+"LAUGH": {
+"word": "Lache",
+"top": "Weinen hat seine Zeit, und Lachen hat seine Zeit;",
+"bot": "Klagen hat seine Zeit und Tanzen hat seine Zeit;",
+"ref": "Pred. 3,4 (ELB)"
+},
+"LISTEN": {
+"word": "Höre",
+"top": "Wer aber auf mich hört, wird sicher wohnen,",
+"bot": "und wird ruhig sein vor des Übels Schrecken.",
+"ref": "Spr. 1,33 (ELB)"
+},
+"LIVE": {
+"word": "Lebe",
+"top": "Ich werde nicht sterben, sondern leben",
+"bot": "und die Taten Jahs erzählen.",
+"ref": "Ps. 118,17 (ELB)"
+},
+"LOVE": {
+"word": "Liebe",
+"top": "Dies ist mein Gebot, daß ihr einander liebet,",
+"bot": "gleichwie ich euch geliebt habe.",
+"ref": "Joh. 15,12 (ELB)"
+},
+"PRAY": {
+"word": "Bete",
+"top": "Wenn ihr betet, so sprechet:",
+"bot": "Vater, geheiligt werde dein Name; dein Reich komme;",
+"ref": "Lk. 11,2 (ELB)"
+},
+"REMEMBER": {
+"word": "Gedenke",
+"top": "Dies ist mein Leib, der für euch gegeben wird;",
+"bot": "dieses tut zu meinem Gedächtnis!",
+"ref": "Lk. 22,19 (ELB)"
+},
+"REST": {
+"word": "Ruhe",
+"top": "Kommet her zu mir, alle ihr Mühseligen",
+"bot": "und Beladenen, und ich werde euch Ruhe geben.",
+"ref": "Mt. 11,28 (ELB)"
+},
+"SEEK": {
+"word": "Suche",
+"top": "Trachtet aber zuerst nach dem Reiche Gottes",
+"bot": "und nach seiner Gerechtigkeit...",
+"ref": "Mt. 6,33 (ELB)"
+},
+"SING": {
+"word": "Singe",
+"top": "Singet Jehova ein neues Lied,",
+"bot": "singet Jehova, ganze Erde!",
+"ref": "Ps. 96,1 (ELB)"
+},
+"TRUST": {
+"word": "Vertraue",
+"top": "Befiehl Jehova deinen Weg",
+"bot": "und vertraue auf ihn! Und er wird handeln;",
+"ref": "Ps. 37,5 (ELB)"
+}
+},
+"el": {
+"ACCEPT": {
+"word": "Δέξου",
+"top": "Προσδέχεστε ο ένας τον άλλον,",
+"bot": "όπως και ο Χριστός προσδέχθηκε εμάς προς δόξαν τού Θεού.",
+"ref": "Ρωμ. 15:7 (FPB)"
+},
+"ASK": {
+"word": "Ζήτα",
+"top": "Πόσο μάλλον ο Πατέρας ο ουράνιος θα δώσει",
+"bot": "Πνεύμα άγιο σ’ εκείνους που ζητούν απ’ αυτόν;",
+"ref": "Λουκ. 11:13 (FPB)"
+},
+"BELIEVE": {
+"word": "Πίστευε",
+"top": "Ας μη ταράζεται η καρδιά σας·",
+"bot": "πιστεύετε στον Θεό, και σε μένα πιστεύετε.",
+"ref": "Ιω. 14:1 (FPB)"
+},
+"BREATHE": {
+"word": "Ανάπνευσε",
+"top": "Έλα, πνεύμα, από τους τέσσερις ανέμους,",
+"bot": "και φύσηξε προς αυτούς τούς φονευμένους, και ας αναζήσουν.",
+"ref": "Ιεζ. 37:9 (FPB)"
+},
+"CHOOSE": {
+"word": "Διάλεξε",
+"top": "Έβαλα μπροστά σας τη ζωή και τον θάνατο...",
+"bot": "γι’ αυτό, διαλέξτε τη ζωή.",
+"ref": "Δευτ. 30:19 (FPB)"
+},
+"ENJOY": {
+"word": "Απόλαυσε",
+"top": "Το να τρώει κάθε άνθρωπος, και να πίνει,",
+"bot": "και να απολαμβάνει καλό από ολόκληρο τον μόχθο του, είναι χάρισμα του Θεού.",
+"ref": "Εκκλ. 3:13 (FPB)"
+},
+"FOLLOW": {
+"word": "Ακολούθα",
+"top": "Αν κάποιος θέλει νάρθει πίσω μου,",
+"bot": "ας απαρνηθεί τον εαυτό του, και ας σηκώσει τον σταυρό του, καθημερινά...",
+"ref": "Λουκ. 9:23 (FPB)"
+},
+"FORGIVE": {
+"word": "Συγχώρεσε",
+"top": "Αν συγχωρήσετε στους ανθρώπους τα πταίσματά τους,",
+"bot": "θα συγχωρήσει και σε σας ο ουράνιος Πατέρας σας.",
+"ref": "Ματθ. 6:14 (FPB)"
+},
+"GATHER": {
+"word": "Μαζευτείτε",
+"top": "Όπου είναι δύο ή τρεις συγκεντρωμένοι στο όνομά μου,",
+"bot": "εκεί είμαι εγώ ανάμεσά τους.",
+"ref": "Ματθ. 18:20 (FPB)"
+},
+"GIVE": {
+"word": "Δίνε",
+"top": "Να δίνετε, και θα σας δοθεί·",
+"bot": "καλό μέτρο, πιεσμένο, και συγκαθισμένο και υπερξεχειλιζόμενο...",
+"ref": "Λουκ. 6:38 (FPB)"
+},
+"GROW": {
+"word": "Αυξάνου",
+"top": "Να αυξάνεστε δε στη χάρη και στη γνώση",
+"bot": "τού Κυρίου μας και Σωτήρα, του Ιησού Χριστού.",
+"ref": "Β΄ Πέτρ. 3:18 (FPB)"
+},
+"HONOR": {
+"word": "Τίμα",
+"top": "«Τίμα τον πατέρα σου και τη μητέρα»,",
+"bot": "αυτή είναι η πρώτη εντολή με υπόσχεση.",
+"ref": "Εφ. 6:2 (FPB)"
+},
+"HOPE": {
+"word": "Έλπισε",
+"top": "Έλπισε στον Θεό·",
+"bot": "επειδή, ακόμα θα τον υμνώ...",
+"ref": "Ψαλμ. 42:5 (FPB)"
+},
+"KNOCK": {
+"word": "Κρούε",
+"top": "Κρούετε, και θα σας ανοιχτεί·",
+"bot": "επειδή, καθένας που ζητάει, παίρνει...",
+"ref": "Ματθ. 7:7-8 (FPB)"
+},
+"LAUGH": {
+"word": "Γέλα",
+"top": "Καιρός να κλαίει, και καιρός να γελάει·",
+"bot": "καιρός να πενθεί, και καιρός να χορεύει·",
+"ref": "Εκκλ. 3:4 (FPB)"
+},
+"LISTEN": {
+"word": "Άκου",
+"top": "Όποιος, όμως, με ακούει, θα κατοικήσει με ασφάλεια·",
+"bot": "και θα ησυχάζει, χωρίς να φοβάται κακό.",
+"ref": "Παρ. 1:33 (FPB)"
+},
+"LIVE": {
+"word": "Ζήσε",
+"top": "Δεν θα πεθάνω, αλλά θα ζήσω,",
+"bot": "και θα διηγούμαι τα έργα τού Κυρίου.",
+"ref": "Ψαλμ. 118:17 (FPB)"
+},
+"LOVE": {
+"word": "Αγάπα",
+"top": "Αυτή είναι η εντολή μου, να αγαπάτε",
+"bot": "ο ένας τον άλλον, όπως εγώ σας αγάπησα.",
+"ref": "Ιω. 15:12 (FPB)"
+},
+"PRAY": {
+"word": "Προσευχήσου",
+"top": "Όταν προσεύχεστε, να λέτε: Πατέρα μας,",
+"bot": "που είσαι στους ουρανούς, ας αγιαστεί το όνομά σου.",
+"ref": "Λουκ. 11:2 (FPB)"
+},
+"REMEMBER": {
+"word": "Θυμήσου",
+"top": "Τούτο είναι το σώμα μου, που δίνεται για σας·",
+"bot": "αυτό να κάνετε στη δική μου ανάμνηση.",
+"ref": "Λουκ. 22:19 (FPB)"
+},
+"REST": {
+"word": "Αναπαύσου",
+"top": "Ελάτε σε μένα όλοι όσοι κοπιάζετε",
+"bot": "και είστε φορτωμένοι, και εγώ θα σας αναπαύσω.",
+"ref": "Ματθ. 11:28 (FPB)"
+},
+"SEEK": {
+"word": "Αναζήτα",
+"top": "Να ζητάτε πρώτα τη βασιλεία τού Θεού,",
+"bot": "και τη δικαιοσύνη του...",
+"ref": "Ματθ. 6:33 (FPB)"
+},
+"SING": {
+"word": "Ψάλλε",
+"top": "Ψάλτε στον Κύριο ένα καινούργιο τραγούδι·",
+"bot": "ψάλτε στον Κύριο, ολόκληρη η γη.",
+"ref": "Ψαλμ. 96:1 (FPB)"
+},
+"TRUST": {
+"word": "Εμπιστέψου",
+"top": "Ανάθεσε στον Κύριο τον δρόμο σου,",
+"bot": "και έλπιζε σ’ αυτόν, και αυτός θα ενεργήσει.",
+"ref": "Ψαλμ. 37:5 (FPB)"
+}
+},
+"zh": {
+"ACCEPT": {
+"word": "接纳",
+"top": "你们要彼此接纳，",
+"bot": "如同基督接纳你们一样，使荣耀归与 神。",
+"ref": "罗15:7（和合本）"
+},
+"ASK": {
+"word": "祈求",
+"top": "何况天父，",
+"bot": "岂不更将圣灵给求他的人吗？",
+"ref": "路11:13（和合本）"
+},
+"BELIEVE": {
+"word": "信",
+"top": "你们心里不要忧愁；",
+"bot": "你们信 神，也当信我。",
+"ref": "约14:1（和合本）"
+},
+"BREATHE": {
+"word": "呼吸",
+"top": "气息啊，要从四方而来，",
+"bot": "吹在这些被杀的人身上，使他们活了。",
+"ref": "结37:9（和合本）"
+},
+"CHOOSE": {
+"word": "拣选",
+"top": "我将生死祸福陈明在你面前，",
+"bot": "所以你要拣选生命。",
+"ref": "申30:19（和合本）"
+},
+"ENJOY": {
+"word": "享福",
+"top": "人人吃喝，在他一切劳碌中享福，",
+"bot": "这也是 神的恩赐。",
+"ref": "传3:13（和合本）"
+},
+"FOLLOW": {
+"word": "跟从",
+"top": "若有人要跟从我，",
+"bot": "就当舍己，天天背起他的十字架来跟从我。",
+"ref": "路9:23（和合本）"
+},
+"FORGIVE": {
+"word": "饶恕",
+"top": "你们饶恕人的过犯，",
+"bot": "你们的天父也必饶恕你们的过犯。",
+"ref": "太6:14（和合本）"
+},
+"GATHER": {
+"word": "聚会",
+"top": "无论在哪里，有两三个人奉我的名聚会，",
+"bot": "那里就有我在他们中间。",
+"ref": "太18:20（和合本）"
+},
+"GIVE": {
+"word": "给予",
+"top": "你们要给人，就必有给你们的，",
+"bot": "并且用十足的升斗，连摇带按，上尖下流地倒在你们怀里……",
+"ref": "路6:38（和合本）"
+},
+"GROW": {
+"word": "长进",
+"top": "你们却要在我们主－救主耶稣基督的",
+"bot": "恩典和知识上有长进。",
+"ref": "彼后3:18（和合本）"
+},
+"HONOR": {
+"word": "孝敬",
+"top": "要孝敬父母，",
+"bot": "这是第一条带应许的诫命。",
+"ref": "弗6:2（和合本）"
+},
+"HOPE": {
+"word": "仰望",
+"top": "应当仰望 神，",
+"bot": "我还要称赞他。",
+"ref": "诗42:5（和合本）"
+},
+"KNOCK": {
+"word": "叩门",
+"top": "叩门，就给你们开门。",
+"bot": "因为凡祈求的，就得着……",
+"ref": "太7:7-8（和合本）"
+},
+"LAUGH": {
+"word": "欢笑",
+"top": "哭有时，笑有时；",
+"bot": "哀恸有时，跳舞有时；",
+"ref": "传3:4（和合本）"
+},
+"LISTEN": {
+"word": "听从",
+"top": "惟有听从我的，必安然居住，",
+"bot": "得享安静，不怕灾祸。",
+"ref": "箴1:33（和合本）"
+},
+"LIVE": {
+"word": "存活",
+"top": "我必不致死，仍要存活，",
+"bot": "并要传扬耶和华的作为。",
+"ref": "诗118:17（和合本）"
+},
+"LOVE": {
+"word": "相爱",
+"top": "你们要彼此相爱，",
+"bot": "像我爱你们一样；这就是我的命令。",
+"ref": "约15:12（和合本）"
+},
+"PRAY": {
+"word": "祷告",
+"top": "你们祷告的时候，要说：",
+"bot": "我们在天上的父：愿人都尊你的名为圣。",
+"ref": "路11:2（和合本）"
+},
+"REMEMBER": {
+"word": "记念",
+"top": "这是我的身体，为你们舍的，",
+"bot": "你们也应当如此行，为的是记念我。",
+"ref": "路22:19（和合本）"
+},
+"REST": {
+"word": "安息",
+"top": "凡劳苦担重担的人",
+"bot": "可以到我这里来，我就使你们得安息。",
+"ref": "太11:28（和合本）"
+},
+"SEEK": {
+"word": "寻求",
+"top": "你们要先求他的国和他的义，",
+"bot": "这些东西都要加给你们了。",
+"ref": "太6:33（和合本）"
+},
+"SING": {
+"word": "歌唱",
+"top": "你们要向耶和华唱新歌！",
+"bot": "全地都要向耶和华歌唱！",
+"ref": "诗96:1（和合本）"
+},
+"TRUST": {
+"word": "倚靠",
+"top": "当将你的事交托耶和华，",
+"bot": "并倚靠他，他就必成全。",
+"ref": "诗37:5（和合本）"
+}
+},
+"ko": {
+"ACCEPT": {
+"word": "받으라",
+"top": "그리스도께서 우리를 받아 하나님께 영광을 돌리심과 같이",
+"bot": "너희도 서로 받으라",
+"ref": "롬 15:7 (개역)"
+},
+"ASK": {
+"word": "간구하라",
+"top": "하물며 너희 천부께서",
+"bot": "구하는 자에게 성령을 주시지 않겠느냐",
+"ref": "눅 11:13 (개역)"
+},
+"BELIEVE": {
+"word": "믿으라",
+"top": "너희는 마음에 근심하지 말라",
+"bot": "하나님을 믿으니 또 나를 믿으라",
+"ref": "요 14:1 (개역)"
+},
+"BREATHE": {
+"word": "숨쉬라",
+"top": "생기야 사방에서부터 와서",
+"bot": "이 사망을 당한 자에게 불어서 살게 하라",
+"ref": "겔 37:9 (개역)"
+},
+"CHOOSE": {
+"word": "택하라",
+"top": "내가 생명과 사망과 복과 저주를 네 앞에 두었은즉",
+"bot": "...생명을 택하고",
+"ref": "신 30:19 (개역)"
+},
+"ENJOY": {
+"word": "누리라",
+"top": "사람마다 먹고 마시는 것과 수고함으로 낙을 누리는 것이",
+"bot": "하나님의 선물인 줄을 또한 알았도다",
+"ref": "전 3:13 (개역)"
+},
+"FOLLOW": {
+"word": "따르라",
+"top": "아무든지 나를 따라 오려거든",
+"bot": "자기를 부인하고 날마다 제 십자가를 지고 나를 좇을 것이니라",
+"ref": "눅 9:23 (개역)"
+},
+"FORGIVE": {
+"word": "용서하라",
+"top": "너희가 사람의 과실을 용서하면",
+"bot": "너희 천부께서도 너희 과실을 용서하시려니와",
+"ref": "마 6:14 (개역)"
+},
+"GATHER": {
+"word": "모이라",
+"top": "두세 사람이 내 이름으로 모인 곳에는",
+"bot": "나도 그들 중에 있느니라",
+"ref": "마 18:20 (개역)"
+},
+"GIVE": {
+"word": "주라",
+"top": "주라 그리하면 너희에게 줄 것이니",
+"bot": "곧 후히 되어 누르고 흔들어 넘치도록 하여...",
+"ref": "눅 6:38 (개역)"
+},
+"GROW": {
+"word": "자라가라",
+"top": "오직 우리 주 곧 구주 예수 그리스도의",
+"bot": "은혜와 저를 아는 지식에서 자라가라",
+"ref": "벧후 3:18 (개역)"
+},
+"HONOR": {
+"word": "공경하라",
+"top": "네 아버지와 어머니를 공경하라",
+"bot": "이것이 약속 있는 첫 계명이니",
+"ref": "엡 6:2 (개역)"
+},
+"HOPE": {
+"word": "바라라",
+"top": "너는 하나님을 바라라",
+"bot": "내가 오히려 찬송하리로다",
+"ref": "시 42:5 (개역)"
+},
+"KNOCK": {
+"word": "두드리라",
+"top": "문을 두드리라 그러면 너희에게 열릴 것이니",
+"bot": "구하는 이마다 얻을 것이요...",
+"ref": "마 7:7-8 (개역)"
+},
+"LAUGH": {
+"word": "웃으라",
+"top": "울 때가 있고 웃을 때가 있으며",
+"bot": "슬퍼할 때가 있고 춤출 때가 있으며",
+"ref": "전 3:4 (개역)"
+},
+"LISTEN": {
+"word": "들으라",
+"top": "오직 나를 듣는 자는 안연히 살며",
+"bot": "재앙의 두려움이 없이 평안하리라",
+"ref": "잠 1:33 (개역)"
+},
+"LIVE": {
+"word": "살라",
+"top": "내가 죽지 않고 살아서",
+"bot": "여호와의 행사를 선포하리로다",
+"ref": "시 118:17 (개역)"
+},
+"LOVE": {
+"word": "사랑하라",
+"top": "내가 너희를 사랑한 것 같이",
+"bot": "너희도 서로 사랑하라",
+"ref": "요 15:12 (개역)"
+},
+"PRAY": {
+"word": "기도하라",
+"top": "너희는 기도할 때에 이렇게 하라",
+"bot": "아버지여 이름이 거룩히 여김을 받으시오며",
+"ref": "눅 11:2 (개역)"
+},
+"REMEMBER": {
+"word": "기념하라",
+"top": "이것은 너희를 위하여 주는 내 몸이라",
+"bot": "너희가 이를 행하여 나를 기념하라",
+"ref": "눅 22:19 (개역)"
+},
+"REST": {
+"word": "쉬라",
+"top": "수고하고 무거운 짐진 자들아",
+"bot": "다 내게로 오라 내가 너희를 쉬게 하리라",
+"ref": "마 11:28 (개역)"
+},
+"SEEK": {
+"word": "구하라",
+"top": "너희는 먼저 그의 나라와 그의 의를 구하라",
+"bot": "그리하면 이 모든 것을 너희에게 더하시리라",
+"ref": "마 6:33 (개역)"
+},
+"SING": {
+"word": "노래하라",
+"top": "새 노래로 여호와께 노래하라",
+"bot": "온 땅이여 여호와께 노래할지어다",
+"ref": "시 96:1 (개역)"
+},
+"TRUST": {
+"word": "의지하라",
+"top": "너의 길을 여호와께 맡기라",
+"bot": "저를 의지하면 저가 이루시고",
+"ref": "시 37:5 (개역)"
+}
+},
+"he": {
+"ACCEPT": {
+"word": "קבל",
+"top": "על כן תקבלו איש את אחיו כאשר",
+"bot": "גם המשיח קבל אתנו לכבוד האלהים.",
+"ref": "רומים 15:7"
+},
+"ASK": {
+"word": "שאל",
+"top": "...אף כי האב מן השמים",
+"bot": "יתן את רוח הקדש לשאלים מאתו.",
+"ref": "לוקס 11:13"
+},
+"BELIEVE": {
+"word": "האמן",
+"top": "אל יבהל לבבכם",
+"bot": "האמינו באלהים ובי האמינו.",
+"ref": "יוחנן 14:1"
+},
+"BREATHE": {
+"word": "נשום",
+"top": "מארבע רוחות באי הרוח",
+"bot": "ופחי בהרוגים האלה ויחיו.",
+"ref": "יחזקאל 37:9"
+},
+"CHOOSE": {
+"word": "בחר",
+"top": "...החיים והמות נתתי לפניך",
+"bot": "ובחרת בחיים.",
+"ref": "דברים 30:19"
+},
+"ENJOY": {
+"word": "שמח",
+"top": "וגם כל האדם שיאכל ושתה",
+"bot": "וראה טוב בכל עמלו מתת אלהים היא.",
+"ref": "קהלת 3:13"
+},
+"FOLLOW": {
+"word": "לך אחרי",
+"top": "איש כי יחפץ ללכת אחרי יכחש בנפשו",
+"bot": "ויום יום ישא את צלבו והלך אחרי.",
+"ref": "לוקס 9:23"
+},
+"FORGIVE": {
+"word": "סלח",
+"top": "כי אם תסלחו לבני אדם את חטאתם",
+"bot": "אביכם שבשמים יסלח גם לכם.",
+"ref": "מתי 6:14"
+},
+"GATHER": {
+"word": "התאספו",
+"top": "כי בכל מקום אשר שנים או שלשה",
+"bot": "נאספו בשמי שם אני בתוכם.",
+"ref": "מתי 18:20"
+},
+"GIVE": {
+"word": "תן",
+"top": "תנו ותנתן לכם",
+"bot": "מדה טובה דחוקה וגדושה ומשפעה...",
+"ref": "לוקס 6:38"
+},
+"GROW": {
+"word": "גדל",
+"top": "ורבו בחסד ובדעת",
+"bot": "אדנינו ומושיענו ישוע המשיח.",
+"ref": "פט״ב 3:18"
+},
+"HONOR": {
+"word": "כבד",
+"top": "כבד את אביך ואת אמך",
+"bot": "זאת היא המצוה הראשונה...",
+"ref": "אפסים 6:2"
+},
+"HOPE": {
+"word": "קווה",
+"top": "הוחילי לאלהים",
+"bot": "כי עוד אודנו...",
+"ref": "תהלים 42:5"
+},
+"KNOCK": {
+"word": "דפוק",
+"top": "דפקו ויפתח לכם",
+"bot": "כי כל השאל יקבל...",
+"ref": "מתי 7:7-8"
+},
+"LAUGH": {
+"word": "צחק",
+"top": "עת לבכות ועת לשחוק",
+"bot": "עת ספוד ועת רקוד.",
+"ref": "קהלת 3:4"
+},
+"LISTEN": {
+"word": "שמע",
+"top": "ושמע לי ישכן בטח",
+"bot": "ושאנן מפחד רעה.",
+"ref": "משלי 1:33"
+},
+"LIVE": {
+"word": "חיה",
+"top": "לא אמות כי אחיה",
+"bot": "ואספר מעשי יה.",
+"ref": "תהלים 118:17"
+},
+"LOVE": {
+"word": "אהוב",
+"top": "הנה זאת מצותי כי תאהבון",
+"bot": "איש את אחיו כאשר אהבתיכם.",
+"ref": "יוחנן 15:12"
+},
+"PRAY": {
+"word": "התפלל",
+"top": "כי תתפללו אמרו אבינו שבשמים",
+"bot": "יתקדש שמך תבוא מלכותך",
+"ref": "לוקס 11:2"
+},
+"REMEMBER": {
+"word": "זכור",
+"top": "זה גופי הנתן בעדכם",
+"bot": "זאת עשו לזכרוני.",
+"ref": "לוקס 22:19"
+},
+"REST": {
+"word": "נוח",
+"top": "לכו אלי כל העמלים והטעונים",
+"bot": "ואני אניח לכם.",
+"ref": "מתי 11:28"
+},
+"SEEK": {
+"word": "בקש",
+"top": "אך בקשו בראשונה את מלכות אלהים",
+"bot": "ואת צדקתו...",
+"ref": "מתי 6:33"
+},
+"SING": {
+"word": "שיר",
+"top": "שירו לה׳ שיר חדש",
+"bot": "שירו לה׳ כל הארץ.",
+"ref": "תהלים 96:1"
+},
+"TRUST": {
+"word": "בטח",
+"top": "גול על ה׳ דרכך",
+"bot": "ובטח עליו והוא יעשה.",
+"ref": "תהלים 37:5"
+}
+},
+"ar": {
+"ACCEPT": {
+"word": "اِقْبَلْ",
+"top": "لذلك اقبلوا بعضكم بعضا",
+"bot": "كما أن المسيح أيضا قبلنا، لمجد الله.",
+"ref": "رومية 15:7"
+},
+"ASK": {
+"word": "اِسْأَلْ",
+"top": "...فكم بالحري الآب الذي من السماء،",
+"bot": "يعطي الروح القدس للذين يسألونه؟",
+"ref": "لوقا 11:13"
+},
+"BELIEVE": {
+"word": "آمِنْ",
+"top": "لا تضطرب قلوبكم.",
+"bot": "أنتم تؤمنون بالله فآمنوا بي.",
+"ref": "يوحنا 14:1"
+},
+"BREATHE": {
+"word": "تَنَفَّسْ",
+"top": "هلم يا روح من الرياح الأربع",
+"bot": "وهب على هؤلاء القتلى ليحيوا.",
+"ref": "حزقيال 37:9"
+},
+"CHOOSE": {
+"word": "اِخْتَرْ",
+"top": "...قد جعلت قدامك الحياة والموت...",
+"bot": "فاختر الحياة.",
+"ref": "تث 30:19"
+},
+"ENJOY": {
+"word": "تَمَتَّعْ",
+"top": "وأيضا أن يأكل كل إنسان ويشرب",
+"bot": "ويرى خيرا من كل تعبه، فهو عطية الله.",
+"ref": "جا 3:13"
+},
+"FOLLOW": {
+"word": "اِتْبَعْنِي",
+"top": "إن أراد أحد أن يأتي ورائي، فلينكر نفسه",
+"bot": "ويحمل صليبه كل يوم، ويتبعني.",
+"ref": "لوقا 9:23"
+},
+"FORGIVE": {
+"word": "اِغْفِرْ",
+"top": "فإنه إن غفرتم للناس زلاتهم،",
+"bot": "يغفر لكم أيضا أبوكم السماوي.",
+"ref": "متى 6:14"
+},
+"GATHER": {
+"word": "اِجْتَمِعُوا",
+"top": "لأنه حيثما اجتمع اثنان أو ثلاثة باسمي",
+"bot": "فهناك أكون في وسطهم.",
+"ref": "متى 18:20"
+},
+"GIVE": {
+"word": "أَعْطِ",
+"top": "أعطوا تعطوا،",
+"bot": "كيلا جيدا ملبدا مهزوزا فائضا...",
+"ref": "لوقا 6:38"
+},
+"GROW": {
+"word": "اُنْمُ",
+"top": "ولكن انموا في النعمة وفي معرفة",
+"bot": "ربنا ومخلصنا يسوع المسيح.",
+"ref": "2بط 3:18"
+},
+"HONOR": {
+"word": "أَكْرِمْ",
+"top": "أكرم أباك وأمك،",
+"bot": "التي هي أول وصية بوعد...",
+"ref": "أفسس 6:2"
+},
+"HOPE": {
+"word": "اِرْتَجِ",
+"top": "ارتجي الله،",
+"bot": "لأني بعد أحمده...",
+"ref": "مز 42:5"
+},
+"KNOCK": {
+"word": "اِقْرَعْ",
+"top": "اقرعوا يفتح لكم.",
+"bot": "لأن كل من يسأل يأخذ...",
+"ref": "متى 7:7-8"
+},
+"LAUGH": {
+"word": "اِضْحَكْ",
+"top": "للبكاء وقت وللضحك وقت.",
+"bot": "للنوح وقت وللرقص وقت.",
+"ref": "الجامعة 3:4"
+},
+"LISTEN": {
+"word": "اِسْتَمِعْ",
+"top": "أما المستمع لي فيسكن آمنا،",
+"bot": "ويستريح من خوف الشر.",
+"ref": "الأمثال 1:33"
+},
+"LIVE": {
+"word": "عِشْ",
+"top": "لا أموت بل أحيا",
+"bot": "وأحدث بأعمال الرب.",
+"ref": "مز 118:17"
+},
+"LOVE": {
+"word": "أَحِبَّ",
+"top": "هذه هي وصيتي أن تحبوا",
+"bot": "بعضكم بعضا كما أحببتكم.",
+"ref": "يوحنا 15:12"
+},
+"PRAY": {
+"word": "صَلِّ",
+"top": "متى صليتم فقولوا: أبانا الذي في السماوات،",
+"bot": "ليتقدس اسمك، ليأت ملكوتك",
+"ref": "لوقا 11:2"
+},
+"REMEMBER": {
+"word": "اُذْكُرْ",
+"top": "هذا هو جسدي الذي يبذل عنكم.",
+"bot": "اصنعوا هذا لذكري.",
+"ref": "لوقا 22:19"
+},
+"REST": {
+"word": "اِسْتَرِحْ",
+"top": "تعالوا إلي يا جميع المتعبين والثقيلي الأحمال،",
+"bot": "وأنا أريحكم.",
+"ref": "متى 11:28"
+},
+"SEEK": {
+"word": "اُطْلُبْ",
+"top": "لكن اطلبوا أولا ملكوت الله",
+"bot": "وبره...",
+"ref": "متى 6:33"
+},
+"SING": {
+"word": "رَنِّمْ",
+"top": "رنموا للرب ترنيمة جديدة.",
+"bot": "رنمي للرب يا كل الأرض.",
+"ref": "مز 96:1"
+},
+"TRUST": {
+"word": "اِتَّكِلْ",
+"top": "سلم للرب طريقك",
+"bot": "واتكل عليه وهو يجري.",
+"ref": "مز 37:5"
+}
+},
+"hi": {
+"ACCEPT": {
+"word": "ग्रहण करो",
+"top": "जैसा मसीह ने भी परमेश्वर की महिमा के लिये तुम्हें ग्रहण किया है,",
+"bot": "वैसे ही तुम भी एक दूसरे को ग्रहण करो।",
+"ref": "रोम. 15:7 (IRV)"
+},
+"ASK": {
+"word": "माँगो",
+"top": "तो तुम्हारा स्वर्गीय पिता अपने माँगनेवालों को",
+"bot": "पवित्र आत्मा क्यों न देगा।",
+"ref": "लूका 11:13 (IRV)"
+},
+"BELIEVE": {
+"word": "विश्वास करो",
+"top": "तुम्हारा मन व्याकुल न हो,",
+"bot": "तुम परमेश्वर पर विश्वास रखते हो मुझ पर भी विश्वास रखो।",
+"ref": "यूह. 14:1 (IRV)"
+},
+"BREATHE": {
+"word": "साँस लो",
+"top": "हे साँस... चारों दिशाओं से आकर",
+"bot": "इन घात किए हुओं में समा जा, कि ये जी उठें।",
+"ref": "यहे. 37:9 (IRV)"
+},
+"CHOOSE": {
+"word": "चुनो",
+"top": "मैंने जीवन और मरण, आशीष और श्राप को तुम्हारे आगे रखा है;",
+"bot": "इसलिए तू जीवन ही को अपना ले...",
+"ref": "व्य. 30:19 (IRV)"
+},
+"ENJOY": {
+"word": "आनन्द करो",
+"top": "यह भी परमेश्वर का दान है",
+"bot": "कि मनुष्य खाए-पीए और अपने सब परिश्रम में सुखी रहे।",
+"ref": "सभो. 3:13 (IRV)"
+},
+"FOLLOW": {
+"word": "पीछे हो लो",
+"top": "यदि कोई मेरे पीछे आना चाहे,",
+"bot": "तो अपने आप से इन्कार करे और प्रतिदिन अपना क्रूस उठाए हुए मेरे पीछे हो ले।",
+"ref": "लूका 9:23 (IRV)"
+},
+"FORGIVE": {
+"word": "क्षमा करो",
+"top": "यदि तुम मनुष्य के अपराध क्षमा करोगे,",
+"bot": "तो तुम्हारा स्वर्गीय पिता भी तुम्हें क्षमा करेगा।",
+"ref": "मत्ती 6:14 (IRV)"
+},
+"GATHER": {
+"word": "इकट्ठे हो",
+"top": "जहाँ दो या तीन मेरे नाम पर इकट्ठे होते हैं",
+"bot": "वहाँ मैं उनके बीच में होता हूँ।",
+"ref": "मत्ती 18:20 (IRV)"
+},
+"GIVE": {
+"word": "दिया करो",
+"top": "दिया करो, तो तुम्हें भी दिया जाएगा:",
+"bot": "लोग पूरा नाप दबा-दबाकर और हिला-हिलाकर और उभरता हुआ तुम्हारी गोद में डालेंगे...",
+"ref": "लूका 6:38 (IRV)"
+},
+"GROW": {
+"word": "बढ़ते जाओ",
+"top": "हमारे प्रभु, और उद्धारकर्ता यीशु मसीह के",
+"bot": "अनुग्रह और पहचान में बढ़ते जाओ।",
+"ref": "2 पत. 3:18 (IRV)"
+},
+"HONOR": {
+"word": "आदर करो",
+"top": "अपनी माता और पिता का आदर कर",
+"bot": "(यह पहली आज्ञा है, जिसके साथ प्रतिज्ञा भी है)।",
+"ref": "इफि. 6:2 (IRV)"
+},
+"HOPE": {
+"word": "आशा रखो",
+"top": "परमेश्वर पर आशा लगाए रह;",
+"bot": "क्योंकि मैं ... फिर उसका धन्यवाद करूँगा।",
+"ref": "भज. 42:5 (IRV)"
+},
+"KNOCK": {
+"word": "खटखटाओ",
+"top": "खटखटाओ, तो तुम्हारे लिये खोला जाएगा।",
+"bot": "क्योंकि जो कोई माँगता है, उसे मिलता है...",
+"ref": "मत्ती 7:7-8 (IRV)"
+},
+"LAUGH": {
+"word": "हँसो",
+"top": "रोने का समय, और हँसने का भी समय;",
+"bot": "छाती पीटने का समय, और नाचने का भी समय है;",
+"ref": "सभो. 3:4 (IRV)"
+},
+"LISTEN": {
+"word": "सुनो",
+"top": "परन्तु जो मेरी सुनेगा, वह निडर बसा रहेगा,",
+"bot": "और विपत्ति से निश्चिन्त होकर सुख से रहेगा।",
+"ref": "नीति. 1:33 (IRV)"
+},
+"LIVE": {
+"word": "जीवित रहो",
+"top": "मैं न मरूँगा वरन् जीवित रहूँगा,",
+"bot": "और परमेश्वर के कामों का वर्णन करता रहूँगा।",
+"ref": "भज. 118:17 (IRV)"
+},
+"LOVE": {
+"word": "प्रेम करो",
+"top": "मेरी आज्ञा यह है, कि जैसा मैंने तुम से प्रेम रखा,",
+"bot": "वैसा ही तुम भी एक दूसरे से प्रेम रखो।",
+"ref": "यूह. 15:12 (IRV)"
+},
+"PRAY": {
+"word": "प्रार्थना करो",
+"top": "जब तुम प्रार्थना करो, तो कहो:",
+"bot": "‘हे पिता, तेरा नाम पवित्र माना जाए, तेरा राज्य आए।’",
+"ref": "लूका 11:2 (IRV)"
+},
+"REMEMBER": {
+"word": "स्मरण करो",
+"top": "यह मेरी देह है, जो तुम्हारे लिये दी जाती है:",
+"bot": "मेरे स्मरण के लिये यही किया करो।",
+"ref": "लूका 22:19 (IRV)"
+},
+"REST": {
+"word": "विश्राम करो",
+"top": "हे सब परिश्रम करनेवालों और बोझ से दबे लोगों,",
+"bot": "मेरे पास आओ; मैं तुम्हें विश्राम दूँगा।",
+"ref": "मत्ती 11:28 (IRV)"
+},
+"SEEK": {
+"word": "खोजो",
+"top": "पहले तुम परमेश्वर के राज्य",
+"bot": "और धार्मिकता की खोज करो...",
+"ref": "मत्ती 6:33 (IRV)"
+},
+"SING": {
+"word": "गाओ",
+"top": "यहोवा के लिये एक नया गीत गाओ,",
+"bot": "हे सारी पृथ्वी के लोगों यहोवा के लिये गाओ!",
+"ref": "भज. 96:1 (IRV)"
+},
+"TRUST": {
+"word": "भरोसा रखो",
+"top": "अपने मार्ग की चिन्ता यहोवा पर छोड़;",
+"bot": "और उस पर भरोसा रख, वही पूरा करेगा।",
+"ref": "भज. 37:5 (IRV)"
+}
+}
+}

@@ -23,14 +23,17 @@
     ref:{size:192,avail:980,stroke:7,cond:1,up:200,down:66}};
   var HOBOCAP=832.3333333333333/1000;   // Hobo's capital H, per unit of size: every script's letters are matched to this height
 
-  function f1(n){ return Math.round(n*10)/10; }
-  // path commands, each point moved by fn(x,y) -> [x,y], as SVG path data
-  function pathD(cmds,fn){ var s='';
-    cmds.forEach(function(c){ var p;
-      if(c.type==='M'||c.type==='L'){ p=fn(c.x,c.y); s+=c.type+f1(p[0])+' '+f1(p[1]); }
-      else if(c.type==='C'){ var a=fn(c.x1,c.y1),b=fn(c.x2,c.y2); p=fn(c.x,c.y); s+='C'+f1(a[0])+' '+f1(a[1])+' '+f1(b[0])+' '+f1(b[1])+' '+f1(p[0])+' '+f1(p[1]); }
-      else if(c.type==='Q'){ var q=fn(c.x1,c.y1); p=fn(c.x,c.y); s+='Q'+f1(q[0])+' '+f1(q[1])+' '+f1(p[0])+' '+f1(p[1]); }
-      else if(c.type==='Z') s+='Z'; });
+  // path commands, each point moved by fn(x,y) -> [x,y], as compact SVG path data: whole units (a fish is 4,000 wide, so a
+  // unit is a few hundredths of a millimetre on a decal), and each point written from the last one (rounded first, so nothing drifts)
+  function nums(a){ var s=''; a.forEach(function(n,i){ s+=(i&&n>=0?' ':'')+n; }); return s; }
+  function pathD(cmds,fn){ var s='', cx=0, cy=0, sx=0, sy=0;
+    function r(p){ return [Math.round(p[0]),Math.round(p[1])]; }
+    cmds.forEach(function(c){ var p, a, b;
+      if(c.type==='M'){ p=r(fn(c.x,c.y)); s+='M'+nums(p); cx=sx=p[0]; cy=sy=p[1]; }
+      else if(c.type==='L'){ p=r(fn(c.x,c.y)); if(p[0]!==cx||p[1]!==cy) s+='l'+nums([p[0]-cx,p[1]-cy]); cx=p[0]; cy=p[1]; }
+      else if(c.type==='C'){ a=r(fn(c.x1,c.y1)); b=r(fn(c.x2,c.y2)); p=r(fn(c.x,c.y)); s+='c'+nums([a[0]-cx,a[1]-cy,b[0]-cx,b[1]-cy,p[0]-cx,p[1]-cy]); cx=p[0]; cy=p[1]; }
+      else if(c.type==='Q'){ a=r(fn(c.x1,c.y1)); p=r(fn(c.x,c.y)); s+='q'+nums([a[0]-cx,a[1]-cy,p[0]-cx,p[1]-cy]); cx=p[0]; cy=p[1]; }
+      else if(c.type==='Z'){ s+='z'; cx=sx; cy=sy; } });
     return s; }
   // the outline of a path as points (each curve at quarter steps)
   function points(cmds){ var out=[], px=0, py=0;
@@ -95,7 +98,8 @@
     // the word at a given size, balanced left/right and top/bottom
     function place(size,sx){ var s=size/100, base=W.cy+E.capH*size/2, dx=0, dy=0, P;
       function at(){ return raw.map(function(p){ return [W.cx+(p[0]-mx)*s*sx+dx, base+p[1]*s+dy]; }); }
-      for(var i=0;i<4;i++){ P=at(); var S=sides(P); if(S.L<-1e8) break; dx+=(S.R-S.L)/2; P=at(); S=sides(P); dy+=(S.B-S.T)/2; }
+      for(var i=0;i<10;i++){ P=at(); var S=sides(P); if(S.L<-1e8) break; dx+=(S.R-S.L)/2; P=at(); S=sides(P); dy+=(S.B-S.T)/2; if(Math.abs(S.B-S.T)<1&&Math.abs(S.R-S.L)<1) break; }
+      P=at(); var S2=sides(P); if(S2.L>-1e8) dx+=(S2.R-S2.L)/2;   // end level left to right
       P=at(); return {size:size,sx:sx,hh:1,ox:W.cx-mx*s*sx+dx,oy:base+dy,room:nearest(P,(W.room||0)+200)-half}; }
     var best=place(size0,sx0);
     function scaled(f){ var sz=size0*f, sx=sx0; if(sz<min){ sx=sx0*sz/min; sz=min; } return place(sz,sx); }
@@ -129,17 +133,27 @@
   //   ref {text, size, k, lift}: centred on the tail
   function layout(E,f,R){ E=eng(E); R=R||RULE;
     return {word:wordLayout(E,f.word,R),top:lineLayout(E,f.top,'top',R),bot:lineLayout(E,f.bot,'bot',R),ref:refLayout(E,f,R)}; }
+  // the word and the lines carry data-part (and each verse word its place in the line, data-s/data-e), so a page can light
+  // them up while the verse is read aloud (index.html fishHi)
   function wordPath(E,word,L,stroke){ var run=runCmds(E,word,L.size);
     var d=pathD(run.cmds,function(x,y){ return [L.ox+x*L.sx, L.oy+y*(L.hh||1)]; });
-    return '<path fill-rule="nonzero" fill="#fff" stroke="#fff" stroke-width="'+stroke+'" stroke-linejoin="round" d="'+d+'"/>'; }
-  function linePath(E,text,which,L,stroke){ var c=GEO[which], d='';
-    E.run(text,L.size).glyphs.forEach(function(g){ var mid=L.start+(g.x+g.adv/2)*L.k, P=along(c,mid), co=Math.cos(P.ang), si=Math.sin(P.ang), ox=g.adv/2, up=L.lift||0;
-      d+=pathD(g.cmds,function(x,y){ var lx=(x-ox)*L.k, ly=y-up; return [P.x+lx*co-ly*si, P.y+lx*si+ly*co]; }); });
-    return '<path fill-rule="nonzero" fill="#000" stroke="#000" stroke-width="'+stroke+'" stroke-linejoin="round" d="'+d+'"/>'; }
+    return '<path data-part="word" fill-rule="nonzero" fill="#fff" stroke="#fff" stroke-width="'+stroke+'" stroke-linejoin="round" d="'+d+'"/>'; }
+  // the line's words, in reading order, with where each starts and ends in the text (Chinese: each character is a word)
+  function wordsOf(text,cjk){ var out=[], i=0; (cjk?Array.from(text):text.split(/(\s+)/)).forEach(function(t){ if(t&&!/^\s+$/.test(t)) out.push({s:i,e:i+t.length}); i+=t.length; }); return out; }
+  function linePath(E,text,which,L,stroke){ var c=GEO[which], gl=E.run(text,L.size).glyphs, cjk=/[\u3040-\u30ff\u3400-\u9fff]/.test(text) && !/\s/.test(text.trim());
+    function one(g){ var mid=L.start+(g.x+g.adv/2)*L.k, P=along(c,mid), co=Math.cos(P.ang), si=Math.sin(P.ang), ox=g.adv/2, up=L.lift||0;
+      return pathD(g.cmds,function(x,y){ var lx=(x-ox)*L.k, ly=y-up; return [P.x+lx*co-ly*si, P.y+lx*si+ly*co]; }); }
+    // glyphs grouped into words where the spaces are (a space has no outline); right-to-left lines are seen last word first
+    var groups=[], cur=[]; gl.forEach(function(g){ if(!g.cmds.length&&!cjk){ if(cur.length) groups.push(cur); cur=[]; } else if(g.cmds.length) { if(cjk){ groups.push([g]); } else cur.push(g); } });
+    if(cur.length) groups.push(cur);
+    var words=wordsOf(text,cjk), att=' fill-rule="nonzero" fill="#000" stroke="#000" stroke-width="'+stroke+'" stroke-linejoin="round"';
+    if(E.rtl) groups.reverse();
+    if(groups.length!==words.length) return '<path data-part="'+which+'" data-s="0" data-e="'+text.length+'"'+att+' d="'+gl.map(one).join('')+'"/>';
+    return groups.map(function(gr,i){ return '<path data-part="'+which+'" data-s="'+words[i].s+'" data-e="'+words[i].e+'"'+att+' d="'+gr.map(one).join('')+'"/>'; }).join(''); }
   function refPath(E,L,stroke){ var g=GEO.ref, a=g.rot*Math.PI/180, co=Math.cos(a), si=Math.sin(a), run=runCmds(E,L.text,L.size), half=run.adv*L.k/2, up=L.lift||0;
     var d=pathD(run.cmds,function(x,y){ var X=g.x+x*L.k-half, Y=g.y+y-up;   // laid out flat, then turned with the tail
       var dx=X-g.ox, dy=Y-g.oy; return [g.ox+dx*co-dy*si, g.oy+dx*si+dy*co]; });
-    return '<path fill-rule="nonzero" fill="#000" stroke="#000" stroke-width="'+stroke+'" stroke-linejoin="round" d="'+d+'"/>'; }
+    return '<path data-part="ref" fill-rule="nonzero" fill="#000" stroke="#000" stroke-width="'+stroke+'" stroke-linejoin="round" d="'+d+'"/>'; }
   function draw(E,f,P,R){ E=eng(E); R=R||RULE;
     return '<svg viewBox="0 0 4000 2000" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;shape-rendering:geometricPrecision;fill-rule:evenodd;clip-rule:evenodd" role="img" aria-label="'+String(f.word).replace(/[&<>"‪-‮]/g,'')+' fish">'
       +GEO.base+wordPath(E,f.word,P.word,R.word.stroke)+linePath(E,f.top,'top',P.top,R.verse.stroke)+linePath(E,f.bot,'bot',P.bot,R.verse.stroke)+refPath(E,P.ref,R.ref.stroke)+'</svg>'; }
