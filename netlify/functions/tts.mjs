@@ -15,6 +15,15 @@ const NAME = { en: 'English', es: 'Spanish', tl: 'Tagalog', zh: 'Chinese', hi: '
 // one word on its own: the voice could say another word (Ken, 25 Oct: Spanish "Cree" was heard as "Pray"), so it is told to say just
 // that word, as written, in its own language
 const ONE = (lang, w) => `Say only this one ${NAME[lang] || ''} word, exactly as written, pronounced in ${NAME[lang] || 'its own language'}: "${w}". Do not translate it and do not add any other word. Say it calmly and warmly.`;
+// one word on its own is kept as a WAV with a little quiet after it (Ken, 26 Oct: Spanish "Goza" stopped before the end of
+// the word; the last moment of a very short MP3 can be lost when a phone plays it): recorded as raw sound and wrapped here
+function wav(pcm, rate = 24000) {
+  const data = Buffer.concat([Buffer.from(pcm), Buffer.alloc(Math.round(rate * 0.35) * 2)]), h = Buffer.alloc(44);
+  h.write('RIFF', 0); h.writeUInt32LE(36 + data.length, 4); h.write('WAVE', 8); h.write('fmt ', 12); h.writeUInt32LE(16, 16);
+  h.writeUInt16LE(1, 20); h.writeUInt16LE(1, 22); h.writeUInt32LE(rate, 24); h.writeUInt32LE(rate * 2, 28); h.writeUInt16LE(2, 32); h.writeUInt16LE(16, 34);
+  h.write('data', 36); h.writeUInt32LE(data.length, 40);
+  return Buffer.concat([h, data]);
+}
 export default async (req) => {
   const u = new URL(req.url), lang = String(u.searchParams.get('lang') || 'en'), key = String(u.searchParams.get('w') || '').toUpperCase();
   const part = u.searchParams.get('part') === 'word' ? 'word' : 'verse';
@@ -27,19 +36,21 @@ export default async (req) => {
   if (!apiKey) return new Response('No voice key yet', { status: 501 });
   // the clip's name carries a short fingerprint of its words, so a corrected line is recorded afresh
   const how = pid ? 'Speak warmly, clearly and a little slowly, like a kind friend talking face to face, in the language of the text.' : part === 'word' ? ONE(lang, text) : HOW[lang] || 'Read calmly and warmly, like a devotional, in the language of the text.';
-  const fp = createHash('sha256').update(text + (part === 'word' && !pid ? '|one' : '')).digest('hex').slice(0, 8);
-  const store = getStore('mannafish-tts'), id = pid ? `${lang}/tongue-${pid}-${voice}-${fp}.mp3` : `${lang}/${key}-${part}-${voice}-${fp}.mp3`;
+  const word = part === 'word' && !pid;
+  const fp = createHash('sha256').update(text + (word ? '|one2' : '')).digest('hex').slice(0, 8);
+  const store = getStore('mannafish-tts'), id = pid ? `${lang}/tongue-${pid}-${voice}-${fp}.mp3` : `${lang}/${key}-${part}-${voice}-${fp}.${word ? 'wav' : 'mp3'}`;
   let audio = await store.get(id, { type: 'arrayBuffer' });
   if (!audio) {
     const r = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST',
       headers: { 'authorization': 'Bearer ' + apiKey, 'content-type': 'application/json' },
-      body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice, input: part === 'word' && !pid ? text + '.' : text, response_format: 'mp3',
+      body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice, input: word ? text + '.' : text, response_format: word ? 'pcm' : 'mp3',
         instructions: how }) });
     if (!r.ok) return new Response('Voice service error', { status: 502 });
     audio = await r.arrayBuffer();
+    if (word) audio = wav(audio);
     await store.set(id, audio);
   }
   // kept by Netlify's CDN too (Ken, 11 Oct: the delay before a fish is heard); a corrected line is new after a week at most
-  return new Response(audio, { headers: { 'content-type': 'audio/mpeg', 'cache-control': 'public, max-age=86400', 'netlify-cdn-cache-control': 'public, max-age=604800, durable', 'netlify-vary': 'query' } });
+  return new Response(audio, { headers: { 'content-type': word ? 'audio/wav' : 'audio/mpeg', 'cache-control': 'public, max-age=86400', 'netlify-cdn-cache-control': 'public, max-age=604800, durable', 'netlify-vary': 'query' } });
 };
 export const config = { path: '/api/tts' };

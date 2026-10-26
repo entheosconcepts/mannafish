@@ -119,6 +119,9 @@ html,body{touch-action:manipulation}   /* tapping a fish twice reads its verse: 
 html,body{overflow-x:hidden}
 .topr{justify-self:end;display:inline-flex;gap:6px;align-items:center;position:relative}
 .pill.more{padding:7px 10px;letter-spacing:1px}
+/* Ken, 26 Oct: a speaker button to hear the game or turn its sound off */
+.sayrow{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
+.pill.spk{padding:6px 12px;font-size:.9rem}.pill.spk[aria-pressed="false"]{opacity:.8}.say input:disabled+span{opacity:.5}
 .mmenu{position:absolute;right:0;top:calc(100% + 6px);z-index:40;background:var(--bg2);border:1px solid var(--glow);border-radius:14px;padding:6px;min-width:180px;box-shadow:0 18px 40px -10px rgba(0,0,0,.6)}
 .mmenu[hidden]{display:none}.mmenu button{display:block;width:100%;text-align:left;border:0;background:none;color:var(--text);font:600 .95rem 'Archivo',sans-serif;padding:10px 12px;border-radius:10px;cursor:pointer}.mmenu button:hover{background:rgba(255,255,255,.06)}.how h2{margin:0 0 6px;font:700 1.05rem 'Archivo',sans-serif}.how ol{margin:0 auto 12px;padding-left:1.3em;line-height:1.5;text-align:left;max-width:560px}.how{text-align:center}.how li{margin:3px 0}
 .howbtn{font-size:.85rem;padding:6px 12px}
@@ -197,7 +200,8 @@ html,body{overflow-x:hidden}
 <div class="wrapw pickl" id="pickL" hidden></div>
 <div class="wrapw bar">
   <span id="stat" aria-live="off"></span>
-  <label class="say"><input type="checkbox" id="sayChk" checked> <span>🔊 <span data-t="say">Say words when flipped</span></span></label>
+  <span class="sayrow"><button class="pill spk" id="spkBtn" type="button" aria-pressed="true"><span class="ic">🔊</span> <span class="lb"></span></button>
+  <label class="say"><input type="checkbox" id="sayChk" checked> <span data-t="say">Say words when flipped</span></label></span>
   <span class="tip" data-t="tip">Tap a fish once to turn it over (and hear its word, if the box is checked). Tap it again to hear its verse. Tap its tail to see it in the other language.</span>
 </div>
 <div class="wrapw players" id="players" hidden aria-live="polite"></div>
@@ -285,7 +289,7 @@ html,body{overflow-x:hidden}
   var PAIRS=12, TRIES=3, MAXP=4, PC=['#3370FF','#f5d76e','#7fd18b','#e8735c'];
   var T={
     en:{home:'Home',sub:'Go MannaFish',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',pickl:'Choose languages…',pickls:'Choose…',pickh:'Tap the languages to play with:',none:'None (one language only)',nones:'None (one language)',
-      say:'Say words when flipped',moves:'Moves',pairs:'pairs',winsub:'Tap any card to hear its verse.',
+      say:'Say words when flipped',spkOn:'Sound on: tap to turn it off',spkOff:'Sound off: tap to hear the game',spkOnS:'Sound on',spkOffS:'Sound off',moves:'Moves',pairs:'pairs',winsub:'Tap any card to hear its verse.',
       again:'Play again',look:'See the cards',how:'How to play',mFb:'Tell us what you think',howok:'Let’s play',
       gfh:'Go fish!',hidden:'Hidden fish {i}',gfmult:'Catch multiplied!',gfnob:'No bonus',gfnob2:'Your catch stays ×{m}',gfnob3:'{p}’s catch stays ×{m}',gfmults:'Now ×{m} · +{b} points',matches:'Matches',caught:'Caught',gfsub:'Catch <b>{w}</b>. Every fish is hidden until you catch it: pick one!',gfskip:'Skip',gfok:'{p} caught {w}! Catch ×{m}',gfokme:'You caught {w}! Catch ×{m}',gfno:'That was {w}. {n} left',gfaway:'It got away. Catch stays ×{m}',score:'Score',catch:'Catch',fish:'fish',
       won2:'All 12 found in {n} moves · Score {s} · {f} fish caught',best:'Your best: {b}',wins:'{p} wins!',tie:'A tie!',
@@ -307,7 +311,7 @@ html,body{overflow-x:hidden}
       h7:'More players? ⋯ → Players on this device (take turns), or Play online with a friend. A match lets you go again.',
       down:'Card {i}, face down',matched:'matched',match:'Match',verse:'Hear the verse',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
     es:{home:'Inicio',sub:'Go MannaFish',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',pickl:'Elegir idiomas…',pickls:'Elegir…',pickh:'Toca los idiomas para jugar:',none:'Ninguno (un solo idioma)',nones:'Ninguno (un idioma)',
-      say:'Decirlas al voltear',moves:'Jugadas',pairs:'pares',winsub:'Toca cualquier carta para oír su versículo.',
+      say:'Decirlas al voltear',spkOn:'Sonido activado: toca para apagarlo',spkOff:'Sonido apagado: toca para oír el juego',spkOnS:'Sonido',spkOffS:'Sin sonido',moves:'Jugadas',pairs:'pares',winsub:'Toca cualquier carta para oír su versículo.',
       again:'Jugar otra vez',look:'Ver las cartas',how:'Cómo se juega',mFb:'Cuéntanos qué piensas',howok:'¡A jugar!',
       gfh:'¡A pescar!',hidden:'Pez escondido {i}',gfmult:'¡Pesca multiplicada!',gfnob:'Sin bono',gfnob2:'Tu pesca sigue ×{m}',gfnob3:'La pesca de {p} sigue ×{m}',gfmults:'Ahora ×{m} · +{b} puntos',matches:'Parejas',caught:'Atrapados',gfsub:'Atrapa <b>{w}</b>. Cada pez está escondido hasta que lo atrapes: ¡elige uno!',gfskip:'Saltar',gfok:'¡{p} atrapó {w}! Pesca ×{m}',gfokme:'¡Atrapaste {w}! Pesca ×{m}',gfno:'Era {w}. Quedan {n}',gfaway:'Se escapó. La pesca sigue ×{m}',score:'Puntos',catch:'Pesca',fish:'peces',
       won2:'Las 12 en {n} jugadas · {s} puntos · {f} peces',best:'Tu mejor: {b}',wins:'¡Gana {p}!',tie:'¡Empate!',
@@ -335,7 +339,7 @@ html,body{overflow-x:hidden}
   function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function rid(n){ var c='abcdefghjkmnpqrstuvwxyz23456789', s=''; for(var i=0;i<n;i++) s+=c[Math.floor(Math.random()*c.length)]; return s; }
 
-  var W=null, l1, l2, ui='en', sayOn=store('mf-match-say')!=='off';
+  var W=null, l1, l2, ui='en', sayOn=store('mf-match-say')!=='off', muted=store('mf-match-mute')==='on';
   function t(k){ var o=(T[ui]||T.en)[k]; return o==null?T.en[k]:o; }
   function f(k,o){ var s=t(k); for(var x in o) s=s.split('{'+x+'}').join(o[x]); return s; }
 
@@ -367,7 +371,7 @@ html,body{overflow-x:hidden}
       pk.innerHTML='<span>'+esc(t('pickh'))+'</span>'+LANGS.filter(function(l){ return l!==l1; }).map(function(l){ return '<button type="button" data-l="'+l+'" aria-pressed="'+(on.indexOf(l)>=0)+'"'+(lock0()?' disabled':'')+'>'+NAME[l]+'</button>'; }).join(''); }
     var lock=lock0(); $('l1').disabled=lock; $('l2').disabled=lock; $('newBtn').disabled=lock;
   }
-  function applyUI(){
+  function applyUI(){ spkUI();
     ui=l1==='es'?'es':'en'; document.documentElement.lang=ui;
     document.querySelectorAll('[data-t]').forEach(function(el){ el.textContent=t(el.getAttribute('data-t')); });
     $('board').setAttribute('aria-label',t('cards'));
@@ -378,6 +382,10 @@ html,body{overflow-x:hidden}
   $('pickL').addEventListener('click',function(e){ var b=e.target.closest('[data-l]'); if(!b) return; var l=b.dataset.l, on=picks(), i=on.indexOf(l);
     if(i>=0){ if(on.length===1) return; on.splice(i,1); } else on.push(l); PICK=on; store('mf-match-pick',PICK.join(',')); fillPickers(); deal(); });
   $('sayChk').checked=sayOn;
+  // the speaker: off means the game says nothing at all (no words when flipped, no verses when tapped)
+  function spkUI(){ var b=$('spkBtn'); b.querySelector('.ic').textContent=muted?'🔇':'🔊'; b.querySelector('.lb').textContent=t(muted?'spkOffS':'spkOnS'); b.setAttribute('aria-pressed',String(!muted)); b.title=t(muted?'spkOff':'spkOn'); b.setAttribute('aria-label',b.title); $('sayChk').disabled=muted; }
+  $('spkBtn').addEventListener('click',function(){ muted=!muted; store('mf-match-mute',muted?'on':'off'); if(muted) stopSpeak(); spkUI(); });
+  spkUI();
   $('sayChk').addEventListener('change',function(){ sayOn=this.checked; store('mf-match-say',sayOn?'on':'off'); });
 
   var V={}, BACK='', POND='', FISH={};
@@ -727,7 +735,7 @@ html,body{overflow-x:hidden}
   function clip(l,k,part){ part=part||'word';
     var v=aiVoice(); if(!v||apiOff) return Promise.reject(new Error('device'));
     var key=l+'|'+k+'|'+v+'|'+part; if(CLIP[key]) return CLIP[key];
-    var p=fetch('/api/tts?lang='+l+'&w='+k+'&part='+part+'&v='+v+(part==='word'?'&r=2':'')).then(function(r){
+    var p=fetch('/api/tts?lang='+l+'&w='+k+'&part='+part+'&v='+v+(part==='word'?'&r=3':'')).then(function(r){
       if(r.status===501) apiOff=true;
       if(!r.ok) throw new Error('tts '+r.status); return r.blob(); }).then(function(b){ return URL.createObjectURL(b); });
     p.catch(function(){ delete CLIP[key]; });
@@ -750,6 +758,7 @@ html,body{overflow-x:hidden}
   }
   // queue=true (a card just flipped): wait for the word being said; otherwise (a tap) say it now
   function say(c,queue,both){
+    if(muted) return;
     if(queue&&sp.busy){ sp.next=c; return; }
     stopSpeak();
     var id=sp.id, k=c.k, list, part=both==='verse'?'verse':'word', cur2=c.shown||c.l;
