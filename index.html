@@ -4256,7 +4256,7 @@ window.MF=(function(){
   var HLS={en:'Highlight',es:'Resaltar',tl:'I-highlight',zh:'标记',hi:'हाइलाइट',el:'Επισήμανση',de:'Markieren',ko:'표시',he:'סימון',ar:'تمييز'}, hlSelRange=null;
   function hearHide(){ $('hearSel').hidden=true; $('hlSel').hidden=true; $('scrSel').hidden=true; hlSelRange=null; }
   // the scripture the selected words are in: a chapter in the reader, or a verse of the devotional (data-hl="John 3:16")  -> {ref, quote, l}
-  var RREF=null, SCR=null, BV={es:'rv1909',tl:'ab1905',zh:'cuv',hi:'irv',el:'fpb',de:'elb',ko:'krv',he:'hmt',ar:'svd'};
+  var RREF=null, SCR=null, BV={es:'rv1909',tl:'ab1905',zh:'cuv',hi:'irv',el:'vamvas',de:'elb',ko:'krv',he:'hmt',ar:'svd'};
   function scrOf(el,t){ var ch=el.closest('#rChapter'), v=el.closest('[data-v]');
     if(ch&&RREF&&v&&!el.closest('.orig,.ilin')) return {ref:RREF.book+' '+RREF.ch+':'+v.dataset.v,quote:t,l:RREF.l};
     var h=el.closest('[data-hl]'), r=h&&h.getAttribute('data-hl'); if(r&&/\d+:\d+/.test(r)) return {ref:r.replace(/\s*\(?(KJV|RVR|RV)[^)]*\)?\s*$/,''),quote:t,l:MF.lang};

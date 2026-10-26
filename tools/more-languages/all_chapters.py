@@ -10,6 +10,10 @@ NAMES={'tl':'Ang Biblia (1905)','de':'Elberfelder (1905)','ko':'개역성경','h
  'zh':'和合本（新标点·神版）','zh2':'和合本','el':'Η Αγία Γραφή (FPB)','el2':'Η Αγία Γραφή (Βάμβας, 1850)','he':'המקרא — נוסח המסורה; הברית החדשה בתרגום דליטש',
  'ar':'ترجمة فاندايك (1865) · Arabic Bible Outreach Ministry · STEPBible.org (CC BY-SA 4.0)','es':'Reina-Valera (1909)'}
 sb.SRC['es']=[sb.numbered('es/SpaRV.json')]  # Reina-Valera 1909, public domain
+# Ken, 26 Oct: the free texts for Chinese and Greek -- the Chinese Union Version of 1919 (in simplified characters) and Vamvas (1850),
+# both public domain, in place of the punctuated CUV (1988) and the FPB, which may still be under copyright
+sb.SRC['zh']=sb.SRC['zh'][1:]; sb.SRC['el']=sb.SRC['el'][1:]
+NAMES['zh']='和合本 (1919)'; NAMES['el']='Η Αγία Γραφή (Βάμβας, 1850)'
 KJV=sb.KJV
 total=0; files=0; missing=[]
 for l in sb.SRC:
@@ -18,7 +22,7 @@ for l in sb.SRC:
     for c in range(1,len(KJV[bi])+1):
       out=None; name=''
       for i,s in enumerate(sb.SRC[l]):
-        idx=(l in('zh','hi','el')) and i==0
+        idx=l=='hi' and i==0
         if idx and not sb.okchap(s,b,c,True): continue
         try: ch=s[bi][c-1]
         except (IndexError,KeyError,TypeError): continue
@@ -27,9 +31,9 @@ for l in sb.SRC:
         out=[]
         for t in vs:
           t=sb.clean(l,t or '')
-          if l=='zh' and i==1: t=sb.CC.convert(t)
+          if l=='zh': t=sb.CC.convert(t)   # traditional characters to simplified
           out.append(t)
-        name=NAMES[l+('2' if i==1 else '')]
+        name=NAMES[l]
         break
       if not out or not any(out): missing.append(f'{l} {b} {c}'); continue
       f=f"{OUT}/{l}/{b.replace(' ','_')}-{c}.json"

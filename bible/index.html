@@ -305,8 +305,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     {k:'darby',n:'Darby Translation',s:'Darby'},{k:'bbe',n:'Bible in Basic English',s:'BBE'},{k:'dra',n:'Douay-Rheims',s:'Douay-Rheims'},{k:'net',n:'New English Translation',s:'NET',api:1},
     // the whole Bible in each fish language (Ken, 26 Oct: "all scripture to have these options available on the bible in any version and language"):
     // each language's own public-domain Bible, every chapter in fish-lang/bible/<l>/ (tools/more-languages/all_chapters.py)
-    {k:'rv1909',l:'es',f:'es',n:'Reina-Valera (1909)',s:'Español'},{k:'ab1905',l:'tl',f:'tl',n:'Ang Biblia (1905)',s:'Tagalog'},{k:'cuv',l:'zh',f:'zh',n:'和合本',s:'中文'},
-    {k:'irv',l:'hi',f:'hi',n:'इंडियन रिवाइज्ड वर्जन (IRV)',s:'हिन्दी'},{k:'fpb',l:'el',f:'el',n:'Η Αγία Γραφή',s:'Ελληνικά'},{k:'elb',l:'de',f:'de',n:'Elberfelder (1905)',s:'Deutsch'},
+    {k:'rv1909',l:'es',f:'es',n:'Reina-Valera (1909)',s:'Español'},{k:'ab1905',l:'tl',f:'tl',n:'Ang Biblia (1905)',s:'Tagalog'},{k:'cuv',l:'zh',f:'zh',n:'和合本 (1919)',s:'中文'},
+    {k:'irv',l:'hi',f:'hi',n:'इंडियन रिवाइज्ड वर्जन (IRV)',s:'हिन्दी'},{k:'vamvas',l:'el',f:'el',n:'Βάμβας (1850)',s:'Ελληνικά'},{k:'elb',l:'de',f:'de',n:'Elberfelder (1905)',s:'Deutsch'},
     {k:'krv',l:'ko',f:'ko',n:'개역성경',s:'한국어'},{k:'hmt',l:'he',f:'he',n:'המקרא',s:'עברית',rtl:1},{k:'svd',l:'ar',f:'ar',n:'فاندايك',s:'العربية',rtl:1}];
   function ver(){ var k=ls('mf-bible-version')||'kjv'; return VERS.filter(function(v){ return v.k===k; })[0]||VERS[0]; }
   function vlang(v){ return (v||ver()).l||'en'; }
@@ -319,7 +319,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   var CH={};
   function kjv(b,c){ return fetch('/fish-lang/bible/kjv/'+B[b][0].replace(/ /g,'_')+'-'+c+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return {t:j.t,note:'King James Version · public domain'}; }); }
   function chapter(b,c,v){ v=v||ver(); var key=v.k+'|'+b+'|'+c; if(CH[key]) return CH[key];
-    var p=v.k==='kjv'?kjv(b,c):v.f?fetch('/fish-lang/bible/'+v.f+'/'+B[b][0].replace(/ /g,'_')+'-'+c+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return {t:j.t||[],note:(j.v||v.n)+({es:1,tl:1,de:1,he:1}[v.l]?' · public domain':v.l==='hi'?' · CC BY-SA 4.0':'')}; }):v.api?fetch('/api/bible?v='+v.k+'&b='+encodeURIComponent(B[b][0])+'&c='+c).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return {t:j.t||[],note:j.note||v.n}; })
+    var p=v.k==='kjv'?kjv(b,c):v.f?fetch('/fish-lang/bible/'+v.f+'/'+B[b][0].replace(/ /g,'_')+'-'+c+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return {t:j.t||[],note:(j.v||v.n)+({es:1,tl:1,de:1,he:1,zh:1,el:1}[v.l]?' · public domain':v.l==='hi'?' · CC BY-SA 4.0':'')}; }):v.api?fetch('/api/bible?v='+v.k+'&b='+encodeURIComponent(B[b][0])+'&c='+c).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return {t:j.t||[],note:j.note||v.n}; })
       :fetch('https://bible-api.com/'+encodeURIComponent(B[b][0]+' '+c)+'?translation='+v.k).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ var t=[]; (j.verses||[]).forEach(function(x){ t[x.verse-1]=x.text.replace(/\s+/g,' ').trim(); }); return {t:t,note:v.n+' · public domain'}; });
     return CH[key]=p.catch(function(e){ delete CH[key]; if(v.k!=='kjv') return kjv(b,c).then(function(o){ o.note='King James Version (the '+v.s+' could not be reached just now)'; return o; }); throw e; }); }
 
