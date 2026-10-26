@@ -148,6 +148,7 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
 [hidden]{display:none!important}
 </style>
 <script src="/fish-lang/tabbar.js" defer></script>
+<script src="/fish-lang/voicepick.js" defer onload="window.MFvpHook&&MFvpHook()"></script>
 <script src="/fish-lang/basket.js" defer></script>
 <script src="/fish-lang/account.js" defer></script>
 </head>
@@ -347,7 +348,9 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
   // read aloud, verse by verse, following along on the page
   var SAY={on:false,i:0,list:[]};
   function stopSay(){ SAY.on=false; try{ speechSynthesis.cancel(); }catch(e){} [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); }); $('rSay').innerHTML='&#9654;&#xFE0E; Listen'; }
-  function voice(){ var vs=speechSynthesis.getVoices().filter(function(v){ return /^en/i.test(v.lang); }); var pick=ls('mf-voice'); return vs.filter(function(v){ return v.name===pick; })[0]||vs.filter(function(v){ return /en-(US|GB)/i.test(v.lang)&&/natural|premium|enhanced|samantha|daniel|google/i.test(v.name); })[0]||vs[0]||null; }
+  // Ken, 26 Oct: a ▾ beside Listen picks one of this phone's voices (fish-lang/voicepick.js); that pick comes first
+  window.MFvpHook=function(){ if(window.MFvoice) MFvoice.attach($('rSay'),{mode:'device',lang:'en',onPick:function(){ if(SAY.on) stopSay(); }}); };
+  function voice(){ var pk=window.MFvoice&&MFvoice.device('en'); if(pk) return pk; var vs=speechSynthesis.getVoices().filter(function(v){ return /^en/i.test(v.lang); }); var pick=ls('mf-voice'); return vs.filter(function(v){ return v.name===pick; })[0]||vs.filter(function(v){ return /en-(US|GB)/i.test(v.lang)&&/natural|premium|enhanced|samantha|daniel|google/i.test(v.name); })[0]||vs[0]||null; }
   function sayNext(){ if(!SAY.on) return; [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); });
     var el=SAY.list[SAY.i]; if(!el){ stopSay(); return; } el.classList.add('say'); var b=$('rBody'), t=el.getBoundingClientRect(), bb=b.getBoundingClientRect(); if(t.top<bb.top+40||t.bottom>bb.bottom-60) b.scrollTop+=t.top-bb.top-bb.height/3;
     var head=el.dataset.v==='1'?(RD.k==='pace'?RD.chs:R(+RD.k.split('-')[0],+RD.k.split('-')[1],RD.k.split('-')[2]).ch)[+el.dataset.c].join(' chapter ')+'. ':'';

@@ -7,6 +7,7 @@
 <script>try{if(localStorage.getItem("mf-mode")==="light")document.documentElement.setAttribute("data-mode","light");}catch(e){}</script>
 <script src="/fish-lang/spell/spell.js" defer onload="MFspell.watch('#notesText,#psT,#psB,#ptCNote,#fsText')"></script>
 <script src="/fish-lang/tabbar.js" defer></script>
+<script src="/fish-lang/voicepick.js" defer onload="window.MFvpHook&&MFvpHook()"></script>
 <script src="/fish-lang/basket.js" defer></script>
 <script src="/fish-lang/prhl.js" defer></script>
 <link rel="manifest" href="/manifest.webmanifest">
@@ -1559,7 +1560,7 @@ select option{background:#0b1620;color:#eaf0f0}
 /* Ken, 11 Oct (mock-up): Word and Verse on the outside, the language between -- balances the tail and the eye */
 #spkMain[hidden]{display:none!important}
 #spkMain{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;width:100%;max-width:860px;margin-top:6px}
-#spkMain .spk[data-part=word]{grid-column:1;justify-self:start}#spkMain .spk[data-part=verse]{grid-column:3;justify-self:end}
+#spkMain .spk[data-part=word]{grid-column:1;justify-self:start}#spkMain .spk[data-part=verse]{grid-column:3;justify-self:end}#spkMain .vpwrap{grid-column:3;justify-self:end}
 #spkMain .spklang{grid-column:2;position:relative;justify-self:center}
 #spkMain .spklang .fishlang{width:auto!important;min-width:0!important;max-width:150px;font-size:.74rem!important;padding:3px 22px 3px 10px!important;text-align:center;text-align-last:center}
 #spkMain .spklang .fishlang{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid var(--line,#333);border-radius:999px;color:var(--foam);font:600 .8rem 'Archivo',sans-serif;padding:4px 26px 4px 12px;cursor:pointer;text-align:center}
@@ -4130,6 +4131,11 @@ window.MF=(function(){
   function voiceOptions(){ var v=curVoice(), dev={es:'Voz de este dispositivo'}[MF.lang]||'This device’s own voice';
     return VOICES.map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===v?' selected':'')+'>'+o[1]+'</option>'; }).join('')+'<option value="device"'+(v==='device'?' selected':'')+'>'+esc(dev)+'</option>'; }
   function setVoice(v){ try{ localStorage.setItem('mf-voice',v); }catch(e){} stopSpeak(); document.querySelectorAll('.voicesel').forEach(function(s){ s.value=v; }); }
+  // Ken, 26 Oct: a ▾ on Listen and on the fish's Verse button opens the voices (fish-lang/voicepick.js); the pick is the voice everywhere
+  window.MFvpHook=function(){ if(!window.MFvoice) return; var dl=document.getElementById('dgListen'), vb=document.querySelector('#spkMain .spk[data-part="verse"]');
+    MFvoice.attach(dl,{lang:function(){ return MF.lang; }});
+    if(vb) MFvoice.attach(vb,{wrap:true,lang:function(){ var s=document.querySelector('#spkLang select'); return (s&&s.value)||MF.lang; }});
+    window.addEventListener('mfvoice',function(e){ setVoice(e.detail.v); }); };
   // Ken, 11 Oct: "a delay" before a fish is heard -- the Word and Verse of each fish on screen are fetched in the background
   var FISHC={};
   function fishClip(l,k,part){ var v=aiVoice(), key=l+'|'+k+'|'+part+'|'+v; if(FISHC[key]) return FISHC[key];
@@ -4846,7 +4852,7 @@ window.MF=(function(){
     cmpDefault=false; oneFish(false); var next=cmpSel.filter(function(x){ return x!==from && x!==to; }); next.push(to); if(next.indexOf(MF.lang)<0 && cmpSel.indexOf(MF.lang)>=0) next.unshift(MF.lang); setCmp(next); });
   function forWho(l,twin){ if(cmpSel.indexOf(MF.lang)<0) return ''; var T=FORYOU[MF.lang]||FORYOU.en; return '<span class="forwho">'+esc(l===MF.lang&&!twin?T[0]:T[1])+'</span>'; }
   function cmpShown(){ return cmpSel.length>1 || (cmpSel.length===1 && (cmpSel[0]!==MF.lang || cmpTwin)); }
-  window.MFcmp=function(){ if(!cmpShown()) return; var spk=$('spkMain').outerHTML.replace(' id="spkMain"','').replace(' hidden=""','').replace(/<span class="spklang"[\s\S]*?<\/select><\/span><\/span>|<span class="spklang" id="spkLang"><\/span>/,'');
+  window.MFcmp=function(){ if(!cmpShown()) return; var spk=$('spkMain').outerHTML.replace(/<button[^>]*class="vpc[^"]*"[^>]*>[^<]*<\/button>/g,'').replace(/<span class="vpwrap">([\s\S]*?<\/button>)<\/span>/,'$1').replace(' id="spkMain"','').replace(' hidden=""','').replace(/<span class="spklang"[\s\S]*?<\/select><\/span><\/span>|<span class="spklang" id="spkLang"><\/span>/,'');
     $('cmp').innerHTML=cmpLangs().map(function(l){ return '<figure data-l="'+l+'"'+(cmpOn[l]?' class="on"':'')+'><div class="cmpf"><div class="cmpfb">'+(fishFor(l,cur)||'<p class="cmpwait">…</p>')+'</div></div><div class="cmpb">'+backFor(l)+'</div><figcaption>'+forWho(l)+fishLang(l)+spk+'</figcaption><div class="saybox" hidden></div></figure>'; }).join('')
       +(cmpTwin&&cmpSel.length===1?'<figure data-l="'+cmpSel[0]+'" data-twin="1"><div class="cmpf"><div class="cmpfb">'+(fishFor(cmpSel[0],cur)||'<p class="cmpwait">…</p>')+'</div></div><div class="cmpb">'+backFor(cmpSel[0])+'</div><figcaption>'+forWho(cmpSel[0],1)+fishLang(cmpSel[0],1)+spk+'</figcaption><div class="saybox" hidden></div></figure>':''); cmpLayout(); $('cmp').querySelectorAll('figure.on').forEach(cmpDeck); };
   // Ken, 9 Oct: every fish stays the size it is with two side by side, whatever the layout. "Per row" picks how many

@@ -12,6 +12,7 @@
 <script src="/fish-lang/account.js" defer></script>
 <script src="/fish-lang/prhl.js" defer></script>
 <script src="/fish-lang/feedback.js" defer></script>
+<script src="/fish-lang/voicepick.js" defer onload="window.MFvpHook&&MFvpHook()"></script>
 <script src="/fish-lang/spell/spell.js" defer onload="MFspell.watch('#cT,#cB,#thanksIn,#heardIn,#updIn')"></script>
 <!-- Ken, 22 Oct: "I would like to mimic this 'time with God' part of YouVersion ... the prayers need to change every day ... let's top it off,
      help create something better. I like how it incorporated my prayers, but maybe give an option for the user to listen here as well, and
@@ -325,6 +326,9 @@ textarea.field{min-height:92px;resize:vertical}
   $('voxSel').addEventListener('change',function(){ try{ localStorage.setItem('mf-voice',this.value); }catch(e){} if(window.MFacct&&MFacct.touch) MFacct.touch('set'); voxTry(); });
   function voxTry(){ unlock(); sayStop(); var run=SAY.run; speak('The Lord is my shepherd; I shall not want. He leadeth me beside the still waters.',function(){},run); }
   $('voxTry').addEventListener('click',voxTry);
+  // Ken, 26 Oct: a ▾ beside Listen opens the voices (fish-lang/voicepick.js), the same choice as everywhere
+  window.MFvpHook=function(){ if(!window.MFvoice) return; MFvoice.attach($('sayBtn'),{lang:'en',cls:'vpsm'});
+    window.addEventListener('mfvoice',function(e){ $('voxSel').value=e.detail.v; }); };
   function bgUI(){ var k=bgKey(); $('bgChips').innerHTML=BGS.map(function(b){ return '<button type="button" data-bg="'+b.k+'" aria-pressed="'+(k===b.k)+'"><i style="background:linear-gradient(180deg,'+b.c[0]+','+b.c[1]+' 45%,'+b.c[2]+' 62%,'+b.c[3]+')"></i>'+b.n+'</button>'; }).join('')
     +'<button type="button" data-bg="daily" aria-pressed="'+(k==='daily')+'">&#127749;&#xFE0E; A new one each day</button>'; }
   bgUI(); $('bgChips').addEventListener('click',function(e){ var b=e.target.closest('[data-bg]'); if(!b) return; try{ localStorage.setItem('mf-twg-bg',b.dataset.bg); }catch(er){} setBg(b.dataset.bg); bgUI(); });

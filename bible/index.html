@@ -206,6 +206,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 .par .txt .v2{opacity:.9;cursor:pointer}.par .txt .v2 .vn{font:700 .66rem 'Archivo',sans-serif;color:var(--dim);vertical-align:super;margin:0 3px 0 2px}
 </style>
 <script src="/fish-lang/tabbar.js" defer></script>
+<script src="/fish-lang/voicepick.js" defer onload="window.MFvpHook&&MFvpHook()"></script>
 <script src="/fish-lang/basket.js" defer></script>
 <script src="/fish-lang/account.js" defer></script>
 </head>
@@ -609,7 +610,9 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   // ── listen: the device's own voice, verse by verse, following along on the page ──
   var SAY={on:false,i:0};
   var LC={en:'en-US',es:'es-ES',tl:'fil-PH',zh:'zh-CN',hi:'hi-IN',el:'el-GR',de:'de-DE',ko:'ko-KR',he:'he-IL',ar:'ar-SA'};
-  function voice(){ var L=vlang(), vs=(window.speechSynthesis?speechSynthesis.getVoices():[]).filter(function(v){ return new RegExp('^'+(L==='tl'?'(fil|tl)':L),'i').test(v.lang); }), want=SET('voice','');
+  // Ken, 26 Oct: a ▾ beside Listen picks one of this phone's voices for the language (fish-lang/voicepick.js); that pick comes first
+  window.MFvpHook=function(){ if(window.MFvoice) MFvoice.attach($('say'),{mode:'device',lang:function(){ return vlang(); },onPick:function(){ if(SAY.on) stopSay(); }}); };
+  function voice(){ var L=vlang(), pk=window.MFvoice&&MFvoice.device(L); if(pk) return pk; var vs=(window.speechSynthesis?speechSynthesis.getVoices():[]).filter(function(v){ return new RegExp('^'+(L==='tl'?'(fil|tl)':L),'i').test(v.lang); }), want=SET('voice','');
     if(L!=='en') return vs.filter(function(v){ return /natural|premium|enhanced|google/i.test(v.name); })[0]||vs[0]||null;
     if(want){ var w=vs.filter(function(v){ return v.voiceURI===want||v.name===want; })[0]; if(w) return w; }
     return vs.filter(function(v){ return /en-(US|GB)/i.test(v.lang)&&/natural|premium|enhanced|samantha|daniel|google/i.test(v.name); })[0]||vs[0]||null; }

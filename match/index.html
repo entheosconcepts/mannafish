@@ -184,6 +184,7 @@ html,body{overflow-x:hidden}
 }
 </style>
 <script src="/fish-lang/tabbar.js" defer></script>
+<script src="/fish-lang/voicepick.js" defer onload="window.MFvpHook&&MFvpHook()"></script>
 <script src="/fish-lang/basket.js" defer></script>
 </head>
 <body>
@@ -386,6 +387,8 @@ html,body{overflow-x:hidden}
   function spkUI(){ var b=$('spkBtn'); b.querySelector('.ic').textContent=muted?'🔇':'🔊'; b.querySelector('.lb').textContent=t(muted?'spkOffS':'spkOnS'); b.setAttribute('aria-pressed',String(!muted)); b.title=t(muted?'spkOff':'spkOn'); b.setAttribute('aria-label',b.title); $('sayChk').disabled=muted; }
   $('spkBtn').addEventListener('click',function(){ muted=!muted; store('mf-match-mute',muted?'on':'off'); if(muted) stopSpeak(); spkUI(); });
   spkUI();
+  // Ken, 26 Oct: a ▾ beside the sound button opens the voices (fish-lang/voicepick.js), the same choice as everywhere
+  window.MFvpHook=function(){ if(window.MFvoice) MFvoice.attach($('spkBtn'),{lang:function(){ return l1||ui; },onPick:function(){ stopSpeak(); }}); };
   $('sayChk').addEventListener('change',function(){ sayOn=this.checked; store('mf-match-say',sayOn?'on':'off'); });
 
   var V={}, BACK='', POND='', FISH={};
