@@ -540,7 +540,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   // ═════ start ═════
   $('who').value=ls('mf-proof-name')||''; primeSigs(); pull();
   Promise.all([fetch('/edit/data.json',{cache:'no-store'}).then(function(r){ return r.json(); }),fetch('/edit/new/data.json').then(function(r){ return r.json(); }),fetch('/edit/new/base.svg').then(function(r){ return r.text(); }),document.fonts.load('100px MFHobo'),fetch('/edit/daily/data.json').then(function(r){ return r.json(); }).catch(function(){ return {fish:[]}; })])
-    .then(function(x){ D=x[0]; N=x[1]; BASE=x[2]; DY=x[4]; if(!DY.fish.length){ document.querySelector('[data-set=daily]').hidden=true; if(set==='daily') set='new'; } var qs=/[?&]set=(new|daily)/.exec(location.search); if(qs&&(qs[1]!=='daily'||DY.fish.length)) set=qs[1]; if(set==='24'&&lang!=='all'&&!D.langs.some(function(l){ return l.l===lang; })) lang='B'; render(); })
+    .then(function(x){ D=x[0]; N=x[1]; BASE=x[2]; DY=x[4]; if(!DY.fish.length){ document.querySelector('[data-set=daily]').hidden=true; if(set==='daily') set='new'; } var qs=/[?&]set=(new|daily)/.exec(location.search); if(qs&&(qs[1]!=='daily'||DY.fish.length)) set=qs[1]; if(set==='24'&&lang!=='all'&&!D.langs.some(function(l){ return l.l===lang; })) lang='B';
+      // straight to one fish (Ken, 26 Oct: from a fish whose design needs fixing): /edit/?find=Trust&code=tl
+      var qf=new URLSearchParams(location.search); if(qf.get('find')){ set='24'; q=qf.get('find'); $('find').value=q; var L0=D.langs.filter(function(l){ return l.code===qf.get('code'); })[0]; lang=L0?L0.l:'all'; }
+      render(); })
     .catch(function(){ $('list').innerHTML='<p class="empty">The fish could not be loaded. Please reload the page.</p>'; });
 })();
 </script>

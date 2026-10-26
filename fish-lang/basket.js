@@ -50,6 +50,7 @@
       +'.mfbk .msg{margin:8px 0 0;font-size:.9rem}.mfbk .ok{text-align:center;padding:10px 4px}.mfbk .ok .big{font-size:3rem}.mfbk .ok h3{margin:4px 0}'
       +'.mfbk .th{cursor:zoom-in}.mfbkz{position:fixed;inset:0;z-index:130;background:rgba(0,0,0,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px;color:#eaf0f0;font:16px/1.4 Archivo,system-ui,sans-serif;text-align:center;cursor:zoom-out}'
       +'.mfbkz .zf{position:relative;width:min(94vw,760px);aspect-ratio:2/1;background:#000;border-radius:14px;overflow:hidden}.mfbkz .zf svg{position:absolute;inset:0;width:100%;height:100%}'
+      +'.mfbkz .zb{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.mfbkz .zb button,.mfbkz .zb a{border:1px solid rgba(255,255,255,.45);background:none;color:#fff;border-radius:999px;padding:8px 14px;font:700 .88rem Archivo,sans-serif;cursor:pointer;text-decoration:none}'
       +'.mfbkz p{margin:6px 0 0}.mfbkz b{font:400 1.6rem MFHobo,cursive}.mfbkz small{opacity:.6}.mfbkz .zx{position:absolute;top:max(14px,env(safe-area-inset-top));right:14px;border:1px solid rgba(255,255,255,.4);background:none;color:#fff;border-radius:50%;width:42px;height:42px;font-size:1.1rem;cursor:pointer}'
       +'.mfbk .empty{opacity:.75;text-align:center;padding:16px 4px}.mfbk a{color:#6f9bff}';
     s.textContent+=[['MFHobo','hobo'],['ZCOOL KuaiLe','zh'],['Baloo 2','hi'],['Ubuntu','el'],['Jua','ko'],['Fredoka','he'],['Cairo','ar']].map(function(f){ return "@font-face{font-family:'"+f[0]+"';src:url(/fish-lang/"+f[1]+".woff2) format('woff2');font-weight:100 900;font-display:swap}"; }).join('');   // the letters on the fish
@@ -114,8 +115,11 @@
   var ZM=null;
   function zoom(x){ unzoom(); var lang=(LANGS.filter(function(l){ return l[0]===(x.l||'en'); })[0]||[])[1]||'';
     ZM=document.createElement('div'); ZM.className='mfbkz'; ZM.setAttribute('role','dialog'); ZM.setAttribute('aria-label',x.word);
-    ZM.innerHTML='<button type="button" class="zx" aria-label="Close">&#10005;</button><div class="zf"></div><p><b>'+esc(x.word)+'</b>'+(x.ref?' · '+esc(x.ref):'')+(String(x.id).indexOf('M:')===0&&lang?' · '+esc(lang):'')+'</p><small>Tap anywhere to close</small>';
-    document.body.appendChild(ZM); var f=ZM.querySelector('.zf'); thumb(f,x); ZM.addEventListener('click',unzoom); }
+    var main=String(x.id).indexOf('M:')===0, admin=''; try{ admin=localStorage.getItem('mf-admin-key')||''; }catch(e){}
+    ZM.innerHTML='<button type="button" class="zx" aria-label="Close">&#10005;</button><div class="zf"></div><p><b>'+esc(x.word)+'</b>'+(x.ref?' · '+esc(x.ref):'')+(main&&lang?' · '+esc(lang):'')+'</p>'
+      +'<span class="zb">'+(window.MFfeedback?'<button type="button" data-z="fb">🎨 Something looks wrong</button>':'')+(admin&&main?'<a href="/edit/?find='+encodeURIComponent(x.word)+'&code='+encodeURIComponent(x.l||'en')+'">✏️ Fix it in the edit sheet</a>':'')+'</span><small>Tap anywhere to close</small>';
+    document.body.appendChild(ZM); var f=ZM.querySelector('.zf'); thumb(f,x);
+    ZM.addEventListener('click',function(e){ if(e.target.closest('a')) return; if(e.target.closest('[data-z=fb]')){ unzoom(); MFfeedback.open({kind:'design',feature:'The fish',fish:x.word+(main&&lang?' · '+lang:'')}); return; } unzoom(); }); }
   function unzoom(){ if(ZM){ ZM.remove(); ZM=null; } }
   function click(e){ var t=e.target, b=t.closest('[data-a],[data-for]');
     if(t===BOX){ close(); return; } if(!b) return;

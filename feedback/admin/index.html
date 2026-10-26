@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>MannaFish · Feedback</title>
+<!-- Ken, 26 Oct: the tweak launch -- everything the testers send (voice notes written out, screenshots, bugs, ideas, fish designs),
+     newest first; mark each one done as it is fixed. Behind the admin password (the same one as the edit sheet). -->
+<style>
+:root{--bg:#0b0e12;--card:#141a21;--line:rgba(255,255,255,.13);--text:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 Archivo,system-ui,sans-serif}
+.wrap{max-width:820px;margin:0 auto;padding:18px 14px 60px}h1{margin:0 0 4px;font-size:1.5rem}.sub{color:var(--dim);margin:0 0 14px}
+.bar{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}.bar button,.bar select,.key input,.key button{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:7px 13px;font:700 .88rem inherit;cursor:pointer}
+.bar button[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}.key{display:flex;gap:8px;margin:0 0 14px}.key input{flex:1;cursor:text;font-weight:400}
+.it{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:0 0 10px}.it.done{opacity:.5}
+.it .h{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}.it .h b{font-size:1.02rem}.it .h small{color:var(--dim)}.it .h .d{margin-left:auto}
+.it .tag{display:inline-block;border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:700;background:rgba(68,143,241,.18);margin:6px 6px 0 0}
+.it p{margin:8px 0 0;white-space:pre-wrap;font-family:Georgia,serif}.it .v{color:#cfe0ff;font-style:italic}.it audio{width:100%;margin-top:8px}.it img{max-width:100%;max-height:420px;border-radius:10px;margin-top:8px}
+.it .f{display:flex;gap:10px;align-items:center;margin-top:10px;font-size:.85rem;color:var(--dim)}.it .f a{color:var(--dim)}.it .f button{margin-left:auto;border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:6px 12px;font:700 .85rem inherit;cursor:pointer}
+.empty{color:var(--dim);text-align:center;padding:30px}
+</style>
+</head>
+<body><div class="wrap">
+<h1>Feedback</h1><p class="sub">From testers and readers, newest first. Voice notes are written out under each one.</p>
+<div class="key" id="key" hidden><input id="k" type="password" placeholder="Admin password" autocomplete="current-password"><button id="kGo">Open</button></div>
+<div class="bar" id="bar" hidden></div>
+<div id="list"><p class="empty">Opening…</p></div>
+</div>
+<script>
+(function(){
+  var $=function(i){ return document.getElementById(i); }, K='', ALL=[], SHOW='open', KIND='';
+  try{ K=localStorage.getItem('mf-admin-key')||localStorage.getItem('mf-admin-k')||''; }catch(e){}
+  var KINDS={bug:'🐞 Bug',idea:'💡 Idea',design:'🎨 Fish design',thought:'💭 Thought',love:'❤️ Love it',good:'🙂 Good',confused:'😕 Confusing',broken:'🐞 Something is broken'};
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function load(){ if(!K){ $('key').hidden=false; $('list').innerHTML=''; return; }
+    fetch('/api/feedback/admin?k='+encodeURIComponent(K),{cache:'no-store'}).then(function(r){ if(r.status===403){ K=''; throw 0; } return r.json(); })
+      .then(function(j){ try{ localStorage.setItem('mf-admin-key',K); }catch(e){} $('key').hidden=true; ALL=j.items||[]; draw(); })
+      .catch(function(){ $('key').hidden=false; $('list').innerHTML='<p class="empty">Enter the admin password (the same as the edit sheet).</p>'; }); }
+  function draw(){ var ks={}; ALL.forEach(function(x){ if(x.kind) ks[x.kind]=(ks[x.kind]||0)+1; });
+    $('bar').hidden=false;
+    $('bar').innerHTML=[['open','Not done'],['done','Done'],['all','All']].map(function(o){ return '<button data-s="'+o[0]+'" aria-pressed="'+(SHOW===o[0])+'">'+o[1]+' ('+ALL.filter(function(x){ return o[0]==='all'||(o[0]==='done')===!!x.done; }).length+')</button>'; }).join('')
+      +'<select id="kind"><option value="">Every kind</option>'+Object.keys(ks).map(function(k){ return '<option value="'+k+'"'+(KIND===k?' selected':'')+'>'+esc(KINDS[k]||k)+' ('+ks[k]+')</option>'; }).join('')+'</select>';
+    var L=ALL.filter(function(x){ return (SHOW==='all'||(SHOW==='done')===!!x.done)&&(!KIND||x.kind===KIND); });
+    $('list').innerHTML=L.length?L.map(function(x){ var m=function(w){ return '/api/feedback/media?id='+encodeURIComponent(x.id)+'&k='+encodeURIComponent(K)+'&w='+w; };
+      return '<div class="it'+(x.done?' done':'')+'" data-id="'+esc(x.id)+'"><div class="h"><b>'+esc(x.name||'Someone')+'</b>'+(x.tester?'<small>tester</small>':'')+(x.email?'<small>'+esc(x.email)+'</small>':'')+'<small class="d">'+esc(new Date(x.at).toLocaleString())+'</small></div>'
+        +(x.kind?'<span class="tag">'+esc(KINDS[x.kind]||x.kind)+'</span>':'')+(x.feature?'<span class="tag">'+esc(x.feature)+'</span>':'')+(x.fish?'<span class="tag">🐟 '+esc(x.fish)+'</span>':'')
+        +(x.text?'<p>'+esc(x.text)+'</p>':'')+(x.audio?'<audio controls preload="none" src="'+m('a')+'"></audio>'+(x.heard?'<p class="v">“'+esc(x.heard)+'”</p>':''):'')
+        +(x.image?'<a href="'+m('i')+'" target="_blank"><img loading="lazy" src="'+m('i')+'" alt="Screenshot"></a>':'')
+        +'<div class="f"><a href="'+esc(x.page||'/')+'" target="_blank">'+esc(x.page||'/')+'</a><button data-done="'+(x.done?0:1)+'">'+(x.done?'Not done':'✓ Done')+'</button></div></div>'; }).join(''):'<p class="empty">Nothing here.</p>'; }
+  document.addEventListener('click',function(e){ var s=e.target.closest('[data-s]'); if(s){ SHOW=s.dataset.s; draw(); return; }
+    var d=e.target.closest('[data-done]'); if(d){ var id=d.closest('.it').dataset.id, on=d.dataset.done==='1';
+      fetch('/api/feedback/admin',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({k:K,id:id,done:on})}).then(function(r){ if(!r.ok) throw 0; ALL.forEach(function(x){ if(x.id===id) x.done=on; }); draw(); }).catch(function(){ alert('Could not save. Try again.'); }); } });
+  document.addEventListener('change',function(e){ if(e.target.id==='kind'){ KIND=e.target.value; draw(); } });
+  $('kGo').addEventListener('click',function(){ K=$('k').value.trim(); load(); }); $('k').addEventListener('keydown',function(e){ if(e.key==='Enter'){ K=this.value.trim(); load(); } });
+  load();
+})();
+</script>
+</body>
+</html>

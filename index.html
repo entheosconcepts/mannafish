@@ -4738,6 +4738,8 @@ window.MF=(function(){
   var CMPFONT={zh:'ZCOOL KuaiLe',hi:'Baloo 2',el:'Ubuntu',ko:'Jua',he:'Fredoka',ar:'Cairo'}, LFISH={}, cmpLang=null;
   function cmpName(l){for(var i=0;i<CMPL.length;i++) if(CMPL[i][0]===l) return CMPL[i][1]; return l;}
   // Ken, 8 Oct: say which language it is in the reader's own language too -- "Chinese · 中文"
+  // feedback from Today says which fish is showing (fish-lang/feedback.js)
+  window.MFfeedbackFish=function(){ var d=DATA[cur]; return d?d.title+' · '+((LNAME.en||{})[MF.lang]||MF.lang):''; };
   var LNAME={en:{en:'English',es:'Spanish',tl:'Tagalog',zh:'Chinese',hi:'Hindi',el:'Greek',he:'Hebrew',ar:'Arabic',de:'German',ko:'Korean'},
              es:{en:'Inglés',es:'Español',tl:'Tagalo',zh:'Chino',hi:'Hindi',el:'Griego',he:'Hebreo',ar:'Árabe',de:'Alemán',ko:'Coreano'},
              tl:{en:'Ingles',es:'Espanyol',tl:'Tagalog',zh:'Tsino',hi:'Hindi',el:'Griyego',he:'Hebreo',ar:'Arabe',de:'Aleman',ko:'Koreano'},
