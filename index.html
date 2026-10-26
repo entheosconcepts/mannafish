@@ -1642,6 +1642,15 @@ select option{background:#0b1620;color:#eaf0f0}
 @keyframes okpop{from{transform:scale(.85);opacity:0}to{transform:none;opacity:1}}
 .hearsel{position:fixed;z-index:125;display:flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:var(--brass);color:#fff;font:600 .85rem 'Archivo',sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.45);cursor:pointer}
 .hearsel[hidden],.hearbox[hidden]{display:none}
+.gfsheet{position:fixed;inset:0;z-index:130;background:rgba(0,0,0,.65);display:flex;align-items:flex-end;justify-content:center}.gfsheet[hidden]{display:none}
+.gfsheet .in{position:relative;width:100%;max-width:560px;max-height:calc(100dvh - 12px);overflow:auto;background:#0e1116;color:#eaf0f0;border:1px solid rgba(255,255,255,.14);border-radius:22px 22px 0 0;padding:16px 16px max(18px,env(safe-area-inset-bottom));font:16px/1.4 'Archivo',sans-serif}
+@media(min-width:640px){.gfsheet{align-items:center}.gfsheet .in{border-radius:22px}}:root[data-mode=light] .gfsheet .in{background:#fbfaf6;color:#1c2228}
+.gfsheet h3{margin:2px 44px 12px 0;font:400 1.8rem 'MFHobo',cursive}.gfsheet h4{margin:16px 0 8px;font:800 .72rem 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.7}
+.gfsheet .gfx{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;border:1px solid rgba(128,128,128,.45);background:none;color:inherit;cursor:pointer}
+.gfcast{display:flex;flex-direction:column;align-items:center;width:100%;border:0;border-radius:18px;background:#2a5fb0;color:#fff;padding:14px;cursor:pointer}.gfcast b{font-size:1.15rem}.gfcast small{opacity:.85}
+.gfgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.gfgrid button{border:1px solid rgba(128,128,128,.3);background:#000;color:#fff;border-radius:12px;padding:6px 4px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font:700 .82rem 'Archivo',sans-serif}
+.gfgrid button[aria-pressed=true]{border-color:#448ff1;box-shadow:0 0 0 2px #448ff1}.gfgrid img{width:100%;aspect-ratio:2/1;object-fit:contain}
+.gfgame{display:block;text-align:center;margin:14px 0 2px;color:inherit;opacity:.85;font-weight:700}
 /* Ken, 26 Oct: scripture in the devotional gets what the Bible has -- a note, share, and the verse in the MannaFish Bible */
 .scrsel{position:fixed;z-index:125;display:flex;gap:6px}.scrsel[hidden]{display:none}.scrsel button{display:flex;align-items:center;gap:5px;height:38px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:#1c2430;color:#fff;font:600 .82rem 'Archivo',sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.45);cursor:pointer}
 .scrnote{position:fixed;inset:0;z-index:140;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center}.scrnote .in{width:100%;max-width:520px;background:#12161c;color:#eaf0f0;border-radius:22px 22px 0 0;padding:18px 18px max(18px,env(safe-area-inset-bottom));font:16px/1.45 'Archivo',sans-serif}
@@ -4857,16 +4866,35 @@ window.MF=(function(){
   function gpLabels(){ var es=MF.lang==='es', M=(typeof MENU!=='undefined'&&MENU&&(MENU[MF.lang]||MENU.en))||['','','Just one fish']; $('cmpGridLab').textContent=es?'Por fila':'Per row'; $('gpAuto').textContent=es?'Automático':'Auto';
     $('cmpClear').textContent='✕ '+M[2];
     var TW={en:'Two fish',es:'Dos peces',tl:'Dalawang isda',zh:'两条鱼',hi:'दो मछलियाँ',el:'Δύο ψάρια',de:'Zwei Fische',ko:'물고기 두 마리',he:'שני דגים',ar:'سمكتان'};
-    $('twoBtn').textContent='+ '+(TW[MF.lang]||TW.en); $('ftOne').textContent=({en:'One fish',es:'Un pez',tl:'Isang isda',zh:'一条鱼',hi:'एक मछली',el:'Ένα ψάρι',de:'Ein Fisch',ko:'물고기 하나',he:'דג אחד',ar:'سمكة واحدة'})[MF.lang]||'One fish'; $('ftTwo').textContent=TW[MF.lang]||TW.en; ftUI(); }
+    $('twoBtn').textContent='+ '+(TW[MF.lang]||TW.en); var G=GFL[MF.lang]||GFL.en; $('ftOne').textContent=G[0]; $('ftTwo').textContent='🎣 '+G[1]; ftUI(); }
+  // Ken, 26 Oct: "Instead of one fish and 2 fish ... put Today's Catch and Go Fish, and allow user to change fish" -- Today's Catch is your fish
+  // for the devotional; Go Fish casts for a new one (at random) or lets you choose any of the 24, and it becomes your fish
+  // (two languages side by side are still in the language menu at the top)
+  var GFL={en:['Today’s Catch','Go Fish'],es:['La pesca de hoy','A pescar'],tl:['Huli Ngayon','Mangisda'],zh:['今日之鱼','去钓鱼'],hi:['आज की मछली','मछली पकड़ें'],el:['Η ψαριά της ημέρας','Πάμε ψάρεμα'],
+    de:['Heutiger Fang','Fischen gehen'],ko:['오늘의 물고기','낚시하기'],he:['הדג של היום','יוצאים לדוג'],ar:['صيد اليوم','هيا نصطاد']};
+  var GFT={en:{cast:'Cast your line',sub:'A fish at random',or:'Or choose your fish',got:'You caught {w}!',game:'Play the Go MannaFish game',x:'Close',now:'your fish now'},
+    es:{cast:'Echa la red',sub:'Un pez al azar',or:'O elige tu pez',got:'¡Pescaste {w}!',game:'Jugar Go MannaFish',x:'Cerrar',now:'tu pez ahora'}};
+  function goFish(){ var l=MF.lang, T=GFT[l]||GFT.en, d=document.getElementById('gfSheet'), fl=/^(en|es|tl|zh|hi|el|de|ko|he|ar)$/.test(l)?l:'en';
+    if(!d){ d=document.createElement('div'); d.id='gfSheet'; d.className='gfsheet'; d.setAttribute('role','dialog'); d.setAttribute('aria-modal','true'); document.body.appendChild(d);
+      d.addEventListener('click',function(e){ if(e.target===d||e.target.closest('[data-gf=x]')){ d.hidden=true; return; } var b=e.target.closest('[data-gk]'), r=e.target.closest('[data-gf=cast]'); if(!b&&!r) return;
+        var nk=b?b.dataset.gk:(function(){ var rs=ORDER.filter(function(x){ return x!==cur&&DATA[x]; }); return rs[Math.floor(Math.random()*rs.length)]; })(); if(!DATA[nk]) return;
+        d.hidden=true; planSet(nk); if(cmpShown()) $('cmpClear').click(); if(nk!==cur) pick(nk,false); ftUI();
+        if(r){ var tb=$('mfToast'); if(tb){ tb.textContent='🎣 '+(GFT[MF.lang]||GFT.en).got.replace('{w}',titleIn(MF.lang,nk)); tb.hidden=false; clearTimeout(tb._t); tb._t=setTimeout(function(){ tb.hidden=true; },2200); } }
+        $('stage').scrollIntoView({block:'center',behavior:'smooth'}); }); }
+    d.innerHTML='<div class="in"><button type="button" class="gfx" data-gf="x" aria-label="'+esc(T.x)+'">&#10005;</button><h3>🎣 '+esc((GFL[l]||GFL.en)[1])+'</h3>'
+      +'<button type="button" class="gfcast" data-gf="cast"><b>🎣 '+esc(T.cast)+'</b><small>'+esc(T.sub)+'</small></button><h4>'+esc(T.or)+'</h4><div class="gfgrid">'
+      +ORDER.filter(function(k){ return DATA[k]; }).map(function(k){ return '<button type="button" data-gk="'+k+'" aria-pressed="'+(k===cur)+'"><img loading="lazy" src="/fish/'+fl+'/'+k+'.svg" alt=""><span>'+esc(titleIn(l,k))+'</span></button>'; }).join('')
+      +'</div><a class="gfgame" href="/go/">🃏 '+esc(T.game)+' &rsaquo;</a></div>';
+    d.hidden=false; }
   function spkLangUI(){ var e=$('spkLang'); if(e) e.innerHTML=fishLang(MF.lang); }
   spkLangUI(); MF.onChange(spkLangUI);
-  function ftUI(){ var two=cmpShown(); $('ftOne').setAttribute('aria-pressed',two?'false':'true'); $('ftTwo').setAttribute('aria-pressed',two?'true':'false'); ftPlace(); }
+  function ftUI(){ var two=cmpShown(), mine=false; try{ mine=cur===planFish(); }catch(e){} $('ftOne').setAttribute('aria-pressed',String(!two&&mine)); $('ftTwo').setAttribute('aria-pressed','false'); ftPlace(); }
   // Ken, 12 Oct: the two pills sit just above the fish card, not inside it
   function ftPlace(){ var t=$('fishTog'), card=cmpShown()?$('cmp'):$('stage'); if(!card||!card.offsetWidth){ t.style.visibility='hidden'; return; }
     var cr=card.getBoundingClientRect(); t.style.visibility=''; if(!cmpShown()) $('spkMain').style.maxWidth=cr.width+'px'; t.style.width=cr.width+'px'; }
   window.addEventListener('resize',function(){ setTimeout(ftPlace,200); });
-  $('ftOne').addEventListener('click',function(e){ e.stopPropagation(); if(cmpShown()) $('cmpClear').click(); });
-  $('ftTwo').addEventListener('click',function(e){ e.stopPropagation(); if(!cmpShown()) $('twoBtn').click(); });
+  $('ftOne').addEventListener('click',function(e){ e.stopPropagation(); if(cmpShown()) $('cmpClear').click(); var k=planFish(); if(k&&k!==cur) pick(k,false); ftUI(); });
+  $('ftTwo').addEventListener('click',function(e){ e.stopPropagation(); goFish(); });
   gpLabels(); MF.onChange(gpLabels);
   // Ken, 9 Oct: with fish side by side, a verse opens right under its own fish, in that fish's language -- so two
   // (or more) passages can be open at once, each with its own Verse / Chapter speaker.
