@@ -339,11 +339,11 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function paint(){ var h=hls(), n=0; [].forEach.call($('txt').querySelectorAll('.v'),function(sp){ var v=+sp.dataset.v, hk=hkey(AT.b,AT.c,v), x=h[hk], c=x&&(HLC[x.c]?x.c:'gold'), t=VT[v]||'';
     sp.classList.toggle('hl',!!x); sp.style.background=x?HLC[c]:''; sp.classList.toggle('gone',!!(x&&HLM&&HLM[hk])); if(x) n++;
     var ph=x?[]:phrases(v,h), at=0, P=[]; ph.forEach(function(p){ var a=Math.max(p.s,at), z=Math.min(p.e,t.length); if(z<=a) return; n++; P.push({k:p.k,c:p.c,s:a,e:z}); at=z; });
-    var out=vtHtml(v,t,P), vt=sp.querySelector('.vt'); if(vt.innerHTML!==out) vt.innerHTML=out; }); if(WC) markWord();
+    var out=vtHtml(v,t,P,!!x), vt=sp.querySelector('.vt'); if(vt.innerHTML!==out) vt.innerHTML=out; }); if(WC) markWord();
     $('hlmBtn').hidden=!n||!!HLM||EMBED; $('hlmBtn').textContent='🖍 '+n+' highlight'+(n===1?'':'s')+' here · Remove'; if(HLM) hlmUI(); }
   // a verse's words, each in its own span (data-j: the word's place, as the Greek and Hebrew are matched to it); in word study, with the
   // Strong's number and the original word of each (shown above or below it when asked for)
-  function vtHtml(v,t,ph){ var T=tk(v), o=studyOn()&&OGJ&&ver().k==='kjv'?OGJ.v[String(v)]:null, cuts=[0,t.length], out='', open=null, ti=0;
+  function vtHtml(v,t,ph,full){ var T=tk(v), og=OGJ&&ver().k==='kjv'?OGJ.v[String(v)]:null, o=studyOn()?og:null, R=full?[]:rulesHere(), cuts=[0,t.length], out='', open=null, ti=0;
     T.forEach(function(x){ cuts.push(x.s,x.e); }); ph.forEach(function(p){ cuts.push(p.s,p.e); });
     cuts=cuts.filter(function(x,i,a){ return x>=0&&x<=t.length&&a.indexOf(x)===i; }).sort(function(a,b){ return a-b; });
     for(var i=0;i<cuts.length-1;i++){ var a=cuts[i], z=cuts[i+1], m=null;
@@ -352,6 +352,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
       while(ti<T.length&&T[ti].e<=a) ti++;
       var seg=esc(t.slice(a,z));
       if(ti<T.length&&T[ti].s<=a&&z<=T[ti].e){ var at='', oi=o&&o.a?o.a[ti]:null, w=oi!=null&&oi>=0?o.w[oi]:null; if(w) at=' data-n="'+strongN(w[3])+'" data-o="'+esc(w[0])+'"';
+        var rc=R.length&&!open?ruleColour(R,T[ti].w,og,ti):''; if(rc) at+=' style="background:'+HLC[rc]+';color:#14181c"';   // a word highlighted everywhere
         out+='<span class="w" data-j="'+ti+'"'+at+'>'+seg+'</span>'; }
       else out+=seg; }
     return out+(open?'</mark>':''); }
@@ -679,7 +680,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     var b=$('stb'); b.hidden=!on; if(!on) return;
     b.innerHTML=kj?'<span><b>Word study</b> · tap a word for its '+L.n+' · tap a verse number for the verse</span><span class="seg2">'+[['words','Words'],['num','Strong’s #'],['inter','Interlinear']].map(function(x){ return '<button type="button" data-sh="'+x[0]+'" aria-pressed="'+(sh===x[0])+'">'+x[1]+'</button>'; }).join('')+'<button type="button" data-sh="off" aria-label="Word study off">&#10005;</button></span>'
       :'<span><b>Word study</b> follows the King James words.</span><span class="seg2"><button type="button" data-kjv="1">KJV</button><button type="button" data-kjv="2">KJV + '+esc(ver().s)+' side by side</button><button type="button" data-sh="off" aria-label="Word study off">&#10005;</button></span>'; }
-  function studyLoad(){ if(!studyOn()||ver().k!=='kjv') return; var k=AT.b+':'+AT.c; ogCh(AT.b,AT.c).then(function(J){ if(AT.b+':'+AT.c!==k||!studyOn()) return; OGJ=J; paint(); }).catch(function(){}); }
+  function studyLoad(){ if(!(studyOn()||rulesHere().some(function(r){ return r.sn; }))||ver().k!=='kjv') return; var k=AT.b+':'+AT.c; ogCh(AT.b,AT.c).then(function(J){ if(AT.b+':'+AT.c!==k) return; OGJ=J; paint(); }).catch(function(){}); }
   function setStudy(on){ putSet('study',on?true:undefined); OGJ=null; closeWc(); studyUI(); paint(); if(on) studyLoad(); }
   $('studyB').addEventListener('click',function(){ setStudy(!studyOn()); });
   $('stb').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; if(b.dataset.sh==='off'){ setStudy(false); return; }
@@ -711,7 +712,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
           +(x&&x.d?'<p class="ogd">'+esc(x.d)+'</p>':'')
           +'<div class="ogu">'+(kw.length>1?'Here: “'+esc(kw.join(' '))+'” · ':'')+(x&&x.n?'Used '+x.n.toLocaleString()+' time'+(x.n===1?'':'s')+' in the '+(AT.b<39?'Old':'New')+' Testament':'')+'</div>'
           +(x&&x.k&&x.k.length?'<div class="kch" title="How the KJV translates it">'+x.k.map(function(k){ return '<span>'+esc(k[0])+' <small>'+k[1]+'</small></span>'; }).join('')+'</div>':'')
-          +'<div class="row" style="margin-top:10px"><button type="button" class="chip" data-wc="hl">&#128397;&#xFE0E; Highlight</button><button type="button" class="chip" data-wc="note">&#65291; Add to my note</button>'
+          +'<div class="row" style="margin-top:10px"><button type="button" class="chip" data-wc="hl">&#128397;&#xFE0E; Highlight</button><button type="button" class="chip" data-wc="every">&#128397;&#xFE0E; Everywhere it is used</button><button type="button" class="chip" data-wc="note">&#65291; Add to my note</button>'
           +'<a class="chip" href="https://www.blueletterbible.org/lexicon/'+sn.toLowerCase()+'/kjv/'+(AT.b<39?'wlc':'tr')+'/0-1/" target="_blank" rel="noopener">Blue Letter Bible &#8599;&#xFE0E;</a>'
           +'<a class="chip" href="https://www.stepbible.org/?q=strong='+encodeURIComponent(w[3].replace(/[A-Za-z]$/,''))+'" target="_blank" rel="noopener">STEPBible &#8599;&#xFE0E;</a></div></div>'
           +(o.w.length>1?'<p class="sub" style="margin:10px 0 4px">The '+L.n+' words of this verse:</p>'+ogRow(o,v).replace('data-oi="'+i+'"','data-oi="'+i+'" class="on"'):'')
@@ -738,10 +739,53 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     if(t.dataset.more){ concShow(me,t.dataset.bk2,+t.dataset.more); return; }
     if(t.dataset.bk!=null){ concShow(me,t.dataset.bk); return; }
     if(t.dataset.go){ var g=t.dataset.go.split(',').map(Number); HIST.push({b:AT.b,c:AT.c,v:me.v}); go(g[0],g[1],g[2]); backUI(); return; }
+    if(a==='every'){ var L0=rules().filter(function(x){ return x.sn!==me.n; }); L0.unshift({sn:me.n,label:me.w[0]+' ('+(me.x&&me.x.g||me.w[2])+')',scope:'all',col:colour()}); saveRules(L0.slice(0,40)); closeWc(); paint(); toast('Every place '+me.n+' is used is highlighted (KJV) · ••• → Highlight a word to change'); return; }
     var p=wcWords(); if(!p){ toast('Tap the word in the verse to pick it'); return; }
     if(a==='hl'){ closeWc(); PHS=[p]; SEL=[p.v]; applyHl(colour()); return; }
     if(a==='note'){ var w=me.w, x=me.x, line=(me.kw&&me.kw.length?me.kw.join(' ')+' — ':'')+w[0]+' ('+w[1]+')'+(x&&x.l!==w[0]?', from '+x.l+' ('+x.t+')':'')+', Strong’s '+me.n+': '+(x?x.g+(x.d&&x.d.toLowerCase()!==x.g.toLowerCase()?' — '+x.d:''):w[2]);
       closeWc(); PHS=[p]; SEL=[p.v]; selUI(); openNote(); var tx=$('aNoteT').value.replace(/\s+$/,''); $('aNoteT').value=(tx?tx+'\n':'')+line; $('aNoteT').dispatchEvent(new Event('input',{bubbles:true})); toast('Added to your note · tap Save note'); } });
+
+
+  // ── a word highlighted everywhere, in advance (Ken, 26 Oct: "a special button where you can add a word and select all words on a
+  // chapter or book of the Bible and highlight them in advance"). ••• → Highlight a word: the word (and its forms, like loved and
+  // loveth), where (this chapter, this book, the whole Bible) and a colour; or, in word study, every place a Greek or Hebrew word is
+  // used (its Strong's number). Kept with the settings (mf-set: wordhl), so they come along with the account; painted as each
+  // chapter is shown, under any highlight of your own.
+  function rules(){ var L=SET('wordhl',[]); return Array.isArray(L)?L:[]; }
+  function saveRules(L){ putSet('wordhl',L.length?L:undefined); }
+  function rulesHere(){ return rules().filter(function(r){ return r.scope==='all'||(r.b===AT.b&&(r.scope==='bk'||r.ch===AT.c)); }); }
+  // a Greek or Hebrew word everywhere: the English words that carry its meaning, not the little ones that come with it ("he", "having")
+  var SKIPW=/^(the|a|an|of|to|in|and|that|for|with|by|from|but|or|is|are|was|were|be|been|he|him|his|she|her|it|its|they|them|their|we|us|our|ye|you|your|i|me|my|thou|thee|thy|which|who|unto|upon|as|so|not|have|having|hath|had|shall|will|do|did|doth)$/i;
+  var ENDS=['','e','s','es','d','ed','th','eth','st','est','ing','er','ers','r','rs','ly','n'];
+  function wordHits(r,w){ var x=String(w).toLowerCase(), q=String(r.w||'').toLowerCase(); if(!q) return false; if(x===q) return true; if(!r.forms) return false;
+    if(/^[a-z']+$/.test(q)){ var base=q.length>3&&/e$/.test(q)?q.slice(0,-1):q; return x.indexOf(base)===0&&ENDS.indexOf(x.slice(base.length))>=0; }
+    return x.indexOf(q)===0&&x.length-q.length<=3; }
+  function ruleColour(R,w,og,j){ for(var i=0;i<R.length;i++){ var r=R[i];
+      if(r.sn){ var oi=og&&og.a?og.a[j]:null; if(oi!=null&&oi>=0&&og.w[oi]&&strongN(og.w[oi][3])===r.sn&&!SKIPW.test(w)) return r.col; }
+      else if(wordHits(r,w)) return r.col; } return ''; }
+  function scopeName(r){ return r.scope==='all'?'the whole Bible':r.scope==='bk'?B[r.b][0]:B[r.b][0]+' '+r.ch; }
+  function countHere(r){ var n=0; Object.keys(VT).forEach(function(v){ tk(+v).forEach(function(t){ if(!r.sn&&wordHits(r,t.w)) n++; }); }); return n; }
+  function openWords(){ $('stuff').classList.add('open'); $('sTitle').textContent='Highlight a word'; $('sSeg').hidden=true; wordsUI(); setTimeout(function(){ var i=$('whW'); if(i) i.focus(); },200); }
+  var WH={scope:'ch',c:''};
+  function wordsUI(){ var L=rules(), c=WH.c||colour();
+    $('sBody').innerHTML='<p class="sub" style="margin:0 0 10px">Every place a word is used is highlighted when you read, in the colour you pick. Your own highlights stay on top.</p>'
+      +'<input class="find" id="whW" type="text" placeholder="A word, like love" autocomplete="off" style="margin:0 0 8px">'
+      +'<label class="sub" style="display:flex;gap:8px;align-items:center;margin:0 0 10px"><input type="checkbox" id="whF" checked> And its forms (loved, loveth, loving…)</label>'
+      +'<div class="sseg" id="whS">'+[['ch',B[AT.b][0]+' '+AT.c],['bk','All of '+B[AT.b][0]],['all','The whole Bible']].map(function(o){ return '<button type="button" data-ws="'+o[0]+'" aria-pressed="'+(WH.scope===o[0])+'">'+esc(o[1])+'</button>'; }).join('')+'</div>'
+      +'<div class="pill" id="whC" style="height:52px;margin:0 0 10px">'+Object.keys(HLC).map(function(k){ return '<button type="button" data-wc2="'+k+'" aria-pressed="'+(c===k)+'" aria-label="'+k+'" style="background:'+HLC[k]+'"></button>'; }).join('')+'</div>'
+      +'<button type="button" class="cont" id="whGo" style="justify-content:center;margin:0 0 6px"><b style="flex:none">🖍 Highlight it</b></button><p class="sub" id="whMsg" aria-live="polite"></p>'
+      +(L.length?'<h5>Words highlighted</h5>'+L.map(function(r,i){ return '<div class="ml" style="margin:0 0 6px"><button type="button" class="it" data-wgo="'+i+'" style="margin:0"><span class="dt" style="background:'+HLC[r.col]+'"></span><span class="tx"><b>'+esc(r.sn?(r.label||r.sn):r.w)+(r.forms?' …':'')+'</b><span>'+esc((r.sn?'Strong’s '+r.sn+' · ':'')+'in '+scopeName(r))+'</span></span></button><button type="button" class="mdel chip" data-wdel="'+i+'" aria-label="Remove">&#10005;</button></div>'; }).join(''):''); }
+  $('stuff').addEventListener('click',function(e){ if(!$('whS')&&!e.target.closest('[data-wdel],[data-wgo]')) return;
+    var s0=e.target.closest('[data-ws]'); if(s0){ WH.scope=s0.dataset.ws; [].forEach.call($('whS').children,function(b){ b.setAttribute('aria-pressed',String(b.dataset.ws===WH.scope)); }); return; }
+    var c0=e.target.closest('[data-wc2]'); if(c0){ WH.c=c0.dataset.wc2; [].forEach.call($('whC').children,function(b){ b.setAttribute('aria-pressed',String(b.dataset.wc2===WH.c)); }); return; }
+    var d=e.target.closest('[data-wdel]'); if(d){ var L=rules(); L.splice(+d.dataset.wdel,1); saveRules(L); paint(); wordsUI(); toast('Word highlight removed'); return; }
+    var g=e.target.closest('[data-wgo]'); if(g){ var r=rules()[+g.dataset.wgo]; if(r&&r.scope!=='all'){ closeStuff(); go(r.b,r.scope==='ch'?r.ch:1); } return; }
+    if(e.target.closest('#whGo')){ var w=$('whW').value.trim().replace(/\s+/g,' '); if(!w){ $('whW').focus(); return; } if(w.indexOf(' ')>=0){ $('whMsg').textContent='One word at a time, please.'; return; }
+      var r={w:w,forms:$('whF').checked,scope:WH.scope,b:AT.b,ch:AT.c,col:WH.c||colour()};
+      var L=rules().filter(function(x){ return !(x.w&&x.w.toLowerCase()===w.toLowerCase()&&x.scope===r.scope&&x.b===r.b&&(r.scope!=='ch'||x.ch===r.ch)); }); L.unshift(r); saveRules(L.slice(0,40)); paint();
+      var n=countHere(r); $('whMsg').textContent=n?'Found '+n+' time'+(n===1?'':'s')+' in '+B[AT.b][0]+' '+AT.c+(r.scope==='ch'?'':', and it will be highlighted wherever you read in '+scopeName(r))+'.':'Not in this chapter; it will be highlighted wherever you read in '+scopeName(r)+'.';
+      $('whW').value=''; setTimeout(wordsUI,1600); } });
+  $('stuff').addEventListener('keydown',function(e){ if(e.target.id==='whW'&&e.key==='Enter'){ e.preventDefault(); $('whGo').click(); } });
 
   // ── ••• (Ken, 24 Oct: "give the bible 3 dots on top right to add notes and see history, recent, highlights, my stuff") ──
   function menuOpen(){ return !$('menu').hidden; }
@@ -750,6 +794,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     var sw=function(id,ic,t,sm,on){ return '<button type="button" class="mi" role="menuitemcheckbox" data-m="'+id+'" aria-pressed="'+!!on+'"><span class="ic">'+ic+'</span><span class="tx">'+t+'<small>'+sm+'</small></span><span class="sw"></span></button>'; };
     $('menu').innerHTML=(H.length?'<h6>Recent</h6><div class="mrc">'+H.map(function(x){ return '<button type="button" data-go="'+x.b+','+x.c+',0">'+esc(B[x.b][0]+' '+x.c)+'</button>'; }).join('')+'</div><hr>':'')
       +'<button type="button" class="mi" role="menuitem" data-m="note"><span class="ic">&#128221;&#xFE0E;</span><span class="tx">'+(cn?'My note on ':'Add a note on ')+esc(here)+'<small>'+esc(cn?cn.text.slice(0,70):'What God is showing you in this chapter')+'</small></span></button>'
+      +'<button type="button" class="mi" role="menuitem" data-m="words"><span class="ic">&#128397;&#xFE0E;</span><span class="tx">Highlight a word<small>Every place it is used: this chapter, this book or the whole Bible</small></span></button>'
       +'<button type="button" class="mi" role="menuitem" data-m="find"><span class="ic">&#128269;&#xFE0E;</span><span class="tx">Go to a book or verse<small>Or type one, like John 3:16</small></span></button>'
       +'<hr><h6>Study</h6>'
       +sw('study','<span class="og2">'+L.i+'</span>','Word study','Tap any word for its '+L.n+' root',studyOn())
@@ -770,6 +815,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     var st=e.target.closest('[data-st]'); if(st){ closeMenu(); openStuff(st.dataset.st); return; }
     var m=e.target.closest('[data-m]'); if(!m) return; var k=m.dataset.m;
     if(k==='note'){ closeMenu(); openCnote(); }
+    else if(k==='words'){ closeMenu(); openWords(); }
     else if(k==='find'){ closeMenu(); openPick(); setTimeout(function(){ var p=$('pFind'); if(p) p.focus(); },60); }
     else if(k==='study'){ setStudy(!studyOn()); menuUI(); }
     else if(k==='par'){ putSet('par',parVer()?undefined:(ver().k==='kjv'?'web':'kjv')); go(AT.b,AT.c,0,true); menuUI(); }
