@@ -1051,10 +1051,11 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 .pt{position:fixed;inset:0;z-index:90;color:#fff;display:flex;flex-direction:column;font-family:'Archivo',sans-serif;
   background:radial-gradient(130% 60% at 50% 78%,rgba(42,95,176,.55),rgba(42,95,176,0) 62%),radial-gradient(90% 40% at 50% 100%,rgba(245,215,110,.16),transparent 70%),linear-gradient(#10161f,#06080b 72%)}
 .pt[hidden]{display:none}
-.ptbar{display:flex;align-items:center;gap:10px;padding:4px 16px 6px}
+.ptbar{display:flex;align-items:center;justify-content:center;gap:10px;padding:4px 16px 6px}
 /* Ken, 27 Oct: the MannaFish logo itself at the top of the devotional (not the word written out), the buttons below it */
 .ptlogo{text-align:center;font-size:2.1rem;line-height:1;padding:max(14px,env(safe-area-inset-top)) 16px 4px;white-space:nowrap}
 @media(max-width:430px){#ptHomeLab{display:none}#ptX.pthome{padding:0 13px}.ptbar{gap:6px;padding-left:12px;padding-right:12px}.ptmode .ptc{padding:0 10px 0 8px}}
+@media(max-width:360px){.ptbar{gap:4px;padding-left:8px;padding-right:8px}.ptmode .ptc{padding:0 8px 0 6px}.ptbar .vpc{padding:0 9px}}
 .ptbar .vpc{flex:none;height:40px;margin-left:-4px;padding:0 12px;border:0;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font:700 .86rem 'Archivo',sans-serif}
 .ptc{flex:none;width:46px;height:46px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:1.5rem;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
 .ptc svg{width:22px;height:22px}
@@ -1067,7 +1068,7 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 .ptmid{position:absolute;left:50%;top:50%;z-index:5;width:68px;height:68px;margin:-34px 0 0 -34px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(10,14,20,.1);color:rgba(255,255,255,.42);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity .2s,color .2s,background .2s;-webkit-tap-highlight-color:transparent}
 .ptmid[hidden]{display:none}.ptmid svg{width:26px;height:26px}.ptmid.ps svg{margin-left:4px}
 .ptmid:hover,.ptmid:focus-visible,.ptmid.ps{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.3);background:rgba(10,14,20,.2)}
-@media (max-width:560px){.ptttl{display:none}.ptbar{justify-content:space-between}}
+@media (max-width:560px){.ptttl{display:none}.ptbar{justify-content:center}}
 #ptMore{font-size:.85rem;letter-spacing:1px}
 .ptttl{flex:1;text-align:center;font:700 .78rem 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ptanchor{position:sticky;top:-18px;z-index:2;margin:-18px -28px 12px;padding:14px 28px 12px;text-align:center;background:none;transition:background .2s}
