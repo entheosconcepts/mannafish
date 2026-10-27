@@ -25,6 +25,9 @@ who are not as easy to get permission from, I will ask now, and keep asking unti
 | 7 | **The Lockman Foundation** | NASB, Amplified | Harder: form | **lockman.org**, then "Permission to Quote", then the Request Form. Paste **Letter C**. |
 | 8 | **Holman Bible Publishers** (Lifeway) | CSB | Harder: written request | Holman Bible Publishers, One LifeWay Plaza, Nashville, TN 37234 (or their permissions page). **Letter C**. |
 
+**Sponsors (Ken asked, 27 Oct).** Keep sponsor names and logos away from any licensed Bible text (a sponsor page on its
+own is fine). The printed fish use the public-domain KJV, so they are unaffected. The letters mention sponsors up front.
+
 **One honest point.** Most free licenses are for *non-commercial* use. MannaFish is free, with no ads, no fees and nothing to
 buy, so say that plainly. Sponsors and donations are gifts to the ministry, not sales of Scripture. If a publisher asks, the
 printed fish and decals are also given away free.
@@ -57,8 +60,9 @@ My name is Ken, and I lead MannaFish (manna-fish.com), a free Bible devotional a
 Wilmington, North Carolina. Each day it gives people one word from God's Word with a verse, a short guided devotional
 (pray, hear, do), a Bible-in-a-year plan, and a Bible reader with highlights and notes, in ten languages.
 
-MannaFish is completely free: no ads, no subscriptions, no fees, nothing for sale. It is supported by donations. We show
-each version's copyright line, never sublicense the text, and follow every display and caching rule.
+MannaFish is completely free: no ads, no subscriptions, no fees, nothing for sale. It is supported by donations. Some donors
+sponsor the printing of free MannaFish decals that are given away. Those use the public-domain King James Version, and no
+sponsor names appear alongside any licensed Bible text. We show each version's copyright line, never sublicense the text, and follow every display and caching rule.
 
 We would like to offer more translations, in English and in the other languages our users read. We have registered for
 an API.Bible account. Could you:
@@ -83,7 +87,9 @@ it gives people one word from God's Word with a verse, a guided devotional that 
 Bible-in-a-year plan, and a Bible reader, in ten languages today (English, Spanish, Tagalog, Chinese, Hindi, Greek, German,
 Korean, Hebrew and Arabic). We would like to add many more.
 
-MannaFish is and will stay free: no ads, no fees, nothing for sale; users never pay. We would like to use Bible Brain for:
+MannaFish is and will stay free: no ads, no fees, nothing for sale; users never pay. It is supported by donations, including
+donors who sponsor free printed decals. No sponsor names appear alongside Bible text or recordings. We would like to use
+Bible Brain for:
 - Bible text in our users' heart languages, and
 - your recorded audio Bibles, so people can *hear* God's Word in the devotional and reading plan, in place of a computer
   voice.
@@ -114,7 +120,9 @@ do), a Bible-in-a-year reading plan, and a Bible reader where people can highlig
 - Always with your copyright notice, exactly as you specify
 - Not printed, not sold, not sublicensed, and not used to train any AI model
 
-**It is free:** no ads, no subscriptions, no fees, and nothing for sale. MannaFish is supported by donations.
+**It is free:** no ads, no subscriptions, no fees, and nothing for sale. MannaFish is supported by donations. Some donors
+sponsor the printing of free decals that are given away. Those use the public-domain King James Version, and no sponsor
+names or logos would appear alongside the **[version]**.
 
 We would be glad to follow any limits you set, use a feed you provide (for example through API.Bible), and send screenshots
 before launch. If full use isn't possible, we would welcome whatever you can allow, such as the daily verse and devotional
