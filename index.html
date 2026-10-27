@@ -1062,8 +1062,11 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 /* Ken, 20 Oct: "switch from speaker mode to read mode at any point in my devotional" -- Listen | Read, always in the bar */
 .ptmode{flex:none;display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:rgba(0,0,0,.55)}
 .ptmode .ptc{width:auto;height:40px;padding:0 13px 0 10px;gap:6px;border-radius:999px;background:none;font:700 .86rem 'Archivo',sans-serif}
-.ptmode .ptc[aria-pressed="true"]{background:#2a5fb0}.ptmode .pmi{display:inline-flex}.ptmode .pmi svg{width:19px;height:19px}
-.pt .ptpause{display:none!important}
+.ptmode .ptc{color:rgba(255,255,255,.6)}.ptmode .ptc[aria-pressed="true"]{background:rgba(255,255,255,.14);color:#fff}.ptmode .pmi{display:inline-flex}.ptmode .pmi svg{width:19px;height:19px}
+/* Ken, 27 Oct: pause and play faint in the middle of the screen, over the devotional, not a big blue button in the bar */
+.ptmid{position:absolute;left:50%;top:50%;z-index:5;width:68px;height:68px;margin:-34px 0 0 -34px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(10,14,20,.1);color:rgba(255,255,255,.42);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity .2s,color .2s,background .2s;-webkit-tap-highlight-color:transparent}
+.ptmid[hidden]{display:none}.ptmid svg{width:26px;height:26px}.ptmid.ps svg{margin-left:4px}
+.ptmid:hover,.ptmid:focus-visible,.ptmid.ps{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.3);background:rgba(10,14,20,.2)}
 @media (max-width:560px){.ptttl{display:none}.ptbar{justify-content:space-between}}
 #ptMore{font-size:.85rem;letter-spacing:1px}
 .ptttl{flex:1;text-align:center;font:700 .78rem 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2258,10 +2261,11 @@ select option{background:#0b1620;color:#eaf0f0}
 <div class="pt" id="pt" role="dialog" aria-modal="true" aria-labelledby="ptTitle" hidden translate="no">
   <div class="ptlogo brand" id="ptTitle" aria-label="MannaFish"><span class="wm-m">Manna</span><span class="wm-f">Fish</span></div>
   <div class="ptbar"><button type="button" class="ptc pthome" id="ptX" aria-label="Home"><span aria-hidden="true">&#8962;&#xFE0E;</span><span id="ptHomeLab">Home</span></button>
-    <span class="ptmode" role="group" aria-label="Listen or read"><button type="button" class="ptc" id="ptSpk" aria-pressed="false" aria-label="Listen"><span class="pmi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></span><span class="pml" id="ptSpkLab">Listen</span></button><button type="button" class="ptc" id="ptRead" aria-pressed="true" aria-label="Read"><span class="pmi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg></span><span class="pml" id="ptReadLab">Read</span></button></span><button type="button" class="ptc ptpause" id="ptPause" aria-label="Pause" hidden></button>
+    <span class="ptmode" role="group" aria-label="Listen or read"><button type="button" class="ptc" id="ptSpk" aria-pressed="false" aria-label="Listen"><span class="pmi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></span><span class="pml" id="ptSpkLab">Listen</span></button><button type="button" class="ptc" id="ptRead" aria-pressed="true" aria-label="Read"><span class="pmi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg></span><span class="pml" id="ptReadLab">Read</span></button></span>
     <button type="button" class="ptc" id="ptMore" aria-label="More" aria-expanded="false">&bull;&bull;&bull;</button></div>
   <div class="ptmenu" id="ptMenu" hidden></div>
   <div class="ptstage" id="ptStage"></div>
+  <button type="button" class="ptmid" id="ptPause" aria-label="Pause" hidden></button>
   <div class="ptnav"><button type="button" class="ptnb" id="ptBack"></button><div class="ptdots" id="ptDots" aria-hidden="true"></div><button type="button" class="ptnb ptnext" id="ptNext"></button></div>
   <div class="ptsheet" id="ptSheet" hidden></div>
   <div class="ptbible" id="ptBible" hidden><iframe id="ptBibleF" title="Bible"></iframe></div>
@@ -3464,7 +3468,7 @@ window.MF=(function(){
   var PAUSEB='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z" fill="currentColor"/></svg>', PLAYB='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg>';
   function spPaused(){ return sp.audio?sp.audio.paused:!!(window.speechSynthesis&&speechSynthesis.paused); }
   function pauseBtnUI(b,src){ var mine=sp.on&&sp.btn===src; b.hidden=!mine; if(!mine) return; var ps=spPaused(), T=LIS[MF.lang]||LIS.en;
-    b.innerHTML=ps?PLAYB:PAUSEB; b.setAttribute('aria-label',ps?T[0]:T[1]); }
+    b.innerHTML=ps?PLAYB:PAUSEB; b.classList.toggle('ps',ps); b.setAttribute('aria-label',ps?T[0]:T[1]); }
   window.MFpauseUI=function(){ pauseBtnUI($('ptPause'),$('ptSpk')); pauseBtnUI($('tPause'),$('tSpk')); if(window.MFptModeUI) MFptModeUI(); };
   function spToggle(){ if(!sp.on) return; if(spPaused()){ if(sp.audio) sp.audio.play(); else speechSynthesis.resume(); } else { if(sp.audio) sp.audio.pause(); else speechSynthesis.pause(); } setTimeout(MFpauseUI,60); }
   $('ptPause').addEventListener('click',spToggle); $('tPause').addEventListener('click',spToggle);
@@ -3497,10 +3501,8 @@ window.MF=(function(){
   var RDL={en:'Read',es:'Leer',tl:'Basahin',zh:'阅读',hi:'पढ़ें',el:'Ανάγνωση',de:'Lesen',ko:'읽기',he:'קריאה',ar:'قراءة'};
   function ptModeUI(){ var L=LIS[PT.l]||LIS.en, mine=sp.on&&sp.btn===$('ptSpk'), ps=mine&&spPaused(), on=!!PT.listen;
     $('ptSpk').setAttribute('aria-pressed',on?'true':'false'); $('ptRead').setAttribute('aria-pressed',on?'false':'true');
-    $('ptSpk').querySelector('.pmi').innerHTML=on&&mine?(ps?PLAYB:PAUSEB):SPKI; $('ptSpkLab').textContent=on&&mine&&!ps?L[1]:L[0];
-    $('ptSpk').setAttribute('aria-label',on&&mine&&!ps?L[1]:L[0]); $('ptReadLab').textContent=RDL[PT.l]||RDL.en; $('ptRead').setAttribute('aria-label',RDL[PT.l]||RDL.en); }
-  var SPKI=$('ptSpk').querySelector('.pmi').innerHTML;
-  $('ptSpk').addEventListener('click',function(){ if(PT.listen&&sp.on&&sp.btn===this){ spToggle(); setTimeout(ptModeUI,80); return; } PT.listen=true; ptSay(); ptModeUI(); });
+    $('ptSpkLab').textContent=L[0]; $('ptSpk').setAttribute('aria-label',L[0]); $('ptReadLab').textContent=RDL[PT.l]||RDL.en; $('ptRead').setAttribute('aria-label',RDL[PT.l]||RDL.en); }
+    $('ptSpk').addEventListener('click',function(){ if(PT.listen&&sp.on&&sp.btn===this){ spToggle(); setTimeout(ptModeUI,80); return; } PT.listen=true; ptSay(); ptModeUI(); });
   window.MFptModeUI=function(){ if(PT.on) ptModeUI(); };
   $('ptRead').addEventListener('click',function(){ var was=PT.listen; PT.listen=false; stopSpeak(); $('pt').classList.remove('guided'); if(was){ var y=$('ptStage').scrollTop; ptRender(); $('ptStage').scrollTop=y; } ptModeUI(); });   /* redrawn so no word stays marked */
   (function(){ var x0=null,y0=0; $('ptStage').addEventListener('touchstart',function(e){ x0=e.touches[0].clientX; y0=e.touches[0].clientY; },{passive:true});
