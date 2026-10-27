@@ -52,6 +52,24 @@ Ken, 25 Oct: launch the free devotional first (digital only), decals "coming soo
   printed as one run and shipped to a MannaFish Station (church, bookstore, sponsor) for pickup, always free. Waiting on Ken:
   100 per design, stations, and printable fish limited to the 24 plus the fish of the week?
 - **Reference icons in the Today reader** too (they are on the Bible tab now), if Ken wants them.
+- **Jars and Doors** (Ken, 27 Oct). A **Jar** is a person who gives fish away ("a jar" / "ajar": people are open); a **Door**
+  is a business or place where people come and go; the **Basket** stays each person's own fish. Sponsors stock the Pond, the
+  Pond fills the Jars and Doors, and they pour out to others. The worked-out plan so far:
+  - Giving is counted on the server: a Jar's share links carry their code, and the QR code on the back of each decal card
+    carries the code of the Jar or Door it was sent to. It counts when a different person opens or scans it (one count per
+    person, not the giver's own phone, daily limit, anything odd goes to Ken). The giver sees counts only, never names.
+  - One QR code per order, not per decal: any printer can do it. The printer ships straight to the Jar or Door (no packing
+    or scanning for Ken); the site makes the print-ready file (design, QR, "Gift of [Sponsor]" or "From MannaFish · Yada
+    Collaborative"). Home addresses are never shown; only Doors that say yes appear on a map.
+  - Start simple: Doors get printed cards (a net of 100 per order); Jars give from their phone first, and later pick up
+    cards at a Door or get small refills once enough different people have scanned.
+  - The card: 4.5" x 2.25", clear vinyl fish decal kiss-cut on a thick (14-16 pt) card, the MannaFish logo pattern printed
+    around the cut, the QR code on the back.
+  - Printer: Ken emailed StickerApp (27 Oct) about a thicker backer, an API, drop shipping, price for 100 and a sample.
+    Others: Smartpress (sticker postcards: 4 mil vinyl on 14 pt card, variable data, mailing), Sticker it (order API),
+    Print Peppermint (16 pt card).
+  Waiting on Ken: StickerApp's answer; how many fish make a Jar (10 or 20?); the Jar refill size (12?); whether "Door"
+  replaces "MannaFish Station" in Fill the Net.
 - **Action words for every fish** (Ken, 27 Oct). Today the 24 main fish are all action words; the year fish are 46 of 128
   and the Bible-in-a-year fish 267 of 624. All can become action words and keep the daily readings: most switch to a verb in
   their own verse, about 61 need another verse from the same day's reading. Waiting on Ken: he may update the word list
