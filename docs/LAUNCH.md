@@ -32,3 +32,23 @@ Ken, 25 Oct: launch the free devotional first (digital only), decals "coming soo
 - **Texting:** when Twilio approves, add `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN` and `TWILIO_MESSAGING_SERVICE_SID` to the manna-fish.com site, and point the Twilio webhook at `https://manna-fish.com/api/sms-in`.
 - **Decals:** when they can be sent, add `MF_BASKET_OPEN` = `1` on manna-fish.com, and Claude switches the basket from waitlist to real requests (`WAIT` in `fish-lang/basket.js`, and the Free MannaFish form). Then email the waitlist (in Netlify Blobs, `mannafish-basket`, status `waitlist`, and Netlify Forms, `free-gift`).
 - **After two weeks of feedback:** decide decals, sponsors, and the game on its own.
+
+## Next updates (Ken's list)
+
+- **Audio upgrade** (Ken, 27 Oct: "the audio needs help ... put on list for an update"). Today the Bible tab and Plans read
+  with the phone's own voice, and everything else with OpenAI's voices. The plan:
+  1. Record each chapter once in the chosen voice and keep it on the server (instant, the same on every phone, no cost after).
+  2. Bible tab and Plans: apply to Faith Comes By Hearing's Digital Bible Platform (free for ministries, human narration in all
+     ten languages; each recording has its own permissions). If not, ElevenLabs: Ken's own cloned voice or a designed one.
+  3. Devotional and site voices: move the voice characters (Thunder, Narrator, Highlander, Grace, Magnolia, Heather) to
+     ElevenLabs or Azure so they sound truly different.
+  4. Before paying: a "voice taste test" page plays the same verse from each choice. Any key goes in Netlify's environment
+     variables, never into a chat.
+  Waiting on Ken: (a) Faith Comes By Hearing, (b) an ElevenLabs trial, or (c) both side by side.
+- **Sharing with friends** (Ken, 27 Oct): notes, highlights, prayers and scripture art each Only me / chosen friends / all
+  friends / everyone, changed with one tap, with a default in Settings; friends by invite link, QR or email request.
+  Kept on the server, forward compatible. Waiting on Ken: build right after launch?
+- **Fill the Net** (Ken, 27 Oct): each fish design fills a net of 100 (requests, and sponsors who stock it); a full net is
+  printed as one run and shipped to a MannaFish Station (church, bookstore, sponsor) for pickup, always free. Waiting on Ken:
+  100 per design, stations, and printable fish limited to the 24 plus the fish of the week?
+- **Reference icons in the Today reader** too (they are on the Bible tab now), if Ken wants them.
