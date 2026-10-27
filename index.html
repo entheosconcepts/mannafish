@@ -1273,7 +1273,8 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 .ptcxt{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:8px 0 2px}.ptcxt small{opacity:.65;font-size:.8rem}
 .ptcxt .hlc button{width:26px;height:26px}
 .ptbible{position:absolute;inset:0;z-index:60;background:#000}.ptbible[hidden]{display:none}.ptbible iframe{border:0;width:100%;height:100%;display:block;background:#000}
-.ptctxh{font:800 .75rem 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.75;margin-bottom:6px}
+.ptctxh{font:800 .75rem 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.75;margin-bottom:4px}
+.ptcxr{font:600 .78rem 'Archivo',sans-serif;opacity:.55;margin-bottom:8px}.ptcxr:empty{display:none}
 .ptctx .ptp{font:1.02rem/1.6 'Spectral',Georgia,serif;opacity:.88}
 .ptlenq{font:700 .8rem 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.8;margin:6px 0 8px}
 .pt.guided .ptlenq,.pt.guided .ptlen{display:none}
@@ -3340,6 +3341,18 @@ window.MF=(function(){
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('siteMenu').hidden) smOpen(false); });
   function ptUI(){ var D=DEVO[MF.lang]||DEVO.en, TT=TOUR[MF.lang]||TOUR.en; $('ptLab').textContent=({en:'Devotional',es:'Devocional',tl:'Debosyon',zh:'今日灵修',hi:'आज की भक्ति',el:'Μελέτη',de:'Andacht',ko:'오늘의 묵상',he:'ההגות',ar:'التأمل'})[MF.lang]||'Devotional'; $('ptBtn').title=D.b[0]; $('tourSub').textContent=({en:'How it works',es:'Cómo funciona',tl:'Paano ito',zh:'使用说明',hi:'कैसे काम करता है',el:'Πώς λειτουργεί',de:'So geht’s',ko:'사용 방법',he:'איך זה עובד',ar:'كيف يعمل'})[MF.lang]||'How it works'; $('ptSub').textContent=D.b[1]; $('tourLab').textContent=({en:'Take a tour',es:'Recorrido',tl:'Mag-tour',zh:'导览',hi:'टूर लें',el:'Ξενάγηση',de:'Rundgang',ko:'둘러보기',he:'סיור',ar:'جولة'})[MF.lang]||'Take a tour'; $('tourBtn').title=TT.btn; setTimeout(fitSlogan,30); }
   function sp1(n,t){ return '<span data-v="'+n+'">'+esc(t)+'</span>'; }
+  // Ken, 27 Oct: "In context" is the whole passage the verse belongs to (backing up into the chapter before, or reading on into
+  // the next, when the passage runs across), not two verses either side. Passages: fish-lang/bible/sect/ (also /api/passage).
+  var SECTC={};
+  function ptPassage(pr,l){ var b=pr.book.replace(/^Psalms$/,'Psalm'), c=+pr.ch, v=+pr.vs;
+    var S=SECTC[b]||(SECTC[b]=fetch('/fish-lang/bible/sect/'+b.replace(/ /g,'_')+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }).catch(function(e){ delete SECTC[b]; throw e; }));
+    return S.then(function(rows){ var me=c*1000+v; return rows.find(function(x){ return x[0]*1000+x[1]<=me&&me<=x[2]*1000+x[3]; }); }).catch(function(){ return null; })
+      .then(function(p){ var r=p||[c,Math.max(1,v-2),c,v+2,''], cs=[]; for(var x=r[0];x<=r[2];x++) cs.push(x);
+        return Promise.all(cs.map(function(x){ return x===c?chGet(pr,l):chGet({book:pr.book,ch:String(x),vs:'1'},l); })).then(function(T){ var cx=[], at=null;
+          cs.forEach(function(x,i){ var t=T[i], a=x===r[0]?r[1]:1, z=x===r[2]?Math.min(r[3],t.length):t.length; for(var n=a;n<=z;n++) if(t[n-1]) cx.push({c:x,n:n,t:t[n-1]}); if(x===c) at=t[v-1]; });
+          return {v:at,cx:cx,title:p?p[4]:'',range:p?pr.book+' '+r[0]+':'+r[1]+'\u2013'+(r[2]!==r[0]?r[2]+':':'')+r[3]:''}; }); }); }
+  // the voice for the next few pieces is asked for now, so there is no wait after "In context"
+  function ptWarm(t,from,l){ var vo=aiVoice(); if(!PT.listen||!vo) return; t.slice(from,from+3).forEach(function(x){ rChunks(x).slice(0,2).forEach(function(c){ sayUrl(spoken(c,l),l,vo).catch(function(){}); }); }); }
   var CHC={};
   function chGet(p,l){ var key=(l==='en'?'en:'+curVer().k:l)+'|'+p.book+'|'+p.ch; return CHC[key]||(CHC[key]=chText(p,l).catch(function(e){ delete CHC[key]; throw e; })); }
   function refLab(l,k,i){ var r=DATA[k].refs[i][0], w=studyOf(l,k); return l==='en'?r:l==='es'?esRef(r):(w&&w.refs[i]?w.refs[i][0]:r); }
@@ -3355,9 +3368,10 @@ window.MF=(function(){
     ko:['장 전체 읽기','구절을 눌러 형광펜 표시','성경','모든 책과 장'],he:['קרא את כל הפרק','הקש על פסוק כדי לסמן אותו','התנ״ך','כל הספרים והפרקים'],ar:['اقرأ الأصحاح كله','انقر على آية لتمييزها','الكتاب المقدس','كل الأسفار والأصحاحات']};
   function bibT(){ return BIBL[PT.l]||BIBL[MF.lang]||BIBL.en; }
   function ptCxTools(){ var col=hlColor(); return '<div class="ptcxt"><span class="hlc" role="group" aria-label="Highlight colour">'+Object.keys(HLC).map(function(c){ return '<button type="button" data-a="cxc" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c]+'"></button>'; }).join('')+'</span><small>'+esc(bibT()[1])+'</small></div>'; }
-  function ptCxPaint(){ var c=PT.cx, h=hls(); if(!c) return; [].forEach.call($('ptStage').querySelectorAll('.cxv'),function(e){ var x=h[hlKey(c,+e.dataset.cv)], col=x&&(HLC[x.c]?x.c:'gold');
+  function cxAt(e){ var c=PT.cx; return e.dataset.cc&&c?Object.assign({},c,{ch:e.dataset.cc}):c; }
+  function ptCxPaint(){ var c=PT.cx, h=hls(); if(!c) return; [].forEach.call($('ptStage').querySelectorAll('.cxv'),function(e){ var x=h[hlKey(cxAt(e),+e.dataset.cv)], col=x&&(HLC[x.c]?x.c:'gold');
     e.classList.toggle('cxhl',!!x); e.style.background=x?HLC[col]:''; }); }
-  $('ptStage').addEventListener('click',function(e){ var sp=e.target.closest('.cxv'); if(!sp||!PT.cx) return; var c=PT.cx, v=+sp.dataset.cv, key=hlKey(c,v), h=hls();
+  $('ptStage').addEventListener('click',function(e){ var sp=e.target.closest('.cxv'); if(!sp||!PT.cx) return; var c=cxAt(sp), v=+sp.dataset.cv, key=hlKey(c,v), h=hls();
     if(h[key]) hlToggle(key,h[key]); else hlToggle(key,{kind:'verse',ref:c.book+' '+c.ch+':'+v,ver:c.ver,k:c.k,i:c.i,l:c.l,v:v,c:hlColor(),text:sp.textContent.slice(0,220)});
     ptCxPaint(); });
   function ptHlRow(){ var cv=curVer().k, col=hlColor();
@@ -3415,17 +3429,19 @@ window.MF=(function(){
         return at?'<button type="button" data-a="goref" data-i="'+i+'" class="today">'+esc(refLab(l,k,i))+'</button>':'<button type="button" disabled class="'+(was?'was':'later')+'">'+(was?'✓ ':'')+esc(refLab(l,k,i))+'</button>'; }).join('')+'</div>'+prm('p_orig'); }
     else if(s.k==='ref'){ var lab=refLab(l,k,s.i), pr=parseRef(DATA[k].refs[s.i][0]);
       h=kick(T.k_trace+' · '+w,esc(plF(plT().day,{d:ptDay(k)+1,n:PLAN_DAYS}))+' · '+(s.j+1)+' / '+s.n)+'<h2 class="pth ptref">'+sp1(1,lab)+'</h2><blockquote class="ptq"><span data-v="2">…</span></blockquote>'
-        +'<div class="ptctx" hidden><div class="ptctxh">'+sp1(3,T.in_context)+'</div><p class="ptp ptcxp"></p>'+ptCxTools()+'</div>'
+        +'<div class="ptctx" hidden><div class="ptctxh">'+sp1(3,T.in_context)+'</div><div class="ptcxr"></div><p class="ptp ptcxp"></p>'+ptCxTools()+'</div>'
         +'<div class="ptrow"><button type="button" class="ptlink" data-a="bible" data-ref="'+esc(pr?pr.book+' '+pr.ch+':'+pr.vs:'')+'">📖 '+esc(bibT()[0])+'</button></div>'+prm('p_ref');
       t=null; var me=PT.i;
-      ready=(pr?chGet(pr,l):Promise.reject()).then(function(ct){ var v=+pr.vs, a=Math.max(1,v-2), z=Math.min(ct.length,v+2), cx=[];
-          for(var x=a;x<=z;x++) if(ct[x-1]) cx.push({n:x,t:ct[x-1]}); return {v:ct[v-1]||refSnip(l,k,s.i),cx:cx.length>1?cx:null}; })
+      ready=(pr?ptPassage(pr,l):Promise.reject()).then(function(o){ return {v:o.v||refSnip(l,k,s.i),cx:o.cx.length>1?o.cx:null,title:o.title,range:o.range}; })
         .catch(function(){ return {v:refSnip(l,k,s.i),cx:null}; })
         .then(function(o){ if(PT.i!==me) return; var st=$('ptStage'); st.querySelector('.ptq [data-v="2"]').textContent=o.v;
           // Ken, 20 Oct: the highlighting is in the context now -- each verse there is tapped to highlight it
           if(o.cx){ st.querySelector('.ptctx').hidden=false; PT.cx={book:pr.book,ch:pr.ch,ver:verCode(l,false),k:k,i:s.i,l:l};
-            st.querySelector('.ptcxp').innerHTML=o.cx.map(function(c,j){ return '<sup class="vn">'+c.n+'</sup><span class="cxv'+(c.n===+pr.vs?' cxme':'')+'" data-v="'+(4+j)+'" data-cv="'+c.n+'">'+esc(c.t)+'</span> '; }).join('');
-            ptCxPaint(); PT.t=[lab,o.v,T.in_context].concat(o.cx.map(function(c){ return c.t; })); } else PT.t=[lab,o.v]; });
+            var two=o.cx[0].c!==o.cx[o.cx.length-1].c, said=T.in_context+(l==='en'&&o.title?': '+o.title:''), hd=st.querySelector('.ptctxh [data-v="3"]');
+            if(hd) hd.textContent=said; if(o.range&&l==='en') st.querySelector('.ptcxr').textContent=o.range;
+            st.querySelector('.ptcxp').innerHTML=o.cx.map(function(c,j){ var me=c.c===+pr.ch&&c.n===+pr.vs;
+              return '<sup class="vn">'+(two&&(j===0||c.n===1)?c.c+':':'')+c.n+'</sup><span class="cxv'+(me?' cxme':'')+'" data-v="'+(4+j)+'" data-cc="'+c.c+'" data-cv="'+c.n+'">'+esc(c.t)+'</span> '; }).join('');
+            ptCxPaint(); PT.t=[lab,o.v,said].concat(o.cx.map(function(c){ return c.t; })); ptWarm(PT.t,3,l); } else PT.t=[lab,o.v]; });
       var ns=PT.steps[PT.i+1]; if(ns&&ns.k==='ref'){ var nx=parseRef(DATA[k].refs[ns.i][0]); if(nx) chGet(nx,l).catch(function(){}); } }
     else if(s.k==='prayer'){ if(s.i===0) t=[T.list_intro];
       h=kick(T.k_list,(s.i+1)+' / '+s.n)+(s.i===0?'<p class="ptp ptsoft">'+sp1(1,T.list_intro)+'</p>':'')+'<h2 class="pth">'+esc(s.x.title)+'</h2>'+(s.x.body?'<p class="ptp" style="white-space:pre-wrap">'+esc(s.x.body)+'</p>':'')
@@ -3460,6 +3476,7 @@ window.MF=(function(){
     $('ptSpk').setAttribute('aria-pressed','true');
     if(s.k==='cast'){ caGuided(); return; }
     (PT.ready||Promise.resolve()).then(function(){ if(!PT.on||PT.i!==me||!PT.listen||!PT.t||!PT.t.length) return;
+      if(s.k==='ref') ptWarm(PT.t,2,PT.l);
       readAloud({root:$('ptStage'),data:{l:PT.l,t:PT.t},box:$('ptStage'),onDone:function(){ if(!PT.on||PT.i!==me||!PT.listen) return;
         $('ptSpk').setAttribute('aria-pressed','true');
         if(s.k==='prayer'||s.k==='prayer0') return;   /* the prayer list waits for the person */
