@@ -52,3 +52,7 @@ Ken, 25 Oct: launch the free devotional first (digital only), decals "coming soo
   printed as one run and shipped to a MannaFish Station (church, bookstore, sponsor) for pickup, always free. Waiting on Ken:
   100 per design, stations, and printable fish limited to the 24 plus the fish of the week?
 - **Reference icons in the Today reader** too (they are on the Bible tab now), if Ken wants them.
+- **Action words for every fish** (Ken, 27 Oct). Today the 24 main fish are all action words; the year fish are 46 of 128
+  and the Bible-in-a-year fish 267 of 624. All can become action words and keep the daily readings: most switch to a verb in
+  their own verse, about 61 need another verse from the same day's reading. Waiting on Ken: he may update the word list
+  first. Then a draft list (old word, new word, verse) for him to approve on the edit sheet, and the builder redraws them.
