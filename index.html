@@ -8,6 +8,7 @@
 <script src="/fish-lang/spell/spell.js" defer onload="MFspell.watch('#notesText,#psT,#psB,#ptCNote,#fsText')"></script>
 <script src="/fish-lang/tabbar.js" defer></script>
 <script src="/fish-lang/voicepick.js" defer onload="window.MFvpHook&&MFvpHook()"></script>
+<script src="/fish-lang/deep.js" defer></script>
 <script src="/fish-lang/basket.js" defer></script>
 <script src="/fish-lang/prhl.js" defer></script>
 <link rel="manifest" href="/manifest.webmanifest">
@@ -1523,6 +1524,8 @@ select option{background:#0b1620;color:#eaf0f0}
 .mpword{display:block;margin:8px auto 0;border:1px solid #f5d76e;background:rgba(245,215,110,.12);color:#fff;border-radius:999px;padding:6px 14px;font:700 .85rem 'Archivo',sans-serif;cursor:pointer}
 .mpword[hidden],.mpsub2[hidden],.mpsel[hidden]{display:none}
 /* Ken, 11 Oct: tap one word -- hear it, what it means here, and highlight, play or loop from that verse */
+.wpop{max-height:calc(100dvh - 24px);overflow:auto;overscroll-behavior:contain}
+.wpdeep{display:block;margin:10px auto 0;border:1px solid #2a5fb0;background:rgba(42,95,176,.18);color:inherit;border-radius:999px;padding:8px 16px;font:700 .95rem 'Archivo',sans-serif;cursor:pointer}.wpdeep[aria-expanded=true]{background:#2a5fb0;color:#fff}
 .wpop{position:fixed;z-index:80;left:50%;transform:translateX(-50%);width:min(360px,calc(100% - 24px));background:#16181c;color:#fff;border:1px solid #2a5fb0;border-radius:16px;box-shadow:0 18px 50px -12px #000;padding:14px 16px 12px;font-family:'Archivo',sans-serif}
 .wpop[hidden]{display:none}
 .wpx{position:absolute;top:6px;right:8px;border:0;background:none;color:#fff;font-size:1.3rem;cursor:pointer;width:32px;height:32px}
@@ -2264,6 +2267,7 @@ select option{background:#0b1620;color:#eaf0f0}
 <div class="wpop" id="wPop" role="dialog" aria-live="polite" hidden><button type="button" class="wpx" id="wpX" aria-label="Close">&times;</button>
   <div class="wpw"><span id="wpWord"></span><button type="button" class="wpsay" id="wpSay" aria-label="Hear it">&#128266;</button></div>
   <div class="wpt" id="wpTr"></div><div class="wpm" id="wpMean"></div><div class="wpn" id="wpNote"></div>
+  <button type="button" class="wpdeep" id="wpDeep" hidden></button><div id="wpDeepOut"></div>
   <div class="wpb"><button type="button" id="wpLex" hidden></button><button type="button" id="wpHlw"></button><button type="button" id="wpHl"></button><button type="button" id="wpPlay"></button><button type="button" id="wpLoop"></button></div>
   <div class="wpc" id="wpC" role="group" aria-label="Highlight colour"></div>
   <div class="wpin"><label for="wpIn" id="wpInL">See it in</label><select id="wpIn"></select><div class="wpinr" id="wpInR" aria-live="polite"></div><button type="button" class="wpsay" id="wpInSay" aria-label="Hear it" hidden>&#128266;</button></div></div>
@@ -2941,6 +2945,8 @@ window.MF=(function(){
     WP={v:v,vn:vn,root:root,X:X,w:o?o.w:t.w,L:L,toggle:toggle||null,o:o,t:t,text:text}; wselMark(v,t); wpExtras();
     $('wpWord').textContent=WP.w; $('wpWord').setAttribute('lang',L); $('wpWord').dir=/^(he|ar)$/.test(L)?'rtl':'ltr';
     $('wpTr').textContent=o?[o.tr,o.gl].filter(Boolean).join(' · '):''; $('wpMean').textContent='…'; $('wpNote').textContent='';
+    $('hearBox').hidden=true; $('hearSel').hidden=true; $('wpDeepOut').innerHTML=''; $('wpDeep').hidden=!window.MFdeep||!X.hl&&!o;
+    if(window.MFdeep){ $('wpDeep').textContent='📖 '+MFdeep.label(); $('wpDeep').setAttribute('aria-expanded','false'); }
     var lexk=o&&o.sn&&LEX[o.sn]?Object.keys(STRONGS).filter(function(k){ var g=STRONGS[k]; return 'G'+g[0]===o.sn||'H'+g[1]===o.sn; })[0]:null;
     $('wpLex').hidden=!lexk; $('wpLex').textContent=T[6]+' '+(o?o.sn:'')+' ›'; WP.lexk=lexk;
     var on=v.classList.contains('mk'); $('wpHl').textContent='🖍 '+(on?T[2]:T[1]); $('wpHl').hidden=!X.hl;
@@ -2970,18 +2976,30 @@ window.MF=(function(){
     var show=function(main,sub,sayL){ if(WP!==me) return; out.innerHTML=esc(main)+(sub?'<small>'+esc(sub)+'</small>':''); WP.inSay={t:main,l:sayL||to}; $('wpInSay').hidden=!main; };
     if(to==='orig'){
       if(!p){ out.textContent=X2[7]; return; }
-      (WIC[key]||(WIC[key]=loadOrig(p).then(function(j){ var row=(j.v||{})[WP.vn]||[]; if(!row.length) throw 'none';
-          var lw=WP.w.toLowerCase(), st=lw.slice(0,Math.max(4,lw.length-2)), clean=function(g){ return String(g||'').toLowerCase().replace(/[<>\[\]().,;:!?'’]/g,' '); };
-          var i=row.findIndex(function(x){ return clean(x[2]).split(/\s+/).some(function(g){ return g&&(g===lw||(g.length>3&&g.slice(0,st.length)===st)); }); });
-          if(i>=0) return {j:j,x:row[i]};
-          // not by its gloss: ask which of the original words it translates (only these words can be the answer)
-          return etPost('/api/translate',{pick:1,text:WP.w,verse:WP.text.slice(0,400),cands:row.map(function(x){ return x[2]; }).slice(0,80)}).then(function(r){ if(!r.ok) throw 0; return r.json(); })
-            .then(function(o){ var x=row[+o.i]; if(!x) throw 'none'; return {j:j,x:x}; }); })))
+      origOf(me,key)
         .then(function(z){ var x=z.x; show(String(x[0]).replace(/[¶,.;:·]+$/,''),[x[1],x[2],x[3],(z.j.l==='hbo'?X2[6]:X2[5])].filter(Boolean).join(' · '),z.j.l==='hbo'?'he':'el'); })
         .catch(function(er){ delete WIC[key]; if(WP!==me) return; out.textContent=er==='none'||er===0?X2[7]:X2[8]; });
       return; }
     (WIC[key]||(WIC[key]=etPost('/api/translate',{equiv:1,text:WP.w,verse:WP.text.slice(0,400),from:WP.L,to:to}).then(function(r){ if(!r.ok) throw 0; return r.json(); })))
       .then(function(o){ show(o.word||'',o.translit||''); }).catch(function(){ delete WIC[key]; if(WP===me) out.textContent=X2[8]; }); });
+  function origOf(me,key){ var c=me.X.hl, p=c?{book:c.book,ch:c.ch}:null; key=key||('orig|'+me.L+'|'+me.w+'|'+me.vn+'|'+(p?p.book+p.ch:''));
+      if(!p) return Promise.reject('none');
+      return (WIC[key]||(WIC[key]=loadOrig(p).then(function(j){ var row=(j.v||{})[WP.vn]||[]; if(!row.length) throw 'none';
+          var lw=WP.w.toLowerCase(), st=lw.slice(0,Math.max(4,lw.length-2)), clean=function(g){ return String(g||'').toLowerCase().replace(/[<>\[\]().,;:!?'’]/g,' '); };
+          var i=row.findIndex(function(x){ return clean(x[2]).split(/\s+/).some(function(g){ return g&&(g===lw||(g.length>3&&g.slice(0,st.length)===st)); }); });
+          if(i>=0) return {j:j,x:row[i]};
+          // not by its gloss: ask which of the original words it translates (only these words can be the answer)
+          return etPost('/api/translate',{pick:1,text:me.w,verse:me.text.slice(0,400),cands:row.map(function(x){ return x[2]; }).slice(0,80)}).then(function(r){ if(!r.ok) throw 0; return r.json(); })
+            .then(function(o){ var x=row[+o.i]; if(!x) throw 'none'; return {j:j,x:x}; }); })));
+  }
+  // Ken, 26 Oct: "Go deeper" -- the Hebrew or Greek word behind it, how often and where it is used, its senses, a verse for each
+  $('wpDeep').addEventListener('click',function(){ if(!WP||!window.MFdeep) return; var me=WP, b=this, out=$('wpDeepOut');
+    if(b.getAttribute('aria-expanded')==='true'){ out.innerHTML=''; b.setAttribute('aria-expanded','false'); return; }
+    b.setAttribute('aria-expanded','true'); out.innerHTML='<p class="wpn">…</p>';
+    (me.o&&me.o.sn?Promise.resolve(me.o.sn):origOf(me).then(function(z){ return z.x[3]; })).then(function(sn){ if(WP!==me) return;
+      var k=MFdeep.norm(sn), fk=k&&Object.keys(STRONGS).filter(function(f){ var g=STRONGS[f]; return 'G'+g[0]===k||'H'+g[1]===k; })[0];
+      return MFdeep.show(out,sn,{fish:fk?{key:fk,title:titleIn(MF.lang,fk)}:null}).then(function(){ if(WP===me) out.scrollIntoView({block:'nearest',behavior:'smooth'}); }); })
+      .catch(function(){ if(WP===me) out.innerHTML='<p class="wpn">'+esc(wpX()[7])+'</p>'; }); });
   window.MFwordTap=wordTap;
   $('wpX').addEventListener('click',closeWord);
   document.addEventListener('click',function(e){ if(!WP||$('wPop').contains(e.target)||e.target.closest('.chapter span[data-v],#mpWord')) return; closeWord(); });
@@ -4327,7 +4345,7 @@ window.MF=(function(){
     if(x&&window.MFhlRange) MFhlRange(x.r,x.root); try{ getSelection().removeAllRanges(); }catch(e){} });
   $('hearSel').addEventListener('click',function(){ var l=MF.lang, text=hearText.slice(0,300), T=etT();
     if(hearText.length>300){ var cut=text.search(/[.!?。！？।][^.!?。！？।]*$/); if(cut>80) text=text.slice(0,cut+1); }
-    hearHide(); $('hearBox').hidden=false; $('hearMine').textContent=''; $('hearTxt').setAttribute('lang',l); $('hearTxt').textContent=T.wait;
+    hearHide(); if(window.MFcloseWord) MFcloseWord(); $('hearBox').hidden=false; $('hearMine').textContent=''; $('hearTxt').setAttribute('lang',l); $('hearTxt').textContent=T.wait;
     var speak=function(t,orig){ $('hearMine').textContent=orig&&orig!==t?orig:''; sayBox($('hearTxt'),l,t,'',sayLive(t,l),$('hearPlay')); $('hearPlay').onclick=function(){ speak(t,orig); }; };
     if(l==='en' && /^[\x20-\x7e\u2018-\u201d\u2014\u2026]+$/.test(text)){ speak(text,''); return; }  // English page text needs no translating
     etPost('/api/translate',{text:text,to:l}).then(function(r){ if(!r.ok) throw r; return r.json(); }).then(function(j){ speak(j.text,text); })

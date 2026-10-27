@@ -207,6 +207,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 </style>
 <script src="/fish-lang/tabbar.js" defer></script>
 <script src="/fish-lang/voicepick.js" defer onload="window.MFvpHook&&MFvpHook()"></script>
+<script src="/fish-lang/deep.js" defer></script>
 <script src="/fish-lang/basket.js" defer></script>
 <script src="/fish-lang/account.js" defer></script>
 </head>
@@ -716,11 +717,11 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
           +(x&&x.d?'<p class="ogd">'+esc(x.d)+'</p>':'')
           +'<div class="ogu">'+(kw.length>1?'Here: “'+esc(kw.join(' '))+'” · ':'')+(x&&x.n?'Used '+x.n.toLocaleString()+' time'+(x.n===1?'':'s')+' in the '+(AT.b<39?'Old':'New')+' Testament':'')+'</div>'
           +(x&&x.k&&x.k.length?'<div class="kch" title="How the KJV translates it">'+x.k.map(function(k){ return '<span>'+esc(k[0])+' <small>'+k[1]+'</small></span>'; }).join('')+'</div>':'')
-          +'<div class="row" style="margin-top:10px"><button type="button" class="chip" data-wc="hl">&#128397;&#xFE0E; Highlight</button><button type="button" class="chip" data-wc="every">&#128397;&#xFE0E; Everywhere it is used</button><button type="button" class="chip" data-wc="note">&#65291; Add to my note</button>'
+          +'<div class="row" style="margin-top:10px"><button type="button" class="chip" data-wc="hl">&#128397;&#xFE0E; Highlight</button><button type="button" class="chip" data-wc="every">&#128397;&#xFE0E; Everywhere it is used</button><button type="button" class="chip" data-wc="note">&#65291; Add to my note</button><button type="button" class="chip" data-wc="deep" aria-expanded="false">&#128214;&#xFE0E; Go deeper</button>'
           +'<a class="chip" href="https://www.blueletterbible.org/lexicon/'+sn.toLowerCase()+'/kjv/'+(AT.b<39?'wlc':'tr')+'/0-1/" target="_blank" rel="noopener">Blue Letter Bible &#8599;&#xFE0E;</a>'
           +'<a class="chip" href="https://www.stepbible.org/?q=strong='+encodeURIComponent(w[3].replace(/[A-Za-z]$/,''))+'" target="_blank" rel="noopener">STEPBible &#8599;&#xFE0E;</a></div></div>'
           +(o.w.length>1?'<p class="sub" style="margin:10px 0 4px">The '+L.n+' words of this verse:</p>'+ogRow(o,v).replace('data-oi="'+i+'"','data-oi="'+i+'" class="on"'):'')
-          +'<div class="cc" id="wcC"></div><p class="sub" style="font-size:.75rem">'+L.n+' text and lexicon: <a href="https://www.stepbible.org/" target="_blank" rel="noopener" style="color:inherit">STEPBible.org</a> (CC BY 4.0); Strong’s numbers.</p>';
+          +'<div id="wcDeep"></div><div class="cc" id="wcC"></div><p class="sub" style="font-size:.75rem">'+L.n+' text and lexicon: <a href="https://www.stepbible.org/" target="_blank" rel="noopener" style="color:inherit">STEPBible.org</a> (CC BY 4.0); Strong’s numbers.</p>';
         concShow(me,''); }); })
     .catch(function(){ if(WC===me) $('wcB').innerHTML='<p class="sub">Could not open the '+L.n+' just now. Check the connection and try again.</p>'; }); }
   // every verse that uses the word (tools/bible-orig/conc.py), the KJV words that translate it in bold
@@ -738,6 +739,9 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function wcWords(){ var me=WC, T=tk(me.v), js=[]; if(me.j!=null) js=[me.j]; else T.forEach(function(t,q){ if(OGJ&&OGJ.v[String(me.v)]&&OGJ.v[String(me.v)].a[q]===me.i) js.push(q); });
     if(!js.length) return null; return {v:me.v,s:T[Math.min.apply(null,js)].s,e:T[Math.max.apply(null,js)].e}; }
   $('wc').addEventListener('click',function(e){ var t=e.target.closest('[data-wc],[data-bk],[data-more],[data-go],[data-oi]'); if(!t||!WC) return; var a=t.dataset.wc, me=WC;
+    // Ken, 26 Oct: "Go deeper" -- its senses with a verse for each, where it is first used, the books that use it most, the fish it is on
+    if(a==='deep'){ var dd=$('wcDeep'); if(!dd||!window.MFdeep) return; if(t.getAttribute('aria-expanded')==='true'){ dd.innerHTML=''; t.setAttribute('aria-expanded','false'); return; }
+      t.setAttribute('aria-expanded','true'); MFdeep.show(dd,me.n).then(function(){ if(WC===me) dd.scrollIntoView({block:'nearest',behavior:'smooth'}); }); return; }
     if(a==='x'){ closeWc(); return; }
     if(t.dataset.oi!=null){ wordCard(me.v,null,+t.dataset.oi); return; }
     if(t.dataset.more){ concShow(me,t.dataset.bk2,+t.dataset.more); return; }
