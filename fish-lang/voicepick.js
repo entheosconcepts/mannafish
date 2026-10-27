@@ -92,7 +92,11 @@
   // a ▾ right after the play button
   function attach(btn,opts){ if(!btn||btn._vp) return; btn._vp=1; opts=opts||{}; style();
     var c=document.createElement('button'); c.type='button'; c.className='vpc'+(opts.cls?' '+opts.cls:''); c.textContent='▾'; c.setAttribute('aria-haspopup','dialog');
-    function lab(){ c.setAttribute('aria-label',T(0)); c.title=T(0); } lab();
+    // name:true shows the voice's name on the button ("Sage ▾"), kept up to date
+    function nm(){ if(!opts.name) return; var v=opts.mode==='device'?(device((typeof opts.lang==='function'?opts.lang():opts.lang)||uiLang())||{}).name:get(), o=NAT.filter(function(x){ return x[0]===v; })[0];
+      c.textContent=(opts.mode==='device'?(v||T(2)):(o?o[1]:T(2)))+' ▾'; }
+    function lab(){ c.setAttribute('aria-label',T(0)); c.title=T(0); nm(); } lab();
+    window.addEventListener('mfvoice',nm);
     c.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); lab(); menu(opts,c); });
     if(opts.wrap){ var w=document.createElement('span'); w.className='vpwrap'; btn.parentNode.insertBefore(w,btn); w.appendChild(btn); w.appendChild(c); }   // keep the two together in a grid
     else btn.insertAdjacentElement('afterend',c); return c; }

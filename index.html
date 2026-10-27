@@ -1051,7 +1051,11 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 .pt{position:fixed;inset:0;z-index:90;color:#fff;display:flex;flex-direction:column;font-family:'Archivo',sans-serif;
   background:radial-gradient(130% 60% at 50% 78%,rgba(42,95,176,.55),rgba(42,95,176,0) 62%),radial-gradient(90% 40% at 50% 100%,rgba(245,215,110,.16),transparent 70%),linear-gradient(#10161f,#06080b 72%)}
 .pt[hidden]{display:none}
-.ptbar{display:flex;align-items:center;gap:10px;padding:max(14px,env(safe-area-inset-top)) 16px 6px}
+.ptbar{display:flex;align-items:center;gap:10px;padding:4px 16px 6px}
+/* Ken, 27 Oct: the MannaFish logo itself at the top of the devotional (not the word written out), the buttons below it */
+.ptlogo{text-align:center;font-size:2.1rem;line-height:1;padding:max(14px,env(safe-area-inset-top)) 16px 4px;white-space:nowrap}
+@media(max-width:430px){#ptHomeLab{display:none}#ptX.pthome{padding:0 13px}.ptbar{gap:6px;padding-left:12px;padding-right:12px}.ptmode .ptc{padding:0 10px 0 8px}}
+.ptbar .vpc{flex:none;height:40px;margin-left:-4px;padding:0 12px;border:0;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font:700 .86rem 'Archivo',sans-serif}
 .ptc{flex:none;width:46px;height:46px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:1.5rem;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
 .ptc svg{width:22px;height:22px}
 .ptc[hidden],.tsb[hidden]{display:none}.ptpause svg{width:18px;height:18px}.ptc[aria-pressed="true"]{background:#2a5fb0}
@@ -1078,7 +1082,7 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
   .pt .ptstage::-webkit-scrollbar{display:none}   /* Ken, 16 Oct: no scroll bar on a computer */
   .pt{justify-content:center;padding:14px 0}
   .ptbar{padding-top:0;padding-bottom:10px}
-  .pt .ptstage{flex:0 0 auto;scrollbar-width:none;height:min(900px,calc(100vh - 140px));border:1px solid rgba(255,255,255,.2);border-radius:26px;background:rgba(4,8,14,.45);padding:26px 40px;box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
+  .pt .ptstage{flex:0 0 auto;scrollbar-width:none;height:min(900px,calc(100vh - 190px));border:1px solid rgba(255,255,255,.2);border-radius:26px;background:rgba(4,8,14,.45);padding:26px 40px;box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
   .pt .ptnav{padding-bottom:0;padding-top:14px}
 }
 .ptmenu button{display:flex;align-items:center;gap:14px;width:100%;border:0;background:none;color:#fff;font:600 1.12rem 'Archivo',sans-serif;padding:12px 16px;cursor:pointer;text-align:left;border-radius:14px}
@@ -1236,7 +1240,7 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 @keyframes capulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
 @media(prefers-reduced-motion:reduce){.ptcast .crip,.ptcast .cfish,.ptcast .csplash,.chook,.cfi{animation-duration:.01s!important}}
 /* Ken, 12 Oct: on a computer the speaker, pause and ••• sit right above the devotional, not out at the corners */
-.ptbar{max-width:640px;width:100%;margin:0 auto;box-sizing:border-box}
+.ptbar,.ptlogo{max-width:640px;width:100%;margin:0 auto;box-sizing:border-box}
 .ptmenu{right:max(16px,calc(50% - 304px))!important}
 .ptcoin{position:relative;max-width:360px;width:100%;aspect-ratio:2/1;margin:0 auto 18px;transform-style:preserve-3d;animation:ptwobble 3.6s ease-in-out .4s 1 both}   /* Ken, 12 Oct: "don't flip the fish all the way, wobble it back" */
 .ptcf,.ptcb{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
@@ -2252,7 +2256,8 @@ select option{background:#0b1620;color:#eaf0f0}
   </div>
 </div>
 <div class="pt" id="pt" role="dialog" aria-modal="true" aria-labelledby="ptTitle" hidden translate="no">
-  <div class="ptbar"><button type="button" class="ptc pthome" id="ptX" aria-label="Home"><span aria-hidden="true">&#8962;&#xFE0E;</span><span id="ptHomeLab">Home</span></button><span class="ptttl" id="ptTitle"></span>
+  <div class="ptlogo brand" id="ptTitle" aria-label="MannaFish"><span class="wm-m">Manna</span><span class="wm-f">Fish</span></div>
+  <div class="ptbar"><button type="button" class="ptc pthome" id="ptX" aria-label="Home"><span aria-hidden="true">&#8962;&#xFE0E;</span><span id="ptHomeLab">Home</span></button>
     <span class="ptmode" role="group" aria-label="Listen or read"><button type="button" class="ptc" id="ptSpk" aria-pressed="false" aria-label="Listen"><span class="pmi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></span><span class="pml" id="ptSpkLab">Listen</span></button><button type="button" class="ptc" id="ptRead" aria-pressed="true" aria-label="Read"><span class="pmi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg></span><span class="pml" id="ptReadLab">Read</span></button></span><button type="button" class="ptc ptpause" id="ptPause" aria-label="Pause" hidden></button>
     <button type="button" class="ptc" id="ptMore" aria-label="More" aria-expanded="false">&bull;&bull;&bull;</button></div>
   <div class="ptmenu" id="ptMenu" hidden></div>
@@ -3444,6 +3449,7 @@ window.MF=(function(){
     $('ptBack').disabled=PT.i===0; $('ptNext').hidden=PT.i===PT.steps.length-1; $('ptNext').disabled=false;
     $('ptHomeLab').textContent=({en:'Home',es:'Inicio',tl:'Home',zh:'首页',hi:'होम',el:'Αρχική',de:'Start',ko:'홈',he:'בית',ar:'الرئيسية'})[PT.l]||'Home'; var rtl=/^(he|ar)$/.test(PT.l); $('ptBack').textContent=(rtl?'› ':'‹ ')+T.back; $('ptNext').textContent=T.next+(rtl?' ‹':' ›'); ptTop(!(s.k==='cast'&&!CA.done&&CA.ph!=='caught'));
     if(window.MFptModeUI) MFptModeUI(); }
+  window.MFptRevoice=function(){ if(PT&&PT.listen&&!$('pt').hidden) ptSay(); };   // a new voice picked while listening: read this step again in it
   function ptSay(){ stopSpeak(); $('pt').classList.toggle('guided',!!PT.listen); var me=PT.i, s=PT.steps[me]; if(window.MFptModeUI) setTimeout(MFptModeUI,0);
     if(!PT.listen){ $('ptSpk').setAttribute('aria-pressed','false'); return; }
     $('ptSpk').setAttribute('aria-pressed','true');
@@ -3476,7 +3482,7 @@ window.MF=(function(){
   // Ken, 16 Oct (later): "I meant for it to be inside the bounding box, not on top of it ... put the verbiage up top above that"
   $('ptStage').addEventListener('click',function(e){ if(e.target.closest('.ptanchor .pttf')) bkAdd(cur); });
   $('ptStage').addEventListener('scroll',function(){ this.classList.toggle('scrolled',this.scrollTop>4); },{passive:true});   // the anchored fish gets a backing only once words pass under it
-  function ptTop(on){ $('ptTitle').textContent='MannaFish'; var st=$('ptStage'), a=st.querySelector('.ptanchor'), sk=PT.steps[PT.i]&&PT.steps[PT.i].k;
+  function ptTop(on){ var st=$('ptStage'), a=st.querySelector('.ptanchor'), sk=PT.steps[PT.i]&&PT.steps[PT.i].k;
     if(sk==='fish') on=false;   /* that step shows the fish itself, turning */
     if(!on){ if(a) a.remove(); return; } if(a) return;
     st.insertAdjacentHTML('afterbegin','<div class="ptanchor"><div class="ptak">'+esc(ptT().k_welcome)+'</div><span class="pttf" role="img" aria-label="'+esc(titleIn(PT.l,cur))+'">'+(fishFor(PT.l,cur)||FISH[cur]||'')+'</span></div>'); }
@@ -4152,6 +4158,8 @@ window.MF=(function(){
   // Ken, 26 Oct: a ▾ on Listen and on the fish's Verse button opens the voices (fish-lang/voicepick.js); the pick is the voice everywhere
   window.MFvpHook=function(){ if(!window.MFvoice) return; var dl=document.getElementById('dgListen'), vb=document.querySelector('#spkMain .spk[data-part="verse"]');
     MFvoice.attach(dl,{lang:function(){ return MF.lang; }});
+    // the devotional's own bar: the voice it reads in, by name, beside Listen and Read (Ken, 27 Oct)
+    var pm=document.querySelector('#pt .ptmode'); if(pm) MFvoice.attach(pm,{name:true,lang:function(){ return MF.lang; },onPick:function(){ setTimeout(function(){ if(window.MFptRevoice) MFptRevoice(); },60); }});
     if(vb) MFvoice.attach(vb,{wrap:true,lang:function(){ var s=document.querySelector('#spkLang select'); return (s&&s.value)||MF.lang; }});
     window.addEventListener('mfvoice',function(e){ setVoice(e.detail.v); }); };
   // Ken, 11 Oct: "a delay" before a fish is heard -- the Word and Verse of each fish on screen are fetched in the background
