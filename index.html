@@ -1052,6 +1052,13 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
   background:radial-gradient(130% 60% at 50% 78%,rgba(42,95,176,.55),rgba(42,95,176,0) 62%),radial-gradient(90% 40% at 50% 100%,rgba(245,215,110,.16),transparent 70%),linear-gradient(#10161f,#06080b 72%)}
 .pt[hidden]{display:none}
 .ptbar{display:flex;align-items:center;justify-content:center;gap:10px;padding:4px 16px 6px}
+/* Ken, 27 Oct: the language and the Bible version at the top too, for quick access */
+.ptbar2{display:flex;justify-content:center;gap:8px;padding:0 16px 8px}
+.ptpill{position:relative;display:inline-flex;align-items:center;height:32px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font:700 .8rem 'Archivo',sans-serif}
+.ptpill>span{position:absolute;left:11px;font-size:.8rem;opacity:.75;pointer-events:none}
+.ptpill select{appearance:none;-webkit-appearance:none;height:32px;border:0;border-radius:999px;background:transparent;color:inherit;font:inherit;padding:0 26px 0 30px;cursor:pointer;max-width:46vw;
+  background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 15px) 14px,calc(100% - 10px) 14px;background-size:5px 5px;background-repeat:no-repeat}
+.ptpill select option{color:#111}.ptpill[hidden]{display:none}
 /* Ken, 27 Oct: the MannaFish logo itself at the top of the devotional (not the word written out), the buttons below it */
 .ptlogo{text-align:center;font-size:2.1rem;line-height:1;padding:max(14px,env(safe-area-inset-top)) 16px 4px;white-space:nowrap}
 @media(max-width:430px){#ptHomeLab{display:none}#ptX.pthome{padding:0 13px}.ptbar{gap:6px;padding-left:12px;padding-right:12px}.ptmode .ptc{padding:0 10px 0 8px}}
@@ -1244,7 +1251,7 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 @keyframes capulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
 @media(prefers-reduced-motion:reduce){.ptcast .crip,.ptcast .cfish,.ptcast .csplash,.chook,.cfi{animation-duration:.01s!important}}
 /* Ken, 12 Oct: on a computer the speaker, pause and ••• sit right above the devotional, not out at the corners */
-.ptbar,.ptlogo{max-width:640px;width:100%;margin:0 auto;box-sizing:border-box}
+.ptbar,.ptbar2,.ptlogo{max-width:640px;width:100%;margin:0 auto;box-sizing:border-box}
 .ptmenu{right:max(16px,calc(50% - 304px))!important}
 .ptcoin{position:relative;max-width:360px;width:100%;aspect-ratio:2/1;margin:0 auto 18px;transform-style:preserve-3d;animation:ptwobble 3.6s ease-in-out .4s 1 both}   /* Ken, 12 Oct: "don't flip the fish all the way, wobble it back" */
 .ptcf,.ptcb{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
@@ -2265,6 +2272,7 @@ select option{background:#0b1620;color:#eaf0f0}
   <div class="ptbar"><button type="button" class="ptc pthome" id="ptX" aria-label="Home"><span aria-hidden="true">&#8962;&#xFE0E;</span><span id="ptHomeLab">Home</span></button>
     <span class="ptmode" role="group" aria-label="Listen or read"><button type="button" class="ptc" id="ptSpk" aria-pressed="false" aria-label="Listen"><span class="pmi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></span><span class="pml" id="ptSpkLab">Listen</span></button><button type="button" class="ptc" id="ptRead" aria-pressed="true" aria-label="Read"><span class="pmi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg></span><span class="pml" id="ptReadLab">Read</span></button></span>
     <button type="button" class="ptc" id="ptMore" aria-label="More" aria-expanded="false">&bull;&bull;&bull;</button></div>
+  <div class="ptbar2"><label class="ptpill"><span aria-hidden="true">&#127760;&#xFE0E;</span><select id="ptLang" aria-label="Language"></select></label><label class="ptpill" id="ptVerW"><span aria-hidden="true">&#128214;&#xFE0E;</span><select id="ptVer" aria-label="Bible version"></select></label></div>
   <div class="ptmenu" id="ptMenu" hidden></div>
   <div class="ptstage" id="ptStage"></div>
   <button type="button" class="ptmid" id="ptPause" aria-label="Pause" hidden></button>
@@ -3377,7 +3385,7 @@ window.MF=(function(){
   function ptHlRow(){ var cv=curVer().k, col=hlColor();
     return '<div class="penbar ptpenbar" hidden></div><div class="ptrow pthl"><button type="button" class="ptbtn" data-a="hl" aria-pressed="false" hidden></button><button type="button" class="ptbtn" data-a="hlpen" aria-pressed="false" hidden></button>'
       +'<button type="button" class="ptbtn rhlmore" data-a="hlmore" aria-expanded="false">⋯</button><span class="hlc" role="group" aria-label="Highlight colour">'+Object.keys(HLC).map(function(c){ return '<button type="button" data-a="hlc" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('')+'</span>'
-      +(PT.l==='en'?'<select class="ptversel" aria-label="'+esc((BVL[PT.l]||BVL.en)[0])+'">'+VERS.map(function(v){ return '<option value="'+v.k+'"'+(v.k===cv?' selected':'')+'>'+esc(v.s)+' \u00b7 '+esc(v.n)+'</option>'; }).join('')+'</select>':'')+'</div><div class="hlmenu pthlmenu" hidden></div>'; }
+      +'</div><div class="hlmenu pthlmenu" hidden></div>'; }
   function ptHlSet(pr,k,i,l,text){ var st=$('ptStage'), b=st.querySelector('[data-a="hl"]'); if(!b||!pr) return;
     var ver=verCode(l,false), info={kind:'verse',ref:pr.book+' '+pr.ch+':'+pr.vs,ver:ver,k:k,i:i,l:l,v:+pr.vs,text:String(text||'').slice(0,220)};
     PT.hlc={key:hlKey({book:pr.book,ch:pr.ch,ver:ver},pr.vs),info:info}; ptHlUI(!!hls()[PT.hlc.key]); b.hidden=false;
@@ -3496,9 +3504,20 @@ window.MF=(function(){
   function ptBible(ref){ PT.listen=false; stopSpeak(); $('pt').classList.remove('guided'); if(window.MFptModeUI) MFptModeUI();
     $('ptBibleF').src='/bible/?embed=1&r='+encodeURIComponent(ref||''); $('ptBible').hidden=false; }
   window.addEventListener('message',function(e){ if(e.origin!==location.origin||!e.data||e.data.mf!=='bible-close') return; $('ptBible').hidden=true; $('ptBibleF').src='about:blank'; if(PT.on) ptRender(); });
+  function ptPills(){ var ls=$('ptLang'), vs=$('ptVer'), cv=curVer().k;
+    ls.innerHTML=CMPL.filter(function(o){ return DEVO[o[0]]; }).map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===PT.l?' selected':'')+'>'+esc(cmpName(o[0]))+'</option>'; }).join('');
+    vs.innerHTML=VERS.map(function(v){ return '<option value="'+v.k+'"'+(v.k===cv?' selected':'')+' title="'+esc(v.n)+'">'+esc(v.s)+'</option>'; }).join('');
+    $('ptVerW').hidden=PT.l!=='en'; vs.setAttribute('aria-label',(BVL[PT.l]||BVL.en)[0]); }
+  // a new language: the whole site follows; the devotional stays on the same step and, if it is reading aloud, reads on in it
+  $('ptLang').addEventListener('change',function(){ var l=this.value, at=PT.i, go=PT.listen; stopSpeak(); MF.set(l);
+    PT.l=DEVO[l]?l:'en'; var pt=$('pt'); pt.dir=/^(he|ar)$/.test(PT.l)?'rtl':'ltr'; pt.setAttribute('lang',PT.l); PT.l2=null; $('ptMenu').hidden=true;
+    var redo=function(){ if(!PT.on) return; PT.steps=ptSteps(); PT.i=Math.min(at,PT.steps.length-1); ptRender(); ptPills(); ptModeUI(); if(go){ PT.listen=true; ptSay(); } };
+    if(PT.l!=='en') loadLang(PT.l).then(redo,redo); else redo(); });
+  $('ptVer').addEventListener('change',function(){ var go=PT.listen; try{ localStorage.setItem(VKEY,this.value); }catch(er){} if($('rVer')) $('rVer').value=this.value;
+    toast('\ud83d\udcd6 '+curVer().n); stopSpeak(); ptRender(); if(go){ PT.listen=true; ptSay(); } });
   function ptOpen(){ if(window.MFplClose&&!$('mfPlayer').hidden) MFplClose(); stopSpeak(); PT.l=DEVO[MF.lang]?MF.lang:'en'; PT.on=true; PT.listen=false;
     var pt=$('pt'); pt.dir=/^(he|ar)$/.test(PT.l)?'rtl':'ltr'; pt.setAttribute('lang',PT.l); PR=prLocal().filter(function(x){ return prCloud()||!x.c; });
-    PT.l2=null; CA.done=false; PT.pickOpen=false; PT.len=dLen(); PT.marked={}; PT.dayOv=null; var pf=planFish(); if(pf!==cur) pick(pf,false); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; document.documentElement.style.overflow='hidden'; ptRender();
+    PT.l2=null; CA.done=false; PT.pickOpen=false; PT.len=dLen(); PT.marked={}; PT.dayOv=null; var pf=planFish(); if(pf!==cur) pick(pf,false); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; document.documentElement.style.overflow='hidden'; ptPills(); ptRender();
     prLoad().then(function(){ if(!PT.on) return; var at=PT.steps[PT.i]&&PT.steps[PT.i].k; PT.steps=ptSteps(); if(at==='welcome'||at==='pray'||at==='hear') ptRender(); }); }
   // Ken, 16 Oct: "keep whatever fish is selected static, anchored at the top ... we want people to see this image as much as possible"
   // Ken, 16 Oct (later): "I meant for it to be inside the bounding box, not on top of it ... put the verbiage up top above that"
@@ -3588,7 +3607,7 @@ window.MF=(function(){
     m.hidden=!m.hidden; this.setAttribute('aria-expanded',m.hidden?'false':'true'); });
   $('ptMenu').addEventListener('click',function(e){ var b=e.target.closest('[data-m]'); if(!b) return; var m=b.dataset.m;
     if(m==='ver'){ var vl=$('ptMenu').querySelector('.ptvers'); vl.hidden=!vl.hidden; b.setAttribute('aria-expanded',String(!vl.hidden)); return; }
-    if(m==='setver'){ try{ localStorage.setItem(VKEY,b.dataset.ver); }catch(er){} if($('rVer')) $('rVer').value=b.dataset.ver; $('ptMenu').hidden=true;
+    if(m==='setver'){ try{ localStorage.setItem(VKEY,b.dataset.ver); }catch(er){} if($('rVer')) $('rVer').value=b.dataset.ver; $('ptVer').value=b.dataset.ver; $('ptMenu').hidden=true;
       toast('📖 '+curVer().n); var sk=PT.steps[PT.i]&&PT.steps[PT.i].k; if(sk==='ref'||sk==='hear'){ stopSpeak(); ptRender(); } return; }
     if(m==='speed'){ var r=RATES[(RATES.indexOf(RATE())+1)%RATES.length]; try{ localStorage.setItem('mf-speed',r); }catch(er){} if(sp.audio) sp.audio.playbackRate=r; b.lastChild.textContent=ptT().m_speed+' · '+r+'x'; return; }
     if(m==='change'){ $('ptMenu').hidden=true; if(PT.i!==0) ptGo(0); var pk=$('ptStage').querySelector('.ptpick'); if(pk){ pk.hidden=false; pk.scrollIntoView({block:'start',behavior:'smooth'}); } return; }
