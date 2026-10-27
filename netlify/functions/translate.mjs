@@ -9,6 +9,7 @@
 import { getStore } from '@netlify/blobs';
 import { NAMES, MODEL, translatePair, translateTo, polish } from './lib/tr.mjs';
 const VOICE = process.env.MF_TTS_VOICE || 'sage';
+import { ALL, speaker } from './lib/voices.mjs';
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];
 const MAX = 300, PER_HOUR = 80, SAY_PER_HOUR = 400;  // the Bible reader reads a chapter verse by verse
 const okOrigin = (o) => /^https:\/\/([a-z0-9-]+\.)?manna-fish\.com$|^https:\/\/([a-z0-9-]+--)?yadamannafishtest\.netlify\.app$|^http:\/\/localhost(:\d+)?$/.test(o || '');
@@ -111,15 +112,15 @@ export default async (req, context) => {
 
   if (say) {
     const lang = NAMES[b.lang] ? b.lang : 'en';
-    const voice = VOICES.includes(b.voice) ? b.voice : VOICE;
+    const voice = ALL.includes(b.voice) ? b.voice : VOICE;
     const store = getStore('mannafish-tts'), id = `live/${lang}-${await sha(voice + '|' + text)}.mp3`;
     let audio = await store.get(id, { type: 'arrayBuffer' });
     if (!audio) {
       // only new recordings count toward the hourly limit; anything said before is simply played again
       if (await limited(context && context.ip, 'say', SAY_PER_HOUR)) return bad('Please wait a little', 429, 'busy');
       const r = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST', headers: H,
-        body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice, input: text, response_format: 'mp3',
-          instructions: `Speak warmly, clearly and a little slowly, like a kind friend talking face to face, in ${NAMES[lang]}.` }) });
+        body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice: speaker(voice, lang).voice, input: text, response_format: 'mp3',
+          instructions: speaker(voice, lang).style + `Speak warmly, clearly and a little slowly, like a kind friend talking face to face, in ${NAMES[lang]}.` }) });
       if (r.status === 401 || r.status === 403) return bad('Key not allowed', 503, 'key');
       if (!r.ok) return bad('Voice service error', 502);
       // Ken, 21 Oct: "there is a great delay" -- the sound goes to the phone as it is made, not after the whole clip is done;

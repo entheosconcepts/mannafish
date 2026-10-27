@@ -4148,8 +4148,7 @@ window.MF=(function(){
     return {mark:function(ci){ if(ci<cut){ paint(topL,'#2a5fb0'); paint(botL,''); } else { paint(topL,''); paint(botL,'#2a5fb0'); } },
             reset:function(){ paint(topL,''); paint(botL,''); }}; }
   // Ken, 9 Oct: "the user can choose which voice to hear" -- the natural (AI) voices, or the device's own voice
-  var VOICES=[['sage','Sage — calm'],['coral','Coral — warm'],['nova','Nova — bright'],['shimmer','Shimmer — soft'],['alloy','Alloy — even'],['ash','Ash — gentle'],
-    ['ballad','Ballad — expressive'],['echo','Echo — clear'],['fable','Fable — storyteller'],['onyx','Onyx — deep'],['verse','Verse — lively']];
+  var VOICES=[['thunder','Thunder — very deep, grand'],['narrator','Narrator — classic Bible reader'],['highland','Highlander — Scottish gentleman'],['onyx','Onyx — deep'],['ash','Ash — gentle'],['fable','Fable — storyteller'],['grace','Grace — deep, mature'],['magnolia','Magnolia — Southern, sweet'],['heather','Heather — Scottish lady'],['sage','Sage — calm'],['coral','Coral — warm'],['ballad','Ballad — expressive']];
   function curVoice(){ var v=''; try{ v=localStorage.getItem('mf-voice')||''; }catch(e){} return v==='device'||VOICES.some(function(o){ return o[0]===v; })?v:'sage'; }
   function aiVoice(){ var v=curVoice(); return v==='device'?'':v; }
   function voiceOptions(){ var v=curVoice(), dev={es:'Voz de este dispositivo'}[MF.lang]||'This device’s own voice';

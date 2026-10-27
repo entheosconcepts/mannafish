@@ -8,9 +8,7 @@
 //   window event 'mfvoice' {detail:{v}} when the natural voice changes, so a page can update its own voice lists
 (function(){
   if(window.MFvoice) return;
-  var NAT=[['sage','Sage','calm','tranquila'],['coral','Coral','warm','cálida'],['nova','Nova','bright','luminosa'],['shimmer','Shimmer','soft','suave'],
-    ['alloy','Alloy','even','serena'],['ash','Ash','gentle','amable'],['ballad','Ballad','expressive','expresiva'],['echo','Echo','clear','clara'],
-    ['fable','Fable','storyteller','narradora'],['onyx','Onyx','deep','profunda'],['verse','Verse','lively','alegre']];
+  var NAT=[['thunder','Thunder','very deep, grand','muy grave, solemne'],['narrator','Narrator','classic Bible reader','lector bíblico clásico'],['highland','Highlander','Scottish gentleman','caballero escocés'],['onyx','Onyx','deep','grave'],['ash','Ash','gentle','amable'],['fable','Fable','storyteller','narrador'],['grace','Grace','deep, mature','grave, madura'],['magnolia','Magnolia','Southern, sweet','sureña, dulce'],['heather','Heather','Scottish lady','dama escocesa'],['sage','Sage','calm','tranquila'],['coral','Coral','warm','cálida'],['ballad','Ballad','expressive','expresiva']];
   var TX={en:['Choose a voice','Your pick is used everywhere you press play.','My phone’s voice','Hear it','is your voice now','This phone’s voices. Your pick is used for the Bible and Plans.','No voices on this phone for this language.','Close'],
     es:['Elige una voz','Tu elección se usa en todo lugar donde tocas reproducir.','La voz de mi teléfono','Escuchar','es tu voz ahora','Las voces de este teléfono. Tu elección se usa en la Biblia y los Planes.','Este teléfono no tiene voces para este idioma.','Cerrar'],
     tl:['Pumili ng boses','Gagamitin ang pinili mo saan ka man pumindot ng play.','Boses ng aking telepono','Pakinggan','ang boses mo ngayon','Mga boses ng teleponong ito. Para sa Bibliya at Mga Plano.','Walang boses sa teleponong ito para sa wikang ito.','Isara'],

@@ -7,6 +7,7 @@ import { getStore } from '@netlify/blobs';
 import { createHash } from 'node:crypto';
 import SPEAK from './lib/speak.json';
 import TONGUE from './lib/tongue.json';
+import { ALL, speaker } from './lib/voices.mjs';
 const VOICE = process.env.MF_TTS_VOICE || 'sage';
 // the listener may pick another natural voice (Ken, 9 Oct)
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];
@@ -28,7 +29,7 @@ export default async (req) => {
   const u = new URL(req.url), lang = String(u.searchParams.get('lang') || 'en'), key = String(u.searchParams.get('w') || '').toUpperCase();
   const part = u.searchParams.get('part') === 'word' ? 'word' : 'verse';
   // Every Tongue (8 Oct): a ready-made phrase or one of its four verses, by id (?p=pray_for&lang=ko)
-  const pid = String(u.searchParams.get('p') || ''), voice = VOICES.includes(u.searchParams.get('v')) ? u.searchParams.get('v') : VOICE;
+  const pid = String(u.searchParams.get('p') || ''), voice = ALL.includes(u.searchParams.get('v')) ? u.searchParams.get('v') : VOICE;
   const row = pid && [...TONGUE.phrases, ...TONGUE.verses].find((x) => x.id === pid);
   const text = pid ? (row && row.t[lang]) : ((SPEAK[lang] || {})[key] || {})[part];
   if (!text) return new Response('Unknown word', { status: 404 });
@@ -43,8 +44,8 @@ export default async (req) => {
   if (!audio) {
     const r = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST',
       headers: { 'authorization': 'Bearer ' + apiKey, 'content-type': 'application/json' },
-      body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice, input: word ? text + '.' : text, response_format: word ? 'pcm' : 'mp3',
-        instructions: how }) });
+      body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice: speaker(voice, lang).voice, input: word ? text + '.' : text, response_format: word ? 'pcm' : 'mp3',
+        instructions: speaker(voice, lang).style + how }) });
     if (!r.ok) return new Response('Voice service error', { status: 502 });
     audio = await r.arrayBuffer();
     if (word) audio = wav(audio);

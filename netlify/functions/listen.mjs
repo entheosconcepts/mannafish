@@ -9,6 +9,7 @@ import WORDS from './lib/words.json';
 import ES from './lib/es.json';
 import SPEAK from './lib/speak.json';
 const VOICE = process.env.MF_TTS_VOICE || 'sage';
+import { ALL, speaker } from './lib/voices.mjs';
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];
 const SITE = () => (process.env.URL || 'https://manna-fish.com').replace(/\/$/, '');
 
@@ -44,7 +45,7 @@ function sendAudio(req, audio) {
 export default async (req) => {
   const u = new URL(req.url), key = String(u.searchParams.get('w') || '').toUpperCase();
   const lang = u.searchParams.get('lang') === 'es' ? 'es' : 'en', i = +u.searchParams.get('r') || 0;
-  const voice = VOICES.includes(u.searchParams.get('v')) ? u.searchParams.get('v') : VOICE;
+  const voice = ALL.includes(u.searchParams.get('v')) ? u.searchParams.get('v') : VOICE;
   const w = WORDS.words[key];
   if (!w || !w.refs[i]) return new Response('Unknown word', { status: 404 });
   const reader = `${SITE()}/?w=${key.toLowerCase()}&r=${i}${lang === 'es' ? '&lang=es' : ''}`;
@@ -66,9 +67,9 @@ export default async (req) => {
   if (!audio) {
     const r = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST',
       headers: { authorization: 'Bearer ' + apiKey, 'content-type': 'application/json' },
-      body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice, input: script, response_format: 'mp3',
-        instructions: es ? 'Lee con calma y calidez, como un devocional, con una pausa breve entre las partes.'
-          : 'Read calmly and warmly, like a short morning devotional, with a brief pause between the parts.' }) });
+      body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice: speaker(voice, lang).voice, input: script, response_format: 'mp3',
+        instructions: speaker(voice, lang).style + (es ? 'Lee con calma y calidez, como un devocional, con una pausa breve entre las partes.'
+          : 'Read calmly and warmly, like a short morning devotional, with a brief pause between the parts.') }) });
     if (!r.ok) return Response.redirect(reader, 302);
     audio = await r.arrayBuffer();
     await store.set(id, audio);
