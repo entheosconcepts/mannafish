@@ -103,7 +103,7 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
 <main id="convo" aria-live="polite"><div class="empty" id="empty"><b id="emptyH">Tap Start, then just talk.</b><span id="emptyT"></span></div></main>
 <div class="cv" id="cv" hidden aria-live="assertive"><b id="cvA"></b><span id="cvB"></span></div>
 <div class="status" id="status"></div>
-<div class="tools"><button type="button" id="phBtn"></button><button type="button" id="rateBtn" aria-label="Speed">1x</button><button type="button" id="kbBtn"></button><button type="button" id="histBtn"></button><button type="button" id="clrBtn"></button></div>
+<div class="tools"><button type="button" id="phBtn"></button><button type="button" id="rateBtn" aria-label="Speed">1x</button><button type="button" id="waitBtn" aria-label="Pause before translating"></button><button type="button" id="kbBtn"></button><button type="button" id="histBtn"></button><button type="button" id="clrBtn"></button></div>
 <div class="typebox" id="typebox" hidden><input id="typeIn" autocomplete="off"><button type="button" id="typeGo">&#10148;</button></div>
 <div class="controls">
   <button type="button" class="side" id="micA"></button>
@@ -158,7 +158,16 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
 
   // ── speaking: one audio player, unlocked by the first tap, so phones let it play the answers
   var player=new Audio(), unlocked=false, SILENT='data:audio/wav;base64,UklGRrQBAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YZABAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA';
-  function unlock(){ if(unlocked) return; unlocked=true; try{ player.src=SILENT; var p=player.play(); if(p&&p.catch) p.catch(function(){}); }catch(e){} }
+  function unlock(){ if(BOOST&&BOOST.state==='suspended') BOOST.resume(); if(unlocked) return; unlocked=true; boost(); try{ player.src=SILENT; var p=player.play(); if(p&&p.catch) p.catch(function(){}); }catch(e){} }
+  // Ken, 28 Oct (an Uber ride): "I could barely hear the app" -- the voice goes through a compressor and is made louder than the
+  // phone's own media volume allows; and an iPhone plays sound from the quiet earpiece while a page holds the microphone, so the
+  // microphone is let go while the translation is said, and taken again to listen (navigator.audioSession where Safari has it)
+  var BOOST=null, IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
+  function boost(){ if(BOOST!==null) return; BOOST=false;
+    try{ var C=new (window.AudioContext||window.webkitAudioContext)(), src=C.createMediaElementSource(player), k=C.createDynamicsCompressor(), g=C.createGain();
+      k.threshold.value=-26; k.knee.value=18; k.ratio.value=5; k.attack.value=0.003; k.release.value=0.2; g.gain.value=2.6;
+      src.connect(k); k.connect(g); g.connect(C.destination); BOOST=C; }catch(e){ BOOST=false; } }
+  function session(t){ try{ if(navigator.audioSession) navigator.audioSession.type=t; }catch(e){} }
   function say(text,lang,btn,cb){ var v=get('mf-voice','sage'), fin=false; if(btn) btn.disabled=true;
     var done=function(){ if(fin) return; fin=true; if(btn) btn.disabled=false; if(cb) cb(); };
     var dev=function(){ if(!window.speechSynthesis){ done(); return; } speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(text); u.lang=CODE[lang]||lang; u.rate=.95*rate();
@@ -166,7 +175,7 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
     if(v==='device'){ dev(); return; }
     // the same words always make the same clip, so phones and the CDN keep it (the "Speak now" prompts come back at once)
     // Ken, 21 Oct: "there is a great delay" -- the player is pointed straight at the voice, so it starts with the first sound that arrives
-    player.pause(); player.src='/api/say?t='+encodeURIComponent(text)+'&l='+encodeURIComponent(lang)+'&v='+encodeURIComponent(v); player.playbackRate=rate();
+    if(BOOST&&BOOST.state!=='running') BOOST.resume(); player.pause(); player.src='/api/say?t='+encodeURIComponent(text)+'&l='+encodeURIComponent(lang)+'&v='+encodeURIComponent(v); player.playbackRate=rate();
     player.onended=done; player.onerror=function(){ if(!fin) dev(); }; player.onplaying=function(){ player.playbackRate=rate(); };
     var p=player.play(); if(p&&p.catch) p.catch(function(){ if(!fin) dev(); }); }
   // speed of the spoken translation (shared with the devotional's read-aloud)
@@ -175,6 +184,17 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
   function rateUI(){ $('rateBtn').textContent='⏩ '+rate()+'x'; }
   $('rateBtn').addEventListener('click',function(){ put('mf-speed',RATES[(RATES.indexOf(rate())+1)%RATES.length]); player.playbackRate=rate(); rateUI(); });
   rateUI();
+  // Ken, 28 Oct: "translate out loud for me after I'm done with my thought, not in the middle of it" -- a pause this long means done
+  // (1.3 s unless changed here); and if the words still stop mid-thought ("and", "because", a comma), it keeps listening a little longer
+  var WAITS=[1.3,2,3,0.8], HOLD=3500;
+  function waitS(){ var w=+get('mf-tr-wait',1.3); return WAITS.indexOf(w)>=0?w:1.3; }
+  function waitUI(){ $('waitBtn').textContent='⏳ '+waitS()+' s'; }
+  $('waitBtn').addEventListener('click',function(){ put('mf-tr-wait',WAITS[(WAITS.indexOf(waitS())+1)%WAITS.length]); waitUI(); });
+  waitUI();
+  // the screen stays on while the conversation is on (a phone that sleeps would end it)
+  var WL=null;
+  function wake(on){ try{ if(on&&!WL&&navigator.wakeLock) navigator.wakeLock.request('screen').then(function(l){ WL=l; l.addEventListener('release',function(){ WL=null; }); }).catch(function(){});
+    if(!on&&WL){ WL.release(); WL=null; } }catch(e){} }
   // ── the conversation
   function addTurn(side){ var e=$('empty'); if(e) e.remove(); var d=document.createElement('div'); d.className='turn '+side+' wait';
     d.innerHTML='<div class="said"></div><div class="tr">…</div><div class="acts" hidden></div>'; $('convo').appendChild(d); d.scrollIntoView({block:'end',behavior:'smooth'}); return d; }
@@ -211,7 +231,7 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
     tr:['Şimdi konuşun','Lütfen bekleyin…','Lütfen tekrar söyleyin.','Bir saniye…','Konuşmaya başlayın','Durdurmak için dokunun','Duraklatıldı. Devam etmek için dokunun.']};
   var K={now:0,wait:1,again:2,work:3,start:4,stop:5,paused:6};
   function msg(l,k){ return (MSG[l]||MSG.en)[K[k]]; }
-  var CV={on:false,state:'off',stream:null,rec:null,force:null,hurry:false,ctx:null,an:null,buf:null,tick:null,floor:0.01,heardAt:0};
+  var CV={on:false,state:'off',stream:null,rec:null,force:null,hurry:false,ctx:null,an:null,buf:null,tick:null,floor:0.01,heardAt:0,held:null};
   // the banner says the same thing in both languages
   function banner(k,icon){ var c=$('cv'); c.hidden=false; c.className='cv '+k; $('cvA').textContent=(icon||'')+msg(pair[0],k); $('cvB').textContent=msg(pair[1],k);
     $('cvA').setAttribute('lang',pair[0]); $('cvB').setAttribute('lang',pair[1]); $('cvB').dir=/^(he|ar)$/.test(pair[1])?'rtl':'auto'; }
@@ -221,9 +241,9 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
   function mime(){ var c=['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg;codecs=opus']; for(var i=0;i<c.length;i++) if(window.MediaRecorder&&MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(c[i])) return c[i]; return ''; }
   function live(){ return CV.stream&&CV.stream.getAudioTracks().some(function(t){ return t.readyState==='live'; }); }
   // the microphone, once
-  function getMic(){ if(live()) return Promise.resolve(CV.stream);
+  function getMic(){ if(live()) return Promise.resolve(CV.stream); session('play-and-record');
     return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}}).then(function(st){ CV.stream=st;
-      try{ CV.ctx=CV.ctx||new (window.AudioContext||window.webkitAudioContext)(); var src=CV.ctx.createMediaStreamSource(st); CV.an=CV.ctx.createAnalyser(); CV.an.fftSize=1024; src.connect(CV.an); CV.buf=new Uint8Array(CV.an.fftSize); }catch(e){ CV.an=null; }
+      try{ CV.ctx=CV.ctx||(BOOST||new (window.AudioContext||window.webkitAudioContext)()); var src=CV.ctx.createMediaStreamSource(st); CV.an=CV.ctx.createAnalyser(); CV.an.fftSize=1024; src.connect(CV.an); CV.buf=new Uint8Array(CV.an.fftSize); }catch(e){ CV.an=null; }
       return st; }); }
   function level(){ if(!CV.an) return 0; if(CV.ctx.state==='suspended') CV.ctx.resume(); CV.an.getByteTimeDomainData(CV.buf); var sum=0; for(var i=0;i<CV.buf.length;i++){ var x=(CV.buf[i]-128)/128; sum+=x*x; } return Math.sqrt(sum/CV.buf.length); }
   // one recording per thing said
@@ -234,16 +254,23 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
     CV.rec=r; r.start(); }
   function recStop(keep,ms){ var r=CV.rec; if(!r) return; CV.rec=null; r._send=keep?{force:CV.force,ms:ms}:null; if(r.state!=='inactive') r.stop(); }
   var L0={t:0,spoke:0,quiet:0,loud:0,idle:0};
-  function listen(){ if(!CV.on) return; CV.state='listen'; L0={t:Date.now(),spoke:0,quiet:0,loud:0}; recStart(); banner('now','🎤 '); status(''); uiRec(); }
+  function listen(){ if(!CV.on) return;
+    if(!live()){ CV.state='start'; getMic().then(function(){ if(CV.on) listen(); }).catch(function(){ cvStop(true); status(T.mic); }); return; }
+    CV.state='listen'; L0={t:Date.now(),spoke:0,quiet:0,loud:0}; recStart(); banner('now','🎤 '); status(''); uiRec(); }
+  // the mic let go (an iPhone then plays through its loud speaker)
+  function micOff(){ if(CV.stream){ CV.stream.getTracks().forEach(function(t){ t.stop(); }); CV.stream=null; CV.an=null; } session('playback'); }
+  // the thought was finished after all: say what was held
+  function release(){ var h=CV.held; if(!h) return; CV.held=null; recStop(false); CV.state='work'; fillTurn(h.d,h.text,h.from,h.tr.text,h.to); }
   // every tenth of a second: is someone speaking?
   function tick(){ if(!CV.on) return; var v=level(), th=Math.max(0.03,CV.floor*3), loud=v>th;
     if(!loud) CV.floor=CV.floor*0.97+v*0.03;
     if(CV.state==='listen'){
       if(loud){ L0.spoke+=100; L0.quiet=0; CV.heardAt=Date.now(); } else L0.quiet+=100;
       var held=Date.now()-L0.t;
-      if(L0.spoke>=300&&(L0.quiet>=750||held>40000)){ CV.state='work'; CV.hurry=false; banner('work','… '); uiRec(); recStop(true,L0.spoke); return; }
+      if(CV.held&&!L0.spoke&&L0.quiet>=HOLD){ release(); return; }
+      if(L0.spoke>=300&&(L0.quiet>=waitS()*1000||held>40000)){ CV.state='work'; CV.hurry=false; banner('work','… '); uiRec(); recStop(true,L0.spoke); return; }
       // nothing said: start a fresh recording now and then, and rest after two quiet minutes
-      if(!L0.spoke&&held>12000){ recStop(false); if(Date.now()-CV.heardAt>120000){ cvStop(true); return; } L0={t:Date.now(),spoke:0,quiet:0,loud:0}; recStart(); }
+      if(!L0.spoke&&held>12000){ recStop(false); if(Date.now()-CV.heardAt>600000){ cvStop(true); return; } L0={t:Date.now(),spoke:0,quiet:0,loud:0}; recStart(); }
       if(L0.spoke&&L0.spoke<300&&L0.quiet>=1500){ L0.spoke=0; }
     } else if(CV.state==='work'){
       // someone talking over it while it is still translating
@@ -252,11 +279,11 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
   function cvStart(lang){ unlock(); if(lang) CV.force=lang;
     if(CV.on){ if(!lang) cvStop(); else uiRec(); return; }
     if(!navigator.mediaDevices||!window.MediaRecorder){ status(T.mic); return; }
-    CV.on=true; CV.state='start'; uiRec(); CV.heardAt=Date.now();
+    CV.on=true; CV.state='start'; uiRec(); CV.heardAt=Date.now(); wake(true);
     getMic().then(function(){ if(!CV.on) return; clearInterval(CV.tick); CV.tick=setInterval(tick,100); listen(); })
       .catch(function(){ CV.on=false; uiRec(); $('cv').hidden=true; status(T.mic); }); }
   // stop: the microphone is let go (the phone's mic light goes off)
-  function cvStop(rest){ CV.on=false; CV.state='off'; clearInterval(CV.tick); recStop(false); CV.force=null;
+  function cvStop(rest){ if(CV.held){ var h=CV.held; CV.held=null; CV.on=false; fillTurn(h.d,h.text,h.from,h.tr.text,h.to); } CV.on=false; CV.state='off'; clearInterval(CV.tick); recStop(false); CV.force=null; wake(false);
     if(CV.stream){ CV.stream.getTracks().forEach(function(t){ t.stop(); }); CV.stream=null; }
     if(rest) banner('paused','⏸ '); else $('cv').hidden=true; uiRec(); }
   // after a translation has been said (or nothing came of it): listen again, first asking them to say it again if they were cut off
@@ -264,18 +291,22 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
       say(msg(pair[0],'again'),pair[0],null,function(){ say(msg(pair[1],'again'),pair[1],null,function(){ setTimeout(listen,250); }); }); return; }
     setTimeout(listen,300); } }
   // anything said out loud stops the listening first (so it does not hear itself), then the conversation carries on
-  function sayOut(text,lang,btn){ if(CV.on){ recStop(false); CV.state='speak'; banner('work','🔊 '); $('cvA').textContent='🔊 '+L[lang]; $('cvB').textContent=''; uiRec(); }
+  function sayOut(text,lang,btn){ if(CV.on){ recStop(false); if(IOS) micOff(); CV.state='speak'; banner('work','🔊 '); $('cvA').textContent='🔊 '+L[lang]; $('cvB').textContent=''; uiRec(); }
     say(text,lang,btn,function(){ if(CV.on) cvNext(); }); }
-  function send(blob,type,lang,ms){ if(!blob.size){ cvNext(); return; } status(T.hearing);
-    var d=addTurn(lang&&lang!==pair[0]?'b':'a');
+  function send(blob,type,lang,ms){ var h=CV.held; if(!blob.size){ if(h) release(); else cvNext(); return; } status(T.hearing);
+    var d=h?h.d:addTurn(lang&&lang!==pair[0]?'b':'a');
     var q=lang?'lang='+lang+'&to='+(lang===pair[0]?pair[1]:pair[0]):'pair='+pair.join(',');
+    if(h) q+='&prev='+encodeURIComponent(h.text);
     fetch('/api/hear?'+q,{method:'POST',headers:{'content-type':type},body:blob})
       .then(function(r){ if(!r.ok) return errMsg(r).then(function(m){ throw m; }); return r.json(); })
-      .then(function(j){ var t=String(j.text||'').trim(); CV.force=null; uiRec();
+      .then(function(j){ var t=String(j.text||'').trim(), heard=String(j.heard!=null?j.heard:t).trim(); CV.force=null; uiRec();
         // a cough or a door: speech-to-text sometimes "hears" a stock phrase in a short noise
-        if(!t||(ms<1200&&/^(thanks for watching!?|you\.?|\.+)$/i.test(t))){ d.remove(); status(''); cvNext(); return; }
+        if(!heard||(ms<1200&&/^(thanks for watching!?|you\.?|\.+)$/i.test(heard))){ if(h){ status(''); release(); return; } d.remove(); status(''); cvNext(); return; }
         d.querySelector('.said').textContent=t;
-        if(j.tr&&j.tr.text){ status(''); var fr=j.tr.from||lang||pair[0]; fillTurn(d,t,fr,j.tr.text,j.tr.to||(fr===pair[0]?pair[1]:pair[0])); } else translate(t,lang,d); })
+        if(j.tr&&j.tr.text){ status(''); var fr=j.tr.from||lang||pair[0], to=j.tr.to||(fr===pair[0]?pair[1]:pair[0]);
+          // the words stop mid-thought: keep listening a little longer before saying anything (at most a few times)
+          if(j.tr.done===false&&CV.on&&(h?h.n:0)<3){ CV.held={d:d,text:t,from:fr,to:to,tr:j.tr,n:(h?h.n:0)+1}; d.querySelector('.tr').textContent='…'; listen(); return; }
+          CV.held=null; fillTurn(d,t,fr,j.tr.text,to); } else { CV.held=null; translate(t,lang,d); } })
       .catch(function(m){ status(''); failTurn(d,typeof m==='string'?m:T.fail); cvNext(); }); }
   function warm(){ try{ fetch('/api/hear?warm=1',{cache:'no-store'}).catch(function(){}); fetch('/api/translate',{cache:'no-store'}).catch(function(){}); }catch(e){} }
   warm(); setInterval(function(){ if(CV.on) warm(); },240000);
@@ -283,7 +314,7 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
   $('micA').addEventListener('click',function(){ cvStart(pair[0]); });
   $('micB').addEventListener('click',function(){ cvStart(pair[1]); });
   // leaving the page lets the microphone go
-  document.addEventListener('visibilitychange',function(){ if(document.hidden&&CV.on) cvStop(true); });
+  document.addEventListener('visibilitychange',function(){ if(document.hidden&&CV.on) cvStop(true); else if(!document.hidden&&CV.on) wake(true); });
 
   // ── typing instead of speaking
   $('kbBtn').addEventListener('click',function(){ var tb=$('typebox'); tb.hidden=!tb.hidden; if(!tb.hidden) $('typeIn').focus(); });

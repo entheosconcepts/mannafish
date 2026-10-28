@@ -9,14 +9,21 @@ export async function translatePair(H, text, A, B) {
       { role: 'system', content: `You translate for a Christian sharing the gospel face to face with someone who speaks another language. `
         + `The user's message is in ${NAMES[A]} (code "${A}") or ${NAMES[B]} (code "${B}"). Decide which, then translate it into the other one. `
         + `Keep the meaning and the warmth; use natural, polite, everyday wording, and the usual Bible words of the churches that speak that language. `
-        + `Reply with JSON only: {"from":"<code of the message's language>","to":"<code of the other>","text":"<the translation>"}.` },
+        + `The words are speech-to-text of someone talking, sent when they paused; they may have paused mid-thought to think of what to say. `
+        + `Set "done" to false only if they clearly stopped in the middle of a thought (it ends on "and", "but", "because", "so", "the", a comma, `
+        + `"um", or an unfinished clause), otherwise true. `
+        + `Reply with JSON only: {"from":"<code of the message's language>","to":"<code of the other>","text":"<the translation>","done":true|false}.` },
       { role: 'user', content: text }] }) });
   if (r.status === 401 || r.status === 403) return { error: 'key', status: r.status };
   if (!r.ok) return { error: 'service', status: r.status };
   let o = {}; try { o = JSON.parse((((await r.json()).choices || [])[0] || {}).message.content || '{}'); } catch (e) { o = {}; }
   const fr = o.from === B ? B : A, out = String(o.text || '').trim();
-  return out ? { text: out, from: fr, to: fr === A ? B : A } : { error: 'empty' };
+  return out ? { text: out, from: fr, to: fr === A ? B : A, done: o.done === false ? false : !unfinished(text) } : { error: 'empty' };
 }
+// Ken, 28 Oct: "translate out loud for me after I'm done with my thought, not in the middle of it": words that plainly stop mid-thought
+// (a joining word, a filler, a comma at the end), in the Translator's languages
+const OPEN = /(,|(?<!\p{L})(and|but|or|so|because|that|the|a|to|of|with|um+|uh+|like|y|o|pero|porque|que|el|la|los|las|de|con|para|este|pues|at|pero|kasi|na|ng|und|aber|oder|weil|dass|der|die|das|mit|και|αλλά|γιατί|ότι|и|а|но|или|потому|что|чтобы|в|на|с|ну|э+|ve|ama|çünkü|ki)|[、，,和但因为])\s*$/iu;
+export function unfinished(text) { return OPEN.test(String(text || '').trim()); }
 // into one language  -> {text, to} | {error}
 export async function translateTo(H, text, from, to) {
   const r = await fetch('https://api.openai.com/v1/chat/completions', { method: 'POST', headers: H,

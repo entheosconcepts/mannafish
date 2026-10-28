@@ -4,10 +4,12 @@
 //   POST /api/hear[?lang=es]   body: the recording (audio/webm, audio/mp4, audio/ogg ...)  ->  {text}
 //   ...&pair=en,es (or &to=es)  -> {text, tr:{text,from,to}}: heard and translated in one trip (Ken, 21 Oct: "a great delay")
 //   ...&polish=1               -> {text, raw}: a spoken prayer, its spelling and punctuation made right (Time with God)
+//   ...&prev=<words>          the same thought, carried on after a pause: heard, joined to prev, and the whole translated
+//                             (tr.done false: the words stop mid-thought, so the page keeps listening before it speaks)
 //   GET  /api/hear?warm=1      -> 204, so the first sentence does not wait for the function to wake up
 // Only the site's own pages may call it, recordings up to 4 MB (about a minute), with an hourly limit per visitor.
 import { getStore } from '@netlify/blobs';
-import { NAMES, translatePair, translateTo, polish } from './lib/tr.mjs';
+import { NAMES, translatePair, translateTo, polish, unfinished } from './lib/tr.mjs';
 const MODEL = process.env.MF_HEAR_MODEL || 'gpt-4o-mini-transcribe';
 const LANGS = ['en', 'es', 'tl', 'zh', 'hi', 'el', 'de', 'ko', 'he', 'ar', 'tr', 'ru'];
 const PER_HOUR = 150, MAX = 4 * 1024 * 1024;
@@ -43,7 +45,8 @@ export default async (req, context) => {
   const r = await fetch('https://api.openai.com/v1/audio/transcriptions', { method: 'POST', headers: { authorization: 'Bearer ' + apiKey }, body: fd });
   if (r.status === 401 || r.status === 403) return bad('Key not allowed', 503, 'key');
   if (!r.ok) return bad('Speech service error', 502);
-  const j = await r.json(), text = String(j.text || '').trim(), q = new URL(req.url).searchParams;
+  const j = await r.json(), q = new URL(req.url).searchParams, heard = String(j.text || '').trim(), prev = String(q.get('prev') || '').trim().slice(0, 600);
+  const text = prev && heard ? prev + ' ' + heard : heard;
   // a prayer said aloud: tidied (spelling, punctuation, capitals), the person's words kept
   if (text && q.get('polish')) {
     try { const o = await polish({ authorization: 'Bearer ' + apiKey, 'content-type': 'application/json' }, text.slice(0, 2000)); if (!o.error) return Response.json({ text: o.text, raw: text }); } catch (e) {}
@@ -51,13 +54,13 @@ export default async (req, context) => {
   }
   // and translated straight away, when the page says into what
   const pair = String(q.get('pair') || '').split(','), to = q.get('to');
-  if (text && text.length <= 300 && ((pair.length === 2 && NAMES[pair[0]] && NAMES[pair[1]] && pair[0] !== pair[1]) || NAMES[to])) {
+  if (text && text.length <= 900 && ((pair.length === 2 && NAMES[pair[0]] && NAMES[pair[1]] && pair[0] !== pair[1]) || NAMES[to])) {
     const H = { authorization: 'Bearer ' + apiKey, 'content-type': 'application/json' };
     try {
       const o = NAMES[to] ? await translateTo(H, text, LANGS.includes(lang) ? lang : null, to) : await translatePair(H, text, pair[0], pair[1]);
-      if (!o.error) return Response.json({ text, tr: NAMES[to] ? { text: o.text, from: LANGS.includes(lang) ? lang : null, to } : o });
+      if (!o.error) return Response.json({ text, heard, tr: NAMES[to] ? { text: o.text, from: LANGS.includes(lang) ? lang : null, to, done: !unfinished(text) } : o });
     } catch (e) { /* the page asks /api/translate itself */ }
   }
-  return Response.json({ text });
+  return Response.json({ text, heard });
 };
 export const config = { path: '/api/hear' };
