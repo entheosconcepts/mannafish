@@ -15,7 +15,7 @@ other languages are fish-lang/<l>.json). This script copies /fish/ into every on
 """
 import json,os,sys
 S=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','..')+'/'
-LANGS=['en','es','tl','zh','hi','el','de','ko','he','ar']
+LANGS=['en','es','tl','zh','hi','el','de','ko','he','ar','ru']
 CHECK='--check' in sys.argv
 dec=json.JSONDecoder()
 def src(l):
@@ -39,8 +39,8 @@ for l in ('en','es'):
     put(p,json.dumps(ordered(json.loads(old),SRC[l]),ensure_ascii=False,separators=(',',':')),old)
 # the other languages
 for l in LANGS[2:]:
-    p='fish-lang/%s.json'%l; old=open(S+p,encoding='utf-8').read()
-    put(p,json.dumps(ordered(json.loads(old),SRC[l]),ensure_ascii=False,separators=(',',':')),old)
+    p='fish-lang/%s.json'%l; old=open(S+p,encoding='utf-8').read() if os.path.exists(S+p) else ''
+    put(p,json.dumps(ordered(json.loads(old) if old else None,SRC[l]),ensure_ascii=False,separators=(',',':')),old)
 # the old Spanish folder
 for key,t in SRC['es'].items():
     p='fish-es/%s.svg'%key; old=open(S+p,encoding='utf-8').read() if os.path.exists(S+p) else None

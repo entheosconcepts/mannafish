@@ -18,7 +18,7 @@ const STATUS = ['requested', 'packed', 'sent', 'delivered', 'cancelled', 'waitli
 // Until decals can be sent (Ken, 25 Oct: launch the devotional first, decals "coming soon"), every request is a waitlist entry:
 // name, email and the fish wanted, no address, nothing promised. Netlify setting MF_BASKET_OPEN=1 opens real requests again.
 const OPEN = () => process.env.MF_BASKET_OPEN === '1';
-const LANG = { en: 'English', es: 'Español', tl: 'Tagalog', zh: '中文', hi: 'हिन्दी', el: 'Ελληνικά', de: 'Deutsch', ko: '한국어', he: 'עברית', ar: 'العربية' };
+const LANG = { en: 'English', es: 'Español', tl: 'Tagalog', zh: '中文', hi: 'हिन्दी', el: 'Ελληνικά', de: 'Deutsch', ko: '한국어', he: 'עברית', ar: 'العربية',ru:"Русский" };
 const clean = (v, n) => String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, n);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const rid = (n) => Array.from(crypto.getRandomValues(new Uint8Array(n)), (b) => 'abcdefghjkmnpqrstuvwxyz23456789'[b % 31]).join('');

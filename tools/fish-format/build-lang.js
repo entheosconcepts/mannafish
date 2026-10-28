@@ -14,7 +14,7 @@ const LINES=JSON.parse(fs.readFileSync(path.join(__dirname,'lang-lines.json')));
 // Ken's bold white outline on the word, and the thin black one on the verse, suit Hobo; letters with many close strokes
 // (Chinese, Korean, Hindi) fill in under them, so those get thinner outlines, and their verse letters a little smaller
 // (wstroke: the word's outline; vstroke / rstroke: the verse's and reference's; vsize: verse letter height against Hobo's)
-const FACE={el:{f:'el.ttf',cap:'ΑΗΙΤΠ',fam:'Ubuntu',w:700}, zh:{f:'zh.ttf',cap:'安息爱',tallAll:true,wstroke:8,vstroke:0,rstroke:2,vsize:0.85,fam:'ZCOOL KuaiLe'},
+const FACE={el:{f:'el.ttf',cap:'ΑΗΙΤΠ',fam:'Ubuntu',w:700}, ru:{f:'ru.ttf',cap:'АНИТП',fam:'Ubuntu Cyrillic',w:700}, zh:{f:'zh.ttf',cap:'安息爱',tallAll:true,wstroke:8,vstroke:0,rstroke:2,vsize:0.85,fam:'ZCOOL KuaiLe'},
   ko:{f:'ko.ttf',cap:'가나다라',tallAll:true,wstroke:14,vstroke:1,rstroke:2,vsize:0.9,fam:'Jua'}, he:{f:'he.ttf',cap:'הבמנח',tallAll:true,rtl:true,vsize:0.92,fam:'Fredoka',w:700},
   ar:{f:'ar.ttf',cap:'اكل',rtl:true,fam:'Cairo',w:800}, hi:{f:'hi.ttf',cap:'कमरन',wstroke:12,vstroke:0,rstroke:2,vsize:0.92,fam:'Baloo 2',w:800}};
 const BASE=fs.readFileSync(path.join(ROOT,'edit','new','base.svg'),'utf8');

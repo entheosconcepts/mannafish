@@ -1,6 +1,6 @@
 // The Translator's words, shared by /api/translate and /api/hear (so a spoken sentence is heard and translated in one trip).
 export const NAMES = { en: 'English', es: 'Spanish', tl: 'Tagalog (Filipino)', zh: 'Simplified Chinese (Mandarin)', hi: 'Hindi',
-  el: 'Modern Greek', de: 'German', ko: 'Korean', he: 'Modern Hebrew', ar: 'Modern Standard Arabic', tr: 'Turkish' };
+  el: 'Modern Greek', de: 'German', ko: 'Korean', he: 'Modern Hebrew', ar: 'Modern Standard Arabic',ru:"Russian", tr: 'Turkish' };
 export const MODEL = process.env.MF_TRANSLATE_MODEL || 'gpt-4.1-mini';
 // the words are in one of two languages: find which, and give the other  -> {text, from, to} | {error}
 export async function translatePair(H, text, A, B) {

@@ -9,7 +9,7 @@
 import { getStore } from '@netlify/blobs';
 
 const KEY = () => process.env.MF_ADMIN_KEY || process.env.PROOF_KEY || '';
-const LANGS = ['en', 'es', 'tl', 'zh', 'hi', 'el', 'de', 'ko', 'he', 'ar'];
+const LANGS = ['en', 'es', 'tl', 'zh', 'hi', 'el', 'de', 'ko', 'he', 'ar', 'ru'];
 const TYPES = ['audio/webm', 'audio/mp4', 'audio/mpeg', 'audio/ogg', 'audio/aac', 'audio/x-m4a', 'audio/wav'];
 const MAX = 4 * 1024 * 1024;
 const bad = (msg, status) => Response.json({ error: msg }, { status });

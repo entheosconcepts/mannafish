@@ -12,7 +12,7 @@ const VOICE = process.env.MF_TTS_VOICE || 'sage';
 // the listener may pick another natural voice (Ken, 9 Oct)
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];
 const HOW = { en: 'Read calmly and warmly, like a devotional.', es: 'Lee con calma y calidez, como un devocional.' };
-const NAME = { en: 'English', es: 'Spanish', tl: 'Tagalog', zh: 'Chinese', hi: 'Hindi', el: 'Greek', de: 'German', ko: 'Korean', he: 'Hebrew', ar: 'Arabic' };
+const NAME = { en: 'English', es: 'Spanish', tl: 'Tagalog', zh: 'Chinese', hi: 'Hindi', el: 'Greek', de: 'German', ko: 'Korean', he: 'Hebrew', ar: 'Arabic',ru:"Russian" };
 // one word on its own: the voice could say another word (Ken, 25 Oct: Spanish "Cree" was heard as "Pray"), so it is told to say just
 // that word, as written, in its own language
 const ONE = (lang, w) => `Say only this one ${NAME[lang] || ''} word, exactly as written, pronounced in ${NAME[lang] || 'its own language'}: "${w}". Do not translate it and do not add any other word. Say it calmly and warmly.`;

@@ -317,7 +317,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     // each language's own public-domain Bible, every chapter in fish-lang/bible/<l>/ (tools/more-languages/all_chapters.py)
     {k:'rv1909',l:'es',f:'es',n:'Reina-Valera (1909)',s:'Español'},{k:'ab1905',l:'tl',f:'tl',n:'Ang Biblia (1905)',s:'Tagalog'},{k:'cuv',l:'zh',f:'zh',n:'和合本 (1919)',s:'中文'},
     {k:'irv',l:'hi',f:'hi',n:'इंडियन रिवाइज्ड वर्जन (IRV)',s:'हिन्दी'},{k:'vamvas',l:'el',f:'el',n:'Βάμβας (1850)',s:'Ελληνικά'},{k:'elb',l:'de',f:'de',n:'Elberfelder (1905)',s:'Deutsch'},
-    {k:'krv',l:'ko',f:'ko',n:'개역한글 (1961)',s:'한국어'},{k:'hmt',l:'he',f:'he',n:'המקרא',s:'עברית',rtl:1},{k:'svd',l:'ar',f:'ar',n:'فاندايك',s:'العربية',rtl:1}];
+    {k:'krv',l:'ko',f:'ko',n:'개역한글 (1961)',s:'한국어'},{k:'hmt',l:'he',f:'he',n:'המקרא',s:'עברית',rtl:1},{k:'svd',l:'ar',f:'ar',n:'فاندايك',s:'العربية',rtl:1},{k:'synodal',l:'ru',f:'ru',n:'Синодальный (1876)',s:'Русский'}];
   function ver(){ var k=ls('mf-bible-version')||'kjv'; return VERS.filter(function(v){ return v.k===k; })[0]||VERS[0]; }
   function vlang(v){ return (v||ver()).l||'en'; }
   (function(){ var v0=new URLSearchParams(location.search).get('v'); if(v0&&VERS.some(function(x){ return x.k===v0; })) ls('mf-bible-version',v0); })();   // ?v=rv1909: open in that version (the devotional's Bible button)
@@ -635,7 +635,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 
   // ── listen: the device's own voice, verse by verse, following along on the page ──
   var SAY={on:false,i:0};
-  var LC={en:'en-US',es:'es-ES',tl:'fil-PH',zh:'zh-CN',hi:'hi-IN',el:'el-GR',de:'de-DE',ko:'ko-KR',he:'he-IL',ar:'ar-SA'};
+  var LC={en:'en-US',es:'es-ES',tl:'fil-PH',zh:'zh-CN',hi:'hi-IN',el:'el-GR',de:'de-DE',ko:'ko-KR',he:'he-IL',ar:'ar-SA',ru:"ru-RU"};
   // Ken, 26 Oct: a ▾ beside Listen picks one of this phone's voices for the language (fish-lang/voicepick.js); that pick comes first
   window.MFvpHook=function(){ if(window.MFvoice) MFvoice.attach($('say'),{mode:'device',lang:function(){ return vlang(); },onPick:function(){ if(SAY.on) stopSay(); }}); };
   function voice(){ var L=vlang(), pk=window.MFvoice&&MFvoice.device(L); if(pk) return pk; var vs=(window.speechSynthesis?speechSynthesis.getVoices():[]).filter(function(v){ return new RegExp('^'+(L==='tl'?'(fil|tl)':L),'i').test(v.lang); }), want=SET('voice','');

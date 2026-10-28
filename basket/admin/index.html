@@ -48,7 +48,7 @@ button.ok{background:var(--blue);border-color:var(--blue);color:#fff}button[aria
   var $=function(id){ return document.getElementById(id); };
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   var K='', ALL=[], TAB='open', ST=['requested','packed','sent','delivered','cancelled'], NM={requested:'Requested',packed:'Packed',sent:'Sent',delivered:'Delivered',cancelled:'Cancelled'};
-  var LN={en:'English',es:'Español',tl:'Tagalog',zh:'中文',hi:'हिन्दी',el:'Ελληνικά',de:'Deutsch',ko:'한국어',he:'עברית',ar:'العربية'};
+  var LN={en:'English',es:'Español',tl:'Tagalog',zh:'中文',hi:'हिन्दी',el:'Ελληνικά',de:'Deutsch',ko:'한국어',he:'עברית',ar:'العربية',ru:"Русский"};
   try{ K=localStorage.getItem('mf-admin-k')||''; }catch(e){}
   function load(){ fetch('/api/basket/admin?k='+encodeURIComponent(K)).then(function(r){ if(r.status===403) throw 403; if(!r.ok) throw r.status; return r.json(); })
       .then(function(j){ ALL=j.requests||[]; $('keyBox').hidden=true; $('tabs').hidden=false; $('sum').hidden=false; try{ localStorage.setItem('mf-admin-k',K); }catch(e){} draw(); })

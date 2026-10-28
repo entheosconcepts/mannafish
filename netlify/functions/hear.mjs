@@ -9,7 +9,7 @@
 import { getStore } from '@netlify/blobs';
 import { NAMES, translatePair, translateTo, polish } from './lib/tr.mjs';
 const MODEL = process.env.MF_HEAR_MODEL || 'gpt-4o-mini-transcribe';
-const LANGS = ['en', 'es', 'tl', 'zh', 'hi', 'el', 'de', 'ko', 'he', 'ar', 'tr'];
+const LANGS = ['en', 'es', 'tl', 'zh', 'hi', 'el', 'de', 'ko', 'he', 'ar', 'tr', 'ru'];
 const PER_HOUR = 150, MAX = 4 * 1024 * 1024;
 const okOrigin = (o) => /^https:\/\/([a-z0-9-]+\.)?manna-fish\.com$|^https:\/\/([a-z0-9-]+--)?yadamannafishtest\.netlify\.app$|^http:\/\/localhost(:\d+)?$/.test(o || '');
 const bad = (msg, status, error) => Response.json({ error: error || 'bad', msg }, { status });

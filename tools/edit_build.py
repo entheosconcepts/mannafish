@@ -12,10 +12,11 @@ DATA = js_obj('DATA'); ORDER = [k for k in DATA]  # the site's own order
 proof = rd('proof/index.html'); i = proof.index('const DATA=') + len('const DATA=')
 PD = json.JSONDecoder().raw_decode(proof[i:])[0]
 lines = json.loads(rd('tools/more-languages/lines.json'))
+LL = json.loads(rd('tools/fish-format/lang-lines.json'))
 FL = json.loads(rd('netlify/functions/lib/fishlines.json'))   # English and Spanish fish lines, as printed
 ES = json.loads(rd('netlify/functions/lib/es.json'))          # Spanish meanings ("means": {KEY: [greek, hebrew]})
 LANGS = [('A','en','English','English'),('B','es','Spanish','Español'),('C','tl','Tagalog','Tagalog'),('D','zh','Chinese','中文'),('E','hi','Hindi','हिन्दी'),
-         ('F','el','Greek','Ελληνικά'),('G','de','German','Deutsch'),('H','ko','Korean','한국어'),('I','he','Hebrew','עברית'),('J','ar','Arabic','العربية')]
+         ('F','el','Greek','Ελληνικά'),('G','de','German','Deutsch'),('H','ko','Korean','한국어'),('I','he','Hebrew','עברית'),('J','ar','Arabic','العربية'),('K','ru','Russian','Русский')]
 order = [it for it in PD['items'] if it['l'] == 'A']
 keys = []
 for it in order:  # match each numbered English fish to its word key
@@ -30,8 +31,8 @@ for w, k in enumerate(keys, 1):
             fx = FL[c][k]
             rec = {'word': fx['word'], 'top': fx['top'], 'bot': fx.get('bottom', ''), 'ref': fx['ref']}
         else:
-            fx = next(x for x in lines[c]['fish'] if x['key'] == k)
-            rec = {'word': fx['word'], 'top': fx['top'], 'bot': fx.get('bottom', ''), 'ref': fx['ref']}
+            if c in lines: fx = next(x for x in lines[c]['fish'] if x['key'] == k); rec = {'word': fx['word'], 'top': fx['top'], 'bot': fx.get('bottom', ''), 'ref': fx['ref']}
+            else: fx = LL[c][k]; rec = {'word': fx['word'], 'top': fx['top'], 'bot': fx['bot'], 'ref': fx['ref']}   # Russian (28 Oct): from the builder's lines
         if c == 'en': rec.update(gkm=DATA[k].get('gkm', ''), hbm=DATA[k].get('hbm', ''))
         elif c == 'es': m = ES.get('means', {}).get(k, ['', '']); rec.update(gkm=m[0], hbm=m[1])
         else:

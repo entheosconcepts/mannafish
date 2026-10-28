@@ -18,11 +18,11 @@
     de:['Stimme wählen','Deine Wahl gilt überall, wo du auf Abspielen tippst.','Die Stimme meines Telefons','Anhören','ist jetzt deine Stimme','Die Stimmen dieses Telefons. Für die Bibel und die Pläne.','Keine Stimmen für diese Sprache auf diesem Telefon.','Schließen'],
     ko:['목소리 선택','고른 목소리는 재생 버튼이 있는 모든 곳에서 쓰입니다.','내 휴대폰 목소리','듣기','이(가) 이제 내 목소리입니다','이 휴대폰의 목소리. 성경과 계획에 쓰입니다.','이 휴대폰에는 이 언어의 목소리가 없습니다.','닫기'],
     he:['בחרו קול','הבחירה שלכם תשמש בכל מקום שבו לוחצים על הפעלה.','הקול של הטלפון שלי','האזינו','הוא עכשיו הקול שלכם','הקולות של הטלפון הזה. לתנ״ך ולתוכניות.','אין בטלפון הזה קולות לשפה הזו.','סגירה'],
-    ar:['اختر صوتًا','يُستخدم اختيارك في كل مكان تضغط فيه تشغيل.','صوت هاتفي','استمع','هو صوتك الآن','أصوات هذا الهاتف. للكتاب المقدس والخطط.','لا توجد أصوات لهذه اللغة على هذا الهاتف.','إغلاق']};
-  var LP={en:'en',es:'es',tl:'(fil|tl)',zh:'(zh|cmn)',hi:'hi',el:'el',de:'de',ko:'ko',he:'(he|iw)',ar:'ar'};
+    ar:['اختر صوتًا','يُستخدم اختيارك في كل مكان تضغط فيه تشغيل.','صوت هاتفي','استمع','هو صوتك الآن','أصوات هذا الهاتف. للكتاب المقدس والخطط.','لا توجد أصوات لهذه اللغة على هذا الهاتف.','إغلاق'],ru:["Выберите голос","Ваш выбор будет звучать везде, где вы нажимаете «Слушать».","Голос моего телефона","Послушать","теперь ваш голос","Голоса этого телефона. Ваш выбор используется для Библии и Планов.","На этом телефоне нет голосов для этого языка.","Закрыть"]};
+  var LP={en:'en',es:'es',tl:'(fil|tl)',zh:'(zh|cmn)',hi:'hi',el:'el',de:'de',ko:'ko',he:'(he|iw)',ar:'ar',ru:"ru"};
   var SAMPLE={en:'The Lord is my shepherd; I shall not want.',es:'El Señor es mi pastor; nada me faltará.',tl:'Ang Panginoon ay aking pastor; hindi ako mangangailangan.',zh:'耶和华是我的牧者，我必不致缺乏。',
     hi:'यहोवा मेरा चरवाहा है, मुझे कुछ घटी न होगी।',el:'Ο Κύριος με ποιμαίνει· δεν θα μου λείψει τίποτα.',de:'Der Herr ist mein Hirte; mir wird nichts mangeln.',ko:'여호와는 나의 목자시니 내게 부족함이 없으리로다',
-    he:'יהוה רעי לא אחסר.',ar:'الرب راعيّ فلا يعوزني شيء.'};
+    he:'יהוה רעי לא אחסר.',ar:'الرب راعيّ فلا يعوزني شيء.',ru:"Господь — Пастырь мой; я ни в чем не буду нуждаться."};
   function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
   function uiLang(){ var l=(window.MF&&window.MF.lang)||ls('mf-lang')||(document.documentElement.lang||'en').slice(0,2); return TX[l]?l:'en'; }
   function T(i){ return (TX[uiLang()]||TX.en)[i]; }

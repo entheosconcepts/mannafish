@@ -65,7 +65,7 @@ Hello API.Bible team,
 
 My name is Ken, and I lead MannaFish (manna-fish.com), a free Bible devotional and reading app from Entheos Concepts in
 Wilmington, North Carolina. Each day it gives people one word from God's Word with a verse, a short guided devotional
-(pray, hear, do), a Bible-in-a-year plan, and a Bible reader with highlights and notes, in ten languages.
+(pray, hear, do), a Bible-in-a-year plan, and a Bible reader with highlights and notes, in eleven languages.
 
 MannaFish is completely free: no ads, no subscriptions, no fees, nothing for sale. It is supported by donations. Some donors
 sponsor the printing of free MannaFish decals that are given away. Those use the public-domain King James Version, and no
@@ -91,7 +91,7 @@ manna-fish.com
 
 MannaFish (manna-fish.com) is a free Bible devotional and reading app from Entheos Concepts in Wilmington, North Carolina. Each day
 it gives people one word from God's Word with a verse, a guided devotional that can be read aloud (pray, hear, do), a
-Bible-in-a-year plan, and a Bible reader, in ten languages today (English, Spanish, Tagalog, Chinese, Hindi, Greek, German,
+Bible-in-a-year plan, and a Bible reader, in eleven languages today (English, Spanish, Tagalog, Chinese, Hindi, Greek, German, Russian,
 Korean, Hebrew and Arabic). We would like to add many more.
 
 MannaFish is and will stay free: no ads, no fees, nothing for sale; users never pay. It is supported by donations, including
@@ -135,7 +135,7 @@ Concepts, 4563 Technology Dr, Unit 6, Wilmington, NC 28405.
 
 What MannaFish is: each day it gives people one word from God's Word with one verse, shown on a simple fish design. With it
 comes a short guided devotional (pray, hear, do), a Bible-in-a-year reading plan, and a Bible reader where people can
-highlight and keep notes. It is offered in ten languages.
+highlight and keep notes. It is offered in eleven languages.
 
 We are asking for three uses:
 

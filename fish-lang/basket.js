@@ -10,7 +10,7 @@
   // decals are not ready to send yet (Ken, 25 Oct: launch the devotional first): the basket is a waitlist -- the fish wanted, a name and
   // an email, no address, nothing promised. false (with MF_BASKET_OPEN=1 in Netlify) opens real requests again.
   var WAIT=true;
-  var LANGS=[['en','English'],['es','Español'],['tl','Tagalog'],['zh','中文'],['hi','हिन्दी'],['el','Ελληνικά'],['de','Deutsch'],['ko','한국어'],['he','עברית'],['ar','العربية']];
+  var LANGS=[['en','English'],['es','Español'],['tl','Tagalog'],['zh','中文'],['hi','हिन्दी'],['el','Ελληνικά'],['de','Deutsch'],['ko','한국어'],['he','עברית'],['ar','العربية'],['ru','Русский']];
   function get(k,d){ try{ var v=JSON.parse(localStorage.getItem(k)||'null'); return v==null?d:v; }catch(e){ return d; } }
   function put(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
@@ -53,7 +53,7 @@
       +'.mfbkz .zb{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.mfbkz .zb button,.mfbkz .zb a{border:1px solid rgba(255,255,255,.45);background:none;color:#fff;border-radius:999px;padding:8px 14px;font:700 .88rem Archivo,sans-serif;cursor:pointer;text-decoration:none}'
       +'.mfbkz p{margin:6px 0 0}.mfbkz b{font:400 1.6rem MFHobo,cursive}.mfbkz small{opacity:.6}.mfbkz .zx{position:absolute;top:max(14px,env(safe-area-inset-top));right:14px;border:1px solid rgba(255,255,255,.4);background:none;color:#fff;border-radius:50%;width:42px;height:42px;font-size:1.1rem;cursor:pointer}'
       +'.mfbk .empty{opacity:.75;text-align:center;padding:16px 4px}.mfbk a{color:#6f9bff}';
-    s.textContent+=[['MFHobo','hobo'],['ZCOOL KuaiLe','zh'],['Baloo 2','hi'],['Ubuntu','el'],['Jua','ko'],['Fredoka','he'],['Cairo','ar']].map(function(f){ return "@font-face{font-family:'"+f[0]+"';src:url(/fish-lang/"+f[1]+".woff2) format('woff2');font-weight:100 900;font-display:swap}"; }).join('');   // the letters on the fish
+    s.textContent+=[['MFHobo','hobo'],['ZCOOL KuaiLe','zh'],['Baloo 2','hi'],['Ubuntu','el'],['Jua','ko'],['Fredoka','he'],['Cairo','ar'],['Ubuntu Cyrillic','ru']].map(function(f){ return "@font-face{font-family:'"+f[0]+"';src:url(/fish-lang/"+f[1]+".woff2) format('woff2');font-weight:100 900;font-display:swap}"; }).join('');   // the letters on the fish
     document.head.appendChild(s); }
   // a fish's picture: the real fish, from /fish/ where every fish picture lives (Ken, 22 Oct: "the fish are not actual images");
   // the outline with its word only shows while it loads. The main fish come in the language chosen for them.

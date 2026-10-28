@@ -12,7 +12,7 @@
      click on the verse, I want those edit tools to slide up for editing. And make everything print quality, so I can download PNG
      with no background: the black letters inside the white fish knocked out to be transparent -- the verse, the reference, the
      MannaFish logo on the tail -- and the space behind the white word in the middle."
-     One sheet: the 24 fish in 10 languages (edit/data.json) the 128 new fish (edit/new/data.json) and the Bible-in-a-year plan fish, a day fish and a night fish for every reading day (edit/daily/data.json, shown on /plan/). Tap the word, a verse line
+     One sheet: the 24 fish in 11 languages (edit/data.json) the 128 new fish (edit/new/data.json) and the Bible-in-a-year plan fish, a day fish and a night fish for every reading day (edit/daily/data.json, shown on /plan/). Tap the word, a verse line
      or the reference on a fish and its tools slide up. Every change waits on this device (💾 Save marks a point to come back to)
      until Send. ⬇ PNG draws the fish at print size and turns everything black into see-through. -->
 <style>
@@ -23,6 +23,7 @@
 @font-face{font-family:'Jua';src:url(/fish-lang/ko.woff2) format('woff2');font-display:swap}
 @font-face{font-family:'Fredoka';src:url(/fish-lang/he.woff2) format('woff2');font-weight:100 900;font-display:swap}
 @font-face{font-family:'Cairo';src:url(/fish-lang/ar.woff2) format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Ubuntu Cyrillic';src:url(/fish-lang/ru.woff2) format('woff2');font-weight:100 900;font-display:swap}
 :root{--bg:#05080c;--bg2:#0e1319;--line:rgba(255,255,255,.14);--text:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--gold:#f5d76e;--ok:#7fd18b;--sky:#8fb3e8}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 'Archivo',system-ui,sans-serif;padding-bottom:170px}
@@ -110,8 +111,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 <div class="wrap">
 <header>
   <h1>Manna<b>Fish</b> edit sheet</h1>
-  <p>Every fish in one place: the 24 fish in 10 languages, the 128 new fish, and the Bible-in-a-year fish: a day fish and a night fish for every reading day. <b>Tap the word or a verse line on a fish</b> and its tools slide up. Changes wait on this device; <b>💾 Save</b> marks a point to come back to, and nothing goes out until you tap <b>Send</b>. <b>⬇ PNG</b> saves a print-size picture with no background.</p>
-  <div class="sets" role="group" aria-label="Which fish"><button type="button" data-set="24">The 24 fish · 10 languages</button><button type="button" data-set="new">New fish · Bible in a year (128)</button><button type="button" data-set="daily">Bible in a year · 2 Fish a day</button></div>
+  <p>Every fish in one place: the 24 fish in 11 languages, the 128 new fish, and the Bible-in-a-year fish: a day fish and a night fish for every reading day. <b>Tap the word or a verse line on a fish</b> and its tools slide up. Changes wait on this device; <b>💾 Save</b> marks a point to come back to, and nothing goes out until you tap <b>Send</b>. <b>⬇ PNG</b> saves a print-size picture with no background.</p>
+  <div class="sets" role="group" aria-label="Which fish"><button type="button" data-set="24">The 24 fish · 11 languages</button><button type="button" data-set="new">New fish · Bible in a year (128)</button><button type="button" data-set="daily">Bible in a year · 2 Fish a day</button></div>
   <div class="key" id="key"></div>
   <div class="tools">
     <input id="find" type="search" placeholder="Find a word" aria-label="Find a word">
@@ -173,7 +174,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   var FE=null, FR=null;
   function fishF(X){ return {word:val(X,'word'),top:val(X,'top'),bot:val(X,'bot'),ref:val(X,'ref'),refShort:X.nf&&val(X,'ref')===X.base.ref?X.nf.refShort:''}; }
   function autoP(X){ var f=fishF(X), k=JSON.stringify(f); if(X._ak!==k){ X._ak=k; X._ap=MFfmt.layout(FE,f,FR); X._as=MFfmt.toSheet(FE,f,X._ap,FR); } return X._as; }
-  var FONTFILE={'MFHobo':'hobo','ZCOOL KuaiLe':'zh','Baloo 2':'hi','Ubuntu':'el','Jua':'ko','Fredoka':'he','Cairo':'ar'};
+  var FONTFILE={'MFHobo':'hobo','ZCOOL KuaiLe':'zh','Baloo 2':'hi','Ubuntu':'el','Jua':'ko','Fredoka':'he','Cairo':'ar','Ubuntu Cyrillic':'ru'};
 
   // ═════ what's been changed, kept on this device ═════
   //  S.d[fish] = {word, top, bot, ref, gkm, hbm, design, dnote,  wl: word size/place,  tl / bl: top / bottom line size/place}

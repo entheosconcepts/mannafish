@@ -8,7 +8,7 @@
   // Ken, 25 Oct (one clear path for launch): Pray (Time with God) in place of the game's Pond, which stays in the ••• menu
   var T={en:['Today','Bible','Plans','Pray','You'],es:['Hoy','Biblia','Planes','Orar','Tú'],tl:['Ngayon','Biblia','Plano','Manalangin','Ikaw'],zh:['今天','圣经','计划','祷告','我'],
     hi:['आज','बाइबल','योजनाएँ','प्रार्थना','आप'],el:['Σήμερα','Βίβλος','Πλάνα','Προσευχή','Εσύ'],de:['Heute','Bibel','Pläne','Beten','Du'],ko:['오늘','성경','계획','기도','나'],
-    he:['היום','תנ״ך','תוכניות','תפילה','אני'],ar:['اليوم','الكتاب','الخطط','الصلاة','أنت']}[L]||null;
+    he:['היום','תנ״ך','תוכניות','תפילה','אני'],ar:['اليوم','الكتاب','الخطط','الصلاة','أنت'],ru:["Сегодня","Библия","Планы","Молитва","Профиль"]}[L]||null;
   T=T||['Today','Bible','Plans','Pray','You'];
   var P=location.pathname, at=/^\/bible/.test(P)?1:/^\/plan/.test(P)?2:/^\/pray/.test(P)?3:/^\/you/.test(P)?4:/^\/(go|match)/.test(P)?-1:0;
   var I=[
