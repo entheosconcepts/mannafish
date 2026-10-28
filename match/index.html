@@ -79,8 +79,11 @@ select option{background:var(--bg2);color:var(--text)}
 .say input{accent-color:var(--btn);width:15px;height:15px;margin:0}
 
 /* ── the board ── */
-main{width:100%;display:flex;justify-content:center;padding:0 12px max(10px,env(safe-area-inset-bottom));position:relative}
+main{width:100%;display:flex;flex-direction:column;align-items:center;padding:0 12px max(10px,env(safe-area-inset-bottom));position:relative}
 /* Ken, 13 Oct: all 24 on one screen -- the script sizes the cards to the screen (see layout) */
+/* Ken, 28 Oct: every fish face up at the start, so people see which fish is where, then one button starts the game */
+.peek{display:flex;flex-direction:column;align-items:center;gap:8px;margin:2px 0 10px;text-align:center}.peek[hidden]{display:none}
+.peek p{margin:0;font-size:.92rem;opacity:.85;max-width:520px}.peek .peekgo{font-size:1.08rem;padding:12px 30px}
 .board{display:grid;gap:var(--gap,6px);grid-template-columns:repeat(3,minmax(0,1fr));width:100%;max-width:1400px;justify-content:center}
 .cell{position:relative;min-width:0}
 html,body{touch-action:manipulation}   /* tapping a fish twice reads its verse: a quick double tap must not zoom the page */
@@ -251,6 +254,7 @@ html,body{overflow-x:hidden}
   <button class="pill blue" id="howOk" type="button" data-t="howok">Let's play</button>
 </div></div>
 <main>
+  <div class="peek" id="peek" hidden><p id="peekHint"></p><button class="pill blue peekgo" type="button" id="peekGo"></button></div>
   <div class="board" id="board" aria-label="Cards"></div>
   <div class="matchpop" id="matchPop" hidden aria-hidden="true"></div>
   <!-- Ken, 18 Oct: "couple the memory game and the fish game together, if someone gets a pair, they get to go fish ...
@@ -291,7 +295,7 @@ html,body{overflow-x:hidden}
   var T={
     en:{home:'Home',sub:'Go MannaFish',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',pickl:'Choose languages…',pickls:'Choose…',pickh:'Tap the languages to play with:',none:'None (one language only)',nones:'None (one language)',
       say:'Say words when flipped',spkOn:'Sound on: tap to turn it off',spkOff:'Sound off: tap to hear the game',spkOnS:'Sound on',spkOffS:'Sound off',moves:'Moves',pairs:'pairs',winsub:'Tap any card to hear its verse.',
-      again:'Play again',look:'See the cards',how:'How to play',mFb:'Tell us what you think',howok:'Let’s play',
+      again:'Play again',look:'See the cards',how:'How to play',mFb:'Tell us what you think',howok:'Let’s play',peekGo:'▶ Start the game',peekHint:'Look where each fish is. When you start, they all turn face down.',
       gfh:'Go fish!',hidden:'Hidden fish {i}',gfmult:'Catch multiplied!',gfnob:'No bonus',gfnob2:'Your catch stays ×{m}',gfnob3:'{p}’s catch stays ×{m}',gfmults:'Now ×{m} · +{b} points',matches:'Matches',caught:'Caught',gfsub:'Catch <b>{w}</b>. Every fish is hidden until you catch it: pick one!',gfskip:'Skip',gfok:'{p} caught {w}! Catch ×{m}',gfokme:'You caught {w}! Catch ×{m}',gfno:'That was {w}. {n} left',gfaway:'It got away. Catch stays ×{m}',score:'Score',catch:'Catch',fish:'fish',
       won2:'All 12 found in {n} moves · Score {s} · {f} fish caught',best:'Your best: {b}',wins:'{p} wins!',tie:'A tie!',
       fishing:'{p} is fishing…',turn:'{p}’s turn',yourturn:'Your turn!',notyours:'It’s {p}’s turn',waithost:'Waiting for {p} to start…',
@@ -313,7 +317,7 @@ html,body{overflow-x:hidden}
       down:'Card {i}, face down',matched:'matched',match:'Match',verse:'Hear the verse',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
     es:{home:'Inicio',sub:'Go MannaFish',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',pickl:'Elegir idiomas…',pickls:'Elegir…',pickh:'Toca los idiomas para jugar:',none:'Ninguno (un solo idioma)',nones:'Ninguno (un idioma)',
       say:'Decirlas al voltear',spkOn:'Sonido activado: toca para apagarlo',spkOff:'Sonido apagado: toca para oír el juego',spkOnS:'Sonido',spkOffS:'Sin sonido',moves:'Jugadas',pairs:'pares',winsub:'Toca cualquier carta para oír su versículo.',
-      again:'Jugar otra vez',look:'Ver las cartas',how:'Cómo se juega',mFb:'Cuéntanos qué piensas',howok:'¡A jugar!',
+      again:'Jugar otra vez',look:'Ver las cartas',how:'Cómo se juega',mFb:'Cuéntanos qué piensas',peekGo:'▶ Empezar el juego',peekHint:'Mira dónde está cada pez. Al empezar, todos se voltean.',howok:'¡A jugar!',
       gfh:'¡A pescar!',hidden:'Pez escondido {i}',gfmult:'¡Pesca multiplicada!',gfnob:'Sin bono',gfnob2:'Tu pesca sigue ×{m}',gfnob3:'La pesca de {p} sigue ×{m}',gfmults:'Ahora ×{m} · +{b} puntos',matches:'Parejas',caught:'Atrapados',gfsub:'Atrapa <b>{w}</b>. Cada pez está escondido hasta que lo atrapes: ¡elige uno!',gfskip:'Saltar',gfok:'¡{p} atrapó {w}! Pesca ×{m}',gfokme:'¡Atrapaste {w}! Pesca ×{m}',gfno:'Era {w}. Quedan {n}',gfaway:'Se escapó. La pesca sigue ×{m}',score:'Puntos',catch:'Pesca',fish:'peces',
       won2:'Las 12 en {n} jugadas · {s} puntos · {f} peces',best:'Tu mejor: {b}',wins:'¡Gana {p}!',tie:'¡Empate!',
       fishing:'{p} está pescando…',turn:'Turno de {p}',yourturn:'¡Tu turno!',notyours:'Es el turno de {p}',waithost:'Esperando a que {p} empiece…',
@@ -418,7 +422,7 @@ html,body{overflow-x:hidden}
     while(pool.length<PAIRS) pool=pool.concat(shuffle(others));
     var list=[]; keys.forEach(function(k,i){ list.push({k:k,l:l1}); list.push({k:k,l:l2==='mix'||l2==='pick'?pool[i]:oneLang()?l1:l2}); });
     var deck=shuffle(list);
-    G={id:rid(8),l1:l1,l2:l2,deck:deck,got:deck.map(function(){ return -1; }),open:[],moves:0,turn:0,lock:false,pond:null,over:false,
+    G={id:rid(8),l1:l1,l2:l2,deck:deck,got:deck.map(function(){ return -1; }),open:[],moves:0,turn:0,lock:false,pond:null,over:false,peek:true,
       players:players0().map(function(p){ return {id:p.id,name:p.name,score:0,mult:1,caught:0,pairs:0,gone:false}; })};
     push({t:'deal'});
   }
@@ -429,6 +433,8 @@ html,body{overflow-x:hidden}
   // a move, from this device or (as host) from another player's device
   function hostApply(a,by){
     if(!G||G.over) return; var P=G.players;
+    if(a.t==='start'){ if(G.peek){ G.peek=false; push({t:'start'}); } return; }
+    if(G.peek) return;
     if(a.t==='flip'){
       if(G.pond||G.lock) return; if(NET&&P[G.turn].id!==by) return;
       var i=+a.i; if(!(i>=0&&i<G.deck.length)||G.got[i]>=0||G.open.indexOf(i)>=0) return;
@@ -454,6 +460,7 @@ html,body{overflow-x:hidden}
     G.pond={k:k,fish:shuffle([k].concat(others)),tries:TRIES,picked:[],res:null,by:G.turn,bonus:0}; push({t:'pond'}); }
   function endPond(){ G.pond=null; if(found()>=PAIRS) G.over=true; push({t:G.over?'over':'pondend'}); }   // a match keeps the turn
 
+  $('peekGo').addEventListener('click',function(){ act({t:'start'}); });
   // a tap on this device: do it here (host) or send it to the host
   function act(a){ if(!G) return;
     if(NET){ var p=a.t==='flip'?cur():G.pond&&G.players[G.pond.by]; if(p&&p.id!==ME.id){ bubble(f('notyours',{p:pname(p)})); return; } }
@@ -465,7 +472,8 @@ html,body{overflow-x:hidden}
     if(built!==G.id){ pending=ev; buildBoard(); return; }
     // the languages follow the host's game
     if(NET&&!NET.host&&(G.l1!==l1||G.l2!==l2)){ l1=G.l1; l2=G.l2; applyUI(); }
-    cards.forEach(function(c,i){ var up=G.got[i]>=0||G.open.indexOf(i)>=0; if(up!==c.up) flipDom(c,up);
+    $('peek').hidden=!G.peek; if(G.peek){ $('peekGo').textContent=t('peekGo'); $('peekHint').textContent=t('peekHint'); }
+    cards.forEach(function(c,i){ var up=!!G.peek||G.got[i]>=0||G.open.indexOf(i)>=0; if(up!==c.up) flipDom(c,up);
       var g=G.got[i]>=0; if(g!==c.got){ c.got=g; c.el.classList.toggle('got',g); if(g&&G.players.length>1) c.el.style.setProperty('--own',PC[G.got[i]%PC.length]); else c.el.style.removeProperty('--own'); label(c); } });
     if(ev){
       if(ev.t==='flip'||ev.t==='match'||ev.t==='nomatch'){ var c=cards[ev.i]; if(c&&sayOn) say(c,true); }
@@ -473,6 +481,7 @@ html,body{overflow-x:hidden}
       if(ev.t==='nomatch'){ [ev.a,ev.b].forEach(function(j){ cards[j].el.classList.add('miss'); }); announce(t('nomatch')); }
       if(ev.t==='turn'&&G.players.length>1){ var p=cur(); turnPop(NET&&p.id===ME.id?t('yourturn'):f('turn',{p:pname(p)}),PC[G.turn%PC.length]); announce(f('turn',{p:pname(p)})); }
     }
+    if(!!G.peek!==render.pk){ render.pk=!!G.peek; layout(); }   // the board moves up when the Start button goes
     hud(); pondDraw(ev); winDraw(ev);
   }
   function buildBoard(){ var my=G.id, langs={}; G.deck.forEach(function(c){ langs[c.l]=1; }); langs[G.l1]=1; $('stat').textContent=t('loading');
