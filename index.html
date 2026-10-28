@@ -4957,33 +4957,36 @@ window.MF=(function(){
     de:['Heutiger Fang','Fischen gehen'],ko:['오늘의 물고기','낚시하기'],he:['הדג של היום','יוצאים לדוג'],ar:['صيد اليوم','هيا نصطاد']};
   var GFT={en:{cast:'Cast your line',sub:'A fish at random',or:'Or choose your fish',got:'You caught {w}!',game:'Play the Go MannaFish game',x:'Close',
       net:'153 fish in the net',jn:'“…full of great fishes, an hundred and fifty and three: and for all there were so many, yet was not the net broken.” John 21:11',
-      mine:'Your devotional fish · 24',mineSub:'Tap one to make it your fish',more:'More fish in the net · 129',moreSub:'Tap one to catch it',
+      mine:'Your devotional fish · 24',mineSub:'Tap one to make it your fish',more:'More fish in the net · 129',moreSub:'Tap one to catch it',newd:'New designs',newdSub:'Stop and Go, Repent, Rebuild …',
       bible:'Read it in the Bible',basket:'Add to my basket',share:'Share',again:'Cast again',back:'Back to the net'},
     es:{cast:'Echa la red',sub:'Un pez al azar',or:'O elige tu pez',got:'¡Pescaste {w}!',game:'Jugar Go MannaFish',x:'Cerrar',
       net:'153 peces en la red',jn:'“…llena de grandes peces, ciento cincuenta y tres: y siendo tantos, la red no se rompió.” Juan 21:11',
-      mine:'Tus peces del devocional · 24',mineSub:'Toca uno para que sea tu pez',more:'Más peces en la red · 129',moreSub:'Toca uno para pescarlo',
+      mine:'Tus peces del devocional · 24',mineSub:'Toca uno para que sea tu pez',more:'Más peces en la red · 129',moreSub:'Toca uno para pescarlo',newd:'Diseños nuevos',newdSub:'Detente y Ve, Arrepiéntete, Reconstruye …',
       bible:'Leerlo en la Biblia',basket:'Añadir a mi canasta',share:'Compartir',again:'Echa otra vez',back:'Volver a la red'}};
   // Ken, 26 Oct: "Put 153 fish in Go Fish" (John 21:11): the 24 devotional fish, and 129 more to catch -- the 128 year fish and Tend
   // (John 21:17), from fish/net.json (tools/fish/net.py). A devotional fish caught becomes your fish; another one is shown big, with its
   // verse, to read in the Bible, put in the basket or share.
-  var NET=null;
-  function netLoad(){ return NET?Promise.resolve(NET):fetch('/fish/net.json').then(function(r){ return r.ok?r.json():[]; }).then(function(j){ NET=j; return j; },function(){ return []; }); }
+  // Ken, 28 Oct: new designs outside the 153 (Stop and Go, Repent, Rebuild ...), from fish/designs.json (tools/fish/net.py)
+  var NET=null, DES=[];
+  function netLoad(){ return NET?Promise.resolve(NET):Promise.all([fetch('/fish/net.json').then(function(r){ return r.ok?r.json():[]; }),fetch('/fish/designs.json').then(function(r){ return r.ok?r.json():[]; }).catch(function(){ return []; })])
+    .then(function(a){ NET=a[0]; DES=a[1]; return NET; },function(){ return []; }); }
+  function netAll(){ return (NET||[]).concat(DES); }
   function gfCatch(d,x){ var T=GFT[MF.lang]||GFT.en, c=d.querySelector('.gfcatch');
-    c.innerHTML='<div class="gfbig"><img src="/fish/'+esc(x.id.slice(2))+'.svg" alt=""></div><h3>'+esc(x.word)+'</h3><p class="gfv">“'+esc(x.verse)+'” <b>'+esc(x.ref)+'</b></p>'
+    c.innerHTML='<div class="gfbig"><img src="/fish/'+esc(x.id.slice(2))+'.svg" alt=""></div><h3>'+esc(x.word)+'</h3><p class="gfv">“'+esc(x.verse)+'” <b>'+esc(x.ref+(x.ver?' ('+x.ver+')':''))+'</b></p>'
       +'<div class="gfrow"><a href="/bible/?r='+encodeURIComponent(x.ref)+'">📖 '+esc(T.bible)+'</a><button type="button" data-gf="bk">🧺 '+esc(T.basket)+'</button><button type="button" data-gf="sh">↗ '+esc(T.share)+'</button></div>'
       +'<div class="gfrow"><button type="button" data-gf="cast">🎣 '+esc(T.again)+'</button><button type="button" data-gf="back">‹ '+esc(T.back)+'</button></div>';
     c.hidden=false; c.dataset.id=x.id; d.querySelector('.in').scrollTop=0; }
   function goFish(){ var l=MF.lang, T=GFT[l]||GFT.en, d=document.getElementById('gfSheet'), fl=/^(en|es|tl|zh|hi|el|de|ko|he|ar)$/.test(l)?l:'en';
     if(!d){ d=document.createElement('div'); d.id='gfSheet'; d.className='gfsheet'; d.setAttribute('role','dialog'); d.setAttribute('aria-modal','true'); document.body.appendChild(d);
       d.addEventListener('click',function(e){ if(e.target===d||e.target.closest('[data-gf=x]')){ d.hidden=true; return; }
-        var c=d.querySelector('.gfcatch'), extra=(NET||[]).filter(function(x){ return x.id===c.dataset.id; })[0];
+        var c=d.querySelector('.gfcatch'), extra=netAll().filter(function(x){ return x.id===c.dataset.id; })[0];
         if(e.target.closest('[data-gf=back]')){ c.hidden=true; return; }
         if(e.target.closest('[data-gf=bk]')&&extra){ if(window.MFbasket) MFbasket.add({id:extra.id,word:extra.word,ref:extra.ref}); return; }
         if(e.target.closest('[data-gf=sh]')&&extra){ var t='“'+extra.verse+'” '+extra.ref, u=location.origin+'/bible/?r='+encodeURIComponent(extra.ref);
           if(navigator.share) navigator.share({title:'MannaFish · '+extra.word,text:t,url:u}).catch(function(){}); else if(navigator.clipboard) navigator.clipboard.writeText(t+' '+u); return; }
-        var x=e.target.closest('[data-gx]'); if(x){ var f=(NET||[]).filter(function(y){ return y.id===x.dataset.gx; })[0]; if(f) gfCatch(d,f); return; }
+        var x=e.target.closest('[data-gx]'); if(x){ var f=netAll().filter(function(y){ return y.id===x.dataset.gx; })[0]; if(f) gfCatch(d,f); return; }
         var b=e.target.closest('[data-gk]'), r=e.target.closest('[data-gf=cast]'); if(!b&&!r) return; var nk;
-        if(r){ var all=ORDER.filter(function(k){ return DATA[k]&&k!==cur; }).map(function(k){ return {k:k}; }).concat(NET||[]), got=all[Math.floor(Math.random()*all.length)];
+        if(r){ var all=ORDER.filter(function(k){ return DATA[k]&&k!==cur; }).map(function(k){ return {k:k}; }).concat(netAll()), got=all[Math.floor(Math.random()*all.length)];
           if(got.id){ gfCatch(d,got); return; } nk=got.k; } else nk=b.dataset.gk;
         if(!DATA[nk]) return;
         d.hidden=true; planSet(nk); if(cmpShown()) $('cmpClear').click(); if(nk!==cur) pick(nk,false); ftUI();
@@ -4994,9 +4997,11 @@ window.MF=(function(){
       +'<div class="gfcatch" hidden></div>'
       +'<h4>'+esc(T.mine)+' <small>'+esc(T.mineSub)+'</small></h4><div class="gfgrid">'
       +ORDER.filter(function(k){ return DATA[k]; }).map(function(k){ return '<button type="button" data-gk="'+k+'" aria-pressed="'+(k===cur)+'"><img loading="lazy" src="/fish/'+fl+'/'+k+'.svg" alt=""><span>'+esc(titleIn(l,k))+'</span></button>'; }).join('')
-      +'</div><h4>'+esc(T.more)+' <small>'+esc(T.moreSub)+'</small></h4><div class="gfgrid" id="gfMore"></div><a class="gfgame" href="/go/">🃏 '+esc(T.game)+' &rsaquo;</a></div>';
+      +'</div><h4>'+esc(T.more)+' <small>'+esc(T.moreSub)+'</small></h4><div class="gfgrid" id="gfMore"></div><div id="gfNewW" hidden><h4>'+esc(T.newd||GFT.en.newd)+' <small>'+esc(T.newdSub||GFT.en.newdSub)+'</small></h4><div class="gfgrid" id="gfNew"></div></div><a class="gfgame" href="/go/">🃏 '+esc(T.game)+' &rsaquo;</a></div>';
     d.hidden=false;
-    netLoad().then(function(L){ var m=document.getElementById('gfMore'); if(m) m.innerHTML=L.map(function(x){ return '<button type="button" data-gx="'+esc(x.id)+'"><img loading="lazy" src="/fish/'+esc(x.id.slice(2))+'.svg" alt=""><span>'+esc(x.word)+'</span></button>'; }).join(''); }); }
+    netLoad().then(function(L){ var cell=function(x){ return '<button type="button" data-gx="'+esc(x.id)+'"><img loading="lazy" src="/fish/'+esc(x.id.slice(2))+'.svg" alt=""><span>'+esc(x.word)+'</span></button>'; };
+      var m=document.getElementById('gfMore'); if(m) m.innerHTML=L.map(cell).join('');
+      var n=document.getElementById('gfNew'); if(n&&DES.length){ n.innerHTML=DES.map(cell).join(''); document.getElementById('gfNewW').hidden=false; } }); }
   function spkLangUI(){ var e=$('spkLang'); if(e) e.innerHTML=fishLang(MF.lang); }
   spkLangUI(); MF.onChange(spkLangUI);
   function ftUI(){ var two=cmpShown(), mine=false; try{ mine=cur===planFish(); }catch(e){} $('ftOne').setAttribute('aria-pressed',String(!two&&mine)); $('ftTwo').setAttribute('aria-pressed','false'); ftPlace(); }

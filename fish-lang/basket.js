@@ -60,7 +60,7 @@
   var SV={}, UQ=0;
   function src(x){ var id=String(x.id||''), k=id.slice(2);
     if(id.indexOf('M:')===0) return '/fish/'+(x.l||'en')+'/'+k+'.svg';
-    if(/^[DY]:[WD]\d/.test(id)) return '/fish/'+k+'.svg';
+    if(/^[DYX]:[WDX]\d/.test(id)) return '/fish/'+k+'.svg';
     return x.svg||''; }
   // two fish on one page must not share the names inside them (the curve each verse line runs along)
   function uniq(t){ var p='bk'+(++UQ)+'_'; return t.replace(/\bid="([^"]+)"/g,'id="'+p+'$1"').replace(/href="#([^"]+)"/g,'href="#'+p+'$1"').replace(/url\(#([^)]+)\)/g,'url(#'+p+'$1)'); }

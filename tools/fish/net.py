@@ -12,3 +12,14 @@ net.append({'id': 'D:D648', 'word': t['word'], 'ref': t['ref'], 'verse': t.get('
 for x in net: assert os.path.exists(os.path.join(ROOT, 'fish', x['id'][2:] + '.svg')), x
 json.dump(net, open(os.path.join(ROOT, 'fish', 'net.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
 print(len(net), 'fish in the net, plus the 24 =', len(net) + 24)
+
+# New designs (Ken, 28 Oct: "add Stop ... and Go ... make sure Repent, Return, Rebuild are among those fish designs ... whenever
+# there's a word that's opposite I would like to add that"): fish outside the 153, drawn by tools/fish-format (extra-lines.json:
+# node build.js extra-lines.json), and plan fish worth having on their own (Rebuild). Writes fish/designs.json, same shape.
+extra = json.load(open(os.path.join(ROOT, 'tools', 'fish-format', 'extra-lines.json')))
+des = [{'id': f['id'], 'word': f['word'], 'ref': f['ref'], 'verse': f['verse'], **({'ver': f['ver']} if f.get('ver') else {}), **({'pair': f['pair']} if f.get('pair') else {})} for f in extra]
+for k in ['D271']:   # Rebuild (Amos 9:11)
+    t = daily[k]; des.append({'id': 'D:' + k, 'word': t['word'], 'ref': t['ref'], 'verse': t.get('verse') or (t.get('top', '') + ' ' + t.get('bot', '')).strip()})
+for x in des: assert os.path.exists(os.path.join(ROOT, 'fish', x['id'][2:] + '.svg')), x
+json.dump(des, open(os.path.join(ROOT, 'fish', 'designs.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
+print(len(des), 'new designs')

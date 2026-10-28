@@ -1,0 +1,36 @@
+[
+ {
+  "id": "X:X001",
+  "k": "X001",
+  "word": "Stop",
+  "top": "Sober up as you ought, and stop sinning;",
+  "bot": "for some of you are ignorant of God...",
+  "ref": "1 Corinthians 15:34",
+  "refShort": "1 Cor. 15:34",
+  "ver": "BSB",
+  "pair": "Go",
+  "verse": "Sober up as you ought, and stop sinning; for some of you are ignorant of God. I say this to your shame.",
+  "tag": " (BSB)"
+ },
+ {
+  "id": "X:X002",
+  "k": "X002",
+  "word": "Go",
+  "top": "And Jesus said unto the centurion, Go thy way;",
+  "bot": "and as thou hast believed, so be it done unto thee.",
+  "ref": "Matthew 8:13",
+  "refShort": "Matt. 8:13",
+  "pair": "Stop",
+  "verse": "And Jesus said unto the centurion, Go thy way; and as thou hast believed, so be it done unto thee. And his servant was healed in the selfsame hour."
+ },
+ {
+  "id": "X:X003",
+  "k": "X003",
+  "word": "Repent",
+  "top": "Repent ye therefore, and be converted,",
+  "bot": "that your sins may be blotted out...",
+  "ref": "Acts 3:19",
+  "refShort": "Acts 3:19",
+  "verse": "Repent ye therefore, and be converted, that your sins may be blotted out, when the times of refreshing shall come from the presence of the Lord;"
+ }
+]

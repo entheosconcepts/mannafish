@@ -70,6 +70,23 @@ Ken, 25 Oct: launch the free devotional first (digital only), decals "coming soo
     Print Peppermint (16 pt card).
   Waiting on Ken: StickerApp's answer; how many fish make a Jar (10 or 20?); the Jar refill size (12?); whether "Door"
   replaces "MannaFish Station" in Fill the Net.
+- **"You're invited!" The fish is the gift, the back is the invitation** (Ken, 28 Oct, after YouVersion's "Ken, you're
+  invited" card; a vision for years). Yadah Collaborative gives MannaFish as free gifts that invite people to gather (on
+  Zoom, in person, or both) for connection, community and spiritual growth. The plan so far:
+  - The card: Scripture alone on the front; the back says "You're invited!" with the QR code (the Jar's or Door's own code),
+    and a sponsor's thank-you if there is one.
+  - The QR code opens an invitation page: today's fish and verse, "You're invited" to the next gathering (Zoom link and/or a
+    place, day and time), a one-tap "I'll be there" (RSVP), and the free devotional. Gatherings are kept on the server (an
+    admin page for Ken to add them), and the counts of who was invited and who came feed the Jars and Doors.
+  Waiting on Ken: build the invitation page and gatherings now, or with Jars and Doors?
+- **Opposite words** (Ken, 28 Oct: "whenever there's an opportunity to do a word that's opposite I would like to add that").
+  Stop and Go are done (New designs on Go Fish), with Repent and Rebuild. Opposites still missing, with a KJV verse each,
+  for Ken to approve before they are drawn (tools/fish-format/extra-lines.json, then node build.js extra-lines.json and
+  python3 tools/fish/net.py):
+  Reap (Galatians 6:9; Sow exists), Die (Philippians 1:21; Live), Begin (Philippians 1:6; Finish), Awake (Ephesians 5:14;
+  Sleep), Lose (Matthew 16:25; Find), Dance (Ecclesiastes 3:4; Mourn), Shut (Matthew 6:6; Open), Work (John 9:4; Rest),
+  Answer (Jeremiah 33:3; Ask), Weak (2 Corinthians 12:10; Strong), Fall (Micah 7:8; Rise), Darkness (John 1:5; Light),
+  First and Last (Matthew 20:16).
 - **Action words for every fish** (Ken, 27 Oct). Today the 24 main fish are all action words; the year fish are 46 of 128
   and the Bible-in-a-year fish 267 of 624. All can become action words and keep the daily readings: most switch to a verb in
   their own verse, about 61 need another verse from the same day's reading. Waiting on Ken: he may update the word list
