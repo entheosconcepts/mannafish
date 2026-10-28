@@ -26,7 +26,9 @@ who are not as easy to get permission from, I will ask now, and keep asking unti
 | 8 | **Holman Bible Publishers** (Lifeway) | CSB | Harder: written request | Holman Bible Publishers, One LifeWay Plaza, Nashville, TN 37234 (or their permissions page). **Letter C**. |
 
 **Sponsors (Ken asked, 27 Oct).** Keep sponsor names and logos away from any licensed Bible text (a sponsor page on its
-own is fine). The printed fish use the public-domain KJV, so they are unaffected. The letters mention sponsors up front.
+own is fine). The English printed fish use the public-domain KJV, so they are unaffected. Three language fish do not: Spanish (RVR1960),
+Tagalog (Ang Biblia 2001) and Greek (Filos Pergamos). Either ask those Bible societies (Letter C) or redraw those fish in the
+public-domain Bibles the reader already uses (Reina-Valera 1909, Ang Biblia 1905, Vamvas). The letters mention sponsors up front.
 
 **One honest point.** Most free licenses are for *non-commercial* use. MannaFish is free, with no ads, no fees and nothing to
 buy, so say that plainly. Sponsors and donations are gifts to the ministry, not sales of Scripture. If a publisher asks, the
@@ -44,6 +46,11 @@ printed fish and decals are also given away free.
 | Biblica (NIV) | | | |
 | Lockman (NASB, AMP) | | | |
 | Holman (CSB) | | | |
+| Crossway (ESV printing) | | | |
+| ABS / United Bible Societies (RVR1960) | | | |
+| Philippine Bible Society (Ang Biblia 2001) | | | |
+| Pergamos (Greek FPB) | | | |
+| Korean Bible Society (개역 1961) | | | |
 
 If there's no answer, ask again kindly every 3 to 4 weeks. Refer to the first request by date. If an answer is "no", ask what *would* be
 allowed: fewer verses, the devotional only, an audio-only option, or a later review.
@@ -102,37 +109,61 @@ MannaFish · Entheos Concepts · manna-fish.com
 
 ---
 
-## Letter C: publishers (HarperCollins / Biblica / Lockman / Holman)
+## Letter C: publishers and Bible societies (on screen, read aloud, AND printed on free fish cards)
 
-**Subject:** Permission request: [NKJV / NIV / NASB and Amplified / CSB] in a free, non-commercial Bible app (MannaFish)
+Ken, 28 Oct: "yes, print as well." One letter for every publisher; fill in [version].
+
+| Version | Send to | How |
+|---|---|---|
+| NKJV, and NIV in the US | HarperCollins Christian Publishing | Online form: harpercollinschristian.com/permissions (6 to 8 weeks) |
+| NIV (worldwide) | Biblica | biblica.com/permissions |
+| ESV (printing; the screen is covered by the free key) | Crossway | Online form: crossway.org/permissions |
+| NLT | Tyndale House | Permissions page on tyndale.com |
+| NASB, Amplified | The Lockman Foundation | lockman.org, then "Permission to Quote", then the Request Form |
+| CSB | Holman Bible Publishers (Lifeway) | One LifeWay Plaza, Nashville, TN 37234, or their permissions page |
+| Spanish RVR1960 (on the Spanish fish now) | American Bible Society for United Bible Societies | bibles.com, then Rights and Permissions |
+| Tagalog Ang Biblia 2001 (on the Tagalog fish now) | Philippine Bible Society | translations@bible.org.ph |
+| Greek Filos Pergamos (on the Greek fish now) | Pergamos Publications | pergamos@otenet.gr (from the copyright line) |
+| Korean 개역 1961 (on the Korean fish now; to confirm) | Korean Bible Society | Their website (bskorea.or.kr) |
+
+**Subject:** Permission request: [version] in a free Bible app and on free printed Scripture cards (MannaFish)
 
 Dear Permissions Team,
 
-I am writing to request permission to use the **[version]** in MannaFish (manna-fish.com), a free Bible devotional and reading
-app from Entheos Concepts, 4563 Technology Dr, Unit 6, Wilmington, NC 28405.
+I am writing to request permission to use the [version] in MannaFish (manna-fish.com), a free Bible ministry of Entheos
+Concepts, 4563 Technology Dr, Unit 6, Wilmington, NC 28405.
 
-**What MannaFish is:** each day it gives people one word from God's Word with a verse, a short guided devotional (pray, hear,
-do), a Bible-in-a-year reading plan, and a Bible reader where people can highlight and keep notes. It is offered in ten languages.
+What MannaFish is: each day it gives people one word from God's Word with one verse, shown on a simple fish design. With it
+comes a short guided devotional (pray, hear, do), a Bible-in-a-year reading plan, and a Bible reader where people can
+highlight and keep notes. It is offered in ten languages.
 
-**How the text would be used:**
-- Displayed on screen when a reader chooses **[version]**, one passage or chapter at a time, never the whole Bible at once
-- Read aloud by the app's voice for people who prefer to listen
-- Always with your copyright notice, exactly as you specify
-- Not printed, not sold, not sublicensed, and not used to train any AI model
+We are asking for three uses:
 
-**It is free:** no ads, no subscriptions, no fees, and nothing for sale. MannaFish is supported by donations. Some donors
-sponsor the printing of free decals that are given away. Those use the public-domain King James Version, and no sponsor
-names or logos would appear alongside the **[version]**.
+1. On screen: the [version] shown when a reader chooses it, one passage or chapter at a time, never the whole Bible at once.
+2. Read aloud: by the app's voice, for people who prefer to listen.
+3. Printed: one verse on a small free card (4.5" x 2.25") with a clear fish decal. The decal shows one word, one verse and
+   its reference. The back carries the full copyright notice and a QR code to the app. The cards are given away free,
+   never sold, and are printed in small runs of about 100.
 
-We would be glad to follow any limits you set, use a feed you provide (for example through API.Bible), and send screenshots
-before launch. If full use isn't possible, we would welcome whatever you can allow, such as the daily verse and devotional
-only.
+In every use:
+- your copyright notice appears exactly as you specify
+- nothing is sold, and the text is never sublicensed or used to train any AI model
+- the verse wording is never changed
 
-Thank you for considering this. Many of our readers know and love the **[version]**, and we would be honoured to offer it.
+It is free: no ads, no subscriptions, no fees, and nothing for sale. MannaFish is supported by donations. Some donors sponsor
+the printing of the free cards. A sponsor may be thanked on the back of a card, never on the front with the Scripture, and no
+sponsor names or logos appear with the [version] on screen.
+
+We would be glad to follow any limits you set, use a feed you provide (for example through API.Bible), and send samples and
+screenshots before anything is printed or launched. If full use isn't possible, we would welcome whatever you can allow, such
+as on-screen use only, or a set number of printed verses.
+
+Thank you for considering this. Many of our readers know and love the [version], and we would be honoured to offer it.
 
 Sincerely,
 Ken
 MannaFish · Entheos Concepts
+4563 Technology Dr, Unit 6, Wilmington, NC 28405
 manna-fish.com
 
 ---
