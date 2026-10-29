@@ -993,6 +993,7 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 [data-mode="light"] .hlmenu button{background:#fff;color:#111;border-color:#c9ccd2}[data-mode="light"] .hlmenu button.hlx{color:#b02a2a;border-color:#e3a0a0}
 .rhlmore{min-width:40px;letter-spacing:.08em}
 .pthlmenu{margin:-4px 0 16px}::highlight(mfh-pen){background-color:rgba(255,255,255,.28)}
+.chapter{touch-action:pan-y}
 .chapter.pen{touch-action:none;-webkit-user-select:none;user-select:none;cursor:crosshair}
 .rpen{border:1px solid rgba(255,255,255,.35);background:none;color:inherit;border-radius:999px;padding:5px 12px;font:700 .8rem 'Archivo',sans-serif;cursor:pointer;white-space:nowrap}
 .rpen[aria-pressed=true]{background:#f5d76e;color:#111;border-color:#f5d76e}
@@ -2937,7 +2938,7 @@ window.MF=(function(){
   function wpPhraseKey(){ if(!WP||!WP.t||!WP.X.hl) return null; var c=WP.X.hl; return c.book+' '+c.ch+':'+WP.vn+'#'+WP.t.s+'-'+WP.t.e+'|'+c.ver; }
   function wpExtras(){ var X2=wpX(), k=wpPhraseKey(), on=!!(k&&hls()[k]);
     $('wpHlw').hidden=!WP.X.hl||!!WP.o; $('wpHlw').textContent='🖍 '+(on?X2[1]:X2[0]);
-    var col=hlColor(); $('wpC').innerHTML=Object.keys(HLC).map(function(c){ return '<button type="button" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('');
+    var ck=wpCover(), col=ck&&hls()[ck]?(hls()[ck].c||'gold'):hlColor(); $('wpC').innerHTML=Object.keys(HLC).map(function(c){ return '<button type="button" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('');
     $('wpInL').textContent=X2[2];
     $('wpIn').innerHTML='<option value="">'+X2[3]+'</option>'+(WP.o?'':'<option value="orig">'+esc(X2[4])+'</option>')
       +Object.keys(WPLN).filter(function(l){ return l!==WP.L; }).map(function(l){ return '<option value="'+l+'">'+esc(WPLN[l])+'</option>'; }).join('');
@@ -2984,8 +2985,16 @@ window.MF=(function(){
   // just this word
   $('wpHlw').addEventListener('click',function(){ if(!WP||!WP.X.hl) return; var root=WP.root, vn=WP.vn, t=WP.t, c=WP.X.hl;
     wselClear(); var sp=root.querySelector('span[data-v="'+vn+'"]'); hlPhrase(sp,c,t.s,t.e); wpExtras(); });
-  $('wpC').addEventListener('click',function(e){ var b=e.target.closest('[data-c]'); if(!b) return; try{ localStorage.setItem('mf-hl-color',b.dataset.c); }catch(er){}
-    var k=wpPhraseKey(), h=hls(); if(k&&h[k]){ h[k].c=b.dataset.c; saveHls(h); hlPaint(); } wpExtras(); });
+  // Ken, 29 Oct: change a highlight's colour by tapping the word and a colour, without taking the highlight off first
+  function wpCover(){ var c=WP&&WP.X.hl, t=WP&&WP.t; if(!c||!t) return null; var h=hls(), hit=null;
+    Object.keys(h).forEach(function(k){ var x=h[k], m=x.kind==='phrase'&&x.ver===c.ver&&PHR.exec(x.ref||''); if(m&&m[1]===c.book&&m[2]===String(c.ch)&&m[3]===String(vOf(WP.v))&&+m[4]<t.e&&+m[5]>t.s) hit=hit||k; });
+    if(!hit&&h[hlKey(c,WP.vn)]) hit=hlKey(c,WP.vn); return hit; }
+  $('wpC').addEventListener('click',function(e){ var b=e.target.closest('[data-c]'); if(!b||!WP) return; var col=b.dataset.c; try{ localStorage.setItem('mf-hl-color',col); }catch(er){}
+    var c=WP.X.hl; if(!c){ wpExtras(); return; } var k=wpCover(), h=hls();
+    if(k){ h[k].c=col; saveHls(h); if(window.MFcloudHl&&MFcloudHl.on()) MFcloudHl.add(h[k].ref,h[k].ver,col);
+      if(h[k].kind==='verse'){ WP.v.style.setProperty('--hl',HLC[col]); } hlPaint(); }
+    else { wselClear(); var sp=WP.root.querySelector('span[data-v="'+WP.vn+'"]'); hlPhrase(sp,c,WP.t.s,WP.t.e,col); }
+    wpExtras(); });
   // Ken, 15 Oct: "see that word in Hebrew or Greek or any other language from a little drop down within that box"
   var WIC={};
   $('wpIn').addEventListener('change',function(){ if(!WP) return; var to=this.value, me=WP, X2=wpX(), out=$('wpInR'); out.textContent=to?'…':''; if(!to) return;
@@ -4676,7 +4685,7 @@ window.MF=(function(){
     bar.onclick=function(e){ var c=e.target.closest('[data-pc]'); if(c){ try{ localStorage.setItem('mf-hl-color',c.dataset.pc); }catch(er){} penBar(bar,off); return; } if(e.target.closest('.pbd')) off(); }; }
   function caretAt(x,y){ var r=null; if(document.caretRangeFromPoint) r=document.caretRangeFromPoint(x,y); else if(document.caretPositionFromPoint){ var q=document.caretPositionFromPoint(x,y); if(q){ r=document.createRange(); r.setStart(q.offsetNode,q.offset); } } return r; }
   // root: where the words are; ctxFn: their book, chapter and version; sel: what one verse is
-  function penBind(root,ctxFn,sel){ var P=null;
+  function penBind(root,ctxFn,sel,free){ var P=null;
     function range(){ var rg=document.createRange(), a=P.a, b=P.b; rg.setStart(a.startContainer,a.startOffset); rg.setEnd(a.startContainer,a.startOffset);
       try{ if(rg.comparePoint(b.startContainer,b.startOffset)>=0) rg.setEnd(b.startContainer,b.startOffset); else { rg.setStart(b.startContainer,b.startOffset); rg.setEnd(a.startContainer,a.startOffset); } }catch(er){ return null; } return rg; }
     root.addEventListener('pointerdown',function(e){ if(!root.classList.contains('pen')) return; var r=caretAt(e.clientX,e.clientY); if(!r||!root.contains(r.startContainer)) return;
@@ -4689,13 +4698,26 @@ window.MF=(function(){
         var h=hls(), hit=null; Object.keys(h).forEach(function(k){ var y=h[k], m=PHR.exec(y.ref||''); if(y.kind==='phrase'&&y.ver===c.ver&&m&&m[1]===c.book&&m[2]===String(c.ch)&&m[3]===String(vOf(sp))&&+m[4]<=off&&+m[5]>=off) hit=[k,y]; });
         if(hit){ hlToggle(hit[0],hit[1]); hlPaint(); } else hlPhrase(sp,c,w[0],w[1]); return; }
       versesIn(rg,root,sel).forEach(function(z){ hlPhrase(z[0],c,z[1],z[2]); }); hlPaint(); });
-    root.addEventListener('pointercancel',function(){ P=null; hlPaint(); }); }
+    root.addEventListener('pointercancel',function(){ P=null; hlPaint(); });
+    // Ken, 29 Oct: "drag my finger under the word ... the way that I drag my finger, it would be highlighted" -- no pen needed: a finger
+    // that starts on a word and moves sideways highlights as it goes (up and down still scrolls; holding still selects, to hear it)
+    if(free){ var F=null;
+      root.addEventListener('touchstart',function(e){ F=null; if(root.classList.contains('pen')||e.touches.length!==1||!e.target.closest(sel)) return; var t=e.touches[0], r=caretAt(t.clientX,t.clientY);
+        if(r&&root.contains(r.startContainer)) F={x:t.clientX,y:t.clientY,r:r,on:false}; },{passive:true});
+      root.addEventListener('touchmove',function(e){ if(!F) return; var t=e.touches[0], dx=t.clientX-F.x, dy=t.clientY-F.y;
+        if(!F.on){ if(Math.abs(dy)>10&&Math.abs(dy)>=Math.abs(dx)){ F=null; return; }
+          if(!(Math.abs(dx)>12&&Math.abs(dx)>Math.abs(dy)*1.3)) return; F.on=true; P={a:F.r,b:F.r,moved:true,x:F.x,y:F.y}; if(window.MFcloseWord) MFcloseWord();
+          var s0=window.getSelection&&getSelection(); if(s0) s0.removeAllRanges(); }
+        e.preventDefault(); var r=caretAt(t.clientX,t.clientY); if(r&&root.contains(r.startContainer)){ P.b=r; var rg=range(); if(rg) hlPaint([rg]); } },{passive:false});
+      root.addEventListener('touchend',function(){ if(!F) return; var on=F.on; F=null; if(!on) return; var c=ctxFn(), rg=P&&range(); P=null; root._dragAt=Date.now();
+        if(c&&rg) versesIn(rg,root,sel).forEach(function(z){ hlPhrase(z[0],c,z[1],z[2]); }); hlPaint(); });
+      root.addEventListener('touchcancel',function(){ if(F&&F.on){ P=null; hlPaint(); } F=null; }); } }
   // the reader
   function rPenOn(on){ $('rChapter').classList.toggle('pen',on); $('rPen').setAttribute('aria-pressed',String(on)); $('rPen').textContent=on?penL()[2]:penL()[0];
     $('rPenBar').hidden=!on; if(on){ if(hlHidden()) hlSetHidden(false); if(window.MFcloseWord) MFcloseWord(); penBar($('rPenBar'),function(){ rPenOn(false); }); } }
   $('rPen').addEventListener('click',function(){ rPenOn(!$('rChapter').classList.contains('pen')); });
   rPenOn(false); MF.onChange(function(){ rPenOn($('rChapter').classList.contains('pen')); });
-  penBind($('rChapter'),stageCtx,'span[data-v]');
+  penBind($('rChapter'),stageCtx,'span[data-v]',true);
   // the devotional's verse
   window.MFpenBind=penBind; window.MFpenBar=penBar; window.MFpenL=penL;
   function verseTap(e,root,c){ var sp=e.target.closest('span[data-v]'); if(!sp||!c||!root.contains(sp)) return false;
@@ -4704,7 +4726,7 @@ window.MF=(function(){
       x.classList.toggle('mk',on); if(on) x.style.setProperty('--hl',HLC[col]); return on; };
     if(window.MFwordTap&&MFwordTap(e,root,tog)) return true;   /* Ken, 11 Oct: a tap picks the one word; highlighting the verse is a button there */
     tog(sp); return true; }
-  $('rChapter').addEventListener('click',function(e){ if(this.classList.contains('pen')) return; verseTap(e,this,stageCtx()); });
+  $('rChapter').addEventListener('click',function(e){ if(this.classList.contains('pen')||Date.now()-(this._dragAt||0)<500) return; verseTap(e,this,stageCtx()); });
   document.addEventListener('click',function(e){ var fr=e.target.closest&&e.target.closest('.fr'); if(!fr||!fr._ctx||!e.target.closest('.chapter span[data-v]')) return;
     var c=fr._ctx; verseTap(e,fr.querySelector('.chapter'),hlCtx(c.k,c.i,c.l,c.orig)); },true);
   function verLabel(v){ if(v==='orig') return 'Hebrew/Greek'; if(v.indexOf('en:')===0){ var x=VERS.filter(function(z){ return 'en:'+z.k===v; })[0]; return x?x.s:'KJV'; } return (typeof cmpName==='function'?cmpName(v):v); }
