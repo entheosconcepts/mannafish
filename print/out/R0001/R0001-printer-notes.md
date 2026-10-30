@@ -1,4 +1,4 @@
-# Yadah invitation · Live (first batch, mock-up) (run R0001)
+# Yadah invitation · Gather (first batch, mock-up) (run R0001)
 
 Card: 4.5 x 2.75 in (114.3 x 69.85 mm), custom size (not 2.8 in). Every file includes a 1/8 in (3.175 mm) bleed on each side, so the fish-side files are 120.65 x 76.2 mm and the back is 76.2 x 120.65 mm. All files line up with each other at the same size.
 

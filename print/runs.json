@@ -2,11 +2,11 @@
  "runs": [
   {
    "id": "R0001",
-   "title": "Yadah invitation · Live (first batch, mock-up)",
+   "title": "Yadah invitation · Gather (first batch, mock-up)",
    "status": "draft",
    "qty": 100,
    "fish": {
-    "word": "LIVE",
+    "word": "GATHER",
     "lang": "en"
    },
    "sponsor": "Shattered into Beautiful Podcast",
@@ -24,15 +24,15 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-10-30T16:35:08.130Z"
+   "made": "2026-10-30T16:39:09.607Z"
   },
   {
    "id": "R0002",
-   "title": "Live · word study keepsake (mock-up, gift through a podcast)",
+   "title": "Gather · word study keepsake (mock-up, gift through a podcast)",
    "status": "draft",
    "qty": 100,
    "fish": {
-    "word": "LIVE",
+    "word": "GATHER",
     "lang": "en"
    },
    "sponsor": "Anonymous giver",
@@ -48,7 +48,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-10-30T16:35:16.010Z"
+   "made": "2026-10-30T16:39:16.520Z"
   }
  ]
 }
