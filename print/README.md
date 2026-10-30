@@ -12,19 +12,25 @@ Every file has a 1/8 in bleed on each side, and all the fish-side files line up 
 |---|---|---|
 | 1 | The decal: clear vinyl, white ink only, the letters left clear | `-1-decal-white-ink` (.png 1200 dpi, .pdf) |
 | 2 | The front of the backing paper, under the decal: black, the same fish in white | `-2-backing-front` (.pdf vector, .png 1200 dpi) |
-| 3 | Cut lines: kiss cut 1/8 in outside the fish (vinyl only, blue), card edge (pink) | `-3-cut-lines` (.svg, .pdf) |
+| 3 | Cut lines as spot colours: **CutContour** (kiss cut 1/8 in outside the fish, vinyl only, magenta) and **ThroughCut** (card edge, cyan) | `-3-cut-lines` (.pdf, .svg) |
 | 4 | The back of the backing paper: the invitation, read with the card turned on its side | `-4-back` (.pdf, .png 600 dpi) |
 
 The proof (`-proof.png` / `.pdf`) shows all four, how they look before and after peeling, where every QR code goes, and
-what is still missing. `-printer-notes.md` is the note to send with the files.
+what is still missing. `-printer-notes.md` is the note to send with the files, and `-print-files.zip` holds everything to attach.
 
 ## A new run
 
 1. Copy `print/runs/R0001.json` to the next number and change it:
    - `fish`: the word (`LIVE`, `LOVE`, ...) and the language (`en`, `es`, ...). Any fish in `fish/` works.
    - `qty`, `sponsor` (name, logo, `anonymous: true` to leave the name off), `status`.
-   - `back`: the heading, the logo at the top, the words, and the three QR codes: `qr` (the main one), `left`, and `right`.
-     Each takes a web address in `to`. Or set `"template": "image"` with `"image": "assets/<file>.png"` to use your own finished artwork.
+   - `for`: who it is a gift through (name and logo), when the sponsor gives anonymously. The card then says
+     "A gift to you through" that name, not "Sponsored by".
+   - `back`, one of three:
+     - `"template": "invite"`: the invitation card (heading, the logo at the top, the words, a big QR code `qr`).
+     - `"template": "study"`: the word study of the fish (Greek, Hebrew, meanings, ten verses to look up), like the old word-study card.
+     - `"template": "image"` with `"image": "assets/<file>.png"`: your own finished artwork, as it is.
+     The invite and study backs end with the same strip: the `left` and `right` QR codes (each with a `label` and a web address in `to`)
+     and who it is from in the middle.
 2. Put logos and artwork in `print/assets/` (the bigger the better: 1000 px wide or more).
 3. Run `node tools/print/make.mjs R0002` (once, before the first run: `cd tools/print && npm install`).
 4. Open `print/out/R0002/R0002-proof.png`. When it's right, set `"status": "approved"`, run it again, and send the files.

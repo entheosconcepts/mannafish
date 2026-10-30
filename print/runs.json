@@ -17,14 +17,38 @@
     "right": "R0001m"
    },
    "warn": [
-    "The top logo is a stand-in (assets/yadah-logo-DRAFT.png). Upload the original logo before printing.",
     "The sponsor logo is a stand-in (assets/shattered-into-beautiful-DRAFT.png). Upload the original logo before printing.",
+    "The top logo is a stand-in (assets/yadah-logo-DRAFT.png). Upload the original logo before printing.",
     "QR R0001 (invitation) has no web address yet: it opens manna-fish.com until one is set.",
     "QR R0001s (Shattered into Beautiful Podcast) has no web address yet: it opens manna-fish.com until one is set.",
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-10-30T16:14:32.383Z"
+   "made": "2026-10-30T16:30:04.932Z"
+  },
+  {
+   "id": "R0002",
+   "title": "Live · word study keepsake (mock-up, gift through a podcast)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "word": "LIVE",
+    "lang": "en"
+   },
+   "sponsor": "Anonymous giver",
+   "anonymous": true,
+   "codes": {
+    "main": "R0002",
+    "left": "R0002s",
+    "right": "R0002m"
+   },
+   "warn": [
+    "The logo of Shattered into Beautiful Podcast is a stand-in (assets/shattered-into-beautiful-DRAFT.png). Upload the original logo before printing.",
+    "QR R0002s (Shattered into Beautiful Podcast) has no web address yet: it opens manna-fish.com until one is set.",
+    "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "made": "2026-10-30T16:30:13.606Z"
   }
  ]
 }

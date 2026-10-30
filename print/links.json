@@ -13,5 +13,15 @@
   "to": "https://manna-fish.com/",
   "run": "R0001",
   "what": "Free MannaFish Devo & Merch!"
+ },
+ "R0002s": {
+  "to": "",
+  "run": "R0002",
+  "what": "Shattered into Beautiful Podcast"
+ },
+ "R0002m": {
+  "to": "https://manna-fish.com/?devo=1",
+  "run": "R0002",
+  "what": "Today's free MannaFish devotional"
  }
 }

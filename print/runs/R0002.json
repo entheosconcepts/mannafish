@@ -1,0 +1,17 @@
+{
+ "id": "R0002",
+ "title": "Live · word study keepsake (mock-up, gift through a podcast)",
+ "status": "draft",
+ "qty": 100,
+ "fish": { "word": "LIVE", "lang": "en" },
+ "sponsor": { "name": "Anonymous giver", "anonymous": true },
+ "for": { "name": "Shattered into Beautiful Podcast", "logo": "assets/shattered-into-beautiful-DRAFT.png" },
+ "ship_to": "",
+ "back": {
+  "template": "study",
+  "text": "Still hungry? Do this word study & look up these scriptures",
+  "left": { "label": "Shattered into Beautiful Podcast", "to": "" },
+  "right": { "label": "Today's free MannaFish devotional", "to": "https://manna-fish.com/?devo=1" }
+ },
+ "notes": "Mock-up of the word-study back with the invitation card's strip: someone gives the run anonymously, as a gift through the podcast."
+}
