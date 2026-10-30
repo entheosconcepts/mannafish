@@ -12,6 +12,45 @@ who are not as easy to get permission from, I will ask now, and keep asking unti
 | English, ready | ESV: the code is in place. It turns on as soon as an ESV key is added in Netlify (step 1 below). |
 | 9 other languages | One Bible each (e.g. Spanish RVR1960) |
 
+## Free to print without asking (Ken, 30 Oct)
+
+These can go on printed fish, cards and anything given away with no letter. **Public domain** needs nothing at all.
+**CC BY / CC BY-SA** needs only a small credit line (name, holder, licence) somewhere on the card, e.g. on the back.
+"Check" means a list (eBible.org, Open Bibles) says it is free, but read its licence file once before the first print.
+
+| Language | Free to print | Terms |
+|---|---|---|
+| English | King James (KJV), American Standard 1901 (ASV), World English Bible (WEB), Berean Standard Bible (BSB), Young's Literal, Darby, Douay-Rheims (Challoner), Webster 1833 | Public domain (KJV: in the US) |
+| English | Bible in Basic English (BBE) | Public domain in the US |
+| English | Literal Standard Version (LSV) | CC BY-SA 4.0 |
+| Spanish | Reina-Valera 1909, Reina-Valera 1865 | Public domain |
+| French | Louis Segond 1910, Martin, Ostervald, Darby (French) | Public domain |
+| German | Luther 1912, Elberfelder 1905 | Public domain |
+| Italian | Diodati 1649, Riveduta 1927 | Public domain |
+| Russian | Synodal 1876 | Public domain |
+| Ukrainian | Kulish 1903/1905 | Public domain |
+| Polish | Biblia Gdańska (1881 edition) | Public domain |
+| Chinese | Chinese Union Version 1919 (和合本) | Public domain |
+| Japanese | Kougo-yaku 1954/1955 (口語訳), the 1955 text only, not today's reprints | Public domain since 2006 |
+| Vietnamese | Kinh Thánh 1926 | Public domain (check) |
+| Arabic | Smith & Van Dyck 1865 | Public domain |
+| Hebrew | Westminster Leningrad Codex (the Old Testament original); Delitzsch Hebrew New Testament 1877 | Public domain |
+| Greek | Vamvas 1850 (modern Greek); Textus Receptus and Byzantine New Testament (original) | Public domain |
+| Greek | SBL Greek New Testament (original) | CC BY 4.0 |
+| Tagalog | Ang Biblia 1905 | Public domain |
+| Hindi, Urdu and other Indian languages | Indian Revised Version (IRV) | CC BY-SA 4.0 (check each language) |
+| Korean | 개역한글 1961 (Korean Revised Version) | Listed as expired (check) |
+| Haitian Creole | Haitian Creole Bible 1985 | Listed public domain by eBible.org (check: surprising, verify the licence file) |
+| Haitian Creole | Bib Sen An (BSA), Ron Smith | CC BY-SA 4.0 |
+| Swahili | Krapf 1850 | Public domain (very old wording) |
+| Swahili | Unlocked Literal Bible (Door43, 2019) | CC BY-SA 4.0 |
+| Turkish | Kitabı Mukaddes 1941 | Listed public domain (check) |
+| Persian | Old Persian Version 1895 | Public domain (check) |
+
+**Not on this list, so ask first:** Reina-Valera 1960, NIV, ESV, NKJV, NLT, NET (print), Swahili Union Version 1952, today's Japanese and Korean editions, Ang Biblia 2001, and the Greek FPB.
+Note: some fish on the site were drawn with Spanish RVR1960, Tagalog Ang Biblia 2001 and Greek FPB wording. Redraw those in Reina-Valera 1909,
+Ang Biblia 1905 and Vamvas before printing them.
+
 ## The order to ask in
 
 | # | Who | What you get | How hard | How |
