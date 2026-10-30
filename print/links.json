@@ -1,0 +1,17 @@
+{
+ "R0001": {
+  "to": "",
+  "run": "R0001",
+  "what": "invitation"
+ },
+ "R0001s": {
+  "to": "",
+  "run": "R0001",
+  "what": "Shattered into Beautiful Podcast"
+ },
+ "R0001m": {
+  "to": "https://manna-fish.com/",
+  "run": "R0001",
+  "what": "Free MannaFish Devo & Merch!"
+ }
+}

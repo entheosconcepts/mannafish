@@ -1,0 +1,19 @@
+{
+ "id": "R0001",
+ "title": "Yadah invitation · Live (first batch, mock-up)",
+ "status": "draft",
+ "qty": 100,
+ "fish": { "word": "LIVE", "lang": "en" },
+ "sponsor": { "name": "Shattered into Beautiful Podcast", "logo": "assets/shattered-into-beautiful-DRAFT.png", "anonymous": false, "show": true },
+ "ship_to": "",
+ "back": {
+  "template": "invite",
+  "heading": "YOU’RE INVITED!",
+  "logo": "assets/yadah-logo-DRAFT.png",
+  "text": "Scan the QR code to connect with the person who gave you this invitation, and to learn more about Yadah!",
+  "qr": { "to": "" },
+  "left": { "label": "Shattered into Beautiful Podcast", "to": "" },
+  "right": { "label": "Free MannaFish Devo & Merch!", "to": "https://manna-fish.com/" }
+ },
+ "notes": "Mock-up: the sponsor for the first batch isn't chosen yet. Logos are stand-ins cut from Ken's screenshot."
+}

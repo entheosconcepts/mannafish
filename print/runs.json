@@ -1,0 +1,30 @@
+{
+ "runs": [
+  {
+   "id": "R0001",
+   "title": "Yadah invitation · Live (first batch, mock-up)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "word": "LIVE",
+    "lang": "en"
+   },
+   "sponsor": "Shattered into Beautiful Podcast",
+   "anonymous": false,
+   "codes": {
+    "main": "R0001",
+    "left": "R0001s",
+    "right": "R0001m"
+   },
+   "warn": [
+    "The top logo is a stand-in (assets/yadah-logo-DRAFT.png). Upload the original logo before printing.",
+    "The sponsor logo is a stand-in (assets/shattered-into-beautiful-DRAFT.png). Upload the original logo before printing.",
+    "QR R0001 (invitation) has no web address yet: it opens manna-fish.com until one is set.",
+    "QR R0001s (Shattered into Beautiful Podcast) has no web address yet: it opens manna-fish.com until one is set.",
+    "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "made": "2026-10-30T16:06:03.336Z"
+  }
+ ]
+}
