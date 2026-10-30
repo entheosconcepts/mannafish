@@ -257,7 +257,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   <p class="tip" id="aTip" hidden>Tip: hold a word, then slide your finger to pick just those words</p>
   <button type="button" class="moreh" id="aMore">&#8963; Swipe up for more</button>
   <div class="more">
-    <div class="row"><button type="button" class="chip" id="aShare">Share</button><button type="button" class="chip" id="aSay">&#9654;&#xFE0E; Listen from here</button><button type="button" class="chip" id="aX">Done</button></div>
+    <div class="row"><button type="button" class="chip" id="aShare">Share</button><button type="button" class="chip" id="aPic">&#128444;&#xFE0E; Picture</button><button type="button" class="chip" id="aSay">&#9654;&#xFE0E; Listen from here</button><button type="button" class="chip" id="aX">Done</button></div>
     <div class="nbox" id="aNoteBox" hidden><textarea id="aNoteT" placeholder="What is God showing you here?"></textarea><div class="row"><button type="button" class="chip" id="aNoteDel" hidden>Delete note</button><button type="button" class="chip" id="aNoteSave" style="background:var(--blue);border-color:var(--blue);color:#fff">Save note</button></div></div>
     <div class="nbox" id="aLinkBox" hidden><label class="lk">Link to <input id="aLinkTo" type="text" placeholder="a verse, like Romans 5:8" autocomplete="off"></label>
       <textarea id="aLinkNote" placeholder="Why these go together (optional)"></textarea><p class="sub" id="aLinkMsg" aria-live="polite"></p>
@@ -550,6 +550,9 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   $('aShare').addEventListener('click',function(){ var r=selLabel(), url=location.origin+'/bible/?r='+encodeURIComponent(B[AT.b][0]+' '+AT.c+':'+SEL[0]), t='“'+selText()+'” '+r+' ('+ver().s+')';
     if(navigator.share) navigator.share({title:'MannaFish · '+r,text:t,url:url}).catch(function(){});
     else (navigator.clipboard?navigator.clipboard.writeText(t+' '+url):Promise.reject()).then(function(){ toast('Link copied'); },function(){}); });
+  // Ken, 30 Oct: put the verse on a picture -- a photo of one's own or one made for it -- to save or share (/picture/)
+  $('aPic').addEventListener('click',function(){ var lo=Math.min.apply(null,SEL), hi=Math.max.apply(null,SEL);
+    location.href='/picture/?back=1'+(EMBED?'&embed=1':'')+'&r='+encodeURIComponent(B[AT.b][0]+' '+AT.c+':'+lo+(hi>lo?'-'+hi:''))+'&v='+ver().k; });
   $('aSay').addEventListener('click',function(){ var v=SEL[0]; closeAct(); startSay(v); });
 
   // ── the Greek or Hebrew behind the words picked (Ken, 20 Oct: "a quick reference to Greek or Hebrew for anything the user highlights, with

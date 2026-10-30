@@ -1073,20 +1073,24 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 .ptmode .ptc{width:auto;height:40px;padding:0 13px 0 10px;gap:6px;border-radius:999px;background:none;font:700 .86rem 'Archivo',sans-serif}
 .ptmode .ptc{color:rgba(255,255,255,.6)}.ptmode .ptc[aria-pressed="true"]{background:rgba(255,255,255,.14);color:#fff}.ptmode .pmi{display:inline-flex}.ptmode .pmi svg{width:19px;height:19px}
 /* Ken, 27 Oct: pause and play faint in the middle of the screen, over the devotional, not a big blue button in the bar */
-.ptmid{position:absolute;left:50%;top:50%;z-index:5;width:68px;height:68px;margin:-34px 0 0 -34px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(10,14,20,.1);color:rgba(255,255,255,.42);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity .2s,color .2s,background .2s;-webkit-tap-highlight-color:transparent}
-.ptmid[hidden]{display:none}.ptmid svg{width:26px;height:26px}.ptmid.ps svg{margin-left:4px}
+/* Ken, 30 Oct: bigger */
+.ptmid{position:absolute;left:50%;top:50%;z-index:5;width:96px;height:96px;margin:-48px 0 0 -48px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(10,14,20,.1);color:rgba(255,255,255,.42);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity .2s,color .2s,background .2s;-webkit-tap-highlight-color:transparent}
+.ptmid[hidden]{display:none}.ptmid svg{width:40px;height:40px}.ptmid.ps svg{margin-left:6px}
 .ptmid:hover,.ptmid:focus-visible,.ptmid.ps{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.3);background:rgba(10,14,20,.2)}
 @media (max-width:560px){.ptttl{display:none}.ptbar{justify-content:center}}
 #ptMore{font-size:.85rem;letter-spacing:1px}
 .ptttl{flex:1;text-align:center;font:700 .78rem 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ptanchor{position:sticky;top:-18px;z-index:2;margin:-18px -28px 12px;padding:14px 28px 12px;text-align:center;background:none;transition:background .2s}
-.ptstage.scrolled .ptanchor{background:linear-gradient(#0b1017 82%,rgba(11,16,23,0))}
+/* Ken, 30 Oct: words were showing through the bottom of the fish -- the backing is solid behind the whole fish and fades out below it */
+.ptstage.scrolled .ptanchor{background:#0b1017}
+.ptstage.scrolled .ptanchor::after{content:'';position:absolute;left:0;right:0;top:100%;height:26px;background:linear-gradient(#0b1017,rgba(11,16,23,0));pointer-events:none}
 .ptanchor .ptak{font:800 .74rem 'Archivo',sans-serif;letter-spacing:.22em;text-transform:uppercase;margin-bottom:8px}
 .ptanchor .pttf{display:block;position:relative;width:min(250px,62vw);aspect-ratio:2/1;margin:0 auto}
 .ptstage>.ptanchor{margin-top:-18px}   /* the fish sits at the top of the box, not centred with the rest */
-@media(min-width:760px) and (min-height:620px){.pt .ptstage>.ptanchor{margin-top:-26px}.ptanchor .ptak{font-size:.95rem;letter-spacing:.26em;margin-bottom:12px}.pt .ptstage>.ptweek{margin-top:auto}.ptanchor{top:-26px;margin:-26px -40px 12px;padding:22px 40px 14px;border-radius:26px 26px 0 0}.ptstage.scrolled .ptanchor{background:linear-gradient(#070b11 82%,rgba(7,11,17,0))}.ptanchor .pttf{width:min(62%,clamp(190px,calc(95vh - 516px),320px))}}   /* Ken, 16 Oct mock-up: bigger (a little smaller on a short screen, so nothing scrolls) */
+@media(min-width:760px) and (min-height:620px){.pt .ptstage>.ptanchor{margin-top:-26px}.ptanchor .ptak{font-size:.95rem;letter-spacing:.26em;margin-bottom:12px}.pt .ptstage>.ptweek{margin-top:auto}.ptanchor{top:-26px;margin:-26px -40px 12px;padding:22px 40px 14px;border-radius:26px 26px 0 0}.ptstage.scrolled .ptanchor{background:#070b11}.ptstage.scrolled .ptanchor::after{background:linear-gradient(#070b11,rgba(7,11,17,0))}.ptanchor .pttf{width:min(62%,clamp(190px,calc(95vh - 516px),320px))}}   /* Ken, 16 Oct mock-up: bigger (a little smaller on a short screen, so nothing scrolls) */
 .ptmenu{position:absolute;top:calc(max(14px,env(safe-area-inset-top)) + 54px);right:16px;z-index:3;background:#2a2622;border-radius:22px;padding:8px 6px;min-width:230px;box-shadow:0 20px 50px -10px #000}
 .ptmenu[hidden]{display:none}
+.ptmenu{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}   /* a long menu scrolls inside itself on a phone */
 /* Ken, 12 Oct: "the X should say Home"; and on a computer the devotional is a framed page with its buttons right above it */
 .ptc.pthome{width:auto;padding:0 16px 0 12px;gap:7px;border-radius:999px;font:700 .95rem 'Archivo',sans-serif}
 .ptc.pthome span:first-child{font-size:1.15rem}
@@ -1274,6 +1278,13 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 .ptchips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 6px}
 .ptchips button{border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.3);color:#fff;border-radius:999px;padding:7px 12px;font:600 .88rem 'Archivo',sans-serif;cursor:pointer}
 .ptctx{border-top:1px solid rgba(255,255,255,.15);padding-top:12px;margin-top:4px}
+/* Ken, 30 Oct: highlighting is under ••• on the devotional, so the short pages stay clean */
+.pt.nohl .pthl,.pt.nohl .ptpenbar,.pt.nohl .pthlmenu,.pt.nohl .ptcxt{display:none!important}
+/* Ken, 30 Oct: "In context" is a button that opens the passage in the Bible, with all its tools; when listening, the passage is also shown and read */
+.ptcxbtn{display:flex;flex-direction:column;align-items:center;gap:3px;width:100%;border:1.5px solid rgba(255,255,255,.35);background:rgba(0,0,0,.3);color:#fff;border-radius:16px;padding:12px 40px;cursor:pointer;position:relative;font-family:'Archivo',sans-serif;text-align:center}
+.ptcxbtn:hover,.ptcxbtn:focus-visible{border-color:#fff;background:rgba(255,255,255,.08)}
+.ptcxbtn .ptctxh{margin:0}.ptcxbtn .ptcxr{margin:0;opacity:.75}.ptcxgo{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:1.6rem;opacity:.7}[dir=rtl] .ptcxgo{right:auto;left:16px;transform:translateY(-50%) scaleX(-1)}
+.ptcxbody{margin-top:12px}.pt:not(.guided) .ptcxbody{display:none}
 .ptctx[hidden]{display:none}
 .ptcxp .vn{font:700 .62rem 'Archivo',sans-serif;opacity:.6;vertical-align:super;margin:0 2px 0 4px}
 .ptcxp .cxv{cursor:pointer;border-radius:4px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
@@ -3264,7 +3275,7 @@ window.MF=(function(){
   // references) or Deep dive (about 10: every reference).
   // The choice is remembered; Quick and Standard end with "Go deeper".
   var DLEN={"en": {"q": "Quick", "s": "Standard", "d": "Deep dive", "how": "How long do you have?", "min": "{n} min", "deeper": "Go deeper into {w}"}, "es": {"q": "Rápido", "s": "Estándar", "d": "A fondo", "how": "¿Cuánto tiempo tienes?", "min": "{n} min", "deeper": "Profundiza en {w}"}, "tl": {"q": "Mabilis", "s": "Karaniwan", "d": "Malalim", "how": "Gaano katagal ang oras mo?", "min": "{n} min", "deeper": "Palalimin ang {w}"}, "zh": {"q": "简短", "s": "标准", "d": "深入", "how": "你有多少时间？", "min": "{n} 分钟", "deeper": "更深入认识“{w}”"}, "hi": {"q": "संक्षिप्त", "s": "सामान्य", "d": "गहराई से", "how": "आपके पास कितना समय है?", "min": "{n} मिनट", "deeper": "{w} में और गहराई से"}, "el": {"q": "Σύντομο", "s": "Κανονικό", "d": "Σε βάθος", "how": "Πόσο χρόνο έχεις;", "min": "{n} λεπτά", "deeper": "Πιο βαθιά στο {w}"}, "de": {"q": "Kurz", "s": "Normal", "d": "Vertieft", "how": "Wie viel Zeit hast du?", "min": "{n} Min.", "deeper": "Tiefer in {w}"}, "ko": {"q": "짧게", "s": "보통", "d": "깊이", "how": "시간이 얼마나 있나요?", "min": "{n}분", "deeper": "{w} 더 깊이"}, "he": {"q": "קצר", "s": "רגיל", "d": "לעומק", "how": "כמה זמן יש לכם?", "min": "{n} דק׳", "deeper": "להעמיק ב{w}"},"ar":{"q": "سريع", "s": "عادي", "d": "تعمّق", "how": "كم من الوقت لديكم؟", "min": "{n} دقيقة", "deeper": "تعمّقوا في {w}"},"ru":{"q":"Быстро","s":"Обычно","d":"Подробно","how":"Сколько у вас времени?","min":"{n} мин","deeper":"Глубже в {w}"}}, DMIN={quick:3,std:6,full:10};
-  function dLen(){ var v=''; try{ v=localStorage.getItem('mf-devlen')||''; }catch(e){} return DMIN[v]?v:'quick'; }
+  function dLen(){ var v=''; try{ v=localStorage.getItem('mf-devlen')||''; }catch(e){} return DMIN[v]?v:'std'; }   // Ken, 30 Oct: 6 minutes until someone picks under •••
   // Ken, 13 Oct: one fish a week -- the same fish Sunday to Friday, going through the verses on the back of the decal
   // in order (two a day over six days). The devotional picks up where you left off, and you can stay with a fish or change it.
   // Kept on this device (mf-plan) and, when signed in, with the account.
@@ -3388,7 +3399,7 @@ window.MF=(function(){
   function cxAt(e){ var c=PT.cx; return e.dataset.cc&&c?Object.assign({},c,{ch:e.dataset.cc}):c; }
   function ptCxPaint(){ var c=PT.cx, h=hls(); if(!c) return; [].forEach.call($('ptStage').querySelectorAll('.cxv'),function(e){ var x=h[hlKey(cxAt(e),+e.dataset.cv)], col=x&&(HLC[x.c]?x.c:'gold');
     e.classList.toggle('cxhl',!!x); e.style.background=x?HLC[col]:''; }); }
-  $('ptStage').addEventListener('click',function(e){ var sp=e.target.closest('.cxv'); if(!sp||!PT.cx) return; var c=cxAt(sp), v=+sp.dataset.cv, key=hlKey(c,v), h=hls();
+  $('ptStage').addEventListener('click',function(e){ var sp=e.target.closest('.cxv'); if(!sp||!PT.cx||!PT.hl) return; var c=cxAt(sp), v=+sp.dataset.cv, key=hlKey(c,v), h=hls();
     if(h[key]) hlToggle(key,h[key]); else hlToggle(key,{kind:'verse',ref:c.book+' '+c.ch+':'+v,ver:c.ver,k:c.k,i:c.i,l:c.l,v:v,c:hlColor(),text:sp.textContent.slice(0,220)});
     ptCxPaint(); });
   function ptHlRow(){ var cv=curVer().k, col=hlColor();
@@ -3417,9 +3428,8 @@ window.MF=(function(){
     var prm=function(key){ return '<p class="ptprompt">👉 '+esc(T[key])+'</p>'; };
     if(s.k==='welcome'){ t=[P[0]]; h=planWeekList(k,l)+planPicker()   /* Ken, 16 Oct: no "Pray · Hear · Do" or "Rest · Day 1 of 6" -- the fish at the top says it; Change fish is under ••• */
         +'<p class="ptp">'+sp1(1,P[0])+'</p>'
-        +'<div class="ptlenq">'+esc((DLEN[l]||DLEN.en).how)+'</div><div class="ptlen" role="radiogroup">'+['quick','std','full'].map(function(x){ var D2=DLEN[l]||DLEN.en;
-          return '<button type="button" role="radio" data-a="len" data-len="'+x+'" aria-checked="'+((PT.len||dLen())===x)+'"><b>'+esc(D2.min.replace('{n}',DMIN[x]))+'</b><small>'+esc(D2[x==='quick'?'q':x==='std'?'s':'d'])+'</small></button>'; }).join('')+'</div>'
-        +'<div class="ptrow ptchoose"><button type="button" class="ptbtn ptmain" data-a="guide">'+esc(T.guide_me)+'</button><button type="button" class="ptbtn" data-a="ownpace">'+esc(T.own_pace)+'</button></div>'+prm('p_welcome'); }
+        // Ken, 30 Oct: no "How long" and no big Listen / Read here -- Listen | Read is in the bar, and how long is under •••
+        +'<p class="ptprompt">👉 '+esc(ptX().start.replace('{next}',T.next))+'</p>'; }
     else if(s.k==='pray'){ t=[T.breathe,P[1]]; h=kick(T.k_pray)+'<p class="ptp ptsoft">'+sp1(1,T.breathe)+'</p><h2 class="pth ptpr">'+sp1(2,P[1])+'</h2>'+prm('p_pray'); }
     else if(s.k==='cast'){ var C=caT(); t=[C.cast_line,C.cast_sub]; CA.ph='idle'; CA.early=false; CA.k=null;
       h=caBaitRow()+kick(C.k_cast)+'<div class="ptcast idle">'+CASTSVG+'<div class="cswim">'+caFish()+'</div><div class="chook" aria-hidden="true"></div><button type="button" class="cpause"></button><div class="cpond"'+(POND?'':' hidden')+'>'+(POND?'🎣 '+esc(pondTxt()):'')+'</div></div>'
@@ -3446,19 +3456,20 @@ window.MF=(function(){
         return at?'<button type="button" data-a="goref" data-i="'+i+'" class="today">'+esc(refLab(l,k,i))+'</button>':'<button type="button" disabled class="'+(was?'was':'later')+'">'+(was?'✓ ':'')+esc(refLab(l,k,i))+'</button>'; }).join('')+'</div>'+prm('p_orig'); }
     else if(s.k==='ref'){ var lab=refLab(l,k,s.i), pr=parseRef(DATA[k].refs[s.i][0]);
       h=kick(T.k_trace+' · '+w,esc(plF(plT().day,{d:ptDay(k)+1,n:PLAN_DAYS}))+' · '+(s.j+1)+' / '+s.n)+'<h2 class="pth ptref">'+sp1(1,lab)+'</h2><blockquote class="ptq"><span data-v="2">…</span></blockquote>'
-        +'<div class="ptctx" hidden><div class="ptctxh">'+sp1(3,T.in_context)+'</div><div class="ptcxr"></div><p class="ptp ptcxp"></p>'+ptCxTools()+'</div>'
-        +'<div class="ptrow"><button type="button" class="ptlink" data-a="bible" data-ref="'+esc(pr?pr.book+' '+pr.ch+':'+pr.vs:'')+'">📖 '+esc(bibT()[0])+'</button></div>'+prm('p_ref');
+        +'<div class="ptctx" hidden><button type="button" class="ptcxbtn" data-a="bible" data-ref="'+esc(pr?pr.book+' '+pr.ch+':'+pr.vs:'')+'"><div class="ptctxh">📖 '+sp1(3,T.in_context)+'</div><div class="ptcxr"></div><span class="ptcxgo" aria-hidden="true">›</span></button>'
+        +'<div class="ptcxbody"><p class="ptp ptcxp"></p>'+ptCxTools()+'</div></div>'+prm('p_ref');
       t=null; var me=PT.i;
       ready=(pr?ptPassage(pr,l):Promise.reject()).then(function(o){ return {v:o.v||refSnip(l,k,s.i),cx:o.cx.length>1?o.cx:null,title:o.title,range:o.range}; })
         .catch(function(){ return {v:refSnip(l,k,s.i),cx:null}; })
         .then(function(o){ if(PT.i!==me) return; var st=$('ptStage'); st.querySelector('.ptq [data-v="2"]').textContent=o.v;
           // Ken, 20 Oct: the highlighting is in the context now -- each verse there is tapped to highlight it
-          if(o.cx){ st.querySelector('.ptctx').hidden=false; PT.cx={book:pr.book,ch:pr.ch,ver:verCode(l,false),k:k,i:s.i,l:l};
+          if(o.cx){ st.querySelector('.ptctx').hidden=false; PT.cx={book:pr.book,ch:pr.ch,ver:verCode(l,false),k:k,i:s.i,l:l}; st.querySelector('.ptcxbtn').dataset.ref=pr.book+' '+o.cx[0].c+':'+o.cx[0].n;
             var two=o.cx[0].c!==o.cx[o.cx.length-1].c, said=T.in_context+(l==='en'&&o.title?': '+o.title:''), hd=st.querySelector('.ptctxh [data-v="3"]');
             if(hd) hd.textContent=said; if(o.range&&l==='en') st.querySelector('.ptcxr').textContent=o.range;
             st.querySelector('.ptcxp').innerHTML=o.cx.map(function(c,j){ var me=c.c===+pr.ch&&c.n===+pr.vs;
               return '<sup class="vn">'+(two&&(j===0||c.n===1)?c.c+':':'')+c.n+'</sup><span class="cxv'+(me?' cxme':'')+'" data-v="'+(4+j)+'" data-cc="'+c.c+'" data-cv="'+c.n+'">'+esc(c.t)+'</span> '; }).join('');
-            ptCxPaint(); PT.t=[lab,o.v,said].concat(o.cx.map(function(c){ return c.t; })); ptWarm(PT.t,3,l); } else PT.t=[lab,o.v]; });
+            ptCxPaint(); PT.t=[lab,o.v,said].concat(o.cx.map(function(c){ return c.t; })); ptWarm(PT.t,3,l); }
+          else { if(pr){ st.querySelector('.ptctx').hidden=false; var h0=st.querySelector('.ptctxh [data-v="3"]'); if(h0) h0.textContent=bibT()[0]; } PT.t=[lab,o.v]; } });
       var ns=PT.steps[PT.i+1]; if(ns&&ns.k==='ref'){ var nx=parseRef(DATA[k].refs[ns.i][0]); if(nx) chGet(nx,l).catch(function(){}); } }
     else if(s.k==='prayer'){ if(s.i===0) t=[T.list_intro];
       h=kick(T.k_list,(s.i+1)+' / '+s.n)+(s.i===0?'<p class="ptp ptsoft">'+sp1(1,T.list_intro)+'</p>':'')+'<h2 class="pth">'+esc(s.x.title)+'</h2>'+(s.x.body?'<p class="ptp" style="white-space:pre-wrap">'+esc(s.x.body)+'</p>':'')
@@ -3511,7 +3522,26 @@ window.MF=(function(){
   // Ken, 20 Oct: "the scripture chapters before and after ... other chapters or books of the Bible if they choose" -- the whole Bible
   // opens over the devotional, at this chapter; ‹ Devotional brings the person back to the same step
   function ptBible(ref){ PT.listen=false; stopSpeak(); $('pt').classList.remove('guided'); if(window.MFptModeUI) MFptModeUI();
-    $('ptBibleF').src='/bible/?embed=1&r='+encodeURIComponent(ref||''); $('ptBible').hidden=false; }
+    var bv=PT.l==='en'?curVer().k:PTBV[PT.l]; $('ptBibleF').src='/bible/?embed=1&r='+encodeURIComponent(ref||'')+(bv?'&v='+bv:''); $('ptBible').hidden=false; }
+  var PTBV={es:'rv1909',tl:'ab1905',zh:'cuv',hi:'irv',el:'vamvas',de:'elb',ko:'krv',he:'hmt',ar:'svd',ru:'synodal'};   // each language's own Bible in the Bible reader
+  // Ken, 30 Oct: a picture with a verse on it -- an uploaded photo or one made for it -- opens over the devotional like the Bible
+  function ptPicture(){ PT.listen=false; stopSpeak(); $('pt').classList.remove('guided'); if(window.MFptModeUI) MFptModeUI();
+    var k=cur, sy=(SAY[PT.l]&&SAY[PT.l][k])||SAY.en[k], ref=SAY.en[k][2], bv=PT.l==='en'?curVer().k:PTBV[PT.l];
+    $('ptBibleF').src='/picture/?embed=1&r='+encodeURIComponent(ref)+(bv?'&v='+bv:'')+'&l='+PT.l+(PT.l!=='en'?'&rl='+encodeURIComponent(sy[2]):''); $('ptBible').hidden=false; }   // the words come from that language's public-domain Bible, not the devotional's
+  // Ken, 30 Oct: highlighting, how long, and the picture verse live under •••
+  var PTX={en:{start:'Tap {next} to begin.',hl:'Highlighting',on:'On',off:'Off',pic:'Picture verse'},
+    es:{start:'Toca {next} para empezar.',hl:'Resaltar',on:'Sí',off:'No',pic:'Versículo con imagen'},
+    tl:{start:'Pindutin ang {next} para magsimula.',hl:'Pag-highlight',on:'Bukas',off:'Sarado',pic:'Talata sa larawan'},
+    zh:{start:'点按“{next}”开始。',hl:'标记',on:'开',off:'关',pic:'经文图片'},
+    hi:{start:'शुरू करने के लिए {next} पर टैप करें।',hl:'हाइलाइट',on:'चालू',off:'बंद',pic:'पद चित्र'},
+    el:{start:'Πάτησε {next} για να ξεκινήσεις.',hl:'Επισήμανση',on:'Ναι',off:'Όχι',pic:'Εδάφιο σε εικόνα'},
+    de:{start:'Tippe auf {next}, um zu beginnen.',hl:'Markieren',on:'An',off:'Aus',pic:'Versbild'},
+    ko:{start:'{next}을 눌러 시작하세요.',hl:'형광펜',on:'켜짐',off:'꺼짐',pic:'말씀 그림'},
+    he:{start:'הקש על {next} כדי להתחיל.',hl:'סימון',on:'פועל',off:'כבוי',pic:'פסוק בתמונה'},
+    ar:{start:'انقر على {next} للبدء.',hl:'التمييز',on:'تشغيل',off:'إيقاف',pic:'آية في صورة'},
+    ru:{start:'Нажмите «{next}», чтобы начать.',hl:'Выделение',on:'Вкл',off:'Выкл',pic:'Стих на картинке'}};
+  function ptX(){ return PTX[PT.l]||PTX.en; }
+  function ptHlOn(on){ PT.hl=on; try{ localStorage.setItem('mf-pt-hl',on?'1':'0'); }catch(er){} $('pt').classList.toggle('nohl',!on); }
   window.addEventListener('message',function(e){ if(e.origin!==location.origin||!e.data||e.data.mf!=='bible-close') return; $('ptBible').hidden=true; $('ptBibleF').src='about:blank'; if(PT.on) ptRender(); });
   function ptPills(){ var ls=$('ptLang'), vs=$('ptVer'), cv=curVer().k;
     ls.innerHTML=CMPL.filter(function(o){ return DEVO[o[0]]; }).map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===PT.l?' selected':'')+'>'+esc(cmpName(o[0]))+'</option>'; }).join('');
@@ -3526,7 +3556,7 @@ window.MF=(function(){
     toast('\ud83d\udcd6 '+curVer().n); stopSpeak(); ptRender(); if(go){ PT.listen=true; ptSay(); } });
   function ptOpen(){ if(window.MFplClose&&!$('mfPlayer').hidden) MFplClose(); stopSpeak(); PT.l=DEVO[MF.lang]?MF.lang:'en'; PT.on=true; PT.listen=false;
     var pt=$('pt'); pt.dir=/^(he|ar)$/.test(PT.l)?'rtl':'ltr'; pt.setAttribute('lang',PT.l); PR=prLocal().filter(function(x){ return prCloud()||!x.c; });
-    PT.l2=null; CA.done=false; PT.pickOpen=false; PT.len=dLen(); PT.marked={}; PT.dayOv=null; var pf=planFish(); if(pf!==cur) pick(pf,false); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; document.documentElement.style.overflow='hidden'; ptPills(); ptRender();
+    PT.l2=null; CA.done=false; PT.pickOpen=false; PT.len=dLen(); PT.marked={}; var hl0=''; try{ hl0=localStorage.getItem('mf-pt-hl')||''; }catch(er){} ptHlOn(hl0==='1'); PT.dayOv=null; var pf=planFish(); if(pf!==cur) pick(pf,false); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; document.documentElement.style.overflow='hidden'; ptPills(); ptRender();
     prLoad().then(function(){ if(!PT.on) return; var at=PT.steps[PT.i]&&PT.steps[PT.i].k; PT.steps=ptSteps(); if(at==='welcome'||at==='pray'||at==='hear') ptRender(); }); }
   // Ken, 16 Oct: "keep whatever fish is selected static, anchored at the top ... we want people to see this image as much as possible"
   // Ken, 16 Oct (later): "I meant for it to be inside the bounding box, not on top of it ... put the verbiage up top above that"
@@ -3604,18 +3634,27 @@ window.MF=(function(){
       if(navigator.share) navigator.share({title:ti,text:ti,url:url}).catch(function(){}); else if(navigator.clipboard) navigator.clipboard.writeText(url).then(function(){ toast(T.shared); }); }
     else if(a==='amen'){ stopSpeak(); $('ptStage').innerHTML='<div class="ptk"><span>'+esc(T.k_amen)+'</span></div><h2 class="pth">✓ '+esc(T.done)+'</h2>'; $('ptNext').hidden=true; setTimeout(function(){ if(PT.on) ptClose(); },1800); } });
   // ••• menu: add a prayer, the prayer list, answered prayers, the daily reminder, reading speed
-  $('ptMore').addEventListener('click',function(e){ e.stopPropagation(); var m=$('ptMenu'), T=ptT(); m.style.top=(this.getBoundingClientRect().bottom+8)+'px';
+  $('ptMore').addEventListener('click',function(e){ e.stopPropagation(); var m=$('ptMenu'), T=ptT(), mb=this.getBoundingClientRect().bottom+8; m.style.top=mb+'px'; m.style.maxHeight=Math.max(220,innerHeight-mb-16)+'px';
     var Y=YRS[PT.l]||YRS.en;
     m.innerHTML='<button type="button" data-m="basket"><span class="mi">🧺</span>'+esc((BKT[PT.l]||BKT.en)[0])+' +</button><button type="button" data-m="change"><span class="mi">🐟</span>'+esc(plT().change)+'</button><button type="button" data-m="year"><span class="mi">🗓</span>'+esc(Y[0])+'</button><hr>'
       +'<button type="button" data-m="add"><span class="mi">⊕</span>'+esc(T.add)+'</button><button type="button" data-m="list"><span class="mi">☰</span>'+esc(T.m_list)+'</button>'
       +'<button type="button" data-m="answered"><span class="mi">✓</span>'+esc(T.m_answered)+'</button><button type="button" data-m="remind"><span class="mi">🔔</span>'+esc(T.m_remind)+'</button><hr>'
+      +(function(){ var D2=DLEN[PT.l]||DLEN.en, X=ptX(), ln=PT.len||dLen();
+        return '<button type="button" data-m="pic"><span class="mi">🖼</span>'+esc(X.pic)+'</button><button type="button" data-m="hl" aria-pressed="'+!!PT.hl+'"><span class="mi">🖍</span>'+esc(X.hl)+' · '+esc(PT.hl?X.on:X.off)+'</button>'
+          +'<button type="button" data-m="len" aria-expanded="false"><span class="mi">⏱</span>'+esc(D2.how)+' · '+esc(D2.min.replace('{n}',DMIN[ln]))+'</button>'
+          +'<div class="ptvers ptlens" hidden>'+['quick','std','full'].map(function(x){ return '<button type="button" role="menuitemradio" data-m="setlen" data-len="'+x+'" aria-checked="'+(x===ln)+'"><span class="mi">'+(x===ln?'✓':'')+'</span><span>'+esc(D2.min.replace('{n}',DMIN[x]))+' <small>'+esc(D2[x==='quick'?'q':x==='std'?'s':'d'])+'</small></span></button>'; }).join('')+'</div><hr>'; })()
       +'<button type="button" data-m="speed"><span class="mi">⏩</span>'+esc(T.m_speed)+' · '+RATE()+'x</button>'
       +'<button type="button" data-m="ver" aria-expanded="false"><span class="mi">📖</span>'+esc((BVL[PT.l]||BVL.en)[0])+' · '+esc(curVer().s)+'</button>'
       +'<div class="ptvers" hidden>'+VERS.map(function(v){ return '<button type="button" role="menuitemradio" data-m="setver" data-ver="'+v.k+'" aria-checked="'+(v.k===curVer().k)+'"><span class="mi">'+(v.k===curVer().k?'✓':'')+'</span><span>'+esc(v.n)+' <small>'+esc(v.s)+'</small></span></button>'; }).join('')
       +(PT.l!=='en'?'<p class="ptvnote">'+esc((BVL[PT.l]||BVL.en)[1])+'</p>':'')+'</div>';
     m.hidden=!m.hidden; this.setAttribute('aria-expanded',m.hidden?'false':'true'); });
   $('ptMenu').addEventListener('click',function(e){ var b=e.target.closest('[data-m]'); if(!b) return; var m=b.dataset.m;
-    if(m==='ver'){ var vl=$('ptMenu').querySelector('.ptvers'); vl.hidden=!vl.hidden; b.setAttribute('aria-expanded',String(!vl.hidden)); return; }
+    if(m==='ver'){ var vl=$('ptMenu').querySelector('.ptvers:not(.ptlens)'); vl.hidden=!vl.hidden; b.setAttribute('aria-expanded',String(!vl.hidden)); return; }
+    if(m==='len'){ var ll=$('ptMenu').querySelector('.ptlens'); ll.hidden=!ll.hidden; b.setAttribute('aria-expanded',String(!ll.hidden)); return; }
+    if(m==='setlen'){ $('ptMenu').hidden=true; var go=PT.listen, at=PT.steps[PT.i]&&PT.steps[PT.i].k; PT.len=b.dataset.len; try{ localStorage.setItem('mf-devlen',PT.len); }catch(er){}
+      stopSpeak(); PT.steps=ptSteps(); var j=PT.steps.findIndex(function(x){ return x.k===at; }); PT.i=j>=0?j:Math.min(PT.i,PT.steps.length-1); ptRender(); if(go){ PT.listen=true; ptSay(); } return; }
+    if(m==='hl'){ $('ptMenu').hidden=true; ptHlOn(!PT.hl); toast('🖍 '+ptX().hl+' · '+(PT.hl?ptX().on:ptX().off)); return; }
+    if(m==='pic'){ $('ptMenu').hidden=true; ptPicture(); return; }
     if(m==='setver'){ try{ localStorage.setItem(VKEY,b.dataset.ver); }catch(er){} if($('rVer')) $('rVer').value=b.dataset.ver; $('ptVer').value=b.dataset.ver; $('ptMenu').hidden=true;
       toast('📖 '+curVer().n); var sk=PT.steps[PT.i]&&PT.steps[PT.i].k; if(sk==='ref'||sk==='hear'){ stopSpeak(); ptRender(); } return; }
     if(m==='speed'){ var r=RATES[(RATES.indexOf(RATE())+1)%RATES.length]; try{ localStorage.setItem('mf-speed',r); }catch(er){} if(sp.audio) sp.audio.playbackRate=r; b.lastChild.textContent=ptT().m_speed+' · '+r+'x'; return; }
@@ -3771,8 +3810,8 @@ window.MF=(function(){
   var DG={"en": ["Today’s devotional", "🎧 Listen", " to the devotional", "📖 Read", " the devotional"], "es": ["El devocional de hoy", "🎧 Escuchar", " el devocional", "📖 Leer", " el devocional"], "tl": ["Ang debosyon ngayon", "🎧 Pakinggan", " ang debosyon", "📖 Basahin", " ang debosyon"], "zh": ["今日灵修", "🎧 收听", "今日灵修", "📖 阅读", "今日灵修"], "hi": ["आज की भक्ति", "🎧 सुनें", "", "📖 पढ़ें", ""], "el": ["Η σημερινή μελέτη", "🎧 Άκουσε", " τη μελέτη", "📖 Διάβασε", " τη μελέτη"], "de": ["Die Andacht für heute", "🎧 Anhören", "", "📖 Lesen", ""], "ko": ["오늘의 묵상", "🎧 듣기", "", "📖 읽기", ""], "he": ["ההגות של היום", "🎧 להאזין", " להגות", "📖 לקרוא", " את ההגות"],"ar":["تأمل اليوم", "🎧 استمعوا", " إلى التأمل", "📖 اقرأوا", " التأمل"],"ru":["Размышление на сегодня","🎧 Слушать"," размышление","📖 Читать"," размышление"]};
   function dgUI(){ var d=DG[MF.lang]||DG.en; $('dgK').textContent=d[0]; $('dgListen').innerHTML=esc(d[1])+'<span class="dgs">'+esc(d[2])+'</span>'; $('dgRead').innerHTML=esc(d[3])+'<span class="dgs">'+esc(d[4])+'</span>'; }
   MF.onChange(dgUI); dgUI();
-  $('dgListen').addEventListener('click',function(){ ptOpen(); var b=$('ptStage').querySelector('[data-a="guide"]'); if(b) b.click(); });
-  $('dgRead').addEventListener('click',function(){ ptOpen(); var b=$('ptStage').querySelector('[data-a="ownpace"]'); if(b) b.click(); });
+  $('dgListen').addEventListener('click',function(){ ptOpen(); PT.listen=true; ptSay(); });
+  $('dgRead').addEventListener('click',function(){ ptOpen(); PT.listen=false; ptGo(PT.i+1); });
   // ── The fishing excursion (Ken, 12 Oct): a sponsor stocks the pond; each gift takes two fish; one gift per home
   var PW={"en": ["This fishing trip is sponsored by {s}", "{n} fish left in the pond", "🎁 Send them a free gift", "Two MannaFish: one to keep and one to give away. Free to them, postage too. One gift per home.", "Their name", "Street address", "City", "State and ZIP", "Their email (optional)", "Your name", "I know them, and they would welcome a gift.", "Send the gift", "Sent! Two MannaFish are on their way to {n}.", "This home has already received its MannaFish gift.", "The pond is empty for now. It will be restocked soon.", "Could not send just now. Please try again.", "Please fill in their name and full address, and tick the box."], "es": ["Este viaje de pesca lo patrocina {s}", "Quedan {n} peces en el estanque", "🎁 Envíale un regalo gratis", "Dos MannaFish: uno para quedarse y otro para regalar. Gratis para esa persona, también el envío. Un regalo por hogar.", "Su nombre", "Dirección", "Ciudad", "Estado y código postal", "Su correo (opcional)", "Tu nombre", "La conozco y le gustaría recibir un regalo.", "Enviar el regalo", "¡Enviado! Dos MannaFish van en camino para {n}.", "Este hogar ya recibió su regalo MannaFish.", "El estanque está vacío por ahora. Pronto se volverá a llenar.", "No se pudo enviar ahora. Inténtalo otra vez.", "Escribe su nombre y la dirección completa, y marca la casilla."], "tl": ["Ang pangingisdang ito ay itinataguyod ng {s}", "{n} isda pa ang natitira sa lawa", "🎁 Padalhan sila ng libreng regalo", "Dalawang MannaFish: isa para sa kanila at isa para ibigay. Libre sa kanila, pati padala. Isang regalo bawat tahanan.", "Kanilang pangalan", "Address", "Lungsod", "Estado at ZIP", "Kanilang email (opsyonal)", "Iyong pangalan", "Kilala ko sila, at matutuwa sila sa regalo.", "Ipadala ang regalo", "Naipadala na! Dalawang MannaFish ang papunta kay {n}.", "Nakatanggap na ng regalong MannaFish ang tahanang ito.", "Wala pang laman ang lawa sa ngayon. Malapit na itong mapunan muli.", "Hindi maipadala ngayon. Pakisubukang muli.", "Pakilagay ang kanilang pangalan at buong address, at i-tsek ang kahon."], "zh": ["这次垂钓由 {s} 赞助", "池塘里还剩 {n} 条鱼", "🎁 送他一份免费礼物", "两条 MannaFish：一条自己留着，一条送人。对方免费，邮费也免。每户一份。", "对方姓名", "街道地址", "城市", "州和邮编", "对方电子邮件（可选）", "你的名字", "我认识他，他会乐意收到礼物。", "寄出礼物", "已寄出！两条 MannaFish 正寄往 {n}。", "这个地址已经收到过 MannaFish 礼物。", "池塘暂时空了，很快会再放鱼。", "暂时无法寄出，请再试一次。", "请填写对方姓名和完整地址，并勾选方框。"], "hi": ["यह मछली पकड़ने की यात्रा {s} द्वारा प्रायोजित है", "तालाब में {n} मछलियाँ बाकी हैं", "🎁 उन्हें एक मुफ़्त उपहार भेजें", "दो MannaFish: एक रखने के लिए और एक आगे देने के लिए। उनके लिए मुफ़्त, डाक भी। हर घर को एक उपहार।", "उनका नाम", "पता", "शहर", "राज्य और पिन/ZIP", "उनका ईमेल (वैकल्पिक)", "आपका नाम", "मैं उन्हें जानता/जानती हूँ, उन्हें उपहार अच्छा लगेगा।", "उपहार भेजें", "भेज दिया! दो MannaFish {n} के पास जा रही हैं।", "इस घर को पहले ही MannaFish उपहार मिल चुका है।", "तालाब अभी खाली है। जल्द ही फिर से भरा जाएगा।", "अभी नहीं भेज सके। कृपया फिर कोशिश करें।", "कृपया उनका नाम और पूरा पता भरें, और बॉक्स पर टिक करें।"], "el": ["Αυτή την ψαριά τη χορηγεί ο/η {s}", "Μένουν {n} ψάρια στη λίμνη", "🎁 Στείλε του ένα δωρεάν δώρο", "Δύο MannaFish: ένα να το κρατήσει και ένα να το δώσει. Δωρεάν γι’ αυτόν, και τα ταχυδρομικά. Ένα δώρο ανά σπίτι.", "Το όνομά του", "Διεύθυνση", "Πόλη", "Νομός και Τ.Κ.", "Το email του (προαιρετικά)", "Το όνομά σου", "Τον γνωρίζω και θα χαρεί ένα δώρο.", "Στείλε το δώρο", "Στάλθηκε! Δύο MannaFish έρχονται στον/στην {n}.", "Αυτό το σπίτι έχει ήδη λάβει το δώρο MannaFish.", "Η λίμνη είναι άδεια προς το παρόν. Σύντομα θα ξαναγεμίσει.", "Δεν στάλθηκε τώρα. Δοκίμασε ξανά.", "Συμπλήρωσε όνομα και πλήρη διεύθυνση, και τσέκαρε το κουτί."], "de": ["Dieser Angelausflug wird gesponsert von {s}", "Noch {n} Fische im Teich", "🎁 Schick ein Geschenk", "Zwei MannaFish: einen zum Behalten, einen zum Weitergeben. Kostenlos, auch der Versand. Ein Geschenk pro Haushalt.", "Name", "Straße und Hausnummer", "Ort", "Bundesland und PLZ", "E-Mail (optional)", "Dein Name", "Ich kenne die Person, sie freut sich über ein Geschenk.", "Geschenk senden", "Gesendet! Zwei MannaFish sind unterwegs zu {n}.", "Dieser Haushalt hat sein MannaFish-Geschenk schon bekommen.", "Der Teich ist gerade leer. Er wird bald neu besetzt.", "Gerade nicht möglich. Bitte versuch es noch einmal.", "Bitte Name und vollständige Adresse angeben und das Kästchen ankreuzen."], "ko": ["이번 낚시 여행은 {s}의 후원입니다", "연못에 물고기 {n}마리가 남았어요", "🎁 무료 선물 보내기", "MannaFish 두 개: 하나는 간직하고 하나는 선물하세요. 받는 분은 무료, 배송비도 무료. 한 가정에 한 번.", "받는 분 이름", "주소", "도시", "주와 우편번호", "받는 분 이메일 (선택)", "내 이름", "아는 분이고, 선물을 반가워할 거예요.", "선물 보내기", "보냈어요! MannaFish 두 개가 {n}님께 가고 있어요.", "이 주소는 이미 MannaFish 선물을 받았어요.", "지금은 연못이 비었어요. 곧 다시 채워집니다.", "지금은 보낼 수 없어요. 다시 시도해 주세요.", "이름과 전체 주소를 입력하고 확인란에 표시해 주세요."], "he": ["את מסע הדייג הזה נותן בחסות {s}", "נשארו {n} דגים בבריכה", "🎁 שלחו מתנה חינם", "שני MannaFish: אחד לשמור ואחד לתת. חינם, כולל משלוח. מתנה אחת לכל בית.", "שם", "כתובת", "עיר", "מדינה ומיקוד", "אימייל (לא חובה)", "השם שלכם", "אני מכיר/ה, והמתנה תשמח אותו/ה.", "שלחו את המתנה", "נשלח! שני MannaFish בדרך אל {n}.", "הבית הזה כבר קיבל את מתנת ה‑MannaFish.", "הבריכה ריקה כרגע. היא תתמלא שוב בקרוב.", "לא ניתן לשלוח כרגע. נסו שוב.", "מלאו שם וכתובת מלאה, וסמנו את התיבה."],"ar":["رحلة الصيد هذه برعاية {s}", "بقيت في البركة {n} سمكة", "🎁 أرسلوا عطية مجانية", "سمكتان من MannaFish: واحدة للاحتفاظ بها وواحدة للعطاء. مجانًا، بما في ذلك الشحن. عطية واحدة لكل بيت.", "الاسم", "العنوان", "المدينة", "الولاية والرمز البريدي", "البريد الإلكتروني (اختياري)", "اسمكم", "أعرفه، وستُسعده العطية.", "أرسلوا العطية", "تم الإرسال! سمكتان من MannaFish في الطريق إلى {n}.", "هذا البيت استلم بالفعل عطية MannaFish.", "البركة فارغة الآن. ستُملأ من جديد قريبًا.", "تعذّر الإرسال الآن. حاولوا مرة أخرى.", "املأوا الاسم والعنوان كاملًا، وضعوا علامة في المربع."],"ru":["Эту рыбалку спонсирует {s}","В пруду осталось рыб: {n}","🎁 Отправить им бесплатный подарок","Две MannaFish: одну оставить себе, а другую подарить. Для них бесплатно, включая доставку. Один подарок на семью.","Их имя","Улица и дом","Город","Штат и индекс","Их email (по желанию)","Ваше имя","Я знаю этого человека, и он будет рад подарку.","Отправить подарок","Отправлено! Две MannaFish уже в пути к {n}.","Эта семья уже получила свой подарок MannaFish.","Пруд пока пуст. Скоро его снова пополнят.","Не удалось отправить. Попробуйте еще раз.","Пожалуйста, укажите имя и полный адрес и отметьте галочку."]}, POND=null;
   function pw(i){ return (PW[PT.on?PT.l:MF.lang]||PW.en)[i]; }

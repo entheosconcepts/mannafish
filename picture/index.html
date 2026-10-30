@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MannaFish · Picture verse</title>
+<meta name="description" content="Put a verse of the Bible on a picture: your own photo, or one made for it. Save it or share it.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Spectral:ital,wght@0,400;0,500;1,400&family=Archivo:wght@400;600;700;800&display=swap">
+<!-- Ken, 30 Oct: "got a 'picture verse' in mind? Create one here, using OpenAI / ChatGPT? Or upload image here, and overlay scripture with an
+     image? Make that a feature on the 3 dots, too, that user can share with others, using any language or version of the bible."
+     /picture/?r=Ezekiel+37:9&v=kjv&l=en opens with that verse; ?embed=1 is the devotional's window onto it, ?back=1 came from the Bible.
+     The words come from the Bible versions that are free to print (public domain, or the Hindi IRV with its CC BY-SA line); versions under
+     copyright (NET, ESV) wait for permission. A picture is made on the server (/api/picture) with a few a day for each person; a photo of
+     one's own is drawn here in the browser and never leaves the phone. -->
+<style>
+@font-face{font-family:'MFHobo';src:url(/fish-lang/hobo.woff2) format('woff2');font-display:block}
+:root{--bg:#000;--card:#0d0d0f;--card2:#16171b;--line:rgba(200,215,218,.16);--text:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--gold:#f5d76e;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font:16px/1.5 'Archivo',system-ui,sans-serif;-webkit-font-smoothing:antialiased;padding-bottom:max(24px,env(safe-area-inset-bottom))}
+button,select,input,textarea{font:inherit;color:inherit}
+.bar{position:sticky;top:0;z-index:5;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:max(10px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) 10px max(12px,env(safe-area-inset-left))}
+.bar h1{margin:0;font:600 1.1rem 'Fraunces',Georgia,serif;text-align:center;white-space:nowrap}
+.ib{justify-self:start;border:1px solid var(--line);background:none;border-radius:999px;height:40px;padding:0 14px;font-weight:700;font-size:.9rem;cursor:pointer}
+main{max-width:760px;margin:0 auto;padding:14px max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left));display:grid;gap:14px}
+.stage{position:relative;display:flex;justify-content:center}
+canvas{display:block;max-width:100%;max-height:58vh;width:auto;height:auto;border-radius:14px;box-shadow:0 20px 50px -20px rgba(0,0,0,.9);touch-action:none;cursor:grab;background:#111}
+canvas:active{cursor:grabbing}
+.hint{text-align:center;color:var(--dim);font-size:.82rem;margin:-6px 0 0}
+.acts{display:flex;gap:10px;justify-content:center}
+.btn{border:0;border-radius:999px;height:46px;padding:0 22px;font-weight:700;cursor:pointer;background:#fff;color:#0b0f14}
+.btn.alt{background:none;color:var(--text);border:1.5px solid rgba(255,255,255,.4)}
+.btn[disabled]{opacity:.5;cursor:default}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:10px;min-width:0}
+.sec h2{margin:0;font:800 .74rem 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row>*{min-width:0}
+input[type=text],textarea,select{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:84px;font:1rem/1.5 'Spectral',Georgia,serif}
+select{height:44px;padding:0 10px}
+.ref{flex:2 1 180px}.ver{flex:1 1 140px}
+.seg{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:var(--card2);border:1px solid var(--line);flex-wrap:wrap}
+.seg button{border:0;background:none;border-radius:999px;padding:7px 13px;font-weight:700;font-size:.86rem;cursor:pointer;color:var(--dim)}
+.seg button[aria-pressed=true]{background:#fff;color:#0b0f14}
+.sw{display:flex;gap:8px;flex-wrap:wrap}
+.sw button{width:42px;height:42px;border-radius:50%;border:2px solid transparent;cursor:pointer}
+.sw button[aria-pressed=true]{border-color:#fff;box-shadow:0 0 0 2px #000 inset}
+.pane[hidden]{display:none}
+label.sl{display:flex;align-items:center;gap:10px;font-size:.9rem;color:var(--dim)}
+label.sl input{flex:1}
+.msg{font-size:.88rem;color:var(--gold);margin:0}.msg:empty{display:none}
+.left{font-size:.82rem;color:var(--dim)}
+.file{position:relative;overflow:hidden}
+.file input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.note{font-size:.78rem;color:var(--dim);margin:0}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #93bff5;outline-offset:2px}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .8s linear infinite;vertical-align:-2px;margin-right:6px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+</style>
+</head>
+<body>
+<div class="bar"><div class="in"><button type="button" class="ib" id="close"></button><h1 id="ttl"></h1><span></span></div></div>
+<main>
+  <div class="stage"><canvas id="cv" width="1080" height="1080" aria-label=""></canvas></div>
+  <p class="hint" id="hint"></p>
+  <div class="acts"><button type="button" class="btn" id="share"></button><button type="button" class="btn alt" id="save"></button></div>
+  <p class="msg" id="msg" role="status"></p>
+
+  <section class="sec">
+    <h2 id="hVerse"></h2>
+    <div class="row"><input type="text" class="ref" id="ref" autocomplete="off" aria-label=""><select class="ver" id="ver" aria-label=""></select><button type="button" class="btn alt" id="load"></button></div>
+    <textarea id="txt" aria-label=""></textarea>
+  </section>
+
+  <section class="sec">
+    <h2 id="hBg"></h2>
+    <div class="seg" role="group" id="bgSeg"><button type="button" data-p="col" aria-pressed="true"></button><button type="button" data-p="ph" aria-pressed="false"></button><button type="button" data-p="mk" aria-pressed="false"></button></div>
+    <div class="pane" id="pCol"><div class="sw" id="sw"></div></div>
+    <div class="pane" id="pPh" hidden><span class="btn alt file" style="display:inline-flex;align-items:center"><span id="upL"></span><input type="file" id="up" accept="image/*"></span></div>
+    <div class="pane" id="pMk" hidden>
+      <textarea id="desc" maxlength="300" style="min-height:64px;font-family:'Archivo',sans-serif" aria-label=""></textarea>
+      <div class="row"><button type="button" class="btn" id="make"></button><span class="left" id="left"></span></div>
+    </div>
+    <label class="sl"><span id="dimL"></span><input type="range" id="dim" min="0" max="80" value="30"></label>
+  </section>
+
+  <section class="sec">
+    <h2 id="hTx"></h2>
+    <div class="row"><div class="seg" role="group" id="fnSeg"><button type="button" data-f="serif" aria-pressed="true">Aa</button><button type="button" data-f="display" aria-pressed="false" style="font-family:'Fraunces',serif">Aa</button><button type="button" data-f="sans" aria-pressed="false" style="font-family:'Archivo',sans-serif">Aa</button></div>
+      <div class="seg" role="group" id="tcSeg"><button type="button" data-c="light" aria-pressed="true"></button><button type="button" data-c="dark" aria-pressed="false"></button></div></div>
+    <label class="sl"><span id="szL"></span><input type="range" id="sz" min="36" max="110" value="66"></label>
+    <div class="seg" role="group" id="shSeg"><button type="button" data-s="square" aria-pressed="true"></button><button type="button" data-s="tall" aria-pressed="false"></button><button type="button" data-s="story" aria-pressed="false"></button></div>
+    <p class="note" id="vnote"></p>
+  </section>
+</main>
+<script>
+(function(){
+  function $(i){ return document.getElementById(i); }
+  function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
+  var Q=new URLSearchParams(location.search), EMBED=Q.get('embed')==='1';
+  var S={en:{t:'Picture verse',x:'Close',vv:'Verse',rf:'Reference',bb:'Bible',show:'Show',bg:'Background',col:'Colors',ph:'My photo',mk:'Make one',up:'Choose a photo',dsc:'Describe the picture',dph:'Sunrise over a calm sea',go:'Make the picture',wait:'Making your picture… this takes about 20 seconds.',left:'{n} left today',mine:'That’s all for today. Upload your own photo, or make more tomorrow.',all:'Today’s pictures are all made. Upload your own photo, or try tomorrow.',off:'Making pictures isn’t switched on yet. Upload your own photo instead.',blk:'That picture can’t be made. Try different words.',fail:'The picture couldn’t be made just now. Try again.',tx:'Words',fn:'Font',sz:'Size',lt:'Light',dk:'Dark',dim:'Shade',shp:'Shape',sq:'Square',tl:'Tall',st:'Story',save:'Save',share:'Share',drag:'Drag the words to move them.',nf:'The {v} can’t be used in pictures yet. Showing the KJV.',nov:'That verse couldn’t be found. Check the book, chapter and verse.'},
+  es:{t:'Versículo con imagen',x:'Cerrar',vv:'Versículo',rf:'Cita',bb:'Biblia',show:'Mostrar',bg:'Fondo',col:'Colores',ph:'Mi foto',mk:'Crear una',up:'Elegir una foto',dsc:'Describe la imagen',dph:'Amanecer sobre un mar en calma',go:'Crear la imagen',wait:'Creando tu imagen… tarda unos 20 segundos.',left:'Te quedan {n} hoy',mine:'Eso es todo por hoy. Sube tu propia foto o crea más mañana.',all:'Ya se crearon todas las imágenes de hoy. Sube tu propia foto o inténtalo mañana.',off:'La creación de imágenes aún no está activada. Sube tu propia foto.',blk:'Esa imagen no se puede crear. Prueba con otras palabras.',fail:'No se pudo crear la imagen ahora. Inténtalo de nuevo.',tx:'Texto',fn:'Letra',sz:'Tamaño',lt:'Claro',dk:'Oscuro',dim:'Sombra',shp:'Forma',sq:'Cuadrada',tl:'Alta',st:'Historia',save:'Guardar',share:'Compartir',drag:'Arrastra el texto para moverlo.',nf:'La {v} aún no se puede usar en imágenes. Se muestra la KJV.',nov:'No se encontró ese versículo. Revisa el libro, el capítulo y el versículo.'},
+  tl:{t:'Talata sa larawan',x:'Isara',vv:'Talata',rf:'Sanggunian',bb:'Biblia',show:'Ipakita',bg:'Likuran',col:'Mga kulay',ph:'Aking larawan',mk:'Gumawa',up:'Pumili ng larawan',dsc:'Ilarawan ang larawan',dph:'Pagsikat ng araw sa payapang dagat',go:'Gawin ang larawan',wait:'Ginagawa ang iyong larawan… mga 20 segundo ito.',left:'{n} pa ngayong araw',mine:'Hanggang dito muna ngayong araw. Mag-upload ng sariling larawan, o gumawa ulit bukas.',all:'Naubos na ang mga larawan ngayong araw. Mag-upload ng sariling larawan, o subukan bukas.',off:'Hindi pa bukas ang paggawa ng larawan. Mag-upload na lang ng sariling larawan.',blk:'Hindi magagawa ang larawang iyan. Subukan ang ibang salita.',fail:'Hindi nagawa ang larawan ngayon. Subukan muli.',tx:'Mga salita',fn:'Font',sz:'Laki',lt:'Maliwanag',dk:'Madilim',dim:'Lilim',shp:'Hugis',sq:'Parisukat',tl:'Mataas',st:'Story',save:'I-save',share:'Ibahagi',drag:'I-drag ang mga salita para ilipat.',nf:'Hindi pa magagamit ang {v} sa mga larawan. KJV ang ipinapakita.',nov:'Hindi nakita ang talatang iyan. Suriin ang aklat, kabanata at talata.'},
+  zh:{t:'经文图片',x:'关闭',vv:'经文',rf:'出处',bb:'圣经',show:'显示',bg:'背景',col:'颜色',ph:'我的照片',mk:'生成图片',up:'选择照片',dsc:'描述你想要的图片',dph:'平静海面上的日出',go:'生成图片',wait:'正在生成图片……大约需要20秒。',left:'今天还剩 {n} 张',mine:'今天的次数已用完。可以上传自己的照片，或明天再来。',all:'今天的图片额度已用完。可以上传自己的照片，或明天再试。',off:'图片生成功能尚未开启。请上传自己的照片。',blk:'无法生成这张图片。请换个说法。',fail:'暂时无法生成图片。请重试。',tx:'文字',fn:'字体',sz:'大小',lt:'浅色',dk:'深色',dim:'遮暗',shp:'形状',sq:'方形',tl:'竖版',st:'快拍',save:'保存',share:'分享',drag:'拖动文字可以移动位置。',nf:'{v} 暂时不能用于图片。改为显示 KJV。',nov:'找不到这节经文。请检查书卷、章和节。'},
+  hi:{t:'पद चित्र',x:'बंद करें',vv:'पद',rf:'संदर्भ',bb:'बाइबल',show:'दिखाएँ',bg:'पृष्ठभूमि',col:'रंग',ph:'मेरी फ़ोटो',mk:'एक बनाएँ',up:'फ़ोटो चुनें',dsc:'चित्र का वर्णन करें',dph:'शांत समुद्र पर सूर्योदय',go:'चित्र बनाएँ',wait:'आपका चित्र बन रहा है… लगभग 20 सेकंड लगेंगे।',left:'आज {n} बाकी',mine:'आज के लिए इतना ही। अपनी फ़ोटो अपलोड करें, या कल और बनाएँ।',all:'आज के सारे चित्र बन चुके हैं। अपनी फ़ोटो अपलोड करें, या कल कोशिश करें।',off:'चित्र बनाना अभी चालू नहीं है। अपनी फ़ोटो अपलोड करें।',blk:'यह चित्र नहीं बन सकता। दूसरे शब्द आज़माएँ।',fail:'अभी चित्र नहीं बन सका। फिर कोशिश करें।',tx:'शब्द',fn:'फ़ॉन्ट',sz:'आकार',lt:'हल्का',dk:'गहरा',dim:'छाया',shp:'रूप',sq:'चौकोर',tl:'लंबा',st:'स्टोरी',save:'सहेजें',share:'साझा करें',drag:'शब्दों को खिसकाने के लिए खींचें।',nf:'{v} अभी चित्रों में उपयोग नहीं हो सकता। KJV दिखाया जा रहा है।',nov:'यह पद नहीं मिला। पुस्तक, अध्याय और पद जाँचें।'},
+  el:{t:'Εδάφιο σε εικόνα',x:'Κλείσιμο',vv:'Εδάφιο',rf:'Παραπομπή',bb:'Βίβλος',show:'Εμφάνιση',bg:'Φόντο',col:'Χρώματα',ph:'Η φωτογραφία μου',mk:'Δημιουργία',up:'Διάλεξε φωτογραφία',dsc:'Περίγραψε την εικόνα',dph:'Ανατολή πάνω από ήρεμη θάλασσα',go:'Φτιάξε την εικόνα',wait:'Η εικόνα σου φτιάχνεται… περίπου 20 δευτερόλεπτα.',left:'Απομένουν {n} σήμερα',mine:'Αυτά για σήμερα. Ανέβασε δική σου φωτογραφία ή φτιάξε κι άλλες αύριο.',all:'Οι σημερινές εικόνες τελείωσαν. Ανέβασε δική σου φωτογραφία ή δοκίμασε αύριο.',off:'Η δημιουργία εικόνων δεν είναι ακόμη ενεργή. Ανέβασε δική σου φωτογραφία.',blk:'Αυτή η εικόνα δεν μπορεί να γίνει. Δοκίμασε άλλες λέξεις.',fail:'Η εικόνα δεν έγινε αυτή τη στιγμή. Δοκίμασε ξανά.',tx:'Κείμενο',fn:'Γραμματοσειρά',sz:'Μέγεθος',lt:'Ανοιχτό',dk:'Σκούρο',dim:'Σκίαση',shp:'Σχήμα',sq:'Τετράγωνο',tl:'Ψηλό',st:'Story',save:'Αποθήκευση',share:'Κοινοποίηση',drag:'Σύρε το κείμενο για να το μετακινήσεις.',nf:'Η {v} δεν μπορεί ακόμη να μπει σε εικόνες. Εμφανίζεται η KJV.',nov:'Το εδάφιο δεν βρέθηκε. Έλεγξε βιβλίο, κεφάλαιο και εδάφιο.'},
+  de:{t:'Versbild',x:'Schließen',vv:'Vers',rf:'Stelle',bb:'Bibel',show:'Anzeigen',bg:'Hintergrund',col:'Farben',ph:'Mein Foto',mk:'Erstellen',up:'Foto wählen',dsc:'Beschreibe das Bild',dph:'Sonnenaufgang über ruhigem Meer',go:'Bild erstellen',wait:'Dein Bild wird erstellt … das dauert etwa 20 Sekunden.',left:'Heute noch {n}',mine:'Das war’s für heute. Lade dein eigenes Foto hoch oder erstelle morgen mehr.',all:'Für heute sind alle Bilder erstellt. Lade dein eigenes Foto hoch oder versuch es morgen.',off:'Bilder erstellen ist noch nicht eingeschaltet. Lade dein eigenes Foto hoch.',blk:'Dieses Bild kann nicht erstellt werden. Versuch andere Worte.',fail:'Das Bild konnte gerade nicht erstellt werden. Versuch es noch einmal.',tx:'Text',fn:'Schrift',sz:'Größe',lt:'Hell',dk:'Dunkel',dim:'Abdunkeln',shp:'Format',sq:'Quadrat',tl:'Hoch',st:'Story',save:'Speichern',share:'Teilen',drag:'Zieh den Text, um ihn zu verschieben.',nf:'Die {v} kann noch nicht in Bildern verwendet werden. Es wird die KJV gezeigt.',nov:'Der Vers wurde nicht gefunden. Prüfe Buch, Kapitel und Vers.'},
+  ko:{t:'말씀 그림',x:'닫기',vv:'말씀',rf:'구절',bb:'성경',show:'보기',bg:'배경',col:'색',ph:'내 사진',mk:'만들기',up:'사진 선택',dsc:'그림을 설명해 주세요',dph:'잔잔한 바다 위의 해돋이',go:'그림 만들기',wait:'그림을 만드는 중… 약 20초 걸립니다.',left:'오늘 {n}개 남음',mine:'오늘은 여기까지입니다. 내 사진을 올리거나 내일 더 만드세요.',all:'오늘 만들 수 있는 그림이 모두 끝났습니다. 내 사진을 올리거나 내일 다시 해 보세요.',off:'그림 만들기가 아직 켜져 있지 않습니다. 내 사진을 올려 주세요.',blk:'그 그림은 만들 수 없습니다. 다른 말로 해 보세요.',fail:'지금은 그림을 만들 수 없었습니다. 다시 해 보세요.',tx:'글자',fn:'글꼴',sz:'크기',lt:'밝게',dk:'어둡게',dim:'그늘',shp:'모양',sq:'정사각형',tl:'세로',st:'스토리',save:'저장',share:'공유',drag:'글자를 끌어서 옮기세요.',nf:'{v}은(는) 아직 그림에 쓸 수 없습니다. KJV로 보여 드립니다.',nov:'그 구절을 찾을 수 없습니다. 책, 장, 절을 확인하세요.'},
+  he:{t:'פסוק בתמונה',x:'סגירה',vv:'פסוק',rf:'מראה מקום',bb:'תנ״ך',show:'הצג',bg:'רקע',col:'צבעים',ph:'התמונה שלי',mk:'יצירה',up:'בחר תמונה',dsc:'תאר את התמונה',dph:'זריחה מעל ים שקט',go:'צור את התמונה',wait:'התמונה נוצרת… זה לוקח כ-20 שניות.',left:'נותרו {n} היום',mine:'זה הכול להיום. העלה תמונה משלך, או צור עוד מחר.',all:'כל התמונות של היום נוצרו. העלה תמונה משלך, או נסה מחר.',off:'יצירת תמונות עדיין לא פעילה. העלה תמונה משלך.',blk:'אי אפשר ליצור את התמונה הזו. נסה מילים אחרות.',fail:'לא ניתן היה ליצור את התמונה כרגע. נסה שוב.',tx:'טקסט',fn:'גופן',sz:'גודל',lt:'בהיר',dk:'כהה',dim:'הצללה',shp:'צורה',sq:'ריבוע',tl:'גבוה',st:'סטורי',save:'שמירה',share:'שיתוף',drag:'גרור את הטקסט כדי להזיז אותו.',nf:'את {v} עדיין אי אפשר לשים בתמונות. מוצג KJV.',nov:'הפסוק לא נמצא. בדוק ספר, פרק ופסוק.'},
+  ar:{t:'آية في صورة',x:'إغلاق',vv:'الآية',rf:'الشاهد',bb:'الكتاب المقدس',show:'عرض',bg:'الخلفية',col:'ألوان',ph:'صورتي',mk:'إنشاء صورة',up:'اختر صورة',dsc:'صف الصورة',dph:'شروق الشمس فوق بحر هادئ',go:'أنشئ الصورة',wait:'جارٍ إنشاء صورتك… يستغرق ذلك نحو 20 ثانية.',left:'متبقٍ اليوم: {n}',mine:'هذا كل شيء لليوم. ارفع صورتك الخاصة، أو أنشئ المزيد غدًا.',all:'اكتملت صور اليوم. ارفع صورتك الخاصة، أو حاول غدًا.',off:'إنشاء الصور غير مفعّل بعد. ارفع صورتك الخاصة.',blk:'لا يمكن إنشاء هذه الصورة. جرّب كلمات أخرى.',fail:'تعذّر إنشاء الصورة الآن. حاول مرة أخرى.',tx:'النص',fn:'الخط',sz:'الحجم',lt:'فاتح',dk:'داكن',dim:'تظليل',shp:'الشكل',sq:'مربع',tl:'طولي',st:'قصة',save:'حفظ',share:'مشاركة',drag:'اسحب النص لتحريكه.',nf:'لا يمكن استخدام {v} في الصور بعد. تُعرض KJV.',nov:'لم يتم العثور على هذه الآية. تحقّق من السفر والأصحاح والآية.'},
+  ru:{t:'Стих на картинке',x:'Закрыть',vv:'Стих',rf:'Ссылка',bb:'Библия',show:'Показать',bg:'Фон',col:'Цвета',ph:'Моё фото',mk:'Создать',up:'Выбрать фото',dsc:'Опишите картинку',dph:'Рассвет над тихим морем',go:'Создать картинку',wait:'Картинка создаётся… это займёт около 20 секунд.',left:'Осталось сегодня: {n}',mine:'На сегодня всё. Загрузите своё фото или создайте ещё завтра.',all:'Сегодняшние картинки закончились. Загрузите своё фото или попробуйте завтра.',off:'Создание картинок пока не включено. Загрузите своё фото.',blk:'Такую картинку создать нельзя. Попробуйте другие слова.',fail:'Сейчас не получилось создать картинку. Попробуйте ещё раз.',tx:'Текст',fn:'Шрифт',sz:'Размер',lt:'Светлый',dk:'Тёмный',dim:'Затемнение',shp:'Форма',sq:'Квадрат',tl:'Высокий',st:'История',save:'Сохранить',share:'Поделиться',drag:'Перетащите текст, чтобы передвинуть его.',nf:'{v} пока нельзя использовать в картинках. Показан KJV.',nov:'Стих не найден. Проверьте книгу, главу и стих.'}};
+  var L=S[Q.get('l')]?Q.get('l'):(S[ls('mf-lang')]?ls('mf-lang'):'en'), T=S[L];
+  document.documentElement.lang=L; if(/^(he|ar)$/.test(L)) document.documentElement.dir='rtl';
+  var B=[["Genesis",50],["Exodus",40],["Leviticus",27],["Numbers",36],["Deuteronomy",34],["Joshua",24],["Judges",21],["Ruth",4],["1 Samuel",31],["2 Samuel",24],["1 Kings",22],["2 Kings",25],["1 Chronicles",29],["2 Chronicles",36],["Ezra",10],["Nehemiah",13],["Esther",10],["Job",42],["Psalm",150],["Proverbs",31],["Ecclesiastes",12],["Song of Solomon",8],["Isaiah",66],["Jeremiah",52],["Lamentations",5],["Ezekiel",48],["Daniel",12],["Hosea",14],["Joel",3],["Amos",9],["Obadiah",1],["Jonah",4],["Micah",7],["Nahum",3],["Habakkuk",3],["Zephaniah",3],["Haggai",2],["Zechariah",14],["Malachi",4],["Matthew",28],["Mark",16],["Luke",24],["John",21],["Acts",28],["Romans",16],["1 Corinthians",16],["2 Corinthians",13],["Galatians",6],["Ephesians",6],["Philippians",4],["Colossians",4],["1 Thessalonians",5],["2 Thessalonians",3],["1 Timothy",6],["2 Timothy",4],["Titus",3],["Philemon",1],["Hebrews",13],["James",5],["1 Peter",5],["2 Peter",3],["1 John",5],["2 John",1],["3 John",1],["Jude",1],["Revelation",22]];
+  // the versions a picture can carry: free to print and share. NET and ESV wait for permission (docs/BIBLE-PERMISSIONS.md)
+  var VERS=[{k:'kjv',n:'King James Version',s:'KJV'},{k:'web',n:'World English Bible',s:'WEB'},{k:'asv',n:'American Standard Version',s:'ASV'},{k:'ylt',n:'Young’s Literal Translation',s:'YLT'},
+    {k:'darby',n:'Darby Translation',s:'Darby'},{k:'bbe',n:'Bible in Basic English',s:'BBE'},{k:'dra',n:'Douay-Rheims',s:'DRA'},
+    {k:'rv1909',l:'es',f:'es',n:'Reina-Valera (1909)',s:'RV 1909'},{k:'ab1905',l:'tl',f:'tl',n:'Ang Biblia (1905)',s:'AB 1905'},{k:'cuv',l:'zh',f:'zh',n:'和合本 (1919)',s:'和合本'},
+    {k:'irv',l:'hi',f:'hi',n:'इंडियन रिवाइज्ड वर्जन (IRV)',s:'IRV · CC BY-SA 4.0'},{k:'vamvas',l:'el',f:'el',n:'Βάμβας (1850)',s:'Βάμβας'},{k:'elb',l:'de',f:'de',n:'Elberfelder (1905)',s:'Elberfelder 1905'},
+    {k:'krv',l:'ko',f:'ko',n:'개역한글 (1961)',s:'개역한글'},{k:'hmt',l:'he',f:'he',n:'המקרא',s:'',rtl:1},{k:'svd',l:'ar',f:'ar',n:'فاندايك',s:'فاندايك',rtl:1},{k:'synodal',l:'ru',f:'ru',n:'Синодальный (1876)',s:'Синодальный'}];
+  var LOCKED={net:'NET',esv:'ESV',nkjv:'NKJV',niv:'NIV',nlt:'NLT'};
+  var BYL={es:'rv1909',tl:'ab1905',zh:'cuv',hi:'irv',el:'vamvas',de:'elb',ko:'krv',he:'hmt',ar:'svd',ru:'synodal'};
+  function vby(k){ return VERS.filter(function(v){ return v.k===k; })[0]; }
+  function bookIdx(name){ var n=String(name||'').trim().toLowerCase().replace(/^psalms$/,'psalm'); for(var i=0;i<B.length;i++){ if(B[i][0].toLowerCase()===n) return i; }
+    for(i=0;i<B.length;i++){ if(B[i][0].toLowerCase().replace(/ /g,'').indexOf(n.replace(/[ .]/g,''))===0) return i; } return -1; }
+  function parseRef(s){ var m=/^\s*(.+?)\s+(\d+)\s*:\s*(\d+)(?:\s*[-–—]\s*(\d+))?\s*$/.exec(String(s||'').replace(/\+/g,' ')); if(!m) return null; var b=bookIdx(m[1]); if(b<0) return null;
+    var v1=+m[3], v2=m[4]?Math.max(+m[4],v1):v1; return {b:b,c:+m[2],v1:v1,v2:Math.min(v2,v1+11)}; }
+  function chapter(b,c,v){ var nm=B[b][0].replace(/ /g,'_')+'-'+c+'.json';
+    if(v.k==='kjv'||v.f) return fetch('/fish-lang/bible/'+(v.f||'kjv')+'/'+nm).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return j.t||[]; });
+    return fetch('https://bible-api.com/'+encodeURIComponent(B[b][0]+' '+c)+'?translation='+v.k).then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .then(function(j){ var t=[]; (j.verses||[]).forEach(function(x){ t[x.verse-1]=x.text.replace(/\s+/g,' ').trim(); }); return t; }); }
+
+  // ── the picture's settings, the last ones used kept for next time ──
+  var ST={bg:'g0',img:null,dim:30,font:'serif',tc:'light',size:66,shape:'square',x:.5,y:.5};
+  try{ var o=JSON.parse(ls('mf-pic')||'{}'); ['bg','font','tc','size','shape','dim'].forEach(function(k){ if(o[k]!==undefined) ST[k]=o[k]; }); }catch(e){}
+  if(ST.bg==='img') ST.bg='g0';
+  function keep(){ ls('mf-pic',JSON.stringify({bg:ST.bg,font:ST.font,tc:ST.tc,size:ST.size,shape:ST.shape,dim:ST.dim})); }
+  var SHAPES={square:[1080,1080],tall:[1080,1350],story:[1080,1920]};
+  var GR={g0:['#0b1a33','#2a5fb0','#06080b'],g1:['#3b1f0e','#d98c3a','#f5d76e'],g2:['#062a2e','#1f7a7a','#bfe3d4'],g3:['#1d2414','#5f7a3a','#d8d2a8'],g4:['#000','#16171b','#000'],g5:['#f7f5ef','#ece9df','#d9d2bf']};
+  var FONTS={serif:"500 {s}px 'Spectral', Georgia, serif",display:"500 {s}px 'Fraunces', Georgia, serif",sans:"600 {s}px 'Archivo', system-ui, sans-serif"};
+  var V=null, REF='', TEXT='', LABEL='', RL=Q.get('rl')||'', RLFOR='';
+
+  // ── words ──
+  function setText(){
+    var vk=$('ver').value, v=vby(vk)||VERS[0], p=parseRef($('ref').value), msg=$('msg'); msg.textContent='';
+    if(!p){ msg.textContent=T.nov; return; }
+    V=v; ls('mf-pic-ver',v.k);
+    chapter(p.b,p.c,v).then(function(t){ var a=[]; for(var i=p.v1;i<=p.v2;i++){ if(t[i-1]) a.push(t[i-1]); } if(!a.length) throw 0;
+      REF=B[p.b][0]+' '+p.c+':'+p.v1+(p.v2>p.v1?'–'+p.v2:''); TEXT=a.join(' ').replace(/\s+/g,' ').replace(/^[¶\s]+/,'').trim(); $('txt').value=TEXT; label(); draw();
+    }).catch(function(){ msg.textContent=T.nov; }); }
+  function label(){ var lab=(RL&&RLFOR===REF)?RL:REF; LABEL=lab+(V&&V.s?' ('+V.s+')':''); }
+
+  // ── drawing ──
+  var cv=$('cv'), cx=cv.getContext('2d'), BOX=null;
+  function wrap(t,max){ var out=[], line='', toks=t.split(/(\s+)/).filter(function(x){ return x!==''; });
+    var tk=[]; toks.forEach(function(w){ if(cx.measureText(w).width>max){ Array.from(w).forEach(function(ch){ tk.push(ch); }); } else tk.push(w); });
+    tk.forEach(function(w){ var tryL=line+w; if(cx.measureText(tryL.trim()).width>max&&line.trim()){ out.push(line.trim()); line=/^\s+$/.test(w)?'':w; } else line=tryL; });
+    if(line.trim()) out.push(line.trim()); return out; }
+  function draw(){ var W=SHAPES[ST.shape][0], H=SHAPES[ST.shape][1]; if(cv.width!==W||cv.height!==H){ cv.width=W; cv.height=H; }
+    cx.save(); cx.setTransform(1,0,0,1,0,0); cx.clearRect(0,0,W,H);
+    if(ST.bg==='img'&&ST.img){ var im=ST.img, r=Math.max(W/im.width,H/im.height), w=im.width*r, h=im.height*r; cx.drawImage(im,(W-w)/2,(H-h)/2,w,h); }
+    else { var g=GR[ST.bg]||GR.g0, gr=cx.createLinearGradient(0,0,W*.3,H); gr.addColorStop(0,g[0]); gr.addColorStop(.55,g[1]); gr.addColorStop(1,g[2]); cx.fillStyle=gr; cx.fillRect(0,0,W,H); }
+    var light=ST.tc==='light', d=ST.dim/100;
+    if(d>0){ cx.fillStyle=light?'rgba(0,0,0,'+d+')':'rgba(255,255,255,'+d+')'; cx.fillRect(0,0,W,H); }
+    var t=$('txt').value.trim(), rtl=V&&V.rtl, s=ST.size*(W/1080), maxW=W*.82, lines, lh, refS, tall;
+    cx.direction=rtl?'rtl':'ltr'; cx.textAlign='center'; cx.textBaseline='middle';
+    for(var n=0;n<40;n++){ cx.font=FONTS[ST.font].replace('{s}',Math.round(s)); lines=wrap(rtl?t:'“'+t+'”',maxW); lh=s*1.32; refS=Math.max(24,s*.46); tall=lines.length*lh+refS*2.2; if(tall<=H*.78||s<26) break; s*=.93; }
+    var cy=Math.max(tall/2+H*.06,Math.min(H-tall/2-H*.08,ST.y*H)), cxp=Math.max(maxW/2+W*.06,Math.min(W-maxW/2-W*.06,ST.x*W)), top=cy-tall/2+lh/2;
+    cx.fillStyle=light?'#fff':'#14181c'; cx.shadowColor=light?'rgba(0,0,0,.55)':'rgba(255,255,255,.45)'; cx.shadowBlur=s*.28;
+    lines.forEach(function(ln,i){ cx.fillText(ln,cxp,top+i*lh); });
+    cx.font="700 "+Math.round(refS)+"px 'Archivo', system-ui, sans-serif"; cx.globalAlpha=.9; cx.fillText(LABEL,cxp,top+(lines.length-1)*lh+lh*.5+refS*1.3); cx.globalAlpha=1;
+    BOX={x:cxp-maxW/2,y:cy-tall/2,w:maxW,h:tall};
+    // a small MannaFish at the foot of the picture
+    cx.shadowBlur=8; cx.font="400 "+Math.round(30*W/1080)+"px 'MFHobo', 'Archivo', sans-serif"; cx.globalAlpha=.75; cx.direction='ltr'; cx.fillText('MannaFish',W/2,H-34*W/1080); cx.globalAlpha=1;
+    cx.restore(); }
+
+  // ── drag the words ──
+  var drag=null;
+  function pt(e){ var r=cv.getBoundingClientRect(); return {x:(e.clientX-r.left)/r.width*cv.width,y:(e.clientY-r.top)/r.height*cv.height}; }
+  cv.addEventListener('pointerdown',function(e){ var p=pt(e); drag={x0:p.x,y0:p.y,sx:ST.x,sy:ST.y}; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointermove',function(e){ if(!drag) return; var p=pt(e); ST.x=drag.sx+(p.x-drag.x0)/cv.width; ST.y=drag.sy+(p.y-drag.y0)/cv.height; draw(); });
+  cv.addEventListener('pointerup',function(){ drag=null; }); cv.addEventListener('pointercancel',function(){ drag=null; });
+
+  // ── the controls ──
+  function seg(id,attr,val,fn){ var g=$(id); [].forEach.call(g.querySelectorAll('button'),function(b){ b.setAttribute('aria-pressed',String(b.dataset[attr]===val)); });
+    g.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; [].forEach.call(g.querySelectorAll('button'),function(x){ x.setAttribute('aria-pressed',String(x===b)); }); fn(b.dataset[attr]); }); }
+  seg('fnSeg','f',ST.font,function(v){ ST.font=v; keep(); draw(); });
+  seg('tcSeg','c',ST.tc,function(v){ ST.tc=v; keep(); draw(); });
+  seg('shSeg','s',ST.shape,function(v){ ST.shape=v; keep(); draw(); });
+  seg('bgSeg','p','col',function(v){ $('pCol').hidden=v!=='col'; $('pPh').hidden=v!=='ph'; $('pMk').hidden=v!=='mk'; if(v==='mk') leftNow(); });
+  $('sw').innerHTML=Object.keys(GR).map(function(k){ var g=GR[k]; return '<button type="button" data-g="'+k+'" aria-pressed="'+(k===ST.bg)+'" aria-label="'+k+'" style="background:linear-gradient(135deg,'+g[0]+','+g[1]+','+g[2]+')"></button>'; }).join('');
+  $('sw').addEventListener('click',function(e){ var b=e.target.closest('[data-g]'); if(!b) return; ST.bg=b.dataset.g; ST.tc=b.dataset.g==='g5'?'dark':ST.tc; [].forEach.call($('sw').children,function(x){ x.setAttribute('aria-pressed',String(x===b)); });
+    [].forEach.call($('tcSeg').children,function(x){ x.setAttribute('aria-pressed',String(x.dataset.c===ST.tc)); }); keep(); draw(); });
+  $('dim').value=ST.dim; $('dim').addEventListener('input',function(){ ST.dim=+this.value; keep(); draw(); });
+  $('sz').value=ST.size; $('sz').addEventListener('input',function(){ ST.size=+this.value; keep(); draw(); });
+  $('txt').addEventListener('input',draw);
+  $('load').addEventListener('click',setText); $('ref').addEventListener('keydown',function(e){ if(e.key==='Enter') setText(); });
+  $('ver').addEventListener('change',setText);
+  function useImg(src,isData){ var im=new Image(); im.onload=function(){ ST.img=im; ST.bg='img'; if(ST.dim<20){ ST.dim=30; $('dim').value=30; } draw(); }; im.src=src; }
+  $('up').addEventListener('change',function(){ var f=this.files&&this.files[0]; if(!f) return; useImg(URL.createObjectURL(f)); });
+  function leftNow(){ fetch('/api/picture').then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(j) showLeft(j.left); }).catch(function(){}); }
+  function showLeft(n){ $('left').textContent=T.left.replace('{n}',n); $('make').disabled=n<=0; if(n<=0) $('msg').textContent=T.mine; }
+  $('make').addEventListener('click',function(){ var d=$('desc').value.trim(), b=this; if(d.length<3){ $('desc').focus(); return; }
+    b.disabled=true; b.innerHTML='<span class="spin" aria-hidden="true"></span>'+T.go; $('msg').textContent=T.wait;
+    fetch('/api/picture',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({prompt:d,shape:ST.shape})})
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return {ok:r.ok,j:j}; }); })
+      .then(function(x){ b.textContent=T.go; b.disabled=false;
+        if(x.ok&&x.j.img){ $('msg').textContent=''; useImg(x.j.img); showLeft(x.j.left); return; }
+        var c=x.j.code; $('msg').textContent=c==='mine'?T.mine:c==='all'?T.all:c==='off'?T.off:c==='blocked'?T.blk:T.fail; if(c==='mine') showLeft(0); })
+      .catch(function(){ b.textContent=T.go; b.disabled=false; $('msg').textContent=T.fail; }); });
+
+  // ── save and share ──
+  function blob(){ return new Promise(function(res){ cv.toBlob(function(b){ res(b); },'image/jpeg',.92); }); }
+  function fname(){ return 'MannaFish '+(REF||'verse').replace(/[:–]/g,'-')+'.jpg'; }
+  $('save').addEventListener('click',function(){ blob().then(function(b){ var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=fname(); document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },4000); }); });
+  $('share').addEventListener('click',function(){ blob().then(function(b){ var f=new File([b],fname(),{type:'image/jpeg'}), d={files:[f],title:LABEL,text:LABEL+' · manna-fish.com'};
+    if(navigator.canShare&&navigator.canShare({files:[f]})) navigator.share(d).catch(function(){}); else $('save').click(); }); });
+  if(!(navigator.canShare&&(function(){ try{ return navigator.canShare({files:[new File([''],'a.jpg',{type:'image/jpeg'})]}); }catch(e){ return false; } })())) $('share').hidden=true;
+
+  // ── close: back to the Bible, or to the devotional it opened over, or home ──
+  $('close').addEventListener('click',function(){ if(Q.get('back')==='1'&&history.length>1){ history.back(); return; }
+    if(EMBED){ try{ parent.postMessage({mf:'bible-close'},location.origin); }catch(e){} return; } location.href='/'; });
+
+  // ── words on the page ──
+  document.title='MannaFish · '+T.t; $('ttl').textContent=T.t; $('close').textContent=(document.documentElement.dir==='rtl'?'› ':'‹ ')+T.x;
+  $('hint').textContent=T.drag; $('share').textContent=T.share; $('save').textContent=T.save; $('hVerse').textContent=T.vv; $('ref').setAttribute('aria-label',T.rf); $('ver').setAttribute('aria-label',T.bb);
+  $('load').textContent=T.show; $('txt').setAttribute('aria-label',T.vv); $('hBg').textContent=T.bg; var bs=$('bgSeg').children; bs[0].textContent=T.col; bs[1].textContent=T.ph; bs[2].textContent=T.mk;
+  $('upL').textContent=T.up; $('desc').placeholder=T.dph; $('desc').setAttribute('aria-label',T.dsc); $('make').textContent=T.go; $('dimL').textContent=T.dim; $('hTx').textContent=T.tx;
+  var tc=$('tcSeg').children; tc[0].textContent=T.lt; tc[1].textContent=T.dk; $('szL').textContent=T.sz; var sh=$('shSeg').children; sh[0].textContent=T.sq; sh[1].textContent=T.tl; sh[2].textContent=T.st;
+  $('fnSeg').setAttribute('aria-label',T.fn); cv.setAttribute('aria-label',T.t);
+  var en=VERS.filter(function(v){ return !v.l; }), ot=VERS.filter(function(v){ return v.l; }), op=function(v){ return '<option value="'+v.k+'">'+v.n.replace(/</g,'&lt;')+'</option>'; };
+  $('ver').innerHTML='<optgroup label="English">'+en.map(op).join('')+'</optgroup><optgroup label="Other languages">'+ot.map(op).join('')+'</optgroup>';
+
+  // ── start ──
+  var v0=Q.get('v')||ls('mf-pic-ver')||BYL[L]||'kjv';
+  if(LOCKED[v0]){ $('vnote').textContent=T.nf.replace('{v}',LOCKED[v0]); v0='kjv'; }
+  if(!vby(v0)) v0='kjv'; $('ver').value=v0;
+  var r0=Q.get('r')||'John 3:16', p0=parseRef(r0); if(p0) RLFOR=B[p0.b][0]+' '+p0.c+':'+p0.v1+(p0.v2>p0.v1?'–'+p0.v2:'');
+  $('ref').value=r0.replace(/\+/g,' ');
+  Promise.all(['Spectral','Fraunces','Archivo','MFHobo'].map(function(f){ return document.fonts?document.fonts.load("500 40px '"+f+"'").catch(function(){}):null; })).then(function(){ draw(); setText(); });
+  draw();
+})();
+</script>
+</body>
+</html>
