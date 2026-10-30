@@ -48,8 +48,9 @@ These can go on printed fish, cards and anything given away with no letter. **Pu
 | Persian | Old Persian Version 1895 | Public domain (check) |
 
 **Not on this list, so ask first:** Reina-Valera 1960, NIV, ESV, NKJV, NLT, NET (print), Swahili Union Version 1952, today's Japanese and Korean editions, Ang Biblia 2001, and the Greek FPB.
-Note: some fish on the site were drawn with Spanish RVR1960, Tagalog Ang Biblia 2001 and Greek FPB wording. Redraw those in Reina-Valera 1909,
-Ang Biblia 1905 and Vamvas before printing them.
+Done 30 Oct: the Spanish fish now use Reina-Valera 1909 and the Greek fish Vamvas (tools/fish-format/lang-lines.json). The Tagalog fish
+already had the 1905 wording word for word; only their label changed, from (ABTAG) to (AB1905). The devotional's spoken verses in
+Spanish and Greek still use the newer wording (digital only); switching those is a separate step.
 
 ## The order to ask in
 
