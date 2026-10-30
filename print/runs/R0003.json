@@ -1,0 +1,16 @@
+{
+ "id": "R0003",
+ "title": "Gather · word study, sponsored by K-Tech Construction (mock-up)",
+ "status": "draft",
+ "qty": 100,
+ "fish": { "word": "GATHER", "lang": "en" },
+ "sponsor": { "name": "K-Tech Construction", "show": true },
+ "ship_to": "",
+ "back": {
+  "template": "study",
+  "text": "Still hungry? Do this word study & look up the following Scriptures",
+  "left": { "label": "Free porch quote", "to": "" },
+  "right": { "label": "Today's free MannaFish devotional", "to": "https://manna-fish.com/?devo=1" }
+ },
+ "notes": "Mock-up for Ken's brother. Waiting on the K-Tech logo and the porch page's address (visits arrive tagged utm_source=mannafish)."
+}

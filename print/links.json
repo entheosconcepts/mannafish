@@ -23,5 +23,15 @@
   "to": "https://manna-fish.com/?devo=1",
   "run": "R0002",
   "what": "Today's free MannaFish devotional"
+ },
+ "R0003s": {
+  "to": "",
+  "run": "R0003",
+  "what": "Free porch quote"
+ },
+ "R0003m": {
+  "to": "https://manna-fish.com/?devo=1",
+  "run": "R0003",
+  "what": "Today's free MannaFish devotional"
  }
 }

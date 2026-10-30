@@ -2,7 +2,8 @@
 // Every code on a card opens manna-fish.com/q/<code>: the scan is counted, then the person is sent where that code goes.
 // Where each code goes is print/links.json, written by tools/print/make.mjs from the runs in print/runs/, so a code
 // already printed can be pointed somewhere new without reprinting.
-//   GET /q/<code>               -> counts it, sends the person on (manna-fish.com when the code has no address yet)
+//   GET /q/<code>               -> counts it, sends the person on (manna-fish.com when the code has no address yet); another
+//                                  site gets utm_source=mannafish&utm_medium=card&utm_campaign=<code>, so its stats show the cards
 //   GET /api/qr/stats?k=        -> {codes: {code: {n, days: {date: n}, last}}}  (k = MF_ADMIN_KEY, or PROOF_KEY)
 import { getStore } from '@netlify/blobs';
 
@@ -22,6 +23,10 @@ export default async (req, context) => {
   let to = '';
   try { const r = await fetch(new URL('/print/links.json', url.origin)); if (r.ok) { const L = await r.json(); to = (L[code] && L[code].to) || ''; } } catch (e) { /* send them home */ }
   if (!/^https?:\/\//.test(to)) to = HOME;
+  // the sponsor's own site sees these visits as coming from the cards (most visitor stats read utm_ tags)
+  else if (!/(^|\.)manna-fish\.com$/.test(new URL(to).hostname)) { const u = new URL(to);
+    if (!u.searchParams.has('utm_source')) { u.searchParams.set('utm_source', 'mannafish'); u.searchParams.set('utm_medium', 'card'); u.searchParams.set('utm_campaign', code || 'card'); }
+    to = u.toString(); }
   if (code) {
     try { const s = db(), d = new Date().toISOString().slice(0, 10), o = (await s.get(code, { type: 'json' })) || { n: 0, days: {} };
       o.n++; o.days[d] = (o.days[d] || 0) + 1; o.last = new Date().toISOString(); await s.setJSON(code, o); } catch (e) { /* never block the person because the counter failed */ }

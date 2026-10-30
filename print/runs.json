@@ -49,6 +49,29 @@
     "Status is \"draft\": approve the proof before ordering."
    ],
    "made": "2026-10-30T16:39:16.520Z"
+  },
+  {
+   "id": "R0003",
+   "title": "Gather · word study, sponsored by K-Tech Construction (mock-up)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "word": "GATHER",
+    "lang": "en"
+   },
+   "sponsor": "K-Tech Construction",
+   "anonymous": false,
+   "codes": {
+    "main": "R0003",
+    "left": "R0003s",
+    "right": "R0003m"
+   },
+   "warn": [
+    "QR R0003s (Free porch quote) has no web address yet: it opens manna-fish.com until one is set.",
+    "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "made": "2026-10-30T17:37:12.784Z"
   }
  ]
 }
