@@ -21,13 +21,14 @@ what is still missing. `-printer-notes.md` is the note to send with the files, a
 ## A new run
 
 1. Copy `print/runs/R0001.json` to the next number and change it:
-   - `fish`: the word (`LIVE`, `LOVE`, ...) and the language (`en`, `es`, ...). Any fish in `fish/` works.
+   - `fish`: the word (`LIVE`, `LOVE`, ...) and the language (`en`, `es`, ...). Any fish in `fish/` works; for the others give its `id` too (`"id": "W19b"` is Build).
    - `qty`, `sponsor` (name, logo, `anonymous: true` to leave the name off), `status`.
    - `for`: who it is a gift through (name and logo), when the sponsor gives anonymously. The card then says
      "A gift to you through" that name, not "Sponsored by".
    - `back`, one of three:
      - `"template": "invite"`: the invitation card (heading, the logo at the top, the words, a big QR code `qr`).
      - `"template": "study"`: the word study of the fish (Greek, Hebrew, meanings, ten verses to look up), like the old word-study card.
+       The 24 fish have theirs already; for any other fish, write one in `print/study/<WORD>.json` (see `BUILD.json`).
      - `"template": "image"` with `"image": "assets/<file>.png"`: your own finished artwork, as it is.
      The invite and study backs end with the same strip: the `left` and `right` QR codes (each with a `label` and a web address in `to`)
      and who it is from in the middle.

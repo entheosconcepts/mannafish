@@ -37,7 +37,7 @@ const dataUrl = (file) => { const b = fs.readFileSync(file), ext = path.extname(
 // ── the fish ──
 function fishFile(f) {
   const id = String(f.word || f.id || '').toUpperCase(), l = f.lang || 'en';
-  const tries = [path.join(ROOT, 'fish', l, id + '.svg'), path.join(ROOT, 'fish', id + '.svg'), path.join(ROOT, 'fish', l, f.word + '.svg')];
+  const tries = [path.join(ROOT, 'fish', l, id + '.svg'), path.join(ROOT, 'fish', id + '.svg'), path.join(ROOT, 'fish', l, f.word + '.svg'), path.join(ROOT, 'fish', String(f.id || f.word) + '.svg')];
   const hit = tries.find((p) => fs.existsSync(p));
   if (!hit) throw new Error(`No fish found for ${JSON.stringify(f)} (looked in fish/${l}/ and fish/)`);
   return hit;
@@ -107,7 +107,9 @@ function wordData(id) {
     for (; j < s.length; j++) { const c = s[j]; if (q) { if (c === '\\') { j++; continue; } if (c === q) q = null; continue; }
       if (c === '"' || c === "'") q = c; else if (c === '{') d++; else if (c === '}') { d--; if (!d) break; } }
     WORDS = JSON.parse(s.slice(i, j + 1)); }
-  return WORDS[String(id).toUpperCase()] || null;
+  const k = String(id).toUpperCase(), own = path.join(PRINT, 'study', k + '.json');
+  // the other fish: a word study written for print, in print/study/<WORD>.json (the same fields)
+  return WORDS[k] || (fs.existsSync(own) ? JSON.parse(fs.readFileSync(own, 'utf8')) : null);
 }
 // the site's own Greek and Hebrew font, and the MannaFish lettering
 const GKHB = () => { const m = /font-family:'MFGkHb';src:url\((data:font\/ttf;base64,[A-Za-z0-9+/=]+)\)/.exec(fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8')); return m ? m[1] : ''; };
@@ -138,7 +140,7 @@ async function backHtml(run, codes, warn) {
   </div>`;
   const open = `<div class="pg"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${w}mm;height:${h}mm">`;
   if (B.template === 'study') {
-    const d = wordData(run.fish.word); if (!d) throw new Error(`No word study for ${run.fish.word} (only the 24 fish have one)`);
+    const d = wordData(run.fish.study || run.fish.word); if (!d) throw new Error(`No word study for ${run.fish.word}: add print/study/${String(run.fish.word).toUpperCase()}.json`);
     const refs = (d.refs || []).slice(0, B.refs || 10);
     const lang = (k, wd, lg, snd, m) => `<div class="lg"><div class="k">${k}</div><div class="ow fit" lang="${lg}"><span>${esc(wd)}</span></div><div class="tr">(${esc(snd)})</div><div class="mn fit"><span>${esc(m)}</span></div></div>`;
     return `${open}
