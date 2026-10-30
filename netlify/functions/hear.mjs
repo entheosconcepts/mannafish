@@ -6,12 +6,14 @@
 //   ...&polish=1               -> {text, raw}: a spoken prayer, its spelling and punctuation made right (Time with God)
 //   ...&prev=<words>          the same thought, carried on after a pause: heard, joined to prev, and the whole translated
 //                             (tr.done false: the words stop mid-thought, so the page keeps listening before it speaks)
+//   ...&pair=en,auto[&other=am&oname=Amharic]  🔍 Detect: their language found from what they said -> tr:{..., detected:{code,name,known}},
+//                             or tr:{first:true} when it was the Christian's own language (they haven't spoken yet)
 //   GET  /api/hear?warm=1      -> 204, so the first sentence does not wait for the function to wake up
 // Only the site's own pages may call it, recordings up to 4 MB (about a minute), with an hourly limit per visitor.
 import { getStore } from '@netlify/blobs';
-import { NAMES, translatePair, translateTo, polish, unfinished } from './lib/tr.mjs';
+import { NAMES, translatePair, translateTo, translateDetect, polish, unfinished } from './lib/tr.mjs';
 const MODEL = process.env.MF_HEAR_MODEL || 'gpt-4o-mini-transcribe';
-const LANGS = ['en', 'es', 'tl', 'zh', 'hi', 'el', 'de', 'ko', 'he', 'ar', 'tr', 'ru'];
+const LANGS = ['en', 'es', 'tl', 'zh', 'hi', 'el', 'de', 'ko', 'he', 'ar', 'tr', 'ru', 'fr', 'pt', 'ht', 'vi', 'ja', 'it', 'pl', 'uk', 'fa', 'ur', 'sw'];
 const PER_HOUR = 150, MAX = 4 * 1024 * 1024;
 const okOrigin = (o) => /^https:\/\/([a-z0-9-]+\.)?manna-fish\.com$|^https:\/\/([a-z0-9-]+--)?yadamannafishtest\.netlify\.app$|^http:\/\/localhost(:\d+)?$/.test(o || '');
 const bad = (msg, status, error) => Response.json({ error: error || 'bad', msg }, { status });
@@ -54,6 +56,12 @@ export default async (req, context) => {
   }
   // and translated straight away, when the page says into what
   const pair = String(q.get('pair') || '').split(','), to = q.get('to');
+  if (text && text.length <= 900 && pair.length === 2 && pair[1] === 'auto' && NAMES[pair[0]]) {
+    const oc = String(q.get('other') || ''), on = String(q.get('oname') || '').replace(/[^\p{L} ()'-]/gu, '').trim().slice(0, 40);
+    const other = /^[a-z]{2,3}$/.test(oc) && oc !== pair[0] ? { code: oc, name: NAMES[oc] || on || oc } : null;
+    try { const o = await translateDetect({ authorization: 'Bearer ' + apiKey, 'content-type': 'application/json' }, text, pair[0], other); if (!o.error) return Response.json({ text, heard, tr: o }); } catch (e) { /* the page explains */ }
+    return Response.json({ text, heard });
+  }
   if (text && text.length <= 900 && ((pair.length === 2 && NAMES[pair[0]] && NAMES[pair[1]] && pair[0] !== pair[1]) || NAMES[to])) {
     const H = { authorization: 'Bearer ' + apiKey, 'content-type': 'application/json' };
     try {
