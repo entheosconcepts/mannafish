@@ -12,7 +12,7 @@ Every file has a 1/8 in bleed on each side, and all the fish-side files line up 
 |---|---|---|
 | 1 | The decal: clear vinyl, white ink only, the letters left clear | `-1-decal-white-ink` (.png 1200 dpi, .pdf) |
 | 2 | The front of the backing paper, under the decal: black, the same fish in white | `-2-backing-front` (.pdf vector, .png 1200 dpi) |
-| 3 | Cut lines as spot colours: **CutContour** (kiss cut 1/8 in outside the fish, vinyl only, magenta) and **ThroughCut** (card edge, cyan) | `-3-cut-lines` (.pdf, .svg) |
+| 3 | Cut lines: the printer draws its own kiss cut (about 1/8 in outside the fish) and card edge. Ours (**CutContour** and **ThroughCut** spot colours) is kept ready and only goes in the zip when the run says `"send_cut_file": true` | `-3-cut-lines` (.pdf, .svg) |
 | 4 | The back of the backing paper: the invitation, read with the card turned on its side | `-4-back` (.pdf, .png 600 dpi) |
 
 The proof (`-proof.png` / `.pdf`) shows all four, how they look before and after peeling, where every QR code goes, and
