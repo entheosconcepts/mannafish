@@ -144,7 +144,7 @@ async function backHtml(run, codes, warn) {
     return `${open}
   <div class="wt fit" style="top:3.4mm;height:10.6mm"><span>${esc(B.heading || d.title)}</span></div>
   <div class="gh" style="top:15mm;height:21.4mm">${lang('GREEK', d.gkw, 'el', d.gks, d.gkm)}${lang('HEBREW', d.hbw, 'he', d.hbs, d.hbm)}</div>
-  <div class="hq fit" style="top:37.6mm;height:6.4mm"><span>${esc(B.text || 'Still hungry? Do this word study & look up these scriptures')}</span></div>
+  <div class="hq fit" style="top:37.6mm;height:6.4mm"><span>${esc(B.text || 'Still hungry? Do this word study & look up the following Scriptures')}</span></div>
   <div class="rf" style="top:44.8mm;height:44.8mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
   ${await strip(91.2, 20.4)}</div></div>`;
   }

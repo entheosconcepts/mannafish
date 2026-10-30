@@ -9,7 +9,7 @@
  "ship_to": "",
  "back": {
   "template": "study",
-  "text": "Still hungry? Do this word study & look up these scriptures",
+  "text": "Still hungry? Do this word study & look up the following Scriptures",
   "left": { "label": "Shattered into Beautiful Podcast", "to": "" },
   "right": { "label": "Today's free MannaFish devotional", "to": "https://manna-fish.com/?devo=1" }
  },
