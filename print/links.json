@@ -33,5 +33,25 @@
   "to": "https://manna-fish.com/?devo=1",
   "run": "R0003",
   "what": "Today's free MannaFish devotional"
+ },
+ "R0004s": {
+  "to": "https://manna-fish.com/?devo=1",
+  "run": "R0004",
+  "what": "Today's free MannaFish devotional"
+ },
+ "R0004m": {
+  "to": "https://manna-fish.com/",
+  "run": "R0004",
+  "what": "More fish to give away"
+ },
+ "R0005s": {
+  "to": "",
+  "run": "R0005",
+  "what": "Fling Ball · how to play"
+ },
+ "R0005m": {
+  "to": "https://manna-fish.com/?devo=1",
+  "run": "R0005",
+  "what": "Today's free MannaFish devotional"
  }
 }

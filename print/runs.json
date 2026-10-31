@@ -73,6 +73,51 @@
     "Status is \"draft\": approve the proof before ordering."
    ],
    "made": "2026-10-30T17:38:16.536Z"
+  },
+  {
+   "id": "R0004",
+   "title": "Gather · word study, no sponsor (freely given)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "word": "GATHER",
+    "lang": "en"
+   },
+   "sponsor": "",
+   "anonymous": false,
+   "codes": {
+    "main": "R0004",
+    "left": "R0004s",
+    "right": "R0004m"
+   },
+   "warn": [
+    "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "made": "2026-10-31T00:03:53.394Z"
+  },
+  {
+   "id": "R0005",
+   "title": "Enjoy · word study, sponsored by Fling Ball (mock-up)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "word": "ENJOY",
+    "lang": "en"
+   },
+   "sponsor": "Fling Ball",
+   "anonymous": false,
+   "codes": {
+    "main": "R0005",
+    "left": "R0005s",
+    "right": "R0005m"
+   },
+   "warn": [
+    "QR R0005s (Fling Ball · how to play) has no web address yet: it opens manna-fish.com until one is set.",
+    "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "made": "2026-10-31T00:03:28.868Z"
   }
  ]
 }

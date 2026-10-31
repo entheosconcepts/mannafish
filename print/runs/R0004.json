@@ -1,0 +1,15 @@
+{
+ "id": "R0004",
+ "title": "Gather · word study, no sponsor (freely given)",
+ "status": "draft",
+ "qty": 100,
+ "fish": { "word": "GATHER", "lang": "en" },
+ "sponsor": {},
+ "ship_to": "",
+ "back": {
+  "template": "study",
+  "left": { "label": "Today's free MannaFish devotional", "to": "https://manna-fish.com/?devo=1" },
+  "right": { "label": "More fish to give away", "to": "https://manna-fish.com/" }
+ },
+ "notes": "The plain first card: the word study on the back, nobody's name on it."
+}

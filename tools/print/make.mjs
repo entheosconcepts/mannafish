@@ -128,14 +128,14 @@ async function backHtml(run, codes, warn) {
     return `<div class="pg" style="background:#000"><img src="${dataUrl(f)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>`;
   }
   // who it's from: a gift through someone (the sponsor stays anonymous), the sponsor by name, or simply freely given
-  let credit, ml = '', mn = '';
+  let credit, ml = '', mn = '', verse = false;
   if (F && F.name) { credit = B.credit || 'A gift to you through'; ml = logo(F.logo, `The logo of ${F.name}`); mn = F.name; }
   else if (S.name && S.show !== false && !S.anonymous) { credit = B.credit || 'Sponsored by'; ml = logo(S.logo, 'The sponsor logo'); mn = S.name; }
-  else { credit = B.credit || 'Freely given'; mn = 'by a friend'; }
+  else { credit = B.credit || 'Freely given'; mn = B.freely || '“Freely ye have received, freely give.” Matthew 10:8'; verse = true; }   // no sponsor named
   const L = B.left || null, Rt = B.right || null;
   const strip = async (top, ht) => `<div class="strip" style="top:${top}mm;height:${ht}mm">
     ${L ? `<div class="col"><div class="sq">${await qr(codes.left)}</div><div class="lab fit"><span>${esc(L.label || '')}</span></div></div>` : '<div class="col"></div>'}
-    <div class="col mid"><div class="sb">${esc(credit)}</div>${ml ? `<div class="sl"><img src="${ml}"></div>` : `<div class="sn fit"><span>${esc(mn)}</span></div>`}</div>
+    <div class="col mid"><div class="sb">${esc(credit)}</div>${ml ? `<div class="sl"><img src="${ml}"></div>` : `<div class="sn fit${verse ? ' sv' : ''}"><span>${esc(mn)}</span></div>`}</div>
     ${Rt ? `<div class="col"><div class="sq">${await qr(codes.right)}</div><div class="lab fit"><span>${esc(Rt.label || '')}</span></div></div>` : '<div class="col"></div>'}
   </div>`;
   const open = `<div class="pg"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${w}mm;height:${h}mm">`;
@@ -175,7 +175,7 @@ const BACKCSS = () => `@font-face{font-family:'Lilita One';src:url(${font('lilit
 .col{display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-width:0;min-height:0;height:100%;overflow:hidden}
 .sq{width:12.6mm;height:12.6mm}.lab{width:100%;height:5.2mm;display:flex;align-items:center;justify-content:center;text-align:center;font:400 2.5mm/1.05 'Lilita One',sans-serif}
 .mid{justify-content:flex-start}.sb{font:400 2.3mm/1 'Lilita One',sans-serif;margin:.4mm 0 .8mm;text-align:center}.sl{width:100%;flex:1;min-height:0;display:flex;align-items:center;justify-content:center}.sl img{max-width:100%;max-height:100%;object-fit:contain}
-.sn{flex:1;width:100%;display:flex;align-items:center;justify-content:center;text-align:center;font:400 3mm/1.1 'Lilita One',sans-serif}
+.sn{flex:1;width:100%;display:flex;align-items:center;justify-content:center;text-align:center;font:400 3mm/1.1 'Lilita One',sans-serif}.sn.sv{font:italic 400 2.5mm/1.2 'Spectral',serif;padding:0 .6mm}
 .wt{font:400 10mm/1 'MFHobo',sans-serif;text-align:center;display:flex;align-items:center;justify-content:center;white-space:nowrap}
 .gh{left:2.6mm!important;right:2.6mm!important;display:grid;grid-template-columns:1fr 1fr;gap:1.6mm}
 .lg{border:.25mm solid rgba(255,255,255,.5);border-radius:1.6mm;padding:1.1mm;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;overflow:hidden}

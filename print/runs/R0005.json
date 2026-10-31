@@ -1,0 +1,15 @@
+{
+ "id": "R0005",
+ "title": "Enjoy · word study, sponsored by Fling Ball (mock-up)",
+ "status": "draft",
+ "qty": 100,
+ "fish": { "word": "ENJOY", "lang": "en" },
+ "sponsor": { "name": "Fling Ball", "show": true },
+ "ship_to": "",
+ "back": {
+  "template": "study",
+  "left": { "label": "Fling Ball · how to play", "to": "" },
+  "right": { "label": "Today's free MannaFish devotional", "to": "https://manna-fish.com/?devo=1" }
+ },
+ "notes": "Mock-up for Ken's brother's game. Waiting on the Fling Ball logo and web address."
+}
