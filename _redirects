@@ -12,3 +12,7 @@
 /bible-in-a-year  /plan/  301
 /readingplan  /plan/  301
 /plan/fish/*  /fish/:splat  301
+/stations/admin/*  /hubs/admin/  301
+/stations/admin  /hubs/admin/  301
+/stations/*  /hubs/  301
+/stations  /hubs/  301

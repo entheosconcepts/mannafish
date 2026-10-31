@@ -322,7 +322,7 @@ input[type=range]{width:46%;accent-color:var(--blue2)}
     else L=get('mf-basket-sent',[]).map(mine);
     $('nOr').textContent=L.length||'';
     $('orList').innerHTML=top+(L.length?L.map(orCard).join(''):'<p class="empty">Tap &#129530; on any fish to put it in your prayer basket; MannaFish are always free.</p>')
-      +'<p class="foot" style="margin-top:6px">Five loaves, two fish, and twelve baskets left over (John 6:9&ndash;13). Pray for a fish at a <a href="/stations/">MannaFish Station</a>; when it is there, we email you to come and get it, free.</p>'; }
+      +'<p class="foot" style="margin-top:6px">Five loaves, two fish, and twelve baskets left over (John 6:9&ndash;13). Pray for a fish at a <a href="/hubs/">MannaFish Hub</a>; when it is there, we email you to come and get it, free.</p>'; }
   $('orList').addEventListener('click',function(e){ if(e.target.closest('#orOpen,#orOpen2')&&window.MFbasket) MFbasket.open(); });
   // where each request is: from the account when signed in, else asked by its id
   function orFetch(){ var me=window.MFacct&&MFacct.me();

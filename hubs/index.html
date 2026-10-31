@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MannaFish Hubs</title>
+<meta name="description" content="Places where MannaFish are given away free. Pray for a fish at a Hub near you, ask for a new Hub, or sponsor one.">
+<link rel="icon" href="/icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;1,400&family=Archivo:wght@400;600;700;800&display=swap">
+<!-- Ken, 31 Oct: "show a list of locations nearest that carry MannaFish merch, let user select, or sponsor someone from a list that may be a
+     good potential MannaFish Station ... I would like to request these or this location as a MannaFish Station, they can choose more than
+     one ... one per user, must be signed in ... which we call a MannaFish hub ... once it has a certain number it qualifies to become a
+     Hub ... Sponsorships will bypass this rule". The open Hubs (what is in each pond, how many are praying), the places asked for, a place
+     to suggest, and a sponsor form. Everything from /api/hubs; the sign-in and the counts are shared with the basket (window.MFhubs). -->
+<style>
+@font-face{font-family:'MFHobo';src:url(/fish-lang/hobo.woff2) format('woff2');font-display:block}
+:root{--bg:#000;--card:#0b1620;--line:rgba(200,215,218,.18);--text:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--gold:#f5d76e;--ok:#7fd3a0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 Archivo,system-ui,sans-serif}
+a{color:#8fb6ff}
+header{display:flex;align-items:center;gap:10px;padding:14px max(16px,env(safe-area-inset-left));border-bottom:1px solid var(--line)}
+.brand{font:400 1.45rem/1 'MFHobo',cursive;color:#fff;text-decoration:none}.brand b{font-weight:400;color:#448fff}
+header nav{margin-left:auto;font-size:.92rem;display:flex;gap:14px}
+main{max-width:760px;margin:0 auto;padding:18px 16px 60px}
+h1{font:400 2.4rem/1.05 'MFHobo',cursive;margin:6px 0 8px}
+h2{font:400 1.7rem/1.1 'MFHobo',cursive;margin:30px 0 6px;scroll-margin-top:12px}
+.lead{font:1.08rem/1.55 Spectral,Georgia,serif;margin:0 0 6px}.verse{font:italic .98rem Spectral,Georgia,serif;color:var(--dim);margin:0 0 18px}
+.how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 14px}
+.how div{border:1px solid var(--line);border-radius:14px;padding:10px;font-size:.88rem;background:var(--card)}.how b{display:block;font-size:1.4rem}
+@media(max-width:520px){.how{grid-template-columns:1fr}}
+.bar0{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 10px}.city{font-weight:800}
+.chip{border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:6px 12px;font:700 .85rem Archivo,sans-serif;cursor:pointer}.chip[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+.st{border:1px solid var(--line);border-radius:18px;padding:14px;margin:0 0 12px;background:var(--card)}.st.mine{border-color:var(--gold)}
+.st h3{margin:0;font-size:1.15rem}.st .ad{color:var(--dim);font-size:.9rem}.st p{margin:6px 0}.d{float:right;color:var(--dim);font-weight:700;font-size:.85rem}
+.bar{height:10px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden;margin:8px 0 4px}.bar i{display:block;height:100%;background:var(--gold)}
+.meta{font-size:.86rem;color:var(--dim)}
+h4{margin:14px 0 6px;font:800 .72rem Archivo,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.fish{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.fish span{flex:none;width:112px;text-align:center;font-size:.8rem}.fish img{display:block;width:112px;aspect-ratio:2/1;object-fit:contain;background:#000;border-radius:8px;border:1px solid var(--line)}
+.tag{display:inline-block;border-radius:99px;padding:1px 8px;font-size:.72rem;font-weight:800;margin-top:3px}.tag.in{background:rgba(127,211,160,.18);color:var(--ok)}.tag.coming{background:rgba(245,215,110,.16);color:var(--gold)}
+.go{display:inline-block;margin-top:10px;border:0;border-radius:999px;background:var(--blue);color:#fff;font:800 .95rem Archivo,sans-serif;padding:11px 16px;cursor:pointer;text-decoration:none}.go[disabled]{opacity:.5}
+.go.on{background:none;border:1px solid var(--gold);color:var(--gold)}.go.y{background:var(--gold);color:#111}.go.w{width:100%}
+.ask{display:grid;gap:8px}.ask label{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--card);cursor:pointer}
+.ask label:has(input:checked){border-color:var(--gold)}.ask label.mine{border-color:rgba(127,211,160,.6)}.ask input{margin-top:5px;width:18px;height:18px;flex:none}.ask .t{flex:1;min-width:0}.ask small{display:block;color:var(--dim);font-size:.82rem}
+.ok2{color:var(--ok);font-weight:800}.ask .bar{display:block;max-width:260px;height:7px;margin:6px 0 2px}
+.sticky{position:sticky;bottom:0;background:linear-gradient(transparent,#000 30%);padding:18px 0 max(10px,env(safe-area-inset-bottom))}
+form.f{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;border:1px solid var(--line);border-radius:18px;padding:14px;background:var(--card)}
+form.f .w{grid-column:1/-1}form.f label{display:flex;flex-direction:column;gap:4px;font-size:.82rem;font-weight:700}
+input,select,textarea{font:inherit;color:var(--text);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:10px;padding:9px 10px;min-width:0;width:100%}
+.ticks{display:flex;flex-wrap:wrap;gap:6px}.ticks label{flex-direction:row!important;align-items:center;gap:6px;font-weight:600!important;border:1px solid var(--line);border-radius:999px;padding:5px 10px;font-size:.85rem!important}.ticks input{width:auto}
+.places{max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:6px 10px}.places label{flex-direction:row!important;align-items:center;gap:8px;font-weight:500!important;padding:4px 0}.places input{width:auto}
+.msg{min-height:1.2em;font-size:.92rem;margin:6px 0 0}.si{display:flex;gap:6px;margin-top:8px}.si input{flex:1}.si button{border:0;border-radius:999px;background:var(--blue);color:#fff;font:800 .9rem Archivo,sans-serif;padding:8px 14px;cursor:pointer}.pr{font-size:.86rem;color:var(--dim)}
+.host{border:1px dashed var(--line);border-radius:18px;padding:16px;margin-top:20px}
+.empty{color:var(--dim);text-align:center;padding:18px;border:1px dashed var(--line);border-radius:14px}
+</style>
+</head>
+<body>
+<header><a class="brand" href="/">Manna<b>Fish</b></a><nav><a href="#ask">Ask</a><a href="#sponsor">Sponsor</a><a href="/">Today’s fish</a></nav></header>
+<main>
+<h1>MannaFish Hubs</h1>
+<p class="lead">Places that give MannaFish away free: a coffee shop, a store, a church. Put any fish in your 🧺 prayer basket and pray for it at a Hub near you. When enough people pray, we fill the pond there, and you pick yours up. Nothing is mailed, nothing is sold.</p>
+<p class="verse">Pray ye therefore the Lord of the harvest, that he will send forth labourers into his harvest (Matthew 9:38).</p>
+<div class="how"><div><b>🧺</b>Tap 🧺 on a fish you love.</div><div><b>🙏</b>Pray for it at a Hub near you.</div><div><b>🐟</b>When it is in, we email you. Come and take two: one to keep, one to give.</div></div>
+<div class="bar0"><span class="city">📍 Wilmington, NC</span><button type="button" class="chip" id="nearBtn">Nearest to me</button></div>
+
+<h2>Open Hubs</h2>
+<div id="list"><p class="empty">Finding the Hubs…</p></div>
+
+<h2 id="ask">Ask for a Hub</h2>
+<p class="meta" style="margin:0 0 10px">Places that may want to host MannaFish. Tick every place you would like, then ask. One request per person per place; sign in to ask. When a place has <b id="goal">enough</b> requests, it qualifies, and we talk with them about becoming a Hub. A Hub may draw new people through its door, the way a return counter does.</p>
+<div class="bar0" id="kinds"></div>
+<section><div class="ask" id="askList"><p class="empty">Finding the places…</p></div>
+<div class="sticky"><button type="button" class="go y w" id="askGo" disabled>🙋 I would like these places as MannaFish Hubs</button><div id="si"></div><p class="msg" id="askMsg" aria-live="polite"></p></div></section>
+<details style="margin-top:6px"><summary class="meta" style="cursor:pointer">Don’t see a place? Suggest one</summary>
+<form class="f" id="sgF" novalidate style="margin-top:10px"><label>Name of the place<input id="sgName" required></label><label>What kind<select id="sgKind"><option value="coffee">☕ Coffee shop</option><option value="store">🏪 Store</option><option value="church">⛪ Church</option><option value="books">📚 Books</option><option value="food">🍽️ Food</option><option value="other">📍 Other</option></select></label>
+<label class="w">Address<input id="sgAddr" placeholder="Street, city"></label><label class="w">Why there? (optional)<textarea id="sgWhy" rows="2" maxlength="600"></textarea></label>
+<div class="w"><button type="submit" class="go">Suggest this place</button><div id="sgSi"></div><p class="msg" id="sgMsg" aria-live="polite"></p></div></form></details>
+
+<h2 id="sponsor">Sponsor a Hub</h2>
+<p class="meta" style="margin:0 0 10px">A church, a business or anyone can give the fish for a place, on this list or not. A sponsored place doesn’t wait for requests: we reach out to the host, set it up with them, and write back to you. Every fish is free to the person who receives it: never sold, never resold.</p>
+<form class="f" id="spF" novalidate>
+<label>Your name<input id="spName" autocomplete="name" required></label><label>Church or business (optional)<input id="spOrg" autocomplete="organization"></label>
+<label>Email<input id="spEmail" type="email" autocomplete="email" required></label><label>Phone (optional)<input id="spPhone" type="tel" autocomplete="tel"></label>
+<div class="w"><span style="font-size:.82rem;font-weight:700">Which place?</span><div class="places" id="spPlaces"></div></div>
+<label class="w">Another place (name and address)<input id="spPlace"></label>
+<div class="w"><span style="font-size:.82rem;font-weight:700">What would you like to give?</span><div class="ticks" id="spWhat"></div></div>
+<label class="w">Anything else (optional)<textarea id="spNote" rows="3" maxlength="1000"></textarea></label>
+<label class="w" style="flex-direction:row;align-items:center;gap:8px;font-weight:600"><input type="checkbox" id="spAnon" style="width:auto"> Give anonymously (your name is never shown)</label>
+<input type="text" id="spHp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+<div class="w"><button type="submit" class="go w">Ask to sponsor</button><p class="msg" id="spMsg" aria-live="polite"></p></div></form>
+
+<div class="host"><b>Want your place to be a MannaFish Hub?</b><p class="meta" style="margin:6px 0 0">A shop, a church, a coffee house, a gathering. You give fish away; we send them, already given by a sponsor. <a href="mailto:2fish@manna-fish.com?subject=A%20MannaFish%20Hub">Write to us</a>.</p></div>
+</main>
+<script src="/fish-lang/basket.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var H=window.MFhubs; function $(i){ return document.getElementById(i); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function img(x){ var k=String(x.fish).slice(2); return String(x.fish).indexOf('M:')===0?'/fish/'+(x.l||'en')+'/'+k+'.svg':'/fish/'+k+'.svg'; }
+  var MERCH={decal:'Decals',card:'Cards',shirt:'Shirts',keychain:'Key chains',mug:'Mugs',cap:'Caps'}, KINDS=[['all','All'],['coffee','☕ Coffee'],['store','🏪 Stores'],['books','📚 Books'],['church','⛪ Churches']];
+  var KIND='all', PICK={};
+  try{ var q=new URLSearchParams(location.search).get('hub')||new URLSearchParams(location.search).get('station'); if(q) localStorage.setItem('mf-station',JSON.stringify(q)); }catch(e){}
+  function mine(){ try{ return JSON.parse(localStorage.getItem('mf-station')||'""'); }catch(e){ return ''; } }
+  function fishRow(L,stock){ return '<div class="fish">'+L.map(function(x){ return '<span><img loading="lazy" src="'+img(x)+'" alt="">'+esc(x.word||String(x.fish).slice(2))
+      +(stock?'<br><span class="tag '+(x.status==='in'?'in':'coming')+'">'+(x.status==='in'?'Here now':'On the way')+(x.kind&&x.kind!=='decal'?' · '+esc(MERCH[x.kind]||x.kind):'')+'</span>':'<br><span class="meta">🙏 '+x.n+'</span>')+'</span>'; }).join('')+'</div>'; }
+  function hubs(){ var me=mine(), L=H.byNear(H.hubs()), real=L.filter(function(s){ return s.id!=='anywhere'; }).length;
+    $('list').innerHTML=(real?'':'<p class="empty">No Hub is open yet. The first ones are being asked for below. Until then, pray for fish to go wherever they are needed most.</p>')
+      +L.map(function(s){ var th=s.threshold||100, t=s.total||0, on=s.id===me, stock=s.stock||[];
+      return '<div class="st'+(on?' mine':'')+'"><span class="d">'+esc(H.mi(s))+'</span><h3>'+(s.id==='anywhere'?'🌍 ':H.icon(s.kind)+' ')+esc(s.name)+'</h3>'+(s.address?'<div class="ad">'+esc(s.address)+'</div>':'')
+        +(s.where?'<p>'+esc(s.where)+'</p>':'')+(s.note?'<p class="meta">'+esc(s.note)+'</p>':'')
+        +(stock.length?'<h4>In the pond</h4>'+fishRow(stock,true):'')
+        +'<div class="bar"><i style="width:'+Math.min(100,Math.round(t*100/th))+'%"></i></div><div class="meta">'+t+' of '+th+' prayers'+(t>=th?': the pond is being filled':' to fill the pond')+'</div>'
+        +(s.top&&s.top.length?'<h4>Most prayed for</h4>'+fishRow(s.top,false):'')
+        +'<button type="button" class="go'+(on?' on':'')+'" data-s="'+esc(s.id)+'">'+(on?'✓ Your Hub':'Pray for fish here')+'</button></div>'; }).join(''); }
+  function kinds(){ var have={}; H.proposed().forEach(function(p){ have[p.kind]=1; });
+    $('kinds').innerHTML=KINDS.filter(function(k){ return k[0]==='all'||have[k[0]]; }).map(function(k){ return '<button type="button" class="chip" data-k="'+k[0]+'" aria-pressed="'+(KIND===k[0])+'">'+k[1]+'</button>'; }).join(''); }
+  function asks(){ var G=H.goal(), L=H.byNear(H.proposed()).filter(function(p){ return KIND==='all'||p.kind===KIND; }); $('goal').textContent=G;
+    $('askList').innerHTML=L.length?L.map(function(p){ var m=H.isMine(p.id);
+      return '<label class="'+(m?'mine':'')+'"><input type="checkbox" value="'+esc(p.id)+'"'+(m||PICK[p.id]?' checked':'')+(m?' disabled':'')+'><span class="t"><span class="d">'+esc(H.mi(p))+'</span><b>'+H.icon(p.kind)+' '+esc(p.name)+'</b><small>'+esc(p.address)+'</small>'
+        +'<span class="bar"><i style="width:'+Math.min(100,Math.round(p.votes*100/G))+'%"></i></span><small>'+(m?'<span class="ok2">✓ You asked</span> · ':'')+p.votes+' of '+G+' asking'+(p.qualified?' · <b>qualifies to become a Hub</b>':p.status==='talking'?' · we are talking with them':'')+(p.sponsored?' · sponsored':'')+'</small></span></label>'; }).join('')
+      :'<p class="empty">No places here yet. Suggest one below.</p>'; count(); }
+  function count(){ var n=Object.keys(PICK).filter(function(k){ return PICK[k]&&!H.isMine(k); }).length; $('askGo').disabled=!n; $('askGo').textContent='🙋 I would like '+(n===1?'this place':n?'these '+n+' places':'these places')+' as MannaFish Hubs'; }
+  function places(){ var L=H.proposed().concat(H.hubs().filter(function(s){ return s.id!=='anywhere'; }));
+    $('spPlaces').innerHTML=L.map(function(p){ return '<label><input type="checkbox" value="'+esc(p.id)+'"> '+H.icon(p.kind)+' '+esc(p.name)+'</label>'; }).join('')||'<p class="meta">Write the place below.</p>';
+    $('spWhat').innerHTML=Object.keys(MERCH).map(function(k){ return '<label><input type="checkbox" value="'+k+'"'+(k==='decal'?' checked':'')+'> '+MERCH[k]+'</label>'; }).join(''); }
+  function all(){ hubs(); kinds(); asks(); }
+  $('list').addEventListener('click',function(e){ var b=e.target.closest('[data-s]'); if(!b) return; var was=b.classList.contains('on'); try{ localStorage.setItem('mf-station',JSON.stringify(b.dataset.s)); }catch(x){}
+    hubs(); if(window.MFbasket&&MFbasket.count()) MFbasket.open(); else if(was) location.href='/'; });
+  $('kinds').addEventListener('click',function(e){ var b=e.target.closest('[data-k]'); if(!b) return; KIND=b.dataset.k; kinds(); asks(); });
+  $('askList').addEventListener('change',function(e){ if(e.target.type==='checkbox'){ PICK[e.target.value]=e.target.checked; count(); } });
+  $('nearBtn').addEventListener('click',function(){ var b=this; b.textContent='Finding you…'; H.locate().then(function(){ b.textContent='✓ Nearest first'; b.setAttribute('aria-pressed','true'); all(); },function(){ b.textContent='Location is off'; }); });
+  if(H.near()){ $('nearBtn').textContent='✓ Nearest first'; $('nearBtn').setAttribute('aria-pressed','true'); }
+  $('askGo').addEventListener('click',function(){ var ids=Object.keys(PICK).filter(function(k){ return PICK[k]&&!H.isMine(k); }); if(!ids.length) return;
+    var go=function(){ $('askGo').disabled=true; $('askMsg').textContent='Asking…';
+      H.vote(ids,true).then(function(){ PICK={}; asks(); $('askMsg').textContent='Thank you! You asked for '+ids.length+(ids.length===1?' place':' places')+'. We will let you know when one becomes a Hub.'; })
+        .catch(function(err){ count(); if(err&&err.message==='signin'){ $('askMsg').textContent=''; H.signin($('si'),go); return; } $('askMsg').textContent='It could not be sent just now. '+(err&&err.message||''); }); };
+    go(); });
+  $('sgF').addEventListener('submit',function(e){ e.preventDefault(); var b={name:$('sgName').value.trim(),kind:$('sgKind').value,address:$('sgAddr').value.trim(),why:$('sgWhy').value.trim()}; if(!b.name){ $('sgName').focus(); return; }
+    var go=function(){ $('sgMsg').textContent='Sending…'; H.token().then(function(t){ if(!t) throw new Error('signin'); return fetch('/api/hubs/suggest',{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+t},body:JSON.stringify(b)}); })
+      .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||r.status); }); }).then(function(){ $('sgF').reset(); $('sgMsg').textContent='Thank you! We will look into it.'; })
+      .catch(function(err){ if(err&&err.message==='signin'){ $('sgMsg').textContent=''; H.signin($('sgSi'),go,'Sign in to MannaFish to suggest a place (free, no password: we email you a code).'); return; } $('sgMsg').textContent='It could not be sent just now. '+(err&&err.message||''); }); };
+    go(); });
+  $('spF').addEventListener('submit',function(e){ e.preventDefault(); var m=$('spMsg'), ids=[].map.call($('spPlaces').querySelectorAll('input:checked'),function(i){ return i.value; }), what=[].map.call($('spWhat').querySelectorAll('input:checked'),function(i){ return i.value; });
+    var b={name:$('spName').value.trim(),org:$('spOrg').value.trim(),email:$('spEmail').value.trim(),phone:$('spPhone').value.trim(),ids:ids,place:$('spPlace').value.trim(),what:what,note:$('spNote').value.trim(),anonymous:$('spAnon').checked,hp:$('spHp').value};
+    if(!b.name){ $('spName').focus(); m.textContent='Please add your name.'; return; } if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email)){ $('spEmail').focus(); m.textContent='Please check your email address.'; return; }
+    if(!ids.length&&!b.place){ $('spPlace').focus(); m.textContent='Which place would you like to sponsor?'; return; }
+    m.textContent='Sending…'; fetch('/api/hubs/sponsor',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||r.status); }); })
+      .then(function(){ $('spF').reset(); places(); m.textContent='Thank you! We emailed you, and we will be in touch about setting it up.'; }).catch(function(err){ m.textContent='It could not be sent just now. '+(err&&err.message||''); }); });
+  H.load().then(function(){ all(); places(); return H.mine(); }).then(asks).catch(function(){ $('list').innerHTML='<p class="empty">Couldn’t find the Hubs just now. Please try again in a moment.</p>'; });
+});
+</script>
+</body>
+</html>
