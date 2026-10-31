@@ -103,7 +103,7 @@ input[type=range]{width:46%;accent-color:var(--blue2)}
     <button type="button" data-t="hl" aria-pressed="false">Highlights<small id="nHl"></small></button>
     <button type="button" data-t="sv" aria-pressed="false">Saved<small id="nSv"></small></button>
     <button type="button" data-t="li" aria-pressed="false">Links<small id="nLi"></small></button>
-    <button type="button" data-t="or" aria-pressed="false">&#129530; Orders<small id="nOr"></small></button>
+    <button type="button" data-t="or" aria-pressed="false">&#129530; Basket<small id="nOr"></small></button>
     <button type="button" data-t="hi" aria-pressed="false">History</button>
     <button type="button" data-t="st" aria-pressed="false">&#9881;&#xFE0E; Settings</button>
   </div>
@@ -315,14 +315,15 @@ input[type=range]{width:46%;accent-color:var(--blue2)}
     return '<div class="card"><div class="h"><b class="t">'+esc(o.title)+'</b><span class="d">'+esc(day(o.at))+'</span></div><p>'+o.items.map(function(x){ return esc(x); }).join('<br>')+'</p>'
       +(st==='cancelled'?'<p><span class="pill">Cancelled</span></p>':st==='waitlist'?'<p><span class="pill">On the waitlist &middot; decals coming soon</span></p>':'<div class="steps">'+STEP.map(function(s,i){ return '<i class="'+(i<=k?'on':'')+'"></i>'; }).join('')+'</div><div class="stl">'+STEP.map(function(s){ return '<span>'+STL[s]+'</span>'; }).join('')+'</div>')+'</div>'; }
   var ORS=null;
-  function drawOr(){ var n=window.MFbasket?MFbasket.count():get('mf-basket',[]).length, top=n?'<div class="add" style="display:flex;align-items:center;gap:10px"><span style="flex:1"><b>&#129530; '+n+' fish in your basket</b><br><small style="color:var(--dim)">Not asked for yet</small></span><button type="button" class="b p" id="orOpen">Open basket</button></div>':'';
+  function drawOr(){ var n=window.MFbasket?MFbasket.count():get('mf-basket',[]).length, top=n?'<div class="add" style="display:flex;align-items:center;gap:10px"><span style="flex:1"><b>&#129530; '+n+' fish in your prayer basket</b><br><small style="color:var(--dim)">Not prayed for yet</small></span><button type="button" class="b p" id="orOpen">Open basket</button></div>':'';
+    var PR=get('mf-praying',[]); if(PR.length) top+='<div class="add" style="display:flex;align-items:center;gap:10px"><span style="flex:1"><b>&#128591; Praying for '+PR.length+' fish</b><br><small style="color:var(--dim)">'+PR.slice(0,6).map(function(x){ return esc(x.word)+(x.sname?' at '+esc(x.sname):''); }).join(' · ')+'</small></span><button type="button" class="b" id="orOpen2">See them</button></div>';
     var me=window.MFacct&&MFacct.me(), L=[], mine=function(o){ return {at:o.at,status:o.status,title:(o.for==='gift'?'A gift'+(o.to?' for '+o.to:''):o.for==='church'?'For '+o.to:'For me')+(o.city?', '+o.city:''),items:(o.items||[]).map(function(x){ return x.q+' × '+x.word+(x.l&&x.l!=='en'?' ('+(LN[x.l]||x.l)+')':''); })}; };
     if(me&&ORS) L=get('mf-basket-sent',[]).filter(function(o){ return o.status==='waitlist'; }).map(mine).concat(ORS.map(function(o){ return {at:o.created_at,status:o.status,title:(o.ship_name?'To '+o.ship_name:'MannaFish')+(o.city?', '+o.city:''),items:(o.order_items||[]).map(function(x){ return x.qty+' × '+x.word_key.charAt(0)+x.word_key.slice(1).toLowerCase()+(x.language&&x.language!=='English'?' ('+x.language+')':''); })}; }));   // waitlist entries are only on this device (no order yet)
     else L=get('mf-basket-sent',[]).map(mine);
     $('nOr').textContent=L.length||'';
-    $('orList').innerHTML=top+(L.length?L.map(orCard).join(''):'<p class="empty">No requests yet. Tap &#129530; on any fish to put it in your basket; MannaFish are always free.</p>')
-      +'<p class="foot" style="margin-top:6px">Five loaves, two fish, and twelve baskets left over (John 6:9&ndash;13). Free, postage included: someone already paid for it.</p>'; }
-  $('orList').addEventListener('click',function(e){ if(e.target.closest('#orOpen')&&window.MFbasket) MFbasket.open(); });
+    $('orList').innerHTML=top+(L.length?L.map(orCard).join(''):'<p class="empty">Tap &#129530; on any fish to put it in your prayer basket; MannaFish are always free.</p>')
+      +'<p class="foot" style="margin-top:6px">Five loaves, two fish, and twelve baskets left over (John 6:9&ndash;13). Pray for a fish at a <a href="/stations/">MannaFish Station</a>; when it is there, we email you to come and get it, free.</p>'; }
+  $('orList').addEventListener('click',function(e){ if(e.target.closest('#orOpen,#orOpen2')&&window.MFbasket) MFbasket.open(); });
   // where each request is: from the account when signed in, else asked by its id
   function orFetch(){ var me=window.MFacct&&MFacct.me();
     if(me) MFacct.orders().then(function(r){ ORS=r; drawOr(); }).catch(function(){});

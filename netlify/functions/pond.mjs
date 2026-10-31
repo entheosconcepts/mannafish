@@ -42,7 +42,11 @@ async function limited(ip) {
 export default async (req, context) => {
   const url = new URL(req.url), sub = url.pathname.replace(/^\/api\/pond\/?/, ''), s = db();
 
-  if (sub === '' && req.method === 'GET') return Response.json({ pond: pub(await active()) }, { headers: { 'cache-control': 'no-store' } });
+  // retired (Ken, 31 Oct: "I do not want to give individual decals out, and have a sorting, shipping and production nightmare"):
+  // fish now go to MannaFish Stations in one batch (stations.mjs). Nothing is mailed to a home unless MF_POND_MAIL=1 is set again.
+  const MAILOUT = process.env.MF_POND_MAIL === '1';
+  if (sub === '' && req.method === 'GET') return Response.json({ pond: MAILOUT ? pub(await active()) : null }, { headers: { 'cache-control': 'no-store' } });
+  if (sub === 'claim' && !MAILOUT) return bad('Fish now go to MannaFish Stations', 410, { stations: '/stations/' });
 
   if (sub === 'admin') {
     if (req.method === 'GET') {

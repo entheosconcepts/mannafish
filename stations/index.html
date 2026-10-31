@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MannaFish Stations</title>
+<meta name="description" content="Places where MannaFish are given away free. Pray for a fish at a Station near you; when enough people pray, we fill the pond there.">
+<link rel="icon" href="/icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;1,400&family=Archivo:wght@400;600;700;800&display=swap">
+<!-- Ken, 31 Oct: "stock Fisheries, or Hatcheries, with mannafish ... when other users add and it collectively reaches 100, that MannaFish
+     Station gets a notice ... I fill the pond, and the user can go to that location and get a free decal, or shirt or key chain".
+     Every Station, what is in its pond now, what is on the way, and how many are praying. From /api/stations. -->
+<style>
+@font-face{font-family:'MFHobo';src:url(/fish-lang/hobo.woff2) format('woff2');font-display:block}
+:root{--bg:#000;--card:#0b1620;--line:rgba(200,215,218,.18);--text:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--gold:#f5d76e;--ok:#7fd3a0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 Archivo,system-ui,sans-serif}
+a{color:#8fb6ff}
+header{display:flex;align-items:center;gap:10px;padding:14px max(16px,env(safe-area-inset-left));border-bottom:1px solid var(--line)}
+.brand{font:400 1.45rem/1 'MFHobo',cursive;color:#fff;text-decoration:none}.brand b{font-weight:400;color:#448fff}
+header nav{margin-left:auto;font-size:.92rem}
+main{max-width:760px;margin:0 auto;padding:18px 16px 60px}
+h1{font:400 2.4rem/1.05 'MFHobo',cursive;margin:6px 0 8px}
+.lead{font:1.08rem/1.55 Spectral,Georgia,serif;margin:0 0 6px}.verse{font:italic .98rem Spectral,Georgia,serif;color:var(--dim);margin:0 0 18px}
+.how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 20px}
+.how div{border:1px solid var(--line);border-radius:14px;padding:10px;font-size:.88rem;background:var(--card)}.how b{display:block;font-size:1.4rem}
+@media(max-width:520px){.how{grid-template-columns:1fr}}
+.st{border:1px solid var(--line);border-radius:18px;padding:14px;margin:0 0 12px;background:var(--card)}.st.mine{border-color:var(--gold)}
+.st h2{margin:0;font-size:1.2rem}.st .city{color:var(--dim);font-size:.9rem}.st p{margin:6px 0}
+.bar{height:10px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden;margin:8px 0 4px}.bar i{display:block;height:100%;background:var(--gold)}
+.meta{font-size:.86rem;color:var(--dim)}
+h3{margin:14px 0 6px;font:800 .72rem Archivo,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.fish{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.fish span{flex:none;width:112px;text-align:center;font-size:.8rem}.fish img{display:block;width:112px;aspect-ratio:2/1;object-fit:contain;background:#000;border-radius:8px;border:1px solid var(--line)}
+.tag{display:inline-block;border-radius:99px;padding:1px 8px;font-size:.72rem;font-weight:800;margin-top:3px}.tag.in{background:rgba(127,211,160,.18);color:var(--ok)}.tag.coming{background:rgba(245,215,110,.16);color:var(--gold)}
+.go{display:inline-block;margin-top:10px;border:0;border-radius:999px;background:var(--blue);color:#fff;font:800 .95rem Archivo,sans-serif;padding:10px 16px;cursor:pointer;text-decoration:none}
+.go.on{background:none;border:1px solid var(--gold);color:var(--gold)}
+.host{border:1px dashed var(--line);border-radius:18px;padding:16px;margin-top:20px}
+.empty{color:var(--dim);text-align:center;padding:24px}
+</style>
+</head>
+<body>
+<header><a class="brand" href="/">Manna<b>Fish</b></a><nav><a href="/">Today’s fish</a></nav></header>
+<main>
+<h1>MannaFish Stations</h1>
+<p class="lead">Places where MannaFish are given away free: a shop, a church, a gathering. Put any fish in your 🧺 prayer basket and pray for it at a Station near you. When enough people pray, we fill the pond there, and you pick yours up. Nothing is mailed, nothing is sold.</p>
+<p class="verse">Pray ye therefore the Lord of the harvest, that he will send forth labourers into his harvest (Matthew 9:38).</p>
+<div class="how"><div><b>🧺</b>Tap 🧺 on a fish you love.</div><div><b>🙏</b>Pray for it at a Station.</div><div><b>🐟</b>When it is in, we email you. Come and take two: one to keep, one to give.</div></div>
+<div id="list"><p class="empty">Finding the Stations…</p></div>
+<div class="host"><b>Want your place to be a MannaFish Station?</b><p class="meta" style="margin:6px 0 0">A shop, a church, a coffee house, a gathering. You give fish away; we send them, already paid for by a sponsor. <a href="mailto:2fish@manna-fish.com?subject=A%20MannaFish%20Station">Write to us</a>.</p></div>
+</main>
+<script>
+(function(){
+  function $(i){ return document.getElementById(i); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function get(k){ try{ return localStorage.getItem(k)||''; }catch(e){ return ''; } }
+  function img(x){ var k=String(x.fish).slice(2); return String(x.fish).indexOf('M:')===0?'/fish/'+(x.l||'en')+'/'+k+'.svg':'/fish/'+k+'.svg'; }
+  var KIND={decal:'decals',card:'cards',shirt:'shirts',keychain:'key chains',mug:'mugs',cap:'caps'};
+  var ST=[];
+  try{ var q=new URLSearchParams(location.search).get('station'); if(q) localStorage.setItem('mf-station',JSON.stringify(q)); }catch(e){}
+  function mine(){ try{ return JSON.parse(localStorage.getItem('mf-station')||'""'); }catch(e){ return ''; } }
+  function fishRow(L,stock){ return '<div class="fish">'+L.map(function(x){ return '<span><img loading="lazy" src="'+img(x)+'" alt="">'+esc(x.word||String(x.fish).slice(2))
+      +(stock?'<br><span class="tag '+(x.status==='in'?'in':'coming')+'">'+(x.status==='in'?'Here now':'On the way')+(x.kind&&x.kind!=='decal'?' · '+esc(KIND[x.kind]||x.kind):'')+'</span>':'<br><span class="meta">🙏 '+x.n+'</span>')+'</span>'; }).join('')+'</div>'; }
+  function draw(){ var me=mine();
+    if(!ST.length){ $('list').innerHTML='<p class="empty">No Stations yet.</p>'; return; }
+    $('list').innerHTML=ST.map(function(s){ var th=s.threshold||100, t=s.total||0, on=s.id===me, stock=s.stock||[];
+      return '<div class="st'+(on?' mine':'')+'" id="s-'+esc(s.id)+'"><h2>'+esc(s.name)+'</h2>'+(s.city?'<div class="city">'+esc(s.city)+'</div>':'')
+        +(s.where?'<p>'+esc(s.where)+'</p>':'')+(s.note?'<p class="meta">'+esc(s.note)+'</p>':'')
+        +(stock.length?'<h3>In the pond</h3>'+fishRow(stock,true):'')
+        +'<div class="bar"><i style="width:'+Math.min(100,Math.round(t*100/th))+'%"></i></div><div class="meta">'+t+' of '+th+' prayers'+(t>=th?': the pond is being filled':' to fill the pond')+'</div>'
+        +(s.top&&s.top.length?'<h3>Most prayed for</h3>'+fishRow(s.top,false):'')
+        +'<button type="button" class="go'+(on?' on':'')+'" data-s="'+esc(s.id)+'">'+(on?'✓ Your Station':'Pray for fish here')+'</button></div>'; }).join(''); }
+  $('list').addEventListener('click',function(e){ var b=e.target.closest('[data-s]'); if(!b) return; try{ localStorage.setItem('mf-station',JSON.stringify(b.dataset.s)); }catch(x){}
+    draw(); if(window.MFbasket&&MFbasket.count()) MFbasket.open(); else if(b.classList.contains('on')) location.href='/'; });
+  fetch('/api/stations',{cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ ST=j.stations||[]; draw(); })
+    .catch(function(){ $('list').innerHTML='<p class="empty">Couldn’t find the Stations just now. Please try again in a moment.</p>'; });
+})();
+</script>
+<script src="/fish-lang/basket.js" defer></script>
+</body>
+</html>
