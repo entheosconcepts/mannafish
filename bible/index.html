@@ -297,6 +297,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     try{ localStorage.setItem('mf-set',JSON.stringify(o)); }catch(e){} if(window.MFacct) MFacct.touch('set'); }
   applySet();
   $('back').addEventListener('click',function(){ try{ parent.postMessage({mf:'bible-close'},location.origin); }catch(e){} });
+  if(Q.get('from')==='fish'){ $('back').setAttribute('aria-label','Back to the fish'); $('back').querySelector('.bl').innerHTML='&nbsp;Back'; }   // opened from a verse on the back of the fish
 
   // light or dark: the same choice as the main site
   var root=document.documentElement;

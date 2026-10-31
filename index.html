@@ -662,7 +662,8 @@ section.section.bundles{display:block;margin-top:0}
 .dall.tighter .lang .w{font-size:1rem !important}.dall.tighter .lang .snd{font-size:.62rem !important}
 .dall.tighter .lang .mean{font-size:.66rem !important;line-height:1.25 !important;margin-top:2px !important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .dall.tighter .conc{display:none !important}.dall.tighter .trace{font-size:.5rem !important;letter-spacing:.08em !important}
-.dall.tighter .refs.r9{gap:3px 6px !important;margin-top:4px !important}.dall.tighter .ref .r{font-size:.66rem !important}
+.dall.tighter .refs.r9{gap:3px 6px !important;margin-top:4px !important}.dall.tighter .ref .r{font-size:.66rem !important}.dall.tighter .ref .s{font-size:.58rem !important;line-height:1.2}
+.dall.tightest .trace{display:none}.dall.tightest .lang .mean{-webkit-line-clamp:1}.dall.tightest .lang .snd{display:none}.dall.tightest .refs.r9{gap:2px 6px !important;margin-top:2px !important}.dall.tightest .ref .r{font-size:.62rem !important}.dall.tightest .ref .s{font-size:.54rem !important}
 .deck .trace{margin-top:0 !important}
 .dnav{position:absolute;right:20px;bottom:18px;z-index:6;display:flex;align-items:center;gap:8px;font:600 .72rem 'Archivo',sans-serif;color:var(--foam-dim,#9fb2b6)}
 .dnav[hidden]{display:none}
@@ -1303,6 +1304,7 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 .ptcxp .cxv.cxme{font-weight:600;opacity:1}.ptcxp .cxv.cxhl{color:#14181c;opacity:1}
 .ptcxt{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:8px 0 2px}.ptcxt small{opacity:.65;font-size:.8rem}
 .ptcxt .hlc button{width:26px;height:26px}
+.tbible{position:fixed;inset:0;z-index:140;background:#000}.tbible[hidden]{display:none}.tbible iframe{border:0;width:100%;height:100%;display:block;background:#000}
 .ptbible{position:absolute;inset:0;z-index:60;background:#000}.ptbible[hidden]{display:none}.ptbible iframe{border:0;width:100%;height:100%;display:block;background:#000}
 .ptctxh{font:800 .75rem 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.75;margin-bottom:4px}
 .ptcxr{font:600 .78rem 'Archivo',sans-serif;opacity:.55;margin-bottom:8px}.ptcxr:empty{display:none}
@@ -2457,12 +2459,12 @@ window.MF=(function(){
     function over(c){ return c.scrollHeight>c.clientHeight+1; }
     function cl(sel){ var e=src.querySelector(sel); return e?noIds(e.cloneNode(true)):null; }
     // Ken, 31 Oct: "just do 3 columns and 3 rows instead when the flip side happens to keep it simple, with Greek and Hebrew up top, then the
-    // word study on the bottom, no need for several flips": one card, nine verses. If it is tight, the type gets smaller, then the short
-    // quotes under the verses go, so it is always one card.
+    // word study on the bottom, no need for several flips": one card, nine verses. If it is tight, the type gets smaller (Ken, 31 Oct: keep
+    // the short quote under each verse); only if it still will not fit do the quotes go, so it is always one card.
     var c1=card('dstudy dall'); ['.wtitle','.wsub'].forEach(function(q){ var e=cl(q); if(e) c1.appendChild(e); }); c1.appendChild(cl('.hr'));
     c1.appendChild(cl('.langs')); c1.appendChild(cl('.hr')); c1.appendChild(cl('.trace'));
     var g=document.createElement('div'); g.className='refs r9'; [].slice.call(src.querySelectorAll('.refs .ref'),0,9).forEach(function(r){ g.appendChild(noIds(r.cloneNode(true))); }); c1.appendChild(g);
-    ['tight','tighter','nosnip'].forEach(function(t){ if(over(c1)) c1.classList.add(t); });
+    ['tight','tighter','tightest','nosnip'].forEach(function(t){ if(over(c1)) c1.classList.add(t); });
     // Ken, 16 Oct: on card 3 or 4 there was no sign of the way back -- a small button, bottom left, turns the fish over
     var tb=document.createElement('button'); tb.type='button'; tb.className='dturn'; tb.setAttribute('aria-label','Turn the fish over'); tb.title='Turn the fish over'; tb.innerHTML='↺ <span>🐟</span>'; deck.appendChild(tb);
     var nav=document.createElement('div'); nav.className='dnav'; nav.innerHTML='<button type="button" class="dprev" aria-label="Previous card">‹</button><span class="dpos"></span><button type="button" class="dnext" aria-label="Next card">›</button>';
@@ -2476,9 +2478,15 @@ window.MF=(function(){
     deckShow(deck, +(deck.dataset.at||0)+(b.classList.contains('dprev')?-1:1)); },true);
   // verses and Strong's on any card of the single fish
   document.querySelector('#stage .face.back').addEventListener('click',function(e){ var r=e.target.closest('.deck .ref'), c=e.target.closest('.deck .lang[data-c]');
-    if(r){ e.stopPropagation(); openReader(cur,+r.dataset.i,r.dataset.l); }
+    if(r){ e.stopPropagation(); fishBible(cur,+r.dataset.i,r.dataset.l); }
     else if(c){ e.stopPropagation(); e.preventDefault(); openStrongs(cur,c.dataset.c==='g'); } });
   window.addEventListener('resize',function(){ clearTimeout(window.__dkT); window.__dkT=setTimeout(function(){ document.querySelectorAll('.face.back.decked').forEach(function(f){ if(f.offsetParent) buildDeck(f); }); },200); });
+  // Ken, 31 Oct: a verse on the back of the fish opens the Bible (the same one as ••• Bible, in the reader's own version and language) over
+  // the page, at that verse; ‹ Back closes it and the fish is still turned over
+  function fishBible(k,i,l){ var ref=DATA[k]&&DATA[k].refs[i]; if(!ref) return; l=l||MF.lang; var bv=l==='en'?curVer().k:PTBV[l], o=$('tBible');
+    if(!o){ o=document.createElement('div'); o.id='tBible'; o.className='tbible'; o.innerHTML='<iframe title="Bible"></iframe>'; document.body.appendChild(o); }
+    o.firstChild.src='/bible/?embed=1&from=fish&r='+encodeURIComponent(ref[0])+(bv?'&v='+bv:''); o.hidden=false; document.documentElement.style.overflow='hidden'; }
+  window.addEventListener('message',function(e){ if(e.origin!==location.origin||!e.data||e.data.mf!=='bible-close') return; var o=$('tBible'); if(o&&!o.hidden){ o.hidden=true; o.firstChild.src='about:blank'; document.documentElement.style.overflow=''; } });
   // build word picker
   var wc=$('words');
   ORDER.forEach(function(k){
