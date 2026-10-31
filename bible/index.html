@@ -223,7 +223,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   <span class="lt"><button type="button" class="ib back sm" id="back" aria-label="Back to the devotional">&lsaquo;<span class="bl">&nbsp;Devotional</span></button>
     <button type="button" class="ib sm" id="mode" aria-label="Light or dark">&#9728;&#xFE0E;</button></span>
   <a class="brand" href="/">Manna<b>Fish</b></a>
-  <span class="rt"><button type="button" class="ib sm" id="studyB" aria-pressed="false" aria-label="Word study: Hebrew and Greek" title="Word study"><span class="og2" id="studyI">&alpha;</span></button>
+  <span class="rt"><button type="button" class="ib sm" id="penB" aria-pressed="false" aria-label="Highlighter pen" title="Highlighter: slide across the words">&#128397;&#xFE0E;</button><button type="button" class="ib sm" id="studyB" aria-pressed="false" aria-label="Word study: Hebrew and Greek" title="Word study"><span class="og2" id="studyI">&alpha;</span></button>
     <button type="button" class="ib sm" id="dots" aria-haspopup="menu" aria-expanded="false" aria-label="More"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button></span>
 </div><div class="in r2">
   <button type="button" class="where" id="where" aria-haspopup="dialog">John 1</button>
@@ -658,6 +658,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   // As it is, it will only allow the entire verse to be selected"). Hold a word for a moment, then slide: just those words are picked, and the
   // verse tools open for them. With the highlighter pen (•••) there is no hold: slide sideways and the words are highlighted at once
   // (up and down still scrolls). A tap still picks the whole verse. With a mouse, drag across the words as before.
+  // Ken, 31 Oct: "doesn't have ability to tap and slide to highlight the selected text": now a sideways slide picks the words at once, no
+  // hold needed (up and down still scrolls; a swipe that starts off the words still turns the chapter), and 🖍 at the top turns the pen on.
   var TOUCH=!!(window.matchMedia&&matchMedia('(hover:none)').matches), FD=null, TDRAG=0, PEN=false, HLAPI=!!(window.CSS&&CSS.highlights&&window.Highlight), dgCss=false;
   function tk(v){ return TK[v]||(TK[v]=toks(VT[v]||'')); }
   function wordAt(x,y){ var el=document.elementFromPoint(x,y), w=el&&el.closest&&el.closest('.w'); if(!w||!$('txt').contains(w)) return null; var sp=w.closest('.v'); return sp?{v:+sp.dataset.v,j:+w.dataset.j}:null; }
@@ -677,7 +679,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     FD={x:t.clientX,y:t.clientY,a:w,z:w,on:false};
     if(!PEN){ var me=FD; FD.tm=setTimeout(function(){ if(FD!==me) return; me.on=true; try{ if(navigator.vibrate) navigator.vibrate(10); }catch(er){} fdShow(fdRange(me.a,me.z)); },320); } },{passive:true});
   $('txt').addEventListener('touchmove',function(e){ if(!FD) return; var t=e.touches[0], dx=t.clientX-FD.x, dy=t.clientY-FD.y;
-    if(!FD.on){ if(Math.abs(dx)<8&&Math.abs(dy)<8) return; if(PEN&&Math.abs(dx)>Math.abs(dy)) FD.on=true; else { clearTimeout(FD.tm); FD=null; return; } }
+    if(!FD.on){ if(Math.abs(dx)<8&&Math.abs(dy)<8) return; if(Math.abs(dx)>Math.abs(dy)){ clearTimeout(FD.tm); FD.on=true; } else { clearTimeout(FD.tm); FD=null; return; } }
     e.preventDefault(); var w=wordAt(t.clientX,t.clientY); if(w) FD.z=w; fdShow(fdRange(FD.a,FD.z),PEN?colour():'sel');
     var bh=$('selbar').classList.contains('on')?120:(parseFloat(getComputedStyle(root).getPropertyValue('--barh'))||100);
     if(t.clientY>innerHeight-70) window.scrollBy(0,12); else if(t.clientY<bh+30) window.scrollBy(0,-12); },{passive:false});
@@ -695,10 +697,11 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
         phrases(p.v,h).forEach(function(y){ if(y.s<p.e&&y.e>p.s){ unHl(h,y.k); addPh(h,p.v,y.s,p.s,y.c); addPh(h,p.v,p.e,y.e,y.c); } }); });
       saveHls(h); hlTouched(); closeAct(); paint(); toast('Highlight removed'); return; }
     applyHl(colour()); }
-  function penUI(){ document.body.classList.toggle('pen',PEN); $('penbar').hidden=!PEN; if(!PEN) return;
+  function penUI(){ document.body.classList.toggle('pen',PEN); $('penbar').hidden=!PEN; $('penB').setAttribute('aria-pressed',PEN); $('penB').classList.toggle('on',PEN); if(!PEN) return;
     $('penDots').innerHTML=Object.keys(HLC).map(function(c){ return '<button type="button" class="pd" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(colour()===c)+'" style="background:'+HLC[c]+'"></button>'; }).join(''); }
   function setPen(on){ PEN=on; penUI(); if(on){ closeAct(); closeWc(); toast(TOUCH?'Highlighter on · slide a finger across the words':'Highlighter on · drag across the words'); } }
   $('penX').addEventListener('click',function(){ setPen(false); });
+  $('penB').addEventListener('click',function(){ setPen(!PEN); });
   $('penDots').addEventListener('click',function(e){ var b=e.target.closest('[data-c]'); if(!b) return; ls('mf-hl-color',b.dataset.c); penUI(); });
 
   // ── word study: tap any word for the Hebrew or Greek behind it (Ken, 24 Oct: "a mode for each word in scripture to have a hebrew or greek
