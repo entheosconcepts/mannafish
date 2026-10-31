@@ -651,6 +651,18 @@ section.section.bundles{display:block;margin-top:0}
 .dcard .langs.one{grid-template-columns:1fr !important}
 .dcard .langs.one .div{display:none}
 .deck .refs{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:12px 14px !important;margin-top:12px !important}
+.deck .refs.r9{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:8px 10px !important;margin-top:8px !important}.dall .ref .r{font-size:clamp(.72rem,2.3cqw,.95rem) !important}.dall .ref .s{font-size:clamp(.66rem,1.9cqw,.85rem) !important}
+.dall .hr{margin:8px 0 !important}.dall.nosnip .ref .s{display:none}.dall.nosnip .refs.r9{gap:6px 10px !important}
+/* one card (Ken, 31 Oct): the turn-over button goes to the top left, beside the title, so the verses keep the bottom */
+.dcard.dall{padding:12px clamp(10px,3cqw,30px) 10px}.deck:has(.dall) .dturn{top:10px;bottom:auto;left:10px;height:26px;font-size:.78rem;padding:0 8px}
+/* a phone: Greek and Hebrew in short (the word, how to say it, the meaning in two lines; tap either one for the concordance), then the nine verses */
+.dall.tighter{padding-top:8px}.dall.tighter .wtitle{font-size:clamp(1.15rem,5cqw,1.8rem) !important;line-height:1.1 !important}.dall.tighter .wsub{display:none}
+.dall.tighter .hr{margin:4px 0 !important}.dall.tighter .langs{gap:0 8px !important}.dall.tighter .lang{cursor:pointer}
+.dall.tighter .lang .top{gap:4px !important}.dall.tighter .lang .lab{font-size:.52rem !important;letter-spacing:.08em !important;width:100%}
+.dall.tighter .lang .w{font-size:1rem !important}.dall.tighter .lang .snd{font-size:.62rem !important}
+.dall.tighter .lang .mean{font-size:.66rem !important;line-height:1.25 !important;margin-top:2px !important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dall.tighter .conc{display:none !important}.dall.tighter .trace{font-size:.5rem !important;letter-spacing:.08em !important}
+.dall.tighter .refs.r9{gap:3px 6px !important;margin-top:4px !important}.dall.tighter .ref .r{font-size:.66rem !important}
 .deck .trace{margin-top:0 !important}
 .dnav{position:absolute;right:20px;bottom:18px;z-index:6;display:flex;align-items:center;gap:8px;font:600 .72rem 'Archivo',sans-serif;color:var(--foam-dim,#9fb2b6)}
 .dnav[hidden]{display:none}
@@ -2444,17 +2456,13 @@ window.MF=(function(){
     function card(cls){ var c=document.createElement('div'); c.className='dcard '+cls; deck.appendChild(c); cards.push(c); return c; }
     function over(c){ return c.scrollHeight>c.clientHeight+1; }
     function cl(sel){ var e=src.querySelector(sel); return e?noIds(e.cloneNode(true)):null; }
-    var c1=card('dstudy'); ['.wtitle','.wsub'].forEach(function(q){ var e=cl(q); if(e) c1.appendChild(e); }); c1.appendChild(cl('.hr'));
-    var langs=cl('.langs'); c1.appendChild(langs);
-    // Ken, 16 Oct: Greek and Hebrew side by side on one card in every language -- tighten the card first; split only if it still will not fit
-    if(over(c1)) c1.classList.add('tight');
-    if(over(c1)){ c1.classList.remove('tight'); var ls=langs.querySelectorAll('.lang'), dv=langs.querySelector('.div'); if(dv) dv.remove(); langs.classList.add('one');
-      var c2=card('dstudy'); var t2=cl('.wtitle'); t2.classList.add('small'); c2.appendChild(t2); c2.appendChild(cl('.hr'));
-      var l2=document.createElement('div'); l2.className='langs one'; l2.appendChild(ls[1]); c2.appendChild(l2); }
-    var refs=[].slice.call(src.querySelectorAll('.refs .ref')), at=0;
-    while(at<refs.length){ var rc=card('drefs'); rc.appendChild(cl('.trace')); var g=document.createElement('div'); g.className='refs'; rc.appendChild(g); var n=0;
-      while(at<refs.length){ g.appendChild(noIds(refs[at].cloneNode(true))); if(over(rc) && n>0){ g.lastChild.remove(); break; } at++; n++; }
-      if(!n) at++; }
+    // Ken, 31 Oct: "just do 3 columns and 3 rows instead when the flip side happens to keep it simple, with Greek and Hebrew up top, then the
+    // word study on the bottom, no need for several flips": one card, nine verses. If it is tight, the type gets smaller, then the short
+    // quotes under the verses go, so it is always one card.
+    var c1=card('dstudy dall'); ['.wtitle','.wsub'].forEach(function(q){ var e=cl(q); if(e) c1.appendChild(e); }); c1.appendChild(cl('.hr'));
+    c1.appendChild(cl('.langs')); c1.appendChild(cl('.hr')); c1.appendChild(cl('.trace'));
+    var g=document.createElement('div'); g.className='refs r9'; [].slice.call(src.querySelectorAll('.refs .ref'),0,9).forEach(function(r){ g.appendChild(noIds(r.cloneNode(true))); }); c1.appendChild(g);
+    ['tight','tighter','nosnip'].forEach(function(t){ if(over(c1)) c1.classList.add(t); });
     // Ken, 16 Oct: on card 3 or 4 there was no sign of the way back -- a small button, bottom left, turns the fish over
     var tb=document.createElement('button'); tb.type='button'; tb.className='dturn'; tb.setAttribute('aria-label','Turn the fish over'); tb.title='Turn the fish over'; tb.innerHTML='↺ <span>🐟</span>'; deck.appendChild(tb);
     var nav=document.createElement('div'); nav.className='dnav'; nav.innerHTML='<button type="button" class="dprev" aria-label="Previous card">‹</button><span class="dpos"></span><button type="button" class="dnext" aria-label="Next card">›</button>';
