@@ -712,22 +712,26 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     if(PEN){ fdShow(null); penApply(); } else { selUI(); fdShow(L,'sel'); } },{passive:false});
   $('txt').addEventListener('touchcancel',function(){ if(FD){ clearTimeout(FD.tm); FD=null; fdShow(null); } });
   $('txt').addEventListener('contextmenu',function(e){ if(TOUCH&&(FD||Date.now()-TDRAG<1500)) e.preventDefault(); });
-  // the pen: highlight the words slid across; slide across ones already highlighted to take it off them (only those words)
-  function covered(h,p){ if(h[hkey(AT.b,AT.c,p.v)]) return true; var ph=phrases(p.v,h);
-    return tk(p.v).filter(function(t){ return t.e>p.s&&t.s<p.e; }).every(function(t){ return ph.some(function(x){ return x.s<t.e&&x.e>t.s; }); }); }
+  // the pen: highlight the words slid across; slide across ones already highlighted in the pen's colour to take it off them (only
+  // those words). Ken, 1 Nov ("I chose red but it's still yellow"): words in another colour are changed to the pen's colour instead
+  function covered(h,p){ var pc=colour(), vx=h[hkey(AT.b,AT.c,p.v)]; if(vx) return (HLC[vx.c]?vx.c:'gold')===pc; var ph=phrases(p.v,h);
+    return tk(p.v).filter(function(t){ return t.e>p.s&&t.s<p.e; }).every(function(t){ return ph.some(function(x){ return x.s<t.e&&x.e>t.s&&x.c===pc; }); }); }
   function penApply(){ var L=PHS||[], h=hls(); if(!L.length) return;
     if(L.every(function(p){ return covered(h,p); })){ L.forEach(function(p){ var t=VT[p.v]||'', k=hkey(AT.b,AT.c,p.v), x=h[k];
         if(x){ var c=HLC[x.c]?x.c:'gold'; unHl(h,k); addPh(h,p.v,0,p.s,c); addPh(h,p.v,p.e,t.length,c); }
         phrases(p.v,h).forEach(function(y){ if(y.s<p.e&&y.e>p.s){ unHl(h,y.k); addPh(h,p.v,y.s,p.s,y.c); addPh(h,p.v,p.e,y.e,y.c); } }); });
       saveHls(h); hlTouched(); closeAct(); paint(); toast('Highlight removed'); return; }
-    applyHl(colour()); }
+    applyHl(colour()); LASTPEN={L:L.map(function(p){ return {v:p.v,s:p.s,e:p.e}; }),at:Date.now()}; }
+  // a colour picked just after a slide (within half a minute) changes that highlight too, not only the next one
+  var LASTPEN=null;
+  function penColour(c){ ls('mf-hl-color',c); penUI(); if(LASTPEN&&Date.now()-LASTPEN.at<30000){ PHS=LASTPEN.L; SEL=PHS.map(function(p){ return p.v; }); LASTPEN.at=Date.now(); applyHl(c); } }
   function penUI(){ document.body.classList.toggle('pen',PEN); $('penbar').hidden=!PEN; $('penB').setAttribute('aria-pressed',PEN); $('penB').classList.toggle('on',PEN); if(!PEN) return;
     var pc=colour(); $('penDots').innerHTML=BASE.concat(BASE.indexOf(pc)<0?[pc]:[]).map(function(c){ return '<button type="button" class="pd" data-c="'+c+'" aria-label="'+(HLC[c]||c)+'" aria-pressed="'+(pc===c)+'" style="background:'+HLC[c]+'"></button>'; }).join('')+WHEEL; }
-  $('penDots').addEventListener('change',function(e){ if(e.target.type!=='color') return; ls('mf-hl-color',wheelKey(e.target.value)); penUI(); });
+  $('penDots').addEventListener('change',function(e){ if(e.target.type!=='color') return; penColour(wheelKey(e.target.value)); });
   function setPen(on){ PEN=on; penUI(); if(on){ closeAct(); closeWc(); toast(TOUCH?'Highlighter on · slide a finger across the words':'Highlighter on · drag across the words'); } }
   $('penX').addEventListener('click',function(){ setPen(false); });
   $('penB').addEventListener('click',function(){ setPen(!PEN); });
-  $('penDots').addEventListener('click',function(e){ var b=e.target.closest('[data-c]'); if(!b) return; ls('mf-hl-color',b.dataset.c); penUI(); });
+  $('penDots').addEventListener('click',function(e){ var b=e.target.closest('[data-c]'); if(!b) return; penColour(b.dataset.c); });
 
   // ── word study: tap any word for the Hebrew or Greek behind it (Ken, 24 Oct: "a mode for each word in scripture to have a hebrew or greek
   // root word if it is clicked on like the ESword functionality ... and blb ... find a good balance between the both"). Like e-Sword, every word
