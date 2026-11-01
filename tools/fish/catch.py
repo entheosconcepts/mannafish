@@ -39,7 +39,7 @@ out = {'note': 'Ken, 1 Nov: every fish in the English daily inbox. Sunday is one
        'order': order, 'fish': fish}
 json.dump(out, open(os.path.join(ROOT, 'netlify/functions/lib/catch.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
 FL = J('netlify/functions/lib/fishlines.json')['en']
-json.dump({'core': [{'k': k, 'title': words['words'][k]['title'], 'ref': FL[k]['ref']} for k in core], 'net': [x['id'][2:] for x in net],
+json.dump({'core': [{'k': k, 'title': words['words'][k]['title'], 'ref': FL[k]['ref']} for k in core], 'net': [x['id'][2:] for x in net], 'designs': [x['id'][2:] for x in designs],
            'fish': {k: {x: v[x] for x in ('title', 'ref', 'top', 'bottom', 'verse', 'ver')} for k, v in fish.items()}},
           open(os.path.join(ROOT, 'fish/catch.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
 print(len(core), 'devotional fish +', len(fish), 'more =', len(core) + len(fish), 'fish;', len(order), 'days in the round (', len(order) // 7, 'weeks )')
