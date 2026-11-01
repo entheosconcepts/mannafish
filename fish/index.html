@@ -25,6 +25,8 @@ blockquote{font:italic 1.25rem/1.5 Spectral,Georgia,serif;margin:10px auto 6px;m
 .row a,.row button{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:11px 16px;font:800 .95rem Archivo,sans-serif;text-decoration:none;cursor:pointer}
 .row .p{background:var(--blue);border-color:var(--blue)}
 .empty{color:var(--dim);padding:40px 0}
+h2{font:400 1.6rem 'MFHobo',cursive;margin:28px 0 10px}.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.c{display:block;text-decoration:none;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 6px 8px}.c img{display:block;width:100%;aspect-ratio:2/1;object-fit:contain;background:#000;border-radius:8px}.c b{display:block;font:400 1.15rem 'MFHobo',cursive;margin-top:4px}.c small{color:var(--dim);font-size:.75rem}
 </style>
 </head>
 <body>
@@ -35,7 +37,14 @@ blockquote{font:italic 1.25rem/1.5 Spectral,Georgia,serif;margin:10px auto 6px;m
 (function(){
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   var id=(new URLSearchParams(location.search).get('id')||'').replace(/[^A-Za-z0-9_-]/g,''), M=document.getElementById('m');
-  if(!id){ location.replace('/'); return; }
+  // no fish named: the 153 (Ken, 1 Nov: "I want to see all 153 fish"), John 21:11 -- the 24 devotional fish, then the 129 in the Go Fish net
+  if(!id){ document.title='The 153 · MannaFish'; fetch('/fish/catch.json').then(function(r){ return r.json(); }).then(function(C){
+      var card=function(src,href,w,ref){ return '<a class="c" href="'+href+'"><img loading="lazy" src="'+src+'" alt=""><b>'+esc(w)+'</b><small>'+esc(ref)+'</small></a>'; };
+      M.innerHTML='<div class="k">John 21:11</div><h1>The 153</h1><blockquote>“…full of great fishes, an hundred and fifty and three: and for all there were so many, yet was not the net broken.”</blockquote>'
+        +'<h2>The 24 devotional fish</h2><div class="g">'+C.core.map(function(x){ return card('/fish/en/'+x.k+'.svg','/?w='+x.k.toLowerCase(),x.title,x.ref); }).join('')+'</div>'
+        +'<h2>The other '+C.net.length+'</h2><div class="g">'+C.net.map(function(k){ var f=C.fish[k]; return f?card('/fish/'+k+'.svg','/fish/?id='+k,f.title,f.ref):''; }).join('')+'</div>'
+        +'<p class="ref" style="margin-top:20px">'+(C.core.length+C.net.length)+' fish · every one an action word</p>'; })
+    .catch(function(){ M.innerHTML='<p class="empty">Couldn’t open the net just now.</p>'; }); return; }
   Promise.all([fetch('/fish/catch.json').then(function(r){ return r.json(); }),fetch('/fish/'+id+'.svg').then(function(r){ if(!r.ok) throw 0; return r.text(); })]).then(function(a){
     var f=a[0].fish[id]; if(!f){ M.innerHTML='<p class="empty">This fish swam away. <a href="/">Today’s MannaFish</a></p>'; return; }
     document.title=f.title+' · MannaFish';

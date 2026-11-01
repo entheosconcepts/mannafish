@@ -14,11 +14,11 @@ lines = {x['k']: x for x in J('tools/fish-format/net-lines.json') + J('tools/fis
 def snip(t):
     t = re.sub(r'[\s,;:.…]+$', '', t.strip()); return t
 fish, seen = {}, set(core)
-# the same word on the same verse only once (a Bible-in-a-year fish can repeat a year fish, like Provide on Genesis 22:8)
-same = {(words['words'][k]['title'].lower(), J('netlify/functions/lib/fishlines.json')['en'][k]['ref']) for k in core}
+# the same verse only once (a Bible-in-a-year fish can repeat a year fish's verse, like Provide on Genesis 22:8)
+same = {J('netlify/functions/lib/fishlines.json')['en'][k]['ref'] for k in core}
 def add(k, word, ref, verse, ver=None):
-    if k in seen or (word.lower(), ref) in same or not os.path.exists(os.path.join(ROOT, 'fish', k + '.svg')): return None
-    L = lines.get(k, {}); seen.add(k); same.add((word.lower(), ref))
+    if k in seen or ref in same or not os.path.exists(os.path.join(ROOT, 'fish', k + '.svg')): return None
+    L = lines.get(k, {}); seen.add(k); same.add(ref)
     fish[k] = {'title': word, 'ref': ref, 'top': L.get('top', ''), 'bottom': L.get('bot', ''), 'verse': verse, 'snip': snip(L.get('top') or verse.split(',')[0]),
                'ver': ver or 'KJV', 'url': '/fish/?id=' + k}
     return k
@@ -38,6 +38,8 @@ while len(order) % 7: order.append(others[(len(order)) % len(others)])
 out = {'note': 'Ken, 1 Nov: every fish in the English daily inbox. Sunday is one of the 24; Monday to Saturday the rest. Made by tools/fish/catch.py',
        'order': order, 'fish': fish}
 json.dump(out, open(os.path.join(ROOT, 'netlify/functions/lib/catch.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
-json.dump({'fish': {k: {x: v[x] for x in ('title', 'ref', 'top', 'bottom', 'verse', 'ver')} for k, v in fish.items()}},
+FL = J('netlify/functions/lib/fishlines.json')['en']
+json.dump({'core': [{'k': k, 'title': words['words'][k]['title'], 'ref': FL[k]['ref']} for k in core], 'net': [x['id'][2:] for x in net],
+           'fish': {k: {x: v[x] for x in ('title', 'ref', 'top', 'bottom', 'verse', 'ver')} for k, v in fish.items()}},
           open(os.path.join(ROOT, 'fish/catch.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
 print(len(core), 'devotional fish +', len(fish), 'more =', len(core) + len(fish), 'fish;', len(order), 'days in the round (', len(order) // 7, 'weeks )')
