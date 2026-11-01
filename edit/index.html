@@ -21,7 +21,7 @@
 @font-face{font-family:'Baloo 2';src:url(/fish-lang/hi.woff2) format('woff2');font-weight:100 900;font-display:swap}
 @font-face{font-family:'Ubuntu';src:url(/fish-lang/el.woff2) format('woff2');font-weight:100 900;font-display:swap}
 @font-face{font-family:'Jua';src:url(/fish-lang/ko.woff2) format('woff2');font-display:swap}
-@font-face{font-family:'Fredoka';src:url(/fish-lang/he.woff2) format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Frank Ruhl Libre';src:url(/fish-lang/he.woff2) format('woff2');font-weight:100 900;font-display:swap}
 @font-face{font-family:'Cairo';src:url(/fish-lang/ar.woff2) format('woff2');font-weight:100 900;font-display:swap}
 @font-face{font-family:'Ubuntu Cyrillic';src:url(/fish-lang/ru.woff2) format('woff2');font-weight:100 900;font-display:swap}
 :root{--bg:#05080c;--bg2:#0e1319;--line:rgba(255,255,255,.14);--text:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--gold:#f5d76e;--ok:#7fd18b;--sky:#8fb3e8}
@@ -174,7 +174,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   var FE=null, FR=null;
   function fishF(X){ return {word:val(X,'word'),top:val(X,'top'),bot:val(X,'bot'),ref:val(X,'ref'),refShort:X.nf&&val(X,'ref')===X.base.ref?X.nf.refShort:''}; }
   function autoP(X){ var f=fishF(X), k=JSON.stringify(f); if(X._ak!==k){ X._ak=k; X._ap=MFfmt.layout(FE,f,FR); X._as=MFfmt.toSheet(FE,f,X._ap,FR); } return X._as; }
-  var FONTFILE={'MFHobo':'hobo','ZCOOL KuaiLe':'zh','Baloo 2':'hi','Ubuntu':'el','Jua':'ko','Fredoka':'he','Cairo':'ar','Ubuntu Cyrillic':'ru'};
+  var FONTFILE={'MFHobo':'hobo','ZCOOL KuaiLe':'zh','Baloo 2':'hi','Ubuntu':'el','Jua':'ko','Frank Ruhl Libre':'he','Cairo':'ar','Ubuntu Cyrillic':'ru'};
 
   // ═════ what's been changed, kept on this device ═════
   //  S.d[fish] = {word, top, bot, ref, gkm, hbm, design, dnote,  wl: word size/place,  tl / bl: top / bottom line size/place}

@@ -60,7 +60,7 @@
       +'.mfbk .stn label.mine{border-color:rgba(127,211,160,.6)}.mfbk .ok2{color:#7fd3a0;font-weight:800;font-size:.8rem}.mfbk .si{display:flex;gap:6px;margin-top:8px}.mfbk .si input{flex:1;min-width:0}.mfbk .si button{border:0;border-radius:999px;background:#2a5fb0;color:#fff;font:800 .9rem Archivo,sans-serif;padding:8px 14px;cursor:pointer}'
       +'.mfbk .go.y{background:#f5d76e;color:#111}'
       +'.mfbk .was{border-top:1px solid rgba(128,128,128,.25);margin-top:16px;padding-top:4px}.mfbk .was .row{grid-template-columns:72px 1fr}.mfbk .was .th{width:72px}';
-    s.textContent+=[['MFHobo','hobo'],['ZCOOL KuaiLe','zh'],['Baloo 2','hi'],['Ubuntu','el'],['Jua','ko'],['Fredoka','he'],['Cairo','ar'],['Ubuntu Cyrillic','ru']].map(function(f){ return "@font-face{font-family:'"+f[0]+"';src:url(/fish-lang/"+f[1]+".woff2) format('woff2');font-weight:100 900;font-display:swap}"; }).join('');   // the letters on the fish
+    s.textContent+=[['MFHobo','hobo'],['ZCOOL KuaiLe','zh'],['Baloo 2','hi'],['Ubuntu','el'],['Jua','ko'],['Frank Ruhl Libre','he'],['Cairo','ar'],['Ubuntu Cyrillic','ru']].map(function(f){ return "@font-face{font-family:'"+f[0]+"';src:url(/fish-lang/"+f[1]+".woff2) format('woff2');font-weight:100 900;font-display:swap}"; }).join('');   // the letters on the fish
     document.head.appendChild(s); }
   // a fish's picture: the real fish, from /fish/ where every fish picture lives (Ken, 22 Oct: "the fish are not actual images");
   // the outline with its word only shows while it loads. The main fish come in the language chosen for them.
