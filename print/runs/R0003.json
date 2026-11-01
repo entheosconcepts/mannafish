@@ -1,29 +1,33 @@
 {
  "id": "R0003",
- "title": "Build · word study, sponsored by K-Tech Construction (mock-up)",
+ "title": "Build (Jude 1:20) · word study, sponsored by K-Tech Construction (mock-up)",
  "status": "draft",
  "qty": 100,
  "fish": {
-  "id": "W19b",
+  "id": "X004",
   "word": "BUILD",
-  "lang": "en"
+  "lang": "en",
+  "study": "BUILD-JUDE"
  },
  "sponsor": {
   "name": "K-Tech Construction",
+  "logo": "assets/ktech-round-logo-DRAFT.svg",
   "show": true
  },
  "ship_to": "",
+ "qr_direct": true,
  "back": {
   "template": "study",
+  "refs": 6,
   "text": "Still hungry? Do this word study & look up the following Scriptures",
   "left": {
-   "label": "Free porch quote",
-   "to": ""
+   "label": "Free porch enclosure quote",
+   "to": "https://k-tech-porch-enclosures.netlify.app/"
   },
   "right": {
    "label": "Today's free MannaFish devotional",
    "to": "https://manna-fish.com/?devo=1"
   }
  },
- "notes": "Mock-up for Ken's brother. Waiting on the K-Tech logo and the porch page's address (visits arrive tagged utm_source=mannafish)."
+ "notes": "Ken, 1 Nov: Build with a New Testament verse (Jude 1:20, \"building up yourselves on your most holy faith\"), the word study on the upper back (Greek is Jude's own word, epoikodomeo), six verses so the QR codes fit at the bottom, a made-up round K-Tech logo (replace with the real one), and QR codes that go straight to the porch site and the devotional."
 }

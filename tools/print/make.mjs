@@ -114,11 +114,21 @@ function wordData(id) {
 // the site's own Greek and Hebrew font, and the MannaFish lettering
 const GKHB = () => { const m = /font-family:'MFGkHb';src:url\((data:font\/ttf;base64,[A-Za-z0-9+/=]+)\)/.exec(fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8')); return m ? m[1] : ''; };
 
+// what a QR code holds: manna-fish.com/q/<code> (counts the scan, then sends the person on), or with "qr_direct": true the web
+// address itself (Ken, 1 Nov: "make sure QR codes work": works the day it is printed, but scans are not counted), tagged for the
+// sponsor's own site so their visits show where they came from
+function qrUrl(run, code) {
+  if (!run.qr_direct) return run.qr_base + code;
+  const B = run.back || {}, id = run.id, to = code === id + 's' ? B.left && B.left.to : code === id + 'm' ? B.right && B.right.to : B.qr && B.qr.to;
+  if (!to) return run.qr_base + code;
+  const u = new URL(to); if (!/(^|\.)manna-fish\.com$/.test(u.hostname)) { u.searchParams.set('utm_source', 'mannafish'); u.searchParams.set('utm_medium', 'card'); u.searchParams.set('utm_campaign', code); }
+  return u.toString();
+}
 // ── the back (portrait), filled from the run: "invite" (Ken's invitation card), "study" (the word study, like the old
 // word-study card), or "image" (Ken's own finished artwork). Both templates end with the same strip: two QR codes and who gave it.
 async function backHtml(run, codes, warn) {
   const B = run.back || {}, S = run.sponsor || {}, F = run.for || null, w = CARD.h, h = CARD.w;
-  const qr = async (code) => (await QR.toString(run.qr_base + code, { type: 'svg', errorCorrectionLevel: 'M', margin: 2, color: { dark: '#000000', light: '#ffffff' } }))
+  const qr = async (code) => (await QR.toString(qrUrl(run, code), { type: 'svg', errorCorrectionLevel: 'M', margin: 2, color: { dark: '#000000', light: '#ffffff' } }))
     .replace('<svg ', '<svg preserveAspectRatio="xMidYMid meet" width="100%" height="100%" ');
   const logo = (p, what) => { if (!p) return ''; const f = path.join(PRINT, p); if (!fs.existsSync(f)) { warn.push(`${what}: ${p} is missing`); return ''; }
     if (/DRAFT/.test(p)) warn.push(`${what} is a stand-in (${p}). Upload the original logo before printing.`); return dataUrl(f); };
@@ -133,7 +143,7 @@ async function backHtml(run, codes, warn) {
   else if (S.name && S.show !== false && !S.anonymous) { credit = B.credit || 'Sponsored by'; ml = logo(S.logo, 'The sponsor logo'); mn = S.name; }
   else { credit = B.credit || 'Freely given'; mn = B.freely || '“Freely ye have received, freely give.” Matthew 10:8'; verse = true; }   // no sponsor named
   const L = B.left || null, Rt = B.right || null;
-  const strip = async (top, ht) => `<div class="strip" style="top:${top}mm;height:${ht}mm">
+  const strip = async (top, ht) => `<div class="strip${ht > 30 ? ' big' : ''}" style="top:${top}mm;height:${ht}mm">
     ${L ? `<div class="col"><div class="sq">${await qr(codes.left)}</div><div class="lab fit"><span>${esc(L.label || '')}</span></div></div>` : '<div class="col"></div>'}
     <div class="col mid"><div class="sb">${esc(credit)}</div>${ml ? `<div class="sl"><img src="${ml}"></div>` : `<div class="sn fit${verse ? ' sv' : ''}"><span>${esc(mn)}</span></div>`}</div>
     ${Rt ? `<div class="col"><div class="sq">${await qr(codes.right)}</div><div class="lab fit"><span>${esc(Rt.label || '')}</span></div></div>` : '<div class="col"></div>'}
@@ -142,13 +152,16 @@ async function backHtml(run, codes, warn) {
   if (B.template === 'study') {
     const d = wordData(run.fish.study || run.fish.word); if (!d) throw new Error(`No word study for ${run.fish.word}: add print/study/${String(run.fish.word).toUpperCase()}.json`);
     const refs = (d.refs || []).slice(0, B.refs || 10);
+    // fewer verses (Ken, 1 Nov: "less references so QR codes go on bottom"): the verses take only the rows they need and the strip
+    // with the QR codes and the sponsor's logo grows into the room left
+    const rows = Math.ceil(refs.length / 2), rfH = rows <= 3 ? rows * 8.6 : 44.8, stTop = 44.8 + rfH + (rows <= 3 ? 1.8 : 1.6), stH = 111.6 - stTop;
     const lang = (k, wd, lg, snd, m) => `<div class="lg"><div class="k">${k}</div><div class="ow fit" lang="${lg}"><span>${esc(wd)}</span></div><div class="tr">(${esc(snd)})</div><div class="mn fit"><span>${esc(m)}</span></div></div>`;
     return `${open}
   <div class="wt fit" style="top:3.4mm;height:10.6mm"><span>${esc(B.heading || d.title)}</span></div>
   <div class="gh" style="top:15mm;height:21.4mm">${lang('GREEK', d.gkw, 'el', d.gks, d.gkm)}${lang('HEBREW', d.hbw, 'he', d.hbs, d.hbm)}</div>
   <div class="hq fit" style="top:37.6mm;height:6.4mm"><span>${esc(B.text || 'Still hungry? Do this word study & look up the following Scriptures')}</span></div>
-  <div class="rf" style="top:44.8mm;height:44.8mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
-  ${await strip(91.2, 20.4)}</div></div>`;
+  <div class="rf" style="top:44.8mm;height:${f2(rfH)}mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
+  ${await strip(f2(stTop), f2(stH))}</div></div>`;
   }
   const yl = logo(B.logo, 'The top logo');
   return `${open}
@@ -175,6 +188,8 @@ const BACKCSS = () => `@font-face{font-family:'Lilita One';src:url(${font('lilit
 .col{display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-width:0;min-height:0;height:100%;overflow:hidden}
 .sq{width:12.6mm;height:12.6mm}.lab{width:100%;height:5.2mm;display:flex;align-items:center;justify-content:center;text-align:center;font:400 2.5mm/1.05 'Lilita One',sans-serif}
 .mid{justify-content:flex-start}.sb{font:400 2.3mm/1 'Lilita One',sans-serif;margin:.4mm 0 .8mm;text-align:center}.sl{width:100%;flex:1;min-height:0;display:flex;align-items:center;justify-content:center}.sl img{max-width:100%;max-height:100%;object-fit:contain}
+.strip.big{grid-template-columns:1fr 1fr 1fr;gap:1.6mm;padding:1.6mm}.strip.big .sq{width:19.5mm;height:19.5mm}.strip.big .lab{height:9mm;font-size:2.9mm;line-height:1.08}
+.strip.big .sb{font-size:2.8mm;margin:.6mm 0 1.2mm}.strip.big .col{justify-content:flex-start;gap:1mm}.strip.big .sl{flex:none;width:100%;height:24.5mm}
 .sn{flex:1;width:100%;display:flex;align-items:center;justify-content:center;text-align:center;font:400 3mm/1.1 'Lilita One',sans-serif}.sn.sv{font:italic 400 2.5mm/1.2 'Spectral',serif;padding:0 .6mm}
 .wt{font:400 10mm/1 'MFHobo',sans-serif;text-align:center;display:flex;align-items:center;justify-content:center;white-space:nowrap}
 .gh{left:2.6mm!important;right:2.6mm!important;display:grid;grid-template-columns:1fr 1fr;gap:1.6mm}
@@ -263,7 +278,8 @@ async function make(id, browser) {
   if (B.left) links[codes.left] = { to: B.left.to || '', run: id, what: B.left.label || 'left' };
   if (B.right) links[codes.right] = { to: B.right.to || '', run: id, what: B.right.label || 'right' };
   Object.entries(links).forEach(([c, v]) => { if (!v.to) warn.push(`QR ${c} (${v.what}) has no web address yet: it opens manna-fish.com until one is set.`); });
-  if (B.template !== 'image') warn.push(`Every QR opens ${run.qr_base}<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.`);
+  if (B.template !== 'image' && !run.qr_direct) warn.push(`Every QR opens ${run.qr_base}<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.`);
+  if (run.qr_direct) Object.values(links).forEach((v) => { if (/manna-fish\.com/.test(v.to || '')) warn.push(`QR "${v.what}" opens ${v.to}: the devotional (?devo=1) only opens there once the new site is live on manna-fish.com.`); });
   if (run.status !== 'approved' && run.status !== 'ordered' && run.status !== 'shipped' && run.status !== 'delivered') warn.push(`Status is "${run.status || 'draft'}": approve the proof before ordering.`);
 
   // the proof: every layer, how they go together, the back, and what still needs doing
@@ -283,7 +299,7 @@ ${panel(4, 'After the decal is peeled off: the print on the backing paper', 'Thi
   + `<text x="${f2(PW / 2)}" y="${f2(PH - 2.2)}" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="2.5" letter-spacing=".12" fill="#f5d76e">PRINTED ON THE BACKING PAPER · SEEN AFTER THE DECAL IS PEELED OFF</text>`))}
 </div>
 <div class="row2"><div class="p bk"><h3><b>5</b>Back of the backing paper</h3><p>Reads upright when the card is turned on its side. Blue: the card edge.</p><img src="${backPng}"></div>
-<div class="p nt"><h3>Where the QR codes go</h3><ul>${Object.entries(links).map(([c, v]) => `<li><b>${esc(run.qr_base + c)}</b><br>${esc(v.what)} → ${esc(v.to || 'not set yet (opens manna-fish.com)')}</li>`).join('')}</ul>
+<div class="p nt"><h3>Where the QR codes go</h3><ul>${Object.entries(links).map(([c, v]) => `<li><b>${esc(qrUrl(run, c))}</b><br>${esc(v.what)}${run.qr_direct ? ' (straight to the address, scans not counted)' : ' → ' + esc(v.to || 'not set yet (opens manna-fish.com)')}</li>`).join('')}</ul>
 <h3>Before printing</h3><ul class="w">${warn.map((x) => `<li>${esc(x)}</li>`).join('') || '<li>Nothing left. Ready.</li>'}</ul>
 <h3>Files for the printer</h3><ul class="f"><li>${id}-1-decal-white-ink (.png 1200 dpi, .pdf)</li><li>${id}-2-backing-front (.pdf vector, .png 1200 dpi)</li><li>${id}-3-cut-lines (.pdf with CutContour and ThroughCut, .svg): kept here, sent only if the printer asks${run.send_cut_file ? ' (this run sends it)' : ''}</li><li>${id}-4-back (.pdf, .png 600 dpi)</li><li>All of them together: ${id}-print-files.zip</li></ul></div></div></div>`;
   const PCSS = `body{margin:0;background:#fff}.sheet{width:1500px;padding:28px;box-sizing:border-box;font:15px/1.4 Arial,sans-serif;color:#111}
