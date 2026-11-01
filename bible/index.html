@@ -145,6 +145,10 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 /* choose highlights to take off (Ken, 20 Oct: "remove all highlights, or click and remove only selected highlights") */
 .pace{text-align:center;margin:22px 0 0}.pace .hlm{font-size:.95rem;padding:10px 18px}.pace .hlm[aria-pressed=true]{background:#7fd18b;border-color:#7fd18b;color:#06210c}
 .hlm{border:1px solid var(--line);background:none;border-radius:999px;padding:6px 12px;font-weight:700;font-size:.82rem;cursor:pointer;color:var(--text);margin:0 0 10px}
+.hlm .ar{display:inline-block;margin-left:6px;transition:transform .2s}.hlm[aria-expanded=true] .ar{transform:rotate(180deg)}
+.hlopts{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 12px}.hlopts[hidden]{display:none}.hlopts button{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:7px 12px;font:700 .82rem 'Archivo',sans-serif;cursor:pointer}
+/* Ken, 1 Nov: hide highlights in every Bible on the site (the same setting as the Today page: mf-hl-hide) */
+.hlhide #txt .v.hl,.hlhide #txt mark.ph,.hlhide #txt [style*="background"]{background:none!important;color:inherit!important}
 .hlon .txt .v:not(.hl){opacity:.55}.hlon .txt .v.hl,.hlon .txt mark.ph{outline:2px dashed transparent;outline-offset:2px}
 .hlon .txt .v.hl.gone,.hlon .txt mark.ph.gone{outline-color:#e8735c;opacity:.45;text-decoration:line-through}
 /* the contents (Ken, 20 Oct: "when someone clicks on the bible, I want the table of contents to open") */
@@ -236,7 +240,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 </div></div>
 <div class="menu" id="menu" role="menu" hidden></div>
 <main id="main">
-  <h1 id="title"></h1><p class="sub" id="sub"></p><button type="button" class="cn" id="cnote" hidden></button><div class="stb" id="stb" hidden></div><button type="button" class="hlm" id="hlmBtn" hidden></button>
+  <h1 id="title"></h1><p class="sub" id="sub"></p><button type="button" class="cn" id="cnote" hidden></button><div class="stb" id="stb" hidden></div><button type="button" class="hlm" id="hlmBtn" aria-expanded="false" hidden></button><div class="hlopts" id="hlOpts" hidden></div>
   <div class="txt" id="txt"><p class="msg">Opening…</p></div>
   <p class="pace" id="paceRow" hidden><button type="button" class="hlm" id="paceBtn" aria-pressed="false"></button></p>
   <div class="pn"><button type="button" id="prev"></button><button type="button" id="next"></button></div>
@@ -369,7 +373,14 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     sp.classList.toggle('hl',!!x); sp.style.background=x?HLC[c]:''; sp.style.color=x?ink(c):''; sp.classList.toggle('gone',!!(x&&HLM&&HLM[hk])); if(x) n++;
     var ph=x?[]:phrases(v,h), at=0, P=[]; ph.forEach(function(p){ var a=Math.max(p.s,at), z=Math.min(p.e,t.length); if(z<=a) return; n++; P.push({k:p.k,c:p.c,s:a,e:z}); at=z; });
     var out=vtHtml(v,t,P,!!x), vt=sp.querySelector('.vt'); if(vt.innerHTML!==out) vt.innerHTML=out; }); if(WC) markWord();
-    $('hlmBtn').hidden=!n||!!HLM||EMBED; $('hlmBtn').textContent='🖍 '+n+' highlight'+(n===1?'':'s')+' here · Remove'; if(HLM) hlmUI(); }
+    var hid=hlHid(); $('hlmBtn').hidden=(!n&&!hid)||!!HLM; $('hlmBtn').innerHTML='🖍 '+(n?n+' highlight'+(n===1?'':'s')+(hid?' (hidden)':''):'Highlights hidden')+'<span class="ar" aria-hidden="true">▾</span>';
+    if($('hlmBtn').hidden) hlOpts(false); if(HLM) hlmUI(); }
+  // Ken, 1 Nov: "use an arrow to hide or show and add or remove highlights, or just hide/show highlights for all the Bibles"
+  function hlHid(){ return ls('mf-hl-hide')==='1'; }
+  function hlHide(on){ ls('mf-hl-hide',on?'1':''); document.documentElement.classList.toggle('hlhide',on); paint(); toast(on?'Highlights hidden in every Bible · they are kept':'Highlights showing'); }
+  function hlOpts(open){ var b=$('hlmBtn'), o=$('hlOpts'); b.setAttribute('aria-expanded',String(!!open)); o.hidden=!open; if(!open) return;
+    o.innerHTML='<button type="button" data-o="hide">'+(hlHid()?'👁 Show highlights':'🙈 Hide highlights')+'</button><button type="button" data-o="pen">🖍 '+(PEN?'Pen off':'Highlighter pen')+'</button>'
+      +(document.querySelector('#txt .v.hl,#txt mark.ph')?'<button type="button" data-o="rm">🗑 Remove some</button>':''); }
   // a verse's words, each in its own span (data-j: the word's place, as the Greek and Hebrew are matched to it); in word study, with the
   // Strong's number and the original word of each (shown above or below it when asked for)
   function vtHtml(v,t,ph,full){ var T=tk(v), og=OGJ&&ver().k==='kjv'?OGJ.v[String(v)]:null, o=studyOn()?og:null, R=full?[]:rulesHere(), cuts=[0,t.length], out='', open=null, ti=0;
@@ -389,7 +400,11 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function hlmStart(){ closeAct(); HLM={}; document.body.classList.add('hlon'); $('hlbar').hidden=false; paint(); }
   function hlmEnd(){ HLM=null; document.body.classList.remove('hlon'); $('hlbar').hidden=true; paint(); }
   function hlHere(){ var h=hls(), out=[]; [].forEach.call($('txt').querySelectorAll('.v.hl'),function(sp){ out.push(hkey(AT.b,AT.c,+sp.dataset.v)); }); [].forEach.call($('txt').querySelectorAll('mark.ph'),function(m){ out.push(m.dataset.k); }); return out.filter(function(k){ return h[k]; }); }
-  $('hlmBtn').addEventListener('click',hlmStart); $('hlX').addEventListener('click',hlmEnd);
+  $('hlmBtn').addEventListener('click',function(){ hlOpts($('hlOpts').hidden); }); $('hlX').addEventListener('click',hlmEnd);
+  $('hlOpts').addEventListener('click',function(e){ var b=e.target.closest('[data-o]'); if(!b) return; var o=b.dataset.o; hlOpts(false);
+    if(o==='hide') hlHide(!hlHid()); else if(o==='pen'){ if(hlHid()&&!PEN) hlHide(false); setPen(!PEN); } else if(o==='rm'){ if(hlHid()) hlHide(false); hlmStart(); } });
+  document.documentElement.classList.toggle('hlhide',hlHid());
+  window.addEventListener('storage',function(e){ if(e.key==='mf-hl-hide'){ document.documentElement.classList.toggle('hlhide',hlHid()); paint(); } });
   $('hlAll').addEventListener('click',function(){ var all=hlHere(), every=all.every(function(k){ return HLM[k]; }); HLM={}; if(!every) all.forEach(function(k){ HLM[k]=1; }); paint(); });
   $('hlGo').addEventListener('click',function(){ var ks=Object.keys(HLM); if(!ks.length) return; var h=hls(); ks.forEach(function(k){ unHl(h,k); }); saveHls(h); hlTouched(); toast(ks.length+' highlight'+(ks.length===1?'':'s')+' removed'); HLM={}; paint(); if(!hlHere().length) hlmEnd(); });
 
@@ -508,7 +523,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function addPh(h,v,s,e,c){ var t=VT[v]||'', G=/^[\s\p{P}]*$/u; while(s<e&&/[\s\p{P}]/u.test(t[s])) s++; while(e>s&&/[\s\p{P}]/u.test(t[e-1])) e--; if(e-s<1) return;
     phrases(v,h).forEach(function(x){ if(x.c!==c) return; if((x.s<=e&&x.e>=s)||(x.e<=s&&G.test(t.slice(x.e,s)))||(x.s>=e&&G.test(t.slice(e,x.s)))){ s=Math.min(s,x.s); e=Math.max(e,x.e); unHl(h,x.k); } });
     h[pkey(AT.b,AT.c,v,s,e)]={kind:'phrase',ref:plain(AT.b,AT.c,v)+'#'+s+'-'+e,ver:vcode(),k:'',i:0,l:vlang(),v:v,s:s,e:e,c:c,text:t.slice(s,e).slice(0,220),at:Date.now(),bible:1}; }
-  function applyHl(c,quiet){ var h=hls();
+  function applyHl(c,quiet){ var h=hls(); if(c&&ls('mf-hl-hide')==='1'){ ls('mf-hl-hide',''); document.documentElement.classList.remove('hlhide'); }   // a new highlight shows them all again
     if(PHS){ PHS.forEach(function(p){ var vk=hkey(AT.b,AT.c,p.v), vx=h[vk];
         if(vx&&c){ var vc=HLC[vx.c]?vx.c:'gold'; unHl(h,vk); addPh(h,p.v,0,p.s,vc); addPh(h,p.v,p.e,(VT[p.v]||'').length,vc); }   // a verse in one colour, some of its words in another
         phrases(p.v,h).forEach(function(x){ if(x.s<p.e&&x.e>p.s){ unHl(h,x.k); if(c){ addPh(h,p.v,x.s,p.s,x.c); addPh(h,p.v,p.e,x.e,x.c); } } });
