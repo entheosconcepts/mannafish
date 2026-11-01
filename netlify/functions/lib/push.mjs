@@ -36,7 +36,7 @@ export async function sendDue(now = new Date()) {
     if (!rec) continue;
     const tz = rec.tz || DEFAULT_TZ, here = localNow(now, tz);
     if (here.hour < SEND_HOUR || rec.lastSent === here.date) { notYet++; continue; }
-    const m = todaysCatch(now, tz);   // Ken, 19 Oct: the catch of the day, a different fish each day
+    const m = todaysCatch(now, tz, rec.lang);   // Ken, 19 Oct: the catch of the day, a different fish each day (1 Nov: every fish, in English)
     if (!m) { notYet++; continue; }
     try { await sendTo(rec.sub, notificationFor(m, rec.lang)); sent++; await s.setJSON(b.key, { ...rec, lastSent: here.date }); }
     catch (e) {

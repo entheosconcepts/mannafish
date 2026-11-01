@@ -4,7 +4,7 @@
 // it and a link to read and listen (Daily: Sunday to Friday, two on Friday; Weekly: Sundays; Monthly: the first Sunday). Nothing
 // on the Sabbath. STOP ends it; anything else they text back (a prayer request) is emailed to MannaFish.
 import { store, dueToday } from './devo.mjs';
-import { localNow, todaysManna, welcomeManna, todaysCatch, welcomeCatch, sabbathRest, SEND_HOUR, DEFAULT_TZ } from './manna.mjs';
+import { localNow, todaysManna, welcomeManna, todaysCatch, welcomeCatch, sabbathRest, SEND_HOUR, DEFAULT_TZ, fishInfo } from './manna.mjs';
 import { sendSms, e164, DEAD } from './sms.mjs';
 import WORDS from './words.json';
 import FISH from './fishlines.json';
@@ -17,8 +17,8 @@ const refEs = (r) => { const m = String(r).match(/^(.*?)\s+(\d+:\d+.*)$/); retur
 // one devotional text  (m: todaysCatch for Daily, todaysManna for Weekly and Monthly)
 export function textFor(m, { lang = 'en', freq = 'Daily', site = null, welcome = false } = {}) {
   const es = lang === 'es', base = SITE(site), L = es ? '&lang=es' : '';
-  const word = (k) => (es ? ES.titles[k] : null) || WORDS.words[k].title;
-  const fish = (k, url) => { const f = FISH[es ? 'es' : 'en'][k]; return `"${f.top} ${f.bottom}" ${f.ref}\n${base}${url}${L}`; };
+  const word = (k) => (es ? ES.titles[k] : null) || fishInfo(k, lang).title;
+  const fish = (k, url) => { const f = fishInfo(k, lang); return `"${f.top} ${f.bottom}" ${f.ref}\n${base}${url}${L}`; };
   const stop = es ? 'Responda STOP para cancelar.' : 'Reply STOP to end.';
   if (!weekly(freq)) {
     const two = m.second;
@@ -35,8 +35,8 @@ export function textFor(m, { lang = 'en', freq = 'Daily', site = null, welcome =
   return [head, verse, base + m.url + L, stop].join('\n');
 }
 // today's (or, on the Sabbath, the next) devotional for this person
-export function todayFor(rec, now = new Date()) { const tz = rec.tz || DEFAULT_TZ; return weekly(rec.freq) ? todaysManna(now, tz) : todaysCatch(now, tz); }
-export function welcomeFor(rec, now = new Date()) { const tz = rec.tz || DEFAULT_TZ; return weekly(rec.freq) ? welcomeManna(now, tz) : welcomeCatch(now, tz); }
+export function todayFor(rec, now = new Date()) { const tz = rec.tz || DEFAULT_TZ; return weekly(rec.freq) ? todaysManna(now, tz) : todaysCatch(now, tz, rec.lang); }
+export function welcomeFor(rec, now = new Date()) { const tz = rec.tz || DEFAULT_TZ; return weekly(rec.freq) ? welcomeManna(now, tz) : welcomeCatch(now, tz, rec.lang); }
 
 // the one text that asks them to say yes (the phone companies require it)
 export function confirmText(rec) {

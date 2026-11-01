@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Today’s MannaFish</title>
+<meta name="description" content="A MannaFish: a word, the verse it comes from, and the chapter to read.">
+<link rel="icon" href="/icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;1,400&family=Archivo:wght@400;700;800&display=swap">
+<!-- Ken, 1 Nov: "I want all of them available": every fish now comes round in the daily email, and the ones outside the 24 open here,
+     /fish/?id=W01a: the fish, its verse, the chapter to read, 🧺 Love it for a Hub, and share it. From /fish/catch.json (tools/fish/catch.py). -->
+<style>
+@font-face{font-family:'MFHobo';src:url(/fish-lang/hobo.woff2) format('woff2');font-display:block}
+:root{--bg:#000;--card:#0b1620;--line:rgba(200,215,218,.18);--text:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 Archivo,system-ui,sans-serif}
+header{display:flex;align-items:center;gap:10px;padding:14px max(16px,env(safe-area-inset-left));border-bottom:1px solid var(--line)}
+.brand{font:400 1.45rem/1 'MFHobo',cursive;color:#fff;text-decoration:none}.brand b{font-weight:400;color:#448fff}header a.d{margin-left:auto;color:#8fb6ff;font-size:.92rem}
+main{max-width:720px;margin:0 auto;padding:18px 16px 60px;text-align:center}
+.k{font:800 .74rem Archivo,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#6f9bff;margin:6px 0 10px}
+.fish{position:relative;width:100%;aspect-ratio:2/1;background:#000;border:1px solid var(--line);border-radius:16px;overflow:hidden}.fish svg{position:absolute;inset:0;width:100%;height:100%}
+h1{font:400 2.6rem/1 'MFHobo',cursive;margin:16px 0 6px}
+blockquote{font:italic 1.25rem/1.5 Spectral,Georgia,serif;margin:10px auto 6px;max-width:600px}
+.ref{color:var(--dim);font-weight:700}
+.row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px 0 0}
+.row a,.row button{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:11px 16px;font:800 .95rem Archivo,sans-serif;text-decoration:none;cursor:pointer}
+.row .p{background:var(--blue);border-color:var(--blue)}
+.empty{color:var(--dim);padding:40px 0}
+</style>
+</head>
+<body>
+<header><a class="brand" href="/">Manna<b>Fish</b></a><a class="d" href="/?devo=1">Today’s devotional</a></header>
+<main id="m"><p class="empty">Finding the fish…</p></main>
+<script src="/fish-lang/basket.js" defer></script>
+<script>
+(function(){
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  var id=(new URLSearchParams(location.search).get('id')||'').replace(/[^A-Za-z0-9_-]/g,''), M=document.getElementById('m');
+  if(!id){ location.replace('/'); return; }
+  Promise.all([fetch('/fish/catch.json').then(function(r){ return r.json(); }),fetch('/fish/'+id+'.svg').then(function(r){ if(!r.ok) throw 0; return r.text(); })]).then(function(a){
+    var f=a[0].fish[id]; if(!f){ M.innerHTML='<p class="empty">This fish swam away. <a href="/">Today’s MannaFish</a></p>'; return; }
+    document.title=f.title+' · MannaFish';
+    var bid=(/^W/.test(id)?'Y:':/^X/.test(id)?'X:':'D:')+id;
+    M.innerHTML='<div class="k">Today’s MannaFish</div><div class="fish">'+a[1]+'</div><h1>'+esc(f.title)+'</h1>'
+      +'<blockquote>“'+esc(f.verse)+'”</blockquote><div class="ref">'+esc(f.ref)+' ('+esc(f.ver||'KJV')+')</div>'
+      +'<div class="row"><a class="p" href="/bible/?r='+encodeURIComponent(f.ref)+'">📖 Read the chapter</a><button type="button" id="love">🧺 Love</button><button type="button" id="share">↗ Share</button></div>'
+      +'<div class="row"><a href="/?devo=1">Today’s devotional</a><a href="/hubs/">MannaFish Hubs</a></div>';
+    var s=M.querySelector('.fish svg'); if(s) s.removeAttribute('style');
+    document.getElementById('love').onclick=function(){ if(window.MFbasket) MFbasket.add({id:bid,word:f.title,ref:f.ref,svg:'/fish/'+id+'.svg'}); };
+    document.getElementById('share').onclick=function(){ var t='“'+f.verse+'” '+f.ref, u=location.href; if(navigator.share) navigator.share({title:'MannaFish · '+f.title,text:t,url:u}).catch(function(){}); else if(navigator.clipboard) navigator.clipboard.writeText(t+' '+u); };
+  }).catch(function(){ M.innerHTML='<p class="empty">Couldn’t find that fish. <a href="/">Today’s MannaFish</a></p>'; });
+})();
+</script>
+</body>
+</html>

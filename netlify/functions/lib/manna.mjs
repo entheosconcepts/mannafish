@@ -5,6 +5,7 @@
 import WORDS from './words.json';
 import ES from './es.json';
 import FISH from './fishlines.json';
+import CATCH from './catch.json';
 
 export const START = Date.UTC(2026, 9, 11); // Sunday 11 Oct 2026 (Rest)
 export const DAYS = 6;   // gathering days in a week
@@ -53,18 +54,26 @@ export function todaysManna(now = new Date(), tz = DEFAULT_TZ) {
 // The catch of the day: everyone gets the same fish, a different one each day -- Sunday to Thursday one, Friday two
 // (the day's and the Sabbath's: a double portion), Saturday nothing. Seven fish a week, going round the words in order;
 // each fish comes with the verse on it.
-function fishOf(k) {
-  const n = WORDS.order.length, key = WORDS.order[((k % n) + n) % n], w = WORDS.words[key], f = FISH.en[key];
+// Ken, 1 Nov: "I want all of them available": in English every fish with a picture goes round (catch.json, tools/fish/catch.py):
+// Sunday one of the 24, the other days the year fish, the Bible-in-a-year fish and the new designs. In Spanish, the 24 (the
+// only ones drawn in Spanish).
+export const CATCHFISH = CATCH.fish;
+export function fishInfo(k, lang = 'en') { if (WORDS.words[k]) { const f = FISH[lang === 'es' ? 'es' : 'en'][k]; return { title: WORDS.words[k].title, ref: f.ref, top: f.top, bottom: f.bottom }; }
+  const c = CATCH.fish[k]; return c ? { title: c.title, ref: c.ref, top: c.top, bottom: c.bottom } : null; }
+function fishOf(k, lang = 'en') {
+  const O = lang === 'es' ? WORDS.order : CATCH.order, n = O.length, key = O[((k % n) + n) % n];
+  if (!WORDS.words[key]) { const c = CATCH.fish[key]; return { key, title: c.title, i: -1, ref: c.ref, snippet: c.snip, url: c.url, extra: true }; }
+  const w = WORDS.words[key], f = FISH.en[key];
   const i = w.refs.findIndex((r) => r[0] === f.ref);
   return { key, title: w.title, i, ref: f.ref, snippet: i >= 0 ? w.refs[i][1] : f.top, url: '/?w=' + key.toLowerCase() + (i >= 0 ? '&r=' + i : '') };
 }
-export function catchOn(t) {
+export function catchOn(t, lang = 'en') {
   const dow = new Date(t).getUTCDay(); if (dow === 6) return null;
-  const s = Math.floor(Math.floor((t - START) / 86400000) / 7) * 7 + dow, a = fishOf(s);
-  return { ...a, catch: true, t, friday: dow === 5, refs: [{ i: a.i, ref: a.ref, snippet: a.snippet, url: a.url }], second: dow === 5 ? fishOf(s + 1) : null };
+  const s = Math.floor(Math.floor((t - START) / 86400000) / 7) * 7 + dow, a = fishOf(s, lang);
+  return { ...a, catch: true, t, friday: dow === 5, refs: [{ i: a.i, ref: a.ref, snippet: a.snippet, url: a.url }], second: dow === 5 ? fishOf(s + 1, lang) : null };
 }
-export function todaysCatch(now = new Date(), tz = DEFAULT_TZ) { return catchOn(localNow(now, tz).t); }
-export function welcomeCatch(now = new Date(), tz = DEFAULT_TZ) { return todaysCatch(now, tz) || todaysCatch(new Date(now.getTime() + 86400000), tz); }
+export function todaysCatch(now = new Date(), tz = DEFAULT_TZ, lang = 'en') { return catchOn(localNow(now, tz).t, lang); }
+export function welcomeCatch(now = new Date(), tz = DEFAULT_TZ, lang = 'en') { return todaysCatch(now, tz, lang) || todaysCatch(new Date(now.getTime() + 86400000), tz, lang); }
 
 // Ken, 16 Oct: "if it's a monthly I would like to see a list of every day of the month" -- each day of the month of t
 // (a UTC midnight): its fish and verses; Friday is the double portion, Saturday the Sabbath (no verses)

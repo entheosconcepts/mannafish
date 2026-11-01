@@ -9,7 +9,9 @@ export default async (req) => {
   // ?friday=1 shows the coming Friday's email (the double portion)
   const fr = { weekly: 'Weekly', monthly: 'Monthly' }[u.searchParams.get('freq')] || 'Daily';   // ?freq=weekly or ?freq=monthly
   // Ken, 19 Oct: Daily is the catch of the day, a different fish each day (two on Friday); Weekly and Monthly the week's fish
-  const pick = fr === 'Daily' ? todaysCatch : todaysManna;
+  const pick = fr === 'Daily' ? (d) => todaysCatch(d, undefined, lang) : todaysManna;
+  // ?date=2026-11-02 shows the email for that day (Ken, 1 Nov: see any fish in the rotation)
+  const dq = u.searchParams.get('date'); if (dq && /^\d{4}-\d{2}-\d{2}$/.test(dq)) now.setTime(Date.parse(dq + 'T15:00:00Z'));
   let m = pick(now) || pick(new Date(now.getTime() - 86400000));   // Saturday: Friday's
   if (u.searchParams.get('friday') === '1') for (let d = 0; d < 7; d++) { const x = pick(new Date(now.getTime() + d * 86400000)); if (x && x.friday) { m = x; break; } }
   // ?sms=1: the text message instead (?sms=1&ask=1 the "reply YES" text)

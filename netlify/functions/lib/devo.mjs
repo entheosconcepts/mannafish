@@ -5,7 +5,7 @@
 // Text sign-ups are kept here too; the texts themselves are lib/devotext.mjs (Twilio).
 import { getStore } from '@netlify/blobs';
 import { createHash, createHmac, randomBytes } from 'node:crypto';
-import { localNow, todaysManna, welcomeManna, todaysCatch, welcomeCatch, sabbathRest, SEND_HOUR, DEFAULT_TZ, validTz, monthOf, yearOf } from './manna.mjs';
+import { localNow, todaysManna, welcomeManna, todaysCatch, welcomeCatch, sabbathRest, SEND_HOUR, DEFAULT_TZ, validTz, monthOf, yearOf, fishInfo } from './manna.mjs';
 import WORDS from './words.json';
 import { sendMail } from './mail.mjs';
 import { e164 } from './sms.mjs';
@@ -45,13 +45,13 @@ export async function unsubUrl(email) { return SITE() + '/api/devo-unsubscribe?e
 // a word on a day: the day's verse, and the verse on the fish
 export function emailFor(m, lang, unsub, opts = {}) {
   const keep = LINK; if (opts.site) LINK = opts.site;
-  const es = lang === 'es', f = FISH[es ? 'es' : 'en'][m.key];
+  const es = lang === 'es', f = fishInfo(m.key, lang);
   const word = es ? (ES.titles[m.key] || m.title) : m.title;
   const refEs = (r) => { const mm = r.match(/^(.*?)\s+(\d+:\d+.*)$/); return es && mm ? (ES.books[mm[1]] || mm[1]) + ' ' + mm[2] : r; };
   const ref = refEs(m.ref);
   // Ken, 19 Oct: in the email the reference stands alone on the first row and the words of the verse on the second, for balance
   // Ken, 19 Oct: the daily email is the catch of the day (m.catch): the fish, the reference, the words on the fish -- and on Friday a second fish
-  const fishRef = (k, url) => { const g = FISH[es ? 'es' : 'en'][k]; return { ref: g.ref, snip: ' — “' + g.top + ' ' + g.bottom + '”', url: SITE() + url + (es ? '&lang=es' : '') }; };
+  const fishRef = (k, url) => { const g = fishInfo(k, lang); return { ref: g.ref, snip: ' — “' + g.top + ' ' + g.bottom + '”', url: SITE() + url + (es ? '&lang=es' : '') }; };
   const refs = m.catch ? [fishRef(m.key, m.url)] : (m.refs || [{ ref: m.ref, snippet: m.snippet, url: m.url }]).map((x) => ({ ref: refEs(x.ref), snip: es ? '' : ' — “' + x.snippet + '”', url: SITE() + x.url + (es ? '&lang=es' : '') }));
   const read = SITE() + m.url + (es ? '&lang=es' : '');
   const img = SITE() + (es ? '/w/img/es/' + m.key.toLowerCase() + '.jpg' : '/w/img/' + m.key.toLowerCase() + '.png');
@@ -106,12 +106,14 @@ export function emailFor(m, lang, unsub, opts = {}) {
   // Ken, 9 Oct: the email in the site's own look -- black, white lettering, MannaFish blue, the logo in its own font
   const logo = SITE() + '/w/img/logo-email.png';
   // Ken, 9 Oct: no audio from the email (it felt invasive) -- this button opens the day's fish on the site
-  const listen = SITE() + '/?w=' + m.key.toLowerCase() + (es ? '&lang=es' : '');
+  // a fish outside the 24 (Ken, 1 Nov: every fish in the inbox) opens its own page, /fish/?id=
+  const seeOf = (x) => SITE() + (x.extra ? x.url : '/?w=' + x.key.toLowerCase() + (es ? '&lang=es' : ''));
+  const listen = seeOf(m);
   // Ken, 11 Oct: Friday is a double portion (Exodus 16:22, 29) -- today's verse, and the verse on the fish for the Sabbath
   const dbl = !!m.friday, two = m.catch && m.second;
   const word2 = two ? (es ? (ES.titles[two.key] || two.title) : two.title) : '';
-  const fishIdx = WORDS.words[m.key].refs.findIndex((r) => r[0] === FISH.en[m.key].ref);
-  const sabLink = SITE() + '/?w=' + m.key.toLowerCase() + (fishIdx >= 0 ? '&r=' + fishIdx : '') + (es ? '&lang=es' : '');
+  const fishIdx = m.extra ? -1 : WORDS.words[m.key].refs.findIndex((r) => r[0] === FISH.en[m.key].ref);
+  const sabLink = m.extra ? SITE() + m.url : SITE() + '/?w=' + m.key.toLowerCase() + (fishIdx >= 0 ? '&r=' + fishIdx : '') + (es ? '&lang=es' : '');
   // the Friday catch: the second fish, for the Sabbath -- built further down, once the picture helpers are there
   let catch2 = '';
   // Ken, 11 Oct: Gmail on iPhone (dark mode) flips an email's colours -- black turned white. It leaves pictures alone,
@@ -127,7 +129,7 @@ export function emailFor(m, lang, unsub, opts = {}) {
   const head = (k, alt) => pic(k, alt, 'display:block;margin:0 auto;color:#2a5fb0;font:900 15px Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase');
   const button = (href, k, alt) => `<a href="${href}" style="display:inline-block;margin:5px;text-decoration:none">${pic(k, alt, 'display:inline-block;vertical-align:middle;color:#ffffff;font:bold 16px Arial,sans-serif')}</a>`;
   const rule = td('padding:0 22px;font-size:0;line-height:0', `<img src="${P}rule.png" width="516" height="1" alt="" style="display:block;width:100%;height:1px;border:0">`);
-  if (two) { const r2 = fishRef(two.key, two.url), img2 = SITE() + (es ? '/w/img/es/' + two.key.toLowerCase() + '.jpg' : '/w/img/' + two.key.toLowerCase() + '.png'), see2 = SITE() + '/?w=' + two.key.toLowerCase() + (es ? '&lang=es' : '');
+  if (two) { const r2 = fishRef(two.key, two.url), img2 = SITE() + (es ? '/w/img/es/' + two.key.toLowerCase() + '.jpg' : '/w/img/' + two.key.toLowerCase() + '.png'), see2 = seeOf(two);
     catch2 = td('padding:20px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;color:#2a5fb0;font:900 19px Arial,sans-serif')) + '\n'
       + td('padding:6px 30px 4px;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(T.dblNote))) + '\n'
       + td('padding:12px 18px', `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #3a4148;border-radius:14px;border-collapse:separate"><tr><td bgcolor="#000000" style="${BG}padding:14px;border-radius:14px"><a href="${r2.url}" style="text-decoration:none"><img src="${img2}" width="496" alt="${esc(word2)}" style="width:100%;max-width:496px;height:auto;display:block;border:0;margin:0 auto"></a></td></tr></table>`) + '\n'
@@ -203,7 +205,7 @@ export async function subscribe(f, now = new Date(), site = null) {
 }
 
 // Ken, 19 Oct: a Daily sign-up gets the catch of the day (a different fish each day, two on Friday); Weekly and Monthly the week's fish
-export function welcomeFor(rec, now, tz) { return rec.freq === 'Weekly' || rec.freq === 'Monthly' ? welcomeManna(now, tz) : welcomeCatch(now, tz); }
+export function welcomeFor(rec, now, tz) { return rec.freq === 'Weekly' || rec.freq === 'Monthly' ? welcomeManna(now, tz) : welcomeCatch(now, tz, rec.lang); }
 
 // is today one of this person's days?
 export function dueToday(freq, here) {
@@ -242,7 +244,7 @@ export async function sendDue(now = new Date()) {
       catch (e) { failed++; console.log('held welcome failed', b.key, String(e).slice(0, 200)); }
     }
     if (here.hour < SEND_HOUR || rec.lastSent === here.date || !dueToday(rec.freq, here)) { skipped++; continue; }
-    const m = rec.freq === 'Weekly' || rec.freq === 'Monthly' ? todaysManna(now, tz) : todaysCatch(now, tz);
+    const m = rec.freq === 'Weekly' || rec.freq === 'Monthly' ? todaysManna(now, tz) : todaysCatch(now, tz, rec.lang);
     if (!m) { skipped++; continue; }
     try { await deliver(rec, m, { weekly: rec.freq === 'Weekly' }); sent++; await s.setJSON(b.key, { ...rec, lastSent: here.date }); }
     catch (e) { failed++; console.log('devo email failed', b.key, String(e).slice(0, 200)); }
