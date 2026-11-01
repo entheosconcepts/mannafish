@@ -1809,7 +1809,7 @@ select option{background:#0b1620;color:#eaf0f0}
     <button type="button" class="hbtn smi" id="smPlan" role="menuitem"><span class="hbi" aria-hidden="true">&#128214;&#xFE0E;</span><span class="hbt"><b id="smPlLab">Bible in a Year</b><small id="smPlSub">Day and night readings, 2 Fish a day</small></span></button>
     <button type="button" class="hbtn smi" id="smStories" role="menuitem"><span class="hbi" aria-hidden="true">&#128031;&#xFE0E;</span><span class="hbt"><b id="smStLab">Fish stories</b><small id="smStSub">Share your catch</small></span></button>
     <button type="button" class="hbtn smi" id="tourBtn" role="menuitem"><span class="hbi" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M15.5 8.5 13.4 13.4 8.5 15.5 10.6 10.6z" fill="currentColor"></path></svg></span><span class="hbt"><b id="tourLab">Take a tour</b><small id="tourSub">How it works</small></span></button>
-    <button type="button" class="hbtn smi" id="smMatch" role="menuitem"><span class="hbi" aria-hidden="true">&#127924;&#xFE0E;</span><span class="hbt"><b id="smMaLab">Go MannaFish</b><small id="smMaSub">Match a pair, then go fish</small></span></button>
+    <button type="button" class="hbtn smi" id="smMatch" role="menuitem"><span class="hbi" aria-hidden="true">&#127924;&#xFE0E;</span><span class="hbt"><b id="smMaLab">MannaFish Memory</b><small id="smMaSub">Match a pair, then go fish</small></span></button>
     <button type="button" class="hbtn smi" id="trnBtn" role="menuitem"><span class="hbi" aria-hidden="true">&#128172;&#xFE0E;</span><span class="hbt"><b id="trnLab">Translator</b><small id="trnSub">Talk with anyone</small></span></button>
     <div class="smsep" role="separator"></div>
     <button type="button" class="hbtn smi" id="smProf" role="menuitem"><span class="hbi" aria-hidden="true">&#128100;&#xFE0E;</span><span class="hbt"><b id="smProfLab">My stuff</b><small id="smProfSub">Prayers, notes, highlights, orders, history</small></span></button>
@@ -3333,8 +3333,8 @@ window.MF=(function(){
       +'</div><div class="ptpickx"><button type="button" data-a="planrand">🎲 '+esc(PKX[l]?PKX[l][0]:PKX.en[0])+'</button><a href="/go/">🎣 '+esc(PKX[l]?PKX[l][1]:PKX.en[1])+'</a></div>'
       +'<p class="ptpickk">★ '+esc(P.week)+'</p></div>'; }
   // Ken, 18 Oct: "if someone wants a random word they can choose random, and if someone wants a little more fun ... Go MannaFish"
-  var PKX={en:['Surprise me','Go MannaFish'],es:['Sorpréndeme','Go MannaFish'],tl:['Sorpresahin mo ako','Go MannaFish'],zh:['随机一条','Go MannaFish'],
-    hi:['कोई भी मछली','Go MannaFish'],el:['Τυχαίο ψάρι','Go MannaFish'],de:['Überrasch mich','Go MannaFish'],ko:['아무거나','Go MannaFish'],he:['הפתיעו אותי','Go MannaFish'],ar:['فاجئني','Go MannaFish'],ru:["Удиви меня","Go MannaFish"]};
+  var PKX={en:['Surprise me','MannaFish Memory'],es:['Sorpréndeme','MannaFish Memory'],tl:['Sorpresahin mo ako','MannaFish Memory'],zh:['随机一条','MannaFish Memory'],
+    hi:['कोई भी मछली','MannaFish Memory'],el:['Τυχαίο ψάρι','MannaFish Memory'],de:['Überrasch mich','MannaFish Memory'],ko:['아무거나','MannaFish Memory'],he:['הפתיעו אותי','MannaFish Memory'],ar:['فاجئني','MannaFish Memory'],ru:["Удиви меня","Go MannaFish"]};
   // the end of the day's devotional: mark the day, then stay with this fish or change it
   function planEnd(){ var l=PT.l, P=plT(), k=cur, w=titleIn(l,k), d=PT.marked[k]; if(d==null){ d=ptDay(k); var p=planGet(); p.p[k]=Math.max(+(p.p[k])||0,d+1); p.k=k; p.dd=p.dd||{}; p.dd[k]=p.dd[k]||{}; if(!p.dd[k][d]) p.dd[k][d]=ymd(); planPut(p); PT.marked[k]=d; }
     var dn=planDone(k), nx=planNext(k), h='<div class="ptplanend"><p class="ptp ptplanok">'+esc(plF(P.did,{d:d+1,n:PLAN_DAYS,w:w}))+'</p>';
@@ -3906,8 +3906,8 @@ window.MF=(function(){
   function mmss(n){ n=Math.max(0,Math.round(n)); return Math.floor(n/60)+':'+('0'+n%60).slice(-2); }
   function fsUI(){ var T=stT(), F=FSL[MF.lang]||FSL.en; $('fsEy').textContent=T.ey; $('fsH').textContent=T.h; $('fsP').textContent=T.p; $('fsShare').textContent=T.share; $('fsMore').textContent=T.more;
     $('smStLab').textContent=F[1]; $('smStSub').textContent=F[2];
-    var MA=({en:['Go MannaFish','Match a pair, then go fish'],es:['Go MannaFish','Haz una pareja y ve a pescar'],tl:['Go MannaFish','Magtugma ng pares, saka mangisda'],zh:['Go MannaFish','配成一对，再去钓鱼'],hi:['Go MannaFish','जोड़ी मिलाएँ, फिर मछली पकड़ें'],
-      el:['Go MannaFish','Βρες ένα ζευγάρι, μετά ψάρεψε'],de:['Go MannaFish','Finde ein Paar, dann geh fischen'],ko:['Go MannaFish','짝을 맞추고 낚시하러 가요'],he:['Go MannaFish','מצאו זוג, ואז צאו לדוג'],ar:['Go MannaFish','طابِق زوجًا، ثم اذهب للصيد'],ru:["Go MannaFish","Найдите пару, а потом ловите рыбу"]})[MF.lang]||['Go MannaFish','Match a pair, then go fish'];
+    var MA=({en:['MannaFish Memory','Match a pair, then go fish'],es:['MannaFish Memory','Haz una pareja y ve a pescar'],tl:['MannaFish Memory','Magtugma ng pares, saka mangisda'],zh:['MannaFish Memory','配成一对，再去钓鱼'],hi:['MannaFish Memory','जोड़ी मिलाएँ, फिर मछली पकड़ें'],
+      el:['MannaFish Memory','Βρες ένα ζευγάρι, μετά ψάρεψε'],de:['MannaFish Memory','Finde ein Paar, dann geh fischen'],ko:['MannaFish Memory','짝을 맞추고 낚시하러 가요'],he:['MannaFish Memory','מצאו זוג, ואז צאו לדוג'],ar:['MannaFish Memory','طابِق زوجًا، ثم اذهب للصيد'],ru:["Go MannaFish","Найдите пару, а потом ловите рыбу"]})[MF.lang]||['MannaFish Memory','Match a pair, then go fish'];
     $('smMaLab').textContent=MA[0]; $('smMaSub').textContent=MA[1];
     // Ken, 19 Oct: the Bible in a year, a day and a night reading with 2 Fish (/plan/)
     var PLx=({en:['Bible in a Year','Day and night readings, 2 Fish a day'],es:['La Biblia en un año','Lectura de día y de noche, 2 Fish al día'],tl:['Biblia sa Isang Taon','Pagbasa sa araw at gabi, 2 Fish araw-araw'],zh:['一年读完圣经','白天和晚上的读经，每天 2 Fish'],hi:['एक साल में बाइबल','दिन और रात का पाठ, हर दिन 2 Fish'],
@@ -5025,11 +5025,11 @@ window.MF=(function(){
   // (two languages side by side are still in the language menu at the top)
   var GFL={en:['Today’s Catch','Go Fish'],es:['La pesca de hoy','A pescar'],tl:['Huli Ngayon','Mangisda'],zh:['今日之鱼','去钓鱼'],hi:['आज की मछली','मछली पकड़ें'],el:['Η ψαριά της ημέρας','Πάμε ψάρεμα'],
     de:['Heutiger Fang','Fischen gehen'],ko:['오늘의 물고기','낚시하기'],he:['הדג של היום','יוצאים לדוג'],ar:['صيد اليوم','هيا نصطاد'],ru:["Улов дня","Ловить рыбу"]};
-  var GFT={en:{cast:'Cast your line',sub:'A fish at random',or:'Or choose your fish',got:'You caught {w}!',game:'Play the Go MannaFish game',x:'Close',
+  var GFT={en:{cast:'Cast your line',sub:'A fish at random',or:'Or choose your fish',got:'You caught {w}!',game:'Play MannaFish Memory',x:'Close',
       net:'153 fish in the net',jn:'“…full of great fishes, an hundred and fifty and three: and for all there were so many, yet was not the net broken.” John 21:11',
       mine:'Your devotional fish · 24',mineSub:'Tap one to make it your fish',more:'More fish in the net · 129',moreSub:'Tap one to catch it',newd:'New designs',newdSub:'Stop and Go, Repent, Rebuild …',
       bible:'Read it in the Bible',basket:'Love',share:'Share',again:'Cast again',back:'Back to the net'},
-    es:{cast:'Echa la red',sub:'Un pez al azar',or:'O elige tu pez',got:'¡Pescaste {w}!',game:'Jugar Go MannaFish',x:'Cerrar',
+    es:{cast:'Echa la red',sub:'Un pez al azar',or:'O elige tu pez',got:'¡Pescaste {w}!',game:'Jugar MannaFish Memory',x:'Cerrar',
       net:'153 peces en la red',jn:'“…llena de grandes peces, ciento cincuenta y tres: y siendo tantos, la red no se rompió.” Juan 21:11',
       mine:'Tus peces del devocional · 24',mineSub:'Toca uno para que sea tu pez',more:'Más peces en la red · 129',moreSub:'Toca uno para pescarlo',newd:'Diseños nuevos',newdSub:'Detente y Ve, Arrepiéntete, Reconstruye …',
       bible:'Leerlo en la Biblia',basket:'Me encanta',share:'Compartir',again:'Echa otra vez',back:'Volver a la red'}};

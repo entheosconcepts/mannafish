@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Go MannaFish · match and go fish</title>
-<meta name="description" content="Go MannaFish: a memory match with the 24 MannaFish words in ten languages. Find a pair, then go fish: catch the same word to multiply your catch.">
+<title>MannaFish Memory · match and go fish</title>
+<meta name="description" content="MannaFish Memory: a memory match with the 24 MannaFish words in ten languages. Find a pair, then go fish: catch the same word to multiply your catch.">
 <meta name="theme-color" content="#05080c">
 <link rel="icon" href="/icon-192.png">
 <link rel="apple-touch-icon" href="/icon-180.png">
@@ -194,7 +194,7 @@ html,body{overflow-x:hidden}
 <body>
 <header class="wrapw top">
   <a class="pill home" href="/">⌂ <span data-t="home">Home</span></a>
-  <h1 class="wm"><span class="m">Manna</span><span class="f">Fish</span><small data-t="sub">Go MannaFish</small></h1>
+  <h1 class="wm"><span class="m">Manna</span><span class="f">Fish</span><small data-t="sub">MannaFish Memory</small></h1>
   <span class="topr"><button class="pill blue" id="newBtn" type="button" data-t="new">New game</button><button class="pill more" id="moreBtn" type="button" aria-label="More" aria-expanded="false">&bull;&bull;&bull;</button>
     <span class="mmenu" id="mMenu" hidden><button type="button" id="howBtn">❓ <span data-t="how">How to play</span></button><button type="button" id="playersBtn">👥 <span data-t="mPlayers">Players on this device</span></button><button type="button" id="onlineBtn">🌐 <span data-t="mOnline">Play online</span></button><button type="button" id="fbBtn" onclick="document.getElementById('mMenu').hidden=true;window.MFfeedback&&MFfeedback.open()">💬 <span data-t="mFb">Tell us what you think</span></button></span></span>
 </header>
@@ -294,7 +294,7 @@ html,body{overflow-x:hidden}
   var VOICES=['thunder','narrator','highland','onyx','ash','fable','grace','magnolia','heather','sage','coral','ballad','alloy','echo','nova','shimmer','verse'];
   var PAIRS=12, TRIES=3, MAXP=4, PC=['#3370FF','#f5d76e','#7fd18b','#e8735c'];
   var T={
-    en:{home:'Home',sub:'Go MannaFish',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',pickl:'Choose languages…',pickls:'Choose…',pickh:'Tap the languages to play with:',none:'None (one language only)',nones:'None (one language)',
+    en:{home:'Home',sub:'MannaFish Memory',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',pickl:'Choose languages…',pickls:'Choose…',pickh:'Tap the languages to play with:',none:'None (one language only)',nones:'None (one language)',
       say:'Say words when flipped',spkOn:'Sound on: tap to turn it off',spkOff:'Sound off: tap to hear the game',spkOnS:'Sound on',spkOffS:'Sound off',moves:'Moves',pairs:'pairs',winsub:'Tap any card to hear its verse.',
       again:'Play again',look:'See the cards',how:'How to play',mFb:'Tell us what you think',howok:'Let’s play',peekGo:'▶ Start the game',peekHint:'Look where each fish is. When you start, they all turn face down.',peekSee:'See them all in {l}',peekOther:'the other language',
       gfh:'Go fish!',hidden:'Hidden fish {i}',gfmult:'Catch multiplied!',gfnob:'No bonus',gfnob2:'Your catch stays ×{m}',gfnob3:'{p}’s catch stays ×{m}',gfmults:'Now ×{m} · +{b} points',matches:'Matches',caught:'Caught',gfsub:'Catch <b>{w}</b>. Every fish is hidden until you catch it: pick one!',gfskip:'Skip',gfok:'{p} caught {w}! Catch ×{m}',gfokme:'You caught {w}! Catch ×{m}',gfno:'That was {w}. {n} left',gfaway:'It got away. Catch stays ×{m}',score:'Score',catch:'Catch',fish:'fish',
@@ -316,7 +316,7 @@ html,body{overflow-x:hidden}
       h6:'Every pair lets you go fish for the same word. The fish are hidden: tap one to reel it in and see its word. You have 3 tries. Each catch raises your catch multiplier (×2, ×3 …), and every pair scores 10 × your multiplier.',
       h7:'More players? ⋯ → Players on this device (take turns), or Play online with a friend. A match lets you go again.',
       down:'Card {i}, face down',matched:'matched',match:'Match',verse:'Hear the verse',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
-    es:{home:'Inicio',sub:'Go MannaFish',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',pickl:'Elegir idiomas…',pickls:'Elegir…',pickh:'Toca los idiomas para jugar:',none:'Ninguno (un solo idioma)',nones:'Ninguno (un idioma)',
+    es:{home:'Inicio',sub:'MannaFish Memory',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',pickl:'Elegir idiomas…',pickls:'Elegir…',pickh:'Toca los idiomas para jugar:',none:'Ninguno (un solo idioma)',nones:'Ninguno (un idioma)',
       say:'Decirlas al voltear',spkOn:'Sonido activado: toca para apagarlo',spkOff:'Sonido apagado: toca para oír el juego',spkOnS:'Sonido',spkOffS:'Sin sonido',moves:'Jugadas',pairs:'pares',winsub:'Toca cualquier carta para oír su versículo.',
       again:'Jugar otra vez',look:'Ver las cartas',how:'Cómo se juega',mFb:'Cuéntanos qué piensas',peekGo:'▶ Empezar el juego',peekHint:'Mira dónde está cada pez. Al empezar, todos se voltean.',peekSee:'Verlos todos en {l}',peekOther:'el otro idioma',howok:'¡A jugar!',
       gfh:'¡A pescar!',hidden:'Pez escondido {i}',gfmult:'¡Pesca multiplicada!',gfnob:'Sin bono',gfnob2:'Tu pesca sigue ×{m}',gfnob3:'La pesca de {p} sigue ×{m}',gfmults:'Ahora ×{m} · +{b} puntos',matches:'Parejas',caught:'Atrapados',gfsub:'Atrapa <b>{w}</b>. Cada pez está escondido hasta que lo atrapes: ¡elige uno!',gfskip:'Saltar',gfok:'¡{p} atrapó {w}! Pesca ×{m}',gfokme:'¡Atrapaste {w}! Pesca ×{m}',gfno:'Era {w}. Quedan {n}',gfaway:'Se escapó. La pesca sigue ×{m}',score:'Puntos',catch:'Pesca',fish:'peces',
@@ -367,9 +367,13 @@ html,body{overflow-x:hidden}
   function oneLang(){ return l2==='none'; }
   function lock0(){ return !!(NET&&!NET.host); }
   function narrow(){ return document.documentElement.clientWidth<600; }
+  // Ken, 1 Nov: each language named in yours and in its own ("Spanish · Español"), as on the home page's language list
+  var DNC={}; function dn(){ if(!(ui in DNC)){ try{ DNC[ui]=new Intl.DisplayNames([ui],{type:'language'}); }catch(e){ DNC[ui]=null; } } return DNC[ui]; }
+  var EN={en:'English',es:'Spanish',tl:'Tagalog',zh:'Chinese',hi:'Hindi',el:'Greek',de:'German',ko:'Korean',he:'Hebrew',ar:'Arabic',ru:'Russian'};
+  function lname(l){ if(l===ui||l==='tl') return NAME[l]; var mine='', D=dn(); try{ mine=D?D.of(l):''; }catch(e){} if(!mine||mine===l) mine=ui==='en'||!D?EN[l]:''; mine=mine?mine.charAt(0).toLocaleUpperCase(ui)+mine.slice(1):''; return mine&&mine!==NAME[l]?mine+' · '+NAME[l]:NAME[l]; }
   function fillPickers(){
-    $('l1').innerHTML=LANGS.map(function(l){ return '<option value="'+l+'"'+(l===l1?' selected':'')+'>'+NAME[l]+'</option>'; }).join('');
-    $('l2').innerHTML=LANGS.map(function(l){ return '<option value="'+l+'"'+(l===l2?' selected':'')+(l===l1?' disabled':'')+'>'+NAME[l]+'</option>'; }).join('')+
+    $('l1').innerHTML=LANGS.map(function(l){ return '<option value="'+l+'"'+(l===l1?' selected':'')+'>'+esc(lname(l))+'</option>'; }).join('');
+    $('l2').innerHTML=LANGS.map(function(l){ return '<option value="'+l+'"'+(l===l2?' selected':'')+(l===l1?' disabled':'')+'>'+esc(lname(l))+'</option>'; }).join('')+
       '<option value="mix" title="'+esc(t('mix'))+'"'+(l2==='mix'?' selected':'')+'>'+esc(narrow()?t('mixs'):t('mix'))+'</option>'+
       '<option value="pick"'+(l2==='pick'?' selected':'')+'>'+esc(narrow()?t('pickls'):t('pickl'))+'</option>'+
       '<option value="none"'+(l2==='none'?' selected':'')+'>'+esc(narrow()?t('nones'):t('none'))+'</option>';
@@ -741,7 +745,7 @@ html,body{overflow-x:hidden}
   $('online').addEventListener('click',function(e){ var id=e.target.id;
     if(id==='makeRoom') netJoin(rid(6),true,false);
     else if(id==='copyLink'){ var v=link(NET.room); (navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(function(){ e.target.textContent=t('copied'); },function(){ var i=$('roomBox').querySelector('input'); i.select(); }); }
-    else if(id==='shareLink'){ navigator.share({title:'Go MannaFish',url:link(NET.room)}).catch(function(){}); }
+    else if(id==='shareLink'){ navigator.share({title:'MannaFish Memory',url:link(NET.room)}).catch(function(){}); }
     else if(id==='startRoom') startOnline();
     else if(id==='leaveRoom') netLeave(); });
   // set messages only, no typing

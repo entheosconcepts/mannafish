@@ -283,7 +283,7 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
   function restCard(n){ var el=document.createElement('section'), b=behind(n); el.className='rest';
     el.innerHTML='<h2>Rest and catch up</h2><p>'+(b.length?'Here is anything you missed. No hurry: one reading at a time.':'You are all caught up. Rest, pray, and go fishing with a friend.')+'</p>'
       +(b.length?'<ul class="catch">'+b.slice(0,14).map(function(x){ var r=R(x.w,x.d,x.h); return '<li><span class="ico">'+(x.h==='am'?'&#9728;&#xFE0E;':'&#9790;&#xFE0E;')+'</span><span class="t">'+esc(r.label)+'<small>Week '+x.w+' · Day '+(x.d+1)+' · '+esc(r.f.word)+'</small></span><button type="button" class="b" data-open="'+key(x.w,x.d,x.h)+'">Read</button></li>'; }).join('')+'</ul>'+(b.length>14?'<p>…and '+(b.length-14)+' more in the plan below.</p>':''):'')
-      +'<div class="btns" style="justify-content:center;margin-top:12px"><a class="b p" href="/go/" style="text-decoration:none">Go MannaFish</a></div>'; return el; }
+      +'<div class="btns" style="justify-content:center;margin-top:12px"><a class="b p" href="/go/" style="text-decoration:none">MannaFish Memory</a></div>'; return el; }
   function progress(){ var t=ALLR.length, n=ALLR.filter(function(x){ return ST.done[key(x.w,x.d,x.h)]; }).length, b=ST.start?behind(dayNo(new Date())).length:0;
     $('bar').style.width=(100*n/t).toFixed(1)+'%'; $('pDone').textContent=n+' of '+t+' readings'; $('pBehind').textContent=b?b+' to catch up':(n?'Right on track':''); }
 
