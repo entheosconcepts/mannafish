@@ -45,9 +45,11 @@
   "note": "Ken, 1 Nov: K-Tech Construction's card, a New Testament Build",
   "edit": {
    "wl": {
-    "s": 1.15,
-    "x": -10
-   }
+    "s": 1.319,
+    "w": 0.99,
+    "x": -15
+   },
+   "note": "Ken, 1 Nov: Build as big as Trust (Trust's word is size 784 in ken24.json)"
   }
  }
 ]
