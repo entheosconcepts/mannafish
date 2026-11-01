@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MannaFish Hubs</title>
-<meta name="description" content="Places where MannaFish are given away free. Pray for a fish at a Hub near you, ask for a new Hub, or sponsor one.">
+<meta name="description" content="Places where MannaFish are given away free. Love a fish for a Hub near you, ask for a new Hub, or sponsor one.">
 <link rel="icon" href="/icon-192.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;1,400&family=Archivo:wght@400;600;700;800&display=swap">
 <!-- Ken, 31 Oct: "show a list of locations nearest that carry MannaFish merch, let user select, or sponsor someone from a list that may be a
@@ -50,6 +50,8 @@ input,select,textarea{font:inherit;color:var(--text);background:rgba(255,255,255
 .places{max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:6px 10px}.places label{flex-direction:row!important;align-items:center;gap:8px;font-weight:500!important;padding:4px 0}.places input{width:auto}
 .msg{min-height:1.2em;font-size:.92rem;margin:6px 0 0}.si{display:flex;gap:6px;margin-top:8px}.si input{flex:1}.si button{border:0;border-radius:999px;background:var(--blue);color:#fff;font:800 .9rem Archivo,sans-serif;padding:8px 14px;cursor:pointer}.pr{font-size:.86rem;color:var(--dim)}
 .host{border:1px dashed var(--line);border-radius:18px;padding:16px;margin-top:20px}
+main>h1,main>h2,.lead,.verse,main>p.meta,.how div,.st,.host,.empty,.bar0,#kinds,.sticky{text-align:center}.bar0,#kinds{justify-content:center}
+.st .d{float:none;display:block}.st .bar{max-width:420px;margin-left:auto;margin-right:auto}.fish{justify-content:safe center}.gives{font-weight:700;color:var(--gold)}.how b.in{display:inline;font-size:inherit}
 .empty{color:var(--dim);text-align:center;padding:18px;border:1px dashed var(--line);border-radius:14px}
 </style>
 </head>
@@ -57,9 +59,13 @@ input,select,textarea{font:inherit;color:var(--text);background:rgba(255,255,255
 <header><a class="brand" href="/">Manna<b>Fish</b></a><nav><a href="#ask">Ask</a><a href="#sponsor">Sponsor</a><a href="/">Today’s fish</a></nav></header>
 <main>
 <h1>MannaFish Hubs</h1>
-<p class="lead">Places that give MannaFish away free: a coffee shop, a store, a church. Put any fish in your 🧺 prayer basket and pray for it at a Hub near you. When enough people pray, we fill the pond there, and you pick yours up. Nothing is mailed, nothing is sold.</p>
-<p class="verse">Pray ye therefore the Lord of the harvest, that he will send forth labourers into his harvest (Matthew 9:38).</p>
-<div class="how"><div><b>🧺</b>Tap 🧺 on a fish you love.</div><div><b>🙏</b>Pray for it at a Hub near you.</div><div><b>🐟</b>When it is in, we email you. Come and take two: one to keep, one to give.</div></div>
+<!-- Ken, 1 Nov: "justify all text block to center ... change pray for fish here to cast your bread upon the waters: this puts a request in
+     for any specific design fish, and the fish that are liked the most are the ones that get printed and sent to the MannaFish Hub" -->
+<p class="lead">Places that give MannaFish away free: a coffee shop, a store, a church. Love the fish you want, and the most-loved fish are printed and sent to your Hub. Some Hubs give away T-shirts, beanies, caps, drinkware, key chains, decals and more.</p>
+<p class="verse">Cast thy bread upon the waters: for thou shalt find it after many days (Ecclesiastes 11:1).</p>
+<div class="how"><div><b>❤️</b>Tap 🧺 <b class="in">Love</b> on any fish you love. It adds your vote to that MannaFish Hub’s fish menu.</div>
+<div><b>🙋</b>Request or petition a place or person to become a MannaFish Hub. When enough people ask, we connect with the owner, let them know the demand is there, and work to open a new Hub.</div>
+<div><b>🐟</b>When the most-loved fish is in, or a new MannaFish Hub opens, we email you. Visit that Hub and take the <b class="in">Take 2 Challenge</b>: keep one, give one away!</div></div>
 <div class="bar0"><span class="city">📍 Wilmington, NC</span><button type="button" class="chip" id="nearBtn">Nearest to me</button></div>
 
 <h2>Open Hubs</h2>
@@ -96,21 +102,22 @@ document.addEventListener('DOMContentLoaded',function(){
   var H=window.MFhubs; function $(i){ return document.getElementById(i); }
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function img(x){ var k=String(x.fish).slice(2); return String(x.fish).indexOf('M:')===0?'/fish/'+(x.l||'en')+'/'+k+'.svg':'/fish/'+k+'.svg'; }
-  var MERCH={decal:'Decals',card:'Cards',shirt:'Shirts',keychain:'Key chains',mug:'Mugs',cap:'Caps'}, KINDS=[['all','All'],['coffee','☕ Coffee'],['store','🏪 Stores'],['books','📚 Books'],['church','⛪ Churches']];
+  var MERCH={decal:'Decals',card:'Cards',shirt:'T-shirts',beanie:'Beanies',cap:'Caps',drinkware:'Drinkware',mug:'Mugs',keychain:'Key chains'}, GIVE={decal:'🐟 Decals',card:'🃏 Cards',shirt:'👕 T-shirts',beanie:'🧶 Beanies',cap:'🧢 Caps',drinkware:'🥤 Drinkware',mug:'☕ Mugs',keychain:'🔑 Key chains'}, KINDS=[['all','All'],['coffee','☕ Coffee'],['store','🏪 Stores'],['books','📚 Books'],['church','⛪ Churches']];
   var KIND='all', PICK={};
   try{ var q=new URLSearchParams(location.search).get('hub')||new URLSearchParams(location.search).get('station'); if(q) localStorage.setItem('mf-station',JSON.stringify(q)); }catch(e){}
   function mine(){ try{ return JSON.parse(localStorage.getItem('mf-station')||'""'); }catch(e){ return ''; } }
   function fishRow(L,stock){ return '<div class="fish">'+L.map(function(x){ return '<span><img loading="lazy" src="'+img(x)+'" alt="">'+esc(x.word||String(x.fish).slice(2))
-      +(stock?'<br><span class="tag '+(x.status==='in'?'in':'coming')+'">'+(x.status==='in'?'Here now':'On the way')+(x.kind&&x.kind!=='decal'?' · '+esc(MERCH[x.kind]||x.kind):'')+'</span>':'<br><span class="meta">🙏 '+x.n+'</span>')+'</span>'; }).join('')+'</div>'; }
+      +(stock?'<br><span class="tag '+(x.status==='in'?'in':'coming')+'">'+(x.status==='in'?'Here now':'On the way')+(x.kind&&x.kind!=='decal'?' · '+esc(MERCH[x.kind]||x.kind):'')+'</span>':'<br><span class="meta">❤️ '+x.n+'</span>')+'</span>'; }).join('')+'</div>'; }
   function hubs(){ var me=mine(), L=H.byNear(H.hubs()), real=L.filter(function(s){ return s.id!=='anywhere'; }).length;
-    $('list').innerHTML=(real?'':'<p class="empty">No Hub is open yet. The first ones are being asked for below. Until then, pray for fish to go wherever they are needed most.</p>')
+    $('list').innerHTML=(real?'':'<p class="empty">No Hub is open yet. The first ones are being asked for below. Until then, love fish to go wherever they are needed most.</p>')
       +L.map(function(s){ var th=s.threshold||100, t=s.total||0, on=s.id===me, stock=s.stock||[];
       return '<div class="st'+(on?' mine':'')+'"><span class="d">'+esc(H.mi(s))+'</span><h3>'+(s.id==='anywhere'?'🌍 ':H.icon(s.kind)+' ')+esc(s.name)+'</h3>'+(s.address?'<div class="ad">'+esc(s.address)+'</div>':'')
-        +(s.where?'<p>'+esc(s.where)+'</p>':'')+(s.note?'<p class="meta">'+esc(s.note)+'</p>':'')
+        +(s.where?'<p>'+esc(s.where)+'</p>':'')+(s.gives&&s.gives.length?'<p class="gives">Gives away: '+s.gives.map(function(k){ return esc(GIVE[k]||k); }).join(' · ')+'</p>':'')+(s.note?'<p class="meta">'+esc(s.note)+'</p>':'')
         +(stock.length?'<h4>In the pond</h4>'+fishRow(stock,true):'')
-        +'<div class="bar"><i style="width:'+Math.min(100,Math.round(t*100/th))+'%"></i></div><div class="meta">'+t+' of '+th+' prayers'+(t>=th?': the pond is being filled':' to fill the pond')+'</div>'
-        +(s.top&&s.top.length?'<h4>Most prayed for</h4>'+fishRow(s.top,false):'')
-        +'<button type="button" class="go'+(on?' on':'')+'" data-s="'+esc(s.id)+'">'+(on?'✓ Your Hub':'Pray for fish here')+'</button></div>'; }).join(''); }
+        +'<div class="bar"><i style="width:'+Math.min(100,Math.round(t*100/th))+'%"></i></div><div class="meta">'+t+' of '+th+' loves'+(t>=th?': the pond is being filled':' to fill the pond')+'</div>'
+        +(s.top&&s.top.length?'<h4>Most loved</h4>'+fishRow(s.top,false):'')
+        +'<button type="button" class="go'+(on?' on':'')+'" data-s="'+esc(s.id)+'">'+(on?'✓ Your Hub: pick your fish':'🍞 Cast your bread upon the waters')+'</button>'
+        +'<p class="meta" style="margin-top:6px">Love any fish for this Hub. The most-loved fish are printed and sent here.</p></div>'; }).join(''); }
   function kinds(){ var have={}; H.proposed().forEach(function(p){ have[p.kind]=1; });
     $('kinds').innerHTML=KINDS.filter(function(k){ return k[0]==='all'||have[k[0]]; }).map(function(k){ return '<button type="button" class="chip" data-k="'+k[0]+'" aria-pressed="'+(KIND===k[0])+'">'+k[1]+'</button>'; }).join(''); }
   function asks(){ var G=H.goal(), L=H.byNear(H.proposed()).filter(function(p){ return KIND==='all'||p.kind===KIND; }); $('goal').textContent=G;

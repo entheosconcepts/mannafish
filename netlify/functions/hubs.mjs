@@ -37,7 +37,9 @@ const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 const rid = () => Date.now().toString(36) + Array.from(crypto.getRandomValues(new Uint8Array(3)), (b) => b.toString(16).padStart(2, '0')).join('');
 async function hash(s) { const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)); return Array.from(new Uint8Array(d), (b) => b.toString(16).padStart(2, '0')).join('').slice(0, 24); }
 const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/, FISH = /^[A-Z]:[A-Za-z0-9_-]{1,40}$/;
-const MERCH = ['decal', 'card', 'shirt', 'keychain', 'mug', 'cap'];
+// what a Hub gives away (Ken, 1 Nov: "T-shirts, beanies, caps, drinkware, key chains, decals and more, maybe not all at the same time")
+const MERCH = ['decal', 'card', 'shirt', 'beanie', 'cap', 'drinkware', 'mug', 'keychain'];
+const MNAME = { decal: 'MannaFish decals', card: 'MannaFish cards', shirt: 'MannaFish T-shirts', beanie: 'MannaFish beanies', cap: 'MannaFish caps', drinkware: 'MannaFish drinkware', mug: 'MannaFish mugs', keychain: 'MannaFish key chains' };
 const PLACES = ['coffee', 'store', 'church', 'books', 'food', 'other'];
 const STATUS = ['proposed', 'talking', 'active', 'closed'];
 const SITE = 'https://manna-fish.com';
@@ -90,7 +92,7 @@ async function counts(s, id) { return (await s.get('c/' + id, { type: 'json' }))
 async function votes(s, id) { return (await s.get('vc/' + id, { type: 'json' })) || { n: 0, qualified: false }; }
 const fk = (fish, l) => fish + '|' + (l || 'en');
 function top(c, n) { return Object.entries(c.fish || {}).sort((a, b) => b[1] - a[1]).slice(0, n).map(([k, v]) => ({ fish: k.split('|')[0], l: k.split('|')[1], word: (c.words || {})[k.split('|')[0]] || k.split('|')[0], n: v })); }
-const place = (st) => ({ id: st.id, name: st.name, kind: st.kind || 'other', address: st.address || '', city: st.city || '', lat: st.lat ?? null, lng: st.lng ?? null, url: st.url || '', sponsored: st.sponsored || '' });
+const place = (st) => ({ id: st.id, name: st.name, kind: st.kind || 'other', address: st.address || '', city: st.city || '', lat: st.lat ?? null, lng: st.lng ?? null, url: st.url || '', sponsored: st.sponsored || '', gives: (st.gives || []).filter((x) => MERCH.includes(x)) });
 const pub = (st, c) => ({ ...place(st), where: st.where || '', note: st.note || '', threshold: st.threshold || 100,
   total: c.total || 0, top: top(c, 6), fish: c.fish || {}, stock: (st.stock || []).map((x) => ({ fish: x.fish, word: x.word, l: x.l, kind: x.kind, qty: x.qty, status: x.status })) });
 
@@ -191,10 +193,10 @@ export default async (req, context) => {
     await s.setJSON('c/' + st.id, c);
     if (hit) {   // the need is shown: Ken (and the host) hear, with the fish most prayed for
       const L = top(c, 10).map((x) => `${esc(x.word)}${x.l !== 'en' ? ' (' + esc(x.l) + ')' : ''}: <b>${x.n}</b>`).join('<br>');
-      const lines = [`<b>${esc(st.name)}</b>${st.city ? ' (' + esc(st.city) + ')' : ''} has reached <b>${c.total}</b> prayers for MannaFish (its number is ${th}).`,
-        L, 'Ready to fill its pond: make a run of the fish most prayed for, once it is sponsored, and send it there.', `<a href="${SITE}/hubs/admin/">Open the Hubs page</a>`];
+      const lines = [`<b>${esc(st.name)}</b>${st.city ? ' (' + esc(st.city) + ')' : ''} has reached <b>${c.total}</b> loves for MannaFish fish (its number is ${th}).`,
+        L, 'Ready to fill its pond: make a run of the most-loved fish, once it is sponsored, and send it there.', `<a href="${SITE}/hubs/admin/">Open the Hubs page</a>`];
       await mail(TO(), `MannaFish Hub ready to fill: ${st.name}`, lines);
-      if (st.owner) await mail(st.owner, `${c.total} prayers for MannaFish at ${st.name}`, [lines[0], L, 'We will let you know when fish are on the way to you. Thank you for being a MannaFish Hub.']);
+      if (st.owner) await mail(st.owner, `${c.total} people love MannaFish fish at ${st.name}`, [lines[0], L, 'We will let you know when fish are on the way to you. Thank you for being a MannaFish Hub.']);
     }
     return Response.json({ ok: true, total: c.total, threshold: th, items: out, n: out[0].n, already: out.every((x) => x.already) || undefined }, { headers: NS });
   }
@@ -219,6 +221,7 @@ export default async (req, context) => {
       for (const f of ['name', 'city', 'where', 'note', 'owner', 'address', 'url', 'sponsored']) if (b[f] != null) st[f] = clean(b[f], f === 'note' ? 300 : f === 'where' || f === 'address' ? 200 : 120);
       if (st.owner) st.owner = st.owner.toLowerCase();
       if (b.kind && PLACES.includes(b.kind)) st.kind = b.kind;
+      if (Array.isArray(b.gives)) st.gives = b.gives.filter((x) => MERCH.includes(x));
       if (b.threshold) st.threshold = Math.max(3, Math.min(5000, Number(b.threshold) || 100));
       if (b.status && STATUS.includes(b.status)) st.status = b.status;
       if (b.lat != null && b.lng != null && b.lat !== '' && isFinite(b.lat) && isFinite(b.lng)) { st.lat = +b.lat; st.lng = +b.lng; st.approx = false; }
@@ -238,7 +241,13 @@ export default async (req, context) => {
     }
     const st = await station(s, id); if (!st) return bad('No such place', 404);
     if (a === 'edit') await fields(st);
-    else if (a === 'status') { if (!STATUS.includes(b.status) || id === 'anywhere') return bad('Which status?', 400); st.status = b.status; }
+    else if (a === 'status') { if (!STATUS.includes(b.status) || id === 'anywhere') return bad('Which status?', 400); const was = st.status; st.status = b.status;
+      if (b.status === 'active' && was !== 'active' && !st.opened) {   // a new Hub is open (Ken, 1 Nov): everyone who asked for it hears, once
+        st.opened = new Date().toISOString(); const { blobs } = await s.list({ prefix: `v/${st.id}/` }); let told = 0;
+        for (const x of blobs) { const v = await s.get(x.key, { type: 'json' }); if (v && v.email) { told++; await mail(v.email, `${st.name} is now a MannaFish Hub`, [`You asked for <b>${esc(st.name)}</b> to become a MannaFish Hub. It is open!`,
+          [st.address, st.where].filter(Boolean).map(esc).join(' · '), st.gives && st.gives.length ? 'It gives away: ' + esc(st.gives.map((k) => MNAME[k] || k).join(', ')) + '.' : '',
+          'Love the fish you want there, and the most-loved fish are printed and sent. Then stop by and take the Take 2 Challenge: keep one, give one away.', `<a href="${SITE}/hubs/?hub=${encodeURIComponent(st.id)}">Love fish for this Hub</a>`]); } }
+        await s.setJSON('s/' + st.id, st); return Response.json({ ok: true, told }); } }
     else if (a === 'close' || a === 'open') st.status = a === 'open' ? 'active' : 'closed';
     else if (a === 'remove') { if (st.status === 'active') return bad('Close the Hub first', 400); await s.delete('s/' + id); return Response.json({ ok: true }); }
     else if (a === 'unstock') { st.stock = (st.stock || []).filter((x, i) => i !== Number(b.i)); }
@@ -249,13 +258,13 @@ export default async (req, context) => {
       st.stock.push({ fish, word: clean(b.word, 40) || fish.slice(2), l, kind, qty: Math.max(0, Number(b.qty) || 0), status, at: new Date().toISOString() });
       if (status === 'in') {   // it's here: everyone who prayed for this fish at this Hub hears, and those prayers are answered (the count starts again)
         const c = await counts(s, st.id), key = fk(fish, l), { blobs } = await s.list({ prefix: `p/${st.id}/${key}/` }); let told = 0;
-        const word = clean(b.word, 40) || (c.words || {})[fish] || fish.slice(2), what = kind === 'decal' ? 'MannaFish decals' : kind === 'keychain' ? 'MannaFish key chains' : 'MannaFish ' + kind + 's';
+        const word = clean(b.word, 40) || (c.words || {})[fish] || fish.slice(2), what = MNAME[kind] || 'MannaFish ' + kind + 's';
         for (const x of blobs) { const p = await s.get(x.key, { type: 'json' }); await s.delete(x.key);
           if (p && p.email) { told++; const hi = p.name ? esc(p.name) + ', y' : 'Y';
-            if (st.id === 'anywhere') await mail(p.email, `Your prayer for ${word} was answered`, [`${hi}ou prayed for the <b>${esc(word)}</b> fish to go wherever it is needed most. It has been multiplied: ${esc(what)} are on their way to people who need them.`,
-              'Thank you for praying. <i>Freely ye have received, freely give</i> (Matthew 10:8).', `<a href="${SITE}/hubs/">Find a MannaFish Hub near you</a>`], p.name);
-            else await mail(p.email, `${word} is at ${st.name}`, [`${hi}ou prayed for the <b>${esc(word)}</b> fish at <b>${esc(st.name)}</b>. It is there now: ${esc(what)}, free.`,
-              [st.address, st.where].filter(Boolean).map(esc).join(' · '), 'Stop by and take two: one to keep, and one to give away. <i>Freely ye have received, freely give</i> (Matthew 10:8).', `<a href="${SITE}/hubs/">See every MannaFish Hub</a>`], p.name); } }
+            if (st.id === 'anywhere') await mail(p.email, `The ${word} fish you loved is out`, [`${hi}ou loved the <b>${esc(word)}</b> fish for wherever it is needed most. It has been multiplied: ${esc(what)} are on their way to people who need them.`,
+              'Thank you. <i>Cast thy bread upon the waters: for thou shalt find it after many days</i> (Ecclesiastes 11:1).', `<a href="${SITE}/hubs/">Find a MannaFish Hub near you</a>`], p.name);
+            else await mail(p.email, `${word} is at ${st.name}`, [`${hi}ou loved the <b>${esc(word)}</b> fish at <b>${esc(st.name)}</b>. It is there now: ${esc(what)}, free.`,
+              [st.address, st.where].filter(Boolean).map(esc).join(' · '), 'Stop by and take the Take 2 Challenge: keep one, give one away. <i>Freely ye have received, freely give</i> (Matthew 10:8).', `<a href="${SITE}/hubs/">See every MannaFish Hub</a>`], p.name); } }
         c.total = Math.max(0, (c.total || 0) - (c.fish[key] || 0)); delete c.fish[key]; if (c.total < (st.threshold || 100)) c.notified = false;
         await s.setJSON('c/' + st.id, c); await s.setJSON('s/' + st.id, st); return Response.json({ ok: true, told });
       }

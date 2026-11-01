@@ -33,6 +33,7 @@ table{border-collapse:collapse;width:100%;font-size:.9rem;margin:6px 0}td,th{tex
 #msg{position:sticky;top:0;z-index:5;background:var(--blue);color:#fff;padding:8px 12px;border-radius:10px;margin:0 0 10px}#msg:empty{display:none}
 details summary{cursor:pointer;color:var(--dim);font-size:.9rem;margin-top:10px}
 .empty{color:var(--dim);padding:10px 0}
+.gv>span{font-size:.8rem;color:var(--dim)}.gv>div{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.gv label{flex-direction:row;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:5px 10px;color:var(--foam)}.gv input{width:auto}
 </style>
 </head>
 <body>
@@ -51,7 +52,8 @@ details summary{cursor:pointer;color:var(--dim);font-size:.9rem;margin-top:10px}
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   var K=''; try{ K=localStorage.getItem('mf-admin-key')||''; }catch(e){}
   var D={stations:[],sponsors:[],suggestions:[],cfg:{voteGoal:50}}, TAB='ask';
-  var MERCH=[['decal','Decals'],['card','Cards'],['shirt','Shirts'],['keychain','Key chains'],['mug','Mugs'],['cap','Caps']];
+  var MERCH=[['decal','Decals'],['card','Cards'],['shirt','T-shirts'],['beanie','Beanies'],['cap','Caps'],['drinkware','Drinkware'],['mug','Mugs'],['keychain','Key chains']];
+  function givesBox(L,attr){ L=L||[]; return '<div class="w gv"><span>Gives away (people see this)</span><div>'+MERCH.map(function(m){ return '<label><input type="checkbox" '+attr+' value="'+m[0]+'"'+(L.indexOf(m[0])>=0?' checked':'')+'> '+m[1]+'</label>'; }).join('')+'</div></div>'; }
   var PL=[['coffee','☕ Coffee'],['store','🏪 Store'],['church','⛪ Church'],['books','📚 Books'],['food','🍽️ Food'],['other','📍 Other']], ICON={coffee:'☕',store:'🏪',church:'⛪',books:'📚',food:'🍽️',other:'📍'};
   var ST={proposed:'Asked for',talking:'Talking with them',active:'Hub',closed:'Closed'};
   function say(t){ $('msg').textContent=t||''; if(t) setTimeout(function(){ if($('msg').textContent===t) $('msg').textContent=''; },6000); }
@@ -65,7 +67,7 @@ details summary{cursor:pointer;color:var(--dim);font-size:.9rem;margin-top:10px}
     return '<details><summary>Change</summary><div class="grid" style="margin-top:8px">'+(any?'':'<label>Name<input data-e="name" value="'+esc(s.name)+'"></label><label>Kind<select data-e="kind">'+opt(PL,s.kind)+'</select></label><label class="w">Address (the map point is found from it)<input data-e="address" value="'+esc(s.address)+'"></label>')
       +'<label class="w">Where to pick up (shown)<input data-e="where" value="'+esc(s.where)+'"></label><label class="w">Note (shown)<input data-e="note" value="'+esc(s.note)+'"></label>'
       +(any?'':'<label>Host’s email (gets the notices, not shown)<input data-e="owner" type="email" value="'+esc(s.owner)+'"></label><label>Sponsored by (shown as “sponsored”)<input data-e="sponsored" value="'+esc(s.sponsored)+'"></label><label>Website<input data-e="url" value="'+esc(s.url)+'"></label>')
-      +'<label>Prayers to fill the pond<input data-e="threshold" type="number" min="3" value="'+(s.threshold||100)+'"></label>'
+      +'<label>Loves to fill the pond<input data-e="threshold" type="number" min="3" value="'+(s.threshold||100)+'"></label>'+(any?'':givesBox(s.gives,'data-g'))
       +(any?'':'<label>Map point (lat, lng)<input data-e="ll" value="'+(s.lat!=null?s.lat+', '+s.lng:'')+'" placeholder="34.24, -77.87"></label>')+'</div>'
       +'<div class="row"><button type="button" class="ok" data-a="edit">Save</button>'+(any||s.status==='active'?'':'<button type="button" class="no" data-a="remove">Take off the list</button>')+'</div>'
       +(any?'':'<p class="meta">Link: <a href="/hubs/?hub='+esc(s.id)+'">/hubs/?hub='+esc(s.id)+'</a></p>')+'</details>'; }
@@ -77,13 +79,13 @@ details summary{cursor:pointer;color:var(--dim);font-size:.9rem;margin-top:10px}
   function hubCard(s){ var th=s.threshold||100, t=s.total||0, any=s.id==='anywhere';
     return '<div class="card'+(t>=th?' hit':'')+(s.status==='closed'?' shut':'')+'" data-id="'+esc(s.id)+'"><div class="big">'+(any?'🌍':(ICON[s.kind]||'📍'))+' '+esc(s.name)+(s.status==='closed'?' <span class="pill">closed</span>':'')+(s.sponsored?' <span class="pill done">sponsored: '+esc(s.sponsored)+'</span>':'')+'</div>'
       +'<div class="meta">'+esc(s.address||s.where||'')+(s.owner?' · notices to '+esc(s.owner):'')+'</div>'
-      +'<div class="bar"><i style="width:'+Math.min(100,Math.round(t*100/th))+'%"></i></div><div class="meta">'+t+' of '+th+' prayers'+(s.notified?' · you were emailed: ready to fill':'')+'</div>'
-      +(s.top.length?'<table><tr><th>Fish prayed for</th><th class="n">Praying</th><th></th></tr>'+s.top.map(function(x,j){ return '<tr><td>'+lname(x)+'</td><td class="n">'+x.n+'</td><td style="text-align:right"><button type="button" data-a="pick" data-j="'+j+'">Fill ›</button></td></tr>'; }).join('')+'</table>':'<p class="meta">No prayers here yet.</p>')
+      +'<div class="bar"><i style="width:'+Math.min(100,Math.round(t*100/th))+'%"></i></div><div class="meta">'+t+' of '+th+' loves'+(s.notified?' · you were emailed: ready to fill':'')+'</div>'+(s.gives&&s.gives.length?'<div class="meta">Gives away: '+esc(s.gives.join(', '))+'</div>':'')
+      +(s.top.length?'<table><tr><th>Most-loved fish</th><th class="n">Loves</th><th></th></tr>'+s.top.map(function(x,j){ return '<tr><td>'+lname(x)+'</td><td class="n">'+x.n+'</td><td style="text-align:right"><button type="button" data-a="pick" data-j="'+j+'">Fill ›</button></td></tr>'; }).join('')+'</table>':'<p class="meta">No loves here yet.</p>')
       +((s.stock||[]).length?'<table><tr><th>In the pond</th><th>What</th><th class="n">How many</th><th></th></tr>'+s.stock.map(function(x,j){ return '<tr><td>'+lname(x)+'</td><td>'+esc(x.kind)+' <span class="pill '+x.status+'">'+(x.status==='in'?'here':'on the way')+'</span></td><td class="n">'+(x.qty||'')+'</td><td style="text-align:right">'
         +(x.status!=='in'?'<button type="button" class="in" data-a="arrived" data-j="'+j+'">It’s in</button> ':'')+'<button type="button" data-a="unstock" data-j="'+j+'">Take off</button></td></tr>'; }).join('')+'</table>':'')
       +'<details><summary>Fill the pond</summary><div class="grid" style="margin-top:8px"><label>Fish (M:GATHER, X:X001, Y:W19b …)<input data-f="fish" placeholder="M:GATHER"></label><label>Word<input data-f="word" placeholder="Gather"></label>'
       +'<label>Language<input data-f="l" value="en"></label><label>What<select data-f="kind">'+opt(MERCH,'decal')+'</select></label><label>How many<input data-f="qty" type="number" min="0" value="100"></label></div>'
-      +'<div class="row"><button type="button" data-a="coming">On the way</button><button type="button" class="in" data-a="in">It’s in: tell everyone who prayed</button></div></details>'
+      +'<div class="row"><button type="button" data-a="coming">On the way</button><button type="button" class="in" data-a="in">It’s in: tell everyone who loved it</button></div></details>'
       +editForm(s)+(any?'':'<div class="row">'+(s.status==='closed'?'<button type="button" data-a="st" data-v="active">Open it again</button>':'<button type="button" class="no" data-a="st" data-v="closed">Close this Hub</button>')+'</div>')+'</div>'; }
   function sponsorCard(r,i){ return '<div class="card" data-sp="'+i+'"><div class="big">'+esc(r.org||r.name)+' <span class="pill '+r.status+'">'+esc(r.status)+'</span>'+(r.anonymous?' <span class="pill">anonymous</span>':'')+'</div>'
       +'<div class="meta">'+esc(r.name)+' · <a href="mailto:'+esc(r.email)+'" style="color:#8fb6ff">'+esc(r.email)+'</a>'+(r.phone?' · '+esc(r.phone):'')+' · '+esc((r.at||'').slice(0,10))+'</div>'
@@ -93,7 +95,7 @@ details summary{cursor:pointer;color:var(--dim);font-size:.9rem;margin-top:10px}
       +'<div class="row"><button type="button" class="ok" data-a="sg" data-v="add">Add to the list</button><button type="button" data-a="sg" data-v="dismiss">Dismiss</button></div></div>'; }
   function newForm(){ return '<div class="card"><div class="grid"><label>Name<input id="nName" placeholder="Drift Coffee"></label><label>Kind<select id="nKind">'+opt(PL,'coffee')+'</select></label>'
       +'<label class="w">Address<input id="nAddr" placeholder="221 N Front St, Wilmington, NC 28401"></label><label>Start as<select id="nStatus">'+opt([['proposed','Asked for (people can request it)'],['talking','Talking with them'],['active','A Hub now (agreement made)']],'proposed')+'</select></label>'
-      +'<label>Host’s email (optional, not shown)<input id="nOwner" type="email"></label><label class="w">Where to pick up (optional, shown)<input id="nWhere" placeholder="Ask at the counter"></label></div>'
+      +'<label>Host’s email (optional, not shown)<input id="nOwner" type="email"></label><label class="w">Where to pick up (optional, shown)<input id="nWhere" placeholder="Ask at the counter"></label>'+givesBox(['decal'],'data-ng')+'</div>'
       +'<div class="row"><button class="ok" id="nGo" type="button">Add</button></div></div>'; }
   function draw(){ var S=D.stations, asked=S.filter(function(s){ return s.status==='proposed'||s.status==='talking'; }).sort(function(a,b){ return b.votes-a.votes; }), hubs=S.filter(function(s){ return s.status==='active'; }), shut=S.filter(function(s){ return s.status==='closed'; });
     var spNew=D.sponsors.filter(function(r){ return r.status!=='done'; }).length, T=[['ask','Asked for',asked.length],['hubs','Hubs',hubs.length],['sp','Sponsors',spNew],['sg','Suggested',D.suggestions.length],['add','Add a place',''],['set','Settings','']];
@@ -107,10 +109,10 @@ details summary{cursor:pointer;color:var(--dim);font-size:.9rem;margin-top:10px}
     if(TAB==='set') h='<div class="card"><label>Requests for a place to qualify as a Hub (you will be emailed once when a place reaches it)<input id="cfgGoal" type="number" min="1" value="'+D.cfg.voteGoal+'"></label><div class="row"><button class="ok" id="cfgGo" type="button">Save</button></div></div>';
     $('view').innerHTML=h; }
   $('tabs').addEventListener('click',function(e){ var b=e.target.closest('[data-t]'); if(b){ TAB=b.dataset.t; draw(); } });
-  function done(j){ say(j&&j.told!=null?'Done. '+j.told+' '+(j.told===1?'person was':'people were')+' told it is in.':'Saved.'); return load(); }
+  function done(j){ say(j&&j.told!=null?'Done. '+j.told+' '+(j.told===1?'person was':'people were')+' emailed.':'Saved.'); return load(); }
   function fail(b){ return function(err){ if(b) b.disabled=false; say((err&&err.error)||'That did not work.'); }; }
   $('view').addEventListener('click',function(e){ var b=e.target.closest('[data-a]'), t=e.target.id;
-    if(t==='nGo'){ var n={action:'create',name:$('nName').value.trim(),kind:$('nKind').value,address:$('nAddr').value.trim(),status:$('nStatus').value,owner:$('nOwner').value.trim(),where:$('nWhere').value.trim(),city:'Wilmington, NC'};
+    if(t==='nGo'){ var n={action:'create',name:$('nName').value.trim(),kind:$('nKind').value,address:$('nAddr').value.trim(),status:$('nStatus').value,owner:$('nOwner').value.trim(),where:$('nWhere').value.trim(),city:'Wilmington, NC',gives:[].map.call(document.querySelectorAll('[data-ng]:checked'),function(i){ return i.value; })};
       if(!n.name){ say('Give it a name.'); return; } api(n).then(function(){ TAB=n.status==='active'?'hubs':'ask'; say('Added.'); load(); }).catch(fail()); return; }
     if(t==='cfgGo'){ api({action:'cfg',voteGoal:$('cfgGoal').value}).then(done).catch(fail()); return; }
     if(!b) return; var a=b.dataset.a;
@@ -122,14 +124,14 @@ details summary{cursor:pointer;color:var(--dim);font-size:.9rem;margin-top:10px}
     var body={id:s.id};
     if(a==='coming'||a==='in'){ body.action='stock'; body.status=a; body.fish=f('fish'); body.word=f('word'); body.l=f('l')||'en'; body.kind=f('kind'); body.qty=f('qty');
       if(!/^[A-Z]:/.test(body.fish)){ say('Which fish? For example M:GATHER'); return; }
-      if(a==='in'&&!confirm('Email everyone who prayed for '+(body.word||body.fish)+' at '+s.name+' that it is in?')) return; }
-    else if(a==='arrived'){ var y=s.stock[j]; body={id:s.id,action:'stock',status:'in',fish:y.fish,word:y.word,l:y.l,kind:y.kind,qty:y.qty}; if(!confirm('Email everyone who prayed for '+y.word+' at '+s.name+' that it is in?')) return; }
+      if(a==='in'&&!confirm('Email everyone who loved '+(body.word||body.fish)+' at '+s.name+' that it is in?')) return; }
+    else if(a==='arrived'){ var y=s.stock[j]; body={id:s.id,action:'stock',status:'in',fish:y.fish,word:y.word,l:y.l,kind:y.kind,qty:y.qty}; if(!confirm('Email everyone who loved '+y.word+' at '+s.name+' that it is in?')) return; }
     else if(a==='unstock'){ body.action='unstock'; body.i=j; }
-    else if(a==='edit'){ body.action='edit'; [].forEach.call(c.querySelectorAll('[data-e]'),function(el){ body[el.dataset.e]=el.value.trim(); });
+    else if(a==='edit'){ body.action='edit'; [].forEach.call(c.querySelectorAll('[data-e]'),function(el){ body[el.dataset.e]=el.value.trim(); }); if(c.querySelector('[data-g]')) body.gives=[].map.call(c.querySelectorAll('[data-g]:checked'),function(i){ return i.value; });
       if(body.ll!=null){ var m=body.ll.split(/[ ,]+/); if(m.length===2&&isFinite(m[0])&&isFinite(m[1])&&body.ll!==(s.lat!=null?s.lat+', '+s.lng:'')){ body.lat=m[0]; body.lng=m[1]; } delete body.ll; }
       if(body.address===(s.address||'')) delete body.address; }
     else if(a==='remove'){ if(!confirm('Take '+s.name+' off the list? Its requests are kept.')) return; body.action='remove'; }
-    else if(a==='st'){ var v=b.dataset.v; if(v==='active'&&!confirm('Make '+s.name+' a MannaFish Hub? People can then pray for fish there.')) return; if(v==='closed'&&!confirm('Close '+s.name+'? People can no longer pray for fish there.')) return; body.action='status'; body.status=v; if(v==='active') TAB='hubs'; }
+    else if(a==='st'){ var v=b.dataset.v; if(v==='active'&&!confirm('Make '+s.name+' a MannaFish Hub? Everyone who asked for it is emailed that it is open, and people can love fish for it.')) return; if(v==='closed'&&!confirm('Close '+s.name+'? People can no longer love fish for it.')) return; body.action='status'; body.status=v; if(v==='active') TAB='hubs'; }
     b.disabled=true; api(body).then(done).catch(fail(b)); });
   $('kGo').addEventListener('click',function(){ K=$('k').value.trim(); load(); });
   if(K) load();

@@ -77,7 +77,7 @@
   // ── the button ──
   var FAB=null;
   function fab(){ if(!document.body) return; css(); if(!FAB){ FAB=document.createElement('button'); FAB.type='button'; FAB.className='mfbkfab'; FAB.addEventListener('click',open); document.body.appendChild(FAB); }
-    var n=items().length; FAB.hidden=!n; FAB.textContent='🧺 '+n; FAB.setAttribute('aria-label','Your prayer basket: '+n+' fish'); }
+    var n=items().length; FAB.hidden=!n; FAB.textContent='🧺 '+n; FAB.setAttribute('aria-label','Your basket: '+n+' fish you love'); }
   function bump(){ if(!FAB) return; FAB.classList.remove('bump'); void FAB.offsetWidth; FAB.classList.add('bump'); }
   var TOAST=null;
   function toast(t){ if(!TOAST){ TOAST=document.createElement('div'); TOAST.setAttribute('role','status'); TOAST.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:calc(150px + env(safe-area-inset-bottom));z-index:130;background:#16171b;color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:9px 16px;font:700 .9rem Archivo,sans-serif;max-width:calc(100% - 32px);text-align:center;display:none'; document.body.appendChild(TOAST); }
@@ -85,7 +85,7 @@
 
   function add(f){ if(!f||!f.id) return; var a=items(), at=a.filter(function(x){ return x.id===f.id; })[0];
     if(!at) a.push({id:f.id,word:f.word,ref:f.ref||'',svg:f.svg||'',main:!!f.main||String(f.id).indexOf('M:')===0,l:f.l||'en'});
-    save(a); bump(); toast('🧺 '+f.word+(at?' is already in your prayer basket':' is in your prayer basket')); }
+    save(a); bump(); toast('❤️ '+f.word+(at?' is already in your basket':' is in your basket')); }
 
   // ── the Hubs, shared with /hubs/ (window.MFhubs) ──
   // the open Hubs and the places asked for come from /api/hubs; "Wherever it's needed most" is always the last Hub
@@ -140,8 +140,8 @@
       got=(S.stock||[]).filter(function(y){ return y.fish===x.id&&(y.l||'en')===(x.main?(x.l||'en'):'en'); })[0];
     if(got&&got.status==='in') return '<span class="pr">✅ Here now at '+esc(S.name)+': come and get yours</span>';
     if(got) return '<span class="pr">🚚 On the way to '+esc(S.name)+'</span>';
-    return '<span class="pr">🙏 '+n+' praying for this fish · '+t+' of '+th+' at '+esc(S.name)+'</span><span class="bar"><i style="width:'+Math.min(100,Math.round(t*100/th))+'%"></i></span>'; }
-  function open(){ css(); if(!BOX){ BOX=document.createElement('div'); BOX.className='mfbk'; BOX.setAttribute('role','dialog'); BOX.setAttribute('aria-modal','true'); BOX.setAttribute('aria-label','Your prayer basket'); BOX.innerHTML='<div class="in"></div>'; document.body.appendChild(BOX);
+    return '<span class="pr">❤️ '+n+' love this fish · '+t+' of '+th+' at '+esc(S.name)+'</span><span class="bar"><i style="width:'+Math.min(100,Math.round(t*100/th))+'%"></i></span>'; }
+  function open(){ css(); if(!BOX){ BOX=document.createElement('div'); BOX.className='mfbk'; BOX.setAttribute('role','dialog'); BOX.setAttribute('aria-modal','true'); BOX.setAttribute('aria-label','Your basket'); BOX.innerHTML='<div class="in"></div>'; document.body.appendChild(BOX);
       BOX.addEventListener('click',click); BOX.addEventListener('change',change); BOX.addEventListener('submit',function(e){ e.preventDefault(); send(); }); document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&ZM){ unzoom(); return; } if(e.key==='Escape'&&!BOX.hidden) close(); if(e.key==='Enter'&&e.target.dataset&&e.target.dataset.a==='zoom') e.target.click(); }); }
     DONE=null; draw(); BOX.hidden=false; document.documentElement.style.overflow='hidden';
     stations().then(function(){ if(!BOX.hidden&&!DONE) draw(); }); if(window.MFacct&&MFacct.me&&MFacct.me()||hasSession()) mine().then(function(){ if(!BOX.hidden&&!DONE) draw(); }); }
@@ -163,25 +163,25 @@
       +'<p class="pr" style="margin-top:10px">A church or business can also <a href="/hubs/#sponsor">sponsor a Hub</a>: you give the fish for a place, and we set it up with them.</p></details>'; }
   function draw(){ var a=items(), S=get(SHIP,{}), me=window.MFacct&&MFacct.me&&MFacct.me(), sid=pick(), P=prayed(), H=ST?byNear(ST):null, real=(H||[]).filter(function(x){ return x.id!=='anywhere'; }).length, h;
     if(DONE){ var D=stn(DONE.station)||{name:DONE.name};
-      BOX.firstChild.innerHTML='<div class="ok"><div class="big">🙏</div><h3>Thank you for praying</h3><p>You prayed for '+DONE.n+' fish to be multiplied '+(DONE.station==='anywhere'?'wherever it is needed most':'at <b>'+esc(D.name)+'</b>')+'.</p>'
-        +'<p>When enough people pray, we fill the pond'+(DONE.station==='anywhere'?'':' there')+'. We will email you when your fish is in'+(DONE.station==='anywhere'?'.':', so you can come and get it, free.')+'</p>'
-        +'<p style="font:italic .95rem Spectral,Georgia,serif;opacity:.8">He took the loaves; and when he had given thanks, he distributed … as much as they would (John 6:11).</p>'
+      BOX.firstChild.innerHTML='<div class="ok"><div class="big">🍞</div><h3>Your bread is cast upon the waters</h3><p>You loved '+DONE.n+' fish '+(DONE.station==='anywhere'?'to go wherever they are needed most':'for <b>'+esc(D.name)+'</b>')+'.</p>'
+        +'<p>The most-loved fish are printed and sent'+(DONE.station==='anywhere'?'':' there')+'. We will email you when your fish is in'+(DONE.station==='anywhere'?'.':', so you can take the Take 2 Challenge: keep one, give one away.')+'</p>'
+        +'<p style="font:italic .95rem Spectral,Georgia,serif;opacity:.8">Cast thy bread upon the waters: for thou shalt find it after many days (Ecclesiastes 11:1).</p>'
         +askHTML(!real)+'<p><a href="/hubs/">See every MannaFish Hub</a></p><button type="button" class="go" data-a="close">Keep fishing</button></div>'; return; }
-    h='<div class="hd"><h3>Your prayer basket</h3><button type="button" class="x" data-a="close" aria-label="Close">&#10005;</button></div>'
-      +'<p class="sub">Pray the Lord of the harvest (Matthew 9:38). Every fish here is a prayer that it be multiplied at a MannaFish Hub near you. When enough people pray, we fill the pond, and you pick yours up there, free.</p>';
-    var was=P.length?'<div class="was"><h4>You are praying for</h4>'+P.slice(0,24).map(function(x,i){ return '<div class="row" data-p="'+i+'"><span class="th" data-a="zoom" role="button" tabindex="0" aria-label="See '+esc(x.word)+' bigger"></span><span class="nm"><b>'+esc(x.word)+'</b><small>'+esc(x.sname||'')+'</small></span><span class="ct">'+(ST?how(x,x.station):'')+'</span></div>'; }).join('')+'</div>':'';
-    if(!a.length){ BOX.firstChild.innerHTML=h+'<p class="empty">Your prayer basket is empty. Tap 🧺 on any fish to put it in.</p>'+askHTML(false)+was+'<p style="text-align:center"><a href="/hubs/">See every MannaFish Hub</a></p><button type="button" class="keep" data-a="close">Keep looking</button>'; thumbs(P); return; }
+    h='<div class="hd"><h3>Your basket</h3><button type="button" class="x" data-a="close" aria-label="Close">&#10005;</button></div>'
+      +'<p class="sub">Cast thy bread upon the waters (Ecclesiastes 11:1). Every fish here is your vote for it at a MannaFish Hub near you. The most-loved fish are printed and sent there, and you pick yours up, free.</p>';
+    var was=P.length?'<div class="was"><h4>Fish you love</h4>'+P.slice(0,24).map(function(x,i){ return '<div class="row" data-p="'+i+'"><span class="th" data-a="zoom" role="button" tabindex="0" aria-label="See '+esc(x.word)+' bigger"></span><span class="nm"><b>'+esc(x.word)+'</b><small>'+esc(x.sname||'')+'</small></span><span class="ct">'+(ST?how(x,x.station):'')+'</span></div>'; }).join('')+'</div>':'';
+    if(!a.length){ BOX.firstChild.innerHTML=h+'<p class="empty">Your basket is empty. Tap 🧺 on any fish you love to put it in.</p>'+askHTML(false)+was+'<p style="text-align:center"><a href="/hubs/">See every MannaFish Hub</a></p><button type="button" class="keep" data-a="close">Keep looking</button>'; thumbs(P); return; }
     h+=a.map(function(x,i){ return '<div class="row" data-i="'+i+'"><span class="th" data-a="zoom" role="button" tabindex="0" aria-label="See '+esc(x.word)+' bigger"></span><span class="nm"><b>'+esc(x.word)+'</b><small>'+esc(x.ref||'')+'</small></span>'
       +'<span class="ct">'+(x.main?'<select data-f="l" aria-label="Language">'+LANGS.map(function(L){ return '<option value="'+L[0]+'"'+(L[0]===x.l?' selected':'')+'>'+L[1]+'</option>'; }).join('')+'</select>':'')
       +'<button type="button" class="rm" data-a="rm" aria-label="Take out">&#10005;</button></span></div>'; }).join('');
     h+='<h4>Which MannaFish Hub?'+(near()?'':'<button type="button" class="near" data-a="near">📍 Nearest to me</button>')+'</h4>'
       +(H?'<div class="stn" role="radiogroup">'+H.map(function(x){ return '<label><input type="radio" name="bkStn" value="'+esc(x.id)+'"'+(x.id===sid?' checked':'')+'><span style="flex:1"><span class="d">'+esc(mi(x))+'</span><b>'+esc(x.name)+'</b>'+(x.city?' · '+esc(x.city):'')
-      +'<small>'+(x.address?esc(x.address)+' · ':x.where?esc(x.where)+' · ':'')+(x.total||0)+' of '+(x.threshold||100)+' praying</small></span></label>'; }).join('')+'</div>'
-      +(real?'':'<p class="pr" style="margin:6px 0 0">No Hub is open yet. Pray for your fish to go wherever it is needed most, and ask for a Hub near you below.</p>'):'<p class="pr">Finding the Hubs…</p>')
+      +'<small>'+(x.address?esc(x.address)+' · ':x.where?esc(x.where)+' · ':'')+(x.total||0)+' of '+(x.threshold||100)+' loves</small></span></label>'; }).join('')+'</div>'
+      +(real?'':'<p class="pr" style="margin:6px 0 0">No Hub is open yet. Love your fish for wherever it is needed most, and ask for a Hub near you below.</p>'):'<p class="pr">Finding the Hubs…</p>')
       +'<form novalidate><div class="f">'
       +'<label>Your name<input id="bkName" autocomplete="name" value="'+esc(S.name||'')+'"></label><label>Your email<input id="bkEmail" type="email" autocomplete="email" value="'+esc(S.email||(me&&me.email)||'')+'" required></label>'
-      +'</div><p class="pr" style="margin:6px 0 0">Only to tell you when your fish is in. One prayer per fish per person.</p><input type="text" id="bkHp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">'
-      +'<button type="submit" class="go" id="bkGo">🙏 Pray for '+(a.length===1?'this fish':'these '+a.length+' fish')+'</button><p class="msg" id="bkMsg" aria-live="polite"></p></form>'
+      +'</div><p class="pr" style="margin:6px 0 0">Only to tell you when your fish is in. One vote per fish per person.</p><input type="text" id="bkHp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">'
+      +'<button type="submit" class="go" id="bkGo">🍞 Cast your bread: love '+(a.length===1?'this fish':'these '+a.length+' fish')+'</button><p class="msg" id="bkMsg" aria-live="polite"></p></form>'
       +askHTML(!real)+was+'<button type="button" class="keep" data-a="close">Keep looking</button>';
     BOX.firstChild.innerHTML=h; [].forEach.call(BOX.querySelectorAll('.row[data-i]'),function(r){ thumb(r.querySelector('.th'),a[+r.dataset.i]); }); thumbs(P); }
   function thumbs(P){ [].forEach.call(BOX.querySelectorAll('.row[data-p]'),function(r){ thumb(r.querySelector('.th'),P[+r.dataset.p]); }); }
@@ -219,7 +219,7 @@
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val('bkEmail'))){ BOX.querySelector('#bkEmail').focus(); m.textContent='Please check your email address.'; return; }
     keepForm(); var sid=c.value, S=stn(sid)||{name:''}, list=a.slice(0,MAXN);
     var body={station:sid,name:val('bkName'),email:val('bkEmail'),hp:val('bkHp'),items:list.map(function(x){ return {fish:x.id,word:x.word,l:x.main?(x.l||'en'):'en'}; })};
-    go.disabled=true; m.textContent='Praying…';
+    go.disabled=true; m.textContent='Sending…';
     fetch('/api/hubs/pray',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)})
       .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(!r.ok||!j.ok) throw new Error(j.error||('HTTP '+r.status)); return j; }); })
       .then(function(j){ var P=prayed().filter(function(p){ return !(p.station===sid&&list.some(function(x){ return key(x)===key(p); })); });
