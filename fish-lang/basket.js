@@ -77,7 +77,7 @@
   // ── the button ──
   var FAB=null;
   function fab(){ if(!document.body) return; css(); if(!FAB){ FAB=document.createElement('button'); FAB.type='button'; FAB.className='mfbkfab'; FAB.addEventListener('click',open); document.body.appendChild(FAB); }
-    var n=items().length; FAB.hidden=!n; FAB.textContent='❤️ '+n; FAB.setAttribute('aria-label','Fish you love: '+n); }
+    var n=items().length; FAB.hidden=!n; FAB.textContent='🧺 '+n; FAB.setAttribute('aria-label','Fish you love: '+n); }
   function bump(){ if(!FAB) return; FAB.classList.remove('bump'); void FAB.offsetWidth; FAB.classList.add('bump'); }
   var TOAST=null;
   function toast(t){ if(!TOAST){ TOAST=document.createElement('div'); TOAST.setAttribute('role','status'); TOAST.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:calc(150px + env(safe-area-inset-bottom));z-index:130;background:#16171b;color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:9px 16px;font:700 .9rem Archivo,sans-serif;max-width:calc(100% - 32px);text-align:center;display:none'; document.body.appendChild(TOAST); }
@@ -85,7 +85,7 @@
 
   function add(f){ if(!f||!f.id) return; var a=items(), at=a.filter(function(x){ return x.id===f.id; })[0];
     if(!at) a.push({id:f.id,word:f.word,ref:f.ref||'',svg:f.svg||'',main:!!f.main||String(f.id).indexOf('M:')===0,l:f.l||'en'});
-    save(a); bump(); toast('❤️ '+(at?'You already love '+f.word:'You love '+f.word)); }
+    save(a); bump(); toast('🧺 '+(at?'You already love '+f.word:'You love '+f.word)); }
 
   // ── the Hubs, shared with /hubs/ (window.MFhubs) ──
   // the open Hubs and the places asked for come from /api/hubs; "Wherever it's needed most" is always the last Hub
@@ -140,7 +140,7 @@
       got=(S.stock||[]).filter(function(y){ return y.fish===x.id&&(y.l||'en')===(x.main?(x.l||'en'):'en'); })[0];
     if(got&&got.status==='in') return '<span class="pr">✅ Here now at '+esc(S.name)+': come and get yours</span>';
     if(got) return '<span class="pr">🚚 On the way to '+esc(S.name)+'</span>';
-    return '<span class="pr">❤️ '+n+' love this fish · '+t+' of '+th+' at '+esc(S.name)+'</span><span class="bar"><i style="width:'+Math.min(100,Math.round(t*100/th))+'%"></i></span>'; }
+    return '<span class="pr">🧺 '+n+' love this fish · '+t+' of '+th+' at '+esc(S.name)+'</span><span class="bar"><i style="width:'+Math.min(100,Math.round(t*100/th))+'%"></i></span>'; }
   function open(){ css(); if(!BOX){ BOX=document.createElement('div'); BOX.className='mfbk'; BOX.setAttribute('role','dialog'); BOX.setAttribute('aria-modal','true'); BOX.setAttribute('aria-label','Fish you love'); BOX.innerHTML='<div class="in"></div>'; document.body.appendChild(BOX);
       BOX.addEventListener('click',click); BOX.addEventListener('change',change); BOX.addEventListener('submit',function(e){ e.preventDefault(); send(); }); document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&ZM){ unzoom(); return; } if(e.key==='Escape'&&!BOX.hidden) close(); if(e.key==='Enter'&&e.target.dataset&&e.target.dataset.a==='zoom') e.target.click(); }); }
     DONE=null; draw(); BOX.hidden=false; document.documentElement.style.overflow='hidden';
@@ -167,10 +167,10 @@
         +'<p>The most-loved fish are printed and sent'+(DONE.station==='anywhere'?'':' there')+'. We will email you when your fish is in'+(DONE.station==='anywhere'?'.':', so you can take the Take 2 Challenge: keep one, give one away.')+'</p>'
         +'<p style="font:italic .95rem Spectral,Georgia,serif;opacity:.8">Cast thy bread upon the waters: for thou shalt find it after many days (Ecclesiastes 11:1).</p>'
         +askHTML(!real)+'<p><a href="/hubs/">See every MannaFish Hub</a></p><button type="button" class="go" data-a="close">Keep fishing</button></div>'; return; }
-    h='<div class="hd"><h3>❤️ Fish you love</h3><button type="button" class="x" data-a="close" aria-label="Close">&#10005;</button></div>'
+    h='<div class="hd"><h3>🧺 Fish you love</h3><button type="button" class="x" data-a="close" aria-label="Close">&#10005;</button></div>'
       +'<p class="sub">Cast thy bread upon the waters (Ecclesiastes 11:1). Every fish you love is your vote for it at a MannaFish Hub near you. The most-loved fish are printed and sent there, and you pick yours up, free.</p>';
     var was=P.length?'<div class="was"><h4>Fish you love</h4>'+P.slice(0,24).map(function(x,i){ return '<div class="row" data-p="'+i+'"><span class="th" data-a="zoom" role="button" tabindex="0" aria-label="See '+esc(x.word)+' bigger"></span><span class="nm"><b>'+esc(x.word)+'</b><small>'+esc(x.sname||'')+'</small></span><span class="ct">'+(ST?how(x,x.station):'')+'</span></div>'; }).join('')+'</div>':'';
-    if(!a.length){ BOX.firstChild.innerHTML=h+'<p class="empty">Nothing here yet. Tap ❤️ Love on any fish you love.</p>'+askHTML(false)+was+'<p style="text-align:center"><a href="/hubs/">See every MannaFish Hub</a></p><button type="button" class="keep" data-a="close">Keep looking</button>'; thumbs(P); return; }
+    if(!a.length){ BOX.firstChild.innerHTML=h+'<p class="empty">Nothing here yet. Tap 🧺 Love on any fish you love.</p>'+askHTML(false)+was+'<p style="text-align:center"><a href="/hubs/">See every MannaFish Hub</a></p><button type="button" class="keep" data-a="close">Keep looking</button>'; thumbs(P); return; }
     h+=a.map(function(x,i){ return '<div class="row" data-i="'+i+'"><span class="th" data-a="zoom" role="button" tabindex="0" aria-label="See '+esc(x.word)+' bigger"></span><span class="nm"><b>'+esc(x.word)+'</b><small>'+esc(x.ref||'')+'</small></span>'
       +'<span class="ct">'+(x.main?'<select data-f="l" aria-label="Language">'+LANGS.map(function(L){ return '<option value="'+L[0]+'"'+(L[0]===x.l?' selected':'')+'>'+L[1]+'</option>'; }).join('')+'</select>':'')
       +'<button type="button" class="rm" data-a="rm" aria-label="Take out">&#10005;</button></span></div>'; }).join('');

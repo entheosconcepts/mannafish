@@ -1827,7 +1827,7 @@ select option{background:#0b1620;color:#eaf0f0}
   <div class="resumebar" id="resumeBar" hidden><span id="resumeTxt"></span><span class="rbtns"><button type="button" class="toolbtn" id="resumeGo">Pick up where I left off</button><button type="button" class="rx" id="resumeX" aria-label="Dismiss">&#215;</button></span></div>
   <div class="stage-col">
     <!-- Ken, 11 Oct (mock-up): "One fish" and "Two fish" in the top corners of the fish card -->
-    <div class="fishtog" id="fishTog"><button type="button" id="ftOne" aria-pressed="false"></button><span class="ftmid"><button type="button" class="stb" id="fsBtn" aria-label="Full screen" title="Full screen">⤢</button><button type="button" class="stb" id="bkAdd" aria-label="Love this fish" title="Love this fish (your vote for it at a MannaFish Hub)">❤️</button></span><button type="button" id="ftTwo" aria-pressed="false"></button></div>
+    <div class="fishtog" id="fishTog"><button type="button" id="ftOne" aria-pressed="false"></button><span class="ftmid"><button type="button" class="stb" id="fsBtn" aria-label="Full screen" title="Full screen">⤢</button><button type="button" class="stb" id="bkAdd" aria-label="Love this fish" title="Love this fish (your vote for it at a MannaFish Hub)">🧺<b>+</b></button></span><button type="button" id="ftTwo" aria-pressed="false"></button></div>
     <button type="button" class="stb fsx" id="fsX" aria-label="Exit full screen" hidden>✕</button>
     <div class="cmpgrid onebar" id="oneBar" hidden><button type="button" class="cmpclear" id="twoBtn"></button></div>
     <div class="cmpgrid" id="cmpGrid" hidden><button type="button" class="cmpclear" id="cmpClear"></button><span class="gpwrap"><span id="cmpGridLab">Per row</span><span class="gp" id="gp" role="group"></span><span class="gpsz" id="gpSz"></span><button type="button" id="gpAuto">Auto</button></span></div>
@@ -3637,7 +3637,7 @@ window.MF=(function(){
   // ••• menu: add a prayer, the prayer list, answered prayers, the daily reminder, reading speed
   $('ptMore').addEventListener('click',function(e){ e.stopPropagation(); var m=$('ptMenu'), T=ptT(), mb=this.getBoundingClientRect().bottom+8; m.style.top=mb+'px'; m.style.maxHeight=Math.max(220,innerHeight-mb-16)+'px';
     var Y=YRS[PT.l]||YRS.en;
-    m.innerHTML='<button type="button" data-m="basket"><span class="mi">❤️</span>'+esc((BKT[PT.l]||BKT.en)[0])+'</button><button type="button" data-m="change"><span class="mi">🐟</span>'+esc(plT().change)+'</button><button type="button" data-m="year"><span class="mi">🗓</span>'+esc(Y[0])+'</button><hr>'
+    m.innerHTML='<button type="button" data-m="basket"><span class="mi">🧺</span>'+esc((BKT[PT.l]||BKT.en)[0])+'</button><button type="button" data-m="change"><span class="mi">🐟</span>'+esc(plT().change)+'</button><button type="button" data-m="year"><span class="mi">🗓</span>'+esc(Y[0])+'</button><hr>'
       +'<button type="button" data-m="add"><span class="mi">⊕</span>'+esc(T.add)+'</button><button type="button" data-m="list"><span class="mi">☰</span>'+esc(T.m_list)+'</button>'
       +'<button type="button" data-m="answered"><span class="mi">✓</span>'+esc(T.m_answered)+'</button><button type="button" data-m="remind"><span class="mi">🔔</span>'+esc(T.m_remind)+'</button><hr>'
       +(function(){ var D2=DLEN[PT.l]||DLEN.en, X=ptX(), ln=PT.len||dLen();
@@ -5043,7 +5043,7 @@ window.MF=(function(){
   function netAll(){ return (NET||[]).concat(DES); }
   function gfCatch(d,x){ var T=GFT[MF.lang]||GFT.en, c=d.querySelector('.gfcatch');
     c.innerHTML='<div class="gfbig"><img src="/fish/'+esc(x.id.slice(2))+'.svg" alt=""></div><h3>'+esc(x.word)+'</h3><p class="gfv">“'+esc(x.verse)+'” <b>'+esc(x.ref+(x.ver?' ('+x.ver+')':''))+'</b></p>'
-      +'<div class="gfrow"><a href="/bible/?r='+encodeURIComponent(x.ref)+'">📖 '+esc(T.bible)+'</a><button type="button" data-gf="bk">❤️ '+esc(T.basket)+'</button><button type="button" data-gf="sh">↗ '+esc(T.share)+'</button></div>'
+      +'<div class="gfrow"><a href="/bible/?r='+encodeURIComponent(x.ref)+'">📖 '+esc(T.bible)+'</a><button type="button" data-gf="bk">🧺 '+esc(T.basket)+'</button><button type="button" data-gf="sh">↗ '+esc(T.share)+'</button></div>'
       +'<div class="gfrow"><button type="button" data-gf="cast">🎣 '+esc(T.again)+'</button><button type="button" data-gf="back">‹ '+esc(T.back)+'</button></div>';
     c.hidden=false; c.dataset.id=x.id; d.querySelector('.in').scrollTop=0; }
   function goFish(){ var l=MF.lang, T=GFT[l]||GFT.en, d=document.getElementById('gfSheet'), fl=/^(en|es|tl|zh|hi|el|de|ko|he|ar|ru)$/.test(l)?l:'en';

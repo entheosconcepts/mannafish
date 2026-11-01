@@ -267,7 +267,7 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
       +'<h2>'+esc(r.label)+'</h2><p class="m">About '+mins(r)+' minutes</p><div class="fish" tabindex="0"></div>'
       +'<p class="verse">“'+esc(f.verse)+'” <small>'+esc(f.ref)+'</small></p>'
       +'<div class="btns"><button type="button" class="b p" data-a="read">&#128214;&#xFE0E; Read</button><button type="button" class="b ok" data-a="done" aria-pressed="'+done+'">&#10003; '+(done?'Read':'Mark read')+'</button>'
-      +(am?'':'<button type="button" class="b" data-a="send">&#10148; Send this fish</button>')+'<button type="button" class="b" data-a="basket" aria-label="Love '+esc(f.word)+'">&#10084;&#65039; Love</button></div>';
+      +(am?'':'<button type="button" class="b" data-a="send">&#10148; Send this fish</button>')+'<button type="button" class="b" data-a="basket" aria-label="Love '+esc(f.word)+'">&#129530; Love</button></div>';
     putFish(el.querySelector('.fish'),f); return el; }
 
   // ── the day being shown ──
@@ -446,7 +446,7 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
       +'<div class="btns center"><button type="button" class="b" data-more="1">Show me others</button><button type="button" class="b" data-rand="1">&#127922;&#xFE0E; Surprise me</button><button type="button" class="b" data-later="1">Later</button></div>';
     [].forEach.call($('fIn').querySelectorAll('.fish[data-fid]'),function(el){ putFish(el,fishById(el.dataset.fid)); }); $('fsh').hidden=false; $('fsh').dataset.chs=JSON.stringify(chs); }
   function viewFish(f){ $('fIn').innerHTML='<div class="big"><div class="fish" data-fid="'+esc(f.id)+'"></div></div><h2 style="font-family:MFHobo,cursive;font-weight:400;margin-top:10px">'+esc(f.word)+'</h2><p class="verse" style="color:var(--text)">“'+esc(f.verse)+'” <small>'+esc(f.ref)+' KJV</small></p>'
-      +'<div class="btns center"><button type="button" class="b p" data-send="'+esc(f.id)+'">&#10148; Send this fish</button><button type="button" class="b" data-bk="'+esc(f.id)+'">&#10084;&#65039; Love this fish</button><button type="button" class="b" data-later="1">Close</button></div>';
+      +'<div class="btns center"><button type="button" class="b p" data-send="'+esc(f.id)+'">&#10148; Send this fish</button><button type="button" class="b" data-bk="'+esc(f.id)+'">&#129530; Love this fish</button><button type="button" class="b" data-later="1">Close</button></div>';
     putFish($('fIn').querySelector('.fish'),f); $('fsh').hidden=false; }
   $('fsh').addEventListener('click',function(e){ var t=e.target, b;
     if(t===this||t.closest('[data-later]')){ this.hidden=true; return; }
@@ -480,7 +480,7 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
   function owCard(i){ var d=OD[i], el=document.createElement('article'); el.className='oday'; el.dataset.i=i;
     el.innerHTML=(d.svg?'<div class="fish"></div>':'')+'<div class="ow">'+esc(d.word)+'</div>'+(d.kjv?'<p class="om" style="margin-top:-4px"><i>In the King James: '+d.kjv.map(function(x){ return '“'+esc(x)+'”'; }).join(', ')+'</i></p>':'')+'<p class="om">Found in these four chapters. Read each one, and look for the word.</p>'
       +d.ch.map(function(c,j){ var on=!!OW.done[i+':'+j]; return '<div class="och"><button type="button" class="ck" data-ock="'+j+'" aria-pressed="'+on+'" aria-label="'+(on?'Read':'Not read yet')+': '+esc(c[0]+' '+c[1])+'">&#10003;</button><div><b>'+esc(c[0]+' '+c[1])+'</b><q>“'+lit(c[3],d.forms)+'” <small>'+esc(c[0]+' '+c[1]+':'+c[2])+'</small></q></div><button type="button" class="b" data-ord="'+j+'">Read</button></div>'; }).join('')
-      +'<div class="btns center" style="margin-top:12px"><button type="button" class="b p" data-oall="1">&#128214;&#xFE0E; Read all '+(d.ch.length===5?'five':'four')+'</button>'+(d.k?'<button type="button" class="b" data-obk="1">&#10084;&#65039; Love '+esc(d.word)+'</button>':'')+'</div>';
+      +'<div class="btns center" style="margin-top:12px"><button type="button" class="b p" data-oall="1">&#128214;&#xFE0E; Read all '+(d.ch.length===5?'five':'four')+'</button>'+(d.k?'<button type="button" class="b" data-obk="1">&#129530; Love '+esc(d.word)+'</button>':'')+'</div>';
     if(d.svg){ var f=el.querySelector('.fish'); f.innerHTML='<div class="ph" aria-hidden="true">'+esc(d.word)+'</div>'; fetch(d.svg).then(function(r){ if(!r.ok) throw 0; return r.text(); }).then(function(x){ f.innerHTML=x; var sv=f.querySelector('svg'); if(sv){ sv.removeAttribute('style'); sv.setAttribute('aria-hidden','true'); } }).catch(function(){}); }
     return el; }
   function owBehind(r){ var out=[]; for(var i=0;i<Math.min(r,OD.length);i++) if(!owDayDone(i)) out.push(i); return out; }
