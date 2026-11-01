@@ -20,15 +20,15 @@
       ph:'Or write it here…',name:'Your name',email:'Your email (optional, for a reply)',send:'Send',sending:'Sending…',
       thanks:'Thank you! We read and listen to every one.',need:'Pick a kind, record, or write a few words.',err:'It could not be sent. Please try again in a moment.',x:'Close',
       mic:'The microphone could not be used. Allow the microphone for this site, or write it instead.',big:'That voice note is too long. Record a shorter one (up to 3 minutes).',
-      fab:'🎙 Feedback',hi:'Thank you for testing MannaFish! Tap 🎙 Feedback any time to tell us something.',fish:'Fish',feat:['Today','Devotional','The fish','Bible','Plans','Time with God','My stuff','Game','Basket','Translator','Email','Something else']};
-  var FEAT=['Today','Devotional','The fish','Bible','Plans','Time with God','My stuff','Game','Basket','Translator','Email','Other'], MAXS=180;
+      fab:'🎙 Feedback',hi:'Thank you for testing MannaFish! Tap 🎙 Feedback any time to tell us something.',fish:'Fish',feat:['Today','Devotional','The fish','Bible','Plans','Time with God','My stuff','Game','Love & Hubs','Translator','Email','Something else']};
+  var FEAT=['Today','Devotional','The fish','Bible','Plans','Time with God','My stuff','Game','Love & Hubs','Translator','Email','Other'], MAXS=180;
   function get(k){ try{ return localStorage.getItem(k)||''; }catch(e){ return ''; } }
   function set(k,v){ try{ if(v) localStorage.setItem(k,v); else localStorage.removeItem(k); }catch(e){} }
   var q=location.search; if(/[?&]tester=1\b/.test(q)) set('mf-tester','1'); else if(/[?&]tester=0\b/.test(q)) set('mf-tester','');
   var TESTER=get('mf-tester')==='1';
   // which part of MannaFish this page is (a page can say better: window.MFfeedbackWhere)
   function where(){ try{ if(window.MFfeedbackWhere){ var w=MFfeedbackWhere(); if(w) return w; } }catch(e){}
-    if(document.querySelector('.mfbk:not([hidden])')) return 'Basket';
+    if(document.querySelector('.mfbk:not([hidden])')) return 'Love & Hubs';
     var p=location.pathname; return /^\/bible/.test(p)?'Bible':/^\/plan/.test(p)?'Plans':/^\/pray/.test(p)?'Time with God':/^\/you/.test(p)?'My stuff':/^\/(go|match)/.test(p)?'Game':/^\/translate/.test(p)?'Translator':/feedback=1/.test(q)?'Email':'Today'; }
   var BOX=null, S0={}, REC=null;
   function css(){ if(document.getElementById('mfFbCss')) return; var s=document.createElement('style'); s.id='mfFbCss';

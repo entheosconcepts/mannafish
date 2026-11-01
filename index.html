@@ -1827,7 +1827,7 @@ select option{background:#0b1620;color:#eaf0f0}
   <div class="resumebar" id="resumeBar" hidden><span id="resumeTxt"></span><span class="rbtns"><button type="button" class="toolbtn" id="resumeGo">Pick up where I left off</button><button type="button" class="rx" id="resumeX" aria-label="Dismiss">&#215;</button></span></div>
   <div class="stage-col">
     <!-- Ken, 11 Oct (mock-up): "One fish" and "Two fish" in the top corners of the fish card -->
-    <div class="fishtog" id="fishTog"><button type="button" id="ftOne" aria-pressed="false"></button><span class="ftmid"><button type="button" class="stb" id="fsBtn" aria-label="Full screen" title="Full screen">⤢</button><button type="button" class="stb" id="bkAdd" aria-label="Add to my basket" title="Add to my basket">🧺<b>+</b></button></span><button type="button" id="ftTwo" aria-pressed="false"></button></div>
+    <div class="fishtog" id="fishTog"><button type="button" id="ftOne" aria-pressed="false"></button><span class="ftmid"><button type="button" class="stb" id="fsBtn" aria-label="Full screen" title="Full screen">⤢</button><button type="button" class="stb" id="bkAdd" aria-label="Love this fish" title="Love this fish (your vote for it at a MannaFish Hub)">❤️</button></span><button type="button" id="ftTwo" aria-pressed="false"></button></div>
     <button type="button" class="stb fsx" id="fsX" aria-label="Exit full screen" hidden>✕</button>
     <div class="cmpgrid onebar" id="oneBar" hidden><button type="button" class="cmpclear" id="twoBtn"></button></div>
     <div class="cmpgrid" id="cmpGrid" hidden><button type="button" class="cmpclear" id="cmpClear"></button><span class="gpwrap"><span id="cmpGridLab">Per row</span><span class="gp" id="gp" role="group"></span><span class="gpsz" id="gpSz"></span><button type="button" id="gpAuto">Auto</button></span></div>
@@ -3637,7 +3637,7 @@ window.MF=(function(){
   // ••• menu: add a prayer, the prayer list, answered prayers, the daily reminder, reading speed
   $('ptMore').addEventListener('click',function(e){ e.stopPropagation(); var m=$('ptMenu'), T=ptT(), mb=this.getBoundingClientRect().bottom+8; m.style.top=mb+'px'; m.style.maxHeight=Math.max(220,innerHeight-mb-16)+'px';
     var Y=YRS[PT.l]||YRS.en;
-    m.innerHTML='<button type="button" data-m="basket"><span class="mi">🧺</span>'+esc((BKT[PT.l]||BKT.en)[0])+' +</button><button type="button" data-m="change"><span class="mi">🐟</span>'+esc(plT().change)+'</button><button type="button" data-m="year"><span class="mi">🗓</span>'+esc(Y[0])+'</button><hr>'
+    m.innerHTML='<button type="button" data-m="basket"><span class="mi">❤️</span>'+esc((BKT[PT.l]||BKT.en)[0])+'</button><button type="button" data-m="change"><span class="mi">🐟</span>'+esc(plT().change)+'</button><button type="button" data-m="year"><span class="mi">🗓</span>'+esc(Y[0])+'</button><hr>'
       +'<button type="button" data-m="add"><span class="mi">⊕</span>'+esc(T.add)+'</button><button type="button" data-m="list"><span class="mi">☰</span>'+esc(T.m_list)+'</button>'
       +'<button type="button" data-m="answered"><span class="mi">✓</span>'+esc(T.m_answered)+'</button><button type="button" data-m="remind"><span class="mi">🔔</span>'+esc(T.m_remind)+'</button><hr>'
       +(function(){ var D2=DLEN[PT.l]||DLEN.en, X=ptX(), ln=PT.len||dLen();
@@ -5028,11 +5028,11 @@ window.MF=(function(){
   var GFT={en:{cast:'Cast your line',sub:'A fish at random',or:'Or choose your fish',got:'You caught {w}!',game:'Play the Go MannaFish game',x:'Close',
       net:'153 fish in the net',jn:'“…full of great fishes, an hundred and fifty and three: and for all there were so many, yet was not the net broken.” John 21:11',
       mine:'Your devotional fish · 24',mineSub:'Tap one to make it your fish',more:'More fish in the net · 129',moreSub:'Tap one to catch it',newd:'New designs',newdSub:'Stop and Go, Repent, Rebuild …',
-      bible:'Read it in the Bible',basket:'Add to my basket',share:'Share',again:'Cast again',back:'Back to the net'},
+      bible:'Read it in the Bible',basket:'Love',share:'Share',again:'Cast again',back:'Back to the net'},
     es:{cast:'Echa la red',sub:'Un pez al azar',or:'O elige tu pez',got:'¡Pescaste {w}!',game:'Jugar Go MannaFish',x:'Cerrar',
       net:'153 peces en la red',jn:'“…llena de grandes peces, ciento cincuenta y tres: y siendo tantos, la red no se rompió.” Juan 21:11',
       mine:'Tus peces del devocional · 24',mineSub:'Toca uno para que sea tu pez',more:'Más peces en la red · 129',moreSub:'Toca uno para pescarlo',newd:'Diseños nuevos',newdSub:'Detente y Ve, Arrepiéntete, Reconstruye …',
-      bible:'Leerlo en la Biblia',basket:'Añadir a mi canasta',share:'Compartir',again:'Echa otra vez',back:'Volver a la red'}};
+      bible:'Leerlo en la Biblia',basket:'Me encanta',share:'Compartir',again:'Echa otra vez',back:'Volver a la red'}};
   // Ken, 26 Oct: "Put 153 fish in Go Fish" (John 21:11): the 24 devotional fish, and 129 more to catch -- the 128 year fish and Tend
   // (John 21:17), from fish/net.json (tools/fish/net.py). A devotional fish caught becomes your fish; another one is shown big, with its
   // verse, to read in the Bible, put in the basket or share.
@@ -5043,7 +5043,7 @@ window.MF=(function(){
   function netAll(){ return (NET||[]).concat(DES); }
   function gfCatch(d,x){ var T=GFT[MF.lang]||GFT.en, c=d.querySelector('.gfcatch');
     c.innerHTML='<div class="gfbig"><img src="/fish/'+esc(x.id.slice(2))+'.svg" alt=""></div><h3>'+esc(x.word)+'</h3><p class="gfv">“'+esc(x.verse)+'” <b>'+esc(x.ref+(x.ver?' ('+x.ver+')':''))+'</b></p>'
-      +'<div class="gfrow"><a href="/bible/?r='+encodeURIComponent(x.ref)+'">📖 '+esc(T.bible)+'</a><button type="button" data-gf="bk">🧺 '+esc(T.basket)+'</button><button type="button" data-gf="sh">↗ '+esc(T.share)+'</button></div>'
+      +'<div class="gfrow"><a href="/bible/?r='+encodeURIComponent(x.ref)+'">📖 '+esc(T.bible)+'</a><button type="button" data-gf="bk">❤️ '+esc(T.basket)+'</button><button type="button" data-gf="sh">↗ '+esc(T.share)+'</button></div>'
       +'<div class="gfrow"><button type="button" data-gf="cast">🎣 '+esc(T.again)+'</button><button type="button" data-gf="back">‹ '+esc(T.back)+'</button></div>';
     c.hidden=false; c.dataset.id=x.id; d.querySelector('.in').scrollTop=0; }
   function goFish(){ var l=MF.lang, T=GFT[l]||GFT.en, d=document.getElementById('gfSheet'), fl=/^(en|es|tl|zh|hi|el|de|ko|he|ar|ru)$/.test(l)?l:'en';
@@ -5321,8 +5321,8 @@ window.MF=(function(){
   // "Want to catch another fish?" opens it at the pond
   // ── Ken, 16 Oct: "a call to action at any point they would like to order MannaFish ... add it to their basket" -- five loaves,
   // two fish, and baskets left over (John 6). Never sold: the basket becomes a request on the Free MannaFish form.
-  var BKT={en:['Prayer basket','Five loaves, two fish, and twelve baskets left over (John 6:9–13). MannaFish is always free.','Request these MannaFish · free','Keep looking','{w} is in your basket','Free, postage included. Someone already paid for it.','Your basket is empty. Tap 🧺 on any fish.'],
-    es:['Tu canasta','Cinco panes, dos peces y doce canastas de sobra (Juan 6:9–13). MannaFish siempre es gratis.','Pedir estos MannaFish · gratis','Seguir mirando','{w} está en tu canasta','Gratis, envío incluido. Alguien ya lo pagó.','Tu canasta está vacía. Toca 🧺 en cualquier pez.']};
+  var BKT={en:['Love this fish','Five loaves, two fish, and twelve baskets left over (John 6:9–13). MannaFish is always free.','Request these MannaFish · free','Keep looking','{w} is in your basket','Free, postage included. Someone already paid for it.','Your basket is empty. Tap 🧺 on any fish.'],
+    es:['Me encanta este pez','Cinco panes, dos peces y doce canastas de sobra (Juan 6:9–13). MannaFish siempre es gratis.','Pedir estos MannaFish · gratis','Seguir mirando','{w} está en tu canasta','Gratis, envío incluido. Alguien ya lo pagó.','Tu canasta está vacía. Toca 🧺 en cualquier pez.']};
   var BKL={en:'English',es:'Español',tl:'Tagalog',zh:'中文',hi:'हिन्दी',el:'Ελληνικά',de:'Deutsch',ko:'한국어',he:'עברית',ar:'العربية',ru:"Русский"};
   function bkT(){ return BKT[MF.lang]||BKT.en; }
   function bkGet(){ try{ var a=JSON.parse(localStorage.getItem('mf-basket')||'[]'); return Array.isArray(a)?a.filter(function(x){ return x&&DATA[x.k]; }):[]; }catch(e){ return []; } }
