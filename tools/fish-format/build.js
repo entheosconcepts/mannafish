@@ -13,5 +13,6 @@ const R=derive(JSON.parse(fs.readFileSync(path.join(__dirname,'ken24.json'))),PI
 fs.copyFileSync(path.join(__dirname,'fishfmt.js'),path.join(ROOT,'fish-lang','fishfmt.js'));
 fs.writeFileSync(path.join(ROOT,'fish-lang','fishgeo.json'),JSON.stringify(Object.assign({},JSON.parse(fs.readFileSync(path.join(__dirname,'geo.json'))),{rule:R})));
 const lines=JSON.parse(fs.readFileSync(path.join(__dirname,process.argv[2]||'net-lines.json')));
-for(const f of lines){ fs.writeFileSync(path.join(ROOT,'fish',f.k+'.svg'),F.svg(font,f,R)); }
+// a fish Ken asked to change by hand keeps it: "edit": {"wl": {"s": 1.15}} makes its word 15% bigger (Ken, 1 Nov: Build "a little bigger")
+for(const f of lines){ fs.writeFileSync(path.join(ROOT,'fish',f.k+'.svg'),f.edit?F.draw(font,f,F.applyRel(font,f,F.layout(font,f,R),f.edit),R):F.svg(font,f,R)); }
 console.log(lines.length,'fish drawn', JSON.stringify(R.word));

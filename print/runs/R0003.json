@@ -27,7 +27,8 @@
   "right": {
    "label": "Today's free MannaFish devotional",
    "to": "https://manna-fish.com/?devo=1"
-  }
+  },
+  "orientation": "landscape"
  },
- "notes": "Ken, 1 Nov: Build with a New Testament verse (Jude 1:20, \"building up yourselves on your most holy faith\"), the word study on the upper back (Greek is Jude's own word, epoikodomeo), six verses so the QR codes fit at the bottom, a made-up round K-Tech logo (replace with the real one), and QR codes that go straight to the porch site and the devotional."
+ "notes": "Ken, 1 Nov: Build with a New Testament verse (Jude 1:20, \"building up yourselves on your most holy faith\"), the word study on the upper back (Greek is Jude's own word, epoikodomeo), six verses so the QR codes fit at the bottom, a made-up round K-Tech logo (replace with the real one), and QR codes that go straight to the porch site and the devotional. Ken, 1 Nov: Build a little bigger; the back held landscape, the same way as the fish (set \"orientation\": \"portrait\" for the turned-sideways back)."
 }

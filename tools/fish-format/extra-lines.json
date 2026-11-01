@@ -42,6 +42,12 @@
   "ref": "Jude 1:20",
   "refShort": "Jude 20",
   "verse": "But ye, beloved, building up yourselves on your most holy faith, praying in the Holy Ghost,",
-  "note": "Ken, 1 Nov: K-Tech Construction's card, a New Testament Build"
+  "note": "Ken, 1 Nov: K-Tech Construction's card, a New Testament Build",
+  "edit": {
+   "wl": {
+    "s": 1.15,
+    "x": -10
+   }
+  }
  }
 ]

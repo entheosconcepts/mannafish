@@ -124,6 +124,7 @@ function qrUrl(run, code) {
   const u = new URL(to); if (!/(^|\.)manna-fish\.com$/.test(u.hostname)) { u.searchParams.set('utm_source', 'mannafish'); u.searchParams.set('utm_medium', 'card'); u.searchParams.set('utm_campaign', code); }
   return u.toString();
 }
+const landscape = (run) => (run.back || {}).orientation === 'landscape';
 // ── the back (portrait), filled from the run: "invite" (Ken's invitation card), "study" (the word study, like the old
 // word-study card), or "image" (Ken's own finished artwork). Both templates end with the same strip: two QR codes and who gave it.
 async function backHtml(run, codes, warn) {
@@ -149,6 +150,21 @@ async function backHtml(run, codes, warn) {
     ${Rt ? `<div class="col"><div class="sq">${await qr(codes.right)}</div><div class="lab fit"><span>${esc(Rt.label || '')}</span></div></div>` : '<div class="col"></div>'}
   </div>`;
   const open = `<div class="pg"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${w}mm;height:${h}mm">`;
+  // the word study back held the same way as the fish (Ken, 1 Nov: "let me see this card back in landscape orientation"):
+  // Greek | the word | Hebrew across the top, the verses in three columns, then the QR codes with their words beside them
+  if (B.template === 'study' && landscape(run)) {
+    const d = wordData(run.fish.study || run.fish.word); if (!d) throw new Error(`No word study for ${run.fish.word}`);
+    const refs = (d.refs || []).slice(0, B.refs || 6), W = CARD.w, H = CARD.h;
+    const lang = (k, wd, lg, snd, m) => `<div class="lg"><div class="k">${k}</div><div class="ow fit" lang="${lg}"><span>${esc(wd)}</span></div><div class="tr">(${esc(snd)})</div><div class="mn fit"><span>${esc(m)}</span></div></div>`;
+    const side = async (code, X, right) => X ? `<div class="col ql${right ? ' r' : ''}">${right ? `<div class="lab fit"><span>${esc(X.label || '')}</span></div>` : ''}<div class="sq">${await qr(code)}</div>${right ? '' : `<div class="lab fit"><span>${esc(X.label || '')}</span></div>`}</div>` : '<div class="col"></div>';
+    return `<div class="pg" style="width:${f2(W + 2 * BLEED)}mm;height:${f2(H + 2 * BLEED)}mm"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${W}mm;height:${H}mm">
+  <div class="gh3" style="top:3mm;height:17mm">${lang('GREEK', d.gkw, 'el', d.gks, d.gkm)}<div class="wt3 fit"><span>${esc(B.heading || d.title)}</span></div>${lang('HEBREW', d.hbw, 'he', d.hbs, d.hbm)}</div>
+  <div class="hq fit" style="top:21mm;height:4.4mm"><span>${esc(B.text || 'Still hungry? Do this word study & look up the following Scriptures')}</span></div>
+  <div class="rf rf3" style="top:26.2mm;height:17.4mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
+  <div class="strip land" style="top:44.6mm;height:22mm">${await side(codes.left, L, false)}
+    <div class="col mid"><div class="sb">${esc(credit)}</div>${ml ? `<div class="sl"><img src="${ml}"></div>` : `<div class="sn fit${verse ? ' sv' : ''}"><span>${esc(mn)}</span></div>`}</div>
+    ${await side(codes.right, Rt, true)}</div></div></div>`;
+  }
   if (B.template === 'study') {
     const d = wordData(run.fish.study || run.fish.word); if (!d) throw new Error(`No word study for ${run.fish.word}: add print/study/${String(run.fish.word).toUpperCase()}.json`);
     const refs = (d.refs || []).slice(0, B.refs || 10);
@@ -190,6 +206,13 @@ const BACKCSS = () => `@font-face{font-family:'Lilita One';src:url(${font('lilit
 .mid{justify-content:flex-start}.sb{font:400 2.3mm/1 'Lilita One',sans-serif;margin:.4mm 0 .8mm;text-align:center}.sl{width:100%;flex:1;min-height:0;display:flex;align-items:center;justify-content:center}.sl img{max-width:100%;max-height:100%;object-fit:contain}
 .strip.big{grid-template-columns:1fr 1fr 1fr;gap:1.6mm;padding:1.6mm}.strip.big .sq{width:19.5mm;height:19.5mm}.strip.big .lab{height:9mm;font-size:2.9mm;line-height:1.08}
 .strip.big .sb{font-size:2.8mm;margin:.6mm 0 1.2mm}.strip.big .col{justify-content:flex-start;gap:1mm}.strip.big .sl{flex:none;width:100%;height:24.5mm}
+.gh3{left:3mm!important;right:3mm!important;display:grid;grid-template-columns:1fr .9fr 1fr;gap:1.8mm}.gh3 .lg .ow{height:5.6mm}
+.wt3{font:400 12mm/1 'MFHobo',sans-serif;display:flex;align-items:center;justify-content:center;white-space:nowrap;min-width:0}
+.rf.rf3{left:3mm!important;right:3mm!important;grid-template-columns:1fr 1fr 1fr}
+.strip.land{left:3mm!important;right:3mm!important;grid-template-columns:1fr .78fr 1fr;gap:2mm;padding:1.4mm}
+.strip.land .ql{flex-direction:row;align-items:center;justify-content:center;gap:1.6mm}.strip.land .sq{width:19mm;height:19mm;flex:none}
+.strip.land .lab{flex:1;width:auto;height:15mm;font-size:3.1mm;line-height:1.1;justify-content:flex-start;text-align:left}.strip.land .r .lab{justify-content:flex-end;text-align:right}
+.strip.land .mid{justify-content:center}.strip.land .sb{font-size:2.6mm;margin:0 0 .8mm}.strip.land .sl{flex:none;height:15.4mm}
 .sn{flex:1;width:100%;display:flex;align-items:center;justify-content:center;text-align:center;font:400 3mm/1.1 'Lilita One',sans-serif}.sn.sv{font:italic 400 2.5mm/1.2 'Spectral',serif;padding:0 .6mm}
 .wt{font:400 10mm/1 'MFHobo',sans-serif;text-align:center;display:flex;align-items:center;justify-content:center;white-space:nowrap}
 .gh{left:2.6mm!important;right:2.6mm!important;display:grid;grid-template-columns:1fr 1fr;gap:1.6mm}
@@ -268,9 +291,9 @@ async function make(id, browser) {
   cutPdf(name('3-cut-lines.pdf'), cut);
   // 4 the back of the backing paper (portrait)
   const codes = { main: id, left: id + 's', right: id + 'm' };
-  const back = await backHtml(run, codes, warn), bw = CARD.h + 2 * BLEED, bh = CARD.w + 2 * BLEED;
-  await pdf(back, bw, bh, name('4-back.pdf'), BACKCSS() + `.pg{width:${f2(bw)}mm;height:${f2(bh)}mm}`);
-  await shot(back, bw, bh, name('4-back.png'), { css: BACKCSS(), scale: true, dpi: 600 });
+  const LAND = landscape(run), back = await backHtml(run, codes, warn), bw = (LAND ? CARD.w : CARD.h) + 2 * BLEED, bh = (LAND ? CARD.h : CARD.w) + 2 * BLEED;
+  await pdf(back, bw, bh, name('4-back.pdf'), BACKCSS() + `.pg{width:${f2(bw)}mm!important;height:${f2(bh)}mm!important}`);
+  await shot(back, bw, bh, name('4-back.png'), { css: BACKCSS() + `.pg{width:${f2(bw)}mm!important;height:${f2(bh)}mm!important}`, scale: true, dpi: 600 });
 
   // where each QR goes
   const B = run.back || {}, links = {};
@@ -298,7 +321,7 @@ ${panel(3, 'On the card, before peeling', 'The clear decal sits on top of the pr
 ${panel(4, 'After the decal is peeled off: the print on the backing paper', 'This black and white fish is <b>not the decal</b>. It is <b>printed on the front of the backing paper</b> (layer 2), under the clear decal, and is seen once the decal is peeled away. The thin grey line is where the kiss cut was; the clear vinyl left outside it sits on the printed black. (Gold words are a note, not printed.)', P(PW, PH, under + `<path d="${cutD}" fill="none" stroke="#333" stroke-width=".35"/>`
   + `<text x="${f2(PW / 2)}" y="${f2(PH - 2.2)}" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="2.5" letter-spacing=".12" fill="#f5d76e">PRINTED ON THE BACKING PAPER · SEEN AFTER THE DECAL IS PEELED OFF</text>`))}
 </div>
-<div class="row2"><div class="p bk"><h3><b>5</b>Back of the backing paper</h3><p>Reads upright when the card is turned on its side. Blue: the card edge.</p><img src="${backPng}"></div>
+<div class="row2${LAND ? ' land' : ''}"><div class="p bk"><h3><b>5</b>Back of the backing paper</h3><p>${LAND ? 'Reads upright held the same way as the fish (landscape).' : 'Reads upright when the card is turned on its side.'} Blue: the card edge.</p><img src="${backPng}"></div>
 <div class="p nt"><h3>Where the QR codes go</h3><ul>${Object.entries(links).map(([c, v]) => `<li><b>${esc(qrUrl(run, c))}</b><br>${esc(v.what)}${run.qr_direct ? ' (straight to the address, scans not counted)' : ' → ' + esc(v.to || 'not set yet (opens manna-fish.com)')}</li>`).join('')}</ul>
 <h3>Before printing</h3><ul class="w">${warn.map((x) => `<li>${esc(x)}</li>`).join('') || '<li>Nothing left. Ready.</li>'}</ul>
 <h3>Files for the printer</h3><ul class="f"><li>${id}-1-decal-white-ink (.png 1200 dpi, .pdf)</li><li>${id}-2-backing-front (.pdf vector, .png 1200 dpi)</li><li>${id}-3-cut-lines (.pdf with CutContour and ThroughCut, .svg): kept here, sent only if the printer asks${run.send_cut_file ? ' (this run sends it)' : ''}</li><li>${id}-4-back (.pdf, .png 600 dpi)</li><li>All of them together: ${id}-print-files.zip</li></ul></div></div></div>`;
@@ -307,7 +330,7 @@ ${panel(4, 'After the decal is peeled off: the print on the backing paper', 'Thi
 .st{font-weight:700;border:2px solid #b45309;color:#b45309;border-radius:8px;padding:6px 12px;font-size:18px}
 .g{display:grid;grid-template-columns:1fr 1fr;gap:18px 26px}.p h3{margin:0 0 2px;font-size:16px}.p h3 b{display:inline-block;background:#111;color:#fff;border-radius:50%;width:22px;height:22px;text-align:center;line-height:22px;margin-right:8px;font-size:13px}
 .p p{margin:0 0 6px;color:#444}.p svg{display:block;width:100%;border:1px solid #bbb}
-.row2{display:grid;grid-template-columns:330px 1fr;gap:26px;margin-top:20px}.bk img{width:100%;border:1px solid #00b7ff}.nt ul{margin:4px 0 14px;padding-left:18px}.nt li{margin:3px 0}.nt .w li{color:#9a3412}.nt h3{margin:0}`;
+.row2{display:grid;grid-template-columns:330px 1fr;gap:26px;margin-top:20px}.row2.land{grid-template-columns:560px 1fr}.bk img{width:100%;border:1px solid #00b7ff}.nt ul{margin:4px 0 14px;padding-left:18px}.nt li{margin:3px 0}.nt .w li{color:#9a3412}.nt h3{margin:0}`;
   const pp = await browser.newPage({ viewport: { width: 1500, height: 1200 }, deviceScaleFactor: 1.5 });
   await pp.setContent(`<html><head><style>${PCSS}</style></head><body>${proof}</body></html>`, { waitUntil: 'load' });
   await pp.screenshot({ path: name('proof.png'), fullPage: true });
@@ -322,7 +345,7 @@ Card: 4.5 x 2.75 in (114.3 x 69.85 mm), custom size (not 2.8 in). Every file inc
 1. **${id}-1-decal-white-ink** : clear vinyl, white ink only. White where the fish is white; the letters and everything else are clear (no ink).
 2. **${id}-2-backing-front** : printed on the FRONT of the backing paper, under the decal (not the back of the paper). Black over the whole card, the same fish in white, lined up exactly under the decal.
 ${run.send_cut_file ? `3. **${id}-3-cut-lines** : two spot colours. **CutContour** (magenta) is the kiss cut, through the vinyl only, 1/8 in outside the fish. **ThroughCut** (cyan) is the card edge, cut through everything. The SVG has the same two layers.` : `3. **Cut lines** : please draw the kiss cut yourselves, about 1/8 in (3 mm) outside the fish, through the vinyl only, and cut the card edge at 4.5 x 2.75 in. You know the right distance for your machines; we have our own cut line file ready if you would rather use it.`}
-4. **${id}-4-back** : printed on the BACK of the backing paper. It reads upright when the card is turned on its side (portrait).
+4. **${id}-4-back** : printed on the BACK of the backing paper. ${LAND ? 'It reads upright held the same way as the fish side (landscape).' : 'It reads upright when the card is turned on its side (portrait).'}
 
 The decal's white ink is the PNG (1200 dpi, transparent where there is no ink); the PDF holds the same picture. Colours are RGB: please convert to your press colours, and use a rich black for the black areas if that is what you recommend.
 
