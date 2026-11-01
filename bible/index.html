@@ -508,14 +508,14 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function addPh(h,v,s,e,c){ var t=VT[v]||'', G=/^[\s\p{P}]*$/u; while(s<e&&/[\s\p{P}]/u.test(t[s])) s++; while(e>s&&/[\s\p{P}]/u.test(t[e-1])) e--; if(e-s<1) return;
     phrases(v,h).forEach(function(x){ if(x.c!==c) return; if((x.s<=e&&x.e>=s)||(x.e<=s&&G.test(t.slice(x.e,s)))||(x.s>=e&&G.test(t.slice(e,x.s)))){ s=Math.min(s,x.s); e=Math.max(e,x.e); unHl(h,x.k); } });
     h[pkey(AT.b,AT.c,v,s,e)]={kind:'phrase',ref:plain(AT.b,AT.c,v)+'#'+s+'-'+e,ver:vcode(),k:'',i:0,l:vlang(),v:v,s:s,e:e,c:c,text:t.slice(s,e).slice(0,220),at:Date.now(),bible:1}; }
-  function applyHl(c){ var h=hls();
+  function applyHl(c,quiet){ var h=hls();
     if(PHS){ PHS.forEach(function(p){ var vk=hkey(AT.b,AT.c,p.v), vx=h[vk];
         if(vx&&c){ var vc=HLC[vx.c]?vx.c:'gold'; unHl(h,vk); addPh(h,p.v,0,p.s,vc); addPh(h,p.v,p.e,(VT[p.v]||'').length,vc); }   // a verse in one colour, some of its words in another
         phrases(p.v,h).forEach(function(x){ if(x.s<p.e&&x.e>p.s){ unHl(h,x.k); if(c){ addPh(h,p.v,x.s,p.s,x.c); addPh(h,p.v,p.e,x.e,x.c); } } });
         if(c) addPh(h,p.v,p.s,p.e,c); }); }
     else SEL.forEach(function(v){ var k=hkey(AT.b,AT.c,v); Object.keys(h).forEach(function(x){ if(h[x].kind==='phrase'&&h[x].ver===vcode()&&String(h[x].ref).indexOf(plain(AT.b,AT.c,v)+'#')===0) unHl(h,x); });
       if(!c) unHl(h,k); else h[k]={kind:'verse',ref:plain(AT.b,AT.c,v),ver:vcode(),k:'',i:0,l:vlang(),v:v,c:c,text:(VT[v]||'').slice(0,220),at:Date.now(),bible:1}; });
-    if(c) ls('mf-hl-color',c); saveHls(h); hlTouched(); paint(); toast(c?'Highlighted · saved to My highlights':'Highlight removed'); closeAct(); }
+    if(c) ls('mf-hl-color',c); saveHls(h); hlTouched(); paint(); toast(c?(quiet?'Highlighted · tap a colour to change it':'Highlighted · saved to My highlights'):'Highlight removed'); closeAct(); }
   // save: a bookmark, kept on this device (Saved, in the book list and under You)
   function saved(){ try{ return JSON.parse(ls('mf-bible-saved')||'[]')||[]; }catch(e){ return []; } }
   function savedAt(){ var r=selLabel(); return saved().filter(function(x){ return x.ref===r; })[0]; }
@@ -709,7 +709,9 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     if(t.clientY>innerHeight-70) window.scrollBy(0,12); else if(t.clientY<bh+30) window.scrollBy(0,-12); },{passive:false});
   $('txt').addEventListener('touchend',function(e){ if(!FD) return; clearTimeout(FD.tm); var f=FD; FD=null; if(!f.on) return; if(e.cancelable) e.preventDefault(); TDRAG=Date.now();
     var L=fdRange(f.a,f.z); if(!L.length){ fdShow(null); return; } closeWc(); PHS=L; SEL=L.map(function(x){ return x.v; });
-    if(PEN){ fdShow(null); penApply(); } else { selUI(); fdShow(L,'sel'); } },{passive:false});
+    // Ken, 1 Nov ("still can't tap and drag to highlight"): a slide highlights at once, in your colour; the colours stay open to change
+    // it (or ✕ to take it off), with Save, Note, Copy and the rest for the same words
+    if(PEN){ fdShow(null); penApply(); } else { fdShow(null); var keep=L.slice(); applyHl(colour(),true); PHS=keep; SEL=keep.map(function(x){ return x.v; }); selUI(); } },{passive:false});
   $('txt').addEventListener('touchcancel',function(){ if(FD){ clearTimeout(FD.tm); FD=null; fdShow(null); } });
   $('txt').addEventListener('contextmenu',function(e){ if(TOUCH&&(FD||Date.now()-TDRAG<1500)) e.preventDefault(); });
   // the pen: highlight the words slid across; slide across ones already highlighted in the pen's colour to take it off them (only
