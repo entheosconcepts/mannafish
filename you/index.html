@@ -138,6 +138,11 @@ input[type=range]{width:46%;accent-color:var(--blue2)}
   function SET(k,d){ var o=get('mf-set',{}); return o[k]!==undefined&&o[k]!==null?o[k]:d; }
   function day(t){ try{ return new Date(t).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}); }catch(e){ return ''; } }
   var HLC={gold:'#f5d76e',green:'#8ddca4',blue:'#93bff5',pink:'#f5a9cb',orange:'#f8b273'};
+  // colours of one's own from the Bible's colour wheel (Ken, 1 Nov): kept as "c-rrggbb", shown in that colour here too
+  (function(H){ function add(c){ if(/^c-[0-9a-f]{6}$/.test(c||'')&&!H[c]) H[c]='#'+c.slice(2); } try{ ['#c9a7f5','#7fd8d2','#f59a9a','#c8e67a','#9fe3f7','#f9c9a5','#dcc6f7','#c4cbd1'].forEach(function(x){ add('c-'+x.slice(1)); });
+    ['mf-hl','mf-hl-pr'].forEach(function(k){ var h=JSON.parse(localStorage.getItem(k)||'{}')||{}; Object.keys(h).forEach(function(x){ add(h[x]&&h[x].c); }); });
+    (JSON.parse(localStorage.getItem('mf-hl-custom')||'[]')||[]).forEach(add); add(localStorage.getItem('mf-hl-color')); }catch(e){} })(HLC);
+
   function bible(ref){ return '/bible/?r='+encodeURIComponent(String(ref||'').replace(/#.*$/,'').replace(/[–-]\d+$/,'').replace(/,.*$/,'')); }
   function word(k){ return k.charAt(0)+k.slice(1).toLowerCase(); }
   // the tabs
@@ -265,7 +270,7 @@ input[type=range]{width:46%;accent-color:var(--blue2)}
       +tg('xref',true,'Cross references','Under “Swipe up for more”')
       +tg('marks',true,'Note and link marks','Small 💬 and 🔗 after a verse')
       +tg('hist',true,'Remember what I read','History and Recent')
-      +'<h3>Highlights</h3><div class="opt"><span class="l"><b>Highlight colour</b><small>The one a tap uses first</small></span><span class="cf" style="margin:0">'+Object.keys(HLC).map(function(c){ return '<button type="button" data-hc="'+c+'" aria-label="'+c+'" aria-pressed="'+(hc===c)+'" style="background:'+HLC[c]+'"></button>'; }).join('')+'</span></div>'
+      +'<h3>Highlights</h3><div class="opt"><span class="l"><b>Highlight colour</b><small>The one a tap uses first</small></span><span class="cf" style="margin:0">'+['gold','green','blue','pink','orange'].concat(HLC[hc]&&['gold','green','blue','pink','orange'].indexOf(hc)<0?[hc]:[]).map(function(c){ return '<button type="button" data-hc="'+c+'" aria-label="'+c+'" aria-pressed="'+(hc===c)+'" style="background:'+HLC[c]+'"></button>'; }).join('')+'</span></div>'
       +'<div class="opt"><span class="l"><b>Remove highlights</b><small>All of them, or the ones you choose</small></span><button type="button" class="b red" id="stHl">Open</button></div>'
       +'<h3>Listening</h3><div class="opt"><span class="l"><b>Voice</b><small>The voices on this device</small></span><select id="stVoice"><option value="">Best on this device</option></select></div>'
       +seg('rate',0.95,'Speed',[[0.8,'Slow'],[0.95,'Normal'],[1.1,'Quick'],[1.25,'Fast']])

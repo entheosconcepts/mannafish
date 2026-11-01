@@ -62,8 +62,9 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 .txt .v.sel .vt{text-decoration:underline dotted 2px;text-underline-offset:6px}
 .txt .ni{border:0;background:none;padding:0 2px;margin:0 2px;cursor:pointer;color:var(--dim);vertical-align:-3px}
 .txt .ni svg{width:18px;height:18px}
-.selbar{position:fixed;top:0;left:0;right:0;z-index:25;background:var(--bg);border-bottom:1px solid var(--line);text-align:center;font-weight:800;font-size:.92rem;padding:max(12px,env(safe-area-inset-top)) 12px 12px;transform:translateY(-110%);transition:transform .2s}
-.selbar.on{transform:none}
+/* Ken, 1 Nov: the Selected line used to cover the top bar (‹ Back and ••• went missing): it now sits just under it */
+.selbar{position:fixed;top:var(--barh,100px);left:0;right:0;z-index:25;background:var(--bg);border-bottom:1px solid var(--line);text-align:center;font-weight:800;font-size:.86rem;padding:7px 12px;opacity:0;transform:translateY(-8px);pointer-events:none;transition:opacity .2s,transform .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.selbar.on{opacity:1;transform:none}
 .act{position:fixed;left:8px;right:8px;bottom:8px;z-index:30;background:var(--card2);border:1px solid var(--line);border-radius:22px;box-shadow:0 -14px 34px -10px rgba(0,0,0,.6);
   transform:translateY(130%);transition:transform .25s cubic-bezier(.2,.8,.2,1);padding:8px 12px max(10px,env(safe-area-inset-bottom));max-height:78vh;overflow:auto;touch-action:pan-y}
 .act.open{transform:none}
@@ -80,6 +81,9 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 .pill{flex:1 1 100%;min-width:0;display:flex;align-items:center;justify-content:space-around;gap:8px;background:var(--card);border-radius:16px;padding:0 10px;height:58px}
 .pill button{flex:none;width:40px;height:40px;border-radius:50%;border:2px solid transparent;cursor:pointer;display:grid;place-items:center;color:#14181c;font-size:1.2rem;font-weight:800}
 .pill button[aria-pressed=true]{border-color:var(--text)}
+.pill .pmore{background:var(--card2,#1d2229);border:1px solid var(--line);font-size:1.15rem}.pill.colmore{justify-content:flex-start;flex-wrap:wrap;height:auto;padding:8px 10px;gap:8px 10px}.pill.colmore[hidden]{display:none}
+.wheel{flex:none;width:40px;height:40px;border-radius:50%;cursor:pointer;background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);border:2px solid var(--line);position:relative;overflow:hidden}.wheel input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:0;padding:0}
+.penbar .wheel{width:30px;height:30px}
 .tile{flex:1;min-width:0;height:58px;border:0;border-radius:14px;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-weight:700;font-size:.76rem;cursor:pointer;color:var(--text)}
 @media (min-width:640px){.pill{flex:1 1 auto;height:70px}.tile{flex:none;width:76px;height:70px;flex-direction:column;gap:5px;font-size:.82rem}.act .top{flex-wrap:nowrap}}
 .tile svg{width:22px;height:22px}.tile[aria-pressed=true]{color:var(--blue2)}
@@ -152,7 +156,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 .recent{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}.recent button{flex:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 12px;font-weight:600;font-size:.86rem;cursor:pointer}
 .acc{display:block;margin:14px 0 0;border:1px solid var(--line);background:var(--card2);border-radius:14px;padding:12px 14px;color:var(--text);text-decoration:none;font-size:.9rem}.acc b{display:block;font-size:.98rem;margin-bottom:2px}.acc span{color:var(--dim)}
 [hidden]{display:none!important}
-@media (max-width:420px){.txt{font-size:var(--fs,1.12rem)}.embed .back .bl{display:none}}
+@media (max-width:420px){.txt{font-size:var(--fs,1.12rem)}.embed .back .bl{display:none}.fromfish .back .bl{display:inline}}
 /* ••• (Ken, 24 Oct: "give the bible 3 dots on top right to add notes and see history, recent, highlights, my stuff") */
 .menu{position:fixed;top:calc(var(--barh,100px) - 6px);right:max(8px,calc(50% - 372px));z-index:45;width:min(350px,calc(100% - 16px));max-height:calc(100dvh - var(--barh,100px) - 10px);overflow:auto;overscroll-behavior:contain;
   background:var(--card2);border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 44px -14px rgba(0,0,0,.75);padding:6px 6px 8px}
@@ -247,7 +251,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 <div class="act xrsheet" id="xrs" role="dialog" aria-label="Cross references"><div class="in" id="xrsIn"></div></div>
 <div class="act" id="act" role="dialog" aria-label="Verse"><div class="in">
   <button type="button" class="grab" id="aGrab" aria-label="More"></button>
-  <div class="top"><div class="pill" id="aDots" role="group" aria-label="Highlight"></div>
+  <div class="top"><div class="pill" id="aDots" role="group" aria-label="Highlight"></div><div class="pill colmore" id="aMore" role="group" aria-label="More colours" hidden></div>
     <button type="button" class="tile" id="aSave" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span>Save</span></button>
     <button type="button" class="tile" id="aNote"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>Note</span></button>
     <button type="button" class="tile" id="aPray"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c-1.5 2-2 5-2 8v6l-3 3M12 3c1.5 2 2 5 2 8v6l3 3"/><path d="M10 11l-3 2M14 11l3 2"/></svg><span>Pray</span></button>
@@ -297,7 +301,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     try{ localStorage.setItem('mf-set',JSON.stringify(o)); }catch(e){} if(window.MFacct) MFacct.touch('set'); }
   applySet();
   $('back').addEventListener('click',function(){ try{ parent.postMessage({mf:'bible-close'},location.origin); }catch(e){} });
-  if(Q.get('from')==='fish'){ $('back').setAttribute('aria-label','Back to the fish'); $('back').querySelector('.bl').innerHTML='&nbsp;Back'; }   // opened from a verse on the back of the fish
+  if(Q.get('from')==='fish'){ document.body.classList.add('fromfish'); $('back').setAttribute('aria-label','Back to the fish'); $('back').querySelector('.bl').innerHTML='&nbsp;Back'; }   // opened from a verse on the back of the fish
 
   // light or dark: the same choice as the main site
   var root=document.documentElement;
@@ -344,12 +348,25 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function hkey(b,c,v){ return plain(b,c,v)+'|'+vcode(); }
   function pkey(b,c,v,s,e){ return plain(b,c,v)+'#'+s+'-'+e+'|'+vcode(); }
   function colour(){ var c=ls('mf-hl-color')||'gold'; return HLC[c]?c:'gold'; }
+  // Ken, 1 Nov: "expand the color options and let users select a color wheel to choose their own color". The five stay first; 🎨 opens
+  // eight more and a colour wheel. A colour of one's own is kept as "c-rrggbb" (the same key on every page and in the account).
+  var HLX=['#c9a7f5','#7fd8d2','#f59a9a','#c8e67a','#9fe3f7','#f9c9a5','#dcc6f7','#c4cbd1'].map(function(x){ return 'c-'+x.slice(1); });
+  function addC(c){ if(/^c-[0-9a-f]{6}$/.test(c||'')&&!HLC[c]) HLC[c]='#'+c.slice(2); return c; }
+  function customs(){ try{ return (JSON.parse(ls('mf-hl-custom')||'[]')||[]).filter(function(c){ return /^c-[0-9a-f]{6}$/.test(c); }); }catch(e){ return []; } }
+  function keepCustom(c){ if(HLX.indexOf(c)>=0) return; var L=customs().filter(function(x){ return x!==c; }); L.unshift(c); ls('mf-hl-custom',JSON.stringify(L.slice(0,8))); }
+  HLX.forEach(addC); customs().forEach(addC); addC(ls('mf-hl-color')); (function(){ var h=hls(); Object.keys(h).forEach(function(k){ addC(h[k]&&h[k].c); }); })();
+  var BASE=['gold','green','blue','pink','orange'], MORE=false;
+  // dark colours of one's own get white letters, so the words stay easy to read
+  function ink(c){ var x=HLC[c]||''; if(!/^#[0-9a-f]{6}$/i.test(x)) return ''; var n=parseInt(x.slice(1),16), L=(0.299*(n>>16)+0.587*(n>>8&255)+0.114*(n&255))/255; return L<0.55?'#fff':''; }
+  function swatches(L,on){ return L.map(function(c){ return '<button type="button" data-c="'+c+'" aria-label="Highlight '+(HLC[c]||c)+'" aria-pressed="'+(on===c)+'" style="background:'+HLC[c]+'"></button>'; }).join(''); }
+  var WHEEL='<label class="wheel" title="Choose any colour" aria-label="Choose any colour"><input type="color" value="#f5d76e"></label>';
+
   var VT={};   // this chapter's verses, as shown
   function phrases(v,h){ var pre=plain(AT.b,AT.c,v)+'#', out=[]; Object.keys(h).forEach(function(k){ var x=h[k]; if(x.kind==='phrase'&&x.ver===vcode()&&String(x.ref).indexOf(pre)===0) out.push({k:k,s:+x.s,e:+x.e,c:HLC[x.c]?x.c:'gold'}); });
     return out.sort(function(a,b){ return a.s-b.s; }); }
   var HLM=null;   // choosing highlights to take off: {key:1}
   function paint(){ var h=hls(), n=0; [].forEach.call($('txt').querySelectorAll('.v'),function(sp){ var v=+sp.dataset.v, hk=hkey(AT.b,AT.c,v), x=h[hk], c=x&&(HLC[x.c]?x.c:'gold'), t=VT[v]||'';
-    sp.classList.toggle('hl',!!x); sp.style.background=x?HLC[c]:''; sp.classList.toggle('gone',!!(x&&HLM&&HLM[hk])); if(x) n++;
+    sp.classList.toggle('hl',!!x); sp.style.background=x?HLC[c]:''; sp.style.color=x?ink(c):''; sp.classList.toggle('gone',!!(x&&HLM&&HLM[hk])); if(x) n++;
     var ph=x?[]:phrases(v,h), at=0, P=[]; ph.forEach(function(p){ var a=Math.max(p.s,at), z=Math.min(p.e,t.length); if(z<=a) return; n++; P.push({k:p.k,c:p.c,s:a,e:z}); at=z; });
     var out=vtHtml(v,t,P,!!x), vt=sp.querySelector('.vt'); if(vt.innerHTML!==out) vt.innerHTML=out; }); if(WC) markWord();
     $('hlmBtn').hidden=!n||!!HLM||EMBED; $('hlmBtn').textContent='🖍 '+n+' highlight'+(n===1?'':'s')+' here · Remove'; if(HLM) hlmUI(); }
@@ -360,7 +377,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     cuts=cuts.filter(function(x,i,a){ return x>=0&&x<=t.length&&a.indexOf(x)===i; }).sort(function(a,b){ return a-b; });
     for(var i=0;i<cuts.length-1;i++){ var a=cuts[i], z=cuts[i+1], m=null;
       for(var q=0;q<ph.length;q++) if(ph[q].s<=a&&z<=ph[q].e){ m=ph[q]; break; }
-      if(m!==open){ if(open) out+='</mark>'; if(m) out+='<mark class="ph'+(HLM&&HLM[m.k]?' gone':'')+'" data-k="'+esc(m.k)+'" data-s="'+m.s+'" data-e="'+m.e+'" style="background:'+HLC[m.c]+'">'; open=m; }
+      if(m!==open){ if(open) out+='</mark>'; if(m) out+='<mark class="ph'+(HLM&&HLM[m.k]?' gone':'')+'" data-k="'+esc(m.k)+'" data-s="'+m.s+'" data-e="'+m.e+'" style="background:'+HLC[m.c]+(ink(m.c)?';color:'+ink(m.c):'')+'">'; open=m; }
       while(ti<T.length&&T[ti].e<=a) ti++;
       var seg=esc(t.slice(a,z));
       if(ti<T.length&&T[ti].s<=a&&z<=T[ti].e){ var at='', oi=o&&o.a?o.a[ti]:null, w=oi!=null&&oi>=0?o.w[oi]:null; if(w) at=' data-n="'+strongN(w[3])+'" data-o="'+esc(w[0])+'"';
@@ -478,9 +495,15 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function hitsNow(h){ if(PHS) return [].concat.apply([],PHS.map(function(p){ return phrases(p.v,h).filter(function(x){ return x.s<p.e&&x.e>p.s; }).map(function(x){ return h[x.k]; }); }));
     return [].concat.apply([],SEL.map(function(v){ var x=h[hkey(AT.b,AT.c,v)]; return x?[x]:phrases(v,h).map(function(p){ return h[p.k]; }); })); }
   function dots(){ var h=hls(), hit=hitsNow(h), on=hit.length&&!PHS&&hit.length===SEL.length&&hit.every(function(x){ return x.kind==='verse'; })&&hit.every(function(x){ return (x.c||'gold')===(hit[0].c||'gold'); })?(hit[0].c||'gold'):null;
+    var mine=on&&BASE.indexOf(on)<0?on:(BASE.indexOf(colour())<0?colour():'');
     $('aDots').innerHTML=(hit.length?'<button type="button" data-c="" aria-label="Remove highlight" style="background:'+HLC[(hit[0].c&&HLC[hit[0].c])?hit[0].c:'gold']+'">&#10005;</button>':'')
-      +Object.keys(HLC).map(function(c){ return '<button type="button" data-c="'+c+'" aria-label="Highlight '+c+'" aria-pressed="'+(on===c)+'" style="background:'+HLC[c]+'"></button>'; }).join(''); }
-  $('aDots').addEventListener('click',function(e){ var b=e.target.closest('[data-c]'); if(!b||!SEL.length) return; applyHl(b.dataset.c); });
+      +swatches(BASE.concat(mine&&!hit.length?[mine]:[]),on)+'<button type="button" class="pmore" data-more="1" aria-expanded="'+MORE+'" aria-label="More colours">🎨</button>';
+    $('aMore').hidden=!MORE; $('aMore').innerHTML=swatches(HLX.concat(customs().filter(function(c){ return HLX.indexOf(c)<0; })),on)+WHEEL; }
+  $('aDots').addEventListener('click',function(e){ if(e.target.closest('[data-more]')){ MORE=!MORE; dots(); return; } var b=e.target.closest('[data-c]'); if(!b||!SEL.length) return; applyHl(b.dataset.c); });
+  $('aMore').addEventListener('click',function(e){ var b=e.target.closest('[data-c]'); if(!b||!SEL.length) return; applyHl(b.dataset.c); });
+  // the colour wheel: the colour chosen is used at once, and kept among your colours
+  function wheelKey(v){ var c=addC('c-'+String(v).replace('#','').toLowerCase()); keepCustom(c); return c; }
+  $('aMore').addEventListener('change',function(e){ if(e.target.type!=='color'||!SEL.length) return; applyHl(wheelKey(e.target.value)); });
   // a few words, in one colour, with the same colour next to it joined on (a word at a time with the pen makes one highlight)
   function addPh(h,v,s,e,c){ var t=VT[v]||'', G=/^[\s\p{P}]*$/u; while(s<e&&/[\s\p{P}]/u.test(t[s])) s++; while(e>s&&/[\s\p{P}]/u.test(t[e-1])) e--; if(e-s<1) return;
     phrases(v,h).forEach(function(x){ if(x.c!==c) return; if((x.s<=e&&x.e>=s)||(x.e<=s&&G.test(t.slice(x.e,s)))||(x.s>=e&&G.test(t.slice(e,x.s)))){ s=Math.min(s,x.s); e=Math.max(e,x.e); unHl(h,x.k); } });
@@ -672,7 +695,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function fdShow(L,c){ [].forEach.call($('txt').querySelectorAll('.w.dg'),function(w){ w.classList.remove('dg'); });
     if(HLAPI) ['sel'].concat(Object.keys(HLC)).forEach(function(k){ CSS.highlights.delete('mfdrag-'+k); });
     if(!L||!L.length) return; c=c||'sel'; var bg=HLC[c]||'rgba(51,112,255,.38)';
-    if(HLAPI){ if(!dgCss){ dgCss=true; var st=document.createElement('style'); st.textContent='::highlight(mfdrag-sel){background-color:rgba(51,112,255,.38)}'+Object.keys(HLC).map(function(k){ return '::highlight(mfdrag-'+k+'){background-color:'+HLC[k]+';color:#14181c}'; }).join(''); document.head.appendChild(st); }
+    if(HLAPI){ if(!dgCss){ dgCss={}; var st=document.createElement('style'); st.id='dgCss'; st.textContent='::highlight(mfdrag-sel){background-color:rgba(51,112,255,.38)}'; document.head.appendChild(st); }
+      if(c!=='sel'&&!dgCss[c]){ dgCss[c]=1; $('dgCss').textContent+='::highlight(mfdrag-'+c+'){background-color:'+HLC[c]+';color:#14181c}'; }
       var hl=new Highlight(); L.forEach(function(p){ var vt=$('txt').querySelector('.v[data-v="'+p.v+'"] .vt'), r=vt&&rangeIn(vt,p.s,p.e); if(r) hl.add(r); }); CSS.highlights.set('mfdrag-'+c,hl); return; }
     root.style.setProperty('--dgc',bg); L.forEach(function(p){ var T=tk(p.v); [].forEach.call($('txt').querySelectorAll('.v[data-v="'+p.v+'"] .w'),function(w){ var x=T[+w.dataset.j]; if(x&&x.s<p.e&&x.e>p.s) w.classList.add('dg'); }); }); }
   $('txt').addEventListener('touchstart',function(e){ if(FD){ clearTimeout(FD.tm); FD=null; } if(e.touches.length!==1||LINKING||HLM) return; var t=e.touches[0], w=wordAt(t.clientX,t.clientY); if(!w) return;
@@ -681,7 +705,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   $('txt').addEventListener('touchmove',function(e){ if(!FD) return; var t=e.touches[0], dx=t.clientX-FD.x, dy=t.clientY-FD.y;
     if(!FD.on){ if(Math.abs(dx)<8&&Math.abs(dy)<8) return; if(Math.abs(dx)>Math.abs(dy)){ clearTimeout(FD.tm); FD.on=true; } else { clearTimeout(FD.tm); FD=null; return; } }
     e.preventDefault(); var w=wordAt(t.clientX,t.clientY); if(w) FD.z=w; fdShow(fdRange(FD.a,FD.z),PEN?colour():'sel');
-    var bh=$('selbar').classList.contains('on')?120:(parseFloat(getComputedStyle(root).getPropertyValue('--barh'))||100);
+    var bh=(parseFloat(getComputedStyle(root).getPropertyValue('--barh'))||100)+($('selbar').classList.contains('on')?34:0);
     if(t.clientY>innerHeight-70) window.scrollBy(0,12); else if(t.clientY<bh+30) window.scrollBy(0,-12); },{passive:false});
   $('txt').addEventListener('touchend',function(e){ if(!FD) return; clearTimeout(FD.tm); var f=FD; FD=null; if(!f.on) return; if(e.cancelable) e.preventDefault(); TDRAG=Date.now();
     var L=fdRange(f.a,f.z); if(!L.length){ fdShow(null); return; } closeWc(); PHS=L; SEL=L.map(function(x){ return x.v; });
@@ -698,7 +722,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
       saveHls(h); hlTouched(); closeAct(); paint(); toast('Highlight removed'); return; }
     applyHl(colour()); }
   function penUI(){ document.body.classList.toggle('pen',PEN); $('penbar').hidden=!PEN; $('penB').setAttribute('aria-pressed',PEN); $('penB').classList.toggle('on',PEN); if(!PEN) return;
-    $('penDots').innerHTML=Object.keys(HLC).map(function(c){ return '<button type="button" class="pd" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(colour()===c)+'" style="background:'+HLC[c]+'"></button>'; }).join(''); }
+    var pc=colour(); $('penDots').innerHTML=BASE.concat(BASE.indexOf(pc)<0?[pc]:[]).map(function(c){ return '<button type="button" class="pd" data-c="'+c+'" aria-label="'+(HLC[c]||c)+'" aria-pressed="'+(pc===c)+'" style="background:'+HLC[c]+'"></button>'; }).join('')+WHEEL; }
+  $('penDots').addEventListener('change',function(e){ if(e.target.type!=='color') return; ls('mf-hl-color',wheelKey(e.target.value)); penUI(); });
   function setPen(on){ PEN=on; penUI(); if(on){ closeAct(); closeWc(); toast(TOUCH?'Highlighter on · slide a finger across the words':'Highlighter on · drag across the words'); } }
   $('penX').addEventListener('click',function(){ setPen(false); });
   $('penB').addEventListener('click',function(){ setPen(!PEN); });
@@ -812,7 +837,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
       +'<input class="find" id="whW" type="text" placeholder="A word, like love" autocomplete="off" style="margin:0 0 8px">'
       +'<label class="sub" style="display:flex;gap:8px;align-items:center;margin:0 0 10px"><input type="checkbox" id="whF" checked> And its forms (loved, loveth, loving…)</label>'
       +'<div class="sseg" id="whS">'+[['ch',B[AT.b][0]+' '+AT.c],['bk','All of '+B[AT.b][0]],['all','The whole Bible']].map(function(o){ return '<button type="button" data-ws="'+o[0]+'" aria-pressed="'+(WH.scope===o[0])+'">'+esc(o[1])+'</button>'; }).join('')+'</div>'
-      +'<div class="pill" id="whC" style="height:52px;margin:0 0 10px">'+Object.keys(HLC).map(function(k){ return '<button type="button" data-wc2="'+k+'" aria-pressed="'+(c===k)+'" aria-label="'+k+'" style="background:'+HLC[k]+'"></button>'; }).join('')+'</div>'
+      +'<div class="pill" id="whC" style="height:52px;margin:0 0 10px">'+BASE.concat(BASE.indexOf(c)<0&&HLC[c]?[c]:[]).map(function(k){ return '<button type="button" data-wc2="'+k+'" aria-pressed="'+(c===k)+'" aria-label="'+k+'" style="background:'+HLC[k]+'"></button>'; }).join('')+'</div>'
       +'<button type="button" class="cont" id="whGo" style="justify-content:center;margin:0 0 6px"><b style="flex:none">🖍 Highlight it</b></button><p class="sub" id="whMsg" aria-live="polite"></p>'
       +(L.length?'<h5>Words highlighted</h5>'+L.map(function(r,i){ return '<div class="ml" style="margin:0 0 6px"><button type="button" class="it" data-wgo="'+i+'" style="margin:0"><span class="dt" style="background:'+HLC[r.col]+'"></span><span class="tx"><b>'+esc(r.sn?(r.label||r.sn):r.w)+(r.forms?' …':'')+'</b><span>'+esc((r.sn?'Strong’s '+r.sn+' · ':'')+'in '+scopeName(r))+'</span></span></button><button type="button" class="mdel chip" data-wdel="'+i+'" aria-label="Remove">&#10005;</button></div>'; }).join(''):''); }
   $('stuff').addEventListener('click',function(e){ if(!$('whS')&&!e.target.closest('[data-wdel],[data-wgo]')) return;

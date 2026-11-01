@@ -7,6 +7,11 @@
 (function(){
   if(window.MFprhl) return;
   var KEY='mf-hl-pr', HLC={gold:'#f5d76e',green:'#8ddca4',blue:'#93bff5',pink:'#f5a9cb',orange:'#f8b273'};
+  // colours of one's own from the Bible's colour wheel (Ken, 1 Nov): kept as "c-rrggbb", shown in that colour here too
+  (function(H){ function add(c){ if(/^c-[0-9a-f]{6}$/.test(c||'')&&!H[c]) H[c]='#'+c.slice(2); } try{ ['#c9a7f5','#7fd8d2','#f59a9a','#c8e67a','#9fe3f7','#f9c9a5','#dcc6f7','#c4cbd1'].forEach(function(x){ add('c-'+x.slice(1)); });
+    ['mf-hl','mf-hl-pr'].forEach(function(k){ var h=JSON.parse(localStorage.getItem(k)||'{}')||{}; Object.keys(h).forEach(function(x){ add(h[x]&&h[x].c); }); });
+    (JSON.parse(localStorage.getItem('mf-hl-custom')||'[]')||[]).forEach(add); add(localStorage.getItem('mf-hl-color')); }catch(e){} })(HLC);
+
   function get(){ try{ var h=JSON.parse(localStorage.getItem(KEY)||'{}'); return h&&typeof h==='object'?h:{}; }catch(e){ return {}; } }
   function put(h){ try{ localStorage.setItem(KEY,JSON.stringify(h)); }catch(e){} if(window.MFacct&&MFacct.touch) MFacct.touch('prhl'); }
   function color(){ var c='gold'; try{ c=localStorage.getItem('mf-hl-color')||'gold'; }catch(e){} return HLC[c]?c:'gold'; }

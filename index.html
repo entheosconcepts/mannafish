@@ -2950,7 +2950,7 @@ window.MF=(function(){
   function wpPhraseKey(){ if(!WP||!WP.t||!WP.X.hl) return null; var c=WP.X.hl; return c.book+' '+c.ch+':'+WP.vn+'#'+WP.t.s+'-'+WP.t.e+'|'+c.ver; }
   function wpExtras(){ var X2=wpX(), k=wpPhraseKey(), on=!!(k&&hls()[k]);
     $('wpHlw').hidden=!WP.X.hl||!!WP.o; $('wpHlw').textContent='🖍 '+(on?X2[1]:X2[0]);
-    var ck=wpCover(), col=ck&&hls()[ck]?(hls()[ck].c||'gold'):hlColor(); $('wpC').innerHTML=Object.keys(HLC).map(function(c){ return '<button type="button" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('');
+    var ck=wpCover(), col=ck&&hls()[ck]?(hls()[ck].c||'gold'):hlColor(); $('wpC').innerHTML=HLK().map(function(c){ return '<button type="button" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('');
     $('wpInL').textContent=X2[2];
     $('wpIn').innerHTML='<option value="">'+X2[3]+'</option>'+(WP.o?'':'<option value="orig">'+esc(X2[4])+'</option>')
       +Object.keys(WPLN).filter(function(l){ return l!==WP.L; }).map(function(l){ return '<option value="'+l+'">'+esc(WPLN[l])+'</option>'; }).join('');
@@ -3396,7 +3396,7 @@ window.MF=(function(){
     el:['Διάβασε όλο το κεφάλαιο','Πάτησε ένα εδάφιο για επισήμανση','Βίβλος','Όλα τα βιβλία και τα κεφάλαια'],de:['Das ganze Kapitel lesen','Tippe auf einen Vers, um ihn zu markieren','Bibel','Alle Bücher und Kapitel'],
     ko:['장 전체 읽기','구절을 눌러 형광펜 표시','성경','모든 책과 장'],he:['קרא את כל הפרק','הקש על פסוק כדי לסמן אותו','התנ״ך','כל הספרים והפרקים'],ar:['اقرأ الأصحاح كله','انقر على آية لتمييزها','الكتاب المقدس','كل الأسفار والأصحاحات'],ru:["Читать всю главу","Нажмите на стих, чтобы выделить его","Библия","Все книги и главы"]};
   function bibT(){ return BIBL[PT.l]||BIBL[MF.lang]||BIBL.en; }
-  function ptCxTools(){ var col=hlColor(); return '<div class="ptcxt"><span class="hlc" role="group" aria-label="Highlight colour">'+Object.keys(HLC).map(function(c){ return '<button type="button" data-a="cxc" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c]+'"></button>'; }).join('')+'</span><small>'+esc(bibT()[1])+'</small></div>'; }
+  function ptCxTools(){ var col=hlColor(); return '<div class="ptcxt"><span class="hlc" role="group" aria-label="Highlight colour">'+HLK().map(function(c){ return '<button type="button" data-a="cxc" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c]+'"></button>'; }).join('')+'</span><small>'+esc(bibT()[1])+'</small></div>'; }
   function cxAt(e){ var c=PT.cx; return e.dataset.cc&&c?Object.assign({},c,{ch:e.dataset.cc}):c; }
   function ptCxPaint(){ var c=PT.cx, h=hls(); if(!c) return; [].forEach.call($('ptStage').querySelectorAll('.cxv'),function(e){ var x=h[hlKey(cxAt(e),+e.dataset.cv)], col=x&&(HLC[x.c]?x.c:'gold');
     e.classList.toggle('cxhl',!!x); e.style.background=x?HLC[col]:''; }); }
@@ -3405,7 +3405,7 @@ window.MF=(function(){
     ptCxPaint(); });
   function ptHlRow(){ var cv=curVer().k, col=hlColor();
     return '<div class="penbar ptpenbar" hidden></div><div class="ptrow pthl"><button type="button" class="ptbtn" data-a="hl" aria-pressed="false" hidden></button><button type="button" class="ptbtn" data-a="hlpen" aria-pressed="false" hidden></button>'
-      +'<button type="button" class="ptbtn rhlmore" data-a="hlmore" aria-expanded="false">⋯</button><span class="hlc" role="group" aria-label="Highlight colour">'+Object.keys(HLC).map(function(c){ return '<button type="button" data-a="hlc" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('')+'</span>'
+      +'<button type="button" class="ptbtn rhlmore" data-a="hlmore" aria-expanded="false">⋯</button><span class="hlc" role="group" aria-label="Highlight colour">'+HLK().map(function(c){ return '<button type="button" data-a="hlc" data-c="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('')+'</span>'
       +'</div><div class="hlmenu pthlmenu" hidden></div>'; }
   function ptHlSet(pr,k,i,l,text){ var st=$('ptStage'), b=st.querySelector('[data-a="hl"]'); if(!b||!pr) return;
     var ver=verCode(l,false), info={kind:'verse',ref:pr.book+' '+pr.ch+':'+pr.vs,ver:ver,k:k,i:i,l:l,v:+pr.vs,text:String(text||'').slice(0,220)};
@@ -4615,7 +4615,15 @@ window.MF=(function(){
   // Ken, 16 Oct: "my highlights are not the colors that I chose ... very ugly" -- see-through colours went muddy on black, so they are
   // solid now with dark letters, like a highlighter on paper
   var HLC={gold:'#f5d76e',green:'#8ddca4',blue:'#93bff5',pink:'#f5a9cb',orange:'#f8b273'};
+  // colours of one's own from the Bible's colour wheel (Ken, 1 Nov): kept as "c-rrggbb", shown in that colour here too
+  (function(H){ function add(c){ if(/^c-[0-9a-f]{6}$/.test(c||'')&&!H[c]) H[c]='#'+c.slice(2); } try{ ['#c9a7f5','#7fd8d2','#f59a9a','#c8e67a','#9fe3f7','#f9c9a5','#dcc6f7','#c4cbd1'].forEach(function(x){ add('c-'+x.slice(1)); });
+    ['mf-hl','mf-hl-pr'].forEach(function(k){ var h=JSON.parse(localStorage.getItem(k)||'{}')||{}; Object.keys(h).forEach(function(x){ add(h[x]&&h[x].c); }); });
+    (JSON.parse(localStorage.getItem('mf-hl-custom')||'[]')||[]).forEach(add); add(localStorage.getItem('mf-hl-color')); }catch(e){} })(HLC);
+  (function(){ var st=document.createElement('style'); st.textContent=Object.keys(HLC).filter(function(k){ return k.indexOf('c-')===0; }).map(function(k){ return '::highlight(mfh-'+k+'){background-color:'+HLC[k]+';color:#14181d}'; }).join(''); document.head.appendChild(st); })();
+
   function hlColor(){ var c='gold'; try{ c=localStorage.getItem('mf-hl-color')||'gold'; }catch(e){} return HLC[c]?c:'gold'; }
+  // the colours to pick from: the five, and your own colour from the Bible's colour wheel when that is the one in use
+  function HLK(){ var B=['gold','green','blue','pink','orange'], c=hlColor(); return B.indexOf(c)<0&&HLC[c]?B.concat([c]):B; }
   window.MFhlColors=HLC; window.MFhlColor=hlColor;
   function hls(){ try{ return JSON.parse(localStorage.getItem(HKEY)||'{}')||{}; }catch(e){ return {}; } }
   function saveHls(h){ try{ localStorage.setItem(HKEY,JSON.stringify(h)); }catch(e){} }
@@ -4721,7 +4729,7 @@ window.MF=(function(){
     ar:['🖍 تمييز الكلمات','مرّروا الإصبع على الكلمات لتمييزها. اضغطوا على التمييز لإزالته.','✓ تم'],ru:["🖍 Выделить слова","Проведите пальцем по словам, чтобы выделить их. Нажмите на выделение, чтобы убрать его.","✓ Готово"]};
   function penL(){ return PENL[MF.lang]||PENL.en; }
   function penBar(bar,off){ var L=penL(), col=hlColor();
-    bar.innerHTML='<span class="pbt">'+esc(L[1])+'</span><span class="pbc">'+Object.keys(HLC).map(function(c){ return '<button type="button" data-pc="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('')+'</span><button type="button" class="pbd">'+esc(L[2])+'</button>';
+    bar.innerHTML='<span class="pbt">'+esc(L[1])+'</span><span class="pbc">'+HLK().map(function(c){ return '<button type="button" data-pc="'+c+'" aria-label="'+c+'" aria-pressed="'+(c===col)+'" style="background:'+HLC[c].replace(/,[.\d]+\)$/,',1)')+'"></button>'; }).join('')+'</span><button type="button" class="pbd">'+esc(L[2])+'</button>';
     bar.onclick=function(e){ var c=e.target.closest('[data-pc]'); if(c){ try{ localStorage.setItem('mf-hl-color',c.dataset.pc); }catch(er){} penBar(bar,off); return; } if(e.target.closest('.pbd')) off(); }; }
   function caretAt(x,y){ var r=null; if(document.caretRangeFromPoint) r=document.caretRangeFromPoint(x,y); else if(document.caretPositionFromPoint){ var q=document.caretPositionFromPoint(x,y); if(q){ r=document.createRange(); r.setStart(q.offsetNode,q.offset); } } return r; }
   // root: where the words are; ctxFn: their book, chapter and version; sel: what one verse is
