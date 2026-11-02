@@ -29,6 +29,8 @@ button,select{font:inherit;color:inherit}
    can see the book of the bible without it being cut off"); ••• at the top right */
 .bar .r1{display:grid;grid-template-columns:1fr auto 1fr;padding-bottom:0}.bar .r1 .lt,.bar .r1 .rt{display:flex;gap:6px;align-items:center}.bar .r1 .rt{justify-self:end}
 .bar .r2{padding-top:6px}
+.bar .chv{flex:none;width:24px;min-width:24px;padding:0 0 3px;border:none!important;background:none!important;font-size:2rem;line-height:1;font-weight:400}.bar .chv:disabled{opacity:.3}
+.bar .r2{gap:4px}.bar .r2 .where{min-width:0;padding:0 10px}.bar .r2 .ver{max-width:74px}
 .ib.sm{height:36px;min-width:36px;padding:0 9px}
 .ib .og2{font:600 1.05rem/1 'Spectral',Georgia,serif}
 .brand{font:400 1.45rem/1 'MFHobo',cursive;text-decoration:none;color:#fff;-webkit-text-stroke:.07em #14181d;paint-order:stroke fill;flex:none}.brand b{font-weight:400;color:#448ff1;-webkit-text-stroke:0}
@@ -234,7 +236,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   <span class="rt"><button type="button" class="ib sm" id="penB" aria-pressed="false" aria-label="Highlighter pen" title="Highlighter: slide across the words">&#128397;&#xFE0E;</button><button type="button" class="ib sm" id="studyB" aria-pressed="false" aria-label="Word study: Hebrew and Greek" title="Word study"><span class="og2" id="studyI">&alpha;</span></button>
     <button type="button" class="ib sm" id="dots" aria-haspopup="menu" aria-expanded="false" aria-label="More"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button></span>
 </div><div class="in r2">
-  <button type="button" class="where" id="where" aria-haspopup="dialog">John 1</button>
+  <button type="button" class="ib chv" id="prevT" aria-label="Previous chapter">&lsaquo;</button><button type="button" class="where" id="where" aria-haspopup="dialog">John 1</button><button type="button" class="ib chv" id="nextT" aria-label="Next chapter">&rsaquo;</button>
   <select class="ver" id="ver" aria-label="Bible version"></select>
   <button type="button" class="ib" id="say" aria-pressed="false" aria-label="Listen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button>
 </div></div>
@@ -415,7 +417,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     whereUI(); $('title').textContent=B[b][0]+' '+c; $('sub').textContent=ver().n; document.title=B[b][0]+' '+c+' · MannaFish Bible';
     try{ history.replaceState(null,'','?r='+encodeURIComponent(B[b][0]+' '+c+(v?':'+v:''))+(EMBED?'&embed=1':'')); }catch(e){}
     var pb=c>1?[b,c-1]:b>0?[b-1,B[b-1][1]]:null, nb=c<B[b][1]?[b,c+1]:b<B.length-1?[b+1,1]:null;
-    $('prev').disabled=!pb; $('next').disabled=!nb; $('prev').dataset.to=pb?pb.join(','):''; $('next').dataset.to=nb?nb.join(','):'';
+    $('prev').disabled=!pb; $('next').disabled=!nb; $('prevT').disabled=!pb; $('nextT').disabled=!nb;
+    $('prevT').title=pb?B[pb[0]][0]+' '+pb[1]:''; $('nextT').title=nb?B[nb[0]][0]+' '+nb[1]:''; $('prev').dataset.to=pb?pb.join(','):''; $('next').dataset.to=nb?nb.join(','):'';
     $('prev').innerHTML=pb?'&lsaquo; Previous<small>'+esc(B[pb[0]][0]+' '+pb[1])+'</small>':''; $('next').innerHTML=nb?'Next &rsaquo;<small>'+esc(B[nb[0]][0]+' '+nb[1])+'</small>':'';
     if(!keep) window.scrollTo(0,0); $('txt').innerHTML='<p class="msg">Opening…</p>';
     cnoteUI(); studyUI(); var P2=parVer();
@@ -456,6 +459,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     if(on){ P.read[k]=Date.now(); P.last={b:AT.b,c:AT.c}; P.lastAt=Date.now(); } else delete P.read[k]; ls('mf-pace',JSON.stringify(P)); if(window.MFacct) MFacct.touch('pace'); paceUI();
     var n=Object.keys(P.read).length, o=Math.floor(n/2)-(P.catch.length-(P.base||0));
     toast(on?(o>0?'🐟 A fish is waiting for you · Plans → My pace':'✓ '+n+' of 1,189 chapters'):'Marked as not read'); });
+  // Ken, 2 Nov: arrows at the top for the previous and next chapter, beside the book and chapter
+  $('prevT').addEventListener('click',function(){ $('prev').click(); }); $('nextT').addEventListener('click',function(){ $('next').click(); });
   $('prev').addEventListener('click',function(){ var t=this.dataset.to.split(',').map(Number); if(t.length===2) go(t[0],t[1]); });
   $('next').addEventListener('click',function(){ var t=this.dataset.to.split(',').map(Number); if(t.length===2) go(t[0],t[1]); });
   document.addEventListener('keydown',function(e){ if(e.target.closest&&e.target.closest('input,select,textarea')) return; if(e.key==='ArrowLeft') $('prev').click(); if(e.key==='ArrowRight') $('next').click(); if(e.key==='Escape'){ closeAct(); closePick(); closeWc(); closeMenu(); closeStuff(); } });
