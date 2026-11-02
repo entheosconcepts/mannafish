@@ -129,7 +129,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     <li>📚 saves a word's size and place as the rule for every word with that many letters in that language. Fish you haven't adjusted follow it.</li>
   </ul>
   <h3>Templates: the average for each word length</h3>
-  <p class="hint" style="text-align:left">Tap ⭐ Template on any fish (your own 24 too). Every word with the same number of letters takes the average of those templates: letter size, left/right and up/down from the middle, and width. The verse lines take the average place of all the templates. Size is the letter size (a 7-letter word is about 583); left/right and up/down are in the fish’s units (it is 4,000 wide).</p>
+  <p class="hint" style="text-align:left">Tap ⭐ Template on any fish (the original 24 too). Every word with the same number of letters takes the average of those templates: letter size, left/right and up/down from the middle, and width. The verse lines take the average place of all the templates. Size is the letter size (a 7-letter word is about 583); left/right and up/down are in the fish’s units (it is 4,000 wide).</p>
   <div class="tw" id="rAvg"></div>
   <div class="row"><button class="btn gold" type="button" id="copyAvg">📋 Copy the averages</button></div>
   <p class="hint" style="text-align:left">When the averages look right, tap 📋 and paste it into your chat with Claude. Every fish is then redrawn with them: the website, the devotional, the 153 and the 365, Go Fish, the daily email pictures, the print files, and Spanish, Tagalog and German.</p>
@@ -439,7 +439,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   // ── templates (Ken, 2 Nov): tick ⭐ on any fish, yours or a new one. Each one is measured (the word's letter size, how far it
   // sits left/right and up/down from the middle of the eye, its width; where each verse line sits along its curve and its letter
   // size), and every word with the same number of letters takes the AVERAGE of the templates with that many letters. The verse
-  // lines take the average of all the templates. Your own 24 are measured from your drawings (tools/fish-format/ken24.json).
+  // lines take the average of all the templates. The original 24 are measured from their hand-drawn art (tools/fish-format/ken24.json).
   var KEN=null;
   function tplOf(id){ for(var i=0;i<LIST.length;i++) if(LIST[i].id===id) return LIST[i]; return null; }
   function title(k){ return k.charAt(0)+k.slice(1).toLowerCase(); }
