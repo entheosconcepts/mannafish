@@ -33,6 +33,18 @@ Ken, 25 Oct: launch the free devotional first (digital only), decals "coming soo
 - **Decals:** when they can be sent, add `MF_BASKET_OPEN` = `1` on manna-fish.com, and Claude switches the basket from waitlist to real requests (`WAIT` in `fish-lang/basket.js`, and the Free MannaFish form). Then email the waitlist (in Netlify Blobs, `mannafish-basket`, status `waitlist`, and Netlify Forms, `free-gift`).
 - **After two weeks of feedback:** decide decals, sponsors, and the game on its own.
 
+- **The app (App Store and Google Play)** (Ken, 2 Nov: "on the priority list, but not right away"). The order Ken chose:
+  1. Soft launch of the website first, and Ken tests every feature.
+  2. Input from family and friends.
+  3. The printable version in place (the decal cards and their print files).
+  4. People ready to engage in kingdom work through sponsorship.
+  5. Then the app: the same site in a Capacitor shell, with a Today's Catch home-screen widget, phone notifications for the
+     devotional, the Bible kept on the phone for no signal, sharing a fish to Messages, and account deletion in the app
+     (Apple requires it). Ken's part, about 5–8 hours over 2–4 weeks: a free D-U-N-S number for Entheos Concepts, the
+     Apple Developer Program as a business ($99 a year), Google Play as a business ($25 once; a business account skips
+     Google's 12-tester, 14-day test), reading the store pages, and trying the test version on his iPhone. Builds through a
+     cloud build service (free plan) or a Mac. Logins and passwords stay with Ken, never in a chat.
+
 ## Next updates (Ken's list)
 
 - **Audio upgrade** (Ken, 27 Oct: "the audio needs help ... put on list for an update"). Today the Bible tab and Plans read
