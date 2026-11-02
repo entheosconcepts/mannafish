@@ -172,6 +172,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 /* ••• (Ken, 24 Oct: "give the bible 3 dots on top right to add notes and see history, recent, highlights, my stuff") */
 .menu{position:fixed;top:calc(var(--barh,100px) - 6px);right:max(8px,calc(50% - 372px));z-index:45;width:min(350px,calc(100% - 16px));max-height:calc(100dvh - var(--barh,100px) - 10px);overflow:auto;overscroll-behavior:contain;
   background:var(--card2);border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 44px -14px rgba(0,0,0,.75);padding:6px 6px 8px}
+.mcat .car{margin-left:auto;color:var(--dim);transition:transform .2s}.mcat[aria-expanded=false] .car{transform:rotate(-90deg)}.mtools{border-left:2px solid var(--line);margin:0 0 0 18px;padding-left:4px}
 .menu h6{margin:8px 10px 6px;font:800 .68rem 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
 .menu hr{border:0;border-top:1px solid var(--line);margin:6px 6px}
 .mi{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;border-radius:12px;padding:10px;cursor:pointer;text-align:left;font-weight:700;font-size:.95rem;color:var(--text);text-decoration:none}
@@ -943,18 +944,37 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 
   // ── ••• (Ken, 24 Oct: "give the bible 3 dots on top right to add notes and see history, recent, highlights, my stuff") ──
   function menuOpen(){ return !$('menu').hidden; }
+  var TOOLS=ls('mf-bible-tools')!=='0', TIPS={tipOrig:1,tipLang:'Tap a word: the window shows it, with 🌐 to pick a language and 🔊 to hear it',
+    tipXr:'Tap the little card after a verse for its cross references',tipPic:'Tap a verse, swipe the window up, then 🖼 Picture',tipLink:'Tap a verse, then Link, and choose the verse it goes with',tipPray:'Tap a verse, then Pray'};
   function closeMenu(){ $('menu').hidden=true; $('dots').setAttribute('aria-expanded','false'); }
   function menuUI(){ var H=hist().filter(function(x){ return B[x.b]&&!(x.b===AT.b&&x.c===AT.c); }).slice(0,8), cn=chNote(), here=B[AT.b][0]+' '+AT.c, L=ogLang(), P2=parVer(), n=counts();
+    var tool=function(id,ic,t,sm){ return '<button type="button" class="mi" role="menuitem" data-m="'+id+'"><span class="ic">'+ic+'</span><span class="tx">'+t+'<small>'+sm+'</small></span></button>'; };
     var sw=function(id,ic,t,sm,on){ return '<button type="button" class="mi" role="menuitemcheckbox" data-m="'+id+'" aria-pressed="'+!!on+'"><span class="ic">'+ic+'</span><span class="tx">'+t+'<small>'+sm+'</small></span><span class="sw"></span></button>'; };
     $('menu').innerHTML=(H.length?'<h6>Recent</h6><div class="mrc">'+H.map(function(x){ return '<button type="button" data-go="'+x.b+','+x.c+',0">'+esc(B[x.b][0]+' '+x.c)+'</button>'; }).join('')+'</div><hr>':'')
       +'<button type="button" class="mi" role="menuitem" data-m="note"><span class="ic">&#128221;&#xFE0E;</span><span class="tx">'+(cn?'My note on ':'Add a note on ')+esc(here)+'<small>'+esc(cn?cn.text.slice(0,70):'What God is showing you in this chapter')+'</small></span></button>'
       +'<button type="button" class="mi" role="menuitem" data-m="words"><span class="ic">&#128397;&#xFE0E;</span><span class="tx">Highlight a word<small>Every place it is used: this chapter, this book or the whole Bible</small></span></button>'
       +'<button type="button" class="mi" role="menuitem" data-m="find"><span class="ic">&#128269;&#xFE0E;</span><span class="tx">Go to a book or verse<small>Or type one, like John 3:16</small></span></button>'
-      +'<hr><h6>Study</h6>'
-      +sw('study','<span class="og2">'+L.i+'</span>','Word study','Tap any word for its '+L.n+' root',studyOn())
-      +sw('par','&#9707;&#xFE0E;','Side by side','Two versions, verse by verse',!!P2)
-      +(P2?'<div class="mi2"><span class="sub" style="margin:0;align-self:center">'+esc(ver().s)+' and</span><select id="mPar" aria-label="The version beside it">'+parOpts()+'</select></div>':'')
-      +sw('pen','&#128397;&#xFE0E;','Highlighter pen',TOUCH?'Slide a finger across the words':'Drag across the words',PEN)
+      // Ken, 2 Nov: "a category under the three dots ... Bible tools, and sub categories under that showing each tool" -- tap to open
+      +'<hr><button type="button" class="mi mcat" data-m="tools" aria-expanded="'+TOOLS+'"><span class="ic">&#129520;&#xFE0E;</span><span class="tx">Bible tools<small>Everything built into this Bible</small></span><span class="car" aria-hidden="true">&#9662;</span></button>'
+      +(TOOLS?'<div class="mtools">'
+        +sw('study','<span class="og2">'+L.i+'</span>','Word study','Tap any word for its '+L.n+' root',studyOn())
+        +sw('par','&#9707;&#xFE0E;','Side by side','Two versions, verse by verse',!!P2)
+        +(P2?'<div class="mi2"><span class="sub" style="margin:0;align-self:center">'+esc(ver().s)+' and</span><select id="mPar" aria-label="The version beside it">'+parOpts()+'</select></div>':'')
+        +sw('pen','&#128397;&#xFE0E;','Highlighter pen',TOUCH?'Slide a finger across the words':'Drag across the words',PEN)
+        +sw('erase','&#129533;','Eraser',TOUCH?'Slide across highlights to take them off':'Drag across highlights to take them off',ERASE)
+        +tool('words','&#128397;&#xFE0E;','Highlight a word everywhere','Every place it is used: this chapter, this book or the whole Bible')
+        +tool('listen','&#128264;&#xFE0E;','Listen','Read this chapter aloud from where you are')
+        +tool('note','&#128221;&#xFE0E;','Chapter note','What God is showing you in '+esc(here))
+        +tool('tipOrig','<span class="og2">'+L.i+'</span>',L.n+' of a verse','Tap a verse, then '+L.n)
+        +tool('tipLang','&#127760;&#xFE0E;','A word in another language','Tap a word: its '+L.n+', Spanish and more, and hear it')
+        +tool('tipXr','&#128209;&#xFE0E;','Cross references','Tap the little card after a verse')
+        +tool('tipPic','&#128444;&#xFE0E;','Picture verse','Tap a verse, swipe up, then Picture')
+        +tool('tipLink','&#128279;&#xFE0E;','Link two verses','Tap a verse, then Link')
+        +tool('tipPray','&#128591;&#xFE0E;','Pray a verse','Tap a verse, then Pray')
+        +tool('find','&#128269;&#xFE0E;','Go to a book or verse','Or type one, like John 3:16')
+        +'<a class="mi" href="/plan/" target="_top"><span class="ic">&#128197;&#xFE0E;</span><span class="tx">Reading plans<small>Bible in a Year, One Word and more</small></span></a>'
+        +'<a class="mi" href="/translate/" target="_top"><span class="ic">&#128483;&#xFE0E;</span><span class="tx">Translator<small>Talk with someone in their language</small></span></a>'
+        +'</div>':'')
       +'<hr><h6>My stuff</h6><div class="mgrid">'
       +[['hl','&#128397;&#xFE0E;','Highlights'],['notes','&#128221;&#xFE0E;','Notes'],['saved','&#128278;&#xFE0E;','Saved'],['links','&#128279;&#xFE0E;','Links'],['hist','&#128337;&#xFE0E;','History']].map(function(x){ return '<button type="button" data-st="'+x[0]+'"><span class="ic">'+x[1]+'</span>'+x[2]+'<small>'+n[x[0]]+'</small></button>'; }).join('')
       +'<a href="/you/" target="_top"><span class="ic">&#128100;&#xFE0E;</span>You<small>Everything</small></a></div>'
@@ -974,6 +994,10 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     else if(k==='study'){ setStudy(!studyOn()); menuUI(); }
     else if(k==='par'){ putSet('par',parVer()?undefined:(ver().k==='kjv'?'web':'kjv')); go(AT.b,AT.c,0,true); menuUI(); }
     else if(k==='pen'){ closeMenu(); setPen(!PEN); }
+    else if(k==='tools'){ TOOLS=!TOOLS; ls('mf-bible-tools',TOOLS?'1':'0'); menuUI(); }
+    else if(k==='erase'){ closeMenu(); setErase(!ERASE); }
+    else if(k==='listen'){ closeMenu(); if(!SAY.on) $('say').click(); }
+    else if(TIPS[k]){ closeMenu(); toast(k==='tipOrig'?'Tap a verse, then the '+ogLang().n+' button in the window':TIPS[k]); }
     else if(k==='fb'){ closeMenu(); MFfeedback.open(); } });
 
   // My stuff: highlights, notes, saved, links and history, in one place, each a tap away from its verse
