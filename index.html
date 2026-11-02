@@ -1055,6 +1055,8 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 .mfplayer[hidden]{display:none}
 .mpgrab{display:block;margin:0 auto 4px;width:60px;height:22px;border:0;background:none;cursor:pointer;padding:0}
 .mpgrab span{display:block;width:44px;height:5px;border-radius:3px;background:#5a5a5e;margin:0 auto}
+/* Ken, 2 Nov: an arrow with the line: down to make the player smaller, up to open it again */
+.mpgrab{height:auto!important;display:flex!important;flex-direction:column;align-items:center;gap:2px;color:#8a8a90}.mpgrab .ga{width:20px;height:10px;transform:rotate(180deg);transition:transform .2s}.mfplayer.mini .mpgrab .ga{transform:none}
 .mphead{text-align:center}
 .mpt{font:800 1.05rem 'Archivo',sans-serif}
 .mps{font:600 .8rem 'Archivo',sans-serif;color:#b8b8bd;margin-top:2px}
@@ -2249,7 +2251,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
 <!-- Ken, 11 Oct: read aloud the way the Bible App does it -- a speaker at the top of the reader opens a player at the
      bottom of the screen: play / pause, a verse back or forward, a bar to move through the chapter, speed and voice. -->
 <div class="mfplayer" id="mfPlayer" hidden role="region" aria-label="Read aloud">
-  <button type="button" class="mpgrab" id="mpMin" aria-label="Make smaller"><span></span></button>
+  <button type="button" class="mpgrab" id="mpMin" aria-label="Make smaller"><span></span><svg class="ga" viewBox="0 0 24 12" aria-hidden="true"><path d="M5 9.5l7-6 7 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   <div class="mphead"><div class="mpt" id="mpTitle"></div><div class="mps" id="mpSub"></div></div>
   <div class="mpctl">
     <button type="button" class="mpb" id="mpPrev" aria-label="Back one verse"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6 3 12l8 6zM21 6l-8 6 8 6z" fill="currentColor"/></svg></button>
