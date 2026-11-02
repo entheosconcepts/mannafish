@@ -14,5 +14,7 @@ fs.copyFileSync(path.join(__dirname,'fishfmt.js'),path.join(ROOT,'fish-lang','fi
 fs.writeFileSync(path.join(ROOT,'fish-lang','fishgeo.json'),JSON.stringify(Object.assign({},JSON.parse(fs.readFileSync(path.join(__dirname,'geo.json'))),{rule:R,ken:JSON.parse(fs.readFileSync(path.join(__dirname,'ken24.json')))})));   // ken: Ken's 24 measured, for templates on the edit sheet
 const lines=JSON.parse(fs.readFileSync(path.join(__dirname,process.argv[2]||'net-lines.json')));
 // a fish Ken asked to change by hand keeps it: "edit": {"wl": {"s": 1.15}} makes its word 15% bigger (Ken, 1 Nov: Build "a little bigger")
-for(const f of lines){ fs.writeFileSync(path.join(ROOT,'fish',f.k+'.svg'),f.edit?F.draw(font,f,F.applyRel(font,f,F.layout(font,f,R),f.edit),R):F.svg(font,f,R)); }
+// Ken's template averages from the edit sheet (templates.json, templates.js), for every fish without its own hand setting
+const T=require('./templates.js'), TPL=T.load(); if(TPL) console.log('using the template averages:',Object.keys(TPL.word||{}).join(', ')||'lines only');
+for(const f of lines){ const P=F.layout(font,f,R); fs.writeFileSync(path.join(ROOT,'fish',f.k+'.svg'),F.draw(font,f,f.edit?F.applyRel(font,f,P,f.edit):T.apply(F,font,f,P,R,TPL),R)); }
 console.log(lines.length,'fish drawn', JSON.stringify(R.word));

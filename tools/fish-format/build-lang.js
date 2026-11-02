@@ -5,6 +5,7 @@
 // The words and lines are lang-lines.json (from each fish's last picture). Spanish, Tagalog and German are in Ken's Hobo;
 // the others in their own face (fonts/: the site's own fish-lang/<l>.woff2, saved as TTF), shaped with HarfBuzz.
 const fs=require('fs'), path=require('path'), ot=require(process.env.OPENTYPE||'opentype.js'), F=require('./fishfmt.js'), {derive}=require('./derive.js'), HB=require('./hbengine.js');
+const TM=require('./templates.js'), TPL=TM.load();   // Ken's template averages (templates.js)
 const ROOT=path.join(__dirname,'..','..');
 F.setGeo(JSON.parse(fs.readFileSync(path.join(__dirname,'geo.json'))));
 const PICKS=(process.env.PICKS||'REST,GROW,LOVE,TRUST,LISTEN,LAUGH,BELIEVE,BREATHE,REMEMBER').split(',');
@@ -27,7 +28,7 @@ function ruleFor(fc){ const r=JSON.parse(JSON.stringify(R)); if(!fc) return r;
   for(const l of want){ const fc=FACE[l];
     const E=fc?await HB.load(path.join(__dirname,'fonts',fc.f),{rtl:!!fc.rtl,capChars:fc.cap,name:l,tallAll:!!fc.tallAll}):hobo;
     const RL=ruleFor(fc), TX={};
-    for(const [key,f0] of Object.entries(LINES[l])){ const f=Object.assign({tag:''},f0); let P=F.layout(E,f,RL); if(f.edit) P=F.applyRel(E,f,P,f.edit);
+    for(const [key,f0] of Object.entries(LINES[l])){ const f=Object.assign({tag:''},f0); let P=F.layout(E,f,RL); P=f.edit?F.applyRel(E,f,P,f.edit):['es','tl','de'].includes(l)?TM.apply(F,E,f,P,RL,TPL):P;   // letter counts mean the same only in Hobo's languages
       fs.writeFileSync(path.join(ROOT,'fish',l,key+'.svg'),F.draw(E,f,P,RL));
       TX[key]=F.textSvg(E,f,P,RL,BASE,fc?fc.fam:'MFHobo',fc?fc.w:'',!!(fc&&fc.rtl)); }
     fs.mkdirSync(path.join(ROOT,'edit','lang'),{recursive:true}); fs.writeFileSync(path.join(ROOT,'edit','lang',l+'.json'),JSON.stringify(TX));

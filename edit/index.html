@@ -131,6 +131,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   <h3>Templates: the average for each word length</h3>
   <p class="hint" style="text-align:left">Tap ⭐ Template on any fish (your own 24 too). Every word with the same number of letters takes the average of those templates: letter size, left/right and up/down from the middle, and width. The verse lines take the average place of all the templates. Size is the letter size (a 7-letter word is about 583); left/right and up/down are in the fish’s units (it is 4,000 wide).</p>
   <div class="tw" id="rAvg"></div>
+  <div class="row"><button class="btn gold" type="button" id="copyAvg">📋 Copy the averages</button></div>
+  <p class="hint" style="text-align:left">When the averages look right, tap 📋 and paste it into your chat with Claude. Every fish is then redrawn with them: the website, the devotional, the 153 and the 365, Go Fish, the daily email pictures, the print files, and Spanish, Tagalog and German.</p>
   <h3>Word in the middle</h3><div class="tw" id="rWord"></div>
   <h3>Verse lines (new fish)</h3><div class="tw" id="rLines"></div>
   <div class="row"><button class="btn ghost" type="button" data-click="copy">Copy the list</button><button class="btn ghost" type="button" data-click="undo">Undo all changes</button></div>
@@ -468,6 +470,13 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     var lt=['top','bot'].map(function(k){ var r=(S.rules[k].en||[]).filter(function(x){ return x.avg; })[0]; return r?'<tr><td>'+(k==='top'?'Top':'Bottom')+' line</td><td>'+r.size+'</td><td>'+r.slide+'%</td><td>'+esc(r.from)+'</td></tr>':''; }).join('');
     el.innerHTML='<table><tr><th>Letters</th><th>Templates</th><th>Size</th><th>Left/right</th><th>Up/down</th><th>Width</th></tr>'+rows.join('')+'</table>'
       +(lt?'<table style="margin-top:8px"><tr><th>Line</th><th>Letter size</th><th>Slide</th><th>From</th></tr>'+lt+'</table>':''); }
+  // what Claude needs to redraw every fish with the averages (tools/fish-format/templates.json)
+  document.addEventListener('click',function(e){ if(!e.target.closest('#copyAvg')) return; averages(); var W=S.rules.word.en||{}, out={mf_templates:1,at:new Date().toISOString(),word:{},templates:(AVG&&AVG.M||[]).map(function(m){ return m.word; })};
+    Object.keys(W).forEach(function(n){ var r=W[n]; if(r.avg) out.word[n]={size:r.size,dx:r.dx,dy:r.dy,ww:r.ww,hh:r.hh,from:r.from}; });
+    ['top','bot'].forEach(function(k){ var r=(S.rules[k].en||[]).filter(function(x){ return x.avg; })[0]; if(r) out[k]={size:r.size,slide:r.slide}; });
+    if(!out.templates.length){ msg('Tap ⭐ Template on some fish first.'); return; }
+    var t=JSON.stringify(out); (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){ msg('Copied the averages of '+out.templates.length+' templates. Paste them into your chat with Claude.'); })
+      .catch(function(){ window.prompt('Copy this and paste it into your chat with Claude:',t); }); });
   function learnLine(X,w){ var v=lineGet(X,w), n=val(X,w).length, list=(S.rules[w][X.code]||[]).filter(function(r){ return r.n!==n; });
     list.push({n:n,size:Math.round(v.size),slide:Math.round(v.slide*10)/10,lw:+(+v.w).toFixed(3),src:X.id,from:val(X,'word')}); S.rules[w][X.code]=list; return {n:n,size:Math.round(v.size)}; }
   function onInput(e){ var X=fishOfEl(e.target); if(!X) return; var i=e.target;
