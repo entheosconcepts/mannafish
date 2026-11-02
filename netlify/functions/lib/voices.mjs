@@ -19,3 +19,10 @@ export function speaker(id, lang, fallback = 'sage') {
   if (c) return { voice: c.v, style: c.how + (lang === 'en' && c.acc ? c.acc : '') + ' ' };
   return { voice: BASE.includes(id) ? id : fallback, style: '' };
 }
+// what each voice is called and sounds like, for the voice lists (the site's pickers, and /api/say?list=1 for Ken's other sites)
+export const LABELS = {
+  thunder: ['Thunder', 'very deep, grand'], narrator: ['Narrator', 'classic Bible reader'], highland: ['Highlander', 'Scottish gentleman'],
+  onyx: ['Onyx', 'deep'], ash: ['Ash', 'gentle'], fable: ['Fable', 'storyteller'], grace: ['Grace', 'deep, mature'], magnolia: ['Magnolia', 'Southern, sweet'],
+  heather: ['Heather', 'Scottish lady'], sage: ['Sage', 'calm'], coral: ['Coral', 'warm'], ballad: ['Ballad', 'expressive'],
+  alloy: ['Alloy', 'even, clear'], echo: ['Echo', 'bright'], nova: ['Nova', 'lively'], shimmer: ['Shimmer', 'soft'], verse: ['Verse', 'friendly'],
+};

@@ -1355,6 +1355,7 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 .tcard{position:fixed;left:50%;transform:translateX(-50%);bottom:max(16px,env(safe-area-inset-bottom));width:min(460px,calc(100% - 24px));box-sizing:border-box;background:#16181c;color:#fff;border:1px solid #2a5fb0;border-radius:18px;padding:14px 16px;pointer-events:auto;box-shadow:0 20px 60px -10px #000;font-family:'Archivo',sans-serif}
 .tcard.top{bottom:auto;top:max(16px,env(safe-area-inset-top))}
 .thd{display:flex;align-items:center;gap:8px}
+#tK{white-space:nowrap}.tvoice{max-width:150px;background:#1c1c1e;color:#fff;border:1px solid #3a3a3e;border-radius:999px;padding:6px 8px;font:700 .8rem 'Archivo',sans-serif}
 .thd span{flex:1;font:800 .72rem 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75}
 .tsb{width:36px;height:36px;border-radius:50%;border:1px solid #3a3a3e;background:none;color:#fff;cursor:pointer;font-size:1.1rem;display:inline-flex;align-items:center;justify-content:center;padding:0}
 .tsb svg{width:18px;height:18px}.tsb[aria-pressed="true"]{background:#2a5fb0;border-color:#2a5fb0}
@@ -2322,7 +2323,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <div class="ptbible" id="ptBible" hidden><iframe id="ptBibleF" title="Bible"></iframe></div>
 </div>
 <div class="tour" id="tour" hidden translate="no"><div class="tring" id="tRing"></div>
-  <div class="tcard" id="tCard" role="dialog" aria-live="polite"><div class="thd"><span id="tK"></span><button type="button" class="tsb" id="tSpk" aria-pressed="false" aria-label="Listen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button><button type="button" class="tsb ptpause" id="tPause" aria-label="Pause" hidden></button><button type="button" class="tsb" id="tX" aria-label="Close">&times;</button></div>
+  <div class="tcard" id="tCard" role="dialog" aria-live="polite"><div class="thd"><span id="tK"></span><select class="voicesel tvoice" id="tVoice" aria-label="Voice"></select><button type="button" class="tsb" id="tSpk" aria-pressed="false" aria-label="Listen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button><button type="button" class="tsb ptpause" id="tPause" aria-label="Pause" hidden></button><button type="button" class="tsb" id="tX" aria-label="Close">&times;</button></div>
   <div class="ttx" id="tTx"></div><div class="tbt" id="tBt"></div><div class="tnav"><button type="button" id="tBack"></button><button type="button" id="tNext"></button></div></div></div>
 <div class="wpop" id="wPop" role="dialog" aria-live="polite" hidden><button type="button" class="wpx" id="wpX" aria-label="Close">&times;</button>
   <div class="wpw"><span id="wpWord"></span><button type="button" class="wpsay" id="wpSay" aria-label="Hear it">&#128266;</button></div>
@@ -3793,7 +3794,9 @@ window.MF=(function(){
       if(me<T.s.length-1) setTimeout(function(){ if(TR.on&&TR.i===me&&TR.guided) trGo(me+1); },800); }},1,1,$('tSpk'));
     $('tSpk').setAttribute('aria-pressed','true'); }
   function trGo(i){ TR.i=Math.max(0,Math.min(trT().s.length-1,i)); trShow(); }
-  function trOpen(){ if(PT.on) ptClose(); if(window.MFplClose&&!$('mfPlayer').hidden) MFplClose(); TR.on=true; TR.guided=false; TR.i=0; $('tour').hidden=false; $('tour').dir=/^(he|ar)$/.test(MF.lang)?'rtl':'ltr'; trShow(); }
+  function trOpen(){ if(PT.on) ptClose(); if(window.MFplClose&&!$('mfPlayer').hidden) MFplClose(); TR.on=true; TR.guided=false; TR.i=0; $('tour').hidden=false; $('tour').dir=/^(he|ar)$/.test(MF.lang)?'rtl':'ltr'; $('tVoice').innerHTML=voiceOptions(); trShow(); }
+  // Ken, 2 Nov: the voices for the tour too -- pick one on the card; the step is read again in it
+  $('tVoice').addEventListener('change',function(){ setVoice(this.value); if(TR.on) trShow(); });
   function trClose(){ TR.on=false; TR.guided=false; stopSpeak(); $('tour').hidden=true; }
   $('tourBtn').addEventListener('click',trOpen);
   $('tX').addEventListener('click',trClose);
@@ -4278,7 +4281,7 @@ window.MF=(function(){
     return {mark:function(ci){ if(ci<cut){ paint(topL,'#2a5fb0'); paint(botL,''); } else { paint(topL,''); paint(botL,'#2a5fb0'); } },
             reset:function(){ paint(topL,''); paint(botL,''); }}; }
   // Ken, 9 Oct: "the user can choose which voice to hear" -- the natural (AI) voices, or the device's own voice
-  var VOICES=[['thunder','Thunder — very deep, grand'],['narrator','Narrator — classic Bible reader'],['highland','Highlander — Scottish gentleman'],['onyx','Onyx — deep'],['ash','Ash — gentle'],['fable','Fable — storyteller'],['grace','Grace — deep, mature'],['magnolia','Magnolia — Southern, sweet'],['heather','Heather — Scottish lady'],['sage','Sage — calm'],['coral','Coral — warm'],['ballad','Ballad — expressive']];
+  var VOICES=[['thunder','Thunder — very deep, grand'],['narrator','Narrator — classic Bible reader'],['highland','Highlander — Scottish gentleman'],['onyx','Onyx — deep'],['ash','Ash — gentle'],['fable','Fable — storyteller'],['grace','Grace — deep, mature'],['magnolia','Magnolia — Southern, sweet'],['heather','Heather — Scottish lady'],['sage','Sage — calm'],['coral','Coral — warm'],['ballad','Ballad — expressive'],['alloy','Alloy — even, clear'],['echo','Echo — bright'],['nova','Nova — lively'],['shimmer','Shimmer — soft'],['verse','Verse — friendly']];
   function curVoice(){ var v=''; try{ v=localStorage.getItem('mf-voice')||''; }catch(e){} return v==='device'||VOICES.some(function(o){ return o[0]===v; })?v:'sage'; }
   function aiVoice(){ var v=curVoice(); return v==='device'?'':v; }
   function voiceOptions(){ var v=curVoice(), dev={es:'Voz de este dispositivo'}[MF.lang]||'This device’s own voice';

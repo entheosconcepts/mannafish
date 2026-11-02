@@ -9,7 +9,7 @@
 import { getStore } from '@netlify/blobs';
 import { NAMES, MODEL, translatePair, translateTo, polish } from './lib/tr.mjs';
 const VOICE = process.env.MF_TTS_VOICE || 'sage';
-import { ALL, speaker } from './lib/voices.mjs';
+import { ALL, speaker, LABELS } from './lib/voices.mjs';
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];
 const MAX = 300, PER_HOUR = 80, SAY_PER_HOUR = 400;  // the Bible reader reads a chapter verse by verse
 const okOrigin = (o) => /^https:\/\/([a-z0-9-]+\.)?manna-fish\.com$|^https:\/\/([a-z0-9-]+--)?yadamannafishtest\.netlify\.app$|^http:\/\/localhost(:\d+)?$/.test(o || '');
@@ -30,11 +30,19 @@ async function sha(t) {
 // Ken, 11 Oct: "there's a delay" before a recording plays -- the voice can also be asked for by GET
 // (/api/say?t=<text>&l=<lang>&v=<voice>), so the browser and Netlify's CDN keep every clip once it is made.
 const okRef = (r) => { try { return okOrigin(new URL(r).origin); } catch (e) { return false; } };
+// Ken, 2 Nov: "I can use it on that tour" -- Ken's own other sites may play MannaFish's voices too (GET /api/say only): the Majestic
+// Awards CRM, any majesticawards.com page, and any address listed in MF_SAY_ORIGINS (comma-separated, set in Netlify)
+const okOther = (u) => { try { const o = new URL(u).origin; return /^https:\/\/(majestic-awards-crm\.netlify\.app|([a-z0-9-]+\.)?majesticawards\.com)$/.test(o)
+  || String(process.env.MF_SAY_ORIGINS || '').split(',').map((x) => x.trim()).filter(Boolean).includes(o); } catch (e) { return false; } };
 export default async (req, context) => {
   const get = req.method === 'GET';
   if (get) {
     if (!new URL(req.url).pathname.endsWith('/say')) return bad('POST only', 405);
-    if (!(okOrigin(req.headers.get('origin')) || req.headers.get('sec-fetch-site') === 'same-origin' || okRef(req.headers.get('referer')))) return bad('Not allowed', 403);
+    // GET /api/say?list=1: every voice, its name and how it sounds (for a voice picker on another of Ken's sites)
+    if (new URL(req.url).searchParams.get('list')) return Response.json({ voices: ALL.map((id) => ({ id, name: (LABELS[id] || [id])[0], sounds: (LABELS[id] || ['', ''])[1] })),
+      languages: Object.keys(NAMES), play: '/api/say?t=<words>&l=<language>&v=<voice>' }, { headers: { 'access-control-allow-origin': '*', 'cache-control': 'public, max-age=3600' } });
+    if (!(okOrigin(req.headers.get('origin')) || req.headers.get('sec-fetch-site') === 'same-origin' || okRef(req.headers.get('referer'))
+      || okOther(req.headers.get('origin')) || okOther(req.headers.get('referer')))) return bad('Not allowed', 403);
   } else {
     if (req.method !== 'POST') return bad('POST only', 405);
     if (!okOrigin(req.headers.get('origin'))) return bad('Not allowed', 403);
@@ -129,7 +137,7 @@ export default async (req, context) => {
         const [toPhone, toStore] = r.body.tee();
         context.waitUntil(new Response(toStore).arrayBuffer().then((buf) => buf.byteLength > 1000 ? store.set(id, buf) : null).catch(() => {}));
         return new Response(toPhone, { headers: get
-          ? { 'content-type': 'audio/mpeg', 'cache-control': 'public, max-age=31536000, immutable', 'netlify-cdn-cache-control': 'public, max-age=31536000, durable', 'netlify-vary': 'query' }
+          ? { 'content-type': 'audio/mpeg', 'cache-control': 'public, max-age=31536000, immutable', 'netlify-cdn-cache-control': 'public, max-age=31536000, durable', 'netlify-vary': 'query', 'access-control-allow-origin': '*' }
           : { 'content-type': 'audio/mpeg', 'cache-control': 'private, max-age=86400' } });
       }
       audio = await r.arrayBuffer();
@@ -137,7 +145,7 @@ export default async (req, context) => {
     }
     // the address holds the exact words and voice, so a clip never changes: keep it everywhere for a year
     return new Response(audio, { headers: get
-      ? { 'content-type': 'audio/mpeg', 'cache-control': 'public, max-age=31536000, immutable', 'netlify-cdn-cache-control': 'public, max-age=31536000, durable', 'netlify-vary': 'query' }
+      ? { 'content-type': 'audio/mpeg', 'cache-control': 'public, max-age=31536000, immutable', 'netlify-cdn-cache-control': 'public, max-age=31536000, durable', 'netlify-vary': 'query', 'access-control-allow-origin': '*' }
       : { 'content-type': 'audio/mpeg', 'cache-control': 'private, max-age=86400' } });
   }
 
