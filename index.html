@@ -1797,6 +1797,16 @@ select option{background:#0b1620;color:#eaf0f0}
 @media(max-width:480px){.nav .cmpbtn{left:12px;height:34px;padding:0 10px;font-size:.76rem}.nav .cmpbtn svg{width:18px;height:9px}}
 #cmpLabS{display:none}
 @media(max-width:480px){#cmpLab{display:none}#cmpLabS{display:inline}}
+
+/* Ken, 2 Nov: "What is 2 Fish?" on the site's own background (it was parchment), like every other section */
+.story{background:transparent;color:inherit}.story::before{display:none}.story h2{color:inherit}
+.story-grid p,.tf p{color:var(--foam-dim)}.story-grid .verse{color:inherit}.tf{background:var(--ink2);border-color:var(--line)}.tf h3{color:inherit}.tf .k{color:var(--brass)}
+.story .secspk{color:var(--foam);border-color:var(--line)}
+/* every section can be closed and opened again (Ken, 2 Nov: "give each section an expand / hide arrow") */
+.sec-tog{display:flex;align-items:center;justify-content:center;width:38px;height:38px;margin:10px auto 0;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--foam);cursor:pointer;font-size:1.05rem;line-height:1;transition:transform .2s}
+.sec-tog[aria-expanded=false]{transform:rotate(-90deg)}
+.sec-hid{display:none!important}
+section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:22px!important}
 </style>
 
 <div class="fsback" id="fsBack" hidden></div>
@@ -1996,6 +2006,29 @@ select option{background:#0b1620;color:#eaf0f0}
   </div>
 </div></section>
 
+<!-- Ken, 2 Nov: "What is 2 Fish?" above the 2 Fish section, on the site's own background -->
+<section class="story" id="story"><div class="wrap">
+  <span class="eyebrow">The heart of it</span>
+  <h2>What is &ldquo;2 Fish&rdquo;?</h2>
+  <button type="button" class="secspk" data-sec="story" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg><span>Listen</span></button>
+  <div class="story-grid">
+    <div>
+      <p>You&rsquo;ve heard the old proverb: give a man a fish and you feed him for a day; teach a man to fish and you feed him for a lifetime. At MannaFish we read it through the eyes of the One who fed the thousands.</p>
+      <p>In John 6, a boy brings five loaves and <em>two small fishes</em> &mdash; an ordinary lunch &mdash; and places it in Jesus&rsquo; hands. Blessed and broken, it feeds a multitude, with baskets left over. That&rsquo;s the &ldquo;2 Fish.&rdquo;</p>
+      <p>Two fish means <em>one for me, and one for you.</em> First I take the Word and apply it to my own life. Then I give it away &mdash; and I teach the next person to do the same. A meal becomes a multiplication.</p>
+    </div>
+    <div>
+      <div class="verse">&ldquo;There is a lad here, which hath five barley loaves, and two small fishes: but what are they among so many?&rdquo;<span>John 6:9 &middot; KJV</span></div>
+      <p style="margin-top:24px">It&rsquo;s the pattern of the manna in the wilderness: gather enough for yourself, and enough for those who cannot yet gather for themselves. Nobody goes without, and everybody learns to gather.</p>
+      <p>And here is the freedom in it &mdash; we are laborers together. One plants, another waters, but <em>God gives the increase.</em> That takes the pressure off, and puts the glory where it belongs.</p>
+    </div>
+  </div>
+  <div class="twofish">
+    <div class="tf"><div class="k">Give a MannaFish</div><h3>Feed him a meal.</h3><p>One verse, one word of God, placed in a willing hand. Enough for today &mdash; real food that meets the moment.</p></div>
+    <div class="tf"><div class="k">Teach a man 2 Fish</div><h3>Feed him for life.</h3><p>Not just the meal, but the catch: how to open the Word for yourself, and how to hand it to the next person.</p></div>
+  </div>
+</div></section>
+
 <section class="section reach" id="reach"><div class="wrap">
   <!-- Ken, 11 Oct: the vision of MannaFish, first -- why we give, that a free gift is never free, receive first,
        the 2 Fish Challenge, who pays the price, and why we gather. Then the sponsorship picker. -->
@@ -2079,28 +2112,6 @@ select option{background:#0b1620;color:#eaf0f0}
   <div class="words" id="words"></div>
   <p class="explore-note"><b>How it works:</b> pick a word, read its Greek and Hebrew meaning, then tap any of the twelve verses to read it &mdash; the whole chapter opens right here, no app required. On a MannaFish decal or card, a QR code opens this same study on any phone.</p>
   <div class="cta-row" style="margin-top:26px"><a class="btn btn-primary" href="free_devotional.html">Open the full devotional &#8594;</a></div>
-</div></section>
-
-<section class="story" id="story"><div class="wrap">
-  <span class="eyebrow">The heart of it</span>
-  <h2>What is &ldquo;2 Fish&rdquo;?</h2>
-  <button type="button" class="secspk" data-sec="story" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg><span>Listen</span></button>
-  <div class="story-grid">
-    <div>
-      <p>You&rsquo;ve heard the old proverb: give a man a fish and you feed him for a day; teach a man to fish and you feed him for a lifetime. At MannaFish we read it through the eyes of the One who fed the thousands.</p>
-      <p>In John 6, a boy brings five loaves and <em>two small fishes</em> &mdash; an ordinary lunch &mdash; and places it in Jesus&rsquo; hands. Blessed and broken, it feeds a multitude, with baskets left over. That&rsquo;s the &ldquo;2 Fish.&rdquo;</p>
-      <p>Two fish means <em>one for me, and one for you.</em> First I take the Word and apply it to my own life. Then I give it away &mdash; and I teach the next person to do the same. A meal becomes a multiplication.</p>
-    </div>
-    <div>
-      <div class="verse">&ldquo;There is a lad here, which hath five barley loaves, and two small fishes: but what are they among so many?&rdquo;<span>John 6:9 &middot; KJV</span></div>
-      <p style="margin-top:24px">It&rsquo;s the pattern of the manna in the wilderness: gather enough for yourself, and enough for those who cannot yet gather for themselves. Nobody goes without, and everybody learns to gather.</p>
-      <p>And here is the freedom in it &mdash; we are laborers together. One plants, another waters, but <em>God gives the increase.</em> That takes the pressure off, and puts the glory where it belongs.</p>
-    </div>
-  </div>
-  <div class="twofish">
-    <div class="tf"><div class="k">Give a MannaFish</div><h3>Feed him a meal.</h3><p>One verse, one word of God, placed in a willing hand. Enough for today &mdash; real food that meets the moment.</p></div>
-    <div class="tf"><div class="k">Teach a man 2 Fish</div><h3>Feed him for life.</h3><p>Not just the meal, but the catch: how to open the Word for yourself, and how to hand it to the next person.</p></div>
-  </div>
 </div></section>
 
 <!-- Ken, 12 Oct: "Manna…Fish Stories -- a section where people can share their catch. Video, audio or written fish stories."
@@ -4049,7 +4060,7 @@ window.MF=(function(){
   $('smBible').addEventListener('click',function(){ location.href='/bible/'; });
   // Ken, 22 Oct: Time with God (/pray/), like the Bible App's guided prayer, and more
   $('smPray').addEventListener('click',function(){ location.href='/pray/'; });
-  $('smStories').addEventListener('click',function(){ $('stories').scrollIntoView({behavior:'smooth',block:'start'}); });
+  $('smStories').addEventListener('click',function(){ if(window.MFsecOpen) MFsecOpen('stories'); $('stories').scrollIntoView({behavior:'smooth',block:'start'}); });
   $('ptStage').addEventListener('click',function(e){ if(e.target.closest('[data-fs]')) fsOpen(); });
   MF.onChange(fsUI); fsUI();
   if('IntersectionObserver' in window){ var fio=new IntersectionObserver(function(es){ if(es.some(function(x){ return x.isIntersecting; })){ fio.disconnect(); fsLoad(); } },{rootMargin:'600px'}); fio.observe($('stories')); } else fsLoad();
@@ -5474,5 +5485,27 @@ body.mfediting{padding-top:54px!important}
   document.addEventListener('click',function(e){var t=e.target;if(!t.closest)return;if(t.closest('#mfEditBar .save'))save();else if(t.closest('#mfEditBar .done'))stop();},true);
   if(document.readyState!=='loading')check();else document.addEventListener('DOMContentLoaded',check);
   window.addEventListener('hashchange',check);
+})();
+</script>
+<script>
+/* Ken, 2 Nov: an arrow under each section's heading hides the section or opens it again; remembered on this device */
+(function(){ var KEY='mf-sec-shut', shut={}; try{ shut=JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){}
+  function keep(){ try{ localStorage.setItem(KEY,JSON.stringify(shut)); }catch(e){} }
+  function init(){ [].slice.call(document.querySelectorAll('section.section,section.story')).forEach(function(sec,i){ var wrap=sec.querySelector('.wrap'), h2=wrap&&wrap.querySelector('h2'); if(!h2||sec._mfOpen) return;
+    var id=sec.id||('sec'+i), head=h2; while(head.parentNode!==wrap) head=head.parentNode;
+    var b=document.createElement('button'); b.type='button'; b.className='sec-tog'; b.setAttribute('translate','no'); b.innerHTML='&#9662;';
+    h2.insertAdjacentElement('afterend',b);
+    function set(open){ b.setAttribute('aria-expanded',String(open)); b.setAttribute('aria-label',open?'Hide this section':'Show this section'); sec.classList.toggle('sec-shut',!open);
+      [].slice.call(wrap.children).forEach(function(c){ var keepIt=c===head||(head===h2&&(c===b||c.classList.contains('eyebrow'))); c.classList.toggle('sec-hid',!open&&!keepIt); });
+      if(head!==h2) [].slice.call(head.children).forEach(function(c){ c.classList.toggle('sec-hid',!open&&!(c===h2||c===b||c.classList.contains('eyebrow'))); }); }
+    set(!shut[id]);
+    b.addEventListener('click',function(){ var open=b.getAttribute('aria-expanded')!=='true'; if(open) delete shut[id]; else shut[id]=1; keep(); set(open); });
+    sec._mfOpen=function(){ if(shut[id]){ delete shut[id]; keep(); set(true); } }; }); }
+  // a link or a menu that takes you to a section opens it
+  function openTo(h){ var t=h&&document.getElementById(String(h).replace(/^#/,'')); while(t&&!t._mfOpen) t=t.parentElement; if(t) t._mfOpen(); }
+  document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.closest('a[href^="#"]'); if(a) openTo(a.getAttribute('href')); },true);
+  window.addEventListener('hashchange',function(){ openTo(location.hash); });
+  function go(){ init(); openTo(location.hash); } if(document.readyState!=='loading') go(); else document.addEventListener('DOMContentLoaded',go);
+  window.MFsecOpen=openTo;
 })();
 </script>
