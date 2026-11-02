@@ -1071,7 +1071,9 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 .mprate{border:0;background:none;color:#fff;font:800 1.05rem 'Archivo',sans-serif;cursor:pointer;min-width:52px;text-align:left}
 .mpfoot select{flex:0 1 210px;min-width:0;height:34px;border-radius:999px;border:1px solid #3a3a3e;background:#2a2a2e;color:#fff;font:600 .8rem 'Archivo',sans-serif;padding:0 10px}
 .mpx{border:1px solid #3a3a3e;background:none;color:#fff;border-radius:50%;width:34px;height:34px;font-size:1.1rem;cursor:pointer}
-.mfplayer.mini .mpctl,.mfplayer.mini .mpbar,.mfplayer.mini .mpfoot{display:none}
+.mfplayer.mini .mpctl,.mfplayer.mini .mpbar,.mfplayer.mini .mpfoot,.mfplayer.mini .mpspd{display:none}
+.mpspd{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px}.mpspd button{border:1px solid #3a3a3e;background:none;color:#fff;border-radius:999px;padding:6px 11px;font:800 .85rem 'Archivo',sans-serif;cursor:pointer}
+.mpspd button[aria-pressed=true]{background:#fff;color:#111;border-color:#fff}
 .mfplayer.mini{display:grid;grid-template-columns:1fr auto;align-items:center;padding-top:4px}
 .mfplayer.mini .mpgrab{grid-column:1/-1}
 .mfplayer.mini .mphead{text-align:left}
@@ -2262,7 +2264,8 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <button type="button" class="mpword" id="mpWord" hidden></button>
   <div class="mpbar"><span id="mpAt">1</span><input type="range" id="mpRange" min="1" max="1" value="1" aria-label="Verse"><span id="mpOf">1</span></div>
   <div class="mpmore"><button type="button" class="mpchip" id="mpLoop" aria-pressed="false"></button><button type="button" class="mpchip" id="mpLearn" aria-pressed="false"></button><select class="mpsel" id="mpLearnL" aria-label="Second language" hidden></select></div>
-  <div class="mpfoot"><button type="button" class="mprate" id="mpRate">1x</button><select class="voicesel mpver" id="mpVer" aria-label="Bible version" hidden></select><select class="voicesel" id="mpVoice" aria-label="Voice"></select><button type="button" class="mpx" id="mpX" aria-label="Close">&times;</button></div>
+  <div class="mpspd" id="mpSpd" role="group" aria-label="Speed"><button type="button" data-r="0.75" aria-pressed="false">0.75×</button><button type="button" data-r="1" aria-pressed="false">1×</button><button type="button" data-r="1.25" aria-pressed="false">1.25×</button><button type="button" data-r="1.5" aria-pressed="false">1.5×</button><button type="button" data-r="1.75" aria-pressed="false">1.75×</button></div>
+  <div class="mpfoot"><button type="button" class="mprate" id="mpRate" hidden>1x</button><select class="voicesel mpver" id="mpVer" aria-label="Bible version" hidden></select><select class="voicesel" id="mpVoice" aria-label="Voice"></select><button type="button" class="mpx" id="mpX" aria-label="Close">&times;</button></div>
   <div class="mpmini"><button type="button" class="mprate" id="mpRate2" aria-label="Speed">1x</button><button type="button" class="mpb" id="mpPlay2" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true" id="mpIco2"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg></button></div>
 </div>
 <!-- Ken, 11 Oct: today's devotional, full screen, one step at a time -- familiar from the Bible App's prayer time,
@@ -2887,7 +2890,7 @@ window.MF=(function(){
   $('rFull').addEventListener('click',function(){ var f=reader.classList.toggle('full'); this.innerHTML=f?'&#9662;':'&#9652;'; this.setAttribute('aria-pressed',f?'true':'false'); });
   MF.onChange(function(){ listenUI(); }); window.MFlistenUI=function(){ listenUI(); };
   // ── The player (Ken, 11 Oct: "mimic" the Bible App) -- one at the bottom of the screen for whichever card's 🔊 was tapped
-  var RATES=[1,1.25,1.5,0.75], PB=$('mpPlay'), PL={ctx:null,n:1,N:1,intro:'',title:'',src:null};
+  var RATES=[1,1.25,1.5,1.75,0.75], PB=$('mpPlay'), PL={ctx:null,n:1,N:1,intro:'',title:'',src:null};
   // Ken, 11 Oct: 1.25x is the speed every speaker starts at
   function RATE(){ var r=1.25; try{ r=+localStorage.getItem('mf-speed')||1.25; }catch(e){} return RATES.indexOf(r)>=0?r:1.25; }
   var PLAYI='<path d="M7 4.5v15l13-7.5z" fill="currentColor"/>', PAUSEI='<path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z" fill="currentColor"/>';
@@ -2899,6 +2902,7 @@ window.MF=(function(){
     $('mpTitle').textContent=PL.title; $('mpSub').textContent=(unit?unit+' ':'')+PL.n+' / '+PL.N;
     $('mpRange').max=PL.N; $('mpRange').value=PL.n; $('mpAt').textContent=PL.n; $('mpOf').textContent=PL.N;
     $('mpPrev').disabled=PL.n<=1; $('mpNext').disabled=PL.n>=PL.N; $('mpRate').textContent=$('mpRate2').textContent=RATE()+'x';
+    [].forEach.call($('mpSpd').children,function(b){ b.setAttribute('aria-pressed',String(+b.dataset.r===RATE())); });
     var LT=LOOPT[MF.lang]||LOOPT.en, Lp=PL.loop, verse=PL.unit==='verse';
     $('mpLoop').hidden=!verse; $('mpLearn').hidden=!verse||!PL.ref; $('mpLoop').setAttribute('aria-pressed',Lp?'true':'false');
     $('mpLoop').textContent='🔁 '+(!Lp?LT[0]:Lp.a===Lp.b?LT[1]+' '+Lp.a:(Lp.a===1&&Lp.b===PL.N)?LT[2]:LT[3]+' '+Lp.a+'–'+Lp.b);
@@ -2934,6 +2938,8 @@ window.MF=(function(){
   $('mpRange').addEventListener('input',function(){ $('mpAt').textContent=this.value; });
   $('mpRange').addEventListener('change',function(){ PL.n=+this.value; if(plMine()) plStart(PL.n); else plUI(); });
   function plRate(){ var r=RATES[(RATES.indexOf(RATE())+1)%RATES.length]; try{ localStorage.setItem('mf-speed',r); }catch(e){} if(sp.audio) sp.audio.playbackRate=r; plUI(); }
+  // Ken, 2 Nov: every speed in a row under the player (0.75 to 1.75), for voices that are too slow or too fast
+  $('mpSpd').addEventListener('click',function(e){ var b=e.target.closest('[data-r]'); if(!b) return; var r=+b.dataset.r; try{ localStorage.setItem('mf-speed',r); }catch(er){} if(sp.audio) sp.audio.playbackRate=r; plUI(); });
   $('mpRate').addEventListener('click',plRate); $('mpRate2').addEventListener('click',plRate);
   $('mpVer').addEventListener('change',function(){ if(window.MFverSwitch) MFverSwitch(this.value); });
   $('mpVoice').addEventListener('change',function(){ var was=plMine(); setVoice(this.value); if(was) plStart(PL.n); });
