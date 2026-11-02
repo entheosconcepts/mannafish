@@ -25,6 +25,13 @@ blockquote{font:italic 1.25rem/1.5 Spectral,Georgia,serif;margin:10px auto 6px;m
 .row a,.row button{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:11px 16px;font:800 .95rem Archivo,sans-serif;text-decoration:none;cursor:pointer}
 .row .p{background:var(--blue);border-color:var(--blue)}
 .empty{color:var(--dim);padding:40px 0}
+.flip{display:grid;perspective:1600px;cursor:pointer;outline:none}.fc{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .6s;align-self:start}
+.bk{transform:rotateY(180deg);background:#000;border:1px solid var(--line);border-radius:16px;padding:16px 14px;min-height:100%;cursor:default}.flip.on .fr{transform:rotateY(-180deg)}.flip.on .bk{transform:rotateY(0)}
+.turn{margin:12px auto 0;display:block;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:9px 16px;font:800 .9rem Archivo,sans-serif;cursor:pointer}
+.sw{font:400 2.4rem/1 'MFHobo',cursive;margin:4px 0 12px}.og{border:1px solid rgba(200,215,218,.35);border-radius:12px;padding:10px 12px;margin:0 auto 14px;max-width:520px}
+.og .lg{font:800 .7rem Archivo,sans-serif;letter-spacing:.16em;color:#8fb3ff}.og .ow{font:400 2rem/1.3 'SBL Hebrew','Times New Roman',serif;margin:2px 0}.og .tr{color:var(--dim);font-size:.9rem}.og .def{font:italic .95rem/1.45 Spectral,Georgia,serif;margin:8px 0 0}
+.hq{font:800 .82rem Archivo,sans-serif;text-transform:uppercase;letter-spacing:.04em;margin:6px 0 8px}.xr{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}.xr a{border:1px solid var(--line);border-radius:999px;padding:6px 11px;color:#8fb3ff;text-decoration:none;font-weight:700;font-size:.88rem}
+.deep{margin:14px auto 0;display:block;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:8px 14px;font:800 .85rem Archivo,sans-serif;cursor:pointer}#deepOut{text-align:left;margin-top:10px}
 h2{font:400 1.6rem 'MFHobo',cursive;margin:28px 0 10px}.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .tb{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 10px}.tb button,.tb a{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:9px 14px;font:800 .9rem Archivo,sans-serif;text-decoration:none;cursor:pointer}
 .c.sab{border-color:rgba(245,215,110,.45)}
@@ -38,6 +45,7 @@ h2{font:400 1.6rem 'MFHobo',cursive;margin:28px 0 10px}.g{display:grid;grid-temp
 <main id="m"><p class="empty">Finding the fish…</p></main>
 <script src="/fish-lang/basket.js" defer></script>
 <script src="/fish-lang/feedback.js" defer></script>
+<script src="/fish-lang/deep.js"></script>
 <script>
 (function(){
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
@@ -70,7 +78,7 @@ h2{font:400 1.6rem 'MFHobo',cursive;margin:28px 0 10px}.g{display:grid;grid-temp
         +'<h2>The 24 devotional fish</h2><div class="g">'+C.core.map(function(x){ return card('/fish/en/'+x.k+'.svg','/?w='+x.k.toLowerCase(),x.title,x.ref); }).join('')+'</div>'
         +'<h2>The other '+C.net.length+'</h2><div class="g">'+C.net.map(function(k){ var f=C.fish[k]; return f?card('/fish/'+k+'.svg','/fish/?id='+k,f.title,f.ref,/^D/.test(k)?'daily':'new'):''; }).join('')+'</div>'
         +(C.designs&&C.designs.length?'<h2>New designs</h2><p class="ref">Outside the 153</p><div class="g">'+C.designs.map(function(k){ var f=C.fish[k]; return f?card('/fish/'+k+'.svg','/fish/?id='+k,f.title,f.ref,/^D/.test(k)?'daily':'none'):''; }).join('')+'</div>':'')
-        +'<p class="ref" style="margin-top:20px">'+(C.core.length+C.net.length)+' fish · every one an action word</p>'; })
+        +'<p class="ref" style="margin-top:20px">'+(C.core.length+C.net.length)+' fish · every word in its own verse</p>'; })
     .catch(function(){ M.innerHTML='<p class="empty">Couldn’t open the net just now.</p>'; });
     M.addEventListener('click',function(e){ var b=e.target.closest('[data-req]'); if(!b) return; if(window.MFfeedback) MFfeedback.open({kind:'design',feature:'The fish',fish:b.dataset.req+' · '+b.dataset.ref}); });
     return; }
@@ -78,14 +86,42 @@ h2{font:400 1.6rem 'MFHobo',cursive;margin:28px 0 10px}.g{display:grid;grid-temp
     var f=a[0].fish[id]; if(!f){ M.innerHTML='<p class="empty">This fish swam away. <a href="/">Today’s MannaFish</a></p>'; return; }
     document.title=f.title+' · MannaFish';
     var bid=(/^W/.test(id)?'Y:':/^X/.test(id)?'X:':'D:')+id;
-    M.innerHTML='<div class="k">Today’s MannaFish</div><div class="fish">'+a[1]+'</div><h1>'+esc(f.title)+'</h1>'
+    // Ken, 2 Nov: "on the desktop ... a picture of today's fish, but it doesn't flip" -- every fish turns over to its word study, like
+    // the 24: the Hebrew or Greek word behind it (from the KJV's own alignment), what it means, Scriptures to look up, and Go deeper
+    M.innerHTML='<div class="k">Today’s MannaFish</div><div class="flip" id="flip" role="button" tabindex="0" aria-label="Turn the fish over"><div class="fc fr"><div class="fish">'+a[1]+'</div></div><div class="fc bk" id="bk"><p class="ref">Opening the word study…</p></div></div>'
+      +'<button type="button" class="turn" id="turn">↻ Turn it over: the word study</button><h1>'+esc(f.title)+'</h1>'
       +'<blockquote>“'+esc(f.verse)+'”</blockquote><div class="ref">'+esc(f.ref)+' ('+esc(f.ver||'KJV')+')</div>'
       +'<div class="row"><a class="p" href="/bible/?r='+encodeURIComponent(f.ref)+'">📖 Read the chapter</a><button type="button" id="love">🧺 Love</button><button type="button" id="share">↗ Share</button></div>'
       +'<div class="row"><a href="/?devo=1">Today’s devotional</a><a href="/hubs/">MannaFish Hubs</a></div>';
     var s=M.querySelector('.fish svg'); if(s) s.removeAttribute('style');
+    var turned=false, built=false; function turn(){ turned=!turned; document.getElementById('flip').classList.toggle('on',turned); document.getElementById('turn').textContent=turned?'↻ Turn it back: the fish':'↻ Turn it over: the word study'; if(turned&&!built){ built=true; study(f); } }
+    document.getElementById('flip').addEventListener('click',function(e){ if(e.target.closest('a,button')) return; turn(); });
+    document.getElementById('flip').addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); turn(); } });
+    document.getElementById('turn').onclick=turn; if(/[?&]flip=1/.test(location.search)) turn();
     document.getElementById('love').onclick=function(){ if(window.MFbasket) MFbasket.add({id:bid,word:f.title,ref:f.ref,svg:'/fish/'+id+'.svg'}); };
     document.getElementById('share').onclick=function(){ var t='“'+f.verse+'” '+f.ref, u=location.href; if(navigator.share) navigator.share({title:'MannaFish · '+f.title,text:t,url:u}).catch(function(){}); else if(navigator.clipboard) navigator.clipboard.writeText(t+' '+u); };
   }).catch(function(){ M.innerHTML='<p class="empty">Couldn’t find that fish. <a href="/">Today’s MannaFish</a></p>'; });
+  // the back of a fish: built from the Bible files the site already has (fish-lang/bible: kjv, orig, lex, xref)
+  function J(u){ return fetch(u).then(function(r){ if(!r.ok) throw 0; return r.json(); }); }
+  function study(f){ var bk=document.getElementById('bk'), BOOKS=window.MFdeep?MFdeep.books:null, m=/^(.+?)\s+(\d+):(\d+)/.exec(f.ref||'');
+    if(!BOOKS||!m){ bk.innerHTML='<p class="ref">The word study isn’t ready for this fish yet.</p>'; return; }
+    var b=BOOKS.indexOf(m[1]), c=+m[2], v=+m[3], fn=m[1].replace(/ /g,'_'), ot=b<39, L=ot?{n:'Hebrew',l:'he',d:'rtl'}:{n:'Greek',l:'el',d:'ltr'};
+    var w=String(f.title||'').toLowerCase(), base=w.replace(/e$/,'');
+    Promise.all([J('/fish-lang/bible/kjv/'+fn+'-'+c+'.json').catch(function(){ return null; }),J('/fish-lang/bible/orig/'+fn+'-'+c+'.json').catch(function(){ return null; }),J('/fish-lang/bible/xref/'+fn+'.json').catch(function(){ return {}; })]).then(function(x){
+      var text=x[0]&&x[0].t?x[0].t[v-1]||'':'', o=x[1]&&x[1].v?x[1].v[String(v)]:null, ow=null;
+      if(o&&text){ var re=/[A-Za-z]+(?:'[A-Za-z]+)?/g, t, j=0; while((t=re.exec(text))){ var tl=t[0].toLowerCase(); if(!ow&&(tl===w||(base.length>=3&&tl.indexOf(base)===0))){ var i=o.a[j]; if(i!=null&&i>=0) ow=o.w[i]; } j++; } }
+      var xr=(x[2][c+':'+v]||[]).slice(0,6), BK=function(r){ return BOOKS[r[0]]+' '+r[1]+':'+r[2]+(r[4]?'–'+r[4]:''); };
+      var h='<div class="sw">'+esc(f.title)+'</div>';
+      if(ow){ var sn=String(ow[3]).replace(/^([HG])0*(\d+).*$/,'$1$2');
+        h+='<div class="og"><span class="lg">'+L.n+'</span><div class="ow" lang="'+L.l+'" dir="'+L.d+'">'+esc(String(ow[0]).replace(/[¶,.;:·]+$/,''))+'</div><div class="tr"><i>'+esc(ow[1])+'</i> · “'+esc(String(ow[2]).replace(/[<>¿\[\]]/g,'').replace(/\s+/g,' ').trim())+'” · Strong’s '+esc(sn)+'</div><p class="def" id="def"></p></div>'; }
+      else h+='<p class="ref">This word has no '+L.n+' word of its own in the verse (the translators added it).</p>';
+      h+='<div class="hq">Still hungry? Look up these Scriptures</div><div class="xr">'+(xr.length?xr.map(function(r){ var rf=BK(r); return '<a href="/bible/?r='+encodeURIComponent(rf)+'">'+esc(rf)+'</a>'; }).join(''):'<span class="ref">None listed for this verse</span>')+'</div>'
+        +(ow?'<button type="button" class="deep" id="deep">Go deeper into the '+L.n+'</button><div id="deepOut"></div>':'');
+      bk.innerHTML=h;
+      if(ow){ var st=String(ow[3]), mm=/^([HG])(\d+)/.exec(st);
+        if(mm) J('/fish-lang/bible/lex/'+mm[1]+Math.floor(+mm[2]/250)+'.json').then(function(d){ var e=d[st]||d[st.replace(/[A-Za-z]$/,'')]; if(e&&e.d){ var t=String(e.d); document.getElementById('def').textContent=t.length>240?t.slice(0,238).replace(/\s+\S*$/,'')+' …':t; } }).catch(function(){});
+        document.getElementById('deep').onclick=function(){ var out=document.getElementById('deepOut'); if(out.innerHTML){ out.innerHTML=''; return; } out.innerHTML='<p class="ref">…</p>'; MFdeep.show(out,st,{}); }; }
+    }).catch(function(){ bk.innerHTML='<p class="ref">Couldn’t open the word study just now.</p>'; }); }
 })();
 </script>
 </body>
