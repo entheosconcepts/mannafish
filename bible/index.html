@@ -241,6 +241,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 <script src="/fish-lang/voicepick.js" defer onload="window.MFvpHook&&MFvpHook()"></script>
 <script src="/fish-lang/deep.js" defer></script>
 <script src="/fish-lang/basket.js" defer></script>
+<script src="/fish-lang/makefish.js" defer></script>
 <script src="/fish-lang/account.js" defer></script>
 </head>
 <body>
@@ -280,7 +281,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     <button type="button" class="tile" id="aOrigT" aria-pressed="false"><span class="ogi" id="aOrigI" aria-hidden="true">&alpha;</span><span id="aOrigL">Greek</span></button>
     <button type="button" class="tile" id="aCopy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><span>Copy</span></button></div>
   <div class="arow" id="aRmRow" hidden><button type="button" class="chip" id="aRm">&#10005; Remove highlight</button><button type="button" class="chip" id="aRmAll">Remove all in this chapter</button></div>
-  <div class="arow wl" id="aWl" hidden><span class="wlw"><b id="aWlW"></b><button type="button" class="wls" id="aWlSay0" aria-label="Hear it">🔊</button></span><button type="button" class="chip" id="aWlHl" hidden>&#128397;&#xFE0E; Highlight just this word</button><select id="aWlL" aria-label="See and hear it in another language"></select><span class="wlr" id="aWlR" aria-live="polite"></span><button type="button" class="wls" id="aWlSay" aria-label="Hear it in that language" hidden>🔊</button></div>
+  <div class="arow wl" id="aWl" hidden><span class="wlw"><b id="aWlW"></b><button type="button" class="wls" id="aWlSay0" aria-label="Hear it">🔊</button></span><button type="button" class="chip" id="aWlMk" hidden>&#128031; Make it a MannaFish</button><button type="button" class="chip" id="aWlHl" hidden>&#128397;&#xFE0E; Highlight just this word</button><select id="aWlL" aria-label="See and hear it in another language"></select><span class="wlr" id="aWlR" aria-live="polite"></span><button type="button" class="wls" id="aWlSay" aria-label="Hear it in that language" hidden>🔊</button></div>
   <p class="tip" id="aTip" hidden>Tip: hold a word, then slide your finger to pick just those words</p>
   <button type="button" class="moreh" id="aMore">&#8963; Swipe up for more</button>
   <div class="more">
@@ -574,7 +575,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
       return t?{v:v,s:t.s,e:t.e,w:t.w}:null; }catch(er){ return null; } }
   function wlWord(){ if(PHS&&PHS.length===1){ var p=PHS[0], t=(VT[p.v]||'').slice(p.s,p.e).trim(); if(t&&t.length<=40) return {v:p.v,s:p.s,e:p.e,w:t}; }
     if(!PHS&&TAPW&&SEL.length===1&&SEL[0]===TAPW.v) return TAPW; return null; }
-  function wlUI(){ var W=wlWord(), sel=$('aWlL'); $('aWl').hidden=!W; if(!W) return; $('aWlW').textContent=W.w; $('aWlHl').hidden=!!PHS; var L=ogLang(), cur=ls('mf-bw-lang')||'';
+  function wlUI(){ var W=wlWord(), sel=$('aWlL'); $('aWl').hidden=!W; if(!W) return; $('aWlW').textContent=W.w; $('aWlHl').hidden=!!PHS; $('aWlMk').hidden=!(window.MFmake&&MFmake.latin(VT[W.v]||'')); var L=ogLang(), cur=ls('mf-bw-lang')||'';
     sel.innerHTML='<option value="">🌐 In another language…</option><option value="orig">'+L.n+' (the original)</option>'+WLN.filter(function(x){ return x[0]!==vlang(); }).map(function(x){ return '<option value="'+x[0]+'">'+esc(x[1])+'</option>'; }).join('');
     sel.value=cur&&sel.querySelector('option[value="'+cur+'"]')?cur:''; $('aWlR').innerHTML=''; $('aWlSay').hidden=true; if(sel.value) wlShow(); }
   function say(t,l){ try{ var a=new Audio('/api/say?t='+encodeURIComponent(t)+'&l='+encodeURIComponent(l)); a.play().catch(function(){ sayLocal(t,l); }); }catch(er){ sayLocal(t,l); } }
@@ -593,6 +594,9 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function WLx(W,to){ var k=to+'|'+vlang()+'|'+W.w+'|'+AT.b+':'+AT.c+':'+W.v; return WLC[k]||(WLC[k]=fetch('/api/translate',{method:'POST',headers:{'content-type':'application/json'},
       body:JSON.stringify({equiv:1,text:W.w,verse:(VT[W.v]||'').slice(0,400),from:vlang(),to:to})}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).catch(function(er){ delete WLC[k]; throw er; })); }
   $('aWlL').addEventListener('change',wlShow);
+  // Ken, 2 Nov: Make it a MannaFish -- the word tapped, in the middle of a fish, with its own verse round it; share it or keep it
+  $('aWlMk').addEventListener('click',function(){ var W=wlWord(); if(!W||!window.MFmake) return; var n=B[AT.b][0], ref=n+' '+AT.c+':'+W.v;
+    MFmake.open({word:W.w,verse:VT[W.v]||'',ref:ref,refShort:SHORT[n]?SHORT[n]+' '+AT.c+':'+W.v:'',tag:' ('+ver().s+')',href:'/bible/?r='+encodeURIComponent(ref)}); });
   // Ken, 2 Nov: one word highlighted from the window -- the word tapped, in your colour (tap a colour after to change it)
   $('aWlHl').addEventListener('click',function(){ var W=wlWord(); if(!W) return; PHS=[{v:W.v,s:W.s,e:W.e}]; SEL=[W.v]; var keep=PHS.slice(); applyHl(colour(),true); PHS=keep; SEL=[W.v]; selUI(); });
   $('aWlSay').addEventListener('click',function(){ say(this.dataset.t,this.dataset.l); });
@@ -942,7 +946,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   // ── ••• (Ken, 24 Oct: "give the bible 3 dots on top right to add notes and see history, recent, highlights, my stuff") ──
   function menuOpen(){ return !$('menu').hidden; }
   var TOOLS=ls('mf-bible-tools')!=='0', TIPS={tipOrig:1,tipLang:'Tap a word: the window shows it, with 🌐 to pick a language and 🔊 to hear it',
-    tipXr:'Tap the little card after a verse for its cross references',tipPic:'Tap a verse, swipe the window up, then 🖼 Picture',tipLink:'Tap a verse, then Link, and choose the verse it goes with',tipPray:'Tap a verse, then Pray'};
+    tipXr:'Tap the little card after a verse for its cross references',tipMake:'Tap the word that speaks to you, then 🐟 Make it a MannaFish',tipPic:'Tap a verse, swipe the window up, then 🖼 Picture',tipLink:'Tap a verse, then Link, and choose the verse it goes with',tipPray:'Tap a verse, then Pray'};
   function closeMenu(){ $('menu').hidden=true; $('dots').setAttribute('aria-expanded','false'); }
   function menuUI(){ var H=hist().filter(function(x){ return B[x.b]&&!(x.b===AT.b&&x.c===AT.c); }).slice(0,8), cn=chNote(), here=B[AT.b][0]+' '+AT.c, L=ogLang(), P2=parVer(), n=counts();
     var tool=function(id,ic,t,sm){ return '<button type="button" class="mi" role="menuitem" data-m="'+id+'"><span class="ic">'+ic+'</span><span class="tx">'+t+'<small>'+sm+'</small></span></button>'; };
@@ -962,6 +966,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
         +tool('listen','&#128264;&#xFE0E;','Listen','Read this chapter aloud from where you are')
         +tool('note','&#128221;&#xFE0E;','Chapter note','What God is showing you in '+esc(here))
         +tool('tipOrig','<span class="og2">'+L.i+'</span>',L.n+' of a verse','Tap a verse, then '+L.n)
+        +tool('tipMake','&#128031;','Make it a MannaFish','Tap a word: it goes in the middle of a fish with its verse, to share')
+        +'<a class="mi" href="/my-fish/" target="_top"><span class="ic">&#11088;</span><span class="tx">My MannaFish<small>The fish you made and love, and the ones you shared</small></span></a>'
         +tool('tipLang','&#127760;&#xFE0E;','A word in another language','Tap a word: its '+L.n+', Spanish and more, and hear it')
         +tool('tipXr','&#128209;&#xFE0E;','Cross references','Tap the little card after a verse')
         +tool('tipPic','&#128444;&#xFE0E;','Picture verse','Tap a verse, swipe up, then Picture')
@@ -973,6 +979,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
         +'</div>':'')
       +'<hr><h6>My stuff</h6><div class="mgrid">'
       +[['hl','&#128397;&#xFE0E;','Highlights'],['notes','&#128221;&#xFE0E;','Notes'],['saved','&#128278;&#xFE0E;','Saved'],['links','&#128279;&#xFE0E;','Links'],['hist','&#128337;&#xFE0E;','History']].map(function(x){ return '<button type="button" data-st="'+x[0]+'"><span class="ic">'+x[1]+'</span>'+x[2]+'<small>'+n[x[0]]+'</small></button>'; }).join('')
+      +'<a href="/my-fish/" target="_top"><span class="ic">&#128031;</span>My MannaFish<small>'+((window.MFmake?MFmake.mine().length:0)||'')+'</small></a>'
       +'<a href="/you/" target="_top"><span class="ic">&#128100;&#xFE0E;</span>You<small>Everything</small></a></div>'
       +'<hr><div class="mi" style="cursor:default"><span class="ic">Aa</span><span class="tx">Text size</span><span class="mts"><button type="button" data-fs="-1" aria-label="Smaller">A&minus;</button><button type="button" data-fs="1" aria-label="Bigger">A+</button></span></div>'
       +'<a class="mi" href="/you/#st" target="_top"><span class="ic">&#9881;&#xFE0E;</span><span class="tx">Settings<small>Font, spacing, verse numbers, voice and more</small></span></a>'

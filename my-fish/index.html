@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My MannaFish</title>
+<meta name="description" content="The MannaFish you made and the ones you love, ready to share, and every one you shared.">
+<link rel="icon" href="/icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&display=swap">
+<!-- Ken, 2 Nov: "the ability to share from My MannaFish, which will be premade MannaFish they selected or that are their favorites,
+     but I want them to know which fish or words they chose to share". The fish they made (Make it a MannaFish in the Bible), the fish
+     they love (the 🧺 basket), each with Share, and the list of every one they shared, newest first. Kept on the device and with their
+     account (mf-myfish, mf-myfish-shared, mf-basket). -->
+<style>
+@font-face{font-family:'MFHobo';src:url(/fish-lang/hobo.woff2) format('woff2');font-display:block}
+:root{--bg:#000;--card:#0b1620;--line:rgba(200,215,218,.18);--text:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--gold:#f5d76e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 Archivo,system-ui,sans-serif}
+header{display:flex;align-items:center;gap:10px;padding:14px max(16px,env(safe-area-inset-left));border-bottom:1px solid var(--line)}
+.brand{font:400 1.45rem/1 'MFHobo',cursive;color:#fff;text-decoration:none}.brand b{font-weight:400;color:#448fff}header a.d{margin-left:auto;color:#8fb6ff;font-size:.92rem}
+main{max-width:860px;margin:0 auto;padding:18px 16px 90px;text-align:center}
+h1{font:400 2.4rem/1 'MFHobo',cursive;margin:10px 0 6px}h2{font:400 1.6rem 'MFHobo',cursive;margin:30px 0 4px}
+.sub{color:var(--dim);margin:0 0 12px}
+.tabs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:14px 0 4px}.tabs button{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:9px 14px;font:800 .9rem Archivo,sans-serif;cursor:pointer}
+.tabs button[aria-pressed=true]{background:var(--blue);border-color:var(--blue)}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:12px}
+.c{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 8px 10px;text-align:center}
+.c .f{aspect-ratio:2/1;background:#000;border-radius:9px;overflow:hidden;display:flex;align-items:center;justify-content:center}.c .f svg,.c .f img{width:100%;height:100%;display:block;object-fit:contain}
+.c b{display:block;font:400 1.25rem 'MFHobo',cursive;margin:6px 0 0}.c small{display:block;color:var(--dim);font-size:.8rem}
+.c .st{display:inline-block;margin:6px 0 0;font:800 .72rem Archivo,sans-serif;color:#1a1400;background:var(--gold);border-radius:999px;padding:2px 8px}
+.c .st.no{background:none;color:var(--dim);border:1px solid var(--line)}
+.c .bt{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px}.c .bt a,.c .bt button{border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:6px 11px;font:800 .8rem Archivo,sans-serif;text-decoration:none;cursor:pointer}
+.c .bt .p{background:var(--blue);border-color:var(--blue)}
+.log{list-style:none;padding:0;margin:12px auto 0;max-width:560px;text-align:left}.log li{display:flex;gap:10px;align-items:baseline;border-bottom:1px solid var(--line);padding:9px 2px}
+.log b{font:400 1.15rem 'MFHobo',cursive;min-width:6.5em}.log span{color:var(--dim);font-size:.86rem}.log time{margin-left:auto;color:var(--dim);font-size:.8rem;white-space:nowrap}
+.empty{color:var(--dim);padding:26px 0}.empty a{color:#8fb6ff}
+.msg{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + env(safe-area-inset-bottom));background:#1c2530;border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50}.msg.on{opacity:1}
+</style>
+</head>
+<body>
+<header><a class="brand" href="/">Manna<b>Fish</b></a><a class="d" href="/bible/">Bible</a></header>
+<main>
+  <h1>My MannaFish</h1>
+  <p class="sub">The fish you made and the ones you love, ready to share. Every fish you share is listed, so you know which words you passed on.</p>
+  <div class="tabs" role="group" aria-label="Show"><button type="button" data-t="all" aria-pressed="true">All</button><button type="button" data-t="made">Made by me</button><button type="button" data-t="love">🧺 Fish I love</button><button type="button" data-t="shared">📤 Shared</button></div>
+  <div id="out"><p class="empty">Opening…</p></div>
+</main>
+<div class="msg" id="msg" role="status"></div>
+<script src="/fish-lang/basket.js" defer></script>
+<script src="/fish-lang/makefish.js" defer></script>
+<script src="/fish-lang/account.js" defer></script>
+<script src="/fish-lang/tabbar.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var $=function(id){ return document.getElementById(id); }, T='all', UQ=0;
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function day(t){ return new Date(t).toLocaleDateString([],{day:'numeric',month:'short',year:new Date(t).getFullYear()===new Date().getFullYear()?undefined:'numeric'}); }
+  function msg(t){ var m=$('msg'); m.textContent=t; m.classList.add('on'); clearTimeout(msg.t); msg.t=setTimeout(function(){ m.classList.remove('on'); },2600); }
+  function uniq(t){ var p='mf'+(++UQ)+'_'; return t.replace(/\bid="([^"]+)"/g,'id="'+p+'$1"').replace(/href="#([^"]+)"/g,'href="#'+p+'$1"').replace(/url\(#([^)]+)\)/g,'url(#'+p+'$1)'); }
+  // the fish they love: the basket's fish, each picture from /fish/
+  function loved(){ var a=window.MFbasket?MFbasket.items():[]; return a.map(function(x){ var id=String(x.id||''), k=id.slice(2);
+      var src=id.indexOf('M:')===0?'/fish/'+(x.l||'en')+'/'+k+'.svg':/^[DYX]:[WDX]\d/.test(id)?'/fish/'+k+'.svg':(x.svg||'');
+      var href=id.indexOf('M:')===0?'/?w='+k.toLowerCase():/^[DYX]:/.test(id)?'/fish/?id='+k:'/';
+      return {id:id,word:x.word||k,ref:x.ref||'',src:src,href:href,love:1}; }); }
+  function sharedOf(id){ return MFmake.shared().filter(function(s){ return s.id===id; }); }
+  function card(f,i){ var S=sharedOf(f.id);
+    return '<div class="c"><div class="f" data-i="'+i+'"></div><b>'+esc(f.word)+'</b><small>'+esc(f.ref||'')+(f.love?' · 🧺 loved':' · made by you')+'</small>'
+      +'<span class="st'+(S.length?'':' no')+'">'+(S.length?'Shared '+(S.length>1?S.length+'× · last ':'')+day(S[0].at):'Not shared yet')+'</span>'
+      +'<div class="bt"><button type="button" class="p" data-share="'+i+'">📤 Share</button>'+(f.href?'<a href="'+esc(f.href)+'">Read it</a>':'')+(f.love?'':'<button type="button" data-drop="'+i+'">Remove</button>')+'</div></div>'; }
+  var LIST=[];
+  function show(){ document.querySelectorAll('.tabs button').forEach(function(b){ b.setAttribute('aria-pressed',String(b.dataset.t===T)); });
+    var made=MFmake.mine().map(function(x){ return Object.assign({},x); }), love=loved(), out='';
+    if(T==='shared'){ var L=MFmake.shared();
+      $('out').innerHTML=L.length?'<h2>Fish you shared</h2><p class="sub">'+L.length+' time'+(L.length===1?'':'s')+', newest first</p><ul class="log">'+L.map(function(s){ return '<li><b>'+esc(s.word)+'</b><span>'+esc(s.ref||'')+(s.how&&s.how!=='shared'?' · '+esc(s.how):'')+'</span><time>'+day(s.at)+'</time></li>'; }).join('')+'</ul>'
+        :'<p class="empty">Nothing shared yet. Tap 📤 Share on a fish, and it will be listed here.</p>'; return; }
+    LIST=[]; if(T!=='love') LIST=LIST.concat(made); if(T!=='made') LIST=LIST.concat(love);
+    if(T==='all'||T==='made') out+='<h2>Made by me</h2>'+(made.length?'':'<p class="empty">None yet. In the <a href="/bible/">Bible</a>, tap the word that speaks to you, then 🐟 Make it a MannaFish.</p>');
+    if(made.length&&T!=='love') out+='<div class="g">'+made.map(function(f,i){ return card(f,i); }).join('')+'</div>';
+    if(T==='all'||T==='love'){ var off=T==='love'?0:made.length; out+='<h2>Fish I love</h2>'+(love.length?'<div class="g">'+love.map(function(f,i){ return card(f,off+i); }).join('')+'</div>':'<p class="empty">None yet. Tap 🧺 on any fish to love it.</p>'); }
+    $('out').innerHTML=out; draw(); }
+  function draw(){ document.querySelectorAll('.c .f').forEach(function(el){ var f=LIST[+el.dataset.i]; if(!f) return;
+      if(f.src) fetch(f.src).then(function(r){ return r.text(); }).then(function(t){ el.innerHTML=uniq(t); }).catch(function(){});
+      else MFmake.render(f).then(function(t){ el.innerHTML=uniq(t); f._svg=t; }).catch(function(){ el.innerHTML='<small>'+esc(f.word)+'</small>'; }); }); }
+  document.addEventListener('click',function(e){ var t=e.target;
+    var tb=t.closest('[data-t]'); if(tb){ T=tb.dataset.t; show(); return; }
+    var sh=t.closest('[data-share]'); if(sh){ var f=LIST[+sh.dataset.share]; if(!f) return; sh.disabled=true;
+      MFmake.share(f,f._svg).then(function(r){ sh.disabled=false; if(r==='shared'){ msg('Shared · '+f.word); show(); } else if(r==='saved'){ msg('Picture saved · the words are copied'); show(); } })
+        .catch(function(){ sh.disabled=false; msg('Couldn’t share just now'); }); return; }
+    var dr=t.closest('[data-drop]'); if(dr){ var g=LIST[+dr.dataset.drop]; if(g&&confirm('Remove '+g.word+' from My MannaFish?')){ MFmake.drop(g.id); show(); } } });
+  window.addEventListener('mf-basket',function(){ if(T!=='shared') show(); });
+  var tries=0; (function go(){ if(window.MFmake&&window.MFbasket) show(); else if(++tries<50) setTimeout(go,100); })();
+});
+</script>
+</body>
+</html>
