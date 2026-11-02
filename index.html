@@ -1085,6 +1085,13 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 .pt{position:fixed;inset:0;z-index:90;color:#fff;display:flex;flex-direction:column;font-family:'Archivo',sans-serif;
   background:radial-gradient(130% 60% at 50% 78%,rgba(42,95,176,.55),rgba(42,95,176,0) 62%),radial-gradient(90% 40% at 50% 100%,rgba(245,215,110,.16),transparent 70%),linear-gradient(#10161f,#06080b 72%)}
 .pt[hidden]{display:none}
+/* Ken, 2 Nov: the devotional on the Today page -- a box under Listen / Read, the page's own fish above it */
+.pt.inline{position:relative;inset:auto;z-index:2;max-width:680px;width:calc(100% - 24px);margin:14px auto 26px;padding:10px 0 6px;border:1px solid rgba(255,255,255,.18);border-radius:24px;justify-content:flex-start;min-height:0}
+.pt.inline .ptlogo,.pt.inline .ptanchor{display:none!important}
+.pt.inline .ptstage{height:auto!important;flex:none;overflow:visible;border:0!important;background:none!important;box-shadow:none!important;padding:14px 22px 6px!important;animation:none}
+.pt.inline .ptbible,.pt.inline .ptsheet{position:fixed}.pt.inline .ptbible{z-index:120}.pt.inline .ptsheet{z-index:110}
+.pt.inline .ptnav{padding-bottom:10px}
+@media(max-width:600px){.pt.inline{width:100vw;margin-left:calc(50% - 50vw);margin-right:0;border-radius:18px;border-left:0;border-right:0}.pt.inline .ptstage{padding:12px 16px 6px!important}}
 .ptbar{display:flex;align-items:center;justify-content:center;gap:10px;padding:4px 16px 6px}
 /* Ken, 27 Oct: the language and the Bible version at the top too, for quick access */
 .ptbar2{display:flex;justify-content:center;gap:8px;padding:0 16px 8px}
@@ -1818,7 +1825,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
 <button type="button" class="bkfab" id="bkFab" hidden></button>
 <div class="bkbox" id="bkBox" hidden role="dialog" aria-modal="true" aria-labelledby="bkH"><div class="bkin"><h3 id="bkH"></h3><p class="bksub" id="bkSub"></p><div id="bkList"></div><button type="button" class="bkgo" id="bkGo"></button><button type="button" class="bkk" id="bkKeep"></button><p class="bknote" id="bkNote"></p></div></div>
 <div class="mfintro" id="mfIntro" hidden aria-live="polite"><div class="mi-h"></div><div class="mi-box"><div class="mi-f"></div></div><div class="mi-d"></div></div>
-<script>if(/[?&]devo=(1|cast)\b/.test(location.search)) document.getElementById('mfIntro').hidden=false;</script>
+
 <div class="mf">
 
 <header class="nav"><div class="wrap navc">
@@ -3540,7 +3547,7 @@ window.MF=(function(){
     $('ptDots').innerHTML='<i style="width:'+Math.round((PT.i+1)/PT.steps.length*100)+'%"></i>';
     $('pt').classList.toggle('guided',!!PT.listen);
     $('ptBack').disabled=PT.i===0; $('ptNext').hidden=PT.i===PT.steps.length-1; $('ptNext').disabled=false;
-    $('ptHomeLab').textContent=({en:'Home',es:'Inicio',tl:'Home',zh:'首页',hi:'होम',el:'Αρχική',de:'Start',ko:'홈',he:'בית',ar:'الرئيسية',ru:"Главная"})[PT.l]||'Home'; var rtl=/^(he|ar)$/.test(PT.l); $('ptBack').textContent=(rtl?'› ':'‹ ')+T.back; $('ptNext').textContent=T.next+(rtl?' ‹':' ›'); ptTop(!(s.k==='cast'&&!CA.done&&CA.ph!=='caught'));
+    $('ptHomeLab').textContent=$('pt').classList.contains('inline')?(({es:'Cerrar',tl:'Isara',zh:'关闭',hi:'बंद करें',el:'Κλείσιμο',de:'Schließen',ko:'닫기',he:'סגור',ar:'إغلاق',ru:'Закрыть'})[PT.l]||'Close'):({en:'Home',es:'Inicio',tl:'Home',zh:'首页',hi:'होम',el:'Αρχική',de:'Start',ko:'홈',he:'בית',ar:'الرئيسية',ru:"Главная"})[PT.l]||'Home'; var rtl=/^(he|ar)$/.test(PT.l); $('ptBack').textContent=(rtl?'› ':'‹ ')+T.back; $('ptNext').textContent=T.next+(rtl?' ‹':' ›'); ptTop(!(s.k==='cast'&&!CA.done&&CA.ph!=='caught'));
     if(window.MFptModeUI) MFptModeUI(); }
   window.MFptRevoice=function(){ if(PT&&PT.listen&&!$('pt').hidden) ptSay(); };   // a new voice picked while listening: read this step again in it
   function ptSay(){ stopSpeak(); $('pt').classList.toggle('guided',!!PT.listen); var me=PT.i, s=PT.steps[me]; if(window.MFptModeUI) setTimeout(MFptModeUI,0);
@@ -3600,7 +3607,10 @@ window.MF=(function(){
     toast('\ud83d\udcd6 '+curVer().n); stopSpeak(); ptRender(); if(go){ PT.listen=true; ptSay(); } });
   function ptOpen(){ if(window.MFplClose&&!$('mfPlayer').hidden) MFplClose(); stopSpeak(); PT.l=DEVO[MF.lang]?MF.lang:'en'; PT.on=true; PT.listen=false;
     var pt=$('pt'); pt.dir=/^(he|ar)$/.test(PT.l)?'rtl':'ltr'; pt.setAttribute('lang',PT.l); PR=prLocal().filter(function(x){ return prCloud()||!x.c; });
-    PT.l2=null; CA.done=false; PT.pickOpen=false; PT.len=dLen(); PT.marked={}; var hl0=''; try{ hl0=localStorage.getItem('mf-pt-hl')||''; }catch(er){} ptHlOn(hl0==='1'); PT.dayOv=null; var pf=planFish(); if(pf!==cur) pick(pf,false); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; document.documentElement.style.overflow='hidden'; ptPills(); ptRender();
+    // Ken, 2 Nov: "I want all devotionals to live on the second image" -- the devotional opens on the Today page itself, under the
+    // fish and Listen / Read, not as a page of its own; the page scrolls as usual
+    var dg=document.querySelector('.devogo'); if(dg&&pt.previousElementSibling!==dg) dg.insertAdjacentElement('afterend',pt); pt.classList.add('inline'); pt.removeAttribute('aria-modal'); var hx=$('ptX').querySelector('span'); if(hx) hx.textContent='✕'; $('ptX').setAttribute('aria-label','Close the devotional');
+    PT.l2=null; CA.done=false; PT.pickOpen=false; PT.len=dLen(); PT.marked={}; var hl0=''; try{ hl0=localStorage.getItem('mf-pt-hl')||''; }catch(er){} ptHlOn(hl0==='1'); PT.dayOv=null; var pf=planFish(); if(pf!==cur) pick(pf,false); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; ptPills(); ptRender(); setTimeout(function(){ try{ var top=($('stage')||pt).getBoundingClientRect().top+scrollY-70; window.scrollTo({top:Math.max(0,top),behavior:'smooth'}); }catch(e){} },60);   // the fish stays in view, the devotional under it
     prLoad().then(function(){ if(!PT.on) return; var at=PT.steps[PT.i]&&PT.steps[PT.i].k; PT.steps=ptSteps(); if(at==='welcome'||at==='pray'||at==='hear') ptRender(); }); }
   // Ken, 16 Oct: "keep whatever fish is selected static, anchored at the top ... we want people to see this image as much as possible"
   // Ken, 16 Oct (later): "I meant for it to be inside the bounding box, not on top of it ... put the verbiage up top above that"
@@ -3610,7 +3620,8 @@ window.MF=(function(){
     if(sk==='fish') on=false;   /* that step shows the fish itself, turning */
     if(!on){ if(a) a.remove(); return; } if(a) return;
     st.insertAdjacentHTML('afterbegin','<div class="ptanchor"><div class="ptak">'+esc(ptT().k_welcome)+'</div><span class="pttf" role="img" aria-label="'+esc(titleIn(PT.l,cur))+'">'+(fishFor(PT.l,cur)||FISH[cur]||'')+'</span></div>'); }
-  function ptClose(){ $('ptBible').hidden=true; caStop(); PT.on=false; PT.listen=false; stopSpeak(); $('pt').hidden=true; $('ptSheet').hidden=true; $('ptMenu').hidden=true; document.documentElement.style.overflow=''; }
+  function ptClose(){ var was=PT.on; $('ptBible').hidden=true; caStop(); PT.on=false; PT.listen=false; stopSpeak(); $('pt').hidden=true; $('ptSheet').hidden=true; $('ptMenu').hidden=true; document.documentElement.style.overflow='';
+    if(was&&$('pt').classList.contains('inline')) try{ window.scrollTo({top:0,behavior:'smooth'}); }catch(e){} }
   function ptRebuild(keep){ PT.steps=ptSteps(); var j=PT.steps.findIndex(function(s){ return s.k===keep; }); if(j>=0&&keep!=='prayer') PT.i=j; PT.i=Math.min(PT.i,PT.steps.length-1); ptRender(); }
   $('ptBtn').addEventListener('click',ptOpen);
   $('ptX').addEventListener('click',ptClose);
@@ -5407,7 +5418,7 @@ window.MF=(function(){
     he:['ה-MannaFish של היום','ה-MannaFish של השבוע','ה-MannaFish של החודש'],ar:['MannaFish اليوم','MannaFish هذا الأسبوع','MannaFish هذا الشهر'],ru:["MannaFish на сегодня","MannaFish этой недели","MannaFish этого месяца"]};
   (function(){ var m=location.search.match(/[?&]devo=(1|cast)\b/); if(!m) return;
     var go=function(){ ptOpen(); if(m[1]==='cast'){ PT.pickOpen=true; ptRender(); var pk=$('ptStage').querySelector('.ptpick'); if(pk) setTimeout(function(){ pk.scrollIntoView({block:'center',behavior:'smooth'}); },300); } };
-    var box=$('mfIntro'); if(!box){ setTimeout(go,400); return; }
+    var box=null; if($('mfIntro')) $('mfIntro').hidden=true; if(!box){ setTimeout(go,400); return; }
     var f=(location.search.match(/[?&]f=([dwm])\b/)||[])[1], l=DEVO[MF.lang]?MF.lang:'en', k=planFish(), L=INTRO[l]||INTRO.en, P=PLT[l]||PLT.en;
     box.dir=/^(he|ar)$/.test(l)?'rtl':'ltr';
     box.querySelector('.mi-h').textContent=L[f==='w'?1:f==='m'?2:0];
