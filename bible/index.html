@@ -80,7 +80,9 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 .xrsheet .xr{display:flex;gap:12px;width:100%;text-align:left;border:0;border-top:1px solid var(--line);background:none;color:inherit;padding:11px 4px;cursor:pointer;font:inherit}
 .xrsheet .xr b{display:block;color:#6c9cf0}.xrsheet .xa{opacity:.6;width:14px;flex:none}.xrsheet .xt{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;opacity:.85;font-size:.93rem;margin-top:2px}
 .xrsheet .chip{margin:10px auto 4px;display:block}
-.act .in{max-width:760px;margin:0 auto}
+.act .in{max-width:760px;margin:0 auto;position:relative}
+/* Ken, 2 Nov: a ✕ in a circle at the top right closes the window */
+.actx{position:absolute;top:-2px;right:0;z-index:2;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);color:var(--text);font-size:.95rem;font-weight:700;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .act .grab{display:flex;flex-direction:column;align-items:center;gap:3px;width:72px;margin:0 auto 6px;border:0;padding:2px 0;background:none;cursor:pointer;color:var(--dim)}
 /* Ken, 2 Nov: the line stays, with a little arrow that shows which way it goes: up to open more, down to make it smaller or close */
 .act .grab .gl{display:block;width:44px;height:5px;border-radius:3px;background:var(--dim);opacity:.5}.act .grab .ga{width:22px;height:11px;transition:transform .2s}
@@ -269,7 +271,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 <div class="penbar" id="erbar" hidden><b>&#129533; Eraser · slide across highlights to take them off</b><button type="button" class="chip" id="erX">Done</button></div>
 <div class="penbar" id="penbar" hidden><b>&#128397;&#xFE0E; Slide across the words</b><span id="penDots" style="display:flex;gap:4px"></span><button type="button" class="chip" id="penX">Done</button></div>
 <div class="act xrsheet" id="xrs" role="dialog" aria-label="Cross references"><div class="in" id="xrsIn"></div></div>
-<div class="act" id="act" role="dialog" aria-label="Verse"><div class="in">
+<div class="act" id="act" role="dialog" aria-label="Verse"><div class="in"><button type="button" class="actx" id="aClose" aria-label="Close">&#10005;</button>
   <button type="button" class="grab" id="aGrab" aria-label="More"><span class="gl"></span><svg class="ga" viewBox="0 0 24 12" aria-hidden="true"><path d="M5 9.5l7-6 7 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   <div class="top"><div class="pill" id="aDots" role="group" aria-label="Highlight"></div><div class="pill colmore" id="aMore" role="group" aria-label="More colours" hidden></div>
     <button type="button" class="tile" id="aSave" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span>Save</span></button>
@@ -294,7 +296,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   </div>
 </div></div>
 
-<div class="act wc" id="wc" role="dialog" aria-label="Word study"><div class="in"><button type="button" class="grab dn" id="wcGrab" aria-label="Close"><span class="gl"></span><svg class="ga" viewBox="0 0 24 12" aria-hidden="true"><path d="M5 9.5l7-6 7 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div id="wcB"></div></div></div>
+<div class="act wc" id="wc" role="dialog" aria-label="Word study"><div class="in"><button type="button" class="actx" id="wcClose" aria-label="Close">&#10005;</button><button type="button" class="grab dn" id="wcGrab" aria-label="Close"><span class="gl"></span><svg class="ga" viewBox="0 0 24 12" aria-hidden="true"><path d="M5 9.5l7-6 7 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div id="wcB"></div></div></div>
 <div class="pick" id="stuff" role="dialog" aria-modal="true" aria-labelledby="sTitle">
   <div class="hd"><span style="width:40px"></span><b id="sTitle">My stuff</b><button type="button" class="ib" id="sX" aria-label="Close">&#10005;</button></div>
   <div class="body"><div class="sseg" id="sSeg" role="group"></div><div class="sl" id="sBody"></div></div>
@@ -522,7 +524,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     if($('act').classList.contains('big')) mineRefs(); }
   function closeAct(){ SEL=[]; PHS=null; OGSEL=null; fdShow(null); $('act').classList.remove('open','big'); $('selbar').classList.remove('on'); $('aNoteBox').hidden=true; $('aLinkBox').hidden=true; if($('aOrig')) $('aOrig').hidden=true;
     [].forEach.call(document.querySelectorAll('.v.sel'),function(x){ x.classList.remove('sel'); }); try{ var sl=window.getSelection(); if(sl&&!sl.isCollapsed&&$('txt').contains(sl.anchorNode)) sl.removeAllRanges(); }catch(e){} }
-  $('aX').addEventListener('click',closeAct);
+  $('aX').addEventListener('click',closeAct); $('aClose').addEventListener('click',closeAct); $('wcClose').addEventListener('click',function(){ closeWc(); });
   function more(on){ $('act').classList.toggle('big',on); if(on&&SEL.length) mineRefs(); }
   $('aMore').addEventListener('click',function(){ more(true); }); $('aGrab').addEventListener('click',function(){ more(!$('act').classList.contains('big')); });
   (function(){ var y0=null; $('act').addEventListener('touchstart',function(e){ y0=e.touches[0].clientY; },{passive:true});
