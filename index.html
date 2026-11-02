@@ -369,6 +369,22 @@ a{color:inherit}
 .cards42 .card42 .inv-body{font-size:2.9cqw;line-height:1.45}.cards42 .card42 .inv-qr{width:27cqw;height:27cqw;margin:0;padding:1.6cqw;box-sizing:border-box}.cards42 .card42 .inv-qr svg{width:100%;height:100%;display:block}
 .cards42 .card42 .inv-foot{font-size:2.3cqw;margin-top:2cqw}
 .story .secspk{color:#1d2a36;border-color:rgba(0,0,0,.28)}.story .secspk[aria-pressed=true]{color:#fff}
+.cards42 .card42{aspect-ratio:4.5/2.75}.c42front svg{inset:4%!important;width:92%!important;height:92%!important}
+.sback{background:#000;position:relative;color:#fff;font-family:'Spectral',Georgia,serif;text-align:center}
+.sback .sb-top{position:absolute;top:3cqw;left:3.6cqw;right:3.6cqw;height:15.5cqw;display:grid;grid-template-columns:1fr auto 1fr;gap:2cqw;align-items:center}
+.sback .sb-lg{border:1px solid #9aa3ad;border-radius:1.2cqw;padding:1cqw .8cqw;height:100%;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:.3cqw;min-width:0}
+.sback .sb-k{font:700 1.4cqw 'Archivo',sans-serif;letter-spacing:.15em;color:#8fb3ff}.sback .sb-ow{font:400 3.7cqw/1.1 'MFGkHb','Spectral',serif}
+.sback .sb-tr{font-style:italic;font-size:1.55cqw;color:#b9c2cc}.sback .sb-mn{font-style:italic;font-size:1.55cqw;line-height:1.25}
+.sback .sb-w{font:400 9.6cqw/1 'MFHobo',cursive;white-space:nowrap}
+.sback .sb-hq{position:absolute;top:19.8cqw;left:3cqw;right:3cqw;font:800 1.75cqw 'Archivo',sans-serif;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap}
+.sback .sb-rf{position:absolute;top:22.9cqw;left:3.6cqw;right:3.6cqw;display:grid;grid-template-columns:repeat(3,1fr);column-gap:1.4cqw}
+.sback .sb-rf div{border-top:1px solid #3a4550;padding:.9cqw .3cqw .6cqw;min-width:0}.sback .sb-rf b{display:block;font:700 1.85cqw 'Archivo',sans-serif;color:#8fb3ff}
+.sback .sb-rf i{display:block;font-size:1.5cqw;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sback .sb-strip{position:absolute;left:3.6cqw;right:3.6cqw;bottom:2.6cqw;height:17.6cqw;background:#fff;color:#000;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 1.6cqw;box-sizing:border-box}
+.sback .sb-side{display:flex;align-items:center;gap:1.6cqw;font:400 2.1cqw/1.2 'MFHobo',cursive;text-align:left}.sback .sb-side.r{justify-content:flex-end;text-align:right}
+.sback .sb-qr{width:13.6cqw;height:13.6cqw;flex:none}.sback .sb-qr svg{width:100%;height:100%;display:block}
+.sback .sb-mid{display:flex;flex-direction:column;align-items:center;gap:.6cqw;font:400 1.75cqw 'MFHobo',cursive}
+.sback .sb-logo{width:11.5cqw;height:11.5cqw;border-radius:50%;border:.35cqw dashed #6b7785;display:grid;place-items:center;font:700 1.45cqw/1.15 'Archivo',sans-serif;color:#56606b;text-transform:uppercase;letter-spacing:.06em}
 .cardsize{margin-top:14px;color:var(--foam-dim);font-size:.85rem}
 @media(max-width:760px){.cards42{grid-template-columns:minmax(0,440px)}.beneficiaries{grid-template-columns:1fr 1fr!important}.bene.feat{grid-column:1/-1;max-width:420px;justify-self:center}}
 @media(max-width:480px){.beneficiaries{grid-template-columns:1fr!important}}
@@ -2020,17 +2036,15 @@ select option{background:#0b1620;color:#eaf0f0}
     <div class="invite-copy">
       <span class="eyebrow">Optional add-on</span>
       <h3>A co-branded invitation on the back.</h3>
-      <p>The front stays Scripture. The back becomes a ministry doorway: their name or your name, a QR code to your website, podcast or ministry, and an invitation into community and spiritual growth.</p>
+      <p>The front stays Scripture. The back is a word study of the same fish: the Greek and Hebrew, and verses to look up. Underneath, the sponsor&rsquo;s logo and two QR codes: one to their website, podcast or ministry, and one to today&rsquo;s free MannaFish devotional.</p>
     </div>
-    <!-- Ken, 12 Oct: the printed card is 4 x 2 inches; the back is the same size as the front, laid out across, not up and down -->
+    <!-- Ken, 12 Oct: the back the same size as the front, laid out across. Ken, 2 Nov: show the word-study back the printer gets
+         (tools/print/make.mjs, landscape study back): Greek | word | Hebrew, six verses, then QR codes and the sponsor. Card 4.5 x 2.75 in -->
     <div class="cards42">
       <figure><figcaption>Front</figcaption><div class="card42 c42front" id="invFront" aria-hidden="true"></div></figure>
-      <figure><figcaption>Back</figcaption><div class="card42 invite-card">
-        <div class="inv-l"><div class="inv-h">You&rsquo;re Invited!</div><div class="inv-badge"><div class="n">Your name</div><div class="s">Church &middot; Ministry &middot; Business &middot; Podcast</div></div><div class="inv-body">Scan to connect with the one who gave you this, and find community and spiritual growth.</div></div>
-        <div class="inv-r"><div class="inv-qr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" shape-rendering="crispEdges" aria-hidden="true"><path class="qrline" stroke="#000" d="M0 0.5h7m4 0h2m1 0h1m3 0h7m-25 1h1m5 0h1m1 0h2m1 0h1m4 0h1m1 0h1m5 0h1m-25 1h1m1 0h3m1 0h1m1 0h3m1 0h1m5 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m1 0h7m3 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m3 0h1m1 0h2m2 0h1m1 0h1m1 0h3m1 0h1m-25 1h1m5 0h1m2 0h3m1 0h2m1 0h1m1 0h1m5 0h1m-25 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-17 1h1m2 0h2m-13 1h1m5 0h1m1 0h1m1 0h1m2 0h2m2 0h2m2 0h3m-24 1h5m4 0h1m4 0h2m3 0h5m-24 1h1m2 0h1m1 0h3m4 0h2m1 0h1m2 0h2m1 0h1m1 0h2m-25 1h1m1 0h1m2 0h1m4 0h3m1 0h8m2 0h1m-22 1h4m2 0h2m1 0h1m2 0h2m1 0h2m4 0h1m-25 1h3m10 0h1m1 0h2m2 0h1m3 0h1m-24 1h1m2 0h1m2 0h1m2 0h1m1 0h7m1 0h3m1 0h2m-25 1h1m1 0h4m1 0h1m1 0h3m7 0h1m1 0h2m1 0h1m-25 1h1m2 0h6m2 0h1m1 0h2m1 0h5m1 0h1m-15 1h3m1 0h2m2 0h1m3 0h1m-21 1h7m3 0h2m1 0h1m2 0h1m1 0h1m1 0h1m3 0h1m-25 1h1m5 0h1m3 0h1m1 0h1m1 0h1m1 0h1m3 0h1m-21 1h1m1 0h3m1 0h1m2 0h1m2 0h1m2 0h6m1 0h3m-25 1h1m1 0h3m1 0h1m7 0h5m4 0h2m-25 1h1m1 0h3m1 0h1m2 0h1m1 0h2m2 0h1m5 0h2m1 0h1m-25 1h1m5 0h1m4 0h1m4 0h2m1 0h2m3 0h1m-25 1h7m1 0h2m2 0h3m1 0h2m3 0h1m2 0h1"/></svg></div><div class="inv-foot">A free gift &middot; MannaFish</div></div>
-      </div></figure>
+      <figure><figcaption>Back</figcaption><div class="card42 sback" id="invBack" aria-hidden="true"></div><template id="invQr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" shape-rendering="crispEdges" aria-hidden="true"><path class="qrline" stroke="#000" d="M0 0.5h7m4 0h2m1 0h1m3 0h7m-25 1h1m5 0h1m1 0h2m1 0h1m4 0h1m1 0h1m5 0h1m-25 1h1m1 0h3m1 0h1m1 0h3m1 0h1m5 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m1 0h7m3 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m3 0h1m1 0h2m2 0h1m1 0h1m1 0h3m1 0h1m-25 1h1m5 0h1m2 0h3m1 0h2m1 0h1m1 0h1m5 0h1m-25 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-17 1h1m2 0h2m-13 1h1m5 0h1m1 0h1m1 0h1m2 0h2m2 0h2m2 0h3m-24 1h5m4 0h1m4 0h2m3 0h5m-24 1h1m2 0h1m1 0h3m4 0h2m1 0h1m2 0h2m1 0h1m1 0h2m-25 1h1m1 0h1m2 0h1m4 0h3m1 0h8m2 0h1m-22 1h4m2 0h2m1 0h1m2 0h2m1 0h2m4 0h1m-25 1h3m10 0h1m1 0h2m2 0h1m3 0h1m-24 1h1m2 0h1m2 0h1m2 0h1m1 0h7m1 0h3m1 0h2m-25 1h1m1 0h4m1 0h1m1 0h3m7 0h1m1 0h2m1 0h1m-25 1h1m2 0h6m2 0h1m1 0h2m1 0h5m1 0h1m-15 1h3m1 0h2m2 0h1m3 0h1m-21 1h7m3 0h2m1 0h1m2 0h1m1 0h1m1 0h1m3 0h1m-25 1h1m5 0h1m3 0h1m1 0h1m1 0h1m1 0h1m3 0h1m-21 1h1m1 0h3m1 0h1m2 0h1m2 0h1m2 0h6m1 0h3m-25 1h1m1 0h3m1 0h1m7 0h5m4 0h2m-25 1h1m1 0h3m1 0h1m2 0h1m1 0h2m2 0h1m5 0h2m1 0h1m-25 1h1m5 0h1m4 0h1m4 0h2m1 0h2m3 0h1m-25 1h7m1 0h2m2 0h3m1 0h2m3 0h1m2 0h1"/></svg></template></figure>
     </div>
-    <p class="cardsize">Printed cards: 4 &times; 2 inches, front and back.</p>
+    <p class="cardsize">Printed cards: 4.5 &times; 2.75 inches, front and back.</p>
   </div>
 </div></section>
 
@@ -2516,9 +2530,18 @@ window.MF=(function(){
     }).join('');
   }
   // the main fish and its back, in the reading language (the other languages load their fish and study on first use)
+  // the back of the printed card (Ken, 2 Nov): the same layout the printer gets from tools/print/make.mjs, with this fish's study
+  function invBack(k){ var el=$('invBack'), d=DATA[k], t=$('invQr'); if(!el||!d) return; var q=t?t.innerHTML:'';
+    function lg(n,w,lang,snd,mn){ return '<div class="sb-lg"><div class="sb-k">'+n+'</div><div class="sb-ow" lang="'+lang+'">'+esc(w)+'</div><div class="sb-tr">('+esc(snd)+')</div><div class="sb-mn">'+esc(mn)+'</div></div>'; }
+    el.innerHTML='<div class="sb-top">'+lg('GREEK',d.gkw,'el',d.gks,d.gkm)+'<div class="sb-w">'+esc(d.title)+'</div>'+lg('HEBREW',d.hbw,'he',d.hbs,d.hbm)+'</div>'
+      +'<div class="sb-hq">Still hungry? Do this word study &amp; look up the following Scriptures</div>'
+      +'<div class="sb-rf">'+(d.refs||[]).slice(0,6).map(function(r){ return '<div><b>'+esc(r[0])+'</b><i>&ldquo;'+esc(r[1])+'&rdquo;</i></div>'; }).join('')+'</div>'
+      +'<div class="sb-strip"><div class="sb-side"><div class="sb-qr">'+q+'</div><span>Your website, podcast or ministry</span></div>'
+      +'<div class="sb-mid">Sponsored by<div class="sb-logo">Your<br>logo</div></div>'
+      +'<div class="sb-side r"><span>Today&rsquo;s free MannaFish devotional</span><div class="sb-qr">'+q+'</div></div></div>'; }
   function fillMain(k){ var l=MF.lang, d=DATA[k], L=studyLabels(l), m=meansIn(l,k);
     if(l!=='en'&&(l==='es'?!LSTUDY.es:!LFISH[l])) loadLang(l).then(function(){ if(cur===k&&MF.lang===l){ fillMain(k); sizeStage(); } }).catch(function(){});
-    $('fishbox').innerHTML=fishFor(l,k)||FISH[k]||''; if($('invFront')) $('invFront').innerHTML=$('fishbox').innerHTML;  // the front of the printed card, under the invitation
+    $('fishbox').innerHTML=fishFor(l,k)||FISH[k]||''; if($('invFront')) $('invFront').innerHTML=$('fishbox').innerHTML; invBack(k);  // the front of the printed card, and its word-study back
     $('wTitle').textContent=wordTitle(k); $('wTitle').style.fontFamily=CMPFONT[l]?"'"+CMPFONT[l]+"',sans-serif":'';
     $('gkLab').textContent=L.gk; $('hbLab').textContent=L.hb; $('traceLab').textContent=L.trace; $('stage').querySelector('.face.back').setAttribute('lang',l);
     $('gkW').textContent=d.gkw; $('gkS').textContent='('+d.gks+')'; $('gkM').textContent=m[0];
