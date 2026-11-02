@@ -27,6 +27,7 @@ blockquote{font:italic 1.25rem/1.5 Spectral,Georgia,serif;margin:10px auto 6px;m
 .empty{color:var(--dim);padding:40px 0}
 h2{font:400 1.6rem 'MFHobo',cursive;margin:28px 0 10px}.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .tb{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 10px}.tb button,.tb a{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:9px 14px;font:800 .9rem Archivo,sans-serif;text-decoration:none;cursor:pointer}
+.c.sab{border-color:rgba(245,215,110,.45)}
 .c>a{display:block;text-decoration:none;color:inherit}.ed{display:flex;gap:4px;justify-content:center;margin-top:6px}.ed a,.ed button{border:1px solid var(--line);background:none;color:var(--dim);border-radius:999px;padding:3px 8px;font:700 .72rem Archivo,sans-serif;text-decoration:none;cursor:pointer}
 @media print{header,.tb,.ed{display:none!important}body{background:#fff;color:#000}main{max-width:none;padding:0}.g{grid-template-columns:repeat(4,1fr)}.c{break-inside:avoid;border-color:#bbb;background:#fff}.c b,.c small,h1,h2,blockquote,.k,.ref{color:#000}}
 .c{display:block;text-decoration:none;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 6px 8px}.c img{display:block;width:100%;aspect-ratio:2/1;object-fit:contain;background:#000;border-radius:8px}.c b{display:block;font:400 1.15rem 'MFHobo',cursive;margin-top:4px}.c small{color:var(--dim);font-size:.75rem}
@@ -49,12 +50,23 @@ h2{font:400 1.6rem 'MFHobo',cursive;margin:28px 0 10px}.g{display:grid;grid-temp
   //increase and multiply (Genesis 1:28). Now the Holy Spirit keeps the net from tearing and the jars from leaking (the widow's oil,
   //2 Kings 4): we are no longer broken vessels that cannot hold the oil; in Christ we are made whole. The Kingdom is like a net cast
   //on the right side, gathering every kind of fish (Matthew 13:47).
+  // ?year=1: 365 action fish, one for every day of the year (Ken, 2 Nov), from plan/year365.json (tools/year365): each reading day's
+  // fish and each Sabbath's, printable, with ✏️ Edit and 💬 Change like the 153
+  if(new URLSearchParams(location.search).get('year')){ document.title='365 action fish · MannaFish'; fetch('/plan/year365.json').then(function(r){ return r.json(); }).then(function(Y){
+      var DN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], h='<div class="tb"><button type="button" onclick="print()">🖨 Print this list</button><a href="/plan/">📅 Bible in a Year</a><a href="/fish/">The 153</a></div><div class="k">Bible in a Year</div><h1>365 action fish</h1><p class="ref">One for every day: six reading days and a Sabbath each week. Tap a fish to open it.</p>', wk=0;
+      Y.days.forEach(function(d){ if(d.week!==wk){ if(wk) h+='</div>'; wk=d.week; h+='<h2>'+(d.kind==='last'?'Day 365':'Week '+wk)+'</h2><div class="g">'; }
+        var set=/^D/.test(d.k)?'daily':/^W/.test(d.k)?'new':'';
+        h+='<div class="c'+(d.kind==='sabbath'?' sab':'')+'"><a href="'+d.href+'"><img loading="lazy" src="'+d.svg+'" alt=""><b>'+esc(d.word)+'</b><small>Day '+d.day+' · '+(d.kind==='sabbath'?'Sabbath':d.kind==='last'?'The last day':DN[d.dow])+' · '+esc(d.ref)+'</small></a>'
+          +'<span class="ed"><a href="/edit/?find='+encodeURIComponent(d.word)+(set?'&set='+set:'&code=en')+'">✏️ Edit</a><button type="button" data-req="'+esc(d.word)+'" data-ref="'+esc(d.ref)+'">💬 Change</button></span></div>'; });
+      M.innerHTML=h+'</div>'; }).catch(function(){ M.innerHTML='<p class="empty">Couldn’t open the year just now.</p>'; });
+    M.addEventListener('click',function(e){ var b=e.target.closest('[data-req]'); if(!b) return; if(window.MFfeedback) MFfeedback.open({kind:'design',feature:'The fish',fish:b.dataset.req+' · '+b.dataset.ref}); });
+    return; }
   if(!id){ document.title='The 153 · MannaFish'; fetch('/fish/catch.json').then(function(r){ return r.json(); }).then(function(C){
       // Ken, 1 Nov: "a list of the fish designs as a printable or digital version where I might be able to edit the design or request changes":
       // 🖨 prints the list; on each fish ✏️ opens it on the edit sheet (/edit/), 💬 sends a change request (feedback, design)
       var card=function(src,href,w,ref,set){ return '<div class="c"><a href="'+href+'"><img loading="lazy" src="'+src+'" alt=""><b>'+esc(w)+'</b><small>'+esc(ref)+'</small></a>'
         +'<span class="ed">'+(set==='none'?'':'<a href="/edit/?find='+encodeURIComponent(w)+(set?'&set='+set:'&code=en')+'" title="Change the design on the edit sheet">✏️ Edit</a>')+'<button type="button" data-req="'+esc(w)+'" data-ref="'+esc(ref)+'" title="Ask for a change">💬 Change</button></span></div>'; };
-      M.innerHTML='<div class="tb"><button type="button" onclick="print()">🖨 Print this list</button><a href="/edit/">✏️ Open the edit sheet</a></div><div class="k">John 21:11</div><h1>The 153</h1><blockquote>“…full of great fishes, an hundred and fifty and three: and for all there were so many, yet was not the net broken.”</blockquote>'
+      M.innerHTML='<div class="tb"><button type="button" onclick="print()">🖨 Print this list</button><a href="/edit/">✏️ Open the edit sheet</a><a href="/fish/?year=1">📅 365 action fish</a></div><div class="k">John 21:11</div><h1>The 153</h1><blockquote>“…full of great fishes, an hundred and fifty and three: and for all there were so many, yet was not the net broken.”</blockquote>'
         +'<h2>The 24 devotional fish</h2><div class="g">'+C.core.map(function(x){ return card('/fish/en/'+x.k+'.svg','/?w='+x.k.toLowerCase(),x.title,x.ref); }).join('')+'</div>'
         +'<h2>The other '+C.net.length+'</h2><div class="g">'+C.net.map(function(k){ var f=C.fish[k]; return f?card('/fish/'+k+'.svg','/fish/?id='+k,f.title,f.ref,/^D/.test(k)?'daily':'new'):''; }).join('')+'</div>'
         +(C.designs&&C.designs.length?'<h2>New designs</h2><p class="ref">Outside the 153</p><div class="g">'+C.designs.map(function(k){ var f=C.fish[k]; return f?card('/fish/'+k+'.svg','/fish/?id='+k,f.title,f.ref,/^D/.test(k)?'daily':'none'):''; }).join('')+'</div>':'')
