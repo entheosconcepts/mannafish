@@ -11,7 +11,7 @@ const R=derive(JSON.parse(fs.readFileSync(path.join(__dirname,'ken24.json'))),PI
 // each fish's own lines, as they were on its last picture (so edits made on the edit sheet are kept)
 // the edit sheet runs the same builder: /fish-lang/fishfmt.js and /fish-lang/fishgeo.json (the shape, and this rule)
 fs.copyFileSync(path.join(__dirname,'fishfmt.js'),path.join(ROOT,'fish-lang','fishfmt.js'));
-fs.writeFileSync(path.join(ROOT,'fish-lang','fishgeo.json'),JSON.stringify(Object.assign({},JSON.parse(fs.readFileSync(path.join(__dirname,'geo.json'))),{rule:R})));
+fs.writeFileSync(path.join(ROOT,'fish-lang','fishgeo.json'),JSON.stringify(Object.assign({},JSON.parse(fs.readFileSync(path.join(__dirname,'geo.json'))),{rule:R,ken:JSON.parse(fs.readFileSync(path.join(__dirname,'ken24.json')))})));   // ken: Ken's 24 measured, for templates on the edit sheet
 const lines=JSON.parse(fs.readFileSync(path.join(__dirname,process.argv[2]||'net-lines.json')));
 // a fish Ken asked to change by hand keeps it: "edit": {"wl": {"s": 1.15}} makes its word 15% bigger (Ken, 1 Nov: Build "a little bigger")
 for(const f of lines){ fs.writeFileSync(path.join(ROOT,'fish',f.k+'.svg'),f.edit?F.draw(font,f,F.applyRel(font,f,F.layout(font,f,R),f.edit),R):F.svg(font,f,R)); }

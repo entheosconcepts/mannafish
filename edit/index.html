@@ -128,6 +128,9 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     <li>New fish: each verse line runs the length of its curve like your original 24 (size 170 to 230), and the word fills the eye, unless a rule or your own setting says otherwise.</li>
     <li>📚 saves a word's size and place as the rule for every word with that many letters in that language. Fish you haven't adjusted follow it.</li>
   </ul>
+  <h3>Templates: the average for each word length</h3>
+  <p class="hint" style="text-align:left">Tap ⭐ Template on any fish (your own 24 too). Every word with the same number of letters takes the average of those templates: letter size, left/right and up/down from the middle, and width. The verse lines take the average place of all the templates. Size is the letter size (a 7-letter word is about 583); left/right and up/down are in the fish’s units (it is 4,000 wide).</p>
+  <div class="tw" id="rAvg"></div>
   <h3>Word in the middle</h3><div class="tw" id="rWord"></div>
   <h3>Verse lines (new fish)</h3><div class="tw" id="rLines"></div>
   <div class="row"><button class="btn ghost" type="button" data-click="copy">Copy the list</button><button class="btn ghost" type="button" data-click="undo">Undo all changes</button></div>
@@ -200,7 +203,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   function load(){ var s=null; try{ s=JSON.parse(ls(KEY)||'null'); }catch(e){}
     if(s&&s.d) return Object.assign(blank(),s); s=blank(); try{ migrate(s); }catch(e){} return s; }
   var S=load();
-  function save(){ stamp(); ls(KEY,JSON.stringify(S)); count(); queuePush(); }
+  function save(){ if(Object.keys(S.tpl).length&&KEN!==undefined&&typeof averages==='function') averages(); stamp(); ls(KEY,JSON.stringify(S)); count(); queuePush(); }
 
   // ═════ kept on the server too, so every device has the same sheet (Ken, 19 Oct) ═════
   // Each fish carries the time it last changed; when two devices both changed things, the newer change of each fish wins.
@@ -266,7 +269,9 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   function fitWord(w){ return Math.min(G.cap,100*G.eyeW/meas(w,100).ink); }
 
   // ── the word in the middle: the fish's own setting, else the rule for its letter count, else as drawn ──
-  function ruleWord(X){ return MFWordTool.ruleFor(S.rules.word[X.code],letters(val(X,'word'))); }
+  // a template average counts only for its own letter count; the other lengths keep the builder's rule (or a 📚 rule)
+  function ruleWord(X){ var W=S.rules.word[X.code], n=letters(val(X,'word')); if(!W) return null; if(W[n]) return MFWordTool.ruleFor(W,n);
+    var own={}; Object.keys(W).forEach(function(k){ if(!W[k].avg) own[k]=W[k]; }); return MFWordTool.ruleFor(own,n); }
   function rel24(X){ var a=(S.d[X.id]||{}).wl; if(a) return a; var r=ruleWord(X), B=X.B; return r?{s:r.size/B.fs0,w:r.ww,h:r.hh||1,x:r.dx,y:r.dy}:{s:1,w:1,h:1,x:0,y:0}; }
   function wordGet(X){ if(X.set==='24'){ var a=rel24(X); return {size:X.B.fs0*a.s,dx:a.x,dy:a.y,ww:a.w,hh:a.h}; }
     var o=(S.d[X.id]||{}).wl; if(o) return Object.assign({hh:1},o); var word=val(X,'word'), r=ruleWord(X);
@@ -358,7 +363,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   function tabsOf(X){ return X.drawn?[['look','The look']]:[['word','Word'],['top','Top line'],['bot','Bottom line'],['ref','Reference']]; }
   function card(X){ var el=document.createElement('article'); el.className='card'; el.dataset.id=X.id; X.el=el;
     el.innerHTML='<div class="hd"><span class="num">'+esc(X.set==='24'?X.id:X.daily?(X.nf.inplan?'Wk '+X.nf.w+' · D'+X.nf.day+' '+(X.nf.half==='am'?'☀':'🌙'):'Spare'):'Week '+X.nf.w)+'</span><b>'+esc(X.title)+'</b><span class="sub">'+esc(X.sub)+'</span><span class="st"></span>'
-      +(X.set==='new'?'<button type="button" class="hb star" aria-pressed="false">⭐ Template</button>':'')+'<button type="button" class="hb png">⬇ PNG</button></div>'
+      +(X.set==='new'||(X.set==='24'&&X.code==='en')?'<button type="button" class="hb star" aria-pressed="false">⭐ Template</button>':'')+'<button type="button" class="hb png">⬇ PNG</button></div>'
       +'<div class="pv"></div><p class="hint">'+(X.drawn?'Your hand-drawn English fish: tap it to note what should change.':'Tap the word, a verse line or the reference to edit it.')+'</p>'
       +'<div class="chips">'+tabsOf(X).map(function(t){ return '<button type="button" data-open="'+t[0]+'">✎ '+t[1]+'</button>'; }).join('')+'</div>'
       +(X.set==='24'?'<details class="more"><summary>Back of the fish: Greek and Hebrew meanings</summary>'+txBox('gkm','Greek meaning',2)+txBox('hbm','Hebrew meaning',2)+'</details>'
@@ -422,13 +427,47 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     if(t.closest('[data-back]')){ var sv=JSON.parse(S.saved[X.id]||'{}'); if(Object.keys(sv).length) S.d[X.id]=sv; else delete S.d[X.id]; save(); refill(X); draw(X); return; }
     var u=t.closest('[data-undo]'); if(u){ delete own(X.id)[u.dataset.undo]; clean(X.id); save(); refill(X); draw(X); return; }
     if(t.closest('.png')){ pngOne(X); return; }
-    if(t.closest('.star')){ if(S.tpl[X.id]) delete S.tpl[X.id]; else { S.tpl[X.id]=1; var v2=wordGet(X); S.rules.word.en=S.rules.word.en||{}; S.rules.word.en[letters(val(X,'word'))]={size:Math.round(v2.size),dx:Math.round(v2.dx),dy:Math.round(v2.dy),ww:+(+v2.ww).toFixed(3),hh:+(+(v2.hh||1)).toFixed(3),src:X.id,from:val(X,'word')}; learnLine(X,'top'); learnLine(X,'bot'); }
-      save(); redrawNew(); rules(); return; }
+    if(t.closest('.star')){ if(S.tpl[X.id]) delete S.tpl[X.id]; else S.tpl[X.id]=1; averages(); save(); redrawNew(); rules(); status(X);
+      msg(S.tpl[X.id]?val(X,'word')+' is a template. Every '+letters(val(X,'word'))+'-letter word now uses the average of your '+letters(val(X,'word'))+'-letter templates.':val(X,'word')+' is no longer a template.'); return; }
     var vb=t.closest('.vl [data-v]'); if(vb){ var w=vb.closest('.vl').dataset.w, a=vb.dataset.v, cur=lineGet(X,w), step=X.set==='new'?1:25; if(!cur) return;
       if(a==='learn'){ var r=learnLine(X,w); save(); redrawNew(); rules(); vb.closest('.vl').querySelector('.note').textContent='Saved: '+(w==='top'?'top':'bottom')+' lines of about '+r.n+' letters now use size '+r.size+'.'; return; }
       if(a==='0'){ delete own(X.id)[w==='top'?'tl':'bl']; clean(X.id); }
       else { if(a==='s-') cur.size*=0.96; else if(a==='s+') cur.size*=1.04; else if(a==='w-') cur.w-=0.02; else if(a==='w+') cur.w+=0.02; else if(a==='x-') cur.slide-=step; else if(a==='x+') cur.slide+=step; else if(a==='same') cur.size=(lineGet(X,w==='top'?'bot':'top')||cur).size; linePut(X,w,cur); }
       save(); draw(X); } }
+  // ── templates (Ken, 2 Nov): tick ⭐ on any fish, yours or a new one. Each one is measured (the word's letter size, how far it
+  // sits left/right and up/down from the middle of the eye, its width; where each verse line sits along its curve and its letter
+  // size), and every word with the same number of letters takes the AVERAGE of the templates with that many letters. The verse
+  // lines take the average of all the templates. Your own 24 are measured from your drawings (tools/fish-format/ken24.json).
+  var KEN=null;
+  function tplOf(id){ for(var i=0;i<LIST.length;i++) if(LIST[i].id===id) return LIST[i]; return null; }
+  function title(k){ return k.charAt(0)+k.slice(1).toLowerCase(); }
+  // a template's own design, not the average it feeds: its own setting, else the builder's layout
+  function measureTpl(X){ var w=val(X,'word'), mid=(V.start+V.end)/2, r1=function(x){ return Math.round(x*10)/10; };
+    if(X.set==='24'){ var k=KEN&&KEN[X.key]; if(!k) return null; var vs=FR?FR.verse.size:200;
+      return {word:title(X.key),n:k.n,size:k.size,dx:r1(k.cx-G.cx),dy:r1(k.cy-G.cy),ww:k.sx,hh:1,
+        top:k.top?{size:vs,slide:r1(((k.top.start+k.top.end)/2-mid)*100),n:k.top.chars}:null,bot:k.bot?{size:vs,slide:r1(((k.bot.start+k.bot.end)/2-mid)*100),n:k.bot.chars}:null}; }
+    var o=S.d[X.id]||{}, au=FE?autoP(X):null, v=o.wl||(au&&au.wl)||wordGet(X);
+    function ln(k,key){ var l=o[key]||(au&&au[key]); if(!l){ var g=lineGet(X,k); l=g&&{size:g.size,slide:g.slide}; } return l?{size:r1(l.size),slide:r1(l.slide||0),n:val(X,k).length}:null; }
+    return {word:w,n:letters(w),size:r1(v.size),dx:r1(v.dx),dy:r1(v.dy),ww:+(+v.ww).toFixed(3),hh:+(+(v.hh||1)).toFixed(3),top:ln('top','tl'),bot:ln('bot','bl')}; }
+  var AVG=null;
+  // each template keeps its measurements (S.tpl[id]), so the averages hold whichever fish are on the screen
+  function averages(){ var M=[];
+    Object.keys(S.tpl).forEach(function(id){ var X=tplOf(id), m=X?measureTpl(X):null; if(m) S.tpl[id]=m; else m=typeof S.tpl[id]==='object'?S.tpl[id]:null; if(m) M.push(m); });
+    function av(a,k){ return a.reduce(function(s,x){ return s+x[k]; },0)/a.length; }
+    var W=S.rules.word.en=S.rules.word.en||{}; Object.keys(W).forEach(function(n){ if(W[n].avg) delete W[n]; });
+    var by={}; M.forEach(function(m){ (by[m.n]=by[m.n]||[]).push(m); });
+    Object.keys(by).forEach(function(n){ var a=by[n]; W[n]={size:Math.round(av(a,'size')),dx:Math.round(av(a,'dx')),dy:Math.round(av(a,'dy')),ww:+av(a,'ww').toFixed(3),hh:+av(a,'hh').toFixed(3),avg:true,src:'templates',from:a.map(function(m){ return m.word; }).join(', ')}; });
+    ['top','bot'].forEach(function(k){ var a=M.map(function(m){ return m[k]; }).filter(Boolean), L=S.rules[k].en=(S.rules[k].en||[]).filter(function(r){ return !r.avg; });
+      if(a.length) L.push({n:Math.round(av(a,'n')),size:Math.round(av(a,'size')*10)/10,slide:Math.round(av(a,'slide')*10)/10,lw:1,avg:true,from:'average of '+a.length+' template'+(a.length===1?'':'s')}); });
+    AVG={by:by,M:M}; }
+  function avgTable(){ var el=$('rAvg'); if(!el) return; var W=S.rules.word.en||{}, rows=[];
+    var own={}; Object.keys(W).forEach(function(k){ if(!W[k].avg) own[k]=W[k]; });
+    for(var n=2;n<=9;n++){ var r=W[n], a=AVG&&AVG.by[n]||[], f=r?null:MFWordTool.ruleFor(own,n);
+      rows.push('<tr><td>'+n+'</td><td>'+(a.length?a.length+': '+esc(a.map(function(m){ return m.word; }).join(', ')):'<i>none yet</i>')+'</td>'
+        +(r&&r.avg?'<td>'+r.size+'</td><td>'+r.dx+'</td><td>'+r.dy+'</td><td>'+Math.round(r.ww*100)+'%</td>':'<td colspan="4" class="hint" style="text-align:left">'+(f?'your 📚 rule: size '+Math.round(f.size):'no templates: the builder’s rule')+'</td>')+'</tr>'); }
+    var lt=['top','bot'].map(function(k){ var r=(S.rules[k].en||[]).filter(function(x){ return x.avg; })[0]; return r?'<tr><td>'+(k==='top'?'Top':'Bottom')+' line</td><td>'+r.size+'</td><td>'+r.slide+'%</td><td>'+esc(r.from)+'</td></tr>':''; }).join('');
+    el.innerHTML='<table><tr><th>Letters</th><th>Templates</th><th>Size</th><th>Left/right</th><th>Up/down</th><th>Width</th></tr>'+rows.join('')+'</table>'
+      +(lt?'<table style="margin-top:8px"><tr><th>Line</th><th>Letter size</th><th>Slide</th><th>From</th></tr>'+lt+'</table>':''); }
   function learnLine(X,w){ var v=lineGet(X,w), n=val(X,w).length, list=(S.rules[w][X.code]||[]).filter(function(r){ return r.n!==n; });
     list.push({n:n,size:Math.round(v.size),slide:Math.round(v.slide*10)/10,lw:+(+v.w).toFixed(3),src:X.id,from:val(X,'word')}); S.rules[w][X.code]=list; return {n:n,size:Math.round(v.size)}; }
   function onInput(e){ var X=fishOfEl(e.target); if(!X) return; var i=e.target;
@@ -500,7 +539,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   $('fShow').addEventListener('change',function(){ show=this.value; render(); });
 
   // ── the rules panel ──
-  function rules(){ var R=S.rules, rows=[];
+  function rules(){ var R=S.rules, rows=[]; avgTable();
     Object.keys(R.word).forEach(function(code){ Object.keys(R.word[code]).map(Number).sort(function(a,b){ return a-b; }).forEach(function(n){ var r=R.word[code][n]; rows.push('<tr><td>'+esc(code.toUpperCase())+'</td><td>'+n+'</td><td>'+r.size+'</td><td>'+r.dx+'</td><td>'+r.dy+'</td><td>'+Math.round(r.ww*100)+'%</td><td>'+Math.round((r.hh||1)*100)+'%</td><td>'+esc(r.from)+'</td><td><button type="button" data-del="word" data-c="'+esc(code)+'" data-n="'+n+'">remove</button></td></tr>'); }); });
     $('rWord').innerHTML=rows.length?'<table><tr><th>Lang</th><th>Letters</th><th>Size</th><th>Left/right</th><th>Up/down</th><th>Width</th><th>Height</th><th>From</th><th></th></tr>'+rows.join('')+'</table>':'<p class="hint" style="text-align:left">None yet. Tap 📚 in a word’s tools.</p>';
     var lr=[]; ['top','bot'].forEach(function(k){ Object.keys(R[k]).forEach(function(code){ (R[k][code]||[]).slice().sort(function(a,b){ return a.n-b.n; }).forEach(function(r){ lr.push('<tr><td>'+(k==='top'?'Top':'Bottom')+'</td><td>'+r.n+'</td><td>'+r.size+'</td><td>'+Math.round((r.lw||1)*100)+'%</td><td>'+r.slide+'%</td><td>'+esc(r.from)+'</td><td><button type="button" data-del="'+k+'" data-c="'+esc(code)+'" data-n="'+r.n+'">remove</button></td></tr>'); }); }); });
@@ -557,7 +596,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   Promise.all([fetch('/edit/data.json',{cache:'no-store'}).then(function(r){ return r.json(); }),fetch('/edit/new/data.json').then(function(r){ return r.json(); }),fetch('/edit/new/base.svg').then(function(r){ return r.text(); }),document.fonts.load('100px MFHobo'),fetch('/edit/daily/data.json').then(function(r){ return r.json(); }).catch(function(){ return {fish:[]}; }),
       Promise.all([fetch('/fish-lang/fishgeo.json').then(function(r){ return r.json(); }),fetch('/fish-lang/hobo.otf').then(function(r){ return r.arrayBuffer(); })]).catch(function(){ return null; })])
     .then(function(x){ D=x[0]; N=x[1]; BASE=x[2]; DY=x[4];
-      if(x[5]&&window.MFfmt&&window.opentype){ try{ MFfmt.setGeo(x[5][0]); FR=x[5][0].rule; FE=MFfmt.otEngine(opentype.parse(x[5][1])); }catch(e){ FE=null; } } if(!DY.fish.length){ document.querySelector('[data-set=daily]').hidden=true; if(set==='daily') set='new'; } var qs=/[?&]set=(new|daily)/.exec(location.search); if(qs&&(qs[1]!=='daily'||DY.fish.length)) set=qs[1]; if(set==='24'&&lang!=='all'&&!D.langs.some(function(l){ return l.l===lang; })) lang='B';
+      if(x[5]&&window.MFfmt&&window.opentype){ try{ MFfmt.setGeo(x[5][0]); FR=x[5][0].rule; KEN=x[5][0].ken||null; FE=MFfmt.otEngine(opentype.parse(x[5][1])); }catch(e){ FE=null; } } if(!DY.fish.length){ document.querySelector('[data-set=daily]').hidden=true; if(set==='daily') set='new'; } var qs=/[?&]set=(new|daily)/.exec(location.search); if(qs&&(qs[1]!=='daily'||DY.fish.length)) set=qs[1]; if(set==='24'&&lang!=='all'&&!D.langs.some(function(l){ return l.l===lang; })) lang='B';
       // straight to one fish (Ken, 26 Oct: from a fish whose design needs fixing): /edit/?find=Trust&code=tl
       var qf=new URLSearchParams(location.search); if(qf.get('find')){ set=qs?qs[1]:'24'; q=qf.get('find'); $('find').value=q; var L0=D.langs.filter(function(l){ return l.code===qf.get('code'); })[0]; lang=L0?L0.l:'all'; }
       render(); })
