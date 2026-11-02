@@ -51,5 +51,16 @@
    },
    "note": "Ken, 1 Nov: Build as big as Trust (Trust's word is size 784 in ken24.json)"
   }
+ },
+ {
+  "id": "X:X005",
+  "k": "X005",
+  "word": "Deliver",
+  "top": "Who delivered us from so great a death,",
+  "bot": "and doth deliver: … he will yet deliver us",
+  "ref": "2 Corinthians 1:10",
+  "refShort": "2 Cor. 1:10",
+  "verse": "Who delivered us from so great a death, and doth deliver: in whom we trust that he will yet deliver us;",
+  "note": "Ken, 2 Nov: a New Testament Deliver"
  }
 ]
