@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 """The net for Go Fish on Today (Ken, 26 Oct: "Put 153 fish in Go Fish" -- John 21:11, "an hundred and fifty and three").
 The 24 devotional fish are on the page already; this adds the other 129: the 128 year fish (edit/new/data.json) and, as the 153rd,
-Tend (John 21:17, "Feed my sheep"), the Bible-in-a-year fish from the same chapter. Writes fish/net.json [{id, word, ref, verse}]."""
+Tend (John 21:17, "Feed my sheep"), the Bible-in-a-year fish from the same chapter. Writes fish/net.json [{id, word, ref, verse}].
+Why 153 (Ken, 2 Nov): the net held 153 fish and did not tear (John 21:11). The breath of the Holy Spirit (John 20:22, "he breathed
+on them, and saith unto them, Receive ye the Holy Ghost") answers Genesis 2:7, when God breathed into man the breath of life.
+Peter, who denied Jesus, is restored by the fire ("Feed my sheep", John 21:15-17), and the commission renews God's first command,
+increase and multiply (Genesis 1:28). Now the Holy Spirit keeps the net from tearing and the jars from leaking (the widow's oil,
+2 Kings 4): we are no longer broken vessels that cannot hold the oil; in Christ we are made whole. The Kingdom is like a net cast
+on the right side, gathering every kind of fish (Matthew 13:47)."""
 import json, os
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 year = json.load(open(os.path.join(ROOT, 'edit', 'new', 'data.json')))['fish']

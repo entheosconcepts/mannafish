@@ -42,6 +42,13 @@ h2{font:400 1.6rem 'MFHobo',cursive;margin:28px 0 10px}.g{display:grid;grid-temp
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   var id=(new URLSearchParams(location.search).get('id')||'').replace(/[^A-Za-z0-9_-]/g,''), M=document.getElementById('m');
   // no fish named: the 153 (Ken, 1 Nov: "I want to see all 153 fish"), John 21:11 -- the 24 devotional fish, then the 129 in the Go Fish net
+  //
+  //Why 153 (Ken, 2 Nov): the net held 153 fish and did not tear (John 21:11). The breath of the Holy Spirit (John 20:22, "he breathed
+  //on them, and saith unto them, Receive ye the Holy Ghost") answers Genesis 2:7, when God breathed into man the breath of life.
+  //Peter, who denied Jesus, is restored by the fire ("Feed my sheep", John 21:15-17), and the commission renews God's first command,
+  //increase and multiply (Genesis 1:28). Now the Holy Spirit keeps the net from tearing and the jars from leaking (the widow's oil,
+  //2 Kings 4): we are no longer broken vessels that cannot hold the oil; in Christ we are made whole. The Kingdom is like a net cast
+  //on the right side, gathering every kind of fish (Matthew 13:47).
   if(!id){ document.title='The 153 · MannaFish'; fetch('/fish/catch.json').then(function(r){ return r.json(); }).then(function(C){
       // Ken, 1 Nov: "a list of the fish designs as a printable or digital version where I might be able to edit the design or request changes":
       // 🖨 prints the list; on each fish ✏️ opens it on the edit sheet (/edit/), 💬 sends a change request (feedback, design)
