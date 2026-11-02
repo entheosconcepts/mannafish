@@ -25,6 +25,9 @@
   function css(){ if(document.getElementById('mfBkCss')) return; var s=document.createElement('style'); s.id='mfBkCss';
     s.textContent='.mfbkfab{position:fixed;right:14px;bottom:max(16px,env(safe-area-inset-bottom));z-index:80;border:0;border-radius:999px;background:#f5d76e;color:#111;font:800 1rem Archivo,system-ui,sans-serif;padding:10px 16px;cursor:pointer;box-shadow:0 10px 30px -8px #000}'
       +'.mfbkfab[hidden]{display:none}body.mftabbed .mfbkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;padding:8px 14px}'
+      // Ken, 2 Nov: "move the basket down a little so it is not blocking features" -- while a window is open at the bottom (the Bible's
+      // verse window, word study, lists), the basket drops to the bottom corner, beside "Swipe up for more", out of the buttons' way
+      +'body:has(.act.open,.xrsheet.open,.sheet.open) .mfbkfab{bottom:calc(8px + env(safe-area-inset-bottom));right:8px;padding:5px 11px;font-size:.88rem;opacity:.92}'
       +'.mfbkfab.bump{animation:mfbump .5s ease}@keyframes mfbump{40%{transform:scale(1.18)}}'
       +'.mfbk{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.66);display:flex;align-items:flex-end;justify-content:center}.mfbk[hidden]{display:none}'
       +'.mfbk .in{background:#0e1116;color:#eaf0f0;border:1px solid rgba(255,255,255,.14);border-radius:22px 22px 0 0;width:100%;max-width:560px;max-height:92vh;max-height:calc(100dvh - 12px);overflow:auto;overscroll-behavior:contain;padding:0 16px max(18px,env(safe-area-inset-bottom));font:16px/1.45 Archivo,system-ui,sans-serif;text-align:left}'
