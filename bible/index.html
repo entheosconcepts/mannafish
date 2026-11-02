@@ -204,7 +204,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 .tip{color:var(--dim);font-size:.8rem;text-align:center;margin:8px 0 0}
 /* Ken, 2 Nov: in the window for a tapped highlight or word: take highlights off, and see and hear the word in another language */
 .arow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin:10px 0 0}.arow[hidden]{display:none}
-.arow .chip{padding:7px 11px;font-size:.82rem}#aErase[aria-pressed=true]{background:#e8eef6;color:#14181c;border-color:#e8eef6}
+.arow .chip{padding:7px 11px;font-size:.82rem}
 .wl{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 10px}.wlw{display:inline-flex;align-items:center;gap:2px;font-size:1rem}
 .wl select{border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:999px;padding:6px 8px;font-weight:700;font-size:.82rem;max-width:56vw}
 .wlr{font-size:1.15rem;font-weight:700}.wlr small{display:block;font-size:.72rem;font-weight:400;color:var(--dim)}.wls{border:0;background:none;color:var(--text);font-size:1.05rem;cursor:pointer;padding:4px 6px}
@@ -268,7 +268,6 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 <div class="linkbar" id="linkbar" hidden><b></b><button type="button" class="chip" id="linkX">Cancel</button></div>
 <div class="linkbar" id="hlbar" hidden><b>Tap the ones to remove</b><button type="button" class="chip" id="hlAll">All</button><button type="button" class="chip" id="hlGo" style="background:#e8735c;border-color:#e8735c">Remove</button><button type="button" class="chip" id="hlX">Done</button></div>
 <button type="button" class="histb" id="hist" hidden></button>
-<div class="penbar" id="erbar" hidden><b>&#129533; Eraser · slide across highlights to take them off</b><button type="button" class="chip" id="erX">Done</button></div>
 <div class="penbar" id="penbar" hidden><b>&#128397;&#xFE0E; Slide across the words</b><span id="penDots" style="display:flex;gap:4px"></span><button type="button" class="chip" id="penX">Done</button></div>
 <div class="act xrsheet" id="xrs" role="dialog" aria-label="Cross references"><div class="in" id="xrsIn"></div></div>
 <div class="act" id="act" role="dialog" aria-label="Verse"><div class="in"><button type="button" class="actx" id="aClose" aria-label="Close">&#10005;</button>
@@ -280,8 +279,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     <button type="button" class="tile" id="aLink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Link</span></button>
     <button type="button" class="tile" id="aOrigT" aria-pressed="false"><span class="ogi" id="aOrigI" aria-hidden="true">&alpha;</span><span id="aOrigL">Greek</span></button>
     <button type="button" class="tile" id="aCopy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><span>Copy</span></button></div>
-  <div class="arow" id="aRmRow" hidden><button type="button" class="chip" id="aRm">&#10005; Remove highlight</button><button type="button" class="chip" id="aRmAll">Remove all in this chapter</button><button type="button" class="chip" id="aErase" aria-pressed="false">&#129533; Eraser: slide to remove</button></div>
-  <div class="arow wl" id="aWl" hidden><span class="wlw"><b id="aWlW"></b><button type="button" class="wls" id="aWlSay0" aria-label="Hear it">🔊</button></span><select id="aWlL" aria-label="See and hear it in another language"></select><span class="wlr" id="aWlR" aria-live="polite"></span><button type="button" class="wls" id="aWlSay" aria-label="Hear it in that language" hidden>🔊</button></div>
+  <div class="arow" id="aRmRow" hidden><button type="button" class="chip" id="aRm">&#10005; Remove highlight</button><button type="button" class="chip" id="aRmAll">Remove all in this chapter</button></div>
+  <div class="arow wl" id="aWl" hidden><span class="wlw"><b id="aWlW"></b><button type="button" class="wls" id="aWlSay0" aria-label="Hear it">🔊</button></span><button type="button" class="chip" id="aWlHl" hidden>&#128397;&#xFE0E; Highlight just this word</button><select id="aWlL" aria-label="See and hear it in another language"></select><span class="wlr" id="aWlR" aria-live="polite"></span><button type="button" class="wls" id="aWlSay" aria-label="Hear it in that language" hidden>🔊</button></div>
   <p class="tip" id="aTip" hidden>Tip: hold a word, then slide your finger to pick just those words</p>
   <button type="button" class="moreh" id="aMore">&#8963; Swipe up for more</button>
   <div class="more">
@@ -400,7 +399,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function hlHide(on){ ls('mf-hl-hide',on?'1':''); document.documentElement.classList.toggle('hlhide',on); paint(); toast(on?'Highlights hidden in every Bible · they are kept':'Highlights showing'); }
   function hlOpts(open){ var b=$('hlmBtn'), o=$('hlOpts'); b.setAttribute('aria-expanded',String(!!open)); o.hidden=!open; if(!open) return;
     o.innerHTML='<button type="button" data-o="hide">'+(hlHid()?'👁 Show highlights':'🙈 Hide highlights')+'</button><button type="button" data-o="pen">🖍 '+(PEN?'Pen off':'Highlighter pen')+'</button>'
-      +(document.querySelector('#txt .v.hl,#txt mark.ph')?'<button type="button" data-o="rm">🗑 Remove some</button><button type="button" data-o="erase">🧽 '+(ERASE?'Eraser off':'Eraser: slide to remove')+'</button>':''); }
+      +(document.querySelector('#txt .v.hl,#txt mark.ph')?'<button type="button" data-o="rm">🗑 Remove some</button>':''); }
   // a verse's words, each in its own span (data-j: the word's place, as the Greek and Hebrew are matched to it); in word study, with the
   // Strong's number and the original word of each (shown above or below it when asked for)
   function vtHtml(v,t,ph,full){ var T=tk(v), og=OGJ&&ver().k==='kjv'?OGJ.v[String(v)]:null, o=studyOn()?og:null, R=full?[]:rulesHere(), cuts=[0,t.length], out='', open=null, ti=0;
@@ -422,7 +421,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function hlHere(){ var h=hls(), out=[]; [].forEach.call($('txt').querySelectorAll('.v.hl'),function(sp){ out.push(hkey(AT.b,AT.c,+sp.dataset.v)); }); [].forEach.call($('txt').querySelectorAll('mark.ph'),function(m){ out.push(m.dataset.k); }); return out.filter(function(k){ return h[k]; }); }
   $('hlmBtn').addEventListener('click',function(){ hlOpts($('hlOpts').hidden); }); $('hlX').addEventListener('click',hlmEnd);
   $('hlOpts').addEventListener('click',function(e){ var b=e.target.closest('[data-o]'); if(!b) return; var o=b.dataset.o; hlOpts(false);
-    if(o==='hide') hlHide(!hlHid()); else if(o==='pen'){ if(hlHid()&&!PEN) hlHide(false); setPen(!PEN); } else if(o==='rm'){ if(hlHid()) hlHide(false); hlmStart(); } else if(o==='erase'){ if(hlHid()) hlHide(false); setErase(!ERASE); } });
+    if(o==='hide') hlHide(!hlHid()); else if(o==='pen'){ if(hlHid()&&!PEN) hlHide(false); setPen(!PEN); } else if(o==='rm'){ if(hlHid()) hlHide(false); hlmStart(); } });
   document.documentElement.classList.toggle('hlhide',hlHid());
   window.addEventListener('storage',function(e){ if(e.key==='mf-hl-hide'){ document.documentElement.classList.toggle('hlhide',hlHid()); paint(); } });
   $('hlAll').addEventListener('click',function(){ var all=hlHere(), every=all.every(function(k){ return HLM[k]; }); HLM={}; if(!every) all.forEach(function(k){ HLM[k]=1; }); paint(); });
@@ -500,7 +499,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
       while(a<z&&/[\s\p{P}]/u.test(t[a])) a++; while(z>a&&/[\s\p{P}]/u.test(t[z-1])) z--; if(z>a) out.push({v:v,s:a,e:z}); });
     return out.length?out:null; }
   var DRAG=0;
-  function takeDrag(){ var d=dragged(); if(!d) return false; PHS=d; SEL=d.map(function(x){ return x.v; }); DRAG=Date.now(); if(ERASE){ eraseL(d); return true; } if(PEN) penApply(); else selUI(); return true; }
+  function takeDrag(){ var d=dragged(); if(!d) return false; PHS=d; SEL=d.map(function(x){ return x.v; }); DRAG=Date.now(); if(PEN) penApply(); else selUI(); return true; }
   document.addEventListener('mouseup',function(e){ if(e.target.closest&&e.target.closest('#txt')) setTimeout(takeDrag,10); });
   var selT; document.addEventListener('selectionchange',function(){ clearTimeout(selT); if(PEN) return; selT=setTimeout(function(){ var sel=window.getSelection(); if(sel&&!sel.isCollapsed&&$('txt').contains(sel.anchorNode)){ var d=dragged(); if(d&&JSON.stringify(d)!==JSON.stringify(PHS)) takeDrag(); } },450); });
   $('act').addEventListener('mousedown',function(e){ if(!e.target.closest('textarea,input,select')) e.preventDefault(); });   // the words stay picked
@@ -555,20 +554,15 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     else SEL.forEach(function(v){ var k=hkey(AT.b,AT.c,v); Object.keys(h).forEach(function(x){ if(h[x].kind==='phrase'&&h[x].ver===vcode()&&String(h[x].ref).indexOf(plain(AT.b,AT.c,v)+'#')===0) unHl(h,x); });
       if(!c) unHl(h,k); else h[k]={kind:'verse',ref:plain(AT.b,AT.c,v),ver:vcode(),k:'',i:0,l:vlang(),v:v,c:c,text:(VT[v]||'').slice(0,220),at:Date.now(),bible:1}; });
     if(c) ls('mf-hl-color',c); saveHls(h); hlTouched(); paint(); toast(c?(quiet?'Highlighted · tap a colour to change it':'Highlighted · saved to My highlights'):'Highlight removed'); closeAct(); }
-  // ── Ken, 2 Nov: take highlights off from the window: this one, every one in the chapter, or slide the eraser across them ──
-  var ERASE=false, TAPW=null;
-  function rmUI(){ var hit=hitsNow(hls()); $('aRmRow').hidden=!(hit.length||ERASE||document.querySelector('#txt .v.hl,#txt mark.ph')); $('aRm').hidden=!hit.length;
-    $('aRmAll').hidden=!document.querySelector('#txt .v.hl,#txt mark.ph'); $('aErase').setAttribute('aria-pressed',String(ERASE)); }
+  // ── Ken, 2 Nov: take highlights off from the window: this one, or every one in the chapter (the eraser was taken out: it got in
+  // the way of highlighting) ──
+  var TAPW=null;
+  function rmUI(){ var hit=hitsNow(hls()); $('aRmRow').hidden=!(hit.length||document.querySelector('#txt .v.hl,#txt mark.ph')); $('aRm').hidden=!hit.length;
+    $('aRmAll').hidden=!document.querySelector('#txt .v.hl,#txt mark.ph');}
   $('aRm').addEventListener('click',function(){ applyHl(''); });
   $('aRmAll').addEventListener('click',function(){ if(!confirm('Take every highlight off '+B[AT.b][0]+' '+AT.c+'?')) return; var h=hls(), pre=plain(AT.b,AT.c,'');
     Object.keys(h).forEach(function(k){ var x=h[k]; if(x.ver===vcode()&&(x.kind==='verse'||x.kind==='phrase')&&String(x.ref).indexOf(pre)===0) unHl(h,k); });
     saveHls(h); hlTouched(); paint(); closeAct(); toast('Every highlight in this chapter removed'); });
-  function setErase(on){ ERASE=on; document.body.classList.toggle('erase',on); $('erbar').hidden=!on; if(on){ if(PEN) setPen(false); closeAct(); toast(TOUCH?'Eraser on · slide a finger across the highlights to take them off':'Eraser on · drag across the highlights to take them off'); } else toast('Eraser off'); }
-  $('aErase').addEventListener('click',function(){ setErase(!ERASE); }); $('erX').addEventListener('click',function(){ setErase(false); });
-  function eraseL(L){ var h=hls(), n=0; L.forEach(function(p){ var t=VT[p.v]||'', k=hkey(AT.b,AT.c,p.v), x=h[k];
-      if(x){ n++; var c=HLC[x.c]?x.c:'gold'; unHl(h,k); addPh(h,p.v,0,p.s,c); addPh(h,p.v,p.e,t.length,c); }
-      phrases(p.v,h).forEach(function(y){ if(y.s<p.e&&y.e>p.s){ n++; unHl(h,y.k); addPh(h,p.v,y.s,p.s,y.c); addPh(h,p.v,p.e,y.e,y.c); } }); });
-    saveHls(h); hlTouched(); PHS=null; SEL=[]; closeAct(); paint(); toast(n?'Highlight removed · the eraser stays on until you tap Done':'No highlight there'); }
   // ── Ken, 2 Nov: see and hear the word in Greek or Hebrew (the original), Spanish or any other language, from the same window ──
   var WLN=[['es','Español – Spanish'],['tl','Tagalog'],['zh','中文 – Chinese'],['hi','हिन्दी – Hindi'],['el','Ελληνικά – Modern Greek'],['de','Deutsch – German'],['ko','한국어 – Korean'],['he','עברית – Modern Hebrew'],
     ['ar','العربية – Arabic'],['ru','Русский – Russian'],['tr','Türkçe – Turkish'],['fr','Français – French'],['pt','Português – Portuguese'],['ht','Kreyòl ayisyen – Haitian Creole'],['vi','Tiếng Việt – Vietnamese'],
@@ -580,7 +574,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
       return t?{v:v,s:t.s,e:t.e,w:t.w}:null; }catch(er){ return null; } }
   function wlWord(){ if(PHS&&PHS.length===1){ var p=PHS[0], t=(VT[p.v]||'').slice(p.s,p.e).trim(); if(t&&t.length<=40) return {v:p.v,s:p.s,e:p.e,w:t}; }
     if(!PHS&&TAPW&&SEL.length===1&&SEL[0]===TAPW.v) return TAPW; return null; }
-  function wlUI(){ var W=wlWord(), sel=$('aWlL'); $('aWl').hidden=!W; if(!W) return; $('aWlW').textContent=W.w; var L=ogLang(), cur=ls('mf-bw-lang')||'';
+  function wlUI(){ var W=wlWord(), sel=$('aWlL'); $('aWl').hidden=!W; if(!W) return; $('aWlW').textContent=W.w; $('aWlHl').hidden=!!PHS; var L=ogLang(), cur=ls('mf-bw-lang')||'';
     sel.innerHTML='<option value="">🌐 In another language…</option><option value="orig">'+L.n+' (the original)</option>'+WLN.filter(function(x){ return x[0]!==vlang(); }).map(function(x){ return '<option value="'+x[0]+'">'+esc(x[1])+'</option>'; }).join('');
     sel.value=cur&&sel.querySelector('option[value="'+cur+'"]')?cur:''; $('aWlR').innerHTML=''; $('aWlSay').hidden=true; if(sel.value) wlShow(); }
   function say(t,l){ try{ var a=new Audio('/api/say?t='+encodeURIComponent(t)+'&l='+encodeURIComponent(l)); a.play().catch(function(){ sayLocal(t,l); }); }catch(er){ sayLocal(t,l); } }
@@ -599,6 +593,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function WLx(W,to){ var k=to+'|'+vlang()+'|'+W.w+'|'+AT.b+':'+AT.c+':'+W.v; return WLC[k]||(WLC[k]=fetch('/api/translate',{method:'POST',headers:{'content-type':'application/json'},
       body:JSON.stringify({equiv:1,text:W.w,verse:(VT[W.v]||'').slice(0,400),from:vlang(),to:to})}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).catch(function(er){ delete WLC[k]; throw er; })); }
   $('aWlL').addEventListener('change',wlShow);
+  // Ken, 2 Nov: one word highlighted from the window -- the word tapped, in your colour (tap a colour after to change it)
+  $('aWlHl').addEventListener('click',function(){ var W=wlWord(); if(!W) return; PHS=[{v:W.v,s:W.s,e:W.e}]; SEL=[W.v]; var keep=PHS.slice(); applyHl(colour(),true); PHS=keep; SEL=[W.v]; selUI(); });
   $('aWlSay').addEventListener('click',function(){ say(this.dataset.t,this.dataset.l); });
   $('aWlSay0').addEventListener('click',function(){ var W=wlWord(); if(W) say(W.w,vlang()); });
   // save: a bookmark, kept on this device (Saved, in the book list and under You)
@@ -796,7 +792,6 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     var L=fdRange(f.a,f.z); if(!L.length){ fdShow(null); return; } closeWc(); PHS=L; SEL=L.map(function(x){ return x.v; });
     // Ken, 1 Nov ("still can't tap and drag to highlight"): a slide highlights at once, in your colour; the colours stay open to change
     // it (or ✕ to take it off), with Save, Note, Copy and the rest for the same words
-    if(ERASE){ fdShow(null); eraseL(L); return; }
     if(PEN){ fdShow(null); penApply(); } else { fdShow(null); var keep=L.slice(); applyHl(colour(),true); PHS=keep; SEL=keep.map(function(x){ return x.v; }); selUI(); } },{passive:false});
   $('txt').addEventListener('touchcancel',function(){ if(FD){ clearTimeout(FD.tm); FD=null; fdShow(null); } });
   $('txt').addEventListener('contextmenu',function(e){ if(TOUCH&&(FD||Date.now()-TDRAG<1500)) e.preventDefault(); });
@@ -816,7 +811,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function penUI(){ document.body.classList.toggle('pen',PEN); $('penbar').hidden=!PEN; $('penB').setAttribute('aria-pressed',PEN); $('penB').classList.toggle('on',PEN); if(!PEN) return;
     var pc=colour(); $('penDots').innerHTML=BASE.concat(BASE.indexOf(pc)<0?[pc]:[]).map(function(c){ return '<button type="button" class="pd" data-c="'+c+'" aria-label="'+(HLC[c]||c)+'" aria-pressed="'+(pc===c)+'" style="background:'+HLC[c]+'"></button>'; }).join('')+WHEEL; }
   $('penDots').addEventListener('change',function(e){ if(e.target.type!=='color') return; penColour(wheelKey(e.target.value)); });
-  function setPen(on){ if(on&&ERASE){ ERASE=false; document.body.classList.remove('erase'); $('erbar').hidden=true; } PEN=on; penUI(); if(on){ closeAct(); closeWc(); toast(TOUCH?'Highlighter on · slide a finger across the words':'Highlighter on · drag across the words'); } }
+  function setPen(on){ PEN=on; penUI(); if(on){ closeAct(); closeWc(); toast(TOUCH?'Highlighter on · slide a finger across the words':'Highlighter on · drag across the words'); } }
   $('penX').addEventListener('click',function(){ setPen(false); });
   $('penB').addEventListener('click',function(){ setPen(!PEN); });
   $('penDots').addEventListener('click',function(e){ var b=e.target.closest('[data-c]'); if(!b) return; penColour(b.dataset.c); });
@@ -963,7 +958,6 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
         +sw('par','&#9707;&#xFE0E;','Side by side','Two versions, verse by verse',!!P2)
         +(P2?'<div class="mi2"><span class="sub" style="margin:0;align-self:center">'+esc(ver().s)+' and</span><select id="mPar" aria-label="The version beside it">'+parOpts()+'</select></div>':'')
         +sw('pen','&#128397;&#xFE0E;','Highlighter pen',TOUCH?'Slide a finger across the words':'Drag across the words',PEN)
-        +sw('erase','&#129533;','Eraser',TOUCH?'Slide across highlights to take them off':'Drag across highlights to take them off',ERASE)
         +tool('words','&#128397;&#xFE0E;','Highlight a word everywhere','Every place it is used: this chapter, this book or the whole Bible')
         +tool('listen','&#128264;&#xFE0E;','Listen','Read this chapter aloud from where you are')
         +tool('note','&#128221;&#xFE0E;','Chapter note','What God is showing you in '+esc(here))
@@ -997,7 +991,6 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     else if(k==='par'){ putSet('par',parVer()?undefined:(ver().k==='kjv'?'web':'kjv')); go(AT.b,AT.c,0,true); menuUI(); }
     else if(k==='pen'){ closeMenu(); setPen(!PEN); }
     else if(k==='tools'){ TOOLS=!TOOLS; ls('mf-bible-tools',TOOLS?'1':'0'); menuUI(); }
-    else if(k==='erase'){ closeMenu(); setErase(!ERASE); }
     else if(k==='listen'){ closeMenu(); if(!SAY.on) $('say').click(); }
     else if(TIPS[k]){ closeMenu(); toast(k==='tipOrig'?'Tap a verse, then the '+ogLang().n+' button in the window':TIPS[k]); }
     else if(k==='fb'){ closeMenu(); MFfeedback.open(); } });
