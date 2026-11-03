@@ -1,0 +1,38 @@
+# MannaFish: to-do list for updates (3 Nov 2026)
+
+Everything here is on the test site (https://yadamannafishtest.netlify.app/) until Ken says "push it live".
+
+## Before family and friends (soft launch)
+- [ ] **Ken:** go through the test checklist (••• → Admin view → ✅ Test checklist). Note anything with 📝 Note something to change.
+- [ ] **Ken:** check the live site's Netlify settings match the test site (BREVO_API_KEY, OPENAI_API_KEY, SUPABASE_SECRET_KEY, MF_ADMIN_KEY, PROOF_KEY), then say "push it live".
+- [ ] **Ken:** the original Remember fish says "remembrance" in its verse: keep it, or pick another verse?
+- [ ] **Claude (on Ken's word):** the Spanish, Tagalog and German fish against the "word in its verse" rule.
+- [ ] **Ken:** a Spanish speaker to proofread the Spanish fish and site.
+- [ ] **Ken:** the real K-Tech logo (the card uses a stand-in), or drop that sample run.
+- [ ] **Ken:** word size and place: pick templates on the edit sheet, tap 📋 Copy the averages, paste to Claude.
+
+## Sponsors and printing
+- [ ] **Ken:** pricing for sponsored card orders (the cart shows no price; requests come to /print/orders/).
+- [ ] **Ken:** the printer (StickerApp or another) and who mails the cards.
+- [ ] **Ken:** the legal home for sponsorships (Yadah Collaborative, with a CPA or nonprofit attorney).
+- [ ] **Claude:** a print run from a card order (logo, link, the fish) once a first order comes in.
+
+## Voices
+- [ ] **Ken:** an ElevenLabs account and `ELEVENLABS_API_KEY` in Netlify (never in a chat); then Claude adds the voices everywhere.
+- [ ] **Claude:** a voice taste-test page (the same verse in each voice).
+- [ ] **Ken:** paste docs/HANDOFF-CRM-VOICES.md into the CRM chat for the CRM tour speaker.
+
+## Growing it
+- [ ] **Claude:** an action fish for every chapter of the Bible (559 chapters without one), a book at a time for Ken to approve.
+- [ ] **Claude:** Make it a MannaFish in Greek, Hebrew, Chinese, Korean, Arabic, Hindi and Russian (their own lettering).
+- [ ] **Claude:** a "start here" for first-time visitors, and fewer names (Basket/Love, Hubs, Pond, Jars and Doors, 2 Fish, Take 2).
+- [ ] **Claude:** a simple numbers page: sign-ups, fish shared, what people use most.
+- [ ] **Ken:** texting (US carrier registration), when wanted.
+- [ ] **Ken:** Brevo's paid plan once the daily email passes about 300 people.
+- [ ] **Later:** the app (after the soft launch, feedback, printing and sponsors): Yadah's D-U-N-S number, Apple and Google accounts.
+
+## Done on 3 Nov
+Back button on the Books screen · Go Fish: Make it my fish today · no fish two days in a row · Bible tools under the chapter
+heading · Build follows the standard size and centring · Admin view / User view · co-labor back with nine Scriptures · Make the
+back yours with a cart (at least 100) · the devotional read on the card (Listen) and turned over (Read) · Free MannaFish → find
+or nominate a Hub · every fish from the email opens on the Today page.
