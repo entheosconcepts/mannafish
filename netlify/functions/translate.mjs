@@ -47,7 +47,7 @@ export default async (req, context) => {
     if (req.method !== 'POST') return bad('POST only', 405);
     if (!okOrigin(req.headers.get('origin'))) return bad('Not allowed', 403);
   }
-  let b; if (get) { const q = new URL(req.url).searchParams; b = { text: q.get('t') || '', lang: q.get('l') || '', voice: q.get('v') || '' }; }
+  let b; if (get) { const q = new URL(req.url).searchParams; b = { text: q.get('t') || '', lang: q.get('l') || '', voice: q.get('v') || '', name: q.get('n') || '' }; }
   else { try { b = await req.json(); } catch (e) { return bad('Bad request', 400); } }
   const text = String(b.text || '').trim();
   if (!text) return bad('Nothing to say', 400);
@@ -119,7 +119,10 @@ export default async (req, context) => {
   if (!say && await limited(context && context.ip, 'tr')) return bad('Please wait a little', 429, 'busy');
 
   if (say) {
-    const lang = NAMES[b.lang] ? b.lang : 'en';
+    // Ken, 3 Nov: "make it speak any language aloud" -- a language the translator found that isn't in its list (🔍 Detect) is
+    // spoken too: its code (am, yo, ne ...) and its name come with the words
+    const anyL = !NAMES[b.lang] && /^[a-z]{2,3}$/.test(String(b.lang || '')), lang = NAMES[b.lang] || anyL ? b.lang : 'en';
+    const lname = NAMES[lang] || String(b.name || '').replace(/[^\p{L} ()'-]/gu, '').trim().slice(0, 40) || lang;
     const voice = ALL.includes(b.voice) ? b.voice : VOICE;
     const store = getStore('mannafish-tts'), id = `live/${lang}-${await sha(voice + '|' + text)}.mp3`;
     let audio = await store.get(id, { type: 'arrayBuffer' });
@@ -128,7 +131,7 @@ export default async (req, context) => {
       if (await limited(context && context.ip, 'say', SAY_PER_HOUR)) return bad('Please wait a little', 429, 'busy');
       const r = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST', headers: H,
         body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice: speaker(voice, lang).voice, input: text, response_format: 'mp3',
-          instructions: speaker(voice, lang).style + `Speak warmly, clearly and a little slowly, like a kind friend talking face to face, in ${NAMES[lang]}.` }) });
+          instructions: speaker(voice, lang).style + `Speak warmly, clearly and a little slowly, like a kind friend talking face to face, in ${lname}.` }) });
       if (r.status === 401 || r.status === 403) return bad('Key not allowed', 503, 'key');
       if (!r.ok) return bad('Voice service error', 502);
       // Ken, 21 Oct: "there is a great delay" -- the sound goes to the phone as it is made, not after the whole clip is done;
