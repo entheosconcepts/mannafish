@@ -231,6 +231,8 @@
         DONE={n:list.length,station:sid,name:S.name}; save(a.slice(MAXN)); draw(); if(window.MFacct) MFacct.touch('praying'); })
       .catch(function(err){ go.disabled=false; m.textContent='It could not be sent just now. Please try again in a moment.'+(err&&err.message?' ('+err.message+')':''); }); }
 
+  // Admin view for testing (Ken, 3 Nov), on every page the basket is on
+  if(!window.MFadmin){ try{ var as=document.createElement('script'); as.src='/fish-lang/adminbar.js'; as.defer=true; document.head.appendChild(as); }catch(e){} }
   window.MFbasket={add:add,open:open,close:close,items:items,count:function(){ return items().length; },sent:function(){ return get(SENT,[]); },praying:prayed,stations:stations,refresh:fab};
   window.addEventListener('storage',function(e){ if(e.key===KEY) fab(); });
   if(document.body) fab(); else document.addEventListener('DOMContentLoaded',fab);

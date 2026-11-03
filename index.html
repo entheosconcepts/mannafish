@@ -1856,6 +1856,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
     <button type="button" class="hbtn smi" id="smAcct" role="menuitem"><span class="hbi" aria-hidden="true" id="smAcctIco">&#128273;&#xFE0E;</span><span class="hbt"><b id="smAcctLab">Sign in</b><small id="smAcctSub">Keep your notes on every device</small></span></button>
     <button type="button" class="hbtn smi" id="smNotes" role="menuitem" hidden><span class="hbi" aria-hidden="true">&#9998;&#xFE0E;</span><span class="hbt"><b id="smNotesLab">My notes</b><small id="smNotesSub">Notes and highlights</small></span></button>
     <button type="button" class="hbtn smi" id="smFb" role="menuitem"><span class="hbi" aria-hidden="true">&#128172;&#xFE0E;</span><span class="hbt"><b id="smFbLab">Tell us what you think</b><small id="smFbSub">What you like, what confused you</small></span></button>
+    <button type="button" class="hbtn smi" id="smAdmin" role="menuitem"><span class="hbi" aria-hidden="true">&#128736;&#xFE0E;</span><span class="hbt"><b id="smAdmLab">Admin view</b><small id="smAdmSub">For testing: edit tools and admin pages</small></span></button>
     <button type="button" class="hbtn smi" id="smMode" role="menuitem" hidden><span class="hbi" aria-hidden="true" id="smModeIco">&#9790;&#xFE0E;</span><span class="hbt"><b id="smModeLab">Dark mode</b></span></button>
   </div>
 </div></header>
@@ -4085,6 +4086,11 @@ window.MF=(function(){
   $('smBible').addEventListener('click',function(){ location.href='/bible/'; });
   // Ken, 22 Oct: Time with God (/pray/), like the Bible App's guided prayer, and more
   $('smPray').addEventListener('click',function(){ location.href='/pray/'; });
+  // Ken, 3 Nov: Admin view and User view, one tap apart (fish-lang/adminbar.js; the admin password is asked for once)
+  function admUI(){ var a=window.MFadmin&&MFadmin.on(); $('smAdmLab').textContent=a?'Switch to user view':'Admin view'; $('smAdmSub').textContent=a?'See it exactly as visitors do':'For testing: edit tools and admin pages'; }
+  $('smAdmin').addEventListener('click',function(){ var m=$('siteMenu'); if(m) m.hidden=true; if(window.MFadmin) MFadmin.toggle().then(admUI); });
+  window.addEventListener('mf-admin',admUI); setTimeout(admUI,1500);
+  window.MFadminFish=function(){ return cur?{word:titleIn('en',cur),key:cur}:null; };
   $('smStories').addEventListener('click',function(){ if(window.MFsecOpen) MFsecOpen('stories'); $('stories').scrollIntoView({behavior:'smooth',block:'start'}); });
   $('ptStage').addEventListener('click',function(e){ if(e.target.closest('[data-fs]')) fsOpen(); });
   MF.onChange(fsUI); fsUI();
