@@ -485,7 +485,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     if(!n){ $('txt').innerHTML='<p>'+ns.map(function(n){ return verseH(n)+' '; }).join('')+'</p>'; xrMark(); return; }
     var all=ns.slice(); PK.forEach(function(x){ Object.keys(x.T).map(Number).forEach(function(v){ if(all.indexOf(v)<0) all.push(v); }); }); all.sort(num);
     var head='<div class="phd"><span>'+esc(V1.s)+'</span>'+PK.map(function(x,i){ return '<span class="p2"><select data-pi="'+i+'" aria-label="'+(i?'The third column':'The version beside it')+'">'+parOpts(i,1)+'</select>'
-        +(x.P.og&&!x.none?'<button type="button" class="ogall" data-ogall="1" aria-pressed="false" title="Hear the whole chapter in '+x.P.s+'">&#9654;&#xFE0E;<span class="hl"> Hear</span></button>':'')
+        +(x.P.og&&!x.none?'<button type="button" class="ogall" data-ogall="1" aria-pressed="false" title="Hear the whole chapter in '+x.P.s+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button>':'')
         +(i===n-1&&n<2?'<button type="button" class="padd" data-padd="1" aria-label="Add a third column">&#65291; 3rd</button>':'')
         +'<button type="button" class="ib sm" data-px="'+i+'" aria-label="'+(n===1?'Close side by side':'Take this column away')+'">&#10005;</button></span>'; }).join('')+'</div>';
     $('txt').innerHTML=head+all.map(function(v){ return '<div class="pr"><div class="c1" lang="'+vlang(V1)+'" dir="'+(V1.rtl?'rtl':'ltr')+'">'+(VT[v]?verseH(v):'')+'</div>'
@@ -505,12 +505,12 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     var once=0; function local(){ if(once++) return; if(!window.speechSynthesis){ fin(); return; } var u=new SpeechSynthesisUtterance(t); u.lang=l; u.rate=.85; u.onend=fin; u.onerror=fin; speechSynthesis.cancel(); speechSynthesis.speak(u); } }); }
   var OGA=null;
   function ogStop(){ OGP++; try{ if(OGA){ OGA.pause(); OGA=null; } if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
-    [].forEach.call(document.querySelectorAll('#txt .ogc.saying,#txt .ow.saying'),function(x){ x.classList.remove('saying'); }); var b=document.querySelector('#txt [data-ogall]'); if(b){ b.setAttribute('aria-pressed','false'); b.innerHTML='&#9654;&#xFE0E;<span class="hl"> Hear</span>'; } }
+    [].forEach.call(document.querySelectorAll('#txt .ogc.saying,#txt .ow.saying'),function(x){ x.classList.remove('saying'); }); var b=document.querySelector('#txt [data-ogall]'); if(b){ b.setAttribute('aria-pressed','false'); b.innerHTML='&#9654;&#xFE0E;<span class="hlab"> Hear</span>'; } }
   function ogVerse(v,keep){ var x=ogOf(), o=x&&x.J.v[String(v)]; if(!o) return Promise.resolve(); var el=document.querySelector('#txt .ogc[data-v="'+v+'"]');
     [].forEach.call(document.querySelectorAll('#txt .ogc.saying'),function(y){ y.classList.remove('saying'); }); if(el){ el.classList.add('saying'); if(keep) el.scrollIntoView({block:'center',behavior:'smooth'}); }
     return sayP(ogClean(o.w.map(function(w){ return w[0]; }).join(' ')),x.P.l).then(function(){ if(el) el.classList.remove('saying'); }); }
   function ogAll(from){ var x=ogOf(); if(!x) return; ogStop(); var me=OGP, vs=Object.keys(x.J.v).map(Number).sort(function(a,b){ return a-b; }).filter(function(v){ return v>=(from||1); }), b=document.querySelector('#txt [data-ogall]');
-    if(b){ b.setAttribute('aria-pressed','true'); b.innerHTML='&#9632;&#xFE0E;<span class="hl"> Stop</span>'; }
+    if(b){ b.setAttribute('aria-pressed','true'); b.innerHTML='&#9632;&#xFE0E;<span class="hlab"> Stop</span>'; }
     (function next(i){ if(me!==OGP) return; if(i>=vs.length){ ogStop(); return; } ogVerse(vs[i],true).then(function(){ next(i+1); }); })(0); }
   function ogTap(e){ var b=e.target.closest('[data-ogall]'); if(b){ if(b.getAttribute('aria-pressed')==='true') ogStop(); else ogAll(1); return true; }
     var s=e.target.closest('[data-ogs]'); if(s){ ogStop(); ogVerse(+s.dataset.ogs); return true; }
