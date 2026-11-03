@@ -2072,7 +2072,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <div class="beneficiaries" id="beneficiaries">
     <button class="bene sel" data-b="your church" type="button"><span class="btag">Church</span><span class="bname">Your church</span><p>Stock the welcome table or fund an outreach &mdash; sponsor decals for your own congregation to give away.</p><span class="pick">Selected &#10003;</span></button>
     <button class="bene" data-b="someone you know" type="button"><span class="btag">Near you</span><span class="bname">Someone you know</span><p>A small group leader, a coffee shop, a friend: anyone you know can become a Gift Giver when you sponsor them.</p><span class="pick">Choose</span></button>
-    <button class="bene" data-b="a Christian business" type="button"><span class="btag">Business</span><span class="bname">A Christian business</span><p>Let a faith-driven business share the Word with its customers, co-branded with their own invitation.</p><span class="pick">Choose</span></button>
+    <button class="bene" data-b="a Christian business" type="button"><span class="btag">Business</span><span class="bname">A Christian business</span><p>Let a faith-driven business share the Word with its customers, co-labor with their own invitation on the back.</p><span class="pick">Choose</span></button>
     <button class="bene" data-b="a Christian artist or producer" type="button"><span class="btag">Artist</span><span class="bname">A Christian artist or producer</span><p>A musician, filmmaker or creator you follow becomes a Gift Giver and gives MannaFish to their audience, free.</p><span class="pick">Choose</span></button>
     <button class="bene" data-b="where it&rsquo;s needed most" type="button"><span class="btag">General fund</span><span class="bname">Where it&rsquo;s needed most</span><p>Not sure? Fund the pool and MannaFish places them through partner ministries and outreach events.</p><span class="pick">Choose</span></button>
     <button class="bene" data-b="a Christian podcast" type="button"><span class="btag">Podcast</span><span class="bname">A Christian podcast</span><p>Sponsor a podcast you listen to. The host becomes a Gift Giver and gives MannaFish to listeners, free.</p><span class="pick">Choose</span></button>
@@ -2082,7 +2082,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <div class="invite-wrap">
     <div class="invite-copy">
       <span class="eyebrow">Optional add-on</span>
-      <h3>A co-branded invitation on the back.</h3>
+      <h3>A co-labor invitation on the back.</h3>
       <p>The front stays Scripture. The back is a word study of the same fish: the Greek and Hebrew, and verses to look up. Underneath, the sponsor&rsquo;s logo and two QR codes: one to their website, podcast or ministry, and one to today&rsquo;s free MannaFish devotional.</p>
     </div>
     <!-- Ken, 12 Oct: the back the same size as the front, laid out across. Ken, 2 Nov: show the word-study back the printer gets
@@ -2157,7 +2157,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
     <p>MannaFish is a business <em>and</em> a ministry &mdash; and it&rsquo;s built to be carried by others. Two ways to bring it to your people:</p>
   </div>
   <div class="min-grid">
-    <div class="min"><h3>Co-branded &amp; custom</h3><p>Your verse, your logo, your ministry&rsquo;s name on the decals and merch &mdash; so your people carry your mission and the Word together.</p></div>
+    <div class="min"><h3>Co-labor &amp; custom</h3><p>Your verse, your logo, your ministry&rsquo;s name on the decals and merch &mdash; so your people carry your mission and the Word together.</p></div>
     <div class="min"><h3>Discipleship kits</h3><p>A ready-to-run set a leader can put in every hand: give a fish, teach 2 fish. A simple, repeatable way to disciple.</p></div>
   </div>
   <div class="cta-row" style="margin-top:34px">
@@ -2561,7 +2561,7 @@ window.MF=(function(){
     function lg(n,w,lang,snd,mn){ return '<div class="sb-lg"><div class="sb-k">'+n+'</div><div class="sb-ow" lang="'+lang+'">'+esc(w)+'</div><div class="sb-tr">('+esc(snd)+')</div><div class="sb-mn">'+esc(mn)+'</div></div>'; }
     el.innerHTML='<div class="sb-top">'+lg('GREEK',d.gkw,'el',d.gks,d.gkm)+'<div class="sb-w">'+esc(d.title)+'</div>'+lg('HEBREW',d.hbw,'he',d.hbs,d.hbm)+'</div>'
       +'<div class="sb-hq">Still hungry? Do this word study &amp; look up the following Scriptures</div>'
-      +'<div class="sb-rf">'+(d.refs||[]).slice(0,6).map(function(r){ return '<div><b>'+esc(r[0])+'</b><i>&ldquo;'+esc(r[1])+'&rdquo;</i></div>'; }).join('')+'</div>'
+      +'<div class="sb-rf">'+(d.refs||[]).slice(0,9).map(function(r){ return '<div><b>'+esc(r[0])+'</b><i>&ldquo;'+esc(r[1])+'&rdquo;</i></div>'; }).join('')+'</div>'
       +'<div class="sb-strip"><div class="sb-side"><div class="sb-qr">'+q+'</div><span>Your website, podcast or ministry</span></div>'
       +'<div class="sb-mid">Sponsored by<div class="sb-logo">Your<br>logo</div></div>'
       +'<div class="sb-side r"><span>Today&rsquo;s free MannaFish devotional</span><div class="sb-qr">'+q+'</div></div></div>'; }

@@ -154,14 +154,14 @@ async function backHtml(run, codes, warn) {
   // Greek | the word | Hebrew across the top, the verses in three columns, then the QR codes with their words beside them
   if (B.template === 'study' && landscape(run)) {
     const d = wordData(run.fish.study || run.fish.word); if (!d) throw new Error(`No word study for ${run.fish.word}`);
-    const refs = (d.refs || []).slice(0, B.refs || 6), W = CARD.w, H = CARD.h;
+    const refs = (d.refs || []).slice(0, B.refs || 9), W = CARD.w, H = CARD.h;   // Ken, 3 Nov: nine verses (3 x 3)
     const lang = (k, wd, lg, snd, m) => `<div class="lg"><div class="k">${k}</div><div class="ow fit" lang="${lg}"><span>${esc(wd)}</span></div><div class="tr">(${esc(snd)})</div><div class="mn fit"><span>${esc(m)}</span></div></div>`;
     const side = async (code, X, right) => X ? `<div class="col ql${right ? ' r' : ''}">${right ? `<div class="lab fit"><span>${esc(X.label || '')}</span></div>` : ''}<div class="sq">${await qr(code)}</div>${right ? '' : `<div class="lab fit"><span>${esc(X.label || '')}</span></div>`}</div>` : '<div class="col"></div>';
     return `<div class="pg" style="width:${f2(W + 2 * BLEED)}mm;height:${f2(H + 2 * BLEED)}mm"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${W}mm;height:${H}mm">
-  <div class="gh3" style="top:3mm;height:17mm">${lang('GREEK', d.gkw, 'el', d.gks, d.gkm)}<div class="wt3 fit"><span>${esc(B.heading || d.title)}</span></div>${lang('HEBREW', d.hbw, 'he', d.hbs, d.hbm)}</div>
-  <div class="hq fit" style="top:21mm;height:4.4mm"><span>${esc(B.text || 'Still hungry? Do this word study & look up the following Scriptures')}</span></div>
-  <div class="rf rf3" style="top:26.2mm;height:17.4mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
-  <div class="strip land" style="top:44.6mm;height:22mm">${await side(codes.left, L, false)}
+  <div class="gh3" style="top:2.6mm;height:15.6mm">${lang('GREEK', d.gkw, 'el', d.gks, d.gkm)}<div class="wt3 fit"><span>${esc(B.heading || d.title)}</span></div>${lang('HEBREW', d.hbw, 'he', d.hbs, d.hbm)}</div>
+  <div class="hq fit" style="top:18.8mm;height:4mm"><span>${esc(B.text || 'Still hungry? Do this word study & look up the following Scriptures')}</span></div>
+  <div class="rf rf3" style="top:23.2mm;height:21.8mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
+  <div class="strip land" style="top:45.6mm;height:21.6mm">${await side(codes.left, L, false)}
     <div class="col mid"><div class="sb">${esc(credit)}</div>${ml ? `<div class="sl"><img src="${ml}"></div>` : `<div class="sn fit${verse ? ' sv' : ''}"><span>${esc(mn)}</span></div>`}</div>
     ${await side(codes.right, Rt, true)}</div></div></div>`;
   }
@@ -210,7 +210,7 @@ const BACKCSS = () => `@font-face{font-family:'Lilita One';src:url(${font('lilit
 .wt3{font:400 12mm/1 'MFHobo',sans-serif;display:flex;align-items:center;justify-content:center;white-space:nowrap;min-width:0}
 .rf.rf3{left:3mm!important;right:3mm!important;grid-template-columns:1fr 1fr 1fr}
 .strip.land{left:3mm!important;right:3mm!important;grid-template-columns:1fr .78fr 1fr;gap:2mm;padding:1.4mm}
-.strip.land .ql{flex-direction:row;align-items:center;justify-content:center;gap:1.6mm}.strip.land .sq{width:19mm;height:19mm;flex:none}
+.strip.land .ql{flex-direction:row;align-items:center;justify-content:center;gap:1.6mm}.strip.land .sq{width:18.4mm;height:18.4mm;flex:none}
 .strip.land .lab{flex:1;width:auto;height:15mm;font-size:3.1mm;line-height:1.1;justify-content:flex-start;text-align:left}.strip.land .r .lab{justify-content:flex-end;text-align:right}
 .strip.land .mid{justify-content:center}.strip.land .sb{font-size:2.6mm;margin:0 0 .8mm}.strip.land .sl{flex:none;height:15.4mm}
 .sn{flex:1;width:100%;display:flex;align-items:center;justify-content:center;text-align:center;font:400 3mm/1.1 'Lilita One',sans-serif}.sn.sv{font:italic 400 2.5mm/1.2 'Spectral',serif;padding:0 .6mm}
