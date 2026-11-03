@@ -47,7 +47,11 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 .th{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:18px 0 4px}.th h1{margin:0;flex:1;min-width:0;text-align:center}
 .tbtn{border:0;background:none;color:inherit;font:inherit;cursor:pointer;padding:0;max-width:100%}.tbtn .ar{font-size:.5em;color:var(--dim);margin-left:6px;vertical-align:middle}
 .chv{flex:none;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;background:none;color:var(--text);font-size:1.7rem;line-height:1;padding:0 0 4px;cursor:pointer}.chv:disabled{opacity:.25;cursor:default}
-#main>.sub{text-align:center}#main>.hlm{display:block;margin:0 auto 10px}
+#main>.sub{text-align:center}
+.ht{text-align:center;margin:0 0 10px}.htb{border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:6px 14px;font-weight:700;font-size:.85rem;cursor:pointer}
+.htb .ar,.htmore summary .ar{display:inline-block;color:var(--dim);transition:transform .2s}.htb[aria-expanded=true] .ar,.htmore[open] summary .ar{transform:rotate(180deg)}
+.htp{max-width:520px;margin:8px auto 0;text-align:left;border:1px solid var(--line);border-radius:16px;padding:6px;background:var(--card)}.htp[hidden]{display:none}
+.htmore summary{list-style:none;cursor:pointer;padding:9px 10px;font-weight:700;font-size:.9rem;color:var(--dim)}.htmore summary::-webkit-details-marker{display:none}#main>.hlm{display:block;margin:0 auto 10px}
 .txt{font-family:var(--ff,'Spectral',Georgia,serif);font-size:var(--fs,1.18rem);line-height:var(--lh,1.85)}
 .novn .txt .v .vn{display:none}.lines .txt .v{display:block;margin:0 0 .45em}.lines .txt .nis{display:block;margin-top:-.4em}.nomarks .txt .nis{display:none}
 .txt .v{cursor:pointer;border-radius:4px;box-decoration-break:clone;-webkit-box-decoration-break:clone;transition:background .15s}
@@ -259,7 +263,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 </div></div>
 <div class="menu" id="menu" role="menu" hidden></div>
 <main id="main">
-  <div class="th"><button type="button" class="chv" id="prevT" aria-label="Previous chapter">&lsaquo;</button><h1><button type="button" class="tbtn" id="titleB" aria-haspopup="dialog" aria-label="Choose a book and chapter"><span id="title"></span><span class="ar" aria-hidden="true">▾</span></button></h1><button type="button" class="chv" id="nextT" aria-label="Next chapter">&rsaquo;</button></div><p class="sub" id="sub"></p><button type="button" class="cn" id="cnote" hidden></button><div class="stb" id="stb" hidden></div><button type="button" class="hlm" id="hlmBtn" aria-expanded="false" hidden></button><div class="hlopts" id="hlOpts" hidden></div>
+  <div class="th"><button type="button" class="chv" id="prevT" aria-label="Previous chapter">&lsaquo;</button><h1><button type="button" class="tbtn" id="titleB" aria-haspopup="dialog" aria-label="Choose a book and chapter"><span id="title"></span><span class="ar" aria-hidden="true">▾</span></button></h1><button type="button" class="chv" id="nextT" aria-label="Next chapter">&rsaquo;</button></div><p class="sub" id="sub"></p><div class="ht"><button type="button" class="htb" id="htB" aria-expanded="false">&#129520;&#xFE0E; Bible tools <span class="ar" aria-hidden="true">&#9662;</span></button><div class="htp" id="htP" hidden></div></div><button type="button" class="cn" id="cnote" hidden></button><div class="stb" id="stb" hidden></div><button type="button" class="hlm" id="hlmBtn" aria-expanded="false" hidden></button><div class="hlopts" id="hlOpts" hidden></div>
   <div class="txt" id="txt"><p class="msg">Opening…</p></div>
   <p class="pace" id="paceRow" hidden><button type="button" class="hlm" id="paceBtn" aria-pressed="false"></button></p>
   <div class="pn"><button type="button" id="prev"></button><button type="button" id="next"></button></div>
@@ -433,7 +437,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   var AT={b:42,c:1,sel:0}, HIST=[];
   var AUTOSAY=0;
   function go(b,c,v,keep){ var say=AUTOSAY; AUTOSAY=0; stopSay(); closeAct(); closeWc(); if(HLM) hlmEnd(); AT={b:b,c:c,sel:v||0}; OGJ=null; TK={}; ls('mf-bible-last',JSON.stringify({b:b,c:c})); remember(b,c);
-    whereUI(); $('title').textContent=B[b][0]+' '+c; $('sub').textContent=ver().n; document.title=B[b][0]+' '+c+' · MannaFish Bible';
+    whereUI(); htUI(); $('title').textContent=B[b][0]+' '+c; $('sub').textContent=ver().n; document.title=B[b][0]+' '+c+' · MannaFish Bible';
     try{ history.replaceState(null,'','?r='+encodeURIComponent(B[b][0]+' '+c+(v?':'+v:''))+(EMBED?'&embed=1':'')); }catch(e){}
     var pb=c>1?[b,c-1]:b>0?[b-1,B[b-1][1]]:null, nb=c<B[b][1]?[b,c+1]:b<B.length-1?[b+1,1]:null;
     $('prev').disabled=!pb; $('next').disabled=!nb; $('prevT').disabled=!pb; $('nextT').disabled=!nb;
@@ -945,6 +949,39 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   $('stuff').addEventListener('keydown',function(e){ if(e.target.id==='whW'&&e.key==='Enter'){ e.preventDefault(); $('whGo').click(); } });
 
   // ── ••• (Ken, 24 Oct: "give the bible 3 dots on top right to add notes and see history, recent, highlights, my stuff") ──
+  // Ken, 3 Nov: "Bible tools available under the book heading for easy access, with a hide and show arrow, and the side by side option
+  // in open view when this section is open, before the drop down" -- Side by side first, then More tools for the rest
+  function htUI(){ var open=ls('mf-bible-ht')==='1', b=$('htB'), p=$('htP'); if(!b) return; b.setAttribute('aria-expanded',String(open)); p.hidden=!open; if(!open) return;
+    var L=ogLang(), P2=parVer(), here=B[AT.b][0]+' '+AT.c;
+    var sw=function(id,ic,t,sm,on){ return '<button type="button" class="mi" role="switch" data-h="'+id+'" aria-pressed="'+!!on+'"><span class="ic">'+ic+'</span><span class="tx">'+t+'<small>'+sm+'</small></span><span class="sw"></span></button>'; };
+    var tool=function(id,ic,t,sm){ return '<button type="button" class="mi" data-h="'+id+'"><span class="ic">'+ic+'</span><span class="tx">'+t+'<small>'+sm+'</small></span></button>'; };
+    var link=function(u,ic,t,sm){ return '<a class="mi" href="'+u+'" target="_top"><span class="ic">'+ic+'</span><span class="tx">'+t+'<small>'+sm+'</small></span></a>'; };
+    p.innerHTML=sw('par','&#9707;&#xFE0E;','Side by side','Two versions, verse by verse',!!P2)
+      +(P2?'<div class="mi2"><span class="sub" style="margin:0;align-self:center">'+esc(ver().s)+' and</span><select id="htPar" aria-label="The version beside it">'+parOpts()+'</select></div>':'')
+      +'<details class="htmore"'+(ls('mf-bible-htm')==='1'?' open':'')+'><summary>More tools <span class="ar" aria-hidden="true">&#9662;</span></summary>'
+      +sw('study','<span class="og2">'+L.i+'</span>','Word study','Tap any word for its '+L.n+' root',studyOn())
+      +sw('pen','&#128397;&#xFE0E;','Highlighter pen',TOUCH?'Slide a finger across the words':'Drag across the words',PEN)
+      +tool('words','&#128397;&#xFE0E;','Highlight a word everywhere','This chapter, this book or the whole Bible')
+      +tool('listen','&#128264;&#xFE0E;','Listen','Read this chapter aloud from where you are')
+      +tool('note','&#128221;&#xFE0E;','Chapter note','What God is showing you in '+esc(here))
+      +tool('tipMake','&#128031;','Make it a MannaFish','Tap a word: it goes in the middle of a fish, to share')
+      +link('/my-fish/','&#11088;','My MannaFish','The fish you made and love, and the ones you shared')
+      +tool('tipLang','&#127760;&#xFE0E;','A word in another language','Tap a word: its '+L.n+', Spanish and more, and hear it')
+      +tool('tipXr','&#128209;&#xFE0E;','Cross references','Tap the little card after a verse')
+      +tool('tipPic','&#128444;&#xFE0E;','Picture verse','Tap a verse, swipe up, then Picture')
+      +link('/plan/','&#128197;&#xFE0E;','Reading plans','Bible in a Year, One Word and more')
+      +link('/translate/','&#128483;&#xFE0E;','Translator','Talk with someone in their language')+'</details>'; }
+  $('htB').addEventListener('click',function(){ ls('mf-bible-ht',ls('mf-bible-ht')==='1'?'':'1'); htUI(); });
+  $('htP').addEventListener('toggle',function(e){ if(e.target.classList&&e.target.classList.contains('htmore')) ls('mf-bible-htm',e.target.open?'1':''); },true);
+  $('htP').addEventListener('change',function(e){ if(e.target.id==='htPar'){ putSet('par',e.target.value); go(AT.b,AT.c,0,true); } });
+  $('htP').addEventListener('click',function(e){ var m=e.target.closest('[data-h]'); if(!m) return; var k=m.dataset.h;
+    if(k==='par'){ putSet('par',parVer()?undefined:(ver().k==='kjv'?'web':'kjv')); go(AT.b,AT.c,0,true); }
+    else if(k==='study'){ setStudy(!studyOn()); htUI(); }
+    else if(k==='pen'){ setPen(!PEN); htUI(); }
+    else if(k==='words') openWords();
+    else if(k==='listen'){ if(!SAY.on) $('say').click(); }
+    else if(k==='note') openCnote();
+    else if(TIPS[k]) toast(k==='tipOrig'?'Tap a verse, then the '+ogLang().n+' button in the window':TIPS[k]); });
   function menuOpen(){ return !$('menu').hidden; }
   var TOOLS=ls('mf-bible-tools')!=='0', TIPS={tipOrig:1,tipLang:'Tap a word: the window shows it, with 🌐 to pick a language and 🔊 to hear it',
     tipXr:'Tap the little card after a verse for its cross references',tipMake:'Tap the word that speaks to you, then 🐟 Make it a MannaFish',tipPic:'Tap a verse, swipe the window up, then 🖼 Picture',tipLink:'Tap a verse, then Link, and choose the verse it goes with',tipPray:'Tap a verse, then Pray'};
