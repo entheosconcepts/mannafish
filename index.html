@@ -5655,3 +5655,9 @@ body.mfediting{padding-top:54px!important}
   window.MFsecOpen=openTo;
 })();
 </script>
+<script>
+// Ken, 3 Nov: the invitation email's "📖 Get the free devotional" opens here (/?devotional=1): the sign-up, open and in view
+(function(){ if(!/[?&]devotional=1\b/.test(location.search)&&location.hash!=='#devotional') return;
+  var tries=0; (function go(){ var b=document.getElementById('devoBtn'), x=document.getElementById('devoBox'); if(!b||!x){ if(++tries<40) setTimeout(go,150); return; }
+    if(x.hidden) b.click(); setTimeout(function(){ if(window.MFsecOpen) try{ MFsecOpen('#devoBox'); }catch(e){} x.scrollIntoView({block:'center',behavior:'smooth'}); var i=x.querySelector('input[type=email]'); if(i) try{ i.focus({preventScroll:true}); }catch(e){} },250); })(); })();
+</script>

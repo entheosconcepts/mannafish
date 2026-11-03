@@ -4,8 +4,11 @@
 //   POST /api/hub-mail {k, action:'cfg', auto:{restock,monthly,welcome}, restockDays}
 //   POST /api/hub-mail {k, action:'host', id, owner, hostName, catchEvery:'month'|'quarter'|'off', restockDays, mailOff}
 //   POST /api/hub-mail {k, action:'preview', kind, id?, news, period}      -> {subject, html}
-//   POST /api/hub-mail {k, action:'send', kind, ids:[...]|'all', news, period, test}   -> {sent, skipped:[...]}  (test: only to Ken)
+//   POST /api/hub-mail {k, action:'send', kind, ids:[...]|'all', news, period, test, invite:[{name,email,contact}]}   -> {sent, skipped:[...]}  (test: only to Ken)
+//        intro (the invitation) goes to places that are not Hubs: those on the Asked-for list with an email, and new ones typed in
+//        (kept as 'invited': not shown on the public page until they say yes)
 //   GET  /api/hub-mail/r?h=&t=&a=ok|low|out|stop|start   the buttons in a host's email (a small thank-you page)
+//                                 a=devo|yes|more|no      the invitation's buttons (devo opens the devotional sign-up)
 //   GET  /api/hub-mail/catch?h=&t=&p=month|quarter      -> {hub, period, fish:[{key,title,ref,img}], picked}
 //   POST /api/hub-mail/catch {h, t, p, fish, note}      -> {ok}  (Ken is emailed)
 import { sendMail, hasMail, FROM } from './lib/mail.mjs';
@@ -44,6 +47,16 @@ export default async (req) => {
       await s.setJSON(`hm/r/${at}-${id}`, { at, id, name: st.name, a });
       return a === 'stop' ? page('You will not get these emails', `No more emails for ${esc(st.name)}. Thank you for being a MannaFish Hub.`, `<p><a href="${url.pathname}?h=${encodeURIComponent(id)}&t=${encodeURIComponent(q.get('t'))}&a=start">I changed my mind: start them again</a></p>`)
         : page('Welcome back', `Emails for ${esc(st.name)} are on again.`); }
+    if (a === 'devo') { await s.setJSON(`hm/r/${at}-${id}`, { at, id, name: st.name, a }); return Response.redirect(SITE + '/?devotional=1', 302); }
+    if (a === 'yes' || a === 'more' || a === 'no') {
+      st.lastReply = { a, at }; if (a === 'no') st.mailOff = true; if (a === 'yes' && ['invited', 'proposed'].includes(st.status)) st.status = 'talking';
+      await s.setJSON('s/' + id, st); await s.setJSON(`hm/r/${at}-${id}`, { at, id, name: st.name, a });
+      if (a !== 'no') await tell(a === 'yes' ? `🐟 ${st.name} would like to be a MannaFish Hub!` : `💬 ${st.name} would like to know more about MannaFish Hubs`,
+        [`<b>${esc(st.name)}</b> tapped <b>${a === 'yes' ? '🐟 Yes, we’d like to be a Hub' : '💬 Tell me more'}</b> in the invitation.`, [st.hostName, st.owner, st.address].filter(Boolean).map(esc).join(' · '),
+          a === 'yes' ? 'It is now on your Asked-for list as “Talking with them”.' : 'Reply to them with the details.', `<a href="${SITE}/hubs/admin/">Open Hubs admin</a>`]);
+      if (a === 'no') return page('Thank you', `We will not email ${esc(st.name)} again. God bless you!`, `<p><a href="${SITE}/?devotional=1">The free devotional is still yours if you would like it</a></p>`);
+      return a === 'yes' ? page('Wonderful, thank you!', `Ken will be in touch soon about making ${esc(st.name)} a MannaFish Hub.`, `<p><a href="${SITE}/?devotional=1">📖 Get the free devotional</a></p>`)
+        : page('Thank you!', `Ken will email you with more about MannaFish Hubs. Or just reply to his email with any questions.`, `<p><a href="${SITE}/?devotional=1">📖 Get the free devotional</a></p>`); }
     if (!['ok', 'low', 'out'].includes(a)) return page('Thank you', 'Just reply to the email if you need anything.');
     st.lastReply = { a, at }; st.lastCheck = at; await s.setJSON('s/' + id, st);
     await s.setJSON(`hm/r/${at}-${id}`, { at, id, name: st.name, a });
@@ -82,7 +95,7 @@ export default async (req) => {
   if (isGet) {
     const H = (await hubs(s)).filter((x) => x.status === 'active' || x.owner).map((x) => {
       const every = Math.max(3, Number(x.restockDays) || C.restockDays), since = Date.parse(x.lastCheck || x.opened || x.created || 0) || 0;
-      return { id: x.id, name: x.name, status: x.status, owner: x.owner || '', hostName: x.hostName || '', mailOff: !!x.mailOff, catchEvery: x.catchEvery || 'month', restockDays: x.restockDays || '',
+      return { id: x.id, name: x.name, status: x.status, introAt: x.introAt || '', owner: x.owner || '', hostName: x.hostName || '', mailOff: !!x.mailOff, catchEvery: x.catchEvery || 'month', restockDays: x.restockDays || '',
         lastCheck: x.lastCheck || '', lastReply: x.lastReply || null, nextRestock: x.status === 'active' && x.owner && !x.mailOff && C.auto.restock ? new Date(Math.max(Date.now(), since + every * 86400000)).toISOString() : '' }; });
     return Response.json({ cfg: C, kinds: KINDS, hubs: H, log: await rows(s, 'hm/log/', 40), replies: await rows(s, 'hm/r/', 40), picks: await rows(s, 'hm/p/', 40), to: TO(), mail: hasMail() }, { headers: NS });
   }
@@ -101,7 +114,15 @@ export default async (req) => {
   const news = b.news ? { subject: clean(b.news.subject, 140), heading: clean(b.news.heading, 140), body: clean(b.news.body, 5000), button: clean(b.news.button, 40), link: clean(b.news.link, 400), image: clean(b.news.image, 400), restock: !!b.news.restock, catch: !!b.news.catch } : null;
   if (kind === 'news' && !(news && news.subject && news.body)) return bad('Give it a subject and a message', 400);
   const period = ['month', 'quarter'].includes(b.period) ? b.period : undefined, all = await hubs(s);
-  const pickHubs = () => (b.ids === 'all' ? all.filter((x) => x.status === 'active') : all.filter((x) => (b.ids || []).includes(x.id)));
+  const pickHubs = () => (b.ids === 'all' ? all.filter((x) => (kind === 'intro' ? ['proposed', 'talking', 'invited'].includes(x.status) && x.owner : x.status === 'active'))
+    : all.filter((x) => (b.ids || []).includes(x.id)));
+  // new places to invite, typed in by Ken: kept as 'invited' (not on the public page), or the place already there with that email
+  if (kind === 'intro' && a === 'send' && !b.test && Array.isArray(b.invite)) {
+    for (const v of b.invite.slice(0, 200)) { const email = clean(v && v.email, 120).toLowerCase(), name = clean(v && v.name, 80); if (!EMAIL.test(email) || !name) continue;
+      let st = all.find((x) => (x.owner || '') === email);
+      if (!st) { st = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name, kind: 'other', city: clean(v.city, 80), address: '', where: '', note: '', owner: email, hostName: clean(v.contact, 80), url: '', threshold: 100, status: 'invited', stock: [], created: new Date().toISOString() };
+        await s.setJSON('s/' + st.id, st); all.push(st); }
+      if (b.ids !== 'all') { b.ids = (b.ids || []).concat([st.id]); } else if (!['proposed', 'talking', 'invited'].includes(st.status)) b.ids = 'all'; } }
   const one = async (st) => ({ news, period, info: kind === 'monthly' ? await infoOf(s, st) : null });
   if (a === 'preview') { const st = all.find((x) => x.id === b.id) || pickHubs()[0] || SAMPLE; const m = await build(kind, st, await one(st)); return Response.json(m, { headers: NS }); }
   if (a === 'send') {
@@ -109,7 +130,8 @@ export default async (req) => {
       await sendTo(st, kind, { ...(await one(st)), test: TO() }); return Response.json({ ok: true, sent: 1, to: TO() }, { headers: NS }); }
     const L = pickHubs(); if (!L.length) return bad('Choose at least one Hub', 400);
     const sent = [], skipped = [];
-    for (const st of L) { try { const r = await sendTo(st, kind, await one(st)); if (r.sent) { sent.push({ id: st.id, name: st.name, email: st.owner });
+    for (const st of L) { try { const r = await sendTo(st, kind, { ...(await one(st)), again: !!b.again }); if (r.sent) { sent.push({ id: st.id, name: st.name, email: st.owner });
+          if (kind === 'intro') { st.introAt = new Date().toISOString(); await s.setJSON('s/' + st.id, st); }
           if (kind === 'restock' || kind === 'monthly') { st.lastCheck = new Date().toISOString(); await s.setJSON('s/' + st.id, st); } }
         else skipped.push({ name: st.name, why: r.skipped }); } catch (e) { skipped.push({ name: st.name, why: 'could not send' }); } }
     if (sent.length) await logSend(s, { kind, subject: kind === 'news' ? news.subject : (await build(kind, L[0], await one(L[0]))).subject, to: sent });

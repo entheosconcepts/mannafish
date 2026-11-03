@@ -113,8 +113,8 @@ details summary{cursor:pointer;color:var(--dim);font-size:.9rem;margin-top:10px}
     $('view').innerHTML=h; if(TAB==='mail') hmLoad(); }
   // ── Emails to Hub hosts (Ken, 3 Nov: "email campaigns for every hub that says, need a restock ... automatic email campaigns, check out
   // our new t-shirts, request a catch of the month, catch of the quarter"): send one now, who gets them, what is automatic, and the answers
-  var HM=null, HMF={kind:'restock',period:'month',to:'all',ids:[],news:{}};
-  var KN=[['restock','⚠️ Restock check: “How are the MannaFish?” (one tap: plenty, low, out)'],['catch','🐟 Choose your Catch of the Month or Quarter'],['monthly','📊 Your month as a MannaFish Hub'],['welcome','👋 Welcome, you are a MannaFish Hub'],['news','✍️ Write your own (news, new T-shirts, a season, a thank-you)']];
+  var HM=null, HMF={kind:'intro',period:'month',to:'all',ids:[],news:{},invite:''};
+  var KN=[['intro','💌 Invitation: the free devotional, the vision, and “would you like to be a Hub?” (to places that are not Hubs yet)'],['restock','⚠️ Restock check: “How are the MannaFish?” (one tap: plenty, low, out)'],['catch','🐟 Choose your Catch of the Month or Quarter'],['monthly','📊 Your month as a MannaFish Hub'],['welcome','👋 Welcome, you are a MannaFish Hub'],['news','✍️ Write your own (news, new T-shirts, a season, a thank-you)']];
   var IDEAS=[['','Start from an idea…'],
     ['shirts',{subject:'New MannaFish T-shirts for your Hub',heading:'New MannaFish T-shirts are here',body:'We have new MannaFish T-shirts, free to give away at your Hub, like the fish.\n\nWould you like some? Reply with how many and which sizes, and we will send them.',button:'See the T-shirts',link:'https://manna-fish.com/'}],
     ['fish',{subject:'New MannaFish designs to choose from',heading:'New fish in the net',body:'We have added new MannaFish designs, each a word of Scripture.\n\nChoose the one you would like at your Hub next.',catch:true}],
@@ -128,8 +128,8 @@ details summary{cursor:pointer;color:var(--dim);font-size:.9rem;margin-top:10px}
   function hmApi(b){ b.k=K; return fetch('/api/hub-mail',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw j; return j; }); }); }
   function hmLoad(){ fetch('/api/hub-mail?k='+encodeURIComponent(K),{cache:'no-store'}).then(function(r){ return r.json(); }).then(function(j){ HM=j; hmDraw(); }).catch(function(){ var v=$('hm'); if(v) v.innerHTML='<p class="empty">Could not open the emails.</p>'; }); }
   function day(t){ return t?new Date(t).toLocaleDateString([],{month:'short',day:'numeric'}):''; }
-  var ANS={ok:'✅ Plenty',low:'⚠️ Running low',out:'❌ All out',stop:'🔕 Stopped emails',start:'🔔 Started again'};
-  function hmDraw(){ var v=$('hm'); if(!v||!HM) return; var C=HM.cfg, H=HM.hubs, open=H.filter(function(h){ return h.status==='active'; }), reach=open.filter(function(h){ return h.owner&&!h.mailOff; }).length, n=HMF.news;
+  var ANS={devo:'📖 Opened the devotional',yes:'🐟 Yes, wants to be a Hub',more:'💬 Wants to know more',no:'Not right now',ok:'✅ Plenty',low:'⚠️ Running low',out:'❌ All out',stop:'🔕 Stopped emails',start:'🔔 Started again'};
+  function hmDraw(){ var v=$('hm'); if(!v||!HM) return; var C=HM.cfg, H=HM.hubs, open=H.filter(function(h){ return h.status==='active'; }), reach=open.filter(function(h){ return h.owner&&!h.mailOff; }).length, n=HMF.news, intro=HMF.kind==='intro', ask=H.filter(function(h){ return ['proposed','talking','invited'].indexOf(h.status)>=0&&h.owner&&!h.mailOff; }).length;
     var h=(HM.mail?'':'<div class="card hit">Email is not set up yet (BREVO_API_KEY in Netlify), so nothing can be sent.</div>')
       +'<h2>Send an email</h2><div class="card"><div class="grid">'
       +'<label class="w">Which email<select id="hmKind">'+KN.map(function(k){ return '<option value="'+k[0]+'"'+(k[0]===HMF.kind?' selected':'')+'>'+k[1]+'</option>'; }).join('')+'</select></label>'
@@ -140,8 +140,10 @@ details summary{cursor:pointer;color:var(--dim);font-size:.9rem;margin-top:10px}
         +'<label>Button words (optional)<input id="hmBtn" value="'+esc(n.button||'')+'" placeholder="See the T-shirts"></label><label>Button link<input id="hmLink" value="'+esc(n.link||'')+'" placeholder="https://manna-fish.com/…"></label>'
         +'<label class="w">Picture at the top (a link to an image, optional)<input id="hmImg" value="'+esc(n.image||'')+'" placeholder="https://…/shirts.jpg"></label>'
         +'<div class="w gv"><div><label><input type="checkbox" id="hmR"'+(n.restock?' checked':'')+'> Add a “⚠️ We need a restock” button</label><label><input type="checkbox" id="hmC"'+(n.catch?' checked':'')+'> Add a “🐟 Choose our Catch” button</label></div></div>':'')
-      +'<label class="w">Send to<select id="hmTo"><option value="all"'+(HMF.to==='all'?' selected':'')+'>Every open Hub ('+reach+' with a host email)</option><option value="pick"'+(HMF.to==='pick'?' selected':'')+'>Hubs I choose</option></select></label>'
-      +(HMF.to==='pick'?'<div class="w gv"><div>'+H.map(function(x){ return '<label><input type="checkbox" data-hmid="'+esc(x.id)+'"'+(HMF.ids.indexOf(x.id)>=0?' checked':'')+(x.owner?'':' disabled')+'> '+esc(x.name)+(x.owner?'':' (no email)')+(x.mailOff?' 🔕':'')+'</label>'; }).join('')+'</div></div>':'')
+      +(intro?'<label class="w">Send to<select id="hmTo"><option value="all"'+(HMF.to==='all'?' selected':'')+'>Every place on the Asked-for list with an email ('+ask+')</option><option value="pick"'+(HMF.to==='pick'?' selected':'')+'>Places I choose</option><option value="new"'+(HMF.to==='new'?' selected':'')+'>Only the new places I type below</option></select></label>'
+        +'<label class="w">New places to invite (one per line: place, email, contact name). They are kept as “invited”, not shown on the public page until they say yes.<textarea id="hmInv" rows="4" placeholder="Drift Coffee, owner@driftcoffee.com, Sam Lee">'+esc(HMF.invite)+'</textarea></label>'
+      :'<label class="w">Send to<select id="hmTo"><option value="all"'+(HMF.to==='all'?' selected':'')+'>Every open Hub ('+reach+' with a host email)</option><option value="pick"'+(HMF.to==='pick'?' selected':'')+'>Hubs I choose</option></select></label>')
+      +(HMF.to==='pick'?'<div class="w gv"><div>'+H.filter(function(x){ return intro?x.status!=='active'&&x.status!=='closed':x.status==='active'; }).map(function(x){ return '<label><input type="checkbox" data-hmid="'+esc(x.id)+'"'+(HMF.ids.indexOf(x.id)>=0?' checked':'')+(x.owner?'':' disabled')+'> '+esc(x.name)+(x.owner?'':' (no email)')+(x.mailOff?' 🔕':'')+(x.introAt?' · invited '+day(x.introAt):'')+'</label>'; }).join('')+'</div></div>':'')
       +'</div><div class="row"><button type="button" id="hmPrev">👁 Preview</button><button type="button" id="hmTest">📧 Send me a test</button><button type="button" class="ok" id="hmSend">Send</button></div>'
       +'<iframe id="hmFrame" title="Preview" style="display:none;width:100%;height:560px;border:1px solid var(--line);border-radius:12px;margin-top:10px;background:#fff"></iframe>'
       +'<p class="meta">Tests go to '+esc(HM.to)+'. Hosts who tapped “Stop these emails” (🔕) are skipped.</p></div>'
@@ -150,7 +152,7 @@ details summary{cursor:pointer;color:var(--dim);font-size:.9rem;margin-top:10px}
       +'<label><input type="checkbox" id="auM"'+(C.auto.monthly?' checked':'')+'> 📊 Monthly note on the 1st, with the Catch</label>'
       +'<label><input type="checkbox" id="auW"'+(C.auto.welcome?' checked':'')+'> 👋 Welcome when a Hub opens</label></div></div>'
       +'<div class="row"><button type="button" class="ok" id="auGo">Save</button></div><p class="meta">Sent each morning about 9:40, only to open Hubs that have a host email.</p></div>'
-      +'<h2>Hosts</h2>'+(H.length?H.map(function(x){ return '<div class="card" data-hm="'+esc(x.id)+'"><div class="big">'+esc(x.name)+' <span class="pill '+x.status+'">'+esc(x.status==='active'?'Hub':x.status)+'</span>'+(x.mailOff?' <span class="pill">🔕 stopped emails</span>':'')+'</div>'
+      +'<h2>Hosts</h2>'+(H.length?H.map(function(x){ return '<div class="card" data-hm="'+esc(x.id)+'"><div class="big">'+esc(x.name)+' <span class="pill '+x.status+'">'+esc(x.status==='active'?'Hub':x.status==='invited'?'invited':x.status==='proposed'?'asked for':x.status)+'</span>'+(x.mailOff?' <span class="pill">🔕 stopped emails</span>':'')+'</div>'
         +'<div class="meta">'+(x.lastReply?'Last answer: '+ANS[x.lastReply.a]+' · '+day(x.lastReply.at)+' · ':'')+(x.nextRestock?'Next restock check: '+day(x.nextRestock):'')+'</div>'
         +'<div class="grid" style="margin-top:8px"><label>Host’s name<input data-h="hostName" value="'+esc(x.hostName)+'"></label><label>Host’s email<input data-h="owner" type="email" value="'+esc(x.owner)+'"></label>'
         +'<label>Catch<select data-h="catchEvery">'+opt([['month','Each month'],['quarter','Each quarter'],['off','Not asked']],x.catchEvery)+'</select></label><label>Restock check every (days; blank = '+C.restockDays+')<input data-h="restockDays" type="number" min="3" value="'+esc(x.restockDays)+'"></label>'
@@ -162,17 +164,21 @@ details summary{cursor:pointer;color:var(--dim);font-size:.9rem;margin-top:10px}
     v.innerHTML=h; }
   function hmRead(){ HMF.kind=$('hmKind').value; if($('hmPer')) HMF.period=$('hmPer').value; HMF.to=$('hmTo').value;
     if($('hmSub')) HMF.news={subject:$('hmSub').value.trim(),heading:$('hmHead').value.trim(),body:$('hmBody').value,button:$('hmBtn').value.trim(),link:$('hmLink').value.trim(),image:$('hmImg').value.trim(),restock:$('hmR').checked,catch:$('hmC').checked};
+    if($('hmInv')) HMF.invite=$('hmInv').value;
     if(HMF.to==='pick'&&document.querySelector('[data-hmid]')) HMF.ids=[].map.call(document.querySelectorAll('[data-hmid]:checked'),function(i){ return i.dataset.hmid; }); }
-  function hmBody(extra){ var b={kind:HMF.kind,period:HMF.period,ids:HMF.to==='all'?'all':HMF.ids}; if(HMF.kind==='news') b.news=HMF.news; for(var k in extra) b[k]=extra[k]; return b; }
+  function hmInvites(){ return (HMF.kind==='intro'?HMF.invite:'').split('\n').map(function(l){ var p=l.split(',').map(function(x){ return x.trim(); }), e=p.filter(function(x){ return /@/.test(x); })[0]||'';
+      var rest=p.filter(function(x){ return x&&x!==e; }); return {name:rest[0]||'',email:e,contact:rest[1]||''}; }).filter(function(x){ return x.name&&x.email; }); }
+  function hmBody(extra){ var b={kind:HMF.kind,period:HMF.period,ids:HMF.to==='all'?'all':HMF.to==='new'?[]:HMF.ids}; if(HMF.kind==='news') b.news=HMF.news; if(HMF.kind==='intro') b.invite=hmInvites(); for(var k in extra) b[k]=extra[k]; return b; }
   document.addEventListener('change',function(e){ var t=e.target; if(!$('hm')||!$('hm').contains(t)) return;
     if(t.id==='hmKind'||t.id==='hmTo'){ hmRead(); hmDraw(); }
     if(t.id==='hmIdea'){ var x=IDEAS.filter(function(i){ return i[0]===t.value; })[0]; if(x&&x[0]){ HMF.news=Object.assign({},x[1]); hmDraw(); } } });
   document.addEventListener('click',function(e){ var t=e.target, hm=$('hm'); if(!hm||!hm.contains(t)) return; var b=t.closest('button'); if(!b) return;
     if(b.id==='hmPrev'){ hmRead(); hmApi(hmBody({action:'preview'})).then(function(m){ var f=$('hmFrame'); f.style.display='block'; f.srcdoc='<p style="font:13px Arial;color:#555;margin:8px">Subject: <b>'+esc(m.subject)+'</b></p>'+m.html; }).catch(function(er){ say((er&&er.error)||'Could not preview.'); }); return; }
     if(b.id==='hmTest'){ hmRead(); b.disabled=true; hmApi(hmBody({action:'send',test:true})).then(function(j){ b.disabled=false; say('Test sent to '+j.to+'.'); }).catch(function(er){ b.disabled=false; say((er&&er.error)||'Could not send.'); }); return; }
-    if(b.id==='hmSend'){ hmRead(); var cnt=HMF.to==='all'?HM.hubs.filter(function(h){ return h.status==='active'&&h.owner&&!h.mailOff; }).length:HMF.ids.length;
-      if(!cnt){ say('No Hub to send to: add a host email under Hosts.'); return; }
-      if(!confirm('Send this to '+cnt+' Hub host'+(cnt===1?'':'s')+'?')) return; b.disabled=true;
+    if(b.id==='hmSend'){ hmRead(); var intro=HMF.kind==='intro', inv=hmInvites().length;
+      var cnt=(HMF.to==='all'?HM.hubs.filter(function(h){ return (intro?['proposed','talking','invited'].indexOf(h.status)>=0:h.status==='active')&&h.owner&&!h.mailOff; }).length:HMF.to==='new'?0:HMF.ids.length)+inv;
+      if(!cnt){ say(intro?'No one to invite: type a place and email, or add emails to places on the Asked-for list.':'No Hub to send to: add a host email under Hosts.'); return; }
+      if(!confirm('Send this to '+cnt+(intro?' place'+(cnt===1?'':'s'):' Hub host'+(cnt===1?'':'s'))+'?')) return; b.disabled=true;
       hmApi(hmBody({action:'send'})).then(function(j){ b.disabled=false; say('Sent to '+j.sent+(j.skipped&&j.skipped.length?' · skipped '+j.skipped.length+' ('+j.skipped.map(function(s){ return s.name+': '+s.why; }).join(', ')+')':'')+'.'); hmLoad(); })
         .catch(function(er){ b.disabled=false; say((er&&er.error)||'Could not send.'); }); return; }
     if(b.id==='auGo'){ hmApi({action:'cfg',auto:{restock:$('auR').checked,monthly:$('auM').checked,welcome:$('auW').checked},restockDays:$('auD').value}).then(function(){ say('Saved.'); hmLoad(); }).catch(function(er){ say((er&&er.error)||'Could not save.'); }); return; }

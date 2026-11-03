@@ -5,6 +5,8 @@
 //   restock   "How are the MannaFish at <Hub>?"  ✅ plenty · ⚠️ running low · ❌ all out   (automatic every N days)
 //   catch     "Choose your Catch of the Month / Quarter"  -> /hubs/catch/: the host picks the fish they want next
 //   monthly   "Your month as a MannaFish Hub": loves, fish that arrived, the most-loved fish, and the Catch button   (1st of the month)
+//   intro     "A free devotional, and an invitation": to a place that is not a Hub yet: the vision, the free devotional, and
+//             📖 Get the devotional · 🐟 Yes, we'd like to be a Hub · 💬 Tell me more · Not right now   (Ken, 3 Nov)
 //   welcome   "Welcome, you are a MannaFish Hub"   (when a Hub opens with a host email)
 //   news      anything Ken writes: new T-shirts, Christmas, a thank-you ...
 // Every email has the business address and a link to stop them; a host who stops gets nothing automatic or sent to all.
@@ -12,9 +14,10 @@ import { sendMail, hasMail, FROM } from './mail.mjs';
 import { fishInfo } from './manna.mjs';
 import CATCH from './catch.json';
 
-export const SITE = 'https://manna-fish.com';
+// the site the email came from (the test site's emails open the test site; manna-fish.com once it is live)
+export const SITE = (process.env.URL || 'https://manna-fish.com').replace(/\/$/, '');
 export const ADDRESS = 'MannaFish · Entheos Concepts, 4563 Technology Dr, Unit 6, Wilmington NC 28405';
-export const KINDS = ['restock', 'catch', 'monthly', 'welcome', 'news'];
+export const KINDS = ['intro', 'restock', 'catch', 'monthly', 'welcome', 'news'];
 export const DEFAULTS = { auto: { restock: true, monthly: true, welcome: true }, restockDays: 21 };
 const esc = (t) => String(t == null ? '' : t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const SECRET = () => process.env.MF_HUB_MAIL_SECRET || process.env.MF_ADMIN_KEY || process.env.PROOF_KEY || 'mannafish';
@@ -42,15 +45,15 @@ function button(href, text, color) {
   return `<a href="${esc(href)}" style="display:inline-block;margin:4px 6px 4px 0;padding:12px 18px;border-radius:999px;background:${color || '#2a5fb0'};color:#fff;text-decoration:none;font:700 15px Arial,sans-serif">${text}</a>`;
 }
 // one email: the logo, a heading, the words, the buttons, and the footer with the address and the link to stop
-export function frame({ heading, paras, buttons, image, stop }) {
+export function frame({ heading, paras, buttons, image, stop, why, stopText }) {
   return `<div style="background:#f3f5f6;padding:18px 10px"><div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;font:16px/1.55 Georgia,serif;color:#16202a">`
     + `<div style="background:#000;padding:14px 20px"><img src="${SITE}/w/img/logo-email.png" alt="MannaFish" width="140" style="display:block;height:auto;border:0"></div>`
     + (image ? `<img src="${esc(image)}" alt="" width="560" style="display:block;width:100%;height:auto;border:0">` : '')
     + `<div style="padding:20px 22px"><h1 style="font:800 22px/1.25 Arial,sans-serif;margin:0 0 12px;color:#000">${heading}</h1>`
     + paras.filter(Boolean).map((p) => `<p style="margin:0 0 14px">${p}</p>`).join('')
     + (buttons && buttons.length ? `<p style="margin:6px 0 4px">${buttons.join('')}</p>` : '') + `</div>`
-    + `<div style="padding:14px 22px;border-top:1px solid #e3e8ea;font:12px/1.5 Arial,sans-serif;color:#6b7a80">You get these as the host of a MannaFish Hub. Just reply to this email to reach Ken.<br>${esc(ADDRESS)}`
-    + (stop ? `<br><a href="${esc(stop)}" style="color:#6b7a80">Stop these emails</a>` : '') + `</div></div></div>`;
+    + `<div style="padding:14px 22px;border-top:1px solid #e3e8ea;font:12px/1.5 Arial,sans-serif;color:#6b7a80">${why || 'You get these as the host of a MannaFish Hub.'} Just reply to this email to reach Ken.<br>${esc(ADDRESS)}`
+    + (stop ? `<br><a href="${esc(stop)}" style="color:#6b7a80">${stopText || 'Stop these emails'}</a>` : '') + `</div></div></div>`;
 }
 const textOf = (html) => html.replace(/<a [^>]*href="([^"]+)"[^>]*>([^<]*)<\/a>/g, '$2 ($1)').replace(/<br>/g, '\n').replace(/<\/p>|<\/h1>/g, '\n\n').replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/\n{3,}/g, '\n\n').trim();
 
@@ -60,6 +63,19 @@ export async function build(kind, hub, opt = {}) {
   const hi = hub.hostName ? `Hi ${esc(hub.hostName.split(' ')[0])},` : 'Hi,', name = esc(hub.name);
   const every = hub.catchEvery === 'quarter' ? 'quarter' : 'month', P = periodOf(opt.now || new Date(), opt.period || every);
   const catchUrl = `${SITE}/hubs/catch/?h=${encodeURIComponent(hub.id)}&t=${t}&p=${opt.period || every}`;
+  if (kind === 'intro') {
+    const subject = `A free daily devotional, and an invitation for ${hub.name}`;
+    return { subject, html: frame({ heading: 'A word of Scripture for your community', stop: base + '&a=no', stopText: 'Not right now (we will not email again)',
+      why: `We are writing because we think ${name} would be a wonderful MannaFish Hub.`,
+      paras: [hi,
+        `I’m Ken, and I would like to tell you about <b>MannaFish</b>. Each MannaFish is a fish-shaped decal or card with one word of Scripture in the middle and its verse around it: <b>Hope</b>, <b>Rest</b>, <b>Build</b>, <b>Deliver</b>. They are always free. They are never sold: sponsors pay for them so they can be given away.`,
+        `<b>A free devotional.</b> Every morning, one word of Scripture, by email or text: a verse, a few lines to think on, and a prayer. It takes a minute and it is free. Feel free to share it with your team, your customers or your church.`,
+        `<b>The vision.</b> Like manna in the wilderness and the loaves and fishes, there is always enough to share. We call it Take 2: take one MannaFish to keep and one to give away, and God’s Word goes from hand to hand through a town.`,
+        `<b>Would ${name} like to be a MannaFish Hub?</b> A Hub is a place in the community that gives MannaFish away, a little like a pickup point. It costs you nothing: we bring the fish and a small display, keep it stocked, and people nearby can find you on the MannaFish map. You can choose a Catch of the Month: the fish you would like for your place.`,
+        `<i>Cast thy bread upon the waters: for thou shalt find it after many days</i> (Ecclesiastes 11:1).`,
+        `Grace and peace,<br>Ken`],
+      buttons: [button(base + '&a=devo', '📖 Get the free devotional', '#1f7a4d'), button(base + '&a=yes', '🐟 Yes, we’d like to be a Hub'), button(base + '&a=more', '💬 Tell me more', '#5b6770')] }) };
+  }
   if (kind === 'restock') {
     const subject = `How are the MannaFish at ${hub.name}?`;
     return { subject, html: frame({ heading: `How are the MannaFish at ${name}?`, stop,
@@ -101,6 +117,8 @@ export async function build(kind, hub, opt = {}) {
 
 // send one email to one Hub's host (nothing when they asked to stop, unless it is a test to Ken)
 export async function sendTo(hub, kind, opt = {}) {
+  if (kind === 'intro' && hub.status === 'active' && !opt.test) return { skipped: 'already a Hub' };
+  if (kind === 'intro' && !opt.test && !opt.again && hub.introAt && Date.now() - Date.parse(hub.introAt) < 14 * 86400000) return { skipped: 'invited ' + hub.introAt.slice(0, 10) };
   const to = opt.test ? opt.test : hub.owner;
   if (!to) return { skipped: 'no email' };
   if (hub.mailOff && !opt.test) return { skipped: 'stopped' };

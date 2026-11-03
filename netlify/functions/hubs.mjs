@@ -41,7 +41,7 @@ const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/, FISH = /^[A-Z]:[A-Za-z0-9_-]{1,40}$/
 const MERCH = ['decal', 'card', 'shirt', 'beanie', 'cap', 'drinkware', 'mug', 'keychain'];
 const MNAME = { decal: 'MannaFish decals', card: 'MannaFish cards', shirt: 'MannaFish T-shirts', beanie: 'MannaFish beanies', cap: 'MannaFish caps', drinkware: 'MannaFish drinkware', mug: 'MannaFish mugs', keychain: 'MannaFish key chains' };
 const PLACES = ['coffee', 'store', 'church', 'books', 'food', 'other'];
-const STATUS = ['proposed', 'talking', 'active', 'closed'];
+const STATUS = ['invited', 'proposed', 'talking', 'active', 'closed'];   // invited: Ken sent the invitation (Hub emails); not on the public page
 const SITE = 'https://manna-fish.com';
 // "wherever it's needed most": always there, filled where Ken sees the need
 const ANY = { id: 'anywhere', name: 'Wherever it’s needed most', city: '', where: 'MannaFish places these fish where they are needed.', note: '', threshold: 100, status: 'active', stock: [] };
