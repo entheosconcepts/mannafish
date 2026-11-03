@@ -31,10 +31,27 @@ others, i, j = list(new), 0, 0
 while i < len(year) or j < len(daily):
     if i < len(year): others.append(year[i]); i += 1
     if j < len(daily): others.append(daily[j]); j += 1
-order, w = [], 0
-while w * 6 < len(others):
-    order.append(core[w % len(core)]); order += others[w * 6:(w + 1) * 6]; w += 1
-while len(order) % 7: order.append(others[(len(order)) % len(others)])
+# Ken, 3 Nov ("I got Judge yesterday and today"): the round never moves. A fish added (Deliver went in near the front on 2 Nov)
+# had pushed every later day back one, so Judge came twice. Now the days already set keep their fish: a fish that is gone is
+# replaced in its own place by a new one, and the other new fish go on at the end. Only a first run lays the round out afresh.
+prev_path = os.path.join(ROOT, 'netlify/functions/lib/catch.json')
+prev = json.load(open(prev_path))['order'] if os.path.exists(prev_path) else []
+if prev:
+    have = set(k for k in prev if k in fish); missing = [k for k in others if k not in have]; order = []
+    for idx, k in enumerate(prev):
+        if idx % 7 == 0: order.append(k if k in core else core[(idx // 7) % len(core)]); continue
+        if k in fish: order.append(k)
+        elif missing: order.append(missing.pop(0))
+        else: order.append(others[idx % len(others)])
+    w = len(order) // 7
+    while missing:
+        order.append(core[w % len(core)]); order += missing[:6]; missing = missing[6:]; w += 1
+    while len(order) % 7: order.append(others[len(order) % len(others)])
+else:
+    order, w = [], 0
+    while w * 6 < len(others):
+        order.append(core[w % len(core)]); order += others[w * 6:(w + 1) * 6]; w += 1
+    while len(order) % 7: order.append(others[(len(order)) % len(others)])
 out = {'note': 'Ken, 1 Nov: every fish in the English daily inbox. Sunday is one of the 24; Monday to Saturday the rest. Made by tools/fish/catch.py',
        'order': order, 'fish': fish}
 json.dump(out, open(os.path.join(ROOT, 'netlify/functions/lib/catch.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
