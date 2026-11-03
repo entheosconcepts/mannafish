@@ -29,6 +29,7 @@ button,select{font:inherit;color:inherit}
    can see the book of the bible without it being cut off"); ••• at the top right */
 .bar .r1{display:grid;grid-template-columns:1fr auto 1fr;padding-bottom:0}.bar .r1 .lt,.bar .r1 .rt{display:flex;gap:6px;align-items:center}.bar .r1 .rt{justify-self:end}
 .bar .r2{padding-top:6px}
+.pick .hd .pbk{width:auto;padding:0 12px;border-radius:999px;font-weight:700;font-size:.9rem}
 .ib.sm{height:36px;min-width:36px;padding:0 9px}
 .ib .og2{font:600 1.05rem/1 'Spectral',Georgia,serif}
 .brand{font:400 1.45rem/1 'MFHobo',cursive;text-decoration:none;color:#fff;-webkit-text-stroke:.07em #14181d;paint-order:stroke fill;flex:none}.brand b{font-weight:400;color:#448ff1;-webkit-text-stroke:0}
@@ -302,7 +303,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   <div class="body"><div class="sseg" id="sSeg" role="group"></div><div class="sl" id="sBody"></div></div>
 </div>
 <div class="pick" id="pick" role="dialog" aria-modal="true" aria-labelledby="pTitle">
-  <div class="hd"><button type="button" class="ib" id="pBack" aria-label="Books" hidden>&lsaquo;</button><b id="pTitle">Books</b><button type="button" class="ib" id="pX" aria-label="Close">&#10005;</button></div>
+  <div class="hd"><button type="button" class="ib pbk" id="pBack" aria-label="Back">&lsaquo; Back</button><b id="pTitle">Books</b><button type="button" class="ib" id="pX" aria-label="Close">&#10005;</button></div>
   <div class="body" id="pBody"></div>
 </div>
 <div class="toast" id="toast" role="status"></div>
@@ -1062,8 +1063,9 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   // opened to listen: the device's voice starts with the chapter (a sound now, while the tap counts, so a phone lets it speak later)
   function unlockSay(){ if(OM!=='listen'||!window.speechSynthesis) return; try{ var u=new SpeechSynthesisUtterance(' '); u.volume=0; speechSynthesis.speak(u); }catch(e){} AUTOSAY=1; }
   function closePick(){ $('pick').classList.remove('open'); }
-  $('where').addEventListener('click',openPick); $('pX').addEventListener('click',closePick); $('pBack').addEventListener('click',books);
-  function books(q){ $('pTitle').textContent='Books'; $('pBack').hidden=true; q=(q||'').toLowerCase();
+  $('where').addEventListener('click',openPick); $('pX').addEventListener('click',closePick); $('pBack').addEventListener('click',function(){ if(this.dataset.to==='books') books(); else closePick(); });
+  // Ken, 3 Nov: a Back button on the Books screen (back to the reading; from a book's chapters, back to the books)
+  function books(q){ $('pTitle').textContent='Books'; $('pBack').dataset.to='read'; q=(q||'').toLowerCase();
     var grid=function(a,z){ return '<div class="books">'+B.slice(a,z).map(function(x,i){ var n=a+i; if(q&&x[0].toLowerCase().indexOf(q)<0&&x[0].toLowerCase().replace(/ /g,'').indexOf(q.replace(/ /g,''))<0) return ''; return '<button type="button" data-b="'+n+'" class="'+(n===AT.b?'on':'')+'">'+esc(x[0])+'</button>'; }).join('')+'</div>'; };
     var sv=q?[]:saved().slice(0,30), nt=q?[]:(function(){ var N=nall(), o=[]; Object.keys(N).forEach(function(k){ if(k.indexOf('BIBLE:')===0) (N[k]||[]).forEach(function(n){ if(n.vs) o.push({ref:k.slice(6),b:n.b,c:n.c,vs:n.vs,text:n.text,at:n.at,ed:n.ed}); }); }); return o.sort(function(a,b){ return (b.ed||b.at)-(a.ed||a.at); }).slice(0,30); })();
     var mine=(sv.length?'<h5>Saved</h5><div class="mine">'+sv.map(function(x){ return '<button type="button" data-go="'+x.b+','+x.c+','+x.v+'"><b>'+esc(x.ref)+'</b><span>'+esc(x.text.slice(0,120))+'</span></button>'; }).join('')+'</div>':'')
@@ -1078,7 +1080,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
       +top+mine+'<h5>Old Testament</h5>'+grid(0,39)+'<h5>New Testament</h5>'+grid(39,66);
     var f=$('pFind'); f.addEventListener('input',function(){ var pos=this.value; books(pos); var g=$('pFind'); g.focus(); g.setSelectionRange(pos.length,pos.length); });
     f.addEventListener('keydown',function(e){ if(e.key!=='Enter') return; var r=parseRef(this.value); if(r){ closePick(); unlockSay(); go(r.b,r.c,r.v); } }); }
-  function chapters(b){ $('pTitle').textContent=B[b][0]; $('pBack').hidden=false; var h='<div class="chs">'; for(var c=1;c<=B[b][1];c++) h+='<button type="button" data-c="'+c+'" class="'+(b===AT.b&&c===AT.c?'on':'')+'">'+c+'</button>'; $('pBody').innerHTML=h+'</div>'; $('pBody').dataset.bk=b; }
+  function chapters(b){ $('pTitle').textContent=B[b][0]; $('pBack').dataset.to='books'; var h='<div class="chs">'; for(var c=1;c<=B[b][1];c++) h+='<button type="button" data-c="'+c+'" class="'+(b===AT.b&&c===AT.c?'on':'')+'">'+c+'</button>'; $('pBody').innerHTML=h+'</div>'; $('pBody').dataset.bk=b; }
   $('pBody').addEventListener('click',function(e){ var vb=e.target.closest('[data-ver]'); if(vb){ ls('mf-bible-version',vb.dataset.ver); $('ver').value=vb.dataset.ver; go(AT.b,AT.c,0,true); books(); if(window.MFacct) MFacct.touch('set'); return; }
     var om=e.target.closest('[data-om]'); if(om){ OM=om.dataset.om; try{ sessionStorage.setItem('mf-bible-om',OM); }catch(er){} books(); return; }
     var g=e.target.closest('[data-go]'); if(g){ var t=g.dataset.go.split(',').map(Number); closePick(); unlockSay(); go(t[0],t[1],t[2]); return; } var b=e.target.closest('button[data-b]'); if(b){ var n=+b.dataset.b; if(B[n][1]===1){ closePick(); unlockSay(); go(n,1); } else chapters(n); return; }
