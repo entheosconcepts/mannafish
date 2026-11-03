@@ -121,6 +121,7 @@ a{color:inherit}
   margin:2.4cqw 0;opacity:.7}
 .langs{display:grid;grid-template-columns:1fr 1px 1fr;gap:0 3.4cqw}
 .langs .div{background:var(--line)}
+.langs.one{grid-template-columns:1fr!important}.langs.one .div{display:none}
 .lang{text-align:center}
 .lang .top{display:flex;align-items:baseline;justify-content:center;gap:1.6cqw;flex-wrap:wrap}
 .lang .lab{font-family:'Archivo',sans-serif;font-size:2.5cqw;font-weight:700;letter-spacing:.12em;
@@ -2570,6 +2571,7 @@ window.MF=(function(){
     $('gkLab').textContent=L.gk; $('hbLab').textContent=L.hb; $('traceLab').textContent=L.trace; $('stage').querySelector('.face.back').setAttribute('lang',l);
     $('gkW').textContent=d.gkw; $('gkS').textContent='('+d.gks+')'; $('gkM').textContent=m[0];
     $('hbW').textContent=d.hbw; $('hbS').textContent='('+d.hbs+')'; $('hbM').textContent=m[1];
+    $('gkW').closest('.lang').style.display=d.gkw?'':'none'; $('hbW').closest('.lang').style.display=d.hbw?'':'none'; $('gkW').closest('.langs').classList.toggle('one',!d.gkw||!d.hbw);   // a fish outside the 24 has one of them
     $('refs').innerHTML=renderRefs(k); var dk=$('stage').querySelector('.deck'); if(dk) dk.dataset.at=0;
     $('refs').querySelectorAll('.ref').forEach(function(btn){
       btn.addEventListener('click',function(e){e.stopPropagation();openReader(k,+btn.getAttribute('data-i'),btn.dataset.l);});
@@ -3392,9 +3394,9 @@ window.MF=(function(){
       +'<div class="ptrow"><button type="button" class="ptbtn" data-a="planstay" aria-pressed="true">'+esc(plF(P.stay,{w:w}))+'</button><button type="button" class="ptbtn" data-a="plannext" data-k="'+nx+'" aria-pressed="false">'+esc(plF(P.next,{w:titleIn(l,nx)}))+' ›</button></div>';
     else h+='<p class="ptp ptsoft">'+esc(plF(P.done,{w:w}))+'</p><div class="ptrow"><button type="button" class="ptbtn" data-a="plannext" data-k="'+nx+'" aria-pressed="true">'+esc(plF(P.next,{w:titleIn(l,nx)}))+' ›</button><button type="button" class="ptbtn" data-a="planagain" aria-pressed="false">'+esc(plF(P.again,{w:w}))+'</button></div>';
     return h+'<p class="ptp ptsoft ptplanmsg" aria-live="polite">'+esc(P.left)+'</p></div>'; }
-  function ptSteps(){ var len=PT.len||dLen(), st=[{k:'welcome'},{k:'pray'},{k:'hear'}]   /* Ken, 18 Oct: no fish catching in the devotional; Go MannaFish (the memory game) has it */, op=prOpen(), d=ptDay(cur), pr=planRefs(cur,d);
+  function ptSteps(){ var len=PT.len||dLen(), st=[{k:'welcome'},{k:'pray'},{k:'hear'}]   /* Ken, 18 Oct: no fish catching in the devotional; Go MannaFish (the memory game) has it */, op=prOpen(), d=ptDay(cur), pr=EXTRA[cur]?DATA[cur].refs.map(function(x,i){ return i; }).slice(0,3):planRefs(cur,d);
     if(d===0||len==='full') st.push({k:'fish'},{k:'orig'});
-    if(len==='full') st.push({k:'count'});
+    if(len==='full'&&!EXTRA[cur]) st.push({k:'count'});
     pr.forEach(function(i,j){ st.push({k:'ref',i:i,n:pr.length,j:j}); });
     if(op.length) op.forEach(function(x,i){ st.push({k:'prayer',x:x,i:i,n:op.length}); }); else st.push({k:'prayer0'});
     if(len!=='quick') st.push({k:'share'});
@@ -3477,7 +3479,7 @@ window.MF=(function(){
     var P=D.p.map(function(x){ return x.replace(/^\*/,'').replace('{w}',w).replace('{r}',sy[2]).replace('{v}',sy[1]); });
     var kick=function(a,b){ return '<div class="ptk"><span>'+esc(a)+'</span>'+(b?'<span class="ptof">'+b+'</span>':'')+'</div>'; };
     var prm=function(key){ return '<p class="ptprompt">👉 '+esc(T[key])+'</p>'; };
-    if(s.k==='welcome'){ t=[P[0]]; h=planWeekList(k,l)+planPicker()   /* Ken, 16 Oct: no "Pray · Hear · Do" or "Rest · Day 1 of 6" -- the fish at the top says it; Change fish is under ••• */
+    if(s.k==='welcome'){ t=[P[0]]; h=(EXTRA[k]?'':planWeekList(k,l)+planPicker())   /* Ken, 16 Oct: no "Pray · Hear · Do" or "Rest · Day 1 of 6" -- the fish at the top says it; Change fish is under ••• */
         +'<p class="ptp">'+sp1(1,P[0])+'</p>'
         // Ken, 30 Oct: no "How long" and no big Listen / Read here -- Listen | Read is in the bar, and how long is under •••
         +'<p class="ptprompt">👉 '+esc(ptX().start.replace('{next}',T.next))+'</p>'; }
@@ -3501,12 +3503,13 @@ window.MF=(function(){
     else if(s.k==='orig'){ var L=studyLabels(l), m=meansIn(l,k), d=DATA[k];
       var g=T.orig_line.replace('{lang}',L.gk).replace('{s}',d.gks).replace('{m}',m[0]), hb=T.orig_line.replace('{lang}',L.hb).replace('{s}',d.hbs).replace('{m}',m[1]); t=[g,hb];
       var blk=function(lab,wd,lg,snd,n,line){ return '<div class="ptorig"><div class="ptol">'+esc(lab)+'</div><div class="ptow" lang="'+lg+'">'+esc(wd)+'</div><div class="ptos">'+esc(snd)+'</div><p class="ptp">'+sp1(n,line)+'</p></div>'; };
-      h=kick(w+' · '+L.gk+' · '+L.hb)+'<div class="ptreveal">'+blk(L.gk,d.gkw,'el',d.gks,1,g)+blk(L.hb,d.hbw,'he',d.hbs,2,hb)+'</div>'+prm('p_orig'); }
+      if(!d.gkw) t=[hb]; else if(!d.hbw) t=[g];
+      h=kick(w+' · '+(d.gkw?L.gk:'')+(d.gkw&&d.hbw?' · ':'')+(d.hbw?L.hb:''))+'<div class="ptreveal">'+(d.gkw?blk(L.gk,d.gkw,'el',d.gks,1,g):'')+(d.hbw?blk(L.hb,d.hbw,'he',d.hbs,d.gkw?2:1,hb):'')+'</div>'+prm('p_orig'); }
     else if(s.k==='count'){ var n=DATA[k].refs.length, cl=T.count_line.replace('{n}',n).replace('{w}',w); t=[cl];
       h=kick(T.k_trace)+'<h2 class="pth">'+sp1(1,cl)+'</h2><div class="ptchips">'+DATA[k].refs.map(function(r,i){ var td=planRefs(k,ptDay(k)), dn=planDone(k), at=td.indexOf(i)>=0, was=i<td[0]||dn>=PLAN_DAYS;
         return at?'<button type="button" data-a="goref" data-i="'+i+'" class="today">'+esc(refLab(l,k,i))+'</button>':'<button type="button" disabled class="'+(was?'was':'later')+'">'+(was?'✓ ':'')+esc(refLab(l,k,i))+'</button>'; }).join('')+'</div>'+prm('p_orig'); }
     else if(s.k==='ref'){ var lab=refLab(l,k,s.i), pr=parseRef(DATA[k].refs[s.i][0]);
-      h=kick(T.k_trace+' · '+w,esc(plF(plT().day,{d:ptDay(k)+1,n:PLAN_DAYS}))+' · '+(s.j+1)+' / '+s.n)+'<h2 class="pth ptref">'+sp1(1,lab)+'</h2><blockquote class="ptq"><span data-v="2">…</span></blockquote>'
+      h=kick(T.k_trace+' · '+w,(EXTRA[k]?'':esc(plF(plT().day,{d:ptDay(k)+1,n:PLAN_DAYS}))+' · ')+(s.j+1)+' / '+s.n)+'<h2 class="pth ptref">'+sp1(1,lab)+'</h2><blockquote class="ptq"><span data-v="2">…</span></blockquote>'
         +'<div class="ptctx" hidden><button type="button" class="ptcxbtn" data-a="bible" data-ref="'+esc(pr?pr.book+' '+pr.ch+':'+pr.vs:'')+'"><div class="ptctxh">📖 '+sp1(3,T.in_context)+'</div><div class="ptcxr"></div><span class="ptcxgo" aria-hidden="true">›</span></button>'
         +'<div class="ptcxbody"><p class="ptp ptcxp"></p>'+ptCxTools()+'</div></div>'+prm('p_ref');
       t=null; var me=PT.i;
@@ -3610,7 +3613,7 @@ window.MF=(function(){
     // Ken, 2 Nov: "I want all devotionals to live on the second image" -- the devotional opens on the Today page itself, under the
     // fish and Listen / Read, not as a page of its own; the page scrolls as usual
     var dg=document.querySelector('.devogo'); if(dg&&pt.previousElementSibling!==dg) dg.insertAdjacentElement('afterend',pt); pt.classList.add('inline'); pt.removeAttribute('aria-modal'); var hx=$('ptX').querySelector('span'); if(hx) hx.textContent='✕'; $('ptX').setAttribute('aria-label','Close the devotional');
-    PT.l2=null; CA.done=false; PT.pickOpen=false; PT.len=dLen(); PT.marked={}; var hl0=''; try{ hl0=localStorage.getItem('mf-pt-hl')||''; }catch(er){} ptHlOn(hl0==='1'); PT.dayOv=null; var pf=planFish(); if(pf!==cur) pick(pf,false); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; ptPills(); ptRender(); setTimeout(function(){ try{ var top=($('stage')||pt).getBoundingClientRect().top+scrollY-70; window.scrollTo({top:Math.max(0,top),behavior:'smooth'}); }catch(e){} },60);   // the fish stays in view, the devotional under it
+    PT.l2=null; CA.done=false; PT.pickOpen=false; PT.len=dLen(); PT.marked={}; var hl0=''; try{ hl0=localStorage.getItem('mf-pt-hl')||''; }catch(er){} ptHlOn(hl0==='1'); PT.dayOv=null; var pf=planFish(); if(pf!==cur&&!EXTRA[cur]) pick(pf,false); if(PT.l!=='en') loadLang(PT.l).catch(function(){}); PT.steps=ptSteps(); PT.i=0; pt.hidden=false; ptPills(); ptRender(); setTimeout(function(){ try{ var top=($('stage')||pt).getBoundingClientRect().top+scrollY-70; window.scrollTo({top:Math.max(0,top),behavior:'smooth'}); }catch(e){} },60);   // the fish stays in view, the devotional under it
     prLoad().then(function(){ if(!PT.on) return; var at=PT.steps[PT.i]&&PT.steps[PT.i].k; PT.steps=ptSteps(); if(at==='welcome'||at==='pray'||at==='hear') ptRender(); }); }
   // Ken, 16 Oct: "keep whatever fish is selected static, anchored at the top ... we want people to see this image as much as possible"
   // Ken, 16 Oct (later): "I meant for it to be inside the bounding box, not on top of it ... put the verbiage up top above that"
@@ -4176,6 +4179,33 @@ window.MF=(function(){
   // A shared link opens on its word: /?w=hope or /w/hope/
   (function(){var m=(location.search+location.hash).match(/[?&#]w=([a-z]+)/i); if(m && DATA[m[1].toUpperCase()]) cur=m[1].toUpperCase();
     else { try{ cur=planFish(); }catch(e){} } })();   /* Ken, 16 Oct: it flashed Hope, then went to Rest -- the page opens on your fish */
+  // Ken, 3 Nov: "today's devo in my inbox went to this" (the fish's own page) -- every fish, the 24 and the 640 more in the daily email,
+  // opens here on the Today page: /?fish=D368 (the email adds &devo=1). Its word study is built from the Bible files the site has
+  // (the KJV's own alignment to the Hebrew or Greek, Strong's, cross references), so it turns over, and the devotional runs under it.
+  var EXTRA={}, XF=null;
+  function xJ(u){ return fetch(u).then(function(r){ if(!r.ok) throw 0; return r.json(); }); }
+  function xSnip(t){ t=String(t||'').replace(/\s+/g,' ').trim(); if(t.length<=46) return t.replace(/[,;:.]$/,''); var c=t.slice(0,46); return c.slice(0,c.lastIndexOf(' '))+'…'; }
+  function xBooks(){ return new Promise(function(res){ var n=0; (function w(){ if(window.MFdeep) res(MFdeep.books); else if(++n<100) setTimeout(w,50); else res(null); })(); }); }
+  function loadExtra(id){ id=String(id||'').replace(/[^A-Za-z0-9]/g,''); id=id.charAt(0).toUpperCase()+id.slice(1);   // W02b, D368, X005 if(DATA[id]) return Promise.resolve(id);
+    return Promise.all([xJ('/fish/catch.json'),fetch('/fish/'+id+'.svg').then(function(r){ if(!r.ok) throw 0; return r.text(); }),xBooks()]).then(function(a){
+      var f=a[0].fish[id], BOOKS=a[2], m=f&&/^(.+?)\s+(\d+):(\d+)/.exec(f.ref||''); if(!f||!BOOKS||!m) throw 0;
+      var b=BOOKS.indexOf(m[1]), c=+m[2], v=+m[3], fn=m[1].replace(/ /g,'_'), ot=b<39, w=String(f.title).toLowerCase(), base=w.replace(/e$/,'');
+      return Promise.all([xJ('/fish-lang/bible/kjv/'+fn+'-'+c+'.json').catch(function(){ return null; }),xJ('/fish-lang/bible/orig/'+fn+'-'+c+'.json').catch(function(){ return null; }),xJ('/fish-lang/bible/xref/'+fn+'.json').catch(function(){ return {}; })]).then(function(x){
+        var text=x[0]&&x[0].t?x[0].t[v-1]||'':'', o=x[1]&&x[1].v?x[1].v[String(v)]:null, ow=null;
+        if(o&&text){ var re=/[A-Za-z]+(?:'[A-Za-z]+)?/g, t, j=0; while((t=re.exec(text))){ var tl=t[0].toLowerCase(); if(!ow&&(tl===w||(base.length>=3&&tl.indexOf(base)===0))){ var i=o.a[j]; if(i!=null&&i>=0) ow=o.w[i]; } j++; } }
+        var XR=(x[2][c+':'+v]||[]).slice(0,9), chs={};
+        XR.forEach(function(r){ var k2=BOOKS[r[0]].replace(/ /g,'_')+'-'+r[1]; chs[k2]=chs[k2]||xJ('/fish-lang/bible/kjv/'+k2+'.json').catch(function(){ return null; }); });
+        var st=ow?String(ow[3]):'', mm=/^([HG])(\d+)/.exec(st);
+        var lex=mm?xJ('/fish-lang/bible/lex/'+mm[1]+Math.floor(+mm[2]/250)+'.json').then(function(d){ return d[st]||d[st.replace(/[A-Za-z]$/,'')]||null; }).catch(function(){ return null; }):Promise.resolve(null);
+        return Promise.all([lex].concat(XR.map(function(r){ return chs[BOOKS[r[0]].replace(/ /g,'_')+'-'+r[1]]; }))).then(function(y){
+          var L=y[0], refs=XR.map(function(r,i){ var ch=y[i+1], t2=ch&&ch.t?ch.t[r[2]-1]:''; return [BOOKS[r[0]]+' '+r[1]+':'+r[2]+(r[4]?'–'+r[4]:''),xSnip(t2)]; });
+          var wd=ow?String(ow[0]).replace(/[¶,.;:·]+$/,''):'', snd=ow?ow[1]:'', mean=L&&(L.g||L.d)?String(L.g||L.d).split(/;/)[0].trim():ow?String(ow[2]).replace(/[<>¿\[\]]/g,'').replace(/\s+/g,' ').trim():'';
+          mean=mean?mean.charAt(0).toUpperCase()+mean.slice(1)+(/[.!?]$/.test(mean)?'':'.'):'';
+          var num=mm?String(+mm[2]):'';
+          DATA[id]={title:f.title,gkw:ot?'':wd,gks:ot?'':snd,gkm:ot?'':mean,hbw:ot?wd:'',hbs:ot?snd:'',hbm:ot?mean:'',refs:refs.length?refs:[[f.ref,xSnip(f.verse)]]};
+          STRONGS[id]=ot?['',num]:[num,'']; SAY.en[id]=[f.title,f.verse,f.ref]; FISH[id]=a[1]; EXTRA[id]=f; return id; }); }); }); }
+  (function(){ var m=(location.search+location.hash).match(/[?&#]fish=([A-Za-z0-9]+)/); if(!m) return;
+    XF=loadExtra(m[1]).then(function(k){ pick(k,false); if(/[?&]flip=1/.test(location.search)){ $('stage').classList.add('on'); sizeStage(); } return k; }).catch(function(){ return null; }); })();
   if($('shareWord')) $('shareWord').addEventListener('click',function(e){e.stopPropagation();
     var url=location.origin+'/w/'+cur.toLowerCase()+'/', title=DATA[cur].title+' \u2014 a MannaFish word study';
     if(navigator.share){navigator.share({title:title,text:title,url:url}).catch(function(){});return;}
@@ -4308,6 +4338,7 @@ window.MF=(function(){
   // Ken, 11 Oct: "a delay" before a fish is heard -- the Word and Verse of each fish on screen are fetched in the background
   var FISHC={};
   function fishClip(l,k,part){ var v=aiVoice(), key=l+'|'+k+'|'+part+'|'+v; if(FISHC[key]) return FISHC[key];
+    if(EXTRA[k]&&typeof sayUrl==='function'){ var d0=SAY.en[k]; return FISHC[key]=sayUrl(part==='word'?d0[0]:d0[1]+' '+d0[2],'en',v); }   // a fish outside the 24: the same voices, by its words
     var pr=fetch('/api/tts?w='+k+'&lang='+l+'&part='+part+'&v='+v+(part==='word'?'&r=3':'')).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){ return URL.createObjectURL(b); });
     pr.catch(function(){ delete FISHC[key]; }); return FISHC[key]=pr; }
   function fishPrefetch(){ clearTimeout(fishPrefetch.t); fishPrefetch.t=setTimeout(function(){ if(!aiVoice()||!cur) return;
@@ -5417,7 +5448,7 @@ window.MF=(function(){
     de:['MannaFish für heute','MannaFish dieser Woche','MannaFish dieses Monats'],ko:['오늘의 MannaFish','이번 주 MannaFish','이번 달 MannaFish'],
     he:['ה-MannaFish של היום','ה-MannaFish של השבוע','ה-MannaFish של החודש'],ar:['MannaFish اليوم','MannaFish هذا الأسبوع','MannaFish هذا الشهر'],ru:["MannaFish на сегодня","MannaFish этой недели","MannaFish этого месяца"]};
   (function(){ var m=location.search.match(/[?&]devo=(1|cast)\b/); if(!m) return;
-    var go=function(){ ptOpen(); if(m[1]==='cast'){ PT.pickOpen=true; ptRender(); var pk=$('ptStage').querySelector('.ptpick'); if(pk) setTimeout(function(){ pk.scrollIntoView({block:'center',behavior:'smooth'}); },300); } };
+    var go=function(){ if(XF&&!go.w){ go.w=1; XF.then(function(){ go(); }); return; } ptOpen(); if(m[1]==='cast'){ PT.pickOpen=true; ptRender(); var pk=$('ptStage').querySelector('.ptpick'); if(pk) setTimeout(function(){ pk.scrollIntoView({block:'center',behavior:'smooth'}); },300); } };
     var box=null; if($('mfIntro')) $('mfIntro').hidden=true; if(!box){ setTimeout(go,400); return; }
     var f=(location.search.match(/[?&]f=([dwm])\b/)||[])[1], l=DEVO[MF.lang]?MF.lang:'en', k=planFish(), L=INTRO[l]||INTRO.en, P=PLT[l]||PLT.en;
     box.dir=/^(he|ar)$/.test(l)?'rtl':'ltr';

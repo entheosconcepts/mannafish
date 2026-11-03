@@ -82,6 +82,8 @@ h2{font:400 1.6rem 'MFHobo',cursive;margin:28px 0 10px}.g{display:grid;grid-temp
     .catch(function(){ M.innerHTML='<p class="empty">Couldn’t open the net just now.</p>'; });
     M.addEventListener('click',function(e){ var b=e.target.closest('[data-req]'); if(!b) return; if(window.MFfeedback) MFfeedback.open({kind:'design',feature:'The fish',fish:b.dataset.req+' · '+b.dataset.ref}); });
     return; }
+  // Ken, 3 Nov: every fish lives on the Today page -- a fish's own address goes there (?page=1 keeps this page, for the edit sheet's links)
+  if(!/[?&]page=1/.test(location.search)){ location.replace('/?fish='+encodeURIComponent(id)+(/[?&]devo=1/.test(location.search)?'&devo=1':'')+(/[?&]flip=1/.test(location.search)?'&flip=1':'')); return; }
   Promise.all([fetch('/fish/catch.json').then(function(r){ return r.json(); }),fetch('/fish/'+id+'.svg').then(function(r){ if(!r.ok) throw 0; return r.text(); })]).then(function(a){
     var f=a[0].fish[id]; if(!f){ M.innerHTML='<p class="empty">This fish swam away. <a href="/">Today’s MannaFish</a></p>'; return; }
     document.title=f.title+' · MannaFish';

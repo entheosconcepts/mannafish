@@ -62,7 +62,7 @@ export function fishInfo(k, lang = 'en') { if (WORDS.words[k]) { const f = FISH[
   const c = CATCH.fish[k]; return c ? { title: c.title, ref: c.ref, top: c.top, bottom: c.bottom } : null; }
 function fishOf(k, lang = 'en') {
   const O = lang === 'es' ? WORDS.order : CATCH.order, n = O.length, key = O[((k % n) + n) % n];
-  if (!WORDS.words[key]) { const c = CATCH.fish[key]; return { key, title: c.title, i: -1, ref: c.ref, snippet: c.snip, url: c.url, extra: true }; }
+  if (!WORDS.words[key]) { const c = CATCH.fish[key]; return { key, title: c.title, i: -1, ref: c.ref, snippet: c.snip, url: '/?fish=' + key, extra: true }; }   // Ken, 3 Nov: on the Today page
   const w = WORDS.words[key], f = FISH.en[key];
   const i = w.refs.findIndex((r) => r[0] === f.ref);
   return { key, title: w.title, i, ref: f.ref, snippet: i >= 0 ? w.refs[i][1] : f.top, url: '/?w=' + key.toLowerCase() + (i >= 0 ? '&r=' + i : '') };
