@@ -1729,7 +1729,7 @@ select option{background:#0b1620;color:#eaf0f0}
 .gfsheet .gfn{margin:-6px 0 12px;font:italic .9rem/1.45 'Spectral',Georgia,serif;opacity:.85}.gfsheet .gfn b{font:800 .95rem 'Archivo',sans-serif;font-style:normal}.gfsheet h4 small{display:block;letter-spacing:0;text-transform:none;font-weight:600;opacity:.8;margin-top:2px}
 .gfcatch{margin:12px 0 0;border:1px solid #448ff1;border-radius:18px;padding:12px;text-align:center}.gfcatch[hidden]{display:none}.gfcatch .gfbig{background:#000;border-radius:12px;padding:6px}.gfcatch .gfbig img{width:100%;aspect-ratio:2/1;object-fit:contain;display:block}
 .gfcatch h3{margin:10px 0 4px;font:400 1.7rem 'MFHobo',cursive}.gfcatch .gfv{margin:0 0 10px;font:1rem/1.5 'Spectral',Georgia,serif}.gfcatch .gfv b{font:700 .85rem 'Archivo',sans-serif;opacity:.8}
-.gfrow{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0 0}.gfrow a,.gfrow button{border:1px solid rgba(128,128,128,.45);background:none;color:inherit;border-radius:999px;padding:8px 13px;font:700 .86rem 'Archivo',sans-serif;cursor:pointer;text-decoration:none}
+.gfrow{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0 0}.gfrow .gfmine{background:#f5d76e!important;color:#1a1400!important;border-color:#f5d76e!important;font-weight:800}.gfrow a,.gfrow button{border:1px solid rgba(128,128,128,.45);background:none;color:inherit;border-radius:999px;padding:8px 13px;font:700 .86rem 'Archivo',sans-serif;cursor:pointer;text-decoration:none}
 /* Ken, 26 Oct: scripture in the devotional gets what the Bible has -- a note, share, and the verse in the MannaFish Bible */
 .scrsel{position:fixed;z-index:125;display:flex;gap:6px}.scrsel[hidden]{display:none}.scrsel button{display:flex;align-items:center;gap:5px;height:38px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:#1c2430;color:#fff;font:600 .82rem 'Archivo',sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.45);cursor:pointer}
 .scrnote{position:fixed;inset:0;z-index:140;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center}.scrnote .in{width:100%;max-width:520px;background:#12161c;color:#eaf0f0;border-radius:22px 22px 0 0;padding:18px 18px max(18px,env(safe-area-inset-bottom));font:16px/1.45 'Archivo',sans-serif}
@@ -4204,7 +4204,9 @@ window.MF=(function(){
           var num=mm?String(+mm[2]):'';
           DATA[id]={title:f.title,gkw:ot?'':wd,gks:ot?'':snd,gkm:ot?'':mean,hbw:ot?wd:'',hbs:ot?snd:'',hbm:ot?mean:'',refs:refs.length?refs:[[f.ref,xSnip(f.verse)]]};
           STRONGS[id]=ot?['',num]:[num,'']; SAY.en[id]=[f.title,f.verse,f.ref]; FISH[id]=a[1]; EXTRA[id]=f; return id; }); }); }); }
-  (function(){ var m=(location.search+location.hash).match(/[?&#]fish=([A-Za-z0-9]+)/); if(!m) return;
+  (function(){ var m=(location.search+location.hash).match(/[?&#]fish=([A-Za-z0-9]+)/);
+    if(!m&&!/[?&#]w=/.test(location.search+location.hash)){ try{ var tf=JSON.parse(localStorage.getItem('mf-today-fish')||'null'); if(tf&&tf.d===new Date().toDateString()&&tf.k) m=[0,tf.k]; }catch(e){} }   // the fish picked in Go Fish, for today
+    if(!m) return;
     XF=loadExtra(m[1]).then(function(k){ pick(k,false); if(/[?&]flip=1/.test(location.search)){ $('stage').classList.add('on'); sizeStage(); } return k; }).catch(function(){ return null; }); })();
   if($('shareWord')) $('shareWord').addEventListener('click',function(e){e.stopPropagation();
     var url=location.origin+'/w/'+cur.toLowerCase()+'/', title=DATA[cur].title+' \u2014 a MannaFish word study';
@@ -5116,7 +5118,7 @@ window.MF=(function(){
       net:'153 fish in the net',jn:'“…full of great fishes, an hundred and fifty and three: and for all there were so many, yet was not the net broken.” John 21:11',
       mine:'Your devotional fish · 24',mineSub:'Tap one to make it your fish',more:'More fish in the net · 129',moreSub:'Tap one to catch it',newd:'New designs',newdSub:'Stop and Go, Repent, Rebuild …',
       bible:'Read it in the Bible',basket:'Love',share:'Share',again:'Cast again',back:'Back to the net'},
-    es:{cast:'Echa la red',sub:'Un pez al azar',or:'O elige tu pez',got:'¡Pescaste {w}!',game:'Jugar MannaFish Memory',x:'Cerrar',
+    es:{mine1:'Que sea mi pez de hoy',cast:'Echa la red',sub:'Un pez al azar',or:'O elige tu pez',got:'¡Pescaste {w}!',game:'Jugar MannaFish Memory',x:'Cerrar',
       net:'153 peces en la red',jn:'“…llena de grandes peces, ciento cincuenta y tres: y siendo tantos, la red no se rompió.” Juan 21:11',
       mine:'Tus peces del devocional · 24',mineSub:'Toca uno para que sea tu pez',more:'Más peces en la red · 129',moreSub:'Toca uno para pescarlo',newd:'Diseños nuevos',newdSub:'Detente y Ve, Arrepiéntete, Reconstruye …',
       bible:'Leerlo en la Biblia',basket:'Me encanta',share:'Compartir',again:'Echa otra vez',back:'Volver a la red'}};
@@ -5130,6 +5132,7 @@ window.MF=(function(){
   function netAll(){ return (NET||[]).concat(DES); }
   function gfCatch(d,x){ var T=GFT[MF.lang]||GFT.en, c=d.querySelector('.gfcatch');
     c.innerHTML='<div class="gfbig"><img src="/fish/'+esc(x.id.slice(2))+'.svg" alt=""></div><h3>'+esc(x.word)+'</h3><p class="gfv">“'+esc(x.verse)+'” <b>'+esc(x.ref+(x.ver?' ('+x.ver+')':''))+'</b></p>'
+      +'<div class="gfrow"><button type="button" class="gfmine" data-gf="mine">⭐ '+esc(T.mine1||'Make it my fish today')+'</button></div>'
       +'<div class="gfrow"><a href="/bible/?r='+encodeURIComponent(x.ref)+'">📖 '+esc(T.bible)+'</a><button type="button" data-gf="bk">🧺 '+esc(T.basket)+'</button><button type="button" data-gf="sh">↗ '+esc(T.share)+'</button></div>'
       +'<div class="gfrow"><button type="button" data-gf="cast">🎣 '+esc(T.again)+'</button><button type="button" data-gf="back">‹ '+esc(T.back)+'</button></div>';
     c.hidden=false; c.dataset.id=x.id; d.querySelector('.in').scrollTop=0; }
@@ -5138,6 +5141,11 @@ window.MF=(function(){
       d.addEventListener('click',function(e){ if(e.target===d||e.target.closest('[data-gf=x]')){ d.hidden=true; return; }
         var c=d.querySelector('.gfcatch'), extra=netAll().filter(function(x){ return x.id===c.dataset.id; })[0];
         if(e.target.closest('[data-gf=back]')){ c.hidden=true; return; }
+        // Ken, 3 Nov: "if I go fish, allow me or other users to make that their fish of the day" -- it shows on Today, with its word
+        // study and the devotional, for the rest of the day
+        if(e.target.closest('[data-gf=mine]')&&extra){ var id2=extra.id.slice(2); loadExtra(id2).then(function(k){ d.hidden=true; try{ localStorage.setItem('mf-today-fish',JSON.stringify({d:new Date().toDateString(),k:k})); }catch(er){}
+            if(cmpShown()) $('cmpClear').click(); pick(k,false); ftUI(); var tb=$('mfToast'); if(tb){ tb.textContent='⭐ '+extra.word+' is your fish today'; tb.hidden=false; clearTimeout(tb._t); tb._t=setTimeout(function(){ tb.hidden=true; },2400); }
+            $('stage').scrollIntoView({block:'center',behavior:'smooth'}); }).catch(function(){}); return; }
         if(e.target.closest('[data-gf=bk]')&&extra){ if(window.MFbasket) MFbasket.add({id:extra.id,word:extra.word,ref:extra.ref}); return; }
         if(e.target.closest('[data-gf=sh]')&&extra){ var t='“'+extra.verse+'” '+extra.ref, u=location.origin+'/bible/?r='+encodeURIComponent(extra.ref);
           if(navigator.share) navigator.share({title:'MannaFish · '+extra.word,text:t,url:u}).catch(function(){}); else if(navigator.clipboard) navigator.clipboard.writeText(t+' '+u); return; }
