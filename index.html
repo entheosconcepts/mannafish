@@ -386,6 +386,17 @@ a{color:inherit}
 .sback .sb-qr{width:13.6cqw;height:13.6cqw;flex:none}.sback .sb-qr svg{width:100%;height:100%;display:block}
 .sback .sb-mid{display:flex;flex-direction:column;align-items:center;gap:.6cqw;font:400 1.75cqw 'MFHobo',cursive}
 .sback .sb-logo{width:11.5cqw;height:11.5cqw;border-radius:50%;border:.35cqw dashed #6b7785;display:grid;place-items:center;font:700 1.45cqw/1.15 'Archivo',sans-serif;color:#56606b;text-transform:uppercase;letter-spacing:.06em}
+.hubgo{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:6px 0}.hubgo .btn{flex:1 1 260px;text-align:center}.hubnom{border:1px solid var(--line);color:var(--foam)}
+#giftBox>*:not(.hubgo){display:none!important}
+#stage .ref.saying{outline:2px solid #f5d76e;outline-offset:2px;border-radius:8px;background:rgba(245,215,110,.12)}
+.cdz{max-width:900px;margin:22px auto 0;text-align:left;border:1px solid var(--line);border-radius:18px;padding:16px}.cdz h4{margin:0 0 10px;text-align:center;font:400 1.5rem 'MFHobo',cursive}
+.cdg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.cdg label{display:grid;gap:4px;font:700 .8rem 'Archivo',sans-serif;color:var(--foam-dim)}
+.cdg input,.cdg select,.cdf input,.cdf textarea{font:16px 'Archivo',sans-serif;color:var(--foam);background:var(--ink2);border:1px solid var(--line);border-radius:10px;padding:9px 11px;min-width:0}.cdg small{font-weight:400}
+.cdnote{color:var(--foam-dim);font-size:.82rem;margin:8px 0;text-align:center}.cdadd,.cdsend{display:block;margin:10px auto 0;border:0;border-radius:999px;background:#2A5FB0;color:#fff;padding:12px 22px;font:800 1rem 'Archivo',sans-serif;cursor:pointer}
+.cdcart{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}.cdcart h5{margin:0 0 8px;font:800 .8rem 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
+.cdi{display:flex;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}.cdi img{width:40px;height:40px;object-fit:contain;background:#fff;border-radius:8px}.cdi span{flex:1;display:grid}.cdi small{color:var(--foam-dim)}.cdi button{border:1px solid var(--line);background:none;color:inherit;border-radius:50%;width:30px;height:30px;cursor:pointer}
+.cdf{display:grid;gap:8px;margin-top:10px}.cdmsg{text-align:center;font-weight:700}.cdok{text-align:center;font-weight:700;color:#9fd3a6}
+.sback .sb-img{border-style:solid;border-color:transparent;background:#fff;overflow:hidden}.sback .sb-img img{max-width:92%;max-height:92%;object-fit:contain}.sback .sb-nm{text-transform:none;letter-spacing:0;font-size:1.3cqw;padding:.6cqw;text-align:center;overflow:hidden}
 .cardsize{margin-top:14px;color:var(--foam-dim);font-size:.85rem}
 @media(max-width:760px){.cards42{grid-template-columns:minmax(0,440px)}.beneficiaries{grid-template-columns:1fr 1fr!important}.bene.feat{grid-column:1/-1;max-width:420px;justify-self:center}}
 @media(max-width:480px){.beneficiaries{grid-template-columns:1fr!important}}
@@ -1989,6 +2000,8 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
     <p class="rnote" id="devoFormMsg"></p>
   </div>
   <div class="giftbox" id="giftBox" hidden>
+    <!-- Ken, 3 Nov: "when clicking on Free MannaFish, show Find a MannaFish Hub near you, or Nominate a MannaFish Hub near you" -->
+    <div class="hubgo"><a class="btn btn-primary" href="/hubs/?near=1">📍 Find a MannaFish Hub near you</a><a class="btn hubnom" href="/hubs/#ask">➕ Nominate a MannaFish Hub near you</a></div>
     <div class="twofish-mark"><span class="tf-fish"><span class="wm-m">2&nbsp;</span><span class="wm-f">Fish</span></span><span class="tf-words">Keep One. Give One.</span></div>
     <!-- Ken, 12 Oct: why MannaFish merch is free, how it reaches you, and how to become a Gift Giver -->
     <h3>Free MannaFish merch</h3>
@@ -2092,6 +2105,22 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
       <figure><figcaption>Back</figcaption><div class="card42 sback" id="invBack" aria-hidden="true"></div><template id="invQr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" shape-rendering="crispEdges" aria-hidden="true"><path class="qrline" stroke="#000" d="M0 0.5h7m4 0h2m1 0h1m3 0h7m-25 1h1m5 0h1m1 0h2m1 0h1m4 0h1m1 0h1m5 0h1m-25 1h1m1 0h3m1 0h1m1 0h3m1 0h1m5 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m1 0h7m3 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m3 0h1m1 0h2m2 0h1m1 0h1m1 0h3m1 0h1m-25 1h1m5 0h1m2 0h3m1 0h2m1 0h1m1 0h1m5 0h1m-25 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-17 1h1m2 0h2m-13 1h1m5 0h1m1 0h1m1 0h1m2 0h2m2 0h2m2 0h3m-24 1h5m4 0h1m4 0h2m3 0h5m-24 1h1m2 0h1m1 0h3m4 0h2m1 0h1m2 0h2m1 0h1m1 0h2m-25 1h1m1 0h1m2 0h1m4 0h3m1 0h8m2 0h1m-22 1h4m2 0h2m1 0h1m2 0h2m1 0h2m4 0h1m-25 1h3m10 0h1m1 0h2m2 0h1m3 0h1m-24 1h1m2 0h1m2 0h1m2 0h1m1 0h7m1 0h3m1 0h2m-25 1h1m1 0h4m1 0h1m1 0h3m7 0h1m1 0h2m1 0h1m-25 1h1m2 0h6m2 0h1m1 0h2m1 0h5m1 0h1m-15 1h3m1 0h2m2 0h1m3 0h1m-21 1h7m3 0h2m1 0h1m2 0h1m1 0h1m1 0h1m3 0h1m-25 1h1m5 0h1m3 0h1m1 0h1m1 0h1m1 0h1m3 0h1m-21 1h1m1 0h3m1 0h1m2 0h1m2 0h1m2 0h6m1 0h3m-25 1h1m1 0h3m1 0h1m7 0h5m4 0h2m-25 1h1m1 0h3m1 0h1m2 0h1m1 0h2m2 0h1m5 0h2m1 0h1m-25 1h1m5 0h1m4 0h1m4 0h2m1 0h2m3 0h1m-25 1h7m1 0h2m2 0h3m1 0h2m3 0h1m2 0h1"/></svg></template></figure>
     </div>
     <p class="cardsize">Printed cards: 4.5 &times; 2.75 inches, front and back.</p>
+    <!-- Ken, 3 Nov: "allow user to customize the back of the card and add to cart, and make sure the minimum is 100 decals". No price
+         here (Ken decides pricing later): the cart sends a request, and MannaFish replies with the details and a proof to approve. -->
+    <div class="cdz" id="cdz">
+      <h4>Make the back yours</h4>
+      <div class="cdg">
+        <label>The fish<select id="cdFish"></select></label>
+        <label>Your name<input id="cdName" maxlength="60" placeholder="Church, business, ministry or podcast"></label>
+        <label>Your link<input id="cdUrl" type="url" maxlength="200" placeholder="https://your-website.com"></label>
+        <label>Words beside that QR code<input id="cdLab" maxlength="50" placeholder="Your website, podcast or ministry"></label>
+        <label>Your logo<input id="cdLogo" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml"></label>
+        <label>How many decals<input id="cdQty" type="number" min="100" step="100" value="100" inputmode="numeric"><small>At least 100, in hundreds.</small></label>
+      </div>
+      <p class="cdnote">The preview above changes as you type. The QR codes are made for your link when the cards are printed.</p>
+      <button type="button" class="cdadd" id="cdAdd">&#128722;&#xFE0E; Add to cart</button>
+      <div class="cdcart" id="cdCart" hidden></div>
+    </div>
   </div>
 </div></section>
 
@@ -2557,14 +2586,42 @@ window.MF=(function(){
   }
   // the main fish and its back, in the reading language (the other languages load their fish and study on first use)
   // the back of the printed card (Ken, 2 Nov): the same layout the printer gets from tools/print/make.mjs, with this fish's study
-  function invBack(k){ var el=$('invBack'), d=DATA[k], t=$('invQr'); if(!el||!d) return; var q=t?t.innerHTML:'';
+  function invBack(k){ k=CD.k||k; var el=$('invBack'), d=DATA[k], t=$('invQr'); if(!el||!d) return; var q=t?t.innerHTML:'';
     function lg(n,w,lang,snd,mn){ return '<div class="sb-lg"><div class="sb-k">'+n+'</div><div class="sb-ow" lang="'+lang+'">'+esc(w)+'</div><div class="sb-tr">('+esc(snd)+')</div><div class="sb-mn">'+esc(mn)+'</div></div>'; }
     el.innerHTML='<div class="sb-top">'+lg('GREEK',d.gkw,'el',d.gks,d.gkm)+'<div class="sb-w">'+esc(d.title)+'</div>'+lg('HEBREW',d.hbw,'he',d.hbs,d.hbm)+'</div>'
       +'<div class="sb-hq">Still hungry? Do this word study &amp; look up the following Scriptures</div>'
       +'<div class="sb-rf">'+(d.refs||[]).slice(0,9).map(function(r){ return '<div><b>'+esc(r[0])+'</b><i>&ldquo;'+esc(r[1])+'&rdquo;</i></div>'; }).join('')+'</div>'
-      +'<div class="sb-strip"><div class="sb-side"><div class="sb-qr">'+q+'</div><span>Your website, podcast or ministry</span></div>'
-      +'<div class="sb-mid">Sponsored by<div class="sb-logo">Your<br>logo</div></div>'
+      +'<div class="sb-strip"><div class="sb-side"><div class="sb-qr">'+q+'</div><span>'+esc(CD.lab||'Your website, podcast or ministry')+'</span></div>'
+      +'<div class="sb-mid">Sponsored by'+(CD.logo?'<div class="sb-logo sb-img"><img src="'+CD.logo+'" alt=""></div>':CD.name?'<div class="sb-logo sb-nm">'+esc(CD.name)+'</div>':'<div class="sb-logo">Your<br>logo</div>')+'</div>'
       +'<div class="sb-side r"><span>Today&rsquo;s free MannaFish devotional</span><div class="sb-qr">'+q+'</div></div></div>'; }
+  // ── Make the back yours, and the cart (Ken, 3 Nov) ──
+  var CD={k:'',name:'',url:'',lab:'',logo:''};
+  function cdCart(){ try{ return JSON.parse(localStorage.getItem('mf-card-cart')||'[]')||[]; }catch(e){ return []; } }
+  function cdPut(a){ try{ localStorage.setItem('mf-card-cart',JSON.stringify(a)); }catch(e){ toastSay('Your logo is too big to keep here; try a smaller picture'); } }
+  function toastSay(t){ var tb=$('mfToast'); if(tb){ tb.textContent=t; tb.hidden=false; clearTimeout(tb._t); tb._t=setTimeout(function(){ tb.hidden=true; },2600); } }
+  function cdShow(){ var k=CD.k||cur; if($('invFront')) $('invFront').innerHTML=fishFor(MF.lang,k)||FISH[k]||''; invBack(k); }
+  function cdInit(){ var sel=$('cdFish'); if(!sel) return; sel.innerHTML='<option value="">Today’s fish</option>'+ORDER.filter(function(k){ return DATA[k]; }).map(function(k){ return '<option value="'+k+'">'+esc(titleIn(MF.lang,k))+'</option>'; }).join('');
+    sel.addEventListener('change',function(){ CD.k=this.value; cdShow(); });
+    ['Name','Url','Lab'].forEach(function(n){ $('cd'+n).addEventListener('input',function(){ CD[n.toLowerCase()]=this.value.trim(); cdShow(); }); });
+    $('cdLogo').addEventListener('change',function(){ var f=this.files&&this.files[0]; if(!f) return;
+      // kept small (at most 600 px) so the cart can hold it
+      var rd=new FileReader(); rd.onload=function(){ if(/svg/.test(f.type)){ CD.logo=rd.result; cdShow(); return; } var im=new Image(); im.onload=function(){ var m=600, s2=Math.min(1,m/Math.max(im.width,im.height)), c=document.createElement('canvas'); c.width=Math.round(im.width*s2); c.height=Math.round(im.height*s2); c.getContext('2d').drawImage(im,0,0,c.width,c.height); CD.logo=c.toDataURL('image/png'); cdShow(); }; im.src=rd.result; }; rd.readAsDataURL(f); });
+    $('cdQty').addEventListener('change',function(){ var n=Math.max(100,Math.round((+this.value||100)/100)*100); this.value=n; });
+    $('cdAdd').addEventListener('click',function(){ var n=Math.max(100,Math.round((+$('cdQty').value||100)/100)*100), k=CD.k||cur;
+      if(CD.url&&!/^https?:\/\/[^\s.]+\.[^\s]+/i.test(CD.url)){ toastSay('Check your link: it starts with https://'); $('cdUrl').focus(); return; }
+      var a=cdCart(); a.push({fish:k,title:titleIn('en',k),name:CD.name,url:CD.url,label:CD.lab,logo:CD.logo,qty:n,at:Date.now()}); cdPut(a); cdCartUI(); toastSay('🛒 Added: '+n+' '+titleIn(MF.lang,k)+' decals'); });
+    cdCartUI(); }
+  function cdCartUI(){ var a=cdCart(), el=$('cdCart'); if(!el) return; el.hidden=!a.length; if(!a.length) return; var tot=a.reduce(function(s2,x){ return s2+x.qty; },0);
+    el.innerHTML='<h5>Your cart · '+tot+' decals</h5>'+a.map(function(x,i){ return '<div class="cdi">'+(x.logo?'<img src="'+x.logo+'" alt="">':'')+'<span><b>'+esc(String(x.qty))+' × '+esc(x.title)+'</b><small>'+esc([x.name,x.url].filter(Boolean).join(' · ')||'MannaFish back')+'</small></span><button type="button" data-cdx="'+i+'" aria-label="Remove">✕</button></div>'; }).join('')
+      +'<div class="cdf"><input id="cdCN" placeholder="Your name" autocomplete="name"><input id="cdCE" type="email" placeholder="Email" autocomplete="email"><input id="cdCP" type="tel" placeholder="Phone (optional)" autocomplete="tel"><textarea id="cdCT" rows="2" placeholder="Anything we should know? (where they go, a date)"></textarea></div>'
+      +'<button type="button" class="cdsend" id="cdSend">Send my order request</button><p class="cdnote">Nothing is charged here. We reply with the details and a proof of your card to approve before anything is printed.</p><p class="cdmsg" id="cdMsg" role="status"></p>'; }
+  document.addEventListener('click',function(e){ var x=e.target.closest('[data-cdx]'); if(x){ var a=cdCart(); a.splice(+x.dataset.cdx,1); cdPut(a); cdCartUI(); return; }
+    if(!e.target.closest('#cdSend')) return; var a2=cdCart(), nm=$('cdCN').value.trim(), em=$('cdCE').value.trim(), msg=$('cdMsg');
+    if(!nm||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ msg.textContent='Please add your name and email.'; return; }
+    msg.textContent='Sending…'; fetch('/api/card-order',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({items:a2,contact:{name:nm,email:em,phone:$('cdCP').value.trim(),note:$('cdCT').value.trim()}})})
+      .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw j; return j; }); })
+      .then(function(j){ cdPut([]); var el=$('cdCart'); el.innerHTML='<p class="cdok">Thank you! Your request is in (number '+esc(j.id||'')+'). We’ll email you the details and a proof.</p>'; })
+      .catch(function(er){ msg.textContent=(er&&er.error)||'That didn’t send. Please try again in a minute.'; }); });
   function fillMain(k){ var l=MF.lang, d=DATA[k], L=studyLabels(l), m=meansIn(l,k);
     if(l!=='en'&&(l==='es'?!LSTUDY.es:!LFISH[l])) loadLang(l).then(function(){ if(cur===k&&MF.lang===l){ fillMain(k); sizeStage(); } }).catch(function(){});
     $('fishbox').innerHTML=fishFor(l,k)||FISH[k]||''; if($('invFront')) $('invFront').innerHTML=$('fishbox').innerHTML; invBack(k);  // the front of the printed card, and its word-study back
@@ -2921,7 +2978,7 @@ window.MF=(function(){
     $('mpLearnL').hidden=!PL.learnOn;
     // paused on a word: what does it mean?
     var w=plPaused()&&PL.ctx&&PL.ctx.root.querySelector('.rw.on'); $('mpWord').hidden=!w; if(w) $('mpWord').textContent='“'+w.textContent.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{M}\p{N}]+$/gu,'')+'” · '+(WPT[MF.lang]||WPT.en)[0]+' ›';
-    if(PL.src) PL.src.setAttribute('aria-pressed',plMine()?'true':'false'); if(window.MFvsSync) MFvsSync(); if(window.MFsecSync) MFsecSync(); }
+    if(PL.src) PL.src.setAttribute('aria-pressed',plMine()?'true':'false'); if(window.MFvsSync) MFvsSync(); if(window.MFsecSync) MFsecSync(); if(window.MFdvSync) MFdvSync(); }
   window.MFplUI=plUI;
   function openPlayer(o){ if(PL.src&&PL.src!==o.src) PL.src.setAttribute('aria-pressed','false'); if(plMine()) stopSpeak();
     PL={ctx:o.ctx,n:Math.max(1,o.start||1),N:o.ctx.data.t.length,intro:o.intro||'',title:o.title||'',src:o.src,unit:o.unit||'verse',fresh:true,ref:o.ref||null,loop:null,learnOn:false,learn:null};
@@ -3627,7 +3684,7 @@ window.MF=(function(){
   function ptClose(){ var was=PT.on; $('ptBible').hidden=true; caStop(); PT.on=false; PT.listen=false; stopSpeak(); $('pt').hidden=true; $('ptSheet').hidden=true; $('ptMenu').hidden=true; document.documentElement.style.overflow='';
     if(was&&$('pt').classList.contains('inline')) try{ window.scrollTo({top:0,behavior:'smooth'}); }catch(e){} }
   function ptRebuild(keep){ PT.steps=ptSteps(); var j=PT.steps.findIndex(function(s){ return s.k===keep; }); if(j>=0&&keep!=='prayer') PT.i=j; PT.i=Math.min(PT.i,PT.steps.length-1); ptRender(); }
-  $('ptBtn').addEventListener('click',ptOpen);
+  $('ptBtn').addEventListener('click',function(){ $('dgListen').click(); });   // Ken, 3 Nov: the devotional is the card above, read to you
   $('ptX').addEventListener('click',ptClose);
   $('ptBack').addEventListener('click',function(){ ptGo(PT.i-1); });
   $('ptNext').addEventListener('click',function(){ ptGo(PT.i+1); });
@@ -3871,8 +3928,29 @@ window.MF=(function(){
   var DG={"en": ["Today’s devotional", "🎧 Listen", " to the devotional", "📖 Read", " the devotional"], "es": ["El devocional de hoy", "🎧 Escuchar", " el devocional", "📖 Leer", " el devocional"], "tl": ["Ang debosyon ngayon", "🎧 Pakinggan", " ang debosyon", "📖 Basahin", " ang debosyon"], "zh": ["今日灵修", "🎧 收听", "今日灵修", "📖 阅读", "今日灵修"], "hi": ["आज की भक्ति", "🎧 सुनें", "", "📖 पढ़ें", ""], "el": ["Η σημερινή μελέτη", "🎧 Άκουσε", " τη μελέτη", "📖 Διάβασε", " τη μελέτη"], "de": ["Die Andacht für heute", "🎧 Anhören", "", "📖 Lesen", ""], "ko": ["오늘의 묵상", "🎧 듣기", "", "📖 읽기", ""], "he": ["ההגות של היום", "🎧 להאזין", " להגות", "📖 לקרוא", " את ההגות"],"ar":["تأمل اليوم", "🎧 استمعوا", " إلى التأمل", "📖 اقرأوا", " التأمل"],"ru":["Размышление на сегодня","🎧 Слушать"," размышление","📖 Читать"," размышление"]};
   function dgUI(){ var d=DG[MF.lang]||DG.en; $('dgK').textContent=d[0]; $('dgListen').innerHTML=esc(d[1])+'<span class="dgs">'+esc(d[2])+'</span>'; $('dgRead').innerHTML=esc(d[3])+'<span class="dgs">'+esc(d[4])+'</span>'; }
   MF.onChange(dgUI); dgUI();
-  $('dgListen').addEventListener('click',function(){ ptOpen(); PT.listen=true; ptSay(); });
-  $('dgRead').addEventListener('click',function(){ ptOpen(); PT.listen=false; ptGo(PT.i+1); });
+  // Ken, 3 Nov: "I do not want this read-through section on the bottom, nor the listen. I originally wanted the user to click Listen and
+  // it takes them through the devotional above and reads the verse references to them, not a whole prayer session" -- Listen reads the
+  // card itself: the word and its verse, then (turned over) the Greek and the Hebrew, then each Scripture, lit up as it is read.
+  // Read turns the card over to the word study.
+  var DV={on:false,k:null,n:0};
+  function dvTurn(on){ var st=$('stage'); if(st.classList.contains('on')!==on){ st.classList.toggle('on',on); sizeStage(); } }
+  function dvLines(k){ var l=MF.lang, sy=(SAY[l]&&SAY[l][k])||SAY.en[k], d=DATA[k], m=meansIn(l,k), L=studyLabels(l), w=titleIn(l,k), T=(DEVO[l]||DEVO.en);
+    var out=[w+'. '+sy[1]+' '+sy[2]+'.'];
+    if(d.gkw) out.push(L.gk+': '+d.gkw+', '+d.gks+'. '+m[0]); if(d.hbw) out.push(L.hb+': '+d.hbw+', '+d.hbs+'. '+m[1]);
+    var refs=(d.refs||[]).slice(0,9);
+    return Promise.all(refs.map(function(r,i){ var pr=parseRef(r[0]), lab=refLab(l,k,i);
+      return (pr?chGet(pr,l).then(function(ct){ var v=ct[+pr.vs-1]; return v?lab+'. '+v:lab+'. '+refSnip(l,k,i); }):Promise.reject()).catch(function(){ return lab+'. '+refSnip(l,k,i); }); }))
+      .then(function(R2){ return out.concat(R2); }); }
+  function dvListen(){ var k=cur; if(PL.src===$('dgListen')&&!$('mfPlayer').hidden){ plToggle(); return; } auUnlock&&auUnlock(); dvTurn(false);
+    try{ $('stage').scrollIntoView({block:'start',behavior:'smooth'}); }catch(e){}
+    dvLines(k).then(function(t){ if(k!==cur) return; DV={on:true,k:k,n:0};
+      openPlayer({ctx:{root:SECR,data:{l:MF.lang,t:t},box:null},src:$('dgListen'),start:1,unit:'part',title:titleIn(MF.lang,k)+' · '+((PTS[MF.lang]||PTS.en).k_welcome||'Today’s MannaFish')}); $('mfPlayer').classList.add('mini'); plStart(1); }); }
+  // as it reads: the front for the verse, then the back, with the Scripture being read lit up
+  window.MFdvSync=function(){ if(!DV.on) return; if(PL.src!==$('dgListen')||$('mfPlayer').hidden){ DV.on=false; document.querySelectorAll('#stage .ref.saying').forEach(function(e){ e.classList.remove('saying'); }); return; }
+    var n=PL.n, d=DATA[DV.k]||{}, g=(d.gkw?1:0)+(d.hbw?1:0); dvTurn(n>1);
+    document.querySelectorAll('#stage .ref').forEach(function(e){ var i=+e.getAttribute('data-i'); e.classList.toggle('saying',n>1+g&&i===n-2-g); }); };
+  $('dgListen').addEventListener('click',dvListen);
+  $('dgRead').addEventListener('click',function(){ if(PT.on) ptClose(); dvTurn(true); try{ $('stage').scrollIntoView({block:'start',behavior:'smooth'}); }catch(e){} });
   // ── The fishing excursion (Ken, 12 Oct): a sponsor stocks the pond; each gift takes two fish; one gift per home
   var PW={"en": ["This fishing trip is sponsored by {s}", "{n} fish left in the pond", "🎁 Send them a free gift", "Two MannaFish: one to keep and one to give away. Free to them, postage too. One gift per home.", "Their name", "Street address", "City", "State and ZIP", "Their email (optional)", "Your name", "I know them, and they would welcome a gift.", "Send the gift", "Sent! Two MannaFish are on their way to {n}.", "This home has already received its MannaFish gift.", "The pond is empty for now. It will be restocked soon.", "Could not send just now. Please try again.", "Please fill in their name and full address, and tick the box."], "es": ["Este viaje de pesca lo patrocina {s}", "Quedan {n} peces en el estanque", "🎁 Envíale un regalo gratis", "Dos MannaFish: uno para quedarse y otro para regalar. Gratis para esa persona, también el envío. Un regalo por hogar.", "Su nombre", "Dirección", "Ciudad", "Estado y código postal", "Su correo (opcional)", "Tu nombre", "La conozco y le gustaría recibir un regalo.", "Enviar el regalo", "¡Enviado! Dos MannaFish van en camino para {n}.", "Este hogar ya recibió su regalo MannaFish.", "El estanque está vacío por ahora. Pronto se volverá a llenar.", "No se pudo enviar ahora. Inténtalo otra vez.", "Escribe su nombre y la dirección completa, y marca la casilla."], "tl": ["Ang pangingisdang ito ay itinataguyod ng {s}", "{n} isda pa ang natitira sa lawa", "🎁 Padalhan sila ng libreng regalo", "Dalawang MannaFish: isa para sa kanila at isa para ibigay. Libre sa kanila, pati padala. Isang regalo bawat tahanan.", "Kanilang pangalan", "Address", "Lungsod", "Estado at ZIP", "Kanilang email (opsyonal)", "Iyong pangalan", "Kilala ko sila, at matutuwa sila sa regalo.", "Ipadala ang regalo", "Naipadala na! Dalawang MannaFish ang papunta kay {n}.", "Nakatanggap na ng regalong MannaFish ang tahanang ito.", "Wala pang laman ang lawa sa ngayon. Malapit na itong mapunan muli.", "Hindi maipadala ngayon. Pakisubukang muli.", "Pakilagay ang kanilang pangalan at buong address, at i-tsek ang kahon."], "zh": ["这次垂钓由 {s} 赞助", "池塘里还剩 {n} 条鱼", "🎁 送他一份免费礼物", "两条 MannaFish：一条自己留着，一条送人。对方免费，邮费也免。每户一份。", "对方姓名", "街道地址", "城市", "州和邮编", "对方电子邮件（可选）", "你的名字", "我认识他，他会乐意收到礼物。", "寄出礼物", "已寄出！两条 MannaFish 正寄往 {n}。", "这个地址已经收到过 MannaFish 礼物。", "池塘暂时空了，很快会再放鱼。", "暂时无法寄出，请再试一次。", "请填写对方姓名和完整地址，并勾选方框。"], "hi": ["यह मछली पकड़ने की यात्रा {s} द्वारा प्रायोजित है", "तालाब में {n} मछलियाँ बाकी हैं", "🎁 उन्हें एक मुफ़्त उपहार भेजें", "दो MannaFish: एक रखने के लिए और एक आगे देने के लिए। उनके लिए मुफ़्त, डाक भी। हर घर को एक उपहार।", "उनका नाम", "पता", "शहर", "राज्य और पिन/ZIP", "उनका ईमेल (वैकल्पिक)", "आपका नाम", "मैं उन्हें जानता/जानती हूँ, उन्हें उपहार अच्छा लगेगा।", "उपहार भेजें", "भेज दिया! दो MannaFish {n} के पास जा रही हैं।", "इस घर को पहले ही MannaFish उपहार मिल चुका है।", "तालाब अभी खाली है। जल्द ही फिर से भरा जाएगा।", "अभी नहीं भेज सके। कृपया फिर कोशिश करें।", "कृपया उनका नाम और पूरा पता भरें, और बॉक्स पर टिक करें।"], "el": ["Αυτή την ψαριά τη χορηγεί ο/η {s}", "Μένουν {n} ψάρια στη λίμνη", "🎁 Στείλε του ένα δωρεάν δώρο", "Δύο MannaFish: ένα να το κρατήσει και ένα να το δώσει. Δωρεάν γι’ αυτόν, και τα ταχυδρομικά. Ένα δώρο ανά σπίτι.", "Το όνομά του", "Διεύθυνση", "Πόλη", "Νομός και Τ.Κ.", "Το email του (προαιρετικά)", "Το όνομά σου", "Τον γνωρίζω και θα χαρεί ένα δώρο.", "Στείλε το δώρο", "Στάλθηκε! Δύο MannaFish έρχονται στον/στην {n}.", "Αυτό το σπίτι έχει ήδη λάβει το δώρο MannaFish.", "Η λίμνη είναι άδεια προς το παρόν. Σύντομα θα ξαναγεμίσει.", "Δεν στάλθηκε τώρα. Δοκίμασε ξανά.", "Συμπλήρωσε όνομα και πλήρη διεύθυνση, και τσέκαρε το κουτί."], "de": ["Dieser Angelausflug wird gesponsert von {s}", "Noch {n} Fische im Teich", "🎁 Schick ein Geschenk", "Zwei MannaFish: einen zum Behalten, einen zum Weitergeben. Kostenlos, auch der Versand. Ein Geschenk pro Haushalt.", "Name", "Straße und Hausnummer", "Ort", "Bundesland und PLZ", "E-Mail (optional)", "Dein Name", "Ich kenne die Person, sie freut sich über ein Geschenk.", "Geschenk senden", "Gesendet! Zwei MannaFish sind unterwegs zu {n}.", "Dieser Haushalt hat sein MannaFish-Geschenk schon bekommen.", "Der Teich ist gerade leer. Er wird bald neu besetzt.", "Gerade nicht möglich. Bitte versuch es noch einmal.", "Bitte Name und vollständige Adresse angeben und das Kästchen ankreuzen."], "ko": ["이번 낚시 여행은 {s}의 후원입니다", "연못에 물고기 {n}마리가 남았어요", "🎁 무료 선물 보내기", "MannaFish 두 개: 하나는 간직하고 하나는 선물하세요. 받는 분은 무료, 배송비도 무료. 한 가정에 한 번.", "받는 분 이름", "주소", "도시", "주와 우편번호", "받는 분 이메일 (선택)", "내 이름", "아는 분이고, 선물을 반가워할 거예요.", "선물 보내기", "보냈어요! MannaFish 두 개가 {n}님께 가고 있어요.", "이 주소는 이미 MannaFish 선물을 받았어요.", "지금은 연못이 비었어요. 곧 다시 채워집니다.", "지금은 보낼 수 없어요. 다시 시도해 주세요.", "이름과 전체 주소를 입력하고 확인란에 표시해 주세요."], "he": ["את מסע הדייג הזה נותן בחסות {s}", "נשארו {n} דגים בבריכה", "🎁 שלחו מתנה חינם", "שני MannaFish: אחד לשמור ואחד לתת. חינם, כולל משלוח. מתנה אחת לכל בית.", "שם", "כתובת", "עיר", "מדינה ומיקוד", "אימייל (לא חובה)", "השם שלכם", "אני מכיר/ה, והמתנה תשמח אותו/ה.", "שלחו את המתנה", "נשלח! שני MannaFish בדרך אל {n}.", "הבית הזה כבר קיבל את מתנת ה‑MannaFish.", "הבריכה ריקה כרגע. היא תתמלא שוב בקרוב.", "לא ניתן לשלוח כרגע. נסו שוב.", "מלאו שם וכתובת מלאה, וסמנו את התיבה."],"ar":["رحلة الصيد هذه برعاية {s}", "بقيت في البركة {n} سمكة", "🎁 أرسلوا عطية مجانية", "سمكتان من MannaFish: واحدة للاحتفاظ بها وواحدة للعطاء. مجانًا، بما في ذلك الشحن. عطية واحدة لكل بيت.", "الاسم", "العنوان", "المدينة", "الولاية والرمز البريدي", "البريد الإلكتروني (اختياري)", "اسمكم", "أعرفه، وستُسعده العطية.", "أرسلوا العطية", "تم الإرسال! سمكتان من MannaFish في الطريق إلى {n}.", "هذا البيت استلم بالفعل عطية MannaFish.", "البركة فارغة الآن. ستُملأ من جديد قريبًا.", "تعذّر الإرسال الآن. حاولوا مرة أخرى.", "املأوا الاسم والعنوان كاملًا، وضعوا علامة في المربع."],"ru":["Эту рыбалку спонсирует {s}","В пруду осталось рыб: {n}","🎁 Отправить им бесплатный подарок","Две MannaFish: одну оставить себе, а другую подарить. Для них бесплатно, включая доставку. Один подарок на семью.","Их имя","Улица и дом","Город","Штат и индекс","Их email (по желанию)","Ваше имя","Я знаю этого человека, и он будет рад подарку.","Отправить подарок","Отправлено! Две MannaFish уже в пути к {n}.","Эта семья уже получила свой подарок MannaFish.","Пруд пока пуст. Скоро его снова пополнят.","Не удалось отправить. Попробуйте еще раз.","Пожалуйста, укажите имя и полный адрес и отметьте галочку."]}, POND=null;
   function pw(i){ return (PW[PT.on?PT.l:MF.lang]||PW.en)[i]; }
@@ -4090,6 +4168,7 @@ window.MF=(function(){
   function admUI(){ var a=window.MFadmin&&MFadmin.on(); $('smAdmLab').textContent=a?'Switch to user view':'Admin view'; $('smAdmSub').textContent=a?'See it exactly as visitors do':'For testing: edit tools and admin pages'; }
   $('smAdmin').addEventListener('click',function(){ var m=$('siteMenu'); if(m) m.hidden=true; if(window.MFadmin) MFadmin.toggle().then(admUI); });
   window.addEventListener('mf-admin',admUI); setTimeout(admUI,1500);
+  setTimeout(cdInit,0);
   window.MFadminFish=function(){ return cur?{word:titleIn('en',cur),key:cur}:null; };
   $('smStories').addEventListener('click',function(){ if(window.MFsecOpen) MFsecOpen('stories'); $('stories').scrollIntoView({behavior:'smooth',block:'start'}); });
   $('ptStage').addEventListener('click',function(e){ if(e.target.closest('[data-fs]')) fsOpen(); });
@@ -5462,7 +5541,7 @@ window.MF=(function(){
     de:['MannaFish für heute','MannaFish dieser Woche','MannaFish dieses Monats'],ko:['오늘의 MannaFish','이번 주 MannaFish','이번 달 MannaFish'],
     he:['ה-MannaFish של היום','ה-MannaFish של השבוע','ה-MannaFish של החודש'],ar:['MannaFish اليوم','MannaFish هذا الأسبوع','MannaFish هذا الشهر'],ru:["MannaFish на сегодня","MannaFish этой недели","MannaFish этого месяца"]};
   (function(){ var m=location.search.match(/[?&]devo=(1|cast)\b/); if(!m) return;
-    var go=function(){ if(XF&&!go.w){ go.w=1; XF.then(function(){ go(); }); return; } ptOpen(); if(m[1]==='cast'){ PT.pickOpen=true; ptRender(); var pk=$('ptStage').querySelector('.ptpick'); if(pk) setTimeout(function(){ pk.scrollIntoView({block:'center',behavior:'smooth'}); },300); } };
+    var go=function(){ if(XF&&!go.w){ go.w=1; XF.then(function(){ go(); }); return; } try{ $('stage').scrollIntoView({block:'start'}); }catch(e){} return; /* Ken, 3 Nov: the card on Today, nothing under it */ if(m[1]==='cast'){ PT.pickOpen=true; ptRender(); var pk=$('ptStage').querySelector('.ptpick'); if(pk) setTimeout(function(){ pk.scrollIntoView({block:'center',behavior:'smooth'}); },300); } };
     var box=null; if($('mfIntro')) $('mfIntro').hidden=true; if(!box){ setTimeout(go,400); return; }
     var f=(location.search.match(/[?&]f=([dwm])\b/)||[])[1], l=DEVO[MF.lang]?MF.lang:'en', k=planFish(), L=INTRO[l]||INTRO.en, P=PLT[l]||PLT.en;
     box.dir=/^(he|ar)$/.test(l)?'rtl':'ltr';

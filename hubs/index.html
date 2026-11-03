@@ -136,6 +136,7 @@ document.addEventListener('DOMContentLoaded',function(){
   $('askList').addEventListener('change',function(e){ if(e.target.type==='checkbox'){ PICK[e.target.value]=e.target.checked; count(); } });
   $('nearBtn').addEventListener('click',function(){ var b=this; b.textContent='Finding you…'; H.locate().then(function(){ b.textContent='✓ Nearest first'; b.setAttribute('aria-pressed','true'); all(); },function(){ b.textContent='Location is off'; }); });
   if(H.near()){ $('nearBtn').textContent='✓ Nearest first'; $('nearBtn').setAttribute('aria-pressed','true'); }
+  if(/[?&]near=1/.test(location.search)&&!H.near()) setTimeout(function(){ $('nearBtn').click(); },300);   // Ken, 3 Nov: Free MannaFish -> the Hubs nearest you
   $('askGo').addEventListener('click',function(){ var ids=Object.keys(PICK).filter(function(k){ return PICK[k]&&!H.isMine(k); }); if(!ids.length) return;
     var go=function(){ $('askGo').disabled=true; $('askMsg').textContent='Asking…';
       H.vote(ids,true).then(function(){ PICK={}; asks(); $('askMsg').textContent='Thank you! You asked for '+ids.length+(ids.length===1?' place':' places')+'. We will let you know when one becomes a Hub.'; })

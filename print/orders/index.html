@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Card orders · MannaFish</title>
+<link rel="icon" href="/icon-192.png">
+<!-- Ken, 3 Nov: the card orders from "Make the back yours" (/api/card-order), newest first, with each logo, for the admin password -->
+<style>
+body{margin:0;background:#0b0f14;color:#eaf0f0;font:16px/1.45 system-ui,sans-serif}main{max-width:860px;margin:0 auto;padding:18px 16px 60px}
+h1{font-size:1.5rem;margin:6px 0 14px}.o{border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:12px 14px;margin:0 0 12px;background:#121820}
+.o h2{font-size:1.05rem;margin:0 0 4px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}.o h2 small{color:#9fb2b6;font-weight:400}
+.it{display:flex;gap:10px;align-items:center;border-top:1px solid rgba(255,255,255,.1);padding:8px 0}.it img{width:64px;height:64px;object-fit:contain;background:#fff;border-radius:8px}
+.it span{flex:1}.it a{color:#8fb6ff}select,input,button{font:inherit;padding:7px 10px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:#1a222c;color:inherit}
+.note{color:#9fb2b6;white-space:pre-wrap}.empty{color:#9fb2b6}
+</style>
+</head>
+<body><main>
+<h1>Card orders</h1>
+<div id="out"><p class="empty">Opening…</p></div>
+</main>
+<script>
+(function(){
+  var out=document.getElementById('out');
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function key(){ try{ return localStorage.getItem('mf-admin-key')||''; }catch(e){ return ''; } }
+  function ask(){ out.innerHTML='<p>Admin password: <input type="password" id="k"> <button id="go">Open</button></p>';
+    document.getElementById('go').onclick=function(){ try{ localStorage.setItem('mf-admin-key',document.getElementById('k').value.trim()); }catch(e){} load(); }; }
+  function load(){ var k=key(); if(!k){ ask(); return; }
+    fetch('/api/card-order?k='+encodeURIComponent(k),{cache:'no-store'}).then(function(r){ if(r.status===403){ ask(); throw 0; } return r.json(); }).then(function(j){
+      var L=j.orders||[]; if(!L.length){ out.innerHTML='<p class="empty">No card orders yet.</p>'; return; }
+      out.innerHTML=L.map(function(o){ var c=o.contact||{};
+        return '<div class="o"><h2>'+esc(o.id)+' · '+o.total+' decals <small>'+new Date(o.at).toLocaleString()+'</small>'
+          +'<select data-id="'+esc(o.id)+'">'+['new','talking','proof','printing','done'].map(function(s){ return '<option'+(s===o.status?' selected':'')+'>'+s+'</option>'; }).join('')+'</select></h2>'
+          +'<div><b>'+esc(c.name)+'</b> · <a href="mailto:'+esc(c.email)+'">'+esc(c.email)+'</a>'+(c.phone?' · '+esc(c.phone):'')+'</div>'+(c.note?'<p class="note">'+esc(c.note)+'</p>':'')
+          +(o.items||[]).map(function(x){ return '<div class="it">'+(x.logo?'<a href="'+x.logo+'" download="'+esc(o.id+'-'+(x.name||'logo'))+'"><img src="'+x.logo+'" alt="logo"></a>':'')
+            +'<span><b>'+x.qty+' × '+esc(x.title)+'</b><br>'+esc(x.name||'')+(x.url?' · <a href="'+esc(x.url)+'" target="_blank" rel="noopener">'+esc(x.url)+'</a>':'')+(x.label?'<br>“'+esc(x.label)+'”':'')+'</span></div>'; }).join('')+'</div>'; }).join('');
+    }).catch(function(e){ if(e!==0) out.innerHTML='<p class="empty">Couldn’t open the orders just now.</p>'; }); }
+  out.addEventListener('change',function(e){ var s=e.target.closest('select[data-id]'); if(!s) return;
+    fetch('/api/card-order',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({k:key(),id:s.dataset.id,status:s.value})}); });
+  load();
+})();
+</script>
+</body>
+</html>
