@@ -96,9 +96,10 @@ Nothing here is to be changed until Ken answers. If Ken answers one, move it to 
   - **Bible in a Year** with `/?year=1` (the daily view that calls `ptYear()`).
 - Question to Ken (3 Nov): switch those three to the card too, or leave them? Not answered.
 
-### B3. The "Remember" fish says "remembrance"
+### B3. The "Remember" fish says "remembrance" (4 Nov: a second Remember was made; the original is still open)
 - The original Remember fish (Luke 22:19) has the word "remembrance" in its verse, not "remember". Ken's rule says the word must be in the verse. Claude left Ken's drawing alone.
-- Options: keep it as it is, or pick a verse that contains "remember". Not answered.
+- 4 Nov, Ken: "Make the remember fish or a 2nd version of remember from revelation2:5." Claude made a **second** Remember, `X006` (Revelation 2:5, KJV), and left the original untouched. The word is in its verse.
+- Still open: should X006 **replace** the original Remember (Luke 22:19) or stay as a second one? Not answered.
 - Also note: the Rebuild fish (Amos 9:11) was changed to **Raise** because "rebuild" is not in the KJV. Build (Jude 1:20) is separate.
 
 ### B4. Check the Spanish, Tagalog and German fish against the word-in-verse rule
@@ -204,7 +205,7 @@ Local test base: `python3 -m http.server 8123` in `/home/user/mannafish`, with `
 ### C1. Fish IDs and where fish live (read this before touching fish)
 - **The original 24**: Ken's own drawings, keyed by word (HOPE, REST, TRUST ...). Words and verses: `netlify/functions/lib/words.json`, `fishlines.json`, `es.json`. Pictures in `fish/en/` and `w/<word>/`. Measured sizes: `tools/fish-format/ken24.json`, `lines24.json`.
 - **The 153** = the original 24 + 129 "year fish" (`W01a` ... `W52d`, Go Fish net; list in `fish/net.json`, lines in `tools/fish-format/net-lines.json`). The page is `/fish/` (no id): 🖨 Print, ✏️ Edit, 💬 Change on every fish.
-- **New designs** (`X001` Stop, `X002` Go, `X003` Repent, `X004` Build (Jude 1:20), `X005` Deliver (2 Cor 1:10)); `D271` is Rebuild, now **Raise** (Amos 9:11). Lines in `tools/fish-format/extra-lines.json`; list in `fish/designs.json`.
+- **New designs** (`X001` Stop, `X002` Go, `X003` Repent, `X004` Build (Jude 1:20), `X005` Deliver (2 Cor 1:10), `X006` Remember (Rev 2:5, added 4 Nov)); `D271` is Rebuild, now **Raise** (Amos 9:11). Lines in `tools/fish-format/extra-lines.json`; list in `fish/designs.json`.
 - **Bible-in-a-year ("plan") fish** `D001` ... `D679` (gaps; 623 pictured), lines in `tools/fish-format/daily-lines.json`, edit data `edit/daily/data.json`, plan in `plan/plan.json`.
 - **The 365**: one action fish per day: 312 reading days + 52 Sabbath fish + day 365 "Gather". `tools/year365/` (picks.txt, new-words.txt, sabbaths.txt, apply.py) writes `plan/year365.json`. View: `/fish/?year=1`. Day 1 is Sunday 11 Oct 2026.
 - **Other languages**: `fish/<lang>/` for es, tl, zh, hi, el, de, ko, he, ar, ru (the original 24 each). Lines in `tools/fish-format/lang-lines.json`.
@@ -531,6 +532,7 @@ docs/LAUNCH.md. Ken's full words are in the transcript at `/root/.claude/project
 - 18:19 · "Update CLAUDE.md" · 82cea823 (a short file; Ken later said it lacked detail).
 
 ### 4 Nov
+- (afternoon) · "Make the remember fish or a 2nd version of remember from revelation2:5" · `X006` Remember added as a second fish (B3 updated); original untouched. Lines in `tools/fish-format/extra-lines.json`, then `tools/fish/redraw-all.sh` (word in its verse: 0 problems). The rotation's existing days did not move.
 - 12:27 · Song came in the inbox; "Don't do anything yet ... lets just talk" · talk only (B1). Nothing changed.
 - 12:32, 12:33 · "There's got to be a way [to keep] conversations short without losing any detail"; the CLAUDE.md "is not very detail-oriented and does not cover large sessions like this" · this file (docs/DECISIONS.md) and the new handoff protocol in CLAUDE.md.
 
