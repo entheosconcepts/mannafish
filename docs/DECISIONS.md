@@ -533,6 +533,7 @@ docs/LAUNCH.md. Ken's full words are in the transcript at `/root/.claude/project
 
 ### 4 Nov
 - (afternoon) · "Make the remember fish or a 2nd version of remember from revelation2:5" · `X006` Remember added as a second fish (B3 updated); original untouched. Lines in `tools/fish-format/extra-lines.json`, then `tools/fish/redraw-all.sh` (word in its verse: 0 problems). The rotation's existing days did not move.
+- (afternoon, same day) · "Add it to the devotionals and everything" · X006 was already in every list the other new designs are in (Fish page, Go Fish, daily rotation, email picture, Hub Catch choices). Its place in the daily rotation was moved from the end to **Thu 5 Nov** by swapping it with `D369` (which went to the end): only positions 25 and 750 of `netlify/functions/lib/catch.json` order changed. Checked with `catchOn`: 3 Nov Judge, 4 Nov Song, 5 Nov Remember. Not added to the 365 plan (its days are tied to readings; Revelation 2 has no slot) or to Spanish (the 24 only).
 - 12:27 · Song came in the inbox; "Don't do anything yet ... lets just talk" · talk only (B1). Nothing changed.
 - 12:32, 12:33 · "There's got to be a way [to keep] conversations short without losing any detail"; the CLAUDE.md "is not very detail-oriented and does not cover large sessions like this" · this file (docs/DECISIONS.md) and the new handoff protocol in CLAUDE.md.
 
