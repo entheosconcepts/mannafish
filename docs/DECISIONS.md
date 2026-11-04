@@ -1,0 +1,631 @@
+# MannaFish: decisions, requests and handoff record
+
+Written 4 Nov 2026 from Ken's own messages in the long working session (27 Oct to 4 Nov), the project's change history,
+the other notes in docs/, and the code. Read this first. Then read docs/UPDATES.md (the to-do list).
+
+How to read the marks: **(unconfirmed)** means the sources did not settle it. Dates are the UTC date of Ken's message. Ken is in
+US Eastern time, so a late-evening message can show as the next day. The clone is shallow, so `git log` only reaches back to
+29 Oct. Hashes for older work are marked "(from the session notes)" or left out.
+
+Nothing in this file is a secret. Never add a key, token, password, EIN or home address here.
+
+Contents: A. Read me first · B. Open questions waiting on Ken · C. Feature map · D. Chronological log of Ken's requests ·
+E. Gotchas and fixes · F. Environment · G. How to keep this file current
+
+---
+
+## A. READ ME FIRST
+
+### What MannaFish is
+- MannaFish gives Scripture away. One word of Scripture sits in the middle of a fish, with its verse around it.
+- It is a free daily gift: a daily email (and text, and phone notice) with the day's fish, a word study, and a devotional you can listen to or read.
+- The slogan idea is "Take 2, keep one, give one" (the Two Fish Challenge). "Freely you have received; freely give" (Matthew 10:8).
+- The fish are **never sold and never resold**. Sponsors pay so the fish can be given away. A recipient never pays.
+- Printed MannaFish are kiss-cut clear vinyl decals on a thick backer card, 4.5 x 2.75 inches. The back of the card carries the invitation, a word study, or a sponsor's thank-you, with a QR code.
+- It is a static site on Netlify with serverless functions. Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). The live site is manna-fish.com (branch `main`, last changed 12 Sept). Nothing goes live until Ken says "push it live".
+- Words Ken uses: **Hub** (a place that gives fish away: MannaFish Hub; earlier called Station), **Pond** (a Hub's or sponsor's stock), **Hatchery** (production: Ken plus the printer), **Love** / the 🧺 basket (fish you love), **Take 2** challenge, **Catch** (the day's fish), **co-labor** (the sponsor's part on the card back), **the original 24** (the first 24 fish), **the 153** (the Go Fish net), **the 365** (one action fish for each day of Bible in a Year), **Jar** (a person who gives fish away) and **Door** (a business or place), **Hub host** (the person who runs a Hub).
+
+### Who Ken is
+- Ken owns Entheos Concepts (the production business). Legal address on anything that goes out: Entheos Concepts, 4563 Technology Dr, Unit 6, Wilmington NC 28405. Ken's home address must never appear anywhere.
+- The Majestic Awards CRM (`/home/user/majestic-crm`, repo `entheosconcepts/majestic-crm`) has a MannaFish "engagement center" section. Read it if needed. **Never change it.**
+- Other names that come up: The Big Idea LLC (has Stripe, no MannaFish activity), Yadah Collaborative (the planned ministry or nonprofit, with his wife; still "speculation"; the spelling YADA or YADAH is open), K-Tech Construction (his brother's porch-enclosure business, the first sponsor sample), Fling Ball (a game his brother invented, a second sample), Shattered into Beautiful (a podcast, a sample sponsor), Mailbox Express on Piner Rd (a store whose owner is a skeptic but likes the idea), StickerApp (the printer Ken is working with; the contact is named Nikki in the notes).
+- He has a full-time job. He does not want "a production frenzy". He wants drop-shipped printing and a QR system that does not come in-house.
+- He dictates by voice, so messages are garbled. Read for meaning. Examples: "manifest" or "man fish" means MannaFish; "Dunn's number" means D-U-N-S; "Yatta" or "Yadda" means Yadah; "hatchey" means hatchery; "Sticker U" and "Sticker App" are StickerApp; "enjoy would be a good decal for fling ball" means the Enjoy fish.
+- He sends many screenshots and often says "stand by" and then "go". Wait for "go" when he says so.
+- He is testing on his iPhone and a desktop. He is careful about wording (he asked for "look up the following Scriptures" in place of "look up these scriptures").
+- He has said he keeps getting charged for extra usage. Long sessions cost more. See G.
+
+### How Ken likes replies
+- Short, plain English. Honest. Say plainly when something was not tested or not heard.
+- After every update give **only the main link: https://yadamannafishtest.netlify.app/** (Ken, 1 Nov: "Give me the link after every update please", then "Just mannafish"). Do not append a long link list unless he asks for "the summary of everything we've worked on".
+- "Short answer, please" means one or two sentences.
+- No zip files. Ken cannot open them on his phone (30 Oct: "Why are you all of a sudden zipping files for me?"). Send single files.
+- He wants to see a picture or link, not code.
+- Ask him to decide only what is not already answered here.
+
+### Standing rules (verbatim from CLAUDE.md)
+- **Secrets live only in Netlify environment variables.** Never ask Ken for a key, never paste one, and tell users never to paste tokens, EINs or passwords into chat.
+- The fish are **never sold, never resold**. Sponsors pay so they can be given away.
+- **No dollar amounts on the site** until Ken decides pricing.
+- No earn-style rewards. No celebrity voice imitation.
+- Business address on anything that goes out: Entheos Concepts, 4563 Technology Dr, Unit 6, Wilmington NC 28405. **Ken's home address must never appear.**
+- Call the first 24 fish "the original 24". All the fish are Ken's.
+- Make everything **server side** and forward compatible: pages call `/api/*`, state that matters is stored in Netlify Blobs or Supabase, and phones keep only personal conveniences (basket, settings, carts) that sync to the account when signed in. Don't send zip files.
+- Style: short, plain English, honest. Say plainly when something was not tested.
+- Branch **`test-site`**. **Never push to `main`, and never touch manna-fish.com, unless Ken says "push it live".**
+- Do **not** modify the Majestic Awards CRM (`/home/user/majestic-crm`). Reading it is fine.
+- After every update, tell Ken only the main link: https://yadamannafishtest.netlify.app/
+- Commit with `git -c user.name="Claude" -c user.email="noreply@anthropic.com"` and push to `test-site`. Add the attribution trailer lines the session gives. Don't put model names in files.
+
+### More of Ken's words that act as rules (from the transcript)
+- 27 Oct (or just before): "Make all these request forward compatible and built on server side. Tell me you already know this!!!"
+- 12 Oct (older notes): "We are not going to make people earn merchandise. It is a free gift." No streaks, badges or day counts.
+- 29 Oct, on sponsors: "The idea for sponsors is that He must become greater, and I less" (John 3:30). So: the sponsor is small, on the back only, never on the front. Anonymous sponsorship and "A gift to you through ..." are allowed. Nothing but Scripture is on the front.
+- 27 Oct: any sponsorship or mention of a company is on the back of the card, never the front.
+- 30 Oct: no print nightmares. Anything that can be printed must be in a Bible version that is free to print (see C, Printing and Bible permissions).
+- 31 Oct: "Take dollar amount off everything until we decide." Also "Remove shop / order section". The fish are not for sale.
+- 2 Nov: "Why do you keep say 'your own 24' as if the other are not my property?" Say "the original 24".
+- 2 Nov: "Middle fish word must exist in the scripture in order for it to qualify." Every fish's centre word must be in the verse printed on that fish.
+- 1 Nov: "Change the heart back to the basket icon, it represents the multiplication miracle better." The icon is 🧺. The wording stays "Love".
+- 27 Oct: gift-giver tracking must not turn into "a scanning nightmare". Ken does not want to give out single decals and handle sorting, shipping and production one by one.
+- 3 Nov: do not ask every customer to scan a QR code at a Hub. "Hopefully the store owner will take note" of abuse.
+- Do not put model names in any file or commit message.
+- Keep the Majestic Awards CRM untouched. The notes for its tour speaker are in docs/HANDOFF-CRM-VOICES.md.
+
+---
+
+## B. OPEN QUESTIONS WAITING ON KEN
+
+Nothing here is to be changed until Ken answers. If Ken answers one, move it to D and update C.
+
+### B1. Daily email and less familiar fish like "Song" (NEW, 4 Nov)
+- Ken, 4 Nov: "Song showed up in my inbox this morning. Not sure how I feel about this. Don't do anything, yet ... lets just talk for now."
+- Why it happened: on 1 Nov Ken said "I want all of them available, please". The English daily pick now draws from all 749 designs in `netlify/functions/lib/catch.json` (`order`). Song (Exodus 15:2) is one of them.
+- The email itself looks right (logo, fish, verse). What bothered Ken is not known. Claude asked and listed guesses: the word is too soft or unfamiliar, the verse is cut with "…", the day it landed, the fish seeming random, or the email layout. Ken has not answered.
+- The three options Claude gave:
+  1. **Keep as is.** Every fish gets its turn. Some days feel weaker.
+  2. **A featured list.** The daily email draws only from fish Ken marks as strong. The rest stay on the site and for Hubs.
+  3. **A mix.** Mostly featured fish, with a surprise from the full set every fifth or sixth day.
+- Claude leaned to option 3, but said Ken knows which words he would be glad to send a stranger.
+- **NOTHING is to be changed until Ken says so.** If he picks 2 or 3, the work is in `tools/fish/catch.py` (it writes `catch.json`) and `netlify/functions/lib/manna.mjs` (`catchOn`, `fishOf`). Keep the "no fish two days in a row" check and keep days from shifting (see E).
+
+### B2. The old devotional box entry points
+- Since 2-3 Nov the devotional is the card on the Today page (Listen reads the card and turns it over, Read turns it over). The old step-by-step box (`PT`, `ptOpen()` in `index.html`) still opens from three places:
+  - ••• menu, **Pick up where you left off** (`#smResume`).
+  - The Tour's **Start today's devotional** option (`data-t="devo"`).
+  - **Bible in a Year** with `/?year=1` (the daily view that calls `ptYear()`).
+- Question to Ken (3 Nov): switch those three to the card too, or leave them? Not answered.
+
+### B3. The "Remember" fish says "remembrance"
+- The original Remember fish (Luke 22:19) has the word "remembrance" in its verse, not "remember". Ken's rule says the word must be in the verse. Claude left Ken's drawing alone.
+- Options: keep it as it is, or pick a verse that contains "remember". Not answered.
+- Also note: the Rebuild fish (Amos 9:11) was changed to **Raise** because "rebuild" is not in the KJV. Build (Jude 1:20) is separate.
+
+### B4. Check the Spanish, Tagalog and German fish against the word-in-verse rule
+- The English fish all pass `tools/fish/in-verse.py --check`. The other languages were not held to the rule.
+- A quick scan flagged 11 Spanish, 18 Tagalog and 9 German fish (for example Recibe, Pide, Confía in Spanish). Many may be the same verb with a different ending.
+- Claude asked: go through each language properly and fix the ones that really fail? Not answered. (The Spanish fish were also redrawn in Reina-Valera 1909 on 30 Oct, before the rule, so check again after.)
+- Related: a Spanish speaker should proofread the Spanish fish and site (Ken's step).
+
+### B5. The ElevenLabs key and better voices
+- Ken wants more realistic, natural voices (2 Nov). Current voices are OpenAI's, 17 characters.
+- Plan: Ken makes an ElevenLabs account, picks voices, puts the key in Netlify as `ELEVENLABS_API_KEY` (never in a chat), then tells Claude "ElevenLabs is in" and names the voices. Claude then adds them to every voice list (they appear in `GET /api/say?list=1`, so the CRM picks them up with no change).
+- Not started: the key is not set (unconfirmed). Also offered: a "voice taste test" page (same verse in each voice).
+- Cost figures given to Ken (3 Nov, from published 2026 pricing; Claude could not open ElevenLabs' own page, so check before signing up):
+  - Free plan: no commercial rights, cannot be used on a website.
+  - Starter $6 a month (30,000 characters, about 30 minutes). The lowest plan with commercial use.
+  - Creator $22 a month (first month $11; 121,000 characters, about 2 hours).
+  - Pro $99 a month (600,000 characters, about 10 hours). Paying yearly saves about two months.
+  - Cost depends on new words read, not listeners, because every clip is saved after first use.
+  - One ElevenLabs voice, English only, about 60,000 to 90,000 characters a month: Creator. Two or three voices: Pro.
+  - Suggested: keep OpenAI voices for everything, add Creator for one or two featured devotional voices. Keep the Translator on OpenAI voices (much cheaper).
+  - OpenAI voice cost: about 1.5 cents per minute of new audio.
+- Also open: Bible tab and Plans still read with the phone's own voice. Audio upgrade options in docs/LAUNCH.md: (a) Faith Comes By Hearing, (b) an ElevenLabs trial, (c) both side by side. Ken has not chosen.
+- No celebrity voice imitation. Ken asked for voices "like Darth Vader / James Earl Jones, Sean Connery, Max McLean, Dolly Parton"; Claude declined imitation and made six original characters instead (Thunder, Narrator, Highlander, Grace, Magnolia, Heather).
+
+### B6. Pricing for sponsored card orders
+- The cart on the home page ("Make the back yours") shows **no price** and charges nothing. Requests arrive at `/print/orders/`.
+- Ken's own proposal (29 Oct, internal only, never on the site): 100 to 499 decals at $3 each, 500 or more at $2 each, minimum 100. Cost about $1 a decal.
+- Claude's evaluation: flat tiers have a cliff (400 decals = $1,200 but 500 = $1,000). Recommended graduated pricing: $3 each for the first 500, then $2 for each after, minimum 100 (100 = $300, 500 = $1,500, 1,000 = $2,500, 2,000 = $4,500). A "Keep a pond stocked" option of 100 a month for $300. About 3,500 to 5,700 decals a month would support a $3,000 to $5,000 a month operator. Pay the operator per decal ($0.50 to $0.75) until volume holds. Collect payment up front. Ask a CPA which entity takes the money.
+- Ken has not decided. Claude offered a one-page sponsor sheet or a calculator page. Not answered.
+- Related open items: the printer choice, who mails the cards, and the legal home for sponsorships (Yadah Collaborative, with a CPA or nonprofit attorney). Which entity gets the D-U-N-S number (see B8).
+
+### B7. Soft-launch checklist and "push it live"
+- Ken's order (2 Nov): soft launch the website first and test every feature; then input from family and friends; then the printable version in place; then people ready to sponsor; then the app.
+- Ken's steps (docs/LAUNCH.md and docs/UPDATES.md):
+  1. Go through the test checklist (••• → Admin view → ✅ Test checklist). Use 📝 Note something to change.
+  2. Read the daily email for a week on his phone. Have his wife and one friend try it.
+  3. Check the live site's Netlify settings match the test site (names in F).
+  4. Say "push it live".
+- On "push it live", Claude: merges `test-site` into `main`, checks Today, sign-up and welcome email, Pray, Bible, Plans, You, feedback, privacy; checks no `noindex` header on manna-fish.com. Then on the **test** site set `MF_SEND_OFF` = `1` so it stops sending daily emails.
+- The checklist artifact has **not** been updated for work after 2 Nov (see C, Test checklist). Add items before Ken starts.
+- Switch share-preview links from the test site to manna-fish.com when live. Remove the test site's "do not index" setting from the live copy.
+- The live QR on the printed card (`?devo=1`) only works after "push it live".
+
+### B8. More open items
+**Printing and sponsors**
+- StickerApp's reply (Nikki): thicker backer, API, drop-ship, price for 100, sample. Also Ken's complaint about the proof: the pink die-cut lines, which image is the background, black background behind the fish. Status after that is not recorded (unconfirmed).
+- "Send R0004" (the Gather card, no sponsor): Ken has not said send. Real K-Tech logo (a made-up round logo is used), the K-Tech porch page URL, the Fling Ball logo and URL, who pays for each run.
+- The real Yadah logo (a stand-in cut from Ken's screenshot is used).
+- Which sponsor goes first. Ken (31 Oct): "for now we'll just do the devotional on the back and no sponsored by anybody". Run R0004 is that card.
+- "Two lanes" print guard (recommended, not built, Ken has not said go): digital can use any Bible version; print is locked to the free-to-print versions; a hard stop in the print tool; the version recorded on each order; Spanish devotional verses switched to 1909. See BIBLE-PERMISSIONS.md.
+- Permission letters A, B and C in docs/BIBLE-PERMISSIONS.md (C covers screen, read-aloud and print). Whether Ken has sent them is not recorded (unconfirmed). The ESV key (`ESV_API_KEY`) is not added (unconfirmed).
+- Hindi IRV needs a credit line (CC BY-SA). Korean 1961, Haitian Creole 1985, Vietnamese 1926, Turkish and Persian are marked "check" in the permissions table.
+
+**Hubs**
+- The Hub vote goal is 50 for now (Ken: "a certain number, which I will decide later").
+- Confirm the Wilmington list: Drift Coffee location (the seed uses 221 N Front St #102), "Social Cafe" meaning Social Coffee & Supply, the addresses from public listings. Mailbox Express is the one at 609-A Piner Rd (Ken confirmed).
+- Hub emails have never sent a real message through Brevo. The first check is Hubs admin, Emails, **Send me a test**. Taps in a test email are real and record an answer for the first Hub on the list. Automatic sends also run on the test site every morning, so only enter real host emails for Hubs Ken is ready to contact.
+- Optional builds offered 3 Nov, not asked for: one QR per Hub with a "Claim your 2 fish" scan page, fish-left tracking with a low-stock email, a ZIP code on devotional sign-up (not a street address). Ken said he does not want to require scanning but does want a backend; the Hub emails were built instead.
+- More Hub email ideas for later: Hub of the Month, new Hub openings nearby, "A sponsor just covered your fish", fish stories, a yearly note, display refills.
+- Too many names for the same idea (Basket/Love, Hubs, Pond, Stations, Jars and Doors, 2 Fish, Take 2). Claude suggested fewer. Not decided.
+
+**Jars and Doors, Fill the Net, sharing**
+- Jars and Doors (27 Oct): Ken needs to say how many fish make a Jar (10 or 20?), the Jar refill size (12?), and whether "Door" replaces "Station" or "Hub". Mostly overtaken by Hubs. Whether Ken still wants Jars and Doors is not recorded (unconfirmed).
+- Fill the Net (100 per design, shipped to a Hub): Ken's Hub design ("you decide") replaced most of this. Printable fish limited to the original 24 plus the fish of the week? Not answered.
+- Sharing with friends (notes, highlights, prayers, scripture art: only me, chosen friends, all friends, everyone): build right after launch? Not answered.
+- Invitation cards ("You're invited"; the fish is the gift, the back is the invitation): choose A (invitation), B (fill-in gathering), C (anonymous) in the invite-cards artifact; confirm a gatherings map and invitation page; Ken's sentence "If somebody ..." was cut off and never finished.
+- Ken's idea: a "Ready" fish for 1 Peter 3:15 (the first gathering is a vision cast, giving MannaFish merch). Offered, not asked for.
+
+**Fish and words**
+- Action words for every chapter: 559 chapters have no fish (630 of 1,189 have one). Ken asked for "every chapter at least one fish, an action word". Make it a MannaFish was built first. The official chapter fish are to be drafted a book at a time for Ken to approve. Not started.
+- Opposite words still to draw, with a KJV verse each, waiting for Ken's approval: Reap (Gal 6:9), Die (Phil 1:21), Begin (Phil 1:6), Awake (Eph 5:14), Lose (Matt 16:25), Dance (Eccl 3:4), Shut (Matt 6:6), Work (John 9:4), Answer (Jer 33:3), Weak (2 Cor 12:10), Fall (Mic 7:8), Darkness (John 1:5), First/Last (Matt 20:16). Done already: Stop, Go, Repent, Rebuild (now Raise), Return existed.
+- The 83 words changed to verbs on 1 Nov and the 104 day-words on 2 Nov: Ken to say if any should change (use 💬 Change on /fish/ or /fish/?year=1).
+- One Word plan: 52 days now show fish whose word changed. Keep or drop the pictures?
+- Word size: the average rules are built, but `tools/fish-format/templates.json` does not exist yet. Ken must pick templates on the edit sheet and tap **📋 Copy the averages**, then paste to Claude, who saves it as `templates.json` and runs `tools/fish/redraw-all.sh`.
+- Home page "Today's Catch" still uses only the original 24.
+- The text "Printed cards: 4 × 2 inches" on the site should say 4.5 × 2.75 (unfixed, unconfirmed).
+- Old wording "Add to basket" still shows in places.
+- Reference icons in the Today reader (they exist on the Bible tab).
+- What the "precepts" second card in Ken's screenshot of the word card (just before 27 Oct) was (the word card overlapping). Never answered.
+
+**Translator and Ride**
+- Standalone Translator product: name (Manifest Translator or "Translator by Entheos"), where its code lives (own Netlify site), accounts with free minutes, a domain. Waiting on Ken.
+- Vietnamese: Ken said (2 Nov) add it to the translator, not to MannaFish. It was added with the 11 languages on 30 Oct. It is not in the fish languages.
+- Ride mode (/ride/) has not been tried with real voices or a microphone. A deploy of it was not verified (the QR code uses the `qrcode` package that the site installs at publish). If the code screen shows no QR picture, fix `netlify/functions/ride.mjs`. A second phone or a dash tablet is needed, because phones stop the microphone when the Ride page is not on screen.
+- Translator detect: not tested with real speech or rare languages.
+
+**Business and later**
+- Which entity gets the free D-U-N-S number for the app: Claude suggested Yadah Collaborative (if it becomes the ministry's legal home), after talking to a CPA or nonprofit attorney. Options Ken named: MannaFish (cannot, not a company), Yadah Collaborative, The Big Idea LLC (existing, no activity), Entheos Concepts. Not decided.
+- The CRM brief (read-only) lists the business ZIP as 28412 while every MannaFish page uses 28405. Ask Ken which is right. Do not change either.
+- Texting: needs US carrier registration (10DLC or toll-free). Twilio names are in F.
+- Brevo paid plan once the daily email passes about 300 people a day.
+- The app (App Store and Google Play): after the soft launch, feedback, printing and sponsors (see C, App plan).
+- A simple numbers page (sign-ups, fish shared, what people use most) and a "start here" for first-time visitors. Suggested 3 Nov, not asked for.
+- Older open items from docs/TODO.md: Sign-ups before 7 Oct are only in Netlify Forms (export and send, or re-sign-up); texts wait for registration; Spanish for the other pages.
+
+---
+
+## C. FEATURE MAP
+
+Each entry: what it does, Ken's requests (dates are 2026), files and routes, storage, how to test. Test recipes for tools are in E.
+Local test base: `python3 -m http.server 8123` in `/home/user/mannafish`, with `/api/*` stubbed in Playwright.
+
+### C1. Fish IDs and where fish live (read this before touching fish)
+- **The original 24**: Ken's own drawings, keyed by word (HOPE, REST, TRUST ...). Words and verses: `netlify/functions/lib/words.json`, `fishlines.json`, `es.json`. Pictures in `fish/en/` and `w/<word>/`. Measured sizes: `tools/fish-format/ken24.json`, `lines24.json`.
+- **The 153** = the original 24 + 129 "year fish" (`W01a` ... `W52d`, Go Fish net; list in `fish/net.json`, lines in `tools/fish-format/net-lines.json`). The page is `/fish/` (no id): 🖨 Print, ✏️ Edit, 💬 Change on every fish.
+- **New designs** (`X001` Stop, `X002` Go, `X003` Repent, `X004` Build (Jude 1:20), `X005` Deliver (2 Cor 1:10)); `D271` is Rebuild, now **Raise** (Amos 9:11). Lines in `tools/fish-format/extra-lines.json`; list in `fish/designs.json`.
+- **Bible-in-a-year ("plan") fish** `D001` ... `D679` (gaps; 623 pictured), lines in `tools/fish-format/daily-lines.json`, edit data `edit/daily/data.json`, plan in `plan/plan.json`.
+- **The 365**: one action fish per day: 312 reading days + 52 Sabbath fish + day 365 "Gather". `tools/year365/` (picks.txt, new-words.txt, sabbaths.txt, apply.py) writes `plan/year365.json`. View: `/fish/?year=1`. Day 1 is Sunday 11 Oct 2026.
+- **Other languages**: `fish/<lang>/` for es, tl, zh, hi, el, de, ko, he, ar, ru (the original 24 each). Lines in `tools/fish-format/lang-lines.json`.
+- Every fish page URL: `/?fish=ID` shows any fish on the Today page. `/fish/?id=ID` redirects there (unless `&page=1`).
+- Email pictures: `w/img/<id>.png` (1000 x 500, 4 greys, about 20 KB; 667 files). Made by `tools/fish/catch-img.mjs` and `catch-img.py`.
+
+### C2. Fish builder and the word size and placement standard
+- **What it does.** One builder draws every fish outline the same way as the original 24 (Hobo font): word size from the number of letters, centred word, balanced left/right and top/bottom, never touching the fish's inside edge, with a verse on the top and bottom lines and the reference on the tail. All outputs are SVG outlines (printable).
+- **Ken's requests.**
+  - About 25-26 Oct (before 27 Oct; exact date unconfirmed; from the session notes): "You need to have a format builder so all fish are like the other 24 in Hobo font positioned and proper size ... printable just like the 24." Show the standard fish to pick from (9 recommended: REST, GROW, LOVE, TRUST, LISTEN, LAUGH, BELIEVE, BREATHE, REMEMBER).
+  - Then "more automated": Bless touched the walls, With too tall, Keep off balance, Atone and Tend too close to the edge. Rules were added; all 128 redrawn.
+  - "Go for it": redraw the 623 plan fish and the 24 x 9 language fish; switch the edit sheet to the builder.
+  - Short words (3, 4, 5 letters) should not fill the space: a rule was added.
+  - 2 Nov: "Make all 4 letter words a little smaller" (about 5%; the 4-letter step 1.2 became 1.14). Commit 3d8b1abb.
+  - 2 Nov: "revisit the words that set the standard for size and placement of each word". Ken was shown the Format Builder tool again.
+  - 2 Nov: template averages (below).
+  - 3 Nov: "I thought we already have a standard ... make sure this is on all instances of the word." The K-Tech Build had a hand setting; it was removed (4dccc4eb). No fish has a hand setting now.
+  - 1 Nov: Build must be "just as big as the word Trust" (size 784, scale 1.319). That hand setting was later dropped for the standard (3 Nov).
+- **Rules in `tools/fish-format/fishfmt.js`** (`RULE`): word fill 0.786, minimum size 558; tall-letter reduction up to 15% for Hobo and for tall scripts (he, zh, ko); balance L=R and T=B measured to the eye's inner edge; room at least 40 from the eye; short-word steps (base 583, 3 letters x1.25, 4 x1.14 (was 1.2), 5 x1.12, 6 x1.06, 7 x1.03); verse size 222, condense 0.95, start 0.027, end 0.978; reference size 192, width 980; strokes word 27.8, verse 3, ref 7.
+- **Template averages.** On the edit sheet tap **⭐ Template** on any fish (the original 24 too). Each word length (2 to 9 letters) takes the average of the templates with that length (size, left/right, up/down, width); the two verse lines take the average place of all templates. The rules panel shows the averages. **📋 Copy the averages** gives one block to paste to Claude, saved as `tools/fish-format/templates.json` (file not created yet; `templates.js` reads it). Then `tools/fish/redraw-all.sh`.
+- **Files.** `tools/fish-format/` (README.md, build.js, build-lang.js, buildall.js, derive.js, fishfmt.js, templates.js, geo.json, ken24.json, hbengine.js, clr.py, fonts/), copies served to the browser: `fish-lang/fishfmt.js`, `fishgeo.json`, `opentype.min.js`, `hobo.otf`. Text engines: opentype.js for Hobo; harfbuzzjs for other scripts (shaping, right to left).
+- **Fonts for other scripts** (`build-lang.js` FACE): el Ubuntu 700; zh ZCOOL; ko Jua; he **Frank Ruhl Libre** 800 (changed 1 Nov from Fredoka after Ken said it was too fat and round; commit 8c430779); ar Cairo 800; hi Baloo 2 800; ru Ubuntu (Cyrillic) 700.
+- **Edit sheet** `/edit/` (`edit/index.html`, `edit/wordtool.js`): per fish, tap/drag/pinch the word, numbers, 📚; Ready marks; ⭐ Template; averages table `#rAvg`; ✏️ links from /fish/ (`/edit/?find=<id>&set=new|daily`). Data: `edit/data.json`, `edit/new/data.json`, `edit/daily/data.json`, `edit/lang/<code>.json`. State is saved to the server (`/api/edit-save`, blob store `mannafish-edit`, last 40 copies kept, password `MF_ADMIN_KEY`; `PROOF_KEY` is accepted until `MF_ADMIN_KEY` is set). Local keys: `mf-edit-v3`, `mf-edit-draft`, `mf-edit-saved`, `mf-edit-status`, `mf-edit-set`, `mf-word-rules`, `mf-newfish-v2`.
+- **Format Builder artifact** (a picker of the standard and its logic): https://claude.ai/artifact/AeY59AKSTAArq52oHwjqnm (last updated 2 Nov; says "original 24").
+- **Test.** Build with the env vars in E (OPENTYPE, HOBO, HARFBUZZ). Check clearance with `tools/fish-format/clr.py` (room at least about 37 to 40; L/R and T/B balance within 10 to 12). Open `/fish/` and `/edit/` and compare.
+
+### C3. Redraw pipeline and the word-in-verse rule
+- **One command**: `sh tools/fish/redraw-all.sh` (9168ea34). Order: `build.js` (net), `build.js daily-lines.json`, `build.js extra-lines.json`, `build-lang.js`; `tools/fish/sync.py` (built-in copies in index.html, match/fish-es.json, fish-lang/<l>.json, fish-es/); `tools/fish/net.py` (fish/net.json, fish/designs.json); `tools/fish/catch.py`; removes changed email pictures; `catch-img.mjs` + `/usr/bin/python3 catch-img.py`; `node tools/print/make.mjs --all`; `in-verse.py --check`.
+- **Word-in-verse rule** (Ken, 2 Nov: "Middle fish word must exist in the scripture"). `tools/fish/in-verse.py` plus `tools/fish/in-verse.txt` (the picks); `--check` lists any fish whose centre word is not in its verse lines (exact word, or with an ending: Deliver in "delivered", Atone in "atonement"). 384 English fish got a new word on 2 Nov (73661bc6): 61 of the 153, 199 of the 365 days, the rest of the plan fish. Result: 33 of the 153 and 52 of the 365 are no longer action words, because their verses had no good action verb.
+- **Action words.** 1 Nov (4b975e91): 83 year fish that were nouns got verbs (`tools/fish/action-words.json` lists old to new). 2 Nov: 104 plan fish got a verb from their own verse for the 365. The automatic verb classifier was unreliable; the 312 days were picked by hand.
+- **Ken's reason for the 153** (3 Nov, 1-2 Nov messages): 153 fish and the net did not tear, because the Spirit had not yet been given. After the catch Jesus breathed on them and said receive the Holy Spirit (John 20:22; Genesis 2:7). Peter was reinstated after denying Jesus; this is a reinstatement of the command to increase and multiply. Now the Spirit keeps the net from ripping and the jars from leaking. "His kingdom is like a net on the right side and it produces all kinds of fish" (Matthew 13:47). It is in the notes of `tools/fish/net.py` and on the /fish/ page.
+- **Test.** `python3 tools/fish/in-verse.py --check` must print no failures. Open `/fish/`, `/fish/?year=1`.
+
+### C4. Daily catch rotation, email, push and SMS
+- **What it does.** Everyone gets the same fish each day. Sunday to Thursday one fish; Friday two (the day's and the Sabbath's, "a double portion", Exodus 16:22); Saturday nothing (the Sabbath). Sent at 7am in each person's own time zone. Welcome emails rest from 6pm Friday to 9pm Saturday.
+- **Rotation.** English draws from `netlify/functions/lib/catch.json` `order` (**749 fish**). Spanish keeps the original 24 (the only ones drawn in Spanish). The day's slot is `week * 7 + weekday` counted from Sunday 11 Oct 2026; Sunday is one of the 24, the other days alternate year fish, plan fish and new designs, new designs first. The same verse reference appears only once. `catch.py` keeps the order stable: a removed fish is replaced in its place, new fish are added at the end (39059822).
+- **Counts you may see in older notes**: 663, 668, 756 and 749 are the rotation at different dates. 749 is current.
+- **Ken's requests.** 19 Oct: a different fish each day, "I do not want to become tired of Hope". 1 Nov: "I want all of them available, please". 2-3 Nov: "I got Judge yesterday and today, make sure that does not happen". 4 Nov: unsure about "Song" (see B1).
+- **Files.** `netlify/functions/email-daily.mjs` (hourly at :15), `push-daily.mjs` (:05), `sms-daily.mjs` (:20); `lib/manna.mjs` (`catchOn`, `fishOf`, `fishInfo`, `welcomeCatch`), `lib/devo.mjs` (subscribers, emails), `lib/devotext.mjs`, `lib/push.mjs`, `lib/sms.mjs`, `lib/mail.mjs` (Brevo), `devo-subscribe.mjs`, `devo-unsubscribe.mjs`, `devo-preview.mjs`, `push-subscribe.mjs`, `push-key.mjs`, `sms-in.mjs`. Python: `tools/fish/catch.py` writes `lib/catch.json` and `fish/catch.json`.
+- **Routes.** `POST /api/devo-subscribe`, `/api/devo-unsubscribe`, `GET /api/devo-preview?date=YYYY-MM-DD` (or `?friday=1`), `/api/push-subscribe`, `/api/push-key`, `/api/sms-in` (Twilio webhook).
+- **Storage.** Blob stores `mannafish-devo` (subscribers), `mannafish-push`. Fish in an email link to `/?fish=ID` on the site that sent it.
+- **Switches.** `MF_SEND_OFF=1` stops a site from sending (use on the test site after going live so no one gets two). `MF_LINK_URL` overrides the link base. Texting needs Twilio keys and carrier registration; not on yet.
+- **Test.** Open `/api/devo-preview?date=2026-11-04`. Check no consecutive repeats over `CATCH.order`. Brevo's free plan allows 300 emails a day.
+
+### C5. The devotional card on Today, and the extra-fish loader
+- **What it does.** The devotional is the fish card on the Today page, not a box (Ken, 3 Nov). **Listen** reads the word and its verse, turns the card over, reads the Greek, the Hebrew, then each of the nine Scriptures in full, lighting each as it is read, with the speed buttons (0.75 to 1.75). **Read** turns the card over. The top **▶ Devotional** button and the email's `?devo=1` do the same. The card can also open from the email at `/?fish=ID&flip=1` (turned over).
+- **Ken's requests.**
+  - 27 Oct: faint pause/play in the middle of the screen, no blue highlight, bigger buttons (30 Oct: 96 px).
+  - 27 Oct: "In context" should read the whole passage, not a snippet (from BSB section headings; `/api/passage`); 30 Oct: make it a button that opens the Bible reader in the devotional's version.
+  - 27 Oct and 30 Oct: version and language pickers at the top; highlighter hidden under ••• on short devotional pages; ••• also has Picture verse and How long.
+  - 2 Nov: "on the desktop the devotional is not really working ... it doesn't flip". Then: "I do not want this ... I want all devotionals to live on the second image" (c1ec956e): the devotional under the fish on Today.
+  - 3 Nov: "I do not want this read-through section at the bottom, nor the listen ... not a whole prayer session, and many words, thats all a bit much". So the box was dropped for the card (932ad7de).
+  - 3 Nov: the email's fish (outside the 24) must open on the Today page (05a75e8a).
+- **Extra-fish loader.** `loadExtra(id)` in `index.html` builds `DATA`, `SAY`, `FISH`, `STRONGS` for any fish outside the original 24 from `fish-lang/bible/kjv`, `orig`, `lex`, `xref` data (the Hebrew or Greek word from the KJV's own alignment, its meaning from Strong's, nine Scriptures from cross references). Only the first letter of the id is uppercased (see E).
+- **Files.** `index.html` (card back `invBack(k)`, `buildDeck`, `.dcard.dall`, `fishBible`, `dvListen`, `dgListen`, `dgRead`, `EXTRA`/`loadExtra`, the old `PT` box and `ptOpen()` still used by the three entry points in B2). `fish-lang/deep.js` ("Go deeper"), `voicepick.js`. Data: `fish-lang/bible/{kjv,orig,deep,xref,sect,<lang>}/`, `fish-lang/lex-*.json`, `study-*.json`.
+- **Local keys.** `mf-voice`, `mf-dvoice-<lang>`, `mf-speed`, `mf-devlen`, `mf-pt-hl` (highlighting on/off in the devotional), `mf-resume`, `mf-today-fish`.
+- **Test.** Open `/?fish=D368` and `/?fish=D368&flip=1`; press Listen (stub `/api/say`); check the card turns at part 2. Desktop and a phone width (iPhone 13 emulation).
+
+### C6. Bible reader (`bible/index.html`)
+- **Versions.** English: KJV, WEB, ASV, YLT, Darby, BBE, Douay-Rheims (public domain), NET; ESV when `ESV_API_KEY` is set. One Bible each in 9 other languages (es RV, tl, zh, hi, el, de, ko, he, ar), plus Russian Synodal (added 28 Oct).
+- **Side by side, up to 3 columns** (Ken, 3 Nov: "let user choose what side by side options they want, even up to 3 side by side, and make it easy to hear the Greek or Hebrew"; 6e6ab1a6, 5da12fed). The setting `par` in `mf-set` is a comma list of up to two extra versions (the old single value still works). A column can be a version or the original (`og`: Hebrew for the Old Testament, Greek for the New). In the original column: tap a word to hear it with how to say it and what it means; 🔊 for a verse; ▶ Hear for the chapter. Phones put the main version on top and the other two side by side. Choose columns in Bible tools, the ••• menu, or the column headings. `parKeys()`, `draw(PK)`, `ogCh(b,c)` reads `fish-lang/bible/orig/<Book>-<c>.json`.
+- **Bible tools** (3 Nov, 856f77ca): under the chapter heading, **🧰 Bible tools ▾**. Open: Side by side first, then **More tools ▾** (word study, highlighter, highlight a word everywhere, listen, chapter note, Make it a MannaFish, My MannaFish, a word in another language, cross references, picture verse, plans, translator). Open or closed is remembered (`mf-bible-tools`, `mf-bible-ht`, `mf-bible-htm`). Also a **Bible tools** category under ••• (2 Nov, b1f061dc).
+- **Chapter heading** (2 Nov, 68c918a0): the chapter name centred above the verses with ‹ › on either side and ▾ to open the book and chapter picker. Ken first asked for arrows in the top bar, then moved them to the heading. Books screen has ‹ Back (3 Nov).
+- **Highlighter.** Ken, 29 Oct to 2 Nov. Slide a finger sideways across words and they highlight at once in the pen's colour (no long press; 54e27b7a). 🖍 pen button. Five colours, 🎨 eight more and a colour wheel (custom keys `c-rrggbb`, `mf-hl-custom`). Picking a colour within 30 seconds recolours the last slide; sliding over another colour recolours it. Dark colours get white letters. Tap a highlight or a word to open the **act window**: Remove highlight, Remove all in this chapter, hear/see the word in Greek or Hebrew (with Strong's number) and in Spanish or any translator language (drop-down with 🔊), **Highlight just this word**, **🐟 Make it a MannaFish**. ✕ in a circle at the top right closes it (also the word study). The eraser and "slide to remove" were removed (5b20d083) because they broke single-word highlighting. The "N highlights ▾" button opens Hide/Show highlights (setting `mf-hl-hide`, shared by every Bible and the Today page), Highlighter pen, and Remove some. Highlights are saved to the account (Supabase `highlights`; `MFcloudHl`). Today reader: tap a colour on the word card to recolour whatever highlight covers the word; slide along words to highlight (999f6207).
+- **Arrows on grab lines** (2 Nov, b1df62ff): every drag line gets a small arrow, up to open more, down to close.
+- **Cross references** (before 27 Oct, session notes; the "forward compatible, server side" rule came with it): icons beside verses with cross references; tap opens a sheet of the passages (clickable). `/api/xref`, data `fish-lang/bible/xref/<Book>.json` (OpenBible votes of 10 or more).
+- **Word study "Go deeper"**: `fish-lang/deep.js` and `fish-lang/bible/deep/<H|G><n/100>.json` (155 files) from `tools/bible-orig/deep.py`.
+- **Opened from a fish** (`?embed=1&from=fish`): ‹ Back returns to the turned-over fish (31 Oct to 1 Nov).
+- **Make it a MannaFish and My MannaFish**: see C7.
+- **Picture verse**: a verse on a colour or photo or an AI-made picture, `/picture/`, `/api/picture` (3 a day per person, 300 a day in all). Only print-safe versions; NET, ESV, NKJV, NIV, NLT fall back to KJV. Chip 🖼 Picture in the reader.
+- **Files.** `bible/index.html`, `/api/bible`, `/api/passage`, `/api/xref`, `fish-lang/bible/`, `picture/index.html`, `netlify/functions/picture.mjs`.
+- **Local keys.** `mf-bible-version`, `mf-bible-last`, `mf-bible-saved`, `mf-bible-hist`, `mf-bible-notes`, `mf-bible-links`, `mf-hl`, `mf-hl-color`, `mf-hl-hide`, `mf-hl-custom`, `mf-set` (`par`).
+- **Test.** Playwright with iPhone 13; use CDP `Input.dispatchTouchEvent` for slides; check Revelation 2 for a cross-reference icon (2:7 has one, 2:6 does not); check `par` with 3 columns; check a vertical drag still scrolls.
+
+### C7. Make it a MannaFish and My MannaFish
+- **Ken's request.** 2 Nov: every chapter should let a reader pick one word and share it. "Yes, start on Make it a MannaFish, and with the ability to share from 'my MannaFish' ... I want them to know which fish or words they chose to share."
+- **What it does.** In the Bible, tap a word, then **🐟 Make it a MannaFish**. The fish is drawn on the phone by the same builder as every fish, with that word in the middle and its own verse round it. Tap another word of the verse to change it, or edit the lines. Share as a picture or keep it.
+- **/my-fish/** has three lists: **Made by me**, **Fish I love** (the basket), **Shared** (every share, newest first, with a badge for how many times and when).
+- **Files.** `fish-lang/makefish.js` (`MFmake.open/render/share/mine/shared/keep/drop/latin/lines/png`), `my-fish/index.html`, `fish-lang/account.js` (BLOBS `myfish`, `myshared`). Local keys `mf-myfish`, `mf-myfish-shared`, synced to the account when signed in.
+- **Not built:** an official action-word fish for every chapter (see B8).
+- **Test.** Open Revelation 2, tap a word, Make it a MannaFish; check /my-fish/.
+
+### C8. Go Fish (the catch-a-fish picker on the home page)
+- **What it does.** A picker of the 153 and the new designs. **New designs** group at the top (Stop, Go, Repent, Build, Deliver). A caught fish has a gold **⭐ Make it my fish today** button: it becomes the fish on Today for the rest of the day, with its word study and devotional (3 Nov, cd7545a8). `mf-today-fish` restores it on load.
+- **Ken's requests.** 28 Oct: add Stop, Go, Repent, Return, Rebuild, Faith, Hope, Love (the opposite-word idea). 3 Nov: "if I go fish, allow me or other users to make that their fish of the day".
+- **Files.** `index.html` (`DES`, `netAll()`, `#gfNewW`, `#gfNew`, `[data-gf=mine]`), `fish/designs.json`, `fish/net.json`.
+- **Test.** Open Go Fish (`#ftTwo`), catch a fish, tap Make it my fish today, reload.
+- Not to be confused with the memory game (C20), which used to be called Go MannaFish.
+
+### C9. Admin view toggle
+- **What it does.** ••• → **Admin view** asks once for the admin password (the edit sheet's, checked by the server). A red **🛠 Admin** button then shows on every page: Edit this fish, the edit sheet, the 153 and the 365, Hubs, Pond, stories, print runs, card orders, proofreading, the test checklist, and a note to change. **Switch to user view** shows the site exactly as visitors see it. (Ken, 3 Nov: "an admin button on this user side so when I get help testing ... toggle between admin and user"). 29d26bae.
+- **Files.** `fish-lang/adminbar.js` (loaded by `basket.js`), `index.html` (`#smAdmin`, `admUI`, `MFadminFish`). Local keys `mf-admin-on`, `mf-admin-key`. Checked with `GET /api/edit-save` and header `x-mf-key`.
+- **Test.** Turn it on, open any page, then user view.
+
+### C10. Card back designer, card orders (minimum 100)
+- **What it does.** Under the home page card preview: **Make the back yours**. The sponsor picks a fish, then adds name, link, the words beside the QR code, a logo, and how many (at least 100, in hundreds; 250 rounds up to 300). The preview updates as they type. **Add to cart** and **Send my order request**. No price shows; nothing is charged. MannaFish and the sender get an email. Requests list at `/print/orders/` (admin password). Ken, 3 Nov: "allow user to customize the back of the card and add to cart ... the minimum is 100 decals". 932ad7de.
+- **Card back wording.** "Co-brand" became **co-labor**, with **nine** Scriptures (3 x 3) on the home preview and the printer's files (62357558). Card shown at 4.5 x 2.75 in.
+- **Files.** `index.html` (`#cdz`, `cdInit`, `cdCart`, `cdCartUI`, `invBack`), `netlify/functions/card-order.mjs`, `print/orders/index.html`. Route `POST /api/card-order`, `GET /api/card-order?k=<admin key>`. Blob store `mannafish-orders`. Local key `mf-card-cart`. Env `MF_ORDERS_TO`. Order status: new, talking, proof, printing, done.
+- **Test.** Add a fish, enter 250, check it shows 300; submit with `/api/card-order` stubbed.
+
+### C11. MannaFish Hubs
+- **What it does.** A Hub is a business, church or person who gives free MannaFish (decals, cards, T-shirts, beanies, caps, drinkware, mugs, key chains). Visitors ask for a Hub near them, "Love" fish for it, sponsors can sponsor one. Ken, 31 Oct: stock Fisheries or Hatcheries by "prayer basket" votes (a collective count reaches 100, Ken is emailed, he fills the pond); 31 Oct: show a list of locations near the user, let them request one or more, signed in, one per user, a counter, sponsors bypass the vote; start with Wilmington NC, including churches; "I need a back end for all this". 1 Nov: call it **MannaFish Hub**; centre all text; the button is **"Cast your bread upon the waters"** (Ecclesiastes 11:1); "Tap Love ... to add to the popular vote for that Hub's fish menu"; "Request or petition a location or person to become a MannaFish Hub"; when the most-loved fish is in or a new Hub opens, email you to do the "Take 2" challenge; a Hub can give away T-shirts, beanies, caps, drinkware, key chains, decals and more.
+- **Pages.** `/hubs/` (public), `/hubs/admin/` (tabs: Asked for, Hubs, Sponsors, Suggested, Add a place, Settings, 📧 Emails), `/hubs/catch/` (a host picks their next fish). `/stations/*` redirects to `/hubs/`. 3 Nov: Free MannaFish shows **📍 Find a MannaFish Hub near you** and **➕ Nominate a MannaFish Hub near you** (`/hubs/?near=1`, `/hubs/#ask`).
+- **Server.** `netlify/functions/hubs.mjs`: `GET /api/hubs`, `/mine`, `POST /vote` (signed in, one per account per place), `/sponsor`, `/suggest` (signed in), `/pray` (love a fish for a Hub), admin actions (create, edit, status (becoming active emails the voters once), remove, stock/unstock, cfg, sponsorStatus, suggestion). Statuses: proposed, talking, active, closed (and `invited` for the email invitation). The vote goal default is 50 (Ken to set). At the goal Ken is emailed once. A place only becomes a Hub when Ken makes it one. The signed-in check is server side against Supabase auth.
+- **Seed list, Wilmington NC** (12 places, from public listings): Drift Coffee (221 N Front St #102), Social Coffee & Supply (5317 Wrightsville Ave), Mailbox Express (609-A Piner Rd), Barnes & Noble (890 Inspiration Dr), Port City Java (132 Racine Dr, 8211 Market St, 21 N Front St), Port City Community Church (250 Vision Dr), First Baptist (411 Market St), Church of the Servant (4925 Oriole Dr), New Life (4490 Gordon Rd), Myrtle Grove Presbyterian (800 Piner Rd). Map points from the US Census geocoder.
+- **Basket.** `fish-lang/basket.js` (`window.MFhubs`: load, vote, near, byNear, mine ...): the 🧺 sheet lists open Hubs nearest first, and "Ask for a MannaFish Hub near you". Wording "Love" (🧺 Fish you love; 🍞 Cast your bread: love these N fish). The old one-by-one mail-out to homes (`pond.mjs`) is **off** unless `MF_POND_MAIL=1`.
+- **Storage.** Blob store `mannafish-stations` (kept the old name). Local keys `mf-prayed`, `mf-praying`, `mf-near`, `mf-station`. Env `MF_HUBS_TO` (falls back to `MF_STATIONS_TO`, `MF_POND_TO`, `MF_PROOF_TO`).
+- **Ken's 3 Nov Hub questions and the answer** (nothing built beyond the emails): names for pickup spots (MannaFish Hub kept); keep to two fish with a sign "Take 2 · one for you, one to give" (light), counter handout (medium), scan with email (strong); scanning asked but not required; no account needed to take fish; track the place not the person; ZIP not street address; one QR per Hub.
+- **Test.** Stub `/api/hubs`; open `/hubs/` and `/hubs/admin/` with the admin key.
+
+### C12. Hub emails (Hubs admin → 📧 Emails)
+- **Ken's requests.** 3 Nov: "a back-end system, kind of like we built for K-Tech Construction, like email campaigns for every Hub: need a restock, check out our new T-shirts, request a Catch of the Month or Quarter ... help me with some email ideas." Then: "an introductory email that lets people know, here's a free devotional, share the vision, ask if they want to become a MannaFish Hub."
+- **Kinds** (`netlify/functions/lib/hubmail.mjs`, `KINDS`): `intro` (💌 Invitation), `restock` (⚠️ "How are the MannaFish at <Hub>?" with ✅ plenty / ⚠️ low / ❌ out; low and out email Ken at once), `catch` (🐟 Catch of the Month or Quarter), `monthly` (📊 "Your month as a MannaFish Hub": loves, fish that arrived, most-loved fish, Catch button), `welcome` (👋 when a Hub opens with a host email; asks the host to reply if fish go faster than they should), `news` (✍️ write your own: subject, heading, message, optional button, picture, restock or Catch buttons). Nine ready-made ideas: New T-shirts, New designs, Take 2 reminder, Christmas fish, Easter fish, Thank you (Isaiah 55:11), Tell us a fish story, Know someone who would sponsor, Tell your customers about the free devotional.
+- **Invitation** (c0ba0443): to places that are not Hubs yet: everyone on the Asked-for list with an email, places picked, or new places typed `Name, email, contact`, kept as `invited` and hidden from the public page. Buttons: 📖 Get the free devotional (`/?devotional=1`), 🐟 Yes, we'd like to be a Hub (moves to Talking with them, emails Ken), 💬 Tell me more (emails Ken), Not right now (no more emails). The same place is not invited twice within 14 days. Signed "Grace and peace, Ken". Email links open the site they were sent from.
+- **Automatic** (each can be turned off on the Emails tab; `hub-mail-daily.mjs`, schedule `40 14 * * *` UTC, about 9:40 Eastern): restock check every 21 days (changeable for all or per Hub); the monthly note on the 1st (Hubs set to "each quarter" only get the Catch ask every three months); welcome for a new Hub (Hubs already open do not get one).
+- **Per Hub** (the Hosts list): host name, host email, how often to ask for a Catch (month, quarter, off), how often to check stock, on/off switch. Nothing is sent to a Hub without a host email. Tabs also show Answers, Catches chosen, Sent.
+- **Routes** (`netlify/functions/hub-mail.mjs`): `GET/POST /api/hub-mail` (admin: cfg, host, preview, send with `test` and `invite`), `GET /api/hub-mail/r?h=&t=&a=ok|low|out|stop|start|devo|yes|more|no` (the buttons; the token `t` is an HMAC of the Hub id), `GET/POST /api/hub-mail/catch`. Every email has the business address and a "Stop these emails" link.
+- **Storage.** `mannafish-stations` (keys `s/<id>`, `hm/cfg`, `hm/r/...`). Env `MF_HUB_MAIL_SECRET` (falls back to admin key), `MF_HUBS_TO`.
+- **Test.** The server side was tested by bundling with stand-ins (E). Not sent through Brevo yet: use **Send me a test** first.
+
+### C13. Translator (voices, speeds, detect language, speaks any language)
+- **What it does.** `/translate/` is a hands-free two-way spoken translator. Tap Start once; it listens, finds the language, says it in the other, and listens again. 23 languages (en, es, tl, zh, hi, el, de, ko, he, ar, ru plus fr, pt, ht, vi, ja, it, pl, uk, fa, ur, sw). Persian, Urdu, Hebrew, Arabic read right to left.
+- **Ken's requests.**
+  - 28 Oct (Uber ride with a Spanish speaker): no buttons to play back; translate out loud when he finishes a thought. Built: waits 1.3 s, and if the sentence is unfinished holds up to 3.5 s more and joins the parts; louder; iOS lets go of the mic while speaking; wake lock; 10-minute idle stop; ⏳ button sets the wait (0.8, 1.3, 2, 3 s).
+  - 28 Oct: Russian added. 28 Oct: "I'm considering offering it as a standalone tool ... a separate index file ... maybe its own user accounts" (decision open, B8).
+  - 30 Oct: "Any way for the translator to detect what language is spoken?" Yes: second picker option **🔍 Detect their language**. "what about the driver's name?" 
+  - 31 Oct (evening): "the translator needs a large faint Stop Listening / Resume button" (8a6decc9).
+  - 30 Oct and 2 Nov: add Vietnamese (done 30 Oct, with 10 other languages: fr, pt, ht, vi, ja, it, pl, uk, fa, ur, sw).
+  - 3 Nov: "Can the translator auto detect a language when spoken?" Yes. "What if the language is not on the list?" Then: "yes, make it speak any language aloud, and let me know what language is being spoken" (1294f8f4). A language found by Detect that is not in the list is translated both ways by name and spoken aloud; the note reads "They're speaking <language>"; their mic button shows that language's name.
+  - 2 Nov: voice picker on the Tour (see C14).
+- **Limits.** Detect only works for their side; you still pick yours. Rare languages may sound accented. If the other person is not on the list and Ken speaks first, it asks them to speak first. Not tested with real speech, the voice not heard (stated to Ken).
+- **Files.** `translate/index.html` (`#waitBtn`, `BOOST`, `AUTO()`, `DET`, `#bigSR`), `netlify/functions/hear.mjs` (`/api/hear`, transcription; `prev` joins parts), `lib/tr.mjs` (`translatePair` returns `done`, `translateDetect`, `unfinished()`), `translate.mjs` (`/api/translate` and `/api/say`), `tts.mjs`, `listen.mjs`. Blob stores `mannafish-gloss`, `mannafish-tts`, `mannafish-limits`. Local keys `mf-tr-pair`, `mf-tr-wait`.
+- **Test.** Playwright fake mic: `--use-fake-device-for-media-stream --use-file-for-fake-audio-capture=file.wav%noloop`; skip the warm-up calls in the route mock.
+
+### C14. Voices and the CRM hand-off
+- **17 voices**, lower-case ids (`netlify/functions/lib/voices.mjs`): Thunder (very deep, grand; `thunder`), Narrator (classic Bible reader), Highlander (Scottish gentleman; id `highland`), Grace (deep, mature woman), Magnolia (Southern, sweet), Heather (Scottish lady), and Onyx, Ash, Fable, Sage, Coral, Ballad, Alloy, Echo, Nova, Shimmer, Verse. Accents (Scottish, Southern) only in English. No real-person imitation (Ken asked, before 27 Oct, for deep movie-narrator, Scottish, Southern and female voices; Claude made original characters).
+- **Where.** `fish-lang/voicepick.js` (▾ menu with "Hear it" samples; `mf-voice` natural voice, `mf-dvoice-<lang>` device voice), used on Today, Tour (`#tVoice`), Pray, You, Plan, Match, Translate. Before 27 Oct (session notes): a drop-down on the Listen button; the pick becomes the default wherever there is a play button.
+- **Speeds.** 2 Nov (b0f16b53): every speed in a row under the player controls, 0.75x to 1.75x, chosen one lit and remembered (`mf-speed`, default 1.25). Ken: "slower, 1.25, 1.50, 1.75 ... on the Podcast page".
+- **Server.** `GET /api/say?t=<words>&l=<lang>&v=<voice>` returns an MP3 (up to 300 characters; saved a year; 400 new clips per visitor per hour then HTTP 429). `GET /api/say?list=1` returns `{voices, languages, play}`. Single words are WAV with 0.35 s of silence. Origins allowed: the CRM (`majestic-awards-crm.netlify.app`), `*.majesticawards.com`, plus any in `MF_SAY_ORIGINS`.
+- **CRM hand-off.** Ken, 2 Nov: "I need a hand off note for Claude to add to my CRM tour speaker for our existing voices". Written in `docs/HANDOFF-CRM-VOICES.md` (paste it into the CRM chat). The CRM was not changed. Ken's step still open: paste the note into the CRM session.
+- **More voices.** ElevenLabs is the plan (B5). Also Ken's own recorded voice: `/?record` with the admin password; 52 English lines; stored by `/api/voice` in blob `mannafish-voice`.
+- **Test.** `curl <site>/api/say?list=1`; the real sound has to be heard by Ken (the test machine cannot).
+
+### C15. Ride mode (/ride/, /api/ride)
+- **Ken's request.** 3 Nov: "an idea for Uber drivers ... they speak and it is written on a remote iPad or mobile device." Claude checked: Uber translates typed chat only; Lyft has none in the rider app. Ken: "yes, build it on the test site." Commit 3b654382.
+- **How it works.** The driver opens `/ride/` (or taps 🚗 Ride on the Translator), taps "I'm the driver", sees a QR code and a 6-letter code. The rider scans it (no app, no sign-in) or the driver opens it on a headrest iPad; the code hides when the rider joins ("Rider connected · Español"). The driver taps Start listening and talks; words are translated and shown big on the rider's screen in their language (original small underneath), with optional read-aloud and bigger text. The rider answers by mic or typing; the driver's phone says it aloud. Same-language riders get live captions (helps deaf or hard of hearing). **End ride** shows "Thank you for riding. God bless you!" and today's MannaFish.
+- **Files.** `ride/index.html`, `netlify/functions/ride.mjs`. Routes: `POST /api/ride`, `GET /api/ride?c=CODE&s=d|r&after=N`, `GET /api/ride?today=1`, `GET /api/ride?qr=CODE` (SVG, uses the `qrcode` package). Each side writes only its own list; the other polls about every second; lines drop after a day. Blob store `mannafish-ride` (strong), limit store `mannafish-limits` (600 per hour per IP). Local keys `mf-ride-d`, `mf-ride-rider`, `mf-ride-mine`, `mf-ride-cs`.
+- **Limits.** The driver's phone must keep the Ride page on screen. Tested between two screens with stand-in translation and sound only (B8).
+
+### C16. App plan and costs (internal figures given to Ken)
+- **Ken's requests.** 2 Nov: "What would it look like for me to turn this into an app? How much of my time? How much money?" Then: put it on the priority list, not right away.
+- **Plan** (docs/LAUNCH.md): already an installable web app (home-screen icon, partly offline, notifications). Better: the same site inside a Capacitor shell in both stores, with a Today's Catch home-screen widget, phone notifications, the Bible kept on the phone, sharing a fish to Messages, and account deletion inside the app (Apple requires it). Most site changes appear in the app without a new store review.
+- **Ken's time**: about 3 to 6 hours hands-on in two sittings over 2 to 4 weeks (free D-U-N-S request 20 to 30 min, up to about 2 weeks wait; Google Play business sign-up 30 to 45 min; Apple Developer 30 to 60 min; read store pages about 1 hour; try the test build 1 to 2 hours; Apple questions 0 to 1 hour). Earlier estimate wording: 5 to 8 hours across the time. Sign up with Google as a business (not a person) to skip the 12-tester 14-day test.
+- **Money.** Apple Developer Program $99 a year. Google Play $25 once. D-U-N-S free. iPhone build $0 on a cloud build service's free plan or with a Mac. First year about $124, then $99 a year.
+- **Monthly running cost for about 2,000 people a month** (Ken asked 3 Nov): about $50 to $125 a month all in, plus about $100 a year for Apple. Parts: Netlify $0 to $19; Brevo about $20 to $35 (about 2,000 subscribers); OpenAI voices and translation $5 to $30; Supabase $0 at this size; ElevenLabs (optional) $22; Apple about $8 a month. Without ElevenLabs closer to $50 to $100. Texting would be extra. Estimates; the email plan is the biggest to confirm on Brevo's page.
+- **D-U-N-S entity**: see B8.
+- **Ken's order of work**: soft launch first, then family and friends, then print and sponsors, then the app. Never send logins or passwords to Claude.
+
+### C17. Printing, QR codes and sponsor runs
+- **Card.** 4.5 x 2.75 in (Ken: "their website rounds it off to 2.8"), 1/8 in bleed, kiss cut 1/8 in outside the fish, 3 mm safe margin. Transparent or white-ink decal on a thick backer (the earlier notes said 14 to 16 pt). What Ken wants peeled off: the clear fish decal; behind it, printed on the backing, the black background with the fish in white.
+- **Ken's 30 Oct StickerApp request.** The proof had pink die-cut lines and two images; he did not know which was the background. He wanted the background all black, the printed fish on the backer white, and to communicate the black/white as a print on the backer seen after the decal is peeled off. Claude drafted the reply. Printer draws its own cut line; ours is sent only when a run asks (15eb6f87).
+- **Tool.** `tools/print/make.mjs` (`node tools/print/make.mjs R0004` or `--all`; deps in `tools/print/package.json`: qrcode, fonts). Outputs per run: `-1-decal-white-ink` (png/pdf), `-2-backing-front`, `-3-cut-lines` (svg/pdf, spot colours CutContour and ThroughCut), `-4-back` (600 dpi), `-proof`, `-printer-notes.md`, and a zip for the printer (Ken cannot open zips on his phone, so send him the single files). Back templates: `invite`, `study` (the fish's word study: Greek | word | Hebrew, nine verses, QR strip), `image`. Strip credit: "A gift to you through <name>" (when `run.for`), "Sponsored by <name>", or "Freely given" with Matthew 10:8.
+- **Runs** (`print/runs/R000x.json`, listed in `print/runs.json`, page `/print/admin/`): R0001 Gather, invite back, Yadah (mock-up, stand-in logos). R0002 Gather, study back, a gift through Shattered into Beautiful (mock-up). R0003 **Build** (Jude 1:20, `X004`), study back, K-Tech Construction, landscape back, 9 refs, QR codes direct to the porch site and the devotional (round stand-in K-Tech logo). R0004 Gather, study back, no sponsor ("Freely given"), QR to the devotional (`?devo=1`) and "More fish to give away". R0005 Enjoy, Fling Ball (mock-up).
+- **QR codes.** `netlify/functions/qr.mjs`: `/q/<code>` counts a scan (blob `mannafish-qr`) then redirects to `print/links.json[code].to` (default https://manna-fish.com/), tagging other sites with `utm_source=mannafish&utm_medium=card&utm_campaign=<code>`. Stats: `GET /api/qr/stats?k=<admin key>`. One QR per order, not per decal. Codes can be changed after printing. `qr_direct` runs hold the real address so they work on print day.
+- **Ken's choices on sponsors.** 30 Oct: "How about instead of Live, we could do a different fish, like Gather" (Thanksgiving). Samples for K-Tech (his brother) and Fling Ball; "Build" for K-Tech ("the web page I built will tell us who goes to that website"). Anonymous sponsors allowed. Mailbox Express idea: Ken might buy up the owner's figurines and sponsor them monthly. Sponsored by Yadah Collaborative was considered then set aside ("No, I'm not going to do Yada right now").
+- **Printer research (27 Oct).** StickerApp (asked about backer, API, drop-ship); alternatives noted: Smartpress, Sticker it, Print Peppermint, Sticker Mule. Ken's price guess: $0.75 to $1 each for 100. Ken does not want to bring printing in-house; wants drop-shipping and the QR system kept simple.
+- **Bible permissions.** `docs/BIBLE-PERMISSIONS.md`: letters A, B, C (who to send to), the "free to print without asking" table, a sponsor note. Fish printed in public-domain versions only: English KJV; Spanish Reina-Valera 1909; Greek Vamvas 1850; Tagalog Ang Biblia 1905 (label changed from ABTAG to AB1905); German Elberfelder 1905; others per the table. Done 30 Oct (077a5e98, 30117ce6). The Stop fish uses BSB (tag " (BSB)").
+- **Bible version questions from Ken (27 to 30 Oct).** Does a sponsor make it "paid"? API.Bible's free plan excludes revenue of any kind, so a publisher may ask about sponsors. Letter C covers screen, read-aloud and printed cards. WEB is public domain/open; fine to print. NIV, ESV, NKJV, NLT, NET (print), RV1960, Ang Biblia 2001, Greek FPB: ask first.
+- **Test.** `node tools/print/make.mjs R0004`; decode QR codes with jsqr; view the proof PNG.
+
+### C18. Sponsorship and the home page copy
+- **Home page.** 31 Oct: the shop section is removed ("the fish are not for sale"); no wholesale card or wording; sponsor buttons go to **Sponsor a Gift Giver / Stock the pond** (`#give`); bundles eyebrow "Keep one, give one"; all dollar amounts removed (be6dfbc7, 8cc4d136, a59e1508). `shop.html` now says MannaFish is never sold and redirects to `/#give`.
+- **Sponsor rules from Ken.** The sponsor pays for production, labour, overhead and shipping; the gift is still free to the recipient ("Janes podcast sponsors a hatchery with 1000 decals ... I am over production and distribution ... so I need to be compensated, but it is still free"). Claude confirmed that is fine. John 3:30 rule for credit. Anonymous allowed.
+- **Sections of the home page** (2 Nov): "What is 2 Fish?" above the 2 Fish section on the site background; every section heading has a show/hide arrow (`mf-sec-shut`). Printed-card preview border is bolder (2 px).
+- **CRM engagement center.** 29 Oct: Claude read `MANNAFISH_BRIEF.md` and wrote a summary for the CRM (preview artifact: https://claude.ai/artifact/ULnCjFcCDs359BZUfBYSme). The CRM's records live in `mf_records` (`sql/mannafish.sql`). Lists of potential sponsors (Christian-owned businesses) and sponsees were asked for 29 Oct (the request is recorded; where the lists are saved is not recorded, unconfirmed).
+- **Invitation cards artifact** (A, B, C options): https://claude.ai/artifact/DyCqUpZA2thPmuHHKmJrB6.
+
+### C19. Other parts of the site
+- **Pray (Time with God)** `/pray/`; **Plans** `/plan/` (Bible in a Year, One Word; `plan/year365.json` for the 365); **You** `/you/` (account, notes, loved fish, My MannaFish link; accounts by emailed code through Supabase; `fish-lang/account.js` syncs notes, highlights, prayers, settings, myfish); **Fish stories** (`/api/stories`, admin `/stories/admin/`, blob stores `mannafish-stories`, `-media`); **Feedback** (💬, `/api/feedback`, admin `/feedback/admin/`); **Proofreading** `/proof/` (`/api/proof-fix`, blob `mannafish-proof`); **Pond** `/pond/admin/` (`pond.mjs`, off for home mail-outs); **Basket waitlist** (`basket.mjs`, `/basket/admin/`); **Shared notes** `/s/` (a note or prayer someone chose to share by link); **Privacy** `/privacy/`.
+- **Memory game** `match/index.html` (C20 below).
+- `docs/*` and `tools/*` are blocked on the live site by `_redirects` (404).
+
+### C20. MannaFish Memory (the game)
+- Was "Go MannaFish" (route `/go/`, `/game`, `/memory` redirect to `/match/`). Renamed **MannaFish Memory** on 1 Nov (431a90e0); the language lists say each language in yours and its own ("Spanish · Español").
+- 28 Oct: show all the fish face up at the start with a **▶ Start the game** button; then show them all in English with a button "See them all in Español" (peek, 69fdf766 and a52f90f3 from the session notes).
+- Before 27 Oct (session notes): a sound on/off button; Spanish "Goza" no longer cut off. Prize idea (give a fish for a win, harder levels): advice only, the game is on hold as its own project (task #42).
+- Local keys `mf-match-say`, `mf-match-mute`, `mf-match-pick`, `mf-match-l1`, `mf-match-l2`.
+
+### C21. Test checklist and Format Builder artifacts
+- **Test checklist** (items with ✅ and 📝 Note something to change): https://claude.ai/artifact/2gfCAuZVbo3gFVsn2o3HVn . Linked from the admin menu. Its source is a session-only file (`mannafish-test-checklist.html` in the old scratchpad), so to change it read the artifact (`Artifact` action `read`), edit, and republish with `edits` on the same URL. The new item goes before the first item and its id goes first in `var BUILT={...}` with the date. **Last republished 2 Nov (about 16:30 UTC). Work after that, such as the voice picker on the Tour, the devotional on the card, Go Fish Make it my fish, Admin view, card orders, Bible tools under the heading, side by side up to 3, Translator speaks any language, Ride, Hub emails and the Invitation, has no checklist item yet.**
+- **Format Builder**: https://claude.ai/artifact/AeY59AKSTAArq52oHwjqnm (C2).
+- Other artifacts: invitation cards https://claude.ai/artifact/DyCqUpZA2thPmuHHKmJrB6 ; CRM engagement center preview https://claude.ai/artifact/ULnCjFcCDs359BZUfBYSme .
+
+---
+
+## D. CHRONOLOGICAL LOG OF KEN'S REQUESTS
+
+Oldest first. Format: date (UTC date of the message) · what Ken asked · what was done · commit. Commits before 29 Oct are not in this
+shallow clone; hashes marked "(notes)" come from the session notes, others are in `git log`. Dates before 27 Oct come from docs/TODO.md and
+docs/LAUNCH.md. Ken's full words are in the transcript at `/root/.claude/projects/-home-user-majestic-crm/9a700bef-1320-54c1-abaf-aa01732f367f.jsonl`
+(session-only; this file is the lasting record).
+
+### Before 27 Oct (summary from the older notes)
+- 7 Oct · chose Brevo for email; daily email sender, 7am local, English or Spanish, welcome email, unsubscribe; languages drafted (Tagalog, Chinese, Hindi, Greek 7 Oct; German, Korean 8 Oct) · done.
+- 11 Oct · Sabbath rest and the Friday double portion · done.
+- 12 Oct · record your own voice (/?record); no earn-style rewards ("We are not going to make people earn merchandise"); fish stories; Cast your line; hands-free translator; "too busy" front page · done (docs/TODO.md).
+- 13 Oct · one fish a week rhythm (later replaced by catch of the day) · done.
+- 19 Oct · edit sheet saved on the server (`/api/edit-save`); a different fish each day ("I do not want to become tired of Hope") · done.
+- 25 Oct · launch plan: free devotional first, digital only, decals "coming soon" (docs/LAUNCH.md) · written.
+- About 25-27 Oct (notes) · a format builder so all fish look like the original 24; more automated rules; redraw all 128 · done. Short words smaller · done. Matching game: all prize ideas (advice only). Spanish "Goza" cut off; game speaker on/off · done. Voice drop-down on Listen buttons, default everywhere · done. Deep word study "Go deeper" · done. Devotional logo on top and voice chooser · done. Six voice characters (Thunder, Narrator, Highlander, Grace, Magnolia, Heather) · done. Cross-reference icons in all Bible versions, clickable, server side · done. Sharing with friends and Fill the Net · questions only (B8). Audio upgrade · on the list.
+
+### 27 Oct
+- 12:04 · faint pause/play in the middle of the devotional screen, no blue highlight · done (made 96 px on 30 Oct, aaf24726).
+- 12:12 · "We may need to update the list, stand by, add it to the to do list" · added to docs/LAUNCH.md "Next updates".
+- 12:15 · basket at 10 or 20 fish: sponsor or stock the pond; become a Door; a Door is a Jar · brainstorm; Jars and Doors written up (docs/LAUNCH.md).
+- 12:28 · how gift givers are counted · answered: server-side counts by QR code, one count per person.
+- 12:31, 12:33 · minimum 100 per batch; "a scanning nightmare" · answered: one QR code per order, printer drop-ships, no scanning.
+- 13:07 · Door/Jar naming; printing may come in-house later; kiss cut card with decal front and QR on the back; avoid a production frenzy; printers; transparent vinyl on a thick backer · research and advice.
+- 14:19 · balance the buttons, centre them · done.
+- 14:30 · "In context" has a delay; read the whole chapter or back up to where it is relevant · done: pause removed (voice fetched early), `/api/passage` from BSB headings, `tools/bible-sect/build.py` (3,027 passages).
+- 14:41, 14:57, 15:07 · StickerApp: API, drop-ship, thicker backer; "yes add it" (Jars and Doors on the list) · done.
+- 15:10 · version and language tabs at the top of the devotional; other Bible versions; who to write · done: pickers; docs/BIBLE-PERMISSIONS.md with letters A, B, C.
+- 15:51, 15:53, 15:56 · where are the letters; are sponsors scrutinised as "paid"; sponsor only on the back; which versions can be printed · answered; docs/BIBLE-PERMISSIONS.md.
+
+### 28 Oct
+- 02:33 · "Yes, print as well; resend me option c and who to send it to" · done (letter C).
+- 11:22 · YouVersion invitation idea (the fish is the gift, the back is the invitation); add Stop (1 Cor 15:34) and Go (Matt 8:13); opposites; make sure Repent, Return, Rebuild, Faith, Hope, Love are among the designs · done: Stop, Go, Repent, Rebuild; opposites list in docs/LAUNCH.md (ed7c6ec2, notes).
+- 11:27, 11:39, 11:41 · do we have Return and Rebuild; is Russian available; add Russian everywhere and to the translator · done (33f828dd, ee81d8fb, notes).
+- 12:20 · translator hands-free, speaks out loud after a finished thought (Uber ride with a Spanish speaker) · done (95ff3de4, notes).
+- 12:54, 14:49 · "Have those changes been deployed? ... it doesn't start speaking"; "Send me the link" · explained the one tap needed and the ⏳ check; the test machine cannot reach netlify.app.
+- 14:55, 14:57 · separate translator, maybe "Translator by Entheos"; standalone with accounts · recommendations given (B8).
+- 19:53 · memory game: show all the fish first and a Start button · done (69fdf766, notes).
+
+### 29 Oct
+- 02:53 · start in English, with a way to see all in the other language · done (a52f90f3, notes).
+- 13:19, 13:21 · a podcast sponsors a Hatchery of 1000 decals; Ken needs compensation but it is still free? "He must become greater, and I less" · yes; John 3:30 rule added.
+- 15:20 · highlight on the Today reader: tap a colour to change a highlight, drag a finger to highlight · done, 999f6207.
+- 15:24, 15:36 · sponsor credit at the bottom of the picture; invitation options for gatherings (cut off) · invitation-cards artifact (B8).
+- 15:38 · sponsorship a long pricing question (evaluate my two-tier sponsorship pricing) · answer in B6.
+- 20:29 · write a summary for the CRM's MannaFish engagement center · done as text and a preview page; CRM unchanged.
+- 20:41 · list of potential sponsors (Christian-owned businesses) and sponsees · asked (where saved: unconfirmed).
+
+### 30 Oct
+- 11:45 to 12:00 · bigger play/pause; stand by for several changes; hide highlight on the devotional; make "In context" a button that opens the Bible; Picture verse; "Now you can go!" at 12:00 · done, aaf24726.
+- 15:39 · StickerApp proof confusion: pink cut line, which image is the background, make the background black, explain to them · reply drafted; print process begun.
+- 15:58 · give them exact print files; card is 4.5 x 2.75 (their site rounds to 2.8); an automated process for logo, QR and the back · done: `tools/print/make.mjs`, 5dad19a5, cdda8c84.
+- 16:14 to 16:26 · tell them black and white is printed on the backer; can a sponsor be anonymous and give it as a gift; are these files enough; make all four files as a repeatable process · done: 13db34b4, 6f98e095.
+- 16:33 to 16:38 · wording "look up the following Scriptures"; do not draw the pink lines; why zip files; use Gather instead of Live · done: 17f0d8cd, 15eb6f87, 498fe43e.
+- 16:40 to 17:10 · Mailbox Express benefits; Andrew is a skeptic; sponsored by Yadah? Big Idea? K-Tech? Johnson Legal? podcasters? Fling Ball? · advice only; K-Tech and Fling Ball samples chosen.
+- 17:29, 17:30 · translator: detect the language spoken; "what about driver's name?" · built: 62f463bf (Detect and 11 more languages).
+- 17:36 to 17:38 · K-Tech page tracks visits; resume sticker designs; "Build" for K-Tech; options before building · R0003 Build mock-up, 48230b9c, 3e25f695.
+- 18:19 to 19:00 · Haitian Creole/French; translate KJV to Creole ourselves; translate Greek/Hebrew ourselves and make it free; is WEB open for non-commercial; list of public-domain translations to print · answered; docs/BIBLE-PERMISSIONS.md, 30117ce6.
+- 21:19 · redraw Spanish, Tagalog and Greek fish; first, a summary vision of the Yadah Collaborative project · done: 077a5e98; YADAH-vision text sent.
+- 21:46 · no print nightmares: more digital options, print only versions we have permission for · "two lanes" plan advised (not built, B8).
+
+### 31 Oct
+- 00:02 · back to practical printing: devotional on the back, no sponsor; show the Build verse options; Enjoy for Fling Ball · done: d5accb04 (R0004, R0005).
+- 02:19 to 02:26 · "I need a link"; devotional link; home link; "Remove shop / order section" · links given; shop removed, a59e1508.
+- 12:58 · "Yes" (also remove wholesale wording) · done, 8cc4d136.
+- 13:18 · "Take dollar amount off everything until we decide" · done, be6dfbc7.
+- 13:25 · what is the test site address; verify last deploy (another session says only September 12) · test-site last commit was 31 Oct 9:19 AM Eastern at the time; main last changed 12 Sept; the other session was likely looking at main.
+- 14:15 · basket: no individual decals, sorting nightmare · advice.
+- 16:23, 16:30 · prayer basket: when enough people pray for a fish at a place, Ken fills the pond; "you decide" · Stations built, d93ae1ce, then Hubs.
+- 17:23 · "that fish already exists as Hope" · noted.
+- 17:34 · list of nearby places, request one or more, signed in, one vote each, start with Wilmington (Drift, Social Cafe, Mailbox Express, Barnes & Noble, Port City Java, churches); sponsors bypass; back end · done: fb59cd74 (MannaFish Hubs).
+- 20:11 · Mailbox Express is the one on Piner Rd · fixed (609-A Piner Rd).
+- 20:13 · back of the fish: 3 columns and 3 rows, Greek and Hebrew on top, no several flips · done: 9d9c9058.
+- 23:03 to 23:13 · partial scripture under the reference; open the Bible from the back instead of the other screen; Bible must tap and slide to highlight · done: 26aef46c, 59b15bc9.
+- 23:44 · "How did I get to 153 fish, and why 153?" · explained (John 21).
+
+### 1 Nov
+- 00:03 · translator Stop/Resume button; K-Tech back with Build, Jude 1:20, QR codes, word study turned sideways, round logo · done: 8a6decc9, dec762ea.
+- 00:10 · highlighter: more colours and a colour wheel; the ••• disappeared on next chapter and there is no way back to the fish · done: a4b0a90e.
+- 00:22 · call it MannaFish Hub; centre text; "Cast your bread upon the waters"; Love to add to a Hub's vote; request or petition a place; email when the fish arrives or a Hub opens; Hubs give away shirts, beanies, caps, drinkware, key chains, decals · done: c5bc6d16.
+- 01:08, 01:08 · "Give me the link after every update"; "Just mannafish" · rule recorded (only the main link).
+- 01:14 · basket to ❤️ Love button everywhere; Build bigger; card back in landscape · done: 0a219387, 3661a2a1.
+- 01:18, 01:28 · highlighter: red still yellow; still cannot tap and drag · done: 0e200d29, 54e27b7a.
+- 03:06 · Build must be as big as Trust; answer the 153 question again · aa4f1531.
+- 12:45 · Hebrew font too fat and round · Frank Ruhl Libre, 8c430779.
+- 12:50 · rename Go MannaFish to MannaFish Memory; show languages in the dropdown as in the screenshot · 431a90e0.
+- 12:51 · heart back to the basket icon · 78528867.
+- 12:53 · highlights: use an arrow to hide/show and add/remove; hide or show for all Bibles · cd37b8ee.
+- 13:40, 15:21 · how many words rotate in the daily inbox, list them; "I want all of them available, please" · 322b03c5 (catch.py).
+- 23:34 · see all 153 fish, as action words · done: 4b975e91 (83 words changed).
+- 23:46 · list of fish designs, printable or digital, where I can edit or request changes · /fish/ with Print, Edit, Change: a52f9e7c.
+
+### 2 Nov
+- 00:29 · Ken's reason for 153 (net did not tear, Spirit, Peter reinstated) · written in code notes, c1ce71fb.
+- 00:30, 00:49 · do we have 365 action fish for Bible in a Year? "Ok" to the one-fish-per-day plan · done: 7ebf614a.
+- 00:56 to 01:16 · revisit the standard for word size and position; show the tool; make all 4-letter words a little smaller; "I asked that this page be updated, for the back design, didn't I?" (interrupted); where is the word size tool · tool shown; 3d8b1abb; bad35e3f (home card back).
+- 01:32 · "Middle fish word must exist in the scripture in order for it to qualify" · done: 73661bc6.
+- 01:42, 01:46 · edit tool: select templates; progressive averages for 2 to 9 letter words and the verse lines; will printable, digital and every language update? Add Vietnamese to the translator, not MannaFish · done: bcc22bbe, 9168ea34 (Vietnamese was already there).
+- 12:12 · "Why do you keep say 'your own 24'?" · wording fixed everywhere: f0298cb0.
+- 12:13 · make the faint card border bolder · a951a453.
+- 12:19 · "What is 2 Fish?" above the 2 Fish section on the site background; an expand/hide arrow on each section · 67c26f2e.
+- 12:27, 12:41 · arrows for previous/next chapter, first in the top bar then beside the centred chapter name · 5dcba673, 68c918a0.
+- 12:47 · remove a highlight (word, all, selection); hear/see a word in Greek, Hebrew, Spanish and others in the same window; an arrow on every expandable line; a Bible tools category under ••• · 6c062919, b1df62ff, b1f061dc.
+- 12:52 · move the basket down so it does not block features · 6f6ab5f1.
+- 12:59 · a circled ✕ top right to leave the highlight window · a6356978.
+- 13:03 · remove "slide to remove"; one-word highlighting broke · 5b20d083 (eraser removed).
+- 13:37, 13:38 · is Deliver from 2 Corinthians a fish yet? Make it; confirm no design lacks its word in the verse · cf5339f6; the check found problems in es/tl/de (B4).
+- 14:32 to 14:49 · what it takes to make an app; time; money; priority list; half a day? short answer · 1eaff03e; C16.
+- 16:15 · which entity should get the D-U-N-S number · advice, open (B8).
+- 16:23, 16:29 · chapters in the Bible (1,189); every chapter a word to share; "Yes, start on Make it a MannaFish ... and My MannaFish" · d4f0149b.
+- 19:00 · player speeds 1.25, 1.50, 1.75 · b0f16b53.
+- 19:34 · use the voices; more realistic voices; a hand-off note for the CRM tour speaker; voices for the MannaFish Tour; how to add advanced voices · 0f61dd7c; docs/HANDOFF-CRM-VOICES.md.
+- 19:47, 20:21 · on desktop the email's fish does not flip; "I want all devotionals to live on the second image" · 52fe7883, c1ec956e.
+- 20:35 · "how do I get more advanced voices?" · ElevenLabs steps (B5).
+
+### 3 Nov
+- 00:15, 01:41 · what ElevenLabs costs; commercial tier; monthly fees at an app with a couple thousand users, short · C16, B5.
+- 01:42 · summary of the whole thing: features, gaps, too much, too little · given (kept in C and B8 as "start here", "too many names", "numbers page").
+- 12:18 · "today's devo in my inbox went to this ... did you make those changes and were they deployed?" · fish outside the 24 now open on Today: 05a75e8a.
+- 12:27 · back button on the Books screen · 3ca9e3c9.
+- 12:29 · Go Fish: make it my fish of the day; Judge came two days running · cd7545a8; 39059822.
+- 12:32 · Bible tools under the book heading with a show/hide arrow; Side by side in open view first · 856f77ca.
+- 12:41 · Build not centred in Go Fish, an admin button to toggle admin and user, one standard for word size, co-brand to co-labor with 9 Scriptures, a to-do list, a customisable card back with a cart and a minimum of 100 · 4dccc4eb, 29d26bae, 62357558, 932ad7de, 7f111520.
+- Mid-turn (before 13:00; times not captured) · "when clicking on Free MannaFish show find or nominate a Hub near you"; "I do not want this read-through section on the bottom, nor the listen ... not a whole prayer session" · 932ad7de.
+- 13:00 · side by side: user picks, up to 3, easy to hear Greek or Hebrew · 6e6ab1a6, 5da12fed.
+- 14:50 to 14:58 · translator auto-detect; what if the language is not on the list; speak any language aloud and tell me which; Uber/Lyft driver idea; "yes, build it on the test site" · 1294f8f4; 3b654382 (Ride mode).
+- 15:23 · Hub names (like Kohl's/Amazon drop-off), abuse of "take two", scanning, tracking, server side · advice (C11).
+- 15:36 · a back end like K-Tech's: automatic emails for each Hub (restock, new T-shirts, Catch of the Day/Month/Quarter); email ideas · b30b7701.
+- 15:42 · an introductory email: free devotional, the vision, would you like to be a Hub? · c0ba0443.
+- 18:19 · "Update CLAUDE.md" · 82cea823 (a short file; Ken later said it lacked detail).
+
+### 4 Nov
+- 12:27 · Song came in the inbox; "Don't do anything yet ... lets just talk" · talk only (B1). Nothing changed.
+- 12:32, 12:33 · "There's got to be a way [to keep] conversations short without losing any detail"; the CLAUDE.md "is not very detail-oriented and does not cover large sessions like this" · this file (docs/DECISIONS.md) and the new handoff protocol in CLAUDE.md.
+
+---
+
+## E. GOTCHAS AND FIXES
+
+### E1. Code and logic errors we hit
+- **A `//` comment swallowed code in a one-line script.** In `bible/index.html` `books()` it put "undefined" in the search box; in `index.html` `go()` it caused "Unexpected token ')'". Use `/* */` or put the comment on its own line. Check every inline `<script>` parses with `new Function(...)`.
+- **`esc(number)` crashed the cart:** `(s||"").replace is not a function`. Fix: `esc(String(x.qty))`.
+- **`loadExtra()` uppercased ids**, so `W02b` became `W02B` and was not found. Fix: only the first letter is uppercased.
+- **Stale cache made a fix look missing** (the circled ✕ "not showing"): Ken's screenshot predated the deploy. Ask for a reload or check the time.
+- **The daily rotation shifted when a fish was inserted:** adding Deliver near the front on 2 Nov pushed every later day back one, so Judge was the fish on 2 and 3 Nov. Fix: `catch.py` keeps the existing order, replaces a gone fish in place and appends new ones. A check shows no fish two days in a row.
+- **The Greek-hidden layout left a grey block:** fix `.langs.one{grid-template-columns:1fr}` and hide the divider.
+- **CSS class clash:** `.more` clashed with `.act .more{display:none}`, so 🎨 was invisible; renamed `.pmore` / `.colmore`. `.ask .bar` was inline (invisible), set `display:block`. The sticky ask button covered the hero (wrap in a `<section>`). `svg{100vw}` caught the QR SVGs on the back PNG (scope it to `body>svg,.pg`).
+- **Top-bar chevrons truncated the chapter name:** Ken then asked for the arrows on the heading instead; reverted.
+- **Eraser got in the way of one-word highlighting:** removed everywhere on Ken's word.
+- **Highlight colour:** colour applied only to the next slide ("I chose red but it's still yellow"). Fix: `penColour` recolours the last slide; sliding over a different colour recolours it. A slide on iPhone showed no visible blue selection, so a slide now highlights at once.
+- **Today Verse-button caret wrapped to a new row:** `wrap:true` and `.vpwrap`.
+- **Device voice entry removed by mistake** from the pray, you and translate lists; restored.
+- **Phone devotional bar overflowed:** Home label hidden under 430 px. **Desktop logo clipped:** stage height `calc(100vh - 190px)`.
+- **Base SVG extraction:** a greedy `<g>` regex made mismatched tags and broke `<img>`. Take the svg inner content and remove the `g_top/g_bot/g_ref` helper paths. All fish files must be valid XML. Add `evenodd` on the root and `nonzero` on glyph paths.
+- **opentype `getBoundingBox` uses `y2`, not `yMax`.** HOBOCAP is exactly 832.333/1000 so English output is unchanged. `nearest()` with -1 needs an `out` flag. Arabic imbalance fixed with more balance passes and a final dx step.
+- **harfbuzzjs version:** 0.4.7 fails with "H.Blob is not a constructor"; use 1.6.4 `dist/index.mjs`.
+- **Cyrillic `\b` does not work**; use `(?<!\p{L})` with the `u` flag (translator `unfinished()`).
+- **Russian Bible numbering** (Synodal to KJV): psalm titles stripped, Daniel 3:24 to 90 dropped and 91 to 100 shifted, Job 41 off by one (use KJV lengths on one side, Synodal on the other). See `tools/russian/`.
+- **Stop fish read "(BSB) (KJV)":** use `tag:' (BSB)'` with a plain `refShort`.
+- **Game Start button beside the board:** `main` as a flex column. **`ui` changed after `Intl.DisplayNames` was built:** make `dn()` lazy per `ui`.
+- **Cut path collapsed to a point (RDP on a closed loop with A==B):** split at the farthest point and simplify each half (tolerance 0.03 mm). **Strip overflow:** `grid-template-rows:minmax(0,1fr)` and `.col{height:100%;overflow:hidden}`. **Hand-written PDF regex:** a comment got backtick escapes; validate the PDF with `pdftoppm`.
+- **Long Greek and Spanish fish lines too small:** shortened with "…" excerpts.
+- **A Python replace asserted twice** (the text appeared in HTML and in an i18n key): replace the i18n entry first.
+- **Missing `ar` match in tr.mjs:** added a 'Modern Standard Arabic' rule.
+- **"End ride" could send its goodbye without the ride's details** (found in testing): fixed in `ride.mjs`/page.
+- **Hub email buttons used manna-fish.com on the test site:** now the site the email came from (`process.env.URL`).
+- **The email's Listen button on desktop:** the old fish page did not flip; fixed by sending all fish to Today (`?fish=`).
+- **The devotional test's read-aloud call is `/api/say`, not `/api/listen`:** mock the right route or the pause button stays hidden.
+- **Plan duplicate verses with old words made the catch list grow:** dedupe by verse reference.
+- **The automatic verb classifier was unreliable** (Seed became "see", Ark became come/see); pick action words by hand.
+- **Rebuild is not a KJV word:** the fish was changed to **Raise** (Amos 9:11).
+
+### E2. Environment blocks (this sandbox)
+- **netlify.app cannot be reached from the test machine** (network policy). Claude cannot verify a deploy. Ken can: for example the ⏳ button on the Translator shows the new build. Say "I could not check the live deploy".
+- **elevenlabs.io and platform.openai.com are blocked** here; use WebSearch for prices. Also blocked: ebible.org, bereanbible.com, stickerapp. `raw.githubusercontent.com` is reachable (Bible data came from there: scrollmapper bible_databases, seven1m/open-bibles, JSword).
+- **The local test server dies between bash calls:** start `python3 -m http.server 8123` in the same command as the test.
+- **Playwright** needs `NODE_PATH=/opt/node22/lib/node_modules`. Use `devices['iPhone 13']`; touch drags via CDP `Input.dispatchTouchEvent`; fake mic as in C13.
+- **PIL and fontTools** only work under `/usr/bin/python3`. **nltk wordnet** needs `nltk.pathsec.ALLOW_PROXIED_FETCH=True`.
+- **Zip files:** Ken cannot open them on his phone. Send single files.
+- **Artifact publishing:** files need `root`; `edits` cannot be combined with `files`.
+- **Brevo has never sent a real Hub email yet; Ride and Translator have not been tried with a real microphone or real voices.**
+
+### E3. Testing recipes
+- **Pages:** `cd /home/user/mannafish && python3 -m http.server 8123 &` then Playwright (`require('playwright')`), stub `/api/*` with `page.route`. Check each inline script with `new Function(...)`.
+- **Functions:** bundle with esbuild, aliasing `@netlify/blobs` to an in-memory stand-in and `lib/mail.mjs` to a stand-in that records sends. Local import of JSON needs `with { type: 'json' }`. Run the handler with `new Request(...)`. This was how `hub-mail`, `hubs`, `ride`, `card-order` and `devo` were tested.
+- **Devotional email preview locally:** copy the function to a scratch folder, add the JSON import attribute, stub `@netlify/blobs`.
+- **Fish rebuild env vars (set before `node build.js`):** `OPENTYPE` (path to `opentype.js/dist/opentype.js`), `HOBO` (`/home/user/mannafish/fish-lang/hobo.otf`), `HARFBUZZ` (path to `harfbuzzjs/dist/index.mjs`, version 1.6.4). The old session kept them under a scratchpad `fb/node_modules`; in a new session run `npm install opentype.js harfbuzzjs@1.6.4` in a scratch folder and point the variables there.
+- **QR decode check:** `jsqr` + `pngjs` on the printed back PNG.
+- **Fish clearance check:** `tools/fish-format/clr.py`.
+- **Rule checks after any fish change:** `python3 tools/fish/in-verse.py --check`; no fish two days in a row; every fish file valid XML.
+- **After every job:** commit on `test-site`, push, give Ken the main link only.
+
+---
+
+## F. ENVIRONMENT
+
+Names only. Never write the values. All are Netlify environment variables. A key missing means that part is off.
+
+- **Core.** `BREVO_API_KEY` (email), `OPENAI_API_KEY` (voices, translation, pictures, transcription), `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, `SUPABASE_PUBLISHABLE_KEY` (accounts), `MF_ADMIN_KEY` (admin password: edit sheet, Hubs admin, card orders, print admin, QR stats), `PROOF_KEY` (older admin and proofreading key; accepted when `MF_ADMIN_KEY` is not set).
+- **Planned.** `ESV_API_KEY` (ESV text), `ELEVENLABS_API_KEY` (better voices, not set).
+- **Mail addresses and wording.** `MF_FROM_EMAIL`, `MF_FROM_NAME`, `MF_MAIL_ADDRESS` (address line in emails), `MF_FEEDBACK_TO`, `MF_PROOF_TO`, `MF_STORIES_TO`, `MF_POND_TO`, `MF_BASKET_TO`, `MF_ORDERS_TO` (card orders), `MF_HUBS_TO` (also `MF_STATIONS_TO`), `MF_TEXT_TO`, `MF_LINK_URL` (link base for emails).
+- **Switches.** `MF_SEND_OFF` (=1 stops daily emails on that site), `MF_BASKET_OPEN` (=1 opens decal requests), `MF_POND_MAIL` (=1 turns the old home mail-out back on), `MF_SAY_ORIGINS` (more addresses allowed to play `/api/say`), `MF_IMPORTERS`.
+- **Voices and models.** `MF_TTS_VOICE`, `MF_HEAR_MODEL`, `MF_TRANSLATE_MODEL`, `OPENAI_TRANSLATE_KEY`, `PICTURE_PER_DAY`, `PICTURE_ALL_DAY`, `PICTURE_MODEL`, `PICTURE_QUALITY`.
+- **Hubs.** `MF_HUB_MAIL_SECRET` (signs host links; falls back to the admin key).
+- **Texting (not on yet).** `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_MESSAGING_SERVICE_SID`, `TWILIO_FROM`, `TWILIO_WEBHOOK_URL`.
+- **Other.** `STRIPE_SECRET_KEY` (used by `netlify/edge-functions/create-checkout.js`, an older checkout; whether it is still in use is unconfirmed, and the fish are never sold).
+- **Netlify built-in used:** `URL` (the site's own address).
+- **Blob stores** (all `mannafish-*`): `limits`, `tts`, `gloss`, `voice`, `stories`, `stories-media`, `shares`, `ride`, `qr`, `ponds`, `orders`, `feedback`, `feedback-media`, `edit`, `basket`, `push`, `proof`, `forms`, `devo`, `stations` (Hubs and Hub emails).
+- **Scheduled functions:** `email-daily` (`15 * * * *`), `push-daily` (`5 * * * *`), `sms-daily` (`20 * * * *`), `hub-mail-daily` (`40 14 * * *`, UTC).
+- **Supabase:** accounts by emailed code; table `highlights`; account blobs (notes, prayers, settings, myfish, myshared) via `fish-lang/account.js`.
+- **Live vs test.** manna-fish.com is a separate Netlify site with its own settings and its own subscriber list. Before "push it live" Ken checks the live site has the core names above. The test site's `noindex` header comes from `netlify/edge-functions/noindex.js`.
+- **Session-only things that no longer exist.** The old scratchpad files (checklist source, format-builder source, proofs, node modules for the builder) are gone after the session. The artifacts survive at these links (open them with the Artifact tool, action `read`):
+  - Test checklist: https://claude.ai/artifact/2gfCAuZVbo3gFVsn2o3HVn
+  - Format Builder: https://claude.ai/artifact/AeY59AKSTAArq52oHwjqnm
+  - Invitation cards: https://claude.ai/artifact/DyCqUpZA2thPmuHHKmJrB6
+  - CRM engagement center preview: https://claude.ai/artifact/ULnCjFcCDs359BZUfBYSme
+- **The CRM** (`/home/user/majestic-crm`, read only): `MANNAFISH_BRIEF.md`, `sql/mannafish.sql` (table `mf_records`), `index.html` (`function MannaFish`).
+
+---
+
+## G. HOW TO KEEP THIS FILE CURRENT
+
+1. At the **end of every job**, add one dated line to section D (date, Ken's request in his words, what was done, commit hash).
+2. Move any question Ken answered out of section B and into D. Add any new undecided item to B, with the options you gave.
+3. Update the matching entry in section C (files, routes, storage keys, how to test). Add a new C entry for a new area.
+4. Add any new error and its fix to section E, and any new environment variable name (never the value) to section F.
+5. Add a checklist item to the test checklist artifact for each new thing Ken should try (see C21).
+6. Keep sentences short and plain. Mark anything you could not confirm as "(unconfirmed)".
+7. Before a session gets long, or when Ken says the chat is costly, finish steps 1 to 5 and tell Ken he can start a fresh session. One topic per session is cheaper.
+8. Never put a secret, a key value, a token, a password, an EIN, or Ken's home address in this file. Never put model names in it. No dollar amounts for MannaFish products on the site (the cost figures in B and C are internal; `/docs/*` is not served).

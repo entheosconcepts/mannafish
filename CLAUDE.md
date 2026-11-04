@@ -2,6 +2,18 @@
 
 MannaFish gives Scripture away: one word of Scripture in the middle of a fish, with its verse around it. A static site on Netlify with serverless functions.
 
+## Start every session by reading docs/DECISIONS.md (then docs/UPDATES.md)
+- `docs/DECISIONS.md` is the full record: Ken's rules and how he likes replies (A), every open question waiting on him (B), a map of every feature with its files, routes, storage and how to test it (C), a dated log of everything he asked (D), every error we hit and its fix (E), the environment variable names (F).
+- Then read `docs/UPDATES.md` (Ken's to-do list).
+- **Ask Ken nothing that DECISIONS.md already answers.** If a question is listed in section B, it is still open: do not change that behaviour until Ken answers. Do nothing about the daily-email fish choice ("Song", B1) until he says so.
+- Ken dictates by voice, so read for meaning ("manifest" means MannaFish). Reply short and plain, and end with only https://yadamannafishtest.netlify.app/
+
+## Session handoff protocol
+- At the **end of each job**, append one dated entry to section D of `docs/DECISIONS.md` (date, Ken's request in his words, what was done, commit hash). Refresh B (move answered questions out, add new ones with the options given) and C (files, routes, storage keys, how to test) for the area you changed. Add new errors to E and new variable names (never values) to F.
+- Add an item to the test checklist artifact for each new thing Ken should try.
+- **Before a session gets long**, write the handoff (the steps above) and tell Ken he can start a fresh session. Long sessions cost Ken extra usage. **One topic per session saves cost.**
+- Never put a secret, a token, a password, an EIN, Ken's home address or a model name in any file.
+
 ## Where to work
 - Branch **`test-site`**. It deploys to https://yadamannafishtest.netlify.app.
 - **Never push to `main`, and never touch manna-fish.com, unless Ken says "push it live".**
@@ -35,5 +47,5 @@ MannaFish gives Scripture away: one word of Scripture in the middle of a fish, w
 - Commit with `git -c user.name="Claude" -c user.email="noreply@anthropic.com"` and push to `test-site`. Add the attribution trailer lines the session gives. Don't put model names in files.
 
 ## Lists to keep up
-- `docs/UPDATES.md`: Ken's to-do list. `docs/LAUNCH.md`: app and launch plan. `docs/TODO.md`: the older master list.
+- `docs/DECISIONS.md`: the full record and handoff (keep it current). `docs/UPDATES.md`: Ken's to-do list. `docs/LAUNCH.md`: app and launch plan. `docs/TODO.md`: the older master list.
 - The test checklist (a Claude artifact) is linked from the admin menu; add an item for each new thing Ken should try.
