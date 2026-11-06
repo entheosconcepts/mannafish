@@ -7,7 +7,7 @@ import { getStore } from '@netlify/blobs';
 import { createHash } from 'node:crypto';
 import SPEAK from './lib/speak.json';
 import TONGUE from './lib/tongue.json';
-import { ALL, speaker } from './lib/voices.mjs';
+import { ALL, speaker, wavAt } from './lib/voices.mjs';
 import { isEl, elevenOn, elevenBudget, elevenSpeak } from './lib/eleven.mjs';
 const VOICE = process.env.MF_TTS_VOICE || 'sage';
 // the listener may pick another natural voice (Ken, 9 Oct)
@@ -50,14 +50,14 @@ export default async (req) => {
     if (isEl(voice)) { r = await elevenSpeak(voice, word ? text + '.' : text, word ? 'pcm_24000' : 'mp3_44100_128').catch(() => null); if (!r || !r.ok) { r = null; voice = VOICE; id = idOf(voice); } }
     if (!r) r = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST',
       headers: { 'authorization': 'Bearer ' + apiKey, 'content-type': 'application/json' },
-      body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice: speaker(voice, lang).voice, input: word ? text + '.' : text, response_format: word ? 'pcm' : 'mp3',
+      body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice: speaker(voice, lang).voice, input: word ? text + '.' : text, response_format: word || speaker(voice, lang).pitch ? 'pcm' : 'mp3',
         instructions: speaker(voice, lang).style + how }) });
     if (!r.ok) return new Response('Voice service error', { status: 502 });
     audio = await r.arrayBuffer();
-    if (word) audio = wav(audio);
+    if (speaker(voice, lang).pitch) audio = wavAt(audio, Math.round(24000 * speaker(voice, lang).pitch)); else if (word) audio = wav(audio);
     await store.set(id, audio);
   }
   // kept by Netlify's CDN too (Ken, 11 Oct: the delay before a fish is heard); a corrected line is new after a week at most
-  return new Response(audio, { headers: { 'content-type': word ? 'audio/wav' : 'audio/mpeg', 'cache-control': 'public, max-age=86400', 'netlify-cdn-cache-control': 'public, max-age=604800, durable', 'netlify-vary': 'query' } });
+  return new Response(audio, { headers: { 'content-type': word || speaker(voice, lang).pitch ? 'audio/wav' : 'audio/mpeg', 'cache-control': 'public, max-age=86400', 'netlify-cdn-cache-control': 'public, max-age=604800, durable', 'netlify-vary': 'query' } });
 };
 export const config = { path: '/api/tts' };

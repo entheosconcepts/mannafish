@@ -9,7 +9,7 @@
 import { getStore } from '@netlify/blobs';
 import { NAMES, MODEL, translatePair, translateTo, polish } from './lib/tr.mjs';
 const VOICE = process.env.MF_TTS_VOICE || 'sage';
-import { ALL, speaker, LABELS } from './lib/voices.mjs';
+import { ALL, speaker, LABELS, wavAt } from './lib/voices.mjs';
 import { EL, isEl, elevenOn, elevenVoices, elevenBudget, elevenSpeak } from './lib/eleven.mjs';
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];
 const MAX = 300, PER_HOUR = 80, SAY_PER_HOUR = 400;  // the Bible reader reads a chapter verse by verse
@@ -136,26 +136,26 @@ export default async (req, context) => {
       let r = null;
       if (isEl(voice)) { r = await elevenSpeak(voice, text).catch(() => null); if (!r || !r.ok) { r = null; voice = VOICE; id = await idOf(voice); } }   // ElevenLabs could not answer: the built-in voice
       if (!r) r = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST', headers: H,
-        body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice: speaker(voice, lang).voice, input: text, response_format: 'mp3',
+        body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice: speaker(voice, lang).voice, input: text, response_format: speaker(voice, lang).pitch ? 'pcm' : 'mp3',
           instructions: speaker(voice, lang).style + `Speak warmly, clearly and a little slowly, like a kind friend talking face to face, in ${lname}.` }) });
       if (r.status === 401 || r.status === 403) return bad('Key not allowed', 503, 'key');
       if (!r.ok) return bad('Voice service error', 502);
       // Ken, 21 Oct: "there is a great delay" -- the sound goes to the phone as it is made, not after the whole clip is done;
       // a copy is kept (in the background) so the same words come back at once next time
-      if (r.body && context && context.waitUntil) {
+      if (!speaker(voice, lang).pitch && r.body && context && context.waitUntil) {
         const [toPhone, toStore] = r.body.tee();
         context.waitUntil(new Response(toStore).arrayBuffer().then((buf) => buf.byteLength > 1000 ? store.set(id, buf) : null).catch(() => {}));
         return new Response(toPhone, { headers: get
           ? { 'content-type': 'audio/mpeg', 'cache-control': 'public, max-age=31536000, immutable', 'netlify-cdn-cache-control': 'public, max-age=31536000, durable', 'netlify-vary': 'query', 'access-control-allow-origin': '*' }
           : { 'content-type': 'audio/mpeg', 'cache-control': 'private, max-age=86400' } });
       }
-      audio = await r.arrayBuffer();
+      audio = speaker(voice, lang).pitch ? wavAt(await r.arrayBuffer(), Math.round(24000 * speaker(voice, lang).pitch)) : await r.arrayBuffer();   // the deep voices: lowered in pitch
       await store.set(id, audio);
     }
     // the address holds the exact words and voice, so a clip never changes: keep it everywhere for a year
     return new Response(audio, { headers: get
-      ? { 'content-type': 'audio/mpeg', 'cache-control': 'public, max-age=31536000, immutable', 'netlify-cdn-cache-control': 'public, max-age=31536000, durable', 'netlify-vary': 'query', 'access-control-allow-origin': '*' }
-      : { 'content-type': 'audio/mpeg', 'cache-control': 'private, max-age=86400' } });
+      ? { 'content-type': speaker(voice, lang).pitch ? 'audio/wav' : 'audio/mpeg', 'cache-control': 'public, max-age=31536000, immutable', 'netlify-cdn-cache-control': 'public, max-age=31536000, durable', 'netlify-vary': 'query', 'access-control-allow-origin': '*' }
+      : { 'content-type': speaker(voice, lang).pitch ? 'audio/wav' : 'audio/mpeg', 'cache-control': 'private, max-age=86400' } });
   }
 
   //   POST /api/translate {polish:1, text} -> {text}  a prayer or note with its spelling and punctuation made right (lib/tr.mjs)

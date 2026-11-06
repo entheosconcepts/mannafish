@@ -11,6 +11,17 @@ const CHAR = {
   grace: { v: 'sage', how: 'Voice: a deep, low, mature woman\'s voice, a rich alto; calm, grounded and unhurried, like a wise grandmother reading by the fire.' },
   magnolia: { v: 'coral', how: 'Voice: a bright, warm, sweet woman\'s voice with a smile in it, friendly and full of heart.', acc: ' She speaks with a gentle Southern accent from the Tennessee mountains.' },
   heather: { v: 'shimmer', how: 'Voice: a warm, mature woman, gentle and steady.', acc: ' She speaks with a soft Scottish Highland accent.' },
+  // really deep voices (Ken, 6 Nov: "deeper, way deeper than what we have"): the lowest built-in voice, with the recording itself lowered in
+  // pitch on the server (p = how far: 0.70 is about six notes lower). Spoken briskly first so they end at a natural pace.
+  titan: { v: 'onyx', p: 0.86, how: 'Voice: a colossal, very deep bass, an ancient giant of a man; slow-burning authority and calm. Speak at a brisk, steady pace with short pauses, as every word will be slowed and lowered afterwards.' },
+  abyss: { v: 'onyx', p: 0.78, how: 'Voice: a cavernous, thunderous bass from the bottom of the sea, vast and solemn, like a voice in an enormous stone hall. Speak at a brisk, steady pace with short pauses, as every word will be slowed and lowered afterwards.' },
+  bedrock: { v: 'onyx', p: 0.7, how: 'Voice: the lowest, heaviest bass imaginable, like the voice of the mountain itself, weighty and unshakable. Speak at a quick, steady pace with very short pauses, as every word will be slowed and lowered afterwards.' },
+  canyon: { v: 'sage', p: 0.86, how: 'Voice: a very deep, dark, velvety woman\'s voice, the lowest contralto, calm and powerful. Speak at a brisk, steady pace with short pauses, as every word will be slowed and lowered afterwards.' },
+  // whispery voices (Ken, 6 Nov: "speaking quietly as to not wake anyone up")
+  hush: { v: 'shimmer', how: 'Voice: a true whisper, as quiet as possible so as not to wake anyone, a soft breathy woman speaking close to the ear; gentle and calm, every word clear but hushed.' },
+  murmur: { v: 'echo', how: 'Voice: a gentle man whispering softly in a dark quiet room so as not to wake anyone; breathy, kind and steady, words clear but barely above a whisper.' },
+  lullaby: { v: 'coral', how: 'Voice: a tender, sleepy whisper, like a mother softly reading a bedtime story to a child who is almost asleep; slow, warm and very quiet.' },
+  midnight: { v: 'onyx', how: 'Voice: a deep, low whisper, a calm man speaking very quietly in the middle of the night so as not to wake anyone; breathy and warm, words clear but hushed.' },
   // more characters (Ken, 6 Nov: "give me more of your own AI generated voices"); described only by how they sound, never as a real person
   elder: { v: 'onyx', how: 'Voice: a very old, wise grandfather\'s voice, low and a little gravelly, slow and tender, with long kind pauses; every line spoken like a blessing.' },
   pastor: { v: 'echo', how: 'Voice: a warm, steady, middle-aged pastor, kind and encouraging, speaking from the heart like a friend across the table; natural and unhurried, with gentle emphasis.' },
@@ -31,8 +42,8 @@ export const ALL = [...BASE, ...Object.keys(CHAR)];
 // the voice the speech service is asked for, and how the character speaks (added before the usual instructions)
 export function speaker(id, lang, fallback = 'sage') {
   const c = CHAR[id];
-  if (c) return { voice: c.v, style: c.how + (lang === 'en' && c.acc ? c.acc : '') + ' ' };
-  return { voice: BASE.includes(id) ? id : fallback, style: '' };
+  if (c) return { voice: c.v, style: c.how + (lang === 'en' && c.acc ? c.acc : '') + ' ', pitch: c.p || 0 };
+  return { voice: BASE.includes(id) ? id : fallback, style: '', pitch: 0 };
 }
 // what each voice is called and sounds like, for the voice lists (the site's pickers, and /api/say?list=1 for Ken's other sites)
 export const LABELS = {
@@ -53,5 +64,23 @@ export const LABELS = {
   lily: ['Lily', 'bright, young, joyful'],
   hannah: ['Hannah', 'prayerful, hushed'],
   erin: ['Erin', 'musical Irish lady'],
+  titan: ['Titan', 'colossal deep bass'],
+  abyss: ['Abyss', 'cavernous, far deeper'],
+  bedrock: ['Bedrock', 'the deepest of all'],
+  canyon: ['Canyon', 'very deep woman'],
+  hush: ['Hush', 'a true whisper, soft woman'],
+  murmur: ['Murmur', 'quiet, gentle whisper'],
+  lullaby: ['Lullaby', 'sleepy, tender whisper'],
+  midnight: ['Midnight', 'deep, hushed whisper'],
   alloy: ['Alloy', 'even, clear'], echo: ['Echo', 'bright'], nova: ['Nova', 'lively'], shimmer: ['Shimmer', 'soft'], verse: ['Verse', 'friendly'],
 };
+
+// raw 16-bit mono sound (what the voice service gives as 'pcm' at 24 kHz) as a WAV file declared at a lower rate: it plays lower and slower,
+// which is how the really deep voices are made. A little quiet is added after it so a phone does not clip the last sound.
+export function wavAt(pcm, rate) {
+  const data = Buffer.concat([Buffer.from(pcm), Buffer.alloc(Math.round(rate * 0.3) * 2)]), h = Buffer.alloc(44);
+  h.write('RIFF', 0); h.writeUInt32LE(36 + data.length, 4); h.write('WAVE', 8); h.write('fmt ', 12); h.writeUInt32LE(16, 16);
+  h.writeUInt16LE(1, 20); h.writeUInt16LE(1, 22); h.writeUInt32LE(rate, 24); h.writeUInt32LE(rate * 2, 28); h.writeUInt16LE(2, 32); h.writeUInt16LE(16, 34);
+  h.write('data', 36); h.writeUInt32LE(data.length, 40);
+  return Buffer.concat([h, data]);
+}
