@@ -484,7 +484,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     $('txt').setAttribute('lang',vlang(V1)); $('txt').dir=!n&&V1.rtl?'rtl':'ltr'; $('txt').style.setProperty('--pc',String(1+n));   // Hebrew and Arabic read right to left
     if(!n){ $('txt').innerHTML='<p>'+ns.map(function(n){ return verseH(n)+' '; }).join('')+'</p>'; xrMark(); return; }
     var all=ns.slice(); PK.forEach(function(x){ Object.keys(x.T).map(Number).forEach(function(v){ if(all.indexOf(v)<0) all.push(v); }); }); all.sort(num);
-    var head='<div class="phd"><span>'+esc(V1.s)+' <button type="button" class="ogall" data-hear="m" aria-pressed="false" title="Hear the whole chapter in '+esc(V1.s)+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button></span>'+PK.map(function(x,i){ return '<span class="p2"><select data-pi="'+i+'" aria-label="'+(i?'The third column':'The version beside it')+'">'+parOpts(i,1)+'</select>'
+    var head='<div class="phd"><span class="p2"><select data-mver="1" aria-label="The first column\u2019s version">'+$('ver').innerHTML+'</select><button type="button" class="ogall" data-hear="m" aria-pressed="false" title="Hear the whole chapter in '+esc(V1.s)+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button></span>'+PK.map(function(x,i){ return '<span class="p2"><select data-pi="'+i+'" aria-label="'+(i?'The third column':'The version beside it')+'">'+parOpts(i,1)+'</select>'
         +(!x.none?'<button type="button" class="ogall" data-hear="'+i+'" aria-pressed="false" title="Hear the whole chapter in '+esc(x.P.s)+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button>':'')
         +(i===n-1&&n<2?'<button type="button" class="padd" data-padd="1" aria-label="Add a third column">&#65291; 3rd</button>':'')
         +'<button type="button" class="ib sm" data-px="'+i+'" aria-label="'+(n===1?'Close side by side':'Take this column away')+'">&#10005;</button></span>'; }).join('')+'</div>';
@@ -494,8 +494,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
           return '<div class="v2 ogc" data-v="'+v+'" data-pi="'+i+'" lang="'+P.l+'" dir="'+d+'">'+(o?'<span class="vn">'+v+'</span><button type="button" class="ogs" data-ogs="'+v+'" aria-label="Hear verse '+v+' in '+P.s+'">🔊</button>'
             +o.w.map(function(w,j){ return '<span class="ow" data-oi="'+j+'">'+esc(w[0])+'</span>'; }).join(' ')
             +'<span class="otr">'+esc(o.w.map(function(w){ return w[1]; }).join(' '))+'</span>':(x.none&&v===all[0]?'<small>'+P.s+' could not be opened.</small>':''))+'</div>'; }
-        return '<div class="v2" data-v="'+v+'" data-pi="'+i+'" lang="'+vlang(P)+'" dir="'+d+'">'+(x.T[v]?'<span class="vn">'+v+'</span>'+esc(x.T[v]):'')+'</div>'; }).join('')+'</div>'; }).join(''); xrMark(); }
-  $('txt').addEventListener('change',function(e){ var p=e.target.dataset&&e.target.dataset.pi; if(p!=null&&e.target.tagName==='SELECT'){ putPar(+p,e.target.value); go(AT.b,AT.c,0,true); htUI(); } });
+        return '<div class="v2" data-v="'+v+'" data-pi="'+i+'" lang="'+vlang(P)+'" dir="'+d+'">'+(x.T[v]?'<span class="vn">'+v+'</span>'+esc(x.T[v]):'')+'</div>'; }).join('')+'</div>'; }).join(''); var mv=$('txt').querySelector('[data-mver]'); if(mv) mv.value=ver().k; xrMark(); }
+  $('txt').addEventListener('change',function(e){ if(e.target.dataset&&e.target.dataset.mver){ $('ver').value=e.target.value; $('ver').dispatchEvent(new Event('change')); return; } var p=e.target.dataset&&e.target.dataset.pi; if(p!=null&&e.target.tagName==='SELECT'){ putPar(+p,e.target.value); go(AT.b,AT.c,0,true); htUI(); } });
   // hearing the Hebrew or Greek: tap a word for it alone (and how to say it, and what it means), 🔊 for the verse, ▶ Hear for the chapter
   var OGP=0;
   function ogOf(){ return PX.filter(function(x){ return x.P.og&&x.J; })[0]||null; }
