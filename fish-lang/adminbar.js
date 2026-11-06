@@ -33,6 +33,7 @@
     p.innerHTML=ed
       +'<a href="/edit/">✏️ Edit sheet<small>Every fish; templates for word size and place</small></a>'
       +'<a href="/fish/">🐟 The 153<small>Print, edit or ask for a change</small></a><a href="/fish/?year=1">📅 The 365</a>'
+      +'<a href="/voices/">🎙 Voices<small>Hear every voice, pick favorites (ElevenLabs too)</small></a>'
       +'<a href="/hubs/admin/">📍 Hubs admin</a><a href="/pond/admin/">🎣 Pond admin</a><a href="/stories/admin/">💬 Fish stories to approve</a>'
       +'<a href="/print/orders/">🛒 Card orders<small>Requests from Make the back yours</small></a>'+'<a href="/print/admin/">🖨 Print runs</a><a href="/proof/">🔍 Proofreading</a>'
       +'<a href="'+CHECK+'" target="_blank" rel="noopener">✅ Test checklist<small>Opens in Claude</small></a>'

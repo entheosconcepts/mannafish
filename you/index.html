@@ -274,7 +274,7 @@ input[type=range]{width:46%;accent-color:var(--blue2)}
       +tg('hist',true,'Remember what I read','History and Recent')
       +'<h3>Highlights</h3><div class="opt"><span class="l"><b>Highlight colour</b><small>The one a tap uses first</small></span><span class="cf" style="margin:0">'+['gold','green','blue','pink','orange'].concat(HLC[hc]&&['gold','green','blue','pink','orange'].indexOf(hc)<0?[hc]:[]).map(function(c){ return '<button type="button" data-hc="'+c+'" aria-label="'+c+'" aria-pressed="'+(hc===c)+'" style="background:'+HLC[c]+'"></button>'; }).join('')+'</span></div>'
       +'<div class="opt"><span class="l"><b>Remove highlights</b><small>All of them, or the ones you choose</small></span><button type="button" class="b red" id="stHl">Open</button></div>'
-      +'<h3>Listening</h3><div class="opt"><span class="l"><b>Voice</b><small>MannaFish’s natural voices, used everywhere you press play</small></span><select id="stVoice"></select></div>'
+      +'<h3>Listening</h3><div class="opt"><span class="l"><b>Voice</b><small>Used everywhere you press play. <a href="/voices/" style="color:#6f9be0">🎙 Hear them all →</a></small></span><select id="stVoice"></select></div>'
       +seg('rate',0.95,'Speed',[[0.8,'Slow'],[0.95,'Normal'],[1.1,'Quick'],[1.25,'Fast']])
       +tg('cont',true,'Keep going into the next chapter')
       +'<div class="opt"><span class="l"><b>Hear it</b></span><button type="button" class="b" id="stTry">&#9654;&#xFE0E; Try</button></div>'
