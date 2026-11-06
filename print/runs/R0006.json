@@ -1,0 +1,32 @@
+{
+ "id": "R0006",
+ "title": "Believe · word study, sponsored by K-Tech Construction (mock-up, stacked layout)",
+ "status": "draft",
+ "qty": 100,
+ "fish": {
+  "word": "BELIEVE",
+  "lang": "en"
+ },
+ "sponsor": {
+  "name": "K-Tech Construction",
+  "logo": "assets/ktech-round-logo-DRAFT.svg",
+  "show": true
+ },
+ "ship_to": "",
+ "qr_direct": true,
+ "back": {
+  "template": "study",
+  "refs": 9,
+  "left": {
+   "label": "Free porch enclosure quote",
+   "to": "https://k-tech-porch-enclosures.netlify.app/"
+  },
+  "right": {
+   "label": "Today's free MannaFish devotional",
+   "to": "https://manna-fish.com/?devo=1"
+  },
+  "orientation": "landscape",
+  "layout": "stack"
+ },
+ "notes": "Ken, 6 Nov: the Believe word study like the website's card (the word on top, Greek | Hebrew under it, nine verses), but without the line \"Trace it through Scripture — tap a verse\" and everything moved up, so the QR codes sit at the bottom left and bottom right with \"Sponsored by K-Tech Construction\" in the middle. The K-Tech logo is still the stand-in."
+}

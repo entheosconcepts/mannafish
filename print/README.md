@@ -29,6 +29,7 @@ what is still missing. `-printer-notes.md` is the note to send with the files, a
      - `"template": "invite"`: the invitation card (heading, the logo at the top, the words, a big QR code `qr`).
      - `"template": "study"`: the word study of the fish (Greek, Hebrew, meanings, ten verses to look up), like the old word-study card.
        The 24 fish have theirs already; for any other fish, write one in `print/study/<WORD>.json` (see `BUILD.json`).
+       Add `"layout": "stack"` (with `"orientation": "landscape"`) for the website-style card: the word big across the top, Greek | Hebrew under it with their Strong's numbers, nine verses, no heading line, then the QR codes and the sponsor strip (R0006).
      - `"template": "image"` with `"image": "assets/<file>.png"`: your own finished artwork, as it is.
      The invite and study backs end with the same strip: the `left` and `right` QR codes (each with a `label` and a web address in `to`)
      and who it is from in the middle.

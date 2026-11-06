@@ -53,5 +53,15 @@
   "to": "https://manna-fish.com/?devo=1",
   "run": "R0005",
   "what": "Today's free MannaFish devotional"
+ },
+ "R0006s": {
+  "to": "https://k-tech-porch-enclosures.netlify.app/",
+  "run": "R0006",
+  "what": "Free porch enclosure quote"
+ },
+ "R0006m": {
+  "to": "https://manna-fish.com/?devo=1",
+  "run": "R0006",
+  "what": "Today's free MannaFish devotional"
  }
 }
