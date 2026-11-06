@@ -307,15 +307,15 @@ textarea.field{min-height:92px;resize:vertical}
   var SAY={mode:get('mf-twg-say','off'),at:-1,q:[],tm:null,run:0}, player=new Audio();
   function sentences(t){ return String(t).replace(/\s+/g,' ').match(/[^.!?;:]+[.!?;:”’"]*\s*/g)||[]; }   // no look-behind: older iPhones
   function chunks(t){ var out=[], cur=''; sentences(t).map(function(x){ return x.trim(); }).forEach(function(s){ if((cur+' '+s).length>260&&cur){ out.push(cur); cur=s; } else cur=cur?cur+' '+s:s; }); if(cur) out.push(cur); return out.filter(function(x){ return /\w/.test(x); }); }
-  function sayStop(){ SAY.run++; clearTimeout(SAY.tm); try{ player.pause(); }catch(e){} try{ speechSynthesis.cancel(); }catch(e){} SAY.at=-1; duck(false); }
+  function sayStop(){ SAY.run++; clearTimeout(SAY.tm); try{ player.pause(); }catch(e){} SAY.at=-1; duck(false); }
   function sayStep(i){ sayStop(); var run=SAY.run, sec=document.querySelector('.st[data-i="'+i+'"]'); if(!sec) return; SAY.at=i;
     var parts=[]; [].forEach.call(sec.querySelectorAll('[data-say]'),function(e){ var t=e.dataset.say==='v'?(e.querySelector('p').textContent+' '+e.querySelector('small').textContent.replace(/ (BSB|KJV)$/,'')):e.textContent; parts=parts.concat(chunks(t)); });
     var k=STEPS[i].k; if(k==='list'){ var c=sec.querySelector('.pc'); parts=['From my prayer list.'].concat(parts); }
     duck(true); (function next(){ if(run!==SAY.run) return; var t=parts.shift(); if(!t){ duck(false); if(SAY.mode==='auto'&&i<STEPS.length-1&&STEPS[i].wait) SAY.tm=setTimeout(function(){ if(run===SAY.run) goTo(i+1); },STEPS[i].wait*1000); return; } speak(t,next,run); })(); }
   function raw(k){ try{ return localStorage.getItem(k)||''; }catch(e){ return ''; } }   // the voice and speed are kept as plain text by the other pages
   function speak(t,cb,run){ var v=raw('mf-voice')||'sage', r=parseFloat(raw('mf-speed'))||1; r=Math.min(1.25,r); var fell=0;
-    var dev=function(){ if(fell++) return; if(!window.speechSynthesis){ cb(); return; } var u=new SpeechSynthesisUtterance(t); u.lang='en-US'; u.rate=.95; u.onend=function(){ if(run===SAY.run) cb(); }; u.onerror=u.onend; speechSynthesis.speak(u); };
-    if(v==='device'){ dev(); return; }
+    var dev=function(){ if(fell++) return; if(run===SAY.run) sayStop(); };   /* the natural voice could not play: stop quietly (no phone voice) */
+    if(v==='device') v='sage';
     player.src='/api/say?t='+encodeURIComponent(t)+'&l=en&v='+encodeURIComponent(v); player.playbackRate=r; player.onended=function(){ if(run===SAY.run) setTimeout(cb,350); }; player.onerror=function(){ if(run===SAY.run) dev(); };
     var p=player.play(); if(p&&p.catch) p.catch(function(){ if(run===SAY.run) dev(); }); }
   function setSay(m){ SAY.mode=m; put('mf-twg-say',m); $('sayBtn').setAttribute('aria-pressed',String(m!=='off')); [].forEach.call($('sayChips').children,function(b){ b.setAttribute('aria-pressed',String(b.dataset.say===m)); }); if(m==='off') sayStop(); else if(unlock.done) sayStep(AT); }

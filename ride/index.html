@@ -114,8 +114,8 @@ body.rider main{max-width:980px}
   var IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
   function unlock(){ if(unlocked) return; unlocked=true; try{ player.src=SILENT; var p=player.play(); if(p&&p.catch) p.catch(function(){}); }catch(e){} }
   function say(text,lang,cb){ var fin=false, done=function(){ if(fin) return; fin=true; if(cb) cb(); };
-    var dev=function(){ if(!window.speechSynthesis){ done(); return; } speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(text); u.lang=lang; u.onend=done; u.onerror=done; speechSynthesis.speak(u); };
-    try{ player.pause(); player.src='/api/say?t='+encodeURIComponent(text)+'&l='+encodeURIComponent(lang)+'&v='+encodeURIComponent(get('mf-voice','sage'));
+    var dev=function(){ done(); };   /* the natural voice could not play: end quietly, never the phone's own voice */
+    try{ player.pause(); player.src='/api/say?t='+encodeURIComponent(text)+'&l='+encodeURIComponent(lang)+'&v='+encodeURIComponent((get('mf-voice','sage')==='device'?'sage':get('mf-voice','sage')));
       player.onended=done; player.onerror=function(){ if(!fin) dev(); }; var p=player.play(); if(p&&p.catch) p.catch(function(){ if(!fin) dev(); }); }catch(e){ dev(); } }
   var WL=null;
   function wake(on){ try{ if(on&&!WL&&navigator.wakeLock) navigator.wakeLock.request('screen').then(function(l){ WL=l; l.addEventListener('release',function(){ WL=null; }); }).catch(function(){}); if(!on&&WL){ WL.release(); WL=null; } }catch(e){} }
@@ -233,7 +233,7 @@ body.rider main{max-width:980px}
       +'<div class="typebox" id="rType" hidden><input type="text" id="rIn" placeholder="'+esc(T.type)+'" autocomplete="off"><button type="button" class="btn" id="rSend">'+esc(T.send)+'</button></div>';
     var cs=+get('mf-ride-cs',1)||1; $('caps').style.setProperty('--cs',cs);
     $('rBig').onclick=function(){ cs=cs>=1.6?0.8:Math.round((cs+0.2)*10)/10; put('mf-ride-cs',cs); $('caps').style.setProperty('--cs',cs); };
-    $('rAl').onclick=function(){ RIDE.aloud=!RIDE.aloud; this.setAttribute('aria-pressed',String(RIDE.aloud)); if(!RIDE.aloud){ try{ player.pause(); speechSynthesis.cancel(); }catch(e){} } };
+    $('rAl').onclick=function(){ RIDE.aloud=!RIDE.aloud; this.setAttribute('aria-pressed',String(RIDE.aloud)); if(!RIDE.aloud){ try{ player.pause(); }catch(e){} } };
     $('rLang2').onchange=function(){ RIDE.mine=this.value; put('mf-ride-rider',RIDE.mine); send({t:'hi',l:RIDE.mine}); riderLive(); };
     $('rKb').onclick=function(){ $('rType').hidden=!$('rType').hidden; if(!$('rType').hidden) $('rIn').focus(); };
     var sendText=function(){ var t=$('rIn').value.trim(); if(!t) return; $('rIn').value=''; riderSays(t); };

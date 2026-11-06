@@ -188,9 +188,8 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
   function session(t){ try{ if(navigator.audioSession) navigator.audioSession.type=t; }catch(e){} }
   function say(text,lang,btn,cb){ var v=get('mf-voice','sage'), fin=false; if(btn) btn.disabled=true;
     var done=function(){ if(fin) return; fin=true; if(btn) btn.disabled=false; if(cb) cb(); };
-    var dev=function(){ if(!window.speechSynthesis){ done(); return; } speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(text); u.lang=CODE[lang]||lang; u.rate=.95*rate();
-      var vs=speechSynthesis.getVoices().filter(function(x){ return (x.lang||'').toLowerCase().indexOf(lang==='tl'?'fil':lang)===0; }); if(vs[0]) u.voice=vs[0]; u.onend=done; u.onerror=done; speechSynthesis.speak(u); };
-    if(v==='device'){ dev(); return; }
+    var dev=function(){ done(); };   /* the natural voice could not play: end quietly, never the phone's own voice */
+    if(v==='device') v='sage';
     // the same words always make the same clip, so phones and the CDN keep it (the "Speak now" prompts come back at once)
     // Ken, 21 Oct: "there is a great delay" -- the player is pointed straight at the voice, so it starts with the first sound that arrives
     if(BOOST&&BOOST.state!=='running') BOOST.resume(); player.pause(); player.src='/api/say?t='+encodeURIComponent(text)+'&l='+encodeURIComponent(lang)+'&v='+encodeURIComponent(v)+(!L[lang]&&DET&&DET.code===lang?'&n='+encodeURIComponent(DET.name):''); player.playbackRate=rate();

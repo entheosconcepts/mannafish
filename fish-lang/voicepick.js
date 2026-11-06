@@ -26,25 +26,23 @@
   function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
   function uiLang(){ var l=(window.MF&&window.MF.lang)||ls('mf-lang')||(document.documentElement.lang||'en').slice(0,2); return TX[l]?l:'en'; }
   function T(i){ return (TX[uiLang()]||TX.en)[i]; }
-  function get(){ var v=ls('mf-voice')||''; return v==='device'||NAT.some(function(o){ return o[0]===v; })?v:'sage'; }
+  function get(){ var v=ls('mf-voice')||''; return NAT.some(function(o){ return o[0]===v; })?v:'sage'; }
   function setNat(v){ ls('mf-voice',v); if(window.MFacct&&MFacct.touch) MFacct.touch('set');
     try{ window.dispatchEvent(new CustomEvent('mfvoice',{detail:{v:v}})); }catch(e){} }
-  function devVoices(lang){ if(!window.speechSynthesis) return []; var re=new RegExp('^'+(LP[lang]||lang),'i');
-    return (speechSynthesis.getVoices()||[]).filter(function(v){ return re.test(v.lang); }); }
+  function devVoices(){ return []; }   // the phone's own voices are never offered (Ken, 6 Nov)
   function device(lang){ var name=ls('mf-dvoice-'+lang); if(!name) return null; return devVoices(lang).filter(function(v){ return v.voiceURI===name||v.name===name; })[0]||null; }
-  if(window.speechSynthesis&&speechSynthesis.getVoices) speechSynthesis.getVoices();
 
   // ── hearing a sample ──
   var au=null;
-  function hush(){ if(au){ try{ au.pause(); }catch(e){} au=null; } if(window.speechSynthesis) try{ speechSynthesis.cancel(); }catch(e){} }
-  function sayDevice(text,lang,voice){ if(!window.speechSynthesis) return; var u=new SpeechSynthesisUtterance(text); if(voice){ u.voice=voice; u.lang=voice.lang; } else u.lang=lang; speechSynthesis.speak(u); }
+  function hush(){ if(au){ try{ au.pause(); }catch(e){} au=null; } }
+  function sayDevice(){}
   function sample(mode,id,lang){ hush();
     if(mode==='device'){ sayDevice(SAMPLE[lang]||SAMPLE.en,lang,devVoices(lang).filter(function(v){ return v.voiceURI===id; })[0]); return; }
     if(id==='device'){ sayDevice(SAMPLE[lang]||SAMPLE.en,lang,null); return; }
     // the HOPE fish's verse, in the page's language, in that voice (made once, then kept)
     fetch('/api/tts?lang='+lang+'&w=HOPE&part=verse&v='+id).then(function(r){ if(!r.ok) throw 0; return r.blob(); })
       .then(function(b){ au=new Audio(URL.createObjectURL(b)); return au.play(); })
-      .catch(function(){ if(!nodev) sayDevice(SAMPLE[lang]||SAMPLE.en,lang,null); }); }
+      .catch(function(){}); }
 
   // ── the menu ──
   var css=false, open=null, nodev=false;
@@ -70,7 +68,7 @@
   function menu(opts,back){ style(); close(); nodev=!!opts.noDevice; var mode=opts.mode||'natural', lang=(typeof opts.lang==='function'?opts.lang():opts.lang)||uiLang(), es=uiLang()==='es';
     var rows, cur;
     if(mode==='device'){ var vs=devVoices(lang); cur=(device(lang)||{}).voiceURI||''; rows=vs.map(function(v){ return [v.voiceURI,v.name.replace(/\s*\(.*\)$/,''),v.lang]; }); }
-    else { cur=get(); rows=NAT.map(function(o){ return [o[0],o[1],es?o[3]:o[2]]; }).concat(nodev?[]:[['device',T(2),'']]); }
+    else { cur=get(); rows=NAT.map(function(o){ return [o[0],o[1],es?o[3]:o[2]]; }); }
     var w=document.createElement('div'); w.className='vpw'; w.setAttribute('role','dialog'); w.setAttribute('aria-modal','true'); w.setAttribute('aria-label',T(0));
     w.innerHTML='<div class="vpin"><div class="vph"><h2>'+esc(T(0))+'</h2><button type="button" class="vpx" aria-label="'+esc(T(7))+'">✕</button></div>'
       +'<p class="vpn">'+esc(mode==='device'?T(5):T(1))+'</p>'

@@ -2751,9 +2751,7 @@ window.MF=(function(){
     b.classList.add('on');
     (v?etPost('/api/say',{text:t,lang:L,voice:v}):Promise.reject()).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(bl){
       if(id!==sp.id) return end(); var a=new Audio(URL.createObjectURL(bl)); a.playbackRate=RATE(); sp.audio=a; a.onended=end; a.onpause=end; return a.play(); })
-    .catch(function(){ if(id!==sp.id||!window.speechSynthesis) return end(); var vv=voiceFor(L), u;
-      if(vv.v){ u=new SpeechSynthesisUtterance(t); u.lang=LCODE[L]; u.voice=vv.v; } else { u=new SpeechSynthesisUtterance(pr.replace(/'/g,'')); u.lang='en-US'; }
-      u.rate=.85*RATE(); u.onend=end; u.onerror=end; speechSynthesis.speak(u); }); }
+    .catch(function(){ end(); }); }
   // Expand shows only when the entry is longer than the card
   function fitExp(btn,body,big){ if(btn) btn.hidden=!(big || body.scrollHeight>body.clientHeight+2); }
   function frRoom(f,fr,card){ if(innerWidth>640) return; var want=Math.round(innerHeight*0.62); if(want<=card.offsetHeight) return;
@@ -2901,18 +2899,12 @@ window.MF=(function(){
   function readAloud(ctx,from,to,btn){ if(sp.on && sp.btn===btn){ stopSpeak(); rMarkIn(ctx,0); return; } var D=ctx.data; if(!D) return;
     stopSpeak(); var id=sp.id, L=D.l; sp.on=true; sp.btn=btn; btn.setAttribute('aria-pressed','true');
     var done=function(){ if(id===sp.id){ stopSpeak(); rMarkIn(ctx,0); if(ctx.onDone) ctx.onDone(); } };
-    function say(t,base,el,next,LL){ if(id!==sp.id) return; LL=LL||L; var vv=voiceFor(LL), said=spoken(t,LL);
+    function say(t,base,el,next,LL){ if(id!==sp.id) return; LL=LL||L; var said=spoken(t,LL);
       var v=aiVoice(); (v?sayUrl(said,LL,v):Promise.reject()).then(function(url){
         if(id!==sp.id) return; var a=AU(); a.onplaying=function(){ sp.started=true; listenUI(); if(window.MFplUI) MFplUI(); }; a.onpause=function(){ listenUI(); if(window.MFplUI) MFplUI(); };
         if(el) ttsFollow(a,t,function(ci){ rWordAt(el,base+ci); }); else a.ontimeupdate=null;
         a.onended=function(){ if(id===sp.id) next(); }; a.src=url; a.defaultPlaybackRate=a.playbackRate=RATE(); sp.audio=a; return a.play(); })
-      .catch(function(err){ if(id!==sp.id) return; if(err&&err.name==='NotAllowedError'){ listenBlocked(); return; } if(!window.speechSynthesis||(vv.any&&!vv.v)){ done(); return; }
-        var u=new SpeechSynthesisUtterance(said); u.lang=LCODE[LL]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.92*RATE();
-        var got=false, t0=Date.now(), cps=LL==='zh'?4:LL==='hi'?11:13; clearInterval(sp.timer);
-        u.onboundary=function(e){ got=true; if(el) rWordAt(el,base+e.charIndex); };
-        sp.timer=setInterval(function(){ if(!got&&el) rWordAt(el,base+(Date.now()-t0)/1000*cps); },150);
-        u.onstart=function(){ sp.started=true; listenUI(); };
-        u.onend=function(){ clearInterval(sp.timer); if(id===sp.id) next(); }; u.onerror=function(e){ if(e&&e.error==='not-allowed') listenBlocked(); else done(); }; speechSynthesis.speak(u); }); }
+      .catch(function(err){ if(id!==sp.id) return; if(err&&err.name==='NotAllowedError'){ listenBlocked(); return; } done(); }); }
     // fetch the voice for what comes next while this verse is being read
     // Ken, 12 Oct: "long delays and pauses" -- every piece of this verse and of the next one is asked for now, not when its turn comes
     function ahead(v,parts){ var vo=aiVoice(); if(!vo) return; var n=ctx.next?ctx.next(v):v+1, LN=ctx.learn, get=function(t,l){ sayUrl(spoken(t,l),l,vo).catch(function(){}); };
@@ -2941,7 +2933,7 @@ window.MF=(function(){
   // Listen: start the day's verse, pause and carry on, and ask for one tap when the browser will not play by itself
   var LIS={en:['Listen','Pause','Tap to listen'],es:['Escuchar','Pausa','Toca para escuchar'],tl:['Pakinggan','I-pause','Pindutin para makinig'],zh:['收听','暂停','点此收听'],
     hi:['सुनें','रोकें','सुनने के लिए दबाएँ'],el:['Ακούστε','Παύση','Πατήστε για ακρόαση'],de:['Anhören','Pause','Zum Anhören tippen'],ko:['듣기','일시정지','눌러서 듣기'],he:['האזינו','השהיה','הקישו להאזנה'],ar:['استمعوا','إيقاف مؤقت','اضغطوا للاستماع'],ru:["Слушать","Пауза","Нажмите, чтобы послушать"]};
-  function rPlaying(){ return sp.on && sp.btn && reader.contains(sp.btn) && !(sp.audio?sp.audio.paused:(window.speechSynthesis&&speechSynthesis.paused)); }
+  function rPlaying(){ return sp.on && sp.btn && reader.contains(sp.btn) && !(sp.audio&&sp.audio.paused); }
   function listenUI(tap){ if(window.MFpauseUI) MFpauseUI(); var b=$('listenBtn'); if(!b) return; var T=LIS[MF.lang]||LIS.en, play=rPlaying();
     b.hidden=!sheet; b.classList.toggle('tap',!!tap); reader.classList.toggle('tap',!!tap&&sheet);
     $('listenIco').innerHTML=play?'&#10074;&#10074;':'&#9654;&#xFE0E;'; $('listenLab').textContent=tap?T[2]:play?T[1]:T[0];
@@ -2951,7 +2943,6 @@ window.MF=(function(){
     var id=sp.id; setTimeout(function(){ if(sp.id===id && sp.on && !sp.started) listenBlocked(); },8000); }
   function listenToggle(){ if(!sp.on || !sp.btn || !reader.contains(sp.btn)){ startListen(); return; }
     if(sp.audio){ if(sp.audio.paused) sp.audio.play(); else sp.audio.pause(); }
-    else if(window.speechSynthesis){ if(speechSynthesis.paused) speechSynthesis.resume(); else speechSynthesis.pause(); }
     setTimeout(listenUI,50); }
   $('listenBtn').addEventListener('click',listenToggle); $('rPause').addEventListener('click',listenToggle); $('rTap').addEventListener('click',listenToggle);
   $('rMin').addEventListener('click',function(){ var m=reader.classList.toggle('mini'); reader.classList.remove('full'); this.innerHTML=m?'&#9652;':'&#9662;'; $('rFull').hidden=m; });
@@ -2963,7 +2954,7 @@ window.MF=(function(){
   function RATE(){ var r=1.25; try{ r=+localStorage.getItem('mf-speed')||1.25; }catch(e){} return RATES.indexOf(r)>=0?r:1.25; }
   var PLAYI='<path d="M7 4.5v15l13-7.5z" fill="currentColor"/>', PAUSEI='<path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z" fill="currentColor"/>';
   function plMine(){ return sp.on && sp.btn===PB; }
-  function plPaused(){ return plMine() && (sp.audio?sp.audio.paused:!!(window.speechSynthesis&&speechSynthesis.paused)); }
+  function plPaused(){ return plMine() && !!(sp.audio&&sp.audio.paused); }
   function plPlaying(){ return plMine() && !plPaused(); }
   function plUI(){ if($('mfPlayer').hidden) return; var on=plPlaying(), T=RSAY[MF.lang]||RSAY.en, unit=PL.unit==='verse'?T[0]:'';
     $('mpIco').innerHTML=$('mpIco2').innerHTML=on?PAUSEI:PLAYI; var LB=LIS[MF.lang]||LIS.en; PB.setAttribute('aria-label',on?LB[1]:LB[0]); $('mpPlay2').setAttribute('aria-label',on?LB[1]:LB[0]);
@@ -2995,8 +2986,8 @@ window.MF=(function(){
       next:function(x){ var L=PL.loop; if(L&&(x>=L.b||x<L.a)) return L.a; return x+1; }};
     Object.defineProperty(c,'learn',{get:function(){ return PL.learnOn&&PL.learn&&PL.learn.t?PL.learn:null; }});
     PL.fresh=false; PL.n=v; PL.done=false; readAloud(c,v,PL.N,PB); plUI(); }
-  function plToggle(){ if(plPaused()){ if(sp.audio) sp.audio.play(); else speechSynthesis.resume(); setTimeout(plUI,60); return; }
-    if(plPlaying()){ if(sp.audio) sp.audio.pause(); else speechSynthesis.pause(); setTimeout(plUI,60); return; }
+  function plToggle(){ if(plPaused()){ if(sp.audio) sp.audio.play(); setTimeout(plUI,60); return; }
+    if(plPlaying()){ if(sp.audio) sp.audio.pause(); setTimeout(plUI,60); return; }
     if(PL.ctx) plStart(PL.n>=PL.N&&PL.done?1:PL.n); }
   function plClose(){ if(plMine()) stopSpeak(); rMarkIn(PL.ctx||{root:document.body,data:{l:'en'}},0); if(PL.src) PL.src.setAttribute('aria-pressed','false'); $('mfPlayer').hidden=true; PL.src=null; if(window.MFvsSync) MFvsSync(); if(window.MFsecSync) MFsecSync(); }
   window.MFplClose=plClose; window.MFplSource=function(){ return PL.src; };
@@ -3103,7 +3094,7 @@ window.MF=(function(){
   window.MFcloseWord=function(){ if(WP) closeWord(); };
   $('wpInSay').addEventListener('click',function(){ if(!WP||!WP.inSay) return; var t=WP.inSay.t, L=WP.inSay.l; stopSpeak(); var id=sp.id, vo=aiVoice();
     (vo?sayUrl(t,L,vo):Promise.reject()).then(function(u){ if(id!==sp.id) return; var a=AU(); a.onended=a.onplaying=a.onpause=a.ontimeupdate=null; a.src=u; a.playbackRate=RATE(); sp.audio=a; return a.play(); })
-      .catch(function(){ if(id!==sp.id||!window.speechSynthesis) return; var u=new SpeechSynthesisUtterance(t), vv=voiceFor(L); u.lang=LCODE[L]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.85*RATE(); speechSynthesis.speak(u); }); });
+      .catch(function(){ }); });
   // just this word
   $('wpHlw').addEventListener('click',function(){ if(!WP||!WP.X.hl) return; var root=WP.root, vn=WP.vn, t=WP.t, c=WP.X.hl;
     wselClear(); var sp=root.querySelector('span[data-v="'+vn+'"]'); hlPhrase(sp,c,t.s,t.e); wpExtras(); });
@@ -3155,7 +3146,7 @@ window.MF=(function(){
   document.addEventListener('click',function(e){ if(!WP||$('wPop').contains(e.target)||e.target.closest('.chapter span[data-v],#mpWord')) return; closeWord(); });
   $('wpSay').addEventListener('click',function(){ if(!WP) return; var w=WP.w, L=WP.L; stopSpeak(); var id=sp.id, vo=aiVoice();
     (vo?sayUrl(spoken(w,L),L,vo):Promise.reject()).then(function(u){ if(id!==sp.id) return; var a=AU(); a.onended=a.onplaying=a.onpause=a.ontimeupdate=null; a.src=u; a.playbackRate=RATE(); sp.audio=a; return a.play(); })
-      .catch(function(){ if(id!==sp.id||!window.speechSynthesis) return; var u=new SpeechSynthesisUtterance(spoken(w,L)), vv=voiceFor(L); u.lang=LCODE[L]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.85*RATE(); speechSynthesis.speak(u); }); });
+      .catch(function(){ }); });
   $('wpHl').addEventListener('click',function(){ if(!WP||!WP.toggle) return; var on=WP.toggle(WP.v), T=WPT[MF.lang]||WPT.en; this.textContent='🖍 '+(on?T[2]:T[1]); });
   function wpPlayer(){ var X=WP.X; if(PL.src!==X.src||$('mfPlayer').hidden) X.src.click(); $('mfPlayer').classList.remove('mini'); return PL.src===X.src; }
   $('wpPlay').addEventListener('click',function(){ if(!WP) return; var vn=WP.vn; if(!wpPlayer()) return; closeWord(); PL.fresh=false; plStart(vn); });
@@ -3624,11 +3615,11 @@ window.MF=(function(){
       $('ptSpk').setAttribute('aria-pressed','true'); if(window.MFptModeUI) setTimeout(MFptModeUI,60); }); }
   // ── Pause beside the speaker (Ken, 12 Oct): pauses the reading where it is; ▶ carries on from there
   var PAUSEB='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z" fill="currentColor"/></svg>', PLAYB='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg>';
-  function spPaused(){ return sp.audio?sp.audio.paused:!!(window.speechSynthesis&&speechSynthesis.paused); }
+  function spPaused(){ return !!(sp.audio&&sp.audio.paused); }
   function pauseBtnUI(b,src){ var mine=sp.on&&sp.btn===src; b.hidden=!mine; if(!mine) return; var ps=spPaused(), T=LIS[MF.lang]||LIS.en;
     b.innerHTML=ps?PLAYB:PAUSEB; b.classList.toggle('ps',ps); b.setAttribute('aria-label',ps?T[0]:T[1]); }
   window.MFpauseUI=function(){ pauseBtnUI($('ptPause'),$('ptSpk')); pauseBtnUI($('tPause'),$('tSpk')); if(window.MFptModeUI) MFptModeUI(); };
-  function spToggle(){ if(!sp.on) return; if(spPaused()){ if(sp.audio) sp.audio.play(); else speechSynthesis.resume(); } else { if(sp.audio) sp.audio.pause(); else speechSynthesis.pause(); } setTimeout(MFpauseUI,60); }
+  function spToggle(){ if(!sp.on) return; if(spPaused()){ if(sp.audio) sp.audio.play(); } else { if(sp.audio) sp.audio.pause(); } setTimeout(MFpauseUI,60); }
   $('ptPause').addEventListener('click',spToggle); $('tPause').addEventListener('click',spToggle);
   function ptGo(i){ PT.i=Math.max(0,Math.min(PT.steps.length-1,i)); $('ptMenu').hidden=true; ptRender(); ptSay(); }
   // Ken, 20 Oct: "the scripture chapters before and after ... other chapters or books of the Bible if they choose" -- the whole Bible
@@ -4364,14 +4355,10 @@ window.MF=(function(){
     var SPK={es:['Palabra','Versículo'],tl:['Salita','Talata'],zh:['词','经文'],hi:['शब्द','पद'],el:['Λέξη','Εδάφιο'],de:['Wort','Vers'],ko:['단어','구절'],he:['מילה','פסוק'],ar:['كلمة','آية'],ru:["Слово","Стих"]}, sw=SPK[MF.lang]||['Word','Verse'];
     document.querySelectorAll('.spkw').forEach(function(e){e.textContent=sw[0];});
     document.querySelectorAll('.spkv').forEach(function(e){e.textContent=sw[1];}); }
-  function stopSpeak(){ sp.id++; clearInterval(sp.timer); if(sp.audio){ var a0=sp.audio; a0.onended=a0.onpause=a0.onplaying=a0.ontimeupdate=null; a0.pause(); sp.audio=null; } if(window.speechSynthesis) speechSynthesis.cancel();
+  function stopSpeak(){ sp.id++; clearInterval(sp.timer); if(sp.audio){ var a0=sp.audio; a0.onended=a0.onpause=a0.onplaying=a0.ontimeupdate=null; a0.pause(); sp.audio=null; } 
     if(sp.btn) sp.btn.setAttribute('aria-pressed','false');
     if(sp.fh){ sp.fh.reset(); sp.fh=null; }
     sp.on=false; sp.btn=null; if(window.MFlistenUI) MFlistenUI(); if(window.MFplUI) MFplUI(); }
-  function voiceFor(l){ var vs=(window.speechSynthesis&&speechSynthesis.getVoices())||[];
-    var m=vs.filter(function(v){ var c=(v.lang||'').toLowerCase().replace('_','-'); return LPRE[l].some(function(p){return c.indexOf(p)===0;}); });
-    m.sort(function(a,b){ var q=function(v){return /natural|neural|premium|enhanced|siri|google/i.test(v.name)?0:1;}; return q(a)-q(b); });
-    return {any:vs.length>0, v:m[0]||null}; }
   function renderSay(box,text,l,ref){ var h='', i=0, parts=l==='zh'?text.split(''):text.split(/(\s+)/);
     parts.forEach(function(t){ if(/^\s+$/.test(t)||t===''){ h+=t; } else { h+='<span class="w" data-s="'+i+'" data-e="'+(i+t.length)+'">'+esc(t)+'</span>'; } i+=t.length; });
     box.innerHTML=h+(ref?'<span class="sref">'+esc(ref)+'</span>':''); box.hidden=false;
@@ -4410,10 +4397,10 @@ window.MF=(function(){
             reset:function(){ paint(topL,''); paint(botL,''); }}; }
   // Ken, 9 Oct: "the user can choose which voice to hear" -- the natural (AI) voices, or the device's own voice
   var VOICES=[['thunder','Thunder — very deep, grand'],['narrator','Narrator — classic Bible reader'],['highland','Highlander — Scottish gentleman'],['onyx','Onyx — deep'],['ash','Ash — gentle'],['fable','Fable — storyteller'],['grace','Grace — deep, mature'],['magnolia','Magnolia — Southern, sweet'],['heather','Heather — Scottish lady'],['sage','Sage — calm'],['coral','Coral — warm'],['ballad','Ballad — expressive'],['alloy','Alloy — even, clear'],['echo','Echo — bright'],['nova','Nova — lively'],['shimmer','Shimmer — soft'],['verse','Verse — friendly']];
-  function curVoice(){ var v=''; try{ v=localStorage.getItem('mf-voice')||''; }catch(e){} return v==='device'||VOICES.some(function(o){ return o[0]===v; })?v:'sage'; }
-  function aiVoice(){ var v=curVoice(); return v==='device'?'':v; }
-  function voiceOptions(){ var v=curVoice(), dev={es:'Voz de este dispositivo'}[MF.lang]||'This device’s own voice';
-    return VOICES.map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===v?' selected':'')+'>'+o[1]+'</option>'; }).join('')+'<option value="device"'+(v==='device'?' selected':'')+'>'+esc(dev)+'</option>'; }
+  function curVoice(){ var v=''; try{ v=localStorage.getItem('mf-voice')||''; }catch(e){} return VOICES.some(function(o){ return o[0]===v; })?v:'sage'; }
+  function aiVoice(){ return curVoice(); }
+  function voiceOptions(){ var v=curVoice();
+    return VOICES.map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===v?' selected':'')+'>'+o[1]+'</option>'; }).join(''); }
   function setVoice(v){ try{ localStorage.setItem('mf-voice',v); }catch(e){} stopSpeak(); document.querySelectorAll('.voicesel').forEach(function(s){ s.value=v; }); }
   // Ken, 26 Oct: a ▾ on Listen and on the fish's Verse button opens the voices (fish-lang/voicepick.js); the pick is the voice everywhere
   window.MFvpHook=function(){ if(!window.MFvoice) return; var dl=document.getElementById('dgListen'), vb=document.querySelector('#spkMain .spk[data-part="verse"]');
@@ -4445,17 +4432,7 @@ window.MF=(function(){
       a.onended=function(){ if(id===sp.id) stopSpeak(); }; a.src=url; a.defaultPlaybackRate=a.playbackRate=RATE(); return a.play();
     }).catch(function(){ if(id!==sp.id) return; deviceSay(l,spoken,mk,id,box); });
   }
-  function deviceSay(l,text,mk,id,box){ if(l==='he') text=text.replace(/ה׳/g,'אדוני');  // ה׳ is said aloud as Adonai
-    var es=MF.lang==='es';
-    if(!window.speechSynthesis){ sayNote(box,es?'Este navegador no puede leer en voz alta.':'This browser cannot read aloud.'); sp.on=false; stopSpeak(); return; }
-    var vv=voiceFor(l);
-    if(vv.any && !vv.v){ sayNote(box,(es?'Este dispositivo aún no tiene voz en ':'This device has no voice for ')+cmpLabel(l)+(es?'. Con la voz natural del sitio sí se podrá.':' yet. The site’s natural voice will cover it once it is turned on.')); sp.on=false; stopSpeak(); return; }
-    var u=new SpeechSynthesisUtterance(text); u.lang=LCODE[l]||'en-US'; if(vv.v) u.voice=vv.v; u.rate=.9*RATE();
-    var got=false, t0=Date.now(), cps=l==='zh'?4:l==='hi'?11:13;
-    u.onboundary=function(e){ got=true; mk(e.charIndex); };
-    sp.timer=setInterval(function(){ if(!got) mk((Date.now()-t0)/1000*cps); },150);
-    u.onend=u.onerror=function(){ if(id===sp.id) stopSpeak(); };
-    speechSynthesis.speak(u); }
+  function deviceSay(l,text,mk,id,box){ var es=MF.lang==='es'; sayNote(box,es?'La voz no se pudo reproducir ahora. Inténtalo de nuevo.':'The voice could not play just now. Please try again.'); sp.on=false; stopSpeak(); }
   // one listener for every speaker button, caught before the card's own tap-to-flip
   document.addEventListener('click',function(e){ var b=e.target.closest&&e.target.closest('.spk'); if(!b) return;
     e.stopPropagation(); e.preventDefault(); var fig=b.closest('figure[data-l]');
@@ -4740,8 +4717,8 @@ window.MF=(function(){
   $('nScope').addEventListener('click',function(){ this.setAttribute('aria-pressed',this.getAttribute('aria-pressed')==='true'?'false':'true'); showNotes(); });
   // Ken, 12 Oct: "When I'm playing my notes out loud ... I don't see a pause button anywhere" -- Pause and Stop while it reads
   setInterval(function(){ if($('notesBox').hidden) return; var mine=sp.on&&sp.btn&&$('notesBox').contains(sp.btn), es=MF.lang==='es'; $('nReadCtl').hidden=!mine; if(!mine) return;
-    var ps=sp.audio?sp.audio.paused:!!(window.speechSynthesis&&speechSynthesis.paused); $('nPause').textContent=ps?'▶ '+(es?'Seguir':'Resume'):'⏸ '+(es?'Pausa':'Pause'); $('nStop').textContent='■ '+(es?'Detener':'Stop'); },300);
-  $('nPause').addEventListener('click',function(){ if(sp.audio){ if(sp.audio.paused) sp.audio.play(); else sp.audio.pause(); } else if(window.speechSynthesis){ if(speechSynthesis.paused) speechSynthesis.resume(); else speechSynthesis.pause(); } });
+    var ps=!!(sp.audio&&sp.audio.paused); $('nPause').textContent=ps?'▶ '+(es?'Seguir':'Resume'):'⏸ '+(es?'Pausa':'Pause'); $('nStop').textContent='■ '+(es?'Detener':'Stop'); },300);
+  $('nPause').addEventListener('click',function(){ if(sp.audio){ if(sp.audio.paused) sp.audio.play(); else sp.audio.pause(); } });
   $('nStop').addEventListener('click',function(){ stopSpeak(); document.querySelectorAll('#notesBox .nb.reading').forEach(function(b){ b.classList.remove('reading'); }); });
   // Ken, 12 Oct: import notes -- only the accounts named in MF_IMPORTERS see this. Each file is a note (iPhone Notes exports one
   // file per note); a file with "---" lines between parts becomes several notes; a .json list of {text, date} works too.

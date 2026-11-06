@@ -274,7 +274,7 @@ input[type=range]{width:46%;accent-color:var(--blue2)}
       +tg('hist',true,'Remember what I read','History and Recent')
       +'<h3>Highlights</h3><div class="opt"><span class="l"><b>Highlight colour</b><small>The one a tap uses first</small></span><span class="cf" style="margin:0">'+['gold','green','blue','pink','orange'].concat(HLC[hc]&&['gold','green','blue','pink','orange'].indexOf(hc)<0?[hc]:[]).map(function(c){ return '<button type="button" data-hc="'+c+'" aria-label="'+c+'" aria-pressed="'+(hc===c)+'" style="background:'+HLC[c]+'"></button>'; }).join('')+'</span></div>'
       +'<div class="opt"><span class="l"><b>Remove highlights</b><small>All of them, or the ones you choose</small></span><button type="button" class="b red" id="stHl">Open</button></div>'
-      +'<h3>Listening</h3><div class="opt"><span class="l"><b>Voice</b><small>The voices on this device</small></span><select id="stVoice"><option value="">Best on this device</option></select></div>'
+      +'<h3>Listening</h3><div class="opt"><span class="l"><b>Voice</b><small>MannaFish’s natural voices, used everywhere you press play</small></span><select id="stVoice"></select></div>'
       +seg('rate',0.95,'Speed',[[0.8,'Slow'],[0.95,'Normal'],[1.1,'Quick'],[1.25,'Fast']])
       +tg('cont',true,'Keep going into the next chapter')
       +'<div class="opt"><span class="l"><b>Hear it</b></span><button type="button" class="b" id="stTry">&#9654;&#xFE0E; Try</button></div>'
@@ -282,14 +282,15 @@ input[type=range]{width:46%;accent-color:var(--blue2)}
       +'<h3>This device</h3><div class="opt"><span class="l"><b>Export everything</b><small>Prayers, notes, highlights, saved, links</small></span><button type="button" class="b" id="stExp">&#11015;&#xFE0E; Export</button></div>'
       +'<div class="opt"><span class="l"><b>Back to the standard settings</b></span><button type="button" class="b" id="stReset">Reset</button></div>';
     voices(); preview(); }
-  function voices(){ var sel=$('stVoice'); if(!sel||!window.speechSynthesis) return; var want=SET('voice',''), vs=speechSynthesis.getVoices().filter(function(v){ return /^en/i.test(v.lang); });
-    sel.innerHTML='<option value="">Best on this device</option>'+vs.map(function(v){ return '<option value="'+esc(v.voiceURI)+'"'+(v.voiceURI===want?' selected':'')+'>'+esc(v.name)+' ('+esc(v.lang)+')</option>'; }).join(''); }
-  if(window.speechSynthesis) speechSynthesis.addEventListener('voiceschanged',voices);
+  var NATV=[['thunder','Thunder — very deep, grand'],['narrator','Narrator — classic Bible reader'],['highland','Highlander — Scottish gentleman'],['onyx','Onyx — deep'],['ash','Ash — gentle'],['fable','Fable — storyteller'],['grace','Grace — deep, mature'],['magnolia','Magnolia — Southern, sweet'],['heather','Heather — Scottish lady'],['sage','Sage — calm'],['coral','Coral — warm'],['ballad','Ballad — expressive'],['alloy','Alloy — even, clear'],['echo','Echo — bright'],['nova','Nova — lively'],['shimmer','Shimmer — soft'],['verse','Verse — friendly']];
+  function curNat(){ var v=''; try{ v=localStorage.getItem('mf-voice')||''; }catch(e){} return NATV.some(function(o){ return o[0]===v; })?v:'sage'; }
+  function voices(){ var sel=$('stVoice'); if(!sel) return; var want=curNat(); sel.innerHTML=NATV.map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===want?' selected':'')+'>'+esc(o[1])+'</option>'; }).join(''); }
+  var TRY=null;
   $('stBox').addEventListener('change',function(e){ var t=e.target;
     if(t.classList.contains('tg')){ if(t.dataset.k==='layout_lines') setV('layout',t.checked?'lines':undefined); else setV(t.dataset.k,t.checked?undefined:false); if(t.dataset.k==='hist') drawHi(); return; }
     if(t.id==='stVer'){ rawSet('mf-bible-version',t.value); return; }
     if(t.id==='stLang'){ rawSet('mf-lang',t.value); toast('Language saved'); return; } if(t.id==='stVox'){ rawSet('mf-voice',t.value); return; }
-    if(t.id==='stName'){ setV('name',t.value.trim()||undefined); acctUI(); return; } if(t.id==='stVoice'){ setV('voice',t.value||undefined); } });
+    if(t.id==='stName'){ setV('name',t.value.trim()||undefined); acctUI(); return; } if(t.id==='stVoice'){ try{ localStorage.setItem('mf-voice',t.value); }catch(er){} touch('set'); } });
   $('stBox').addEventListener('input',function(e){ if(e.target.id!=='sz') return; var v=+e.target.value; setV('size',v===19?undefined:v); $('szV').textContent=v===19?'Standard':v+' px'; });
   $('stBox').addEventListener('click',function(e){ var t=e.target.closest('button'); if(!t) return;
     if(t.dataset.seg){ var v=t.dataset.v; if(t.dataset.store){ rawSet(t.dataset.store,v); } else setV(t.dataset.seg,t.dataset.seg==='rate'?+v:v); [].forEach.call(t.parentNode.children,function(b){ b.setAttribute('aria-pressed',String(b===t)); }); preview(); return; }
@@ -298,7 +299,7 @@ input[type=range]{width:46%;accent-color:var(--blue2)}
     if(t.id==='stHl'){ document.querySelector('.tabs [data-t="hl"]').click(); window.scrollTo(0,0); return; }
     if(t.id==='stExp'){ $('exp').click(); return; }
     if(t.id==='stReset'){ if(!confirm('Go back to the standard settings? Your notes, prayers and highlights stay.')) return; put('mf-set',{}); touch('set'); drawSt(); toast('Standard settings'); return; }
-    if(t.id==='stTry'&&window.speechSynthesis){ speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance('In the beginning was the Word, and the Word was with God, and the Word was God.'), want=SET('voice',''), vs=speechSynthesis.getVoices(), w=vs.filter(function(v){ return v.voiceURI===want; })[0]; if(w){ u.voice=w; u.lang=w.lang; } else u.lang='en-US'; u.rate=+SET('rate',0.95)||0.95; speechSynthesis.speak(u); } });
+    if(t.id==='stTry'){ try{ if(TRY) TRY.pause(); TRY=new Audio('/api/say?t='+encodeURIComponent('In the beginning was the Word, and the Word was with God, and the Word was God.')+'&l=en&v='+encodeURIComponent(curNat())); var pr=TRY.play(); if(pr&&pr.catch) pr.catch(function(){ toast('The voice could not play just now.'); }); }catch(er){} } });
 
   // ── the free account ──
   function acctUI(){ var u=window.MFacct&&MFacct.me(); $('acOut').hidden=!!u; $('acIn').hidden=!u; if(u){ $('acWho').textContent=(SET('name','')?SET('name','')+' · ':'')+(u.email||'Signed in'); var t=+raw('mf-synced',0); $('acS').textContent=t?'Synced '+new Date(t).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Syncing…'; }

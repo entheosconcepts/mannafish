@@ -755,9 +755,9 @@ html,body{overflow-x:hidden}
 
   // ── hearing a word: the site's natural voice (/api/tts), else this device's own voice ──
   var CLIP={}, apiOff=false, sp={id:0,audio:null,card:null,next:null,busy:false};
-  function aiVoice(){ var v=store('mf-voice')||''; if(v==='device') return ''; return VOICES.indexOf(v)>=0?v:'sage'; }
+  function aiVoice(){ var v=store('mf-voice')||''; return VOICES.indexOf(v)>=0?v:'sage'; }
   function clip(l,k,part){ part=part||'word';
-    var v=aiVoice(); if(!v||apiOff) return Promise.reject(new Error('device'));
+    var v=aiVoice(); if(apiOff) return Promise.reject(new Error('off'));
     var key=l+'|'+k+'|'+v+'|'+part; if(CLIP[key]) return CLIP[key];
     var p=fetch('/api/tts?lang='+l+'&w='+k+'&part='+part+'&v='+v+(part==='word'?'&r=3':'')).then(function(r){
       if(r.status===501) apiOff=true;
@@ -765,19 +765,9 @@ html,body{overflow-x:hidden}
     p.catch(function(){ delete CLIP[key]; });
     return CLIP[key]=p;
   }
-  function voiceFor(l){
-    if(!window.speechSynthesis) return null;
-    var vs=speechSynthesis.getVoices()||[], pre=LPRE[l], best=null;
-    for(var i=0;i<vs.length;i++){ var n=(vs[i].lang||'').toLowerCase().replace('_','-');
-      if(n===LCODE[l].toLowerCase()) return vs[i];
-      if(!best&&pre.some(function(p){ return n===p||n.indexOf(p+'-')===0; })) best=vs[i]; }
-    return best;
-  }
-  if(window.speechSynthesis&&speechSynthesis.getVoices) speechSynthesis.getVoices();
   function stopSpeak(){
     sp.id++; sp.next=null; sp.busy=false;
     if(sp.audio){ try{ sp.audio.pause(); }catch(e){} sp.audio=null; }
-    if(window.speechSynthesis) try{ speechSynthesis.cancel(); }catch(e){}
     if(sp.card) sp.card.el.classList.remove('talk','talkv'); sp.card=null;
   }
   // queue=true (a card just flipped): wait for the word being said; otherwise (a tap) say it now
@@ -793,14 +783,7 @@ html,body{overflow-x:hidden}
       var n=sp.next; sp.next=null; if(n) say(n,false); }
     one();
     function one(){ var l=list[0], word=part==='verse'?((V[l]||{})[k]||W[l][k]):W[l][k];
-    function device(){
-      if(id!==sp.id) return;
-      if(!window.speechSynthesis||typeof SpeechSynthesisUtterance==='undefined') return done();
-      var u=new SpeechSynthesisUtterance(l==='he'?word.replace(/ה׳/g,'אדוני'):word), v=voiceFor(l);
-      u.lang=LCODE[l]; if(v) u.voice=v; u.rate=part==='verse'?.95:.85;
-      var safety=setTimeout(done,part==='verse'?20000:4000); u.onend=u.onerror=function(){ clearTimeout(safety); done(); };
-      try{ speechSynthesis.speak(u); }catch(e){ clearTimeout(safety); done(); }
-    }
+    function device(){ if(id!==sp.id) return; done(); }   /* the natural voice could not play: carry on quietly, never the phone's own voice */
     clip(l,k,part).then(function(url){
       if(id!==sp.id) return;
       var a=new Audio(url); sp.audio=a; a.onended=done; a.onerror=device;

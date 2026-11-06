@@ -346,17 +346,21 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
     if(RD.k==='pace'){ var t=tips()[0]; if(t) openChapters(t.ch); else closeReader(); return; } var i=-1; ALLR.some(function(x,n){ if(key(x.w,x.d,x.h)===RD.k){ i=n; return true; } return false; }); var x=ALLR[i+1]; if(x) openReader(key(x.w,x.d,x.h)); else closeReader(); });
 
   // read aloud, verse by verse, following along on the page
-  var SAY={on:false,i:0,list:[]};
-  function stopSay(){ SAY.on=false; try{ speechSynthesis.cancel(); }catch(e){} [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); }); $('rSay').innerHTML='&#9654;&#xFE0E; Listen'; }
-  // Ken, 26 Oct: a ▾ beside Listen picks one of this phone's voices (fish-lang/voicepick.js); that pick comes first
-  window.MFvpHook=function(){ if(window.MFvoice) MFvoice.attach($('rSay'),{mode:'device',lang:'en',onPick:function(){ if(SAY.on) stopSay(); }}); };
-  function voice(){ var pk=window.MFvoice&&MFvoice.device('en'); if(pk) return pk; var vs=speechSynthesis.getVoices().filter(function(v){ return /^en/i.test(v.lang); }); var pick=ls('mf-voice'); return vs.filter(function(v){ return v.name===pick; })[0]||vs.filter(function(v){ return /en-(US|GB)/i.test(v.lang)&&/natural|premium|enhanced|samantha|daniel|google/i.test(v.name); })[0]||vs[0]||null; }
+  var SAY={on:false,i:0,list:[],run:0}, PA=null;
+  function stopSay(){ SAY.on=false; SAY.run++; try{ if(PA) PA.pause(); }catch(e){} [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); }); $('rSay').innerHTML='&#9654;&#xFE0E; Listen'; }
+  // Ken, 26 Oct: a ▾ beside Listen picks one of this phone's voices (fish-lang/voicepick.js); natural voices only, never the phone's own
+  window.MFvpHook=function(){ if(window.MFvoice) MFvoice.attach($('rSay'),{mode:'natural',noDevice:true,lang:'en',onPick:function(){ if(SAY.on) stopSay(); }}); };
+  function pvoice(){ var v=window.MFvoice&&MFvoice.get?MFvoice.get():'sage'; return !v||v==='device'?'sage':v; }
+  function pchunk(t,n){ var out=[], r=String(t||'').replace(/\s+/g,' ').trim(); while(r.length>n){ var k=Math.max(r.lastIndexOf('. ',n),r.lastIndexOf('; ',n),r.lastIndexOf(', ',n),r.lastIndexOf(' ',n)); if(k<40) k=n; out.push(r.slice(0,k+1).trim()); r=r.slice(k+1).trim(); } if(r) out.push(r); return out; }
   function sayNext(){ if(!SAY.on) return; [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); });
     var el=SAY.list[SAY.i]; if(!el){ stopSay(); return; } el.classList.add('say'); var b=$('rBody'), t=el.getBoundingClientRect(), bb=b.getBoundingClientRect(); if(t.top<bb.top+40||t.bottom>bb.bottom-60) b.scrollTop+=t.top-bb.top-bb.height/3;
     var head=el.dataset.v==='1'?(RD.k==='pace'?RD.chs:R(+RD.k.split('-')[0],+RD.k.split('-')[1],RD.k.split('-')[2]).ch)[+el.dataset.c].join(' chapter ')+'. ':'';
-    var u=new SpeechSynthesisUtterance(head+el.textContent), v=voice(); if(v){ u.voice=v; u.lang=v.lang; } else u.lang='en-US'; u.rate=.95;
-    u.onend=function(){ SAY.i++; sayNext(); }; u.onerror=function(e){ if(e.error!=='interrupted'&&e.error!=='canceled'){ SAY.i++; sayNext(); } }; speechSynthesis.speak(u); }
-  $('rSay').addEventListener('click',function(){ if(!window.speechSynthesis){ toast('This device cannot read aloud'); return; }
+    var me=SAY.run, parts=pchunk(head+el.textContent,280), v=pvoice(); if(!PA) PA=new Audio();
+    (function nx(i){ if(me!==SAY.run||!SAY.on) return; if(i>=parts.length){ SAY.i++; sayNext(); return; }
+      var bad=function(){ if(me===SAY.run){ toast('The voice could not play just now. Please try again.'); stopSay(); } };
+      PA.onended=function(){ nx(i+1); }; PA.onerror=bad; PA.src='/api/say?t='+encodeURIComponent(parts[i])+'&l=en&v='+encodeURIComponent(v);
+      var pr=PA.play(); if(pr&&pr.catch) pr.catch(function(e){ if(!(e&&e.name==='AbortError')) bad(); }); })(0); }
+  $('rSay').addEventListener('click',function(){
     if(SAY.on){ stopSay(); return; } SAY.list=[].slice.call(document.querySelectorAll('#rTxt .v')); if(!SAY.list.length) return;
     var b=$('rBody').getBoundingClientRect(); SAY.i=Math.max(0,SAY.list.findIndex(function(e){ return e.getBoundingClientRect().bottom>b.top+10; }));
     SAY.on=true; this.innerHTML='&#10074;&#10074; Stop'; sayNext(); });
