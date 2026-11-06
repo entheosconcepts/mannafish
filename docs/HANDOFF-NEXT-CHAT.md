@@ -6,7 +6,7 @@ If you can, also attach the saved word-for-word record of the last chat ("MannaF
 ---
 
 ```
-Let's continue working on MannaFish. Repo: entheosconcepts/mannafish, branch test-site (deploys to https://yadamannafishtest.netlify.app).
+Let's continue working on MannaFish. Repo: entheosconcepts/mannafish. IMPORTANT: all the work is on the branch test-site (it deploys to https://yadamannafishtest.netlify.app). The default branch main is the old live decal shop and does NOT have the Bible reader. First run: git fetch origin test-site && git checkout -B test-site origin/test-site . I authorise you to commit and push to test-site (never to main).
 
 FIRST, before answering anything, read these three files in the repo and do not ask me anything they already answer:
 1. CLAUDE.md  (rules, layout, how to work)

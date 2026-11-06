@@ -2,6 +2,8 @@
 
 MannaFish gives Scripture away: one word of Scripture in the middle of a fish, with its verse around it. A static site on Netlify with serverless functions.
 
+**The branch trap (read this first):** the repo's default branch **`main` is the LIVE decal shop page** (a different, older site: no Bible, no translator). All the real work (Bible reader, Translator, Hubs, Ride, fish tools) is on branch **`test-site`**. A new session may start on `main` or on its own `claude/...` branch and wrongly report "the Bible reader isn't in this repo". Fix before anything else: `git fetch origin test-site && git checkout -B test-site origin/test-site` (then `bible/index.html` exists). Ken authorises pushing to `test-site`; never push to `main`.
+
 ## Start every session by reading docs/DECISIONS.md (then docs/UPDATES.md)
 - `docs/DECISIONS.md` is the full record: Ken's rules and how he likes replies (A), every open question waiting on him (B), a map of every feature with its files, routes, storage and how to test it (C), a dated log of everything he asked (D), every error we hit and its fix (E), the environment variable names (F).
 - Then read `docs/UPDATES.md` (Ken's to-do list).

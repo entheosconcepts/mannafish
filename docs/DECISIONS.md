@@ -537,6 +537,7 @@ docs/LAUNCH.md. Ken's full words are in the transcript at `/root/.claude/project
 - 18:19 · "Update CLAUDE.md" · 82cea823 (a short file; Ken later said it lacked detail).
 
 ### 4 Nov
+- (6 Nov) · A new chat could not find the Bible reader: it was on `main` (the live decal shop) not `test-site`. Fix: check out `test-site` first (now at the top of CLAUDE.md and the handoff message).
 - (afternoon) · Ken wanted every word of this chat saved where it costs nothing to read; asked where to approve; "Try again" · A word-for-word record (603 entries, 12 parts, about 487,000 characters) was built and sent to Ken as one file (`MannaFish-chat-record-FULL.md`). The Google Drive upload was only partly done (folder "MannaFish chat record" holds the index and part 12; parts 1-11 were stopped by a safety check). Nothing is stored in the repo (visibility unknown). A new chat can be given the file and searches it only for a missing detail.
 - (afternoon) · "Create a handoff note to start anew" · `docs/HANDOFF-NEXT-CHAT.md` (a message to paste into a new chat).
 - (afternoon) · "Make the remember fish or a 2nd version of remember from revelation2:5" · `X006` Remember added as a second fish (B3 updated); original untouched. Lines in `tools/fish-format/extra-lines.json`, then `tools/fish/redraw-all.sh` (word in its verse: 0 problems). The rotation's existing days did not move.
