@@ -245,7 +245,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 .phd .ogall{flex:none;border:0;background:var(--blue,#2a5fb0);color:#fff;border-radius:999px;padding:5px 10px;font:800 .74rem 'Archivo',sans-serif;cursor:pointer;white-space:nowrap}.phd .ogall[aria-pressed=true]{background:#c0392b}
 .par .txt .v2.ogc{opacity:1;font-size:1.1em;line-height:1.75}.par .txt .ogc .ow{cursor:pointer;border-radius:5px;padding:0 1px}.par .txt .ogc .ow:hover{background:rgba(68,143,255,.18)}.par .txt .ogc .ow.saying{background:rgba(68,143,255,.38)}
 .par .txt .ogc .ogs{border:1px solid var(--line);background:var(--card);color:inherit;border-radius:999px;width:1.9em;height:1.9em;padding:0;font-size:.8em;line-height:1;cursor:pointer;margin:0 4px;vertical-align:middle}
-.par .txt .ogc.saying{background:rgba(68,143,255,.1);border-radius:8px}.par .txt .ogc .otr{display:block;direction:ltr;text-align:left;font-size:.68em;line-height:1.45;color:var(--dim);font-style:italic;margin-top:2px}
+.par .txt .v2.saying,.par .txt .ogc.saying{background:rgba(68,143,255,.1);border-radius:8px}.par .txt .ogc .otr{display:block;direction:ltr;text-align:left;font-size:.68em;line-height:1.45;color:var(--dim);font-style:italic;margin-top:2px}
 @media (max-width:620px){.par3 .txt{--pc:2 !important}.phd .ogall .hlab{display:none}.par3 .txt .pr>.c1,.par3 .phd>span:first-child{grid-column:1/-1}.par3 .txt .pr>.c1{margin-bottom:6px}}
 .par .txt .v2{opacity:.9;cursor:pointer}.par .txt .v2 .vn{font:700 .66rem 'Archivo',sans-serif;color:var(--dim);vertical-align:super;margin:0 3px 0 2px}
 </style>
@@ -484,8 +484,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     $('txt').setAttribute('lang',vlang(V1)); $('txt').dir=!n&&V1.rtl?'rtl':'ltr'; $('txt').style.setProperty('--pc',String(1+n));   // Hebrew and Arabic read right to left
     if(!n){ $('txt').innerHTML='<p>'+ns.map(function(n){ return verseH(n)+' '; }).join('')+'</p>'; xrMark(); return; }
     var all=ns.slice(); PK.forEach(function(x){ Object.keys(x.T).map(Number).forEach(function(v){ if(all.indexOf(v)<0) all.push(v); }); }); all.sort(num);
-    var head='<div class="phd"><span>'+esc(V1.s)+'</span>'+PK.map(function(x,i){ return '<span class="p2"><select data-pi="'+i+'" aria-label="'+(i?'The third column':'The version beside it')+'">'+parOpts(i,1)+'</select>'
-        +(x.P.og&&!x.none?'<button type="button" class="ogall" data-ogall="1" aria-pressed="false" title="Hear the whole chapter in '+x.P.s+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button>':'')
+    var head='<div class="phd"><span>'+esc(V1.s)+' <button type="button" class="ogall" data-hear="m" aria-pressed="false" title="Hear the whole chapter in '+esc(V1.s)+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button></span>'+PK.map(function(x,i){ return '<span class="p2"><select data-pi="'+i+'" aria-label="'+(i?'The third column':'The version beside it')+'">'+parOpts(i,1)+'</select>'
+        +(!x.none?'<button type="button" class="ogall" data-hear="'+i+'" aria-pressed="false" title="Hear the whole chapter in '+esc(x.P.s)+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button>':'')
         +(i===n-1&&n<2?'<button type="button" class="padd" data-padd="1" aria-label="Add a third column">&#65291; 3rd</button>':'')
         +'<button type="button" class="ib sm" data-px="'+i+'" aria-label="'+(n===1?'Close side by side':'Take this column away')+'">&#10005;</button></span>'; }).join('')+'</div>';
     $('txt').innerHTML=head+all.map(function(v){ return '<div class="pr"><div class="c1" lang="'+vlang(V1)+'" dir="'+(V1.rtl?'rtl':'ltr')+'">'+(VT[v]?verseH(v):'')+'</div>'
@@ -499,20 +499,35 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   // hearing the Hebrew or Greek: tap a word for it alone (and how to say it, and what it means), 🔊 for the verse, ▶ Hear for the chapter
   var OGP=0;
   function ogOf(){ return PX.filter(function(x){ return x.P.og&&x.J; })[0]||null; }
-  function sayP(t,l){ return new Promise(function(done){ var fin=function(){ done(); };
-    try{ var a=new Audio('/api/say?t='+encodeURIComponent(t)+'&l='+encodeURIComponent(l)); OGA=a; a.onended=fin; a.onerror=function(){ local(); };
-      a.play().catch(function(){ local(); }); }catch(er){ local(); }
-    var once=0; function local(){ if(once++) return; if(!window.speechSynthesis){ fin(); return; } var u=new SpeechSynthesisUtterance(t); u.lang=l; u.rate=.85; u.onend=fin; u.onerror=fin; speechSynthesis.cancel(); speechSynthesis.speak(u); } }); }
-  var OGA=null;
-  function ogStop(){ OGP++; try{ if(OGA){ OGA.pause(); OGA=null; } if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
-    [].forEach.call(document.querySelectorAll('#txt .ogc.saying,#txt .ow.saying'),function(x){ x.classList.remove('saying'); }); var b=document.querySelector('#txt [data-ogall]'); if(b){ b.setAttribute('aria-pressed','false'); b.innerHTML='&#9654;&#xFE0E;<span class="hlab"> Hear</span>'; } }
+  // ONE audio element and ONE stop: every Hear button (the top Listen, each column) plays through MannaFish's natural voice (/api/say),
+  // never the phone's or computer's own voice (Ken, 6 Nov: "get rid of Microsoft ... I do not like that old electronic voice").
+  // OGP is a ticket number: stopping bumps it, so anything still queued from before quietly ends.
+  var OGA=null, CP={i:-1};
+  function bvoice(){ var v=window.MFvoice&&MFvoice.get?MFvoice.get():'sage'; return !v||v==='device'?'sage':v; }
+  function chunk(t,n){ var out=[], r=String(t||'').replace(/\s+/g,' ').trim(); while(r.length>n){ var k=Math.max(r.lastIndexOf('. ',n),r.lastIndexOf('; ',n),r.lastIndexOf(', ',n),r.lastIndexOf(' ',n)); if(k<40) k=n; out.push(r.slice(0,k+1).trim()); r=r.slice(k+1).trim(); } if(r) out.push(r); return out; }
+  function halt(){ OGP++; try{ if(OGA) OGA.pause(); }catch(e){} }
+  function sayP(t,l){ var me=OGP, parts=chunk(t,280), v=bvoice();
+    return new Promise(function(done){ if(!OGA) OGA=new Audio();
+      (function nx(i){ if(me!==OGP||i>=parts.length){ done(); return; } var a=OGA;
+        var bad=function(){ if(me===OGP){ toast('The voice could not play just now. Please try again.'); stopSay(); ogStop(); } done(); };
+        a.onended=function(){ nx(i+1); }; a.onerror=bad;
+        a.src='/api/say?t='+encodeURIComponent(parts[i])+'&l='+encodeURIComponent(l)+'&v='+encodeURIComponent(v);
+        var pr=a.play(); if(pr&&pr.catch) pr.catch(function(e){ if(e&&e.name==='AbortError') return; bad(); }); })(0); }); }
+  function hearUI(){ [].forEach.call(document.querySelectorAll('#txt [data-hear]'),function(b){ var id=b.dataset.hear, on=id==='m'?SAY.on:CP.i===+id;
+    b.setAttribute('aria-pressed',on?'true':'false'); b.innerHTML=on?'&#9632;&#xFE0E;<span class="hlab"> Stop</span>':'&#9654;&#xFE0E;<span class="hlab"> Hear</span>'; }); }
+  function ogStop(){ halt(); CP.i=-1; [].forEach.call(document.querySelectorAll('#txt .ogc.saying,#txt .ow.saying,#txt .v2.saying'),function(x){ x.classList.remove('saying'); }); hearUI(); }
   function ogVerse(v,keep){ var x=ogOf(), o=x&&x.J.v[String(v)]; if(!o) return Promise.resolve(); var el=document.querySelector('#txt .ogc[data-v="'+v+'"]');
     [].forEach.call(document.querySelectorAll('#txt .ogc.saying'),function(y){ y.classList.remove('saying'); }); if(el){ el.classList.add('saying'); if(keep) el.scrollIntoView({block:'center',behavior:'smooth'}); }
     return sayP(ogClean(o.w.map(function(w){ return w[0]; }).join(' ')),x.P.l).then(function(){ if(el) el.classList.remove('saying'); }); }
-  function ogAll(from){ var x=ogOf(); if(!x) return; stopSay(); ogStop(); var me=OGP, vs=Object.keys(x.J.v).map(Number).sort(function(a,b){ return a-b; }).filter(function(v){ return v>=(from||1); }), b=document.querySelector('#txt [data-ogall]');
-    if(b){ b.setAttribute('aria-pressed','true'); b.innerHTML='&#9632;&#xFE0E;<span class="hlab"> Stop</span>'; }
-    (function next(i){ if(me!==OGP) return; if(i>=vs.length){ ogStop(); return; } ogVerse(vs[i],true).then(function(){ next(i+1); }); })(0); }
-  function ogTap(e){ var b=e.target.closest('[data-ogall]'); if(b){ if(b.getAttribute('aria-pressed')==='true') ogStop(); else ogAll(1); return true; }
+  function colItems(i){ var x=PX[i], out=[]; if(!x||x.none) return out; var src=x.P.og?(x.J&&x.J.v||{}):x.T;
+    Object.keys(src).map(Number).sort(function(a,b){ return a-b; }).forEach(function(v){ var t=x.P.og?ogClean((src[v].w||[]).map(function(w){ return w[0]; }).join(' ')):src[v];
+      if(t) out.push({v:v,t:t,el:document.querySelector('#txt .v2[data-pi="'+i+'"][data-v="'+v+'"]')}); }); return out; }
+  function colAll(i){ var x=PX[i]; if(!x||x.none) return; stopSay(); ogStop(); CP.i=i; hearUI(); var me=OGP, items=colItems(i);
+    (function nx(k){ if(me!==OGP) return; if(k>=items.length){ ogStop(); return; } var it=items[k];
+      [].forEach.call(document.querySelectorAll('#txt .v2.saying'),function(y){ y.classList.remove('saying'); });
+      if(it.el){ it.el.classList.add('saying'); var r=it.el.getBoundingClientRect(); if(r.top<110||r.bottom>innerHeight-90) it.el.scrollIntoView({block:'center',behavior:'smooth'}); }
+      sayP(it.t,x.P.og?x.P.l:vlang(x.P)).then(function(){ if(it.el) it.el.classList.remove('saying'); nx(k+1); }); })(0); }
+  function ogTap(e){ var b=e.target.closest('[data-hear]'); if(b){ var id=b.dataset.hear; if(id==='m') sayToggle(); else if(CP.i===+id) ogStop(); else colAll(+id); return true; }
     var s=e.target.closest('[data-ogs]'); if(s){ stopSay(); ogStop(); ogVerse(+s.dataset.ogs); return true; }
     var w=e.target.closest('.ogc .ow'); if(w){ var x=ogOf(), v=+w.closest('.ogc').dataset.v, o=x&&x.J.v[String(v)], ww=o&&o.w[+w.dataset.oi]; if(!ww) return true; stopSay(); ogStop();
       w.classList.add('saying'); sayP(ogClean(ww[0]),x.P.l).then(function(){ w.classList.remove('saying'); }); toast(ww[0]+' · '+ww[1]+' · “'+String(ww[2]||'').replace(/[<>]/g,'')+'”'); return true; }
@@ -636,8 +651,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function wlUI(){ var W=wlWord(), sel=$('aWlL'); $('aWl').hidden=!W; if(!W) return; $('aWlW').textContent=W.w; $('aWlHl').hidden=!!PHS; $('aWlMk').hidden=!(window.MFmake&&MFmake.latin(VT[W.v]||'')); var L=ogLang(), cur=ls('mf-bw-lang')||'';
     sel.innerHTML='<option value="">🌐 In another language…</option><option value="orig">'+L.n+' (the original)</option>'+WLN.filter(function(x){ return x[0]!==vlang(); }).map(function(x){ return '<option value="'+x[0]+'">'+esc(x[1])+'</option>'; }).join('');
     sel.value=cur&&sel.querySelector('option[value="'+cur+'"]')?cur:''; $('aWlR').innerHTML=''; $('aWlSay').hidden=true; if(sel.value) wlShow(); }
-  function say(t,l){ try{ var a=new Audio('/api/say?t='+encodeURIComponent(t)+'&l='+encodeURIComponent(l)); a.play().catch(function(){ sayLocal(t,l); }); }catch(er){ sayLocal(t,l); } }
-  function sayLocal(t,l){ if(!window.speechSynthesis) return; var u=new SpeechSynthesisUtterance(t); u.lang=l; u.rate=.85; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+  function say(t,l){ stopSay(); ogStop(); sayP(t,l); }   // one word in another language: the natural voice, and nothing else playing
   function wlShow(){ var W=wlWord(), to=$('aWlL').value, out=$('aWlR'), sb=$('aWlSay'); ls('mf-bw-lang',to); sb.hidden=true; if(!W||!to){ out.innerHTML=''; return; } out.innerHTML='<small>…</small>';
     var me=AT.b+':'+AT.c+':'+W.v+':'+W.s+':'+to, done=function(main,sub,l){ if(wlWord()&&AT.b+':'+AT.c+':'+wlWord().v+':'+wlWord().s+':'+$('aWlL').value!==me) return;
       out.innerHTML=esc(main)+(sub?'<small>'+esc(sub)+'</small>':''); sb.hidden=!main; sb.dataset.t=main; sb.dataset.l=l; };
@@ -807,18 +821,14 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   var SAY={on:false,i:0};
   var LC={en:'en-US',es:'es-ES',tl:'fil-PH',zh:'zh-CN',hi:'hi-IN',el:'el-GR',de:'de-DE',ko:'ko-KR',he:'he-IL',ar:'ar-SA',ru:"ru-RU"};
   // Ken, 26 Oct: a ▾ beside Listen picks one of this phone's voices for the language (fish-lang/voicepick.js); that pick comes first
-  window.MFvpHook=function(){ if(window.MFvoice) MFvoice.attach($('say'),{mode:'device',lang:function(){ return vlang(); },onPick:function(){ if(SAY.on) stopSay(); }}); };
-  function voice(){ var L=vlang(), pk=window.MFvoice&&MFvoice.device(L); if(pk) return pk; var vs=(window.speechSynthesis?speechSynthesis.getVoices():[]).filter(function(v){ return new RegExp('^'+(L==='tl'?'(fil|tl)':L),'i').test(v.lang); }), want=SET('voice','');
-    if(L!=='en') return vs.filter(function(v){ return /natural|premium|enhanced|google/i.test(v.name); })[0]||vs[0]||null;
-    if(want){ var w=vs.filter(function(v){ return v.voiceURI===want||v.name===want; })[0]; if(w) return w; }
-    return vs.filter(function(v){ return /en-(US|GB)/i.test(v.lang)&&/natural|premium|enhanced|samantha|daniel|google/i.test(v.name); })[0]||vs[0]||null; }
-  function stopSay(){ SAY.on=false; try{ speechSynthesis.cancel(); }catch(e){} [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); }); $('say').setAttribute('aria-pressed','false'); }
-  function startSay(v){ if(!window.speechSynthesis){ toast('This device cannot read aloud'); return; } ogStop(); stopSay(); SAY={on:true,i:Math.max(0,(v||1)-1)}; $('say').setAttribute('aria-pressed','true'); next(); }
+  window.MFvpHook=function(){ if(window.MFvoice) MFvoice.attach($('say'),{mode:'natural',noDevice:true,lang:function(){ return vlang(); },onPick:function(){ if(SAY.on) stopSay(); }}); };
+  function stopSay(){ SAY.on=false; halt(); [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); }); $('say').setAttribute('aria-pressed','false'); hearUI(); }
+  function startSay(v){ ogStop(); stopSay(); SAY={on:true,i:Math.max(0,(v||1)-1)}; $('say').setAttribute('aria-pressed','true'); hearUI(); next(); }
   function next(){ if(!SAY.on) return; var L=[].slice.call($('txt').querySelectorAll('.v')); [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); });
     var el=L[SAY.i]; if(!el){ var nb=$('next').dataset.to; stopSay(); if(SET('cont',true)&&nb){ AUTOSAY=1; $('next').click(); } return; } el.classList.add('say'); var r=el.getBoundingClientRect(); if(r.top<70||r.bottom>innerHeight-80) window.scrollBy({top:r.top-innerHeight/3,behavior:'smooth'});
-    var u=new SpeechSynthesisUtterance((SAY.i===0&&vlang()==='en'?B[AT.b][0]+' chapter '+AT.c+'. ':'')+el.querySelector('.vt').textContent), vv=voice(); if(vv){ u.voice=vv; u.lang=vv.lang; } else u.lang=LC[vlang()]||'en-US'; u.rate=+SET('rate',0.95)||0.95;
-    u.onend=function(){ SAY.i++; next(); }; u.onerror=function(e){ if(e.error!=='interrupted'&&e.error!=='canceled'){ SAY.i++; next(); } }; speechSynthesis.speak(u); }
-  $('say').addEventListener('click',function(){ if(SAY.on) stopSay(); else { var L=[].slice.call($('txt').querySelectorAll('.v')), i=L.findIndex(function(s){ return s.getBoundingClientRect().bottom>80; }); startSay(i>=0?i+1:1); } });
+    sayP((SAY.i===0&&vlang()==='en'?B[AT.b][0]+' chapter '+AT.c+'. ':'')+el.querySelector('.vt').textContent,vlang()).then(function(){ if(!SAY.on) return; SAY.i++; next(); }); }
+  function sayToggle(){ if(SAY.on) stopSay(); else { var L=[].slice.call($('txt').querySelectorAll('.v')), i=L.findIndex(function(s){ return s.getBoundingClientRect().bottom>80; }); startSay(i>=0?i+1:1); } }
+  $('say').addEventListener('click',sayToggle);
 
   // ── slide a finger across the words (Ken, 24 Oct: "highlight the scripture by tracking my finger across one word or a whole sentence ...
   // As it is, it will only allow the entire verse to be selected"). Hold a word for a moment, then slide: just those words are picked, and the
@@ -1150,8 +1160,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   // ── the book and chapter picker ──
   var OM='read'; try{ OM=sessionStorage.getItem('mf-bible-om')||'read'; }catch(e){}
   function openPick(){ $('pick').classList.add('open'); books(); }
-  // opened to listen: the device's voice starts with the chapter (a sound now, while the tap counts, so a phone lets it speak later)
-  function unlockSay(){ if(OM!=='listen'||!window.speechSynthesis) return; try{ var u=new SpeechSynthesisUtterance(' '); u.volume=0; speechSynthesis.speak(u); }catch(e){} AUTOSAY=1; }
+  // opened to listen: the natural voice starts with the chapter (a sound now, while the tap counts, so a phone lets it speak later)
+  function unlockSay(){ if(OM!=='listen') return; try{ if(!OGA) OGA=new Audio(); OGA.src='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA='; var pr=OGA.play(); if(pr&&pr.catch) pr.catch(function(){}); }catch(e){} AUTOSAY=1; }
   function closePick(){ $('pick').classList.remove('open'); }
   $('where').addEventListener('click',openPick); $('pX').addEventListener('click',closePick); $('pBack').addEventListener('click',function(){ if(this.dataset.to==='books') books(); else closePick(); });
   // Ken, 3 Nov: a Back button on the Books screen (back to the reading; from a book's chapters, back to the books)

@@ -44,10 +44,10 @@
     // the HOPE fish's verse, in the page's language, in that voice (made once, then kept)
     fetch('/api/tts?lang='+lang+'&w=HOPE&part=verse&v='+id).then(function(r){ if(!r.ok) throw 0; return r.blob(); })
       .then(function(b){ au=new Audio(URL.createObjectURL(b)); return au.play(); })
-      .catch(function(){ sayDevice(SAMPLE[lang]||SAMPLE.en,lang,null); }); }
+      .catch(function(){ if(!nodev) sayDevice(SAMPLE[lang]||SAMPLE.en,lang,null); }); }
 
   // ── the menu ──
-  var css=false, open=null;
+  var css=false, open=null, nodev=false;
   function style(){ if(css) return; css=true; var s=document.createElement('style');
     s.textContent='.vpc{display:inline-flex;align-items:center;justify-content:center;min-width:34px;min-height:34px;margin-left:4px;padding:0 8px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:inherit;font:700 .95rem/1 system-ui,sans-serif;cursor:pointer;vertical-align:middle}'
       +'.vpwrap{display:inline-flex;align-items:center}.vpc:focus-visible,.vpw button:focus-visible{outline:3px solid #6c9cf0;outline-offset:2px}'
@@ -67,10 +67,10 @@
     document.head.appendChild(s); }
   function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function close(){ hush(); if(open){ var b=open.back; open.el.remove(); open=null; if(b) try{ b.focus(); }catch(e){} } }
-  function menu(opts,back){ style(); close(); var mode=opts.mode||'natural', lang=(typeof opts.lang==='function'?opts.lang():opts.lang)||uiLang(), es=uiLang()==='es';
+  function menu(opts,back){ style(); close(); nodev=!!opts.noDevice; var mode=opts.mode||'natural', lang=(typeof opts.lang==='function'?opts.lang():opts.lang)||uiLang(), es=uiLang()==='es';
     var rows, cur;
     if(mode==='device'){ var vs=devVoices(lang); cur=(device(lang)||{}).voiceURI||''; rows=vs.map(function(v){ return [v.voiceURI,v.name.replace(/\s*\(.*\)$/,''),v.lang]; }); }
-    else { cur=get(); rows=NAT.map(function(o){ return [o[0],o[1],es?o[3]:o[2]]; }).concat([['device',T(2),'']]); }
+    else { cur=get(); rows=NAT.map(function(o){ return [o[0],o[1],es?o[3]:o[2]]; }).concat(nodev?[]:[['device',T(2),'']]); }
     var w=document.createElement('div'); w.className='vpw'; w.setAttribute('role','dialog'); w.setAttribute('aria-modal','true'); w.setAttribute('aria-label',T(0));
     w.innerHTML='<div class="vpin"><div class="vph"><h2>'+esc(T(0))+'</h2><button type="button" class="vpx" aria-label="'+esc(T(7))+'">✕</button></div>'
       +'<p class="vpn">'+esc(mode==='device'?T(5):T(1))+'</p>'
