@@ -9,8 +9,8 @@
 (function(){
   if(window.MFvoice) return;
   var NAT=[['thunder','Thunder','very deep, grand','muy grave, solemne'],['titan','Titan','colossal deep bass','bajo colosal, muy profundo'],['abyss','Abyss','cavernous, far deeper','cavernoso, mucho más grave'],['bedrock','Bedrock','the deepest of all','el más profundo de todos'],['canyon','Canyon','very deep woman','mujer muy grave'],['hush','Hush','a true whisper, soft woman','un susurro suave, mujer'],['murmur','Murmur','quiet, gentle whisper','susurro tranquilo y suave'],['lullaby','Lullaby','sleepy, tender whisper','susurro tierno, adormecido'],['midnight','Midnight','deep, hushed whisper','susurro grave y callado'],['narrator','Narrator','classic Bible reader','lector bíblico clásico'],['highland','Highlander','Scottish gentleman','caballero escocés'],['onyx','Onyx','deep','grave'],['ash','Ash','gentle','amable'],['fable','Fable','storyteller','narrador'],['grace','Grace','deep, mature','grave, madura'],['magnolia','Magnolia','Southern, sweet','sureña, dulce'],['heather','Heather','Scottish lady','dama escocesa'],['elder','Elder','wise old grandfather','abuelo sabio'],['pastor','Pastor','warm, kind pastor','pastor cálido y amable'],['scholar','Scholar','refined British professor','profesor británico refinado'],['campfire','Campfire','close, hushed storyteller','narrador cercano, en voz baja'],['herald','Herald','bold, joyful herald','heraldo audaz y alegre'],['prophet','Prophet','fervent, passionate','ferviente, apasionado'],['cowboy','Cowboy','easygoing Texan','texano tranquilo'],['bard','Bard','lyrical Irish poet','poeta irlandés, melódico'],['dove','Dove','soft, peaceful whisper','suave y apacible'],['rose','Rose','gracious British lady','dama británica elegante'],['deborah','Deborah','strong, commanding woman','mujer fuerte y firme'],['lily','Lily','bright, young, joyful','joven y alegre'],['hannah','Hannah','prayerful, hushed','orante, en voz baja'],['erin','Erin','musical Irish lady','dama irlandesa, melodiosa'],['sage','Sage','calm','tranquila'],['coral','Coral','warm','cálida'],['ballad','Ballad','expressive','expresiva'],['alloy','Alloy','even, clear','pareja, clara'],['echo','Echo','bright','brillante'],['nova','Nova','lively','animada'],['shimmer','Shimmer','soft','suave'],['verse','Verse','friendly','amigable']];   // Ken, 2 Nov: more varieties
-  var TX={en:['Choose a voice','Your pick is used everywhere you press play.','My phone’s voice','Hear it','is your voice now','This phone’s voices. Your pick is used for the Bible and Plans.','No voices on this phone for this language.','Close'],
-    es:['Elige una voz','Tu elección se usa en todo lugar donde tocas reproducir.','La voz de mi teléfono','Escuchar','es tu voz ahora','Las voces de este teléfono. Tu elección se usa en la Biblia y los Planes.','Este teléfono no tiene voces para este idioma.','Cerrar'],
+  var TX={en:['Choose a narrator','Your pick is used everywhere you press play.','My phone’s voice','Hear it','is your voice now','This phone’s voices. Your pick is used for the Bible and Plans.','No voices on this phone for this language.','Close'],
+    es:['Elige un narrador','Tu elección se usa en todo lugar donde tocas reproducir.','La voz de mi teléfono','Escuchar','es tu voz ahora','Las voces de este teléfono. Tu elección se usa en la Biblia y los Planes.','Este teléfono no tiene voces para este idioma.','Cerrar'],
     tl:['Pumili ng boses','Gagamitin ang pinili mo saan ka man pumindot ng play.','Boses ng aking telepono','Pakinggan','ang boses mo ngayon','Mga boses ng teleponong ito. Para sa Bibliya at Mga Plano.','Walang boses sa teleponong ito para sa wikang ito.','Isara'],
     zh:['选择声音','你的选择会用在所有播放按钮上。','我手机的声音','试听','现在是你的声音','这部手机的声音。用于圣经和计划。','这部手机没有这种语言的声音。','关闭'],
     hi:['आवाज़ चुनें','आपकी चुनी आवाज़ हर जगह चलेगी जहाँ आप प्ले दबाते हैं।','मेरे फ़ोन की आवाज़','सुनें','अब आपकी आवाज़ है','इस फ़ोन की आवाज़ें। बाइबल और योजनाओं के लिए।','इस फ़ोन पर इस भाषा की कोई आवाज़ नहीं है।','बंद करें'],
@@ -23,6 +23,9 @@
   var SAMPLE={en:'The Lord is my shepherd; I shall not want.',es:'El Señor es mi pastor; nada me faltará.',tl:'Ang Panginoon ay aking pastor; hindi ako mangangailangan.',zh:'耶和华是我的牧者，我必不致缺乏。',
     hi:'यहोवा मेरा चरवाहा है, मुझे कुछ घटी न होगी।',el:'Ο Κύριος με ποιμαίνει· δεν θα μου λείψει τίποτα.',de:'Der Herr ist mein Hirte; mir wird nichts mangeln.',ko:'여호와는 나의 목자시니 내게 부족함이 없으리로다',
     he:'יהוה רעי לא אחסר.',ar:'الرب راعيّ فلا يعوزني شيء.',ru:"Господь — Пастырь мой; я ни в чем не буду нуждаться."};
+  var NARW={en:'Narrator',es:'Narrador',tl:'Tagapagsalaysay',zh:'旁白',hi:'वाचक',el:'Αφηγητής',de:'Sprecher',ko:'내레이터',he:'מקריא',ar:'الراوي',ru:'Диктор'}, CHG={en:'tap to change',es:'toca para cambiar'};
+  // a small person speaking (head, shoulders, sound waves): the narrator button
+  var ICON='<svg class="vpi" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7.5" r="3.3"/><path d="M3 21v-2a5 5 0 0 1 5-5h2a5 5 0 0 1 5 5v2"/><path d="M17.3 6a4.2 4.2 0 0 1 0 5"/><path d="M20 3.8a7.6 7.6 0 0 1 0 9.4"/></svg>';
   function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
   function uiLang(){ var l=(window.MF&&window.MF.lang)||ls('mf-lang')||(document.documentElement.lang||'en').slice(0,2); return TX[l]?l:'en'; }
   function T(i){ return (TX[uiLang()]||TX.en)[i]; }
@@ -49,7 +52,7 @@
   var css=false, open=null, nodev=false;
   function style(){ if(css) return; css=true; var s=document.createElement('style');
     s.textContent='.vpc{display:inline-flex;align-items:center;justify-content:center;min-width:34px;min-height:34px;margin-left:4px;padding:0 8px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:inherit;font:700 .95rem/1 system-ui,sans-serif;cursor:pointer;vertical-align:middle}'
-      +'.vpwrap{display:inline-flex;align-items:center}.vpc:focus-visible,.vpw button:focus-visible{outline:3px solid #6c9cf0;outline-offset:2px}'
+      +'.vpc .vpi{flex:none}.vpc .vpa{font-size:.8em;opacity:.8;margin-left:3px}.vpc .vpnm{margin-left:5px;font-weight:700}.vpwrap{display:inline-flex;align-items:center}.vpc:focus-visible,.vpw button:focus-visible{outline:3px solid #6c9cf0;outline-offset:2px}'
       +'.vpw{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.45);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}'
       +'.vpw .vpin{width:min(440px,100%);max-height:min(80dvh,620px);overflow:auto;background:#121a24;color:#eef3f8;border:1px solid #2b3a4d;border-radius:20px 20px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 40px rgba(0,0,0,.4)}'
       +'@media(min-width:640px){.vpw{align-items:center}.vpw .vpin{border-radius:20px}}'
@@ -92,11 +95,11 @@
     var f=w.querySelector('.vpr[aria-checked=true] .vpk')||w.querySelector('.vpk')||w.querySelector('.vpx'); if(f) f.focus(); }
   // a ▾ right after the play button
   function attach(btn,opts){ if(!btn||btn._vp) return; btn._vp=1; opts=opts||{}; style();
-    var c=document.createElement('button'); c.type='button'; c.className='vpc'+(opts.cls?' '+opts.cls:''); c.textContent='▾'; c.setAttribute('aria-haspopup','dialog');
-    // name:true shows the voice's name on the button ("Sage ▾"), kept up to date
-    function nm(){ if(!opts.name) return; var v=opts.mode==='device'?(device((typeof opts.lang==='function'?opts.lang():opts.lang)||uiLang())||{}).name:get(), o=NAT.filter(function(x){ return x[0]===v; })[0];
-      c.textContent=(opts.mode==='device'?(v||T(2)):(o?o[1]:(ELV.test(v||'')&&ls('mf-voice-name')?ls('mf-voice-name'):T(2))))+' ▾'; }
-    function lab(){ c.setAttribute('aria-label',T(0)); c.title=T(0); nm(); } lab();
+    var c=document.createElement('button'); c.type='button'; c.className='vpc'+(opts.cls?' '+opts.cls:''); c.setAttribute('aria-haspopup','dialog');
+    // the narrator button: a person speaking and a ▾; hovering says "Narrator: Sage (tap to change)"; name:true also writes the name beside it
+    function nm(){ var v=get(), o=NAT.filter(function(x){ return x[0]===v; })[0], name=o?o[1]:(ELV.test(v||'')&&ls('mf-voice-name')?ls('mf-voice-name'):'Sage'), u=uiLang(), w=NARW[u]||NARW.en, tip=w+': '+name+' ('+(CHG[u]||CHG.en)+')';
+      c.innerHTML=ICON+(opts.name?'<span class="vpnm">'+esc(name)+'</span>':'')+'<span class="vpa" aria-hidden="true">▾</span>'; c.title=tip; c.setAttribute('aria-label',tip); }
+    function lab(){ nm(); } lab();
     window.addEventListener('mfvoice',nm);
     c.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); lab(); menu(opts,c); });
     if(opts.wrap){ var w=document.createElement('span'); w.className='vpwrap'; btn.parentNode.insertBefore(w,btn); w.appendChild(btn); w.appendChild(c); }   // keep the two together in a grid
