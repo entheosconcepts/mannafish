@@ -362,7 +362,10 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function ver(){ var k=ls('mf-bible-version')||'kjv'; return VERS.filter(function(v){ return v.k===k; })[0]||VERS[0]; }
   function vlang(v){ return (v||ver()).l||'en'; }
   (function(){ var v0=new URLSearchParams(location.search).get('v'); if(v0&&VERS.some(function(x){ return x.k===v0; })) ls('mf-bible-version',v0); })();   // ?v=rv1909: open in that version (the devotional's Bible button)
-  function verOpts(){ var en=VERS.filter(function(v){ return !v.l; }), ot=VERS.filter(function(v){ return v.l; }), o=function(v){ return '<option value="'+v.k+'" title="'+esc(v.n)+'">'+esc(v.s)+'</option>'; };
+  // a version written in its own language also says what language that is, in English: "Español (Spanish)" (Ken, 6 Nov)
+  var ENL={es:'Spanish',tl:'Tagalog',zh:'Chinese',hi:'Hindi',el:'Greek',de:'German',ko:'Korean',he:'Hebrew',ar:'Arabic',ru:'Russian'};
+  function VL(v){ return v.l&&ENL[v.l]&&ENL[v.l]!==v.s?v.s+' ('+ENL[v.l]+')':v.s; }
+  function verOpts(){ var en=VERS.filter(function(v){ return !v.l; }), ot=VERS.filter(function(v){ return v.l; }), o=function(v){ return '<option value="'+v.k+'" title="'+esc(v.n)+'">'+esc(VL(v))+'</option>'; };
     $('ver').innerHTML='<optgroup label="English">'+en.map(o).join('')+'</optgroup><optgroup label="Other languages">'+ot.map(o).join('')+'</optgroup>'; $('ver').value=ver().k; }
   verOpts();
   fetch('/api/bible?list=1').then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(!j||!(j.versions||[]).includes('esv')) return; VERS.splice(8,0,{k:'esv',n:'English Standard Version',s:'ESV',api:1}); verOpts(); }).catch(function(){});
@@ -473,7 +476,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function parAdd(){ var a=parKeys(), pick=['og','kjv','web','asv','ylt'].filter(function(k){ return k!==ver().k&&a.indexOf(k)<0; })[0]; if(pick){ a.push(pick); putSet('par',a.join(',')); } }
   function parOpts(i,sh){ var a=parKeys(), cur=a[i]||'', L=ogLang();
     return (i>0?'<option value="">No third</option>':'')+'<option value="og"'+(cur==='og'?' selected':'')+(a.indexOf('og')>=0&&cur!=='og'?' disabled':'')+'>'+L.n+(sh?'':' (the original)')+'</option>'
-      +VERS.filter(function(x){ return x.k!==ver().k; }).map(function(x){ return '<option value="'+x.k+'"'+(x.k===cur?' selected':'')+(a.indexOf(x.k)>=0&&x.k!==cur?' disabled':'')+'>'+esc(x.s)+'</option>'; }).join(''); }
+      +VERS.filter(function(x){ return x.k!==ver().k; }).map(function(x){ return '<option value="'+x.k+'"'+(x.k===cur?' selected':'')+(a.indexOf(x.k)>=0&&x.k!==cur?' disabled':'')+'>'+esc(VL(x))+'</option>'; }).join(''); }
   function parSels(id){ var a=parKeys(); return '<div class="mi2"><span class="sub" style="margin:0;align-self:center">'+esc(ver().s)+' and</span><select id="'+id+'0" data-pi="0" aria-label="The version beside it">'+parOpts(0)+'</select>'
       +'<select id="'+id+'1" data-pi="1" aria-label="A third column">'+parOpts(1)+'</select></div>'; }
   // the original words of a chapter as a column: each verse, its words to tap and hear, and how to say them
@@ -1172,7 +1175,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     var mine=(sv.length?'<h5>Saved</h5><div class="mine">'+sv.map(function(x){ return '<button type="button" data-go="'+x.b+','+x.c+','+x.v+'"><b>'+esc(x.ref)+'</b><span>'+esc(x.text.slice(0,120))+'</span></button>'; }).join('')+'</div>':'')
       +(nt.length?'<h5>My notes</h5><div class="mine">'+nt.map(function(x){ return '<button type="button" data-go="'+x.b+','+x.c+','+x.vs[0]+'"><b>'+esc(x.ref)+'</b><span>'+esc(x.text.slice(0,140))+'</span></button>'; }).join('')+'</div>':'');
     var H=q?[]:hist().filter(function(x){ return B[x.b]; }).slice(0,12), last=H[0];
-    var top=q?'':'<h5>Version</h5><div class="vchips">'+VERS.map(function(v){ return '<button type="button" data-ver="'+v.k+'" aria-pressed="'+(v.k===ver().k)+'" title="'+esc(v.n)+'">'+esc(v.s)+'</button>'; }).join('')+'</div><p class="sub" style="margin:6px 2px 0">'+esc(ver().n)+'</p>'
+    var top=q?'':'<h5>Version</h5><div class="vchips">'+VERS.map(function(v){ return '<button type="button" data-ver="'+v.k+'" aria-pressed="'+(v.k===ver().k)+'" title="'+esc(v.n)+'">'+esc(VL(v))+'</button>'; }).join('')+'</div><p class="sub" style="margin:6px 2px 0">'+esc(ver().n)+'</p>'
       +'<div class="seg" role="group" aria-label="Open to"><button type="button" data-om="read" aria-pressed="'+(OM!=='listen')+'">&#128214;&#xFE0E; Read</button><button type="button" data-om="listen" aria-pressed="'+(OM==='listen')+'">&#128266;&#xFE0E; Listen</button></div>'
       +(last?'<button type="button" class="cont" data-go="'+last.b+','+last.c+',0"><b><small>'+(OM==='listen'?'Keep listening':'Continue reading')+'</small>'+esc(B[last.b][0]+' '+last.c)+'</b>&rsaquo;</button>':'')
       +(H.length>1?'<h5>Recent</h5><div class="recent">'+H.slice(1).map(function(x){ return '<button type="button" data-go="'+x.b+','+x.c+',0">'+esc(B[x.b][0]+' '+x.c)+'</button>'; }).join('')+'</div>':'')
