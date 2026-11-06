@@ -18,11 +18,11 @@
   "template": "study",
   "refs": 9,
   "left": {
-   "label": "Free porch enclosure quote",
+   "label": "Free porch\nenclosure quote",
    "to": "https://k-tech-porch-enclosures.netlify.app/"
   },
   "right": {
-   "label": "Free MannaFish devo and merch",
+   "label": "Free MannaFish\ndevo and merch",
    "to": "https://manna-fish.com/devotional"
   },
   "orientation": "landscape",

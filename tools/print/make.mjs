@@ -164,13 +164,13 @@ async function backHtml(run, codes, warn) {
     if (B.layout === 'stack') {
       const st = strongsOf(run.fish.study || run.fish.word);
       // Ken, 6 Nov: the strip on black, no white box; the QR codes inverted (white on black), away from the edges, each with its words under it in white
-      const sideV = async (code, X) => X ? `<div class="col qv"><div class="sq">${await qr(code, true)}</div><div class="lab fit"><span>${esc(X.label || '')}</span></div></div>` : '<div class="col"></div>';
+      const sideV = async (code, X) => X ? `<div class="col qv"><div class="sq">${await qr(code, true)}</div><div class="lab fit"><span>${esc(X.label || '').replace(/\n/g, '<br>')}</span></div></div>` : '<div class="col"></div>';
       const l4 = (k, wd, lg, snd, m, sn) => `<div class="l4"><div class="r1"><span class="k">${k}</span><span class="ow" lang="${lg}">${esc(wd)}</span><span class="tr">(${esc(snd)})</span></div><div class="mn4 fit"><span>${esc(m)}</span></div>${sn ? `<div class="st4">STRONG’S ${esc(sn)}</div>` : ''}</div>`;
       return `<div class="pg" style="width:${f2(W + 2 * BLEED)}mm;height:${f2(H + 2 * BLEED)}mm"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${W}mm;height:${H}mm">
-  <div class="wt4 fit" style="top:1mm;height:8mm"><span>${esc(B.heading || d.title)}</span></div>
-  <div class="gh4" style="top:9.4mm;height:13.4mm">${l4('GREEK', d.gkw, 'el', d.gks, d.gkm, st.g)}<div class="dv"></div>${l4('HEBREW', d.hbw, 'he', d.hbs, d.hbm, st.h)}</div>
-  <div class="rf rf3 rf4" style="top:23.2mm;height:22.5mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
-  <div class="strip inv" style="top:46mm;height:21.2mm">${await sideV(codes.left, L)}
+  <div class="wt4 fit" style="top:3.3mm;height:6.6mm"><span>${esc(B.heading || d.title)}</span></div>
+  <div class="gh4" style="top:10.0mm;height:13.9mm">${l4('GREEK', d.gkw, 'el', d.gks, d.gkm, st.g)}<div class="dv"></div>${l4('HEBREW', d.hbw, 'he', d.hbs, d.hbm, st.h)}</div>
+  <div class="rf rf3 rf4" style="top:24.5mm;height:20.3mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
+  <div class="strip inv" style="top:45.5mm;height:21.15mm">${await sideV(codes.left, L)}
     <div class="col mid"><div class="sb">${esc(credit)}</div>${ml ? `<div class="sl"><img src="${ml}"></div>` : `<div class="sn fit${verse ? ' sv' : ''}"><span>${esc(mn)}</span></div>`}</div>
     ${await sideV(codes.right, Rt)}</div></div></div>`;
     }
@@ -242,20 +242,20 @@ const BACKCSS = () => `@font-face{font-family:'Lilita One';src:url(${font('lilit
 .rf{left:2.6mm!important;right:2.6mm!important;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(0,1fr);gap:.8mm 1.6mm}
 .rf div{border-top:.2mm solid rgba(255,255,255,.25);padding-top:.7mm;text-align:center;overflow:hidden;min-height:0}
 .rf b{display:block;font:700 2.4mm/1.1 'Archivo Narrow',sans-serif;color:#8fb8ff}
-.wt4{font:400 8.8mm/1 'MFHobo',sans-serif;display:flex;align-items:center;justify-content:center;white-space:nowrap;left:3mm!important;right:3mm!important}
-.gh4{left:3mm!important;right:3mm!important;display:grid;grid-template-columns:1fr .25mm 1fr;gap:2.2mm;border-top:.25mm solid rgba(255,255,255,.3);padding:.8mm 0}
+.wt4{font:400 8.8mm/1 'MFHobo',sans-serif;display:flex;align-items:center;justify-content:center;white-space:nowrap;left:3.2mm!important;right:3.2mm!important}
+.gh4{left:3.2mm!important;right:3.2mm!important;display:grid;grid-template-columns:1fr .25mm 1fr;gap:2.2mm;border-top:.25mm solid rgba(255,255,255,.3);padding:.8mm 0}
 .gh4 .dv{background:rgba(255,255,255,.3)}
-.l4{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5mm;min-width:0;text-align:center}
+.l4{padding-bottom:.9mm;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5mm;min-width:0;text-align:center}
 .l4 .r1{display:flex;align-items:baseline;justify-content:center;gap:1.5mm;white-space:nowrap}
 .l4 .k{font:700 1.9mm/1 'Archivo Narrow',sans-serif;letter-spacing:.3mm;color:#8fb8ff}
 .l4 .ow{font:400 5mm/1.1 'MFGkHb',serif}.l4 .tr{font:italic 400 2.2mm/1.2 'Spectral',serif;color:#cfd8dc}
 .l4 .mn4{font:italic 400 2.5mm/1.2 'Spectral',serif;width:100%;display:flex;align-items:center;justify-content:center;white-space:nowrap;height:3.2mm}
 .l4 .st4{font:700 1.8mm/1 'Archivo Narrow',sans-serif;letter-spacing:.25mm;color:#8fb8ff;border-bottom:.2mm solid #8fb8ff;padding-bottom:.3mm}
 .strip.inv{background:none;color:#fff;left:7mm!important;right:7mm!important;padding:0;gap:3mm;grid-template-columns:1fr .9fr 1fr}
-.strip.inv .qv{justify-content:flex-start;gap:.9mm}.strip.inv .qv .sq{width:15.4mm;height:15.4mm}
-.strip.inv .qv .lab{height:3.4mm;width:100%;color:#fff;font-size:2.7mm;white-space:nowrap}
-.strip.inv .mid{justify-content:flex-start;padding-top:1.6mm}.strip.inv .sb{color:#fff;font-size:2.7mm;margin:0 0 1.2mm}.strip.inv .sl{flex:none;height:14.6mm}
-.rf4{grid-auto-rows:auto;align-content:space-around}.rf4 div{padding-top:.4mm;overflow:visible}.rf4 i{font-size:1.8mm;line-height:1.05;margin-top:0}.rf4 b{font-size:2.3mm;line-height:1.05}
+.strip.inv .qv{justify-content:space-between;gap:.9mm}.strip.inv .qv .sq{width:14.6mm;height:14.6mm}
+.strip.inv .qv .lab{height:5.7mm;width:100%;color:#fff;font-size:2.6mm;line-height:1.05;white-space:normal;align-items:flex-start;text-align:center}
+.strip.inv .mid{justify-content:space-between;padding:0}.strip.inv .sb{color:#fff;font-size:2.8mm;margin:0;line-height:1}.strip.inv .sl{flex:none;height:16.2mm}
+.rf4{left:3.2mm!important;right:3.2mm!important;grid-auto-rows:auto;align-content:space-around;row-gap:1mm}.rf4 div{padding-top:.4mm;overflow:visible}.rf4 i{font-size:1.8mm;line-height:1.05;margin-top:0}.rf4 b{font-size:2.3mm;line-height:1.05}
 .rf i{display:block;font:italic 400 2mm/1.15 'Spectral',serif;color:#e6ecef;margin-top:.3mm}`;
 // words that don't fit get smaller until they do
 const FIT = `document.querySelectorAll('.fit').forEach(function(e){ var s=parseFloat(getComputedStyle(e).fontSize), t=e.firstElementChild||e;

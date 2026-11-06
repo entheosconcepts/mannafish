@@ -57,11 +57,11 @@
  "R0006s": {
   "to": "https://k-tech-porch-enclosures.netlify.app/",
   "run": "R0006",
-  "what": "Free porch enclosure quote"
+  "what": "Free porch\nenclosure quote"
  },
  "R0006m": {
   "to": "https://manna-fish.com/devotional",
   "run": "R0006",
-  "what": "Free MannaFish devo and merch"
+  "what": "Free MannaFish\ndevo and merch"
  }
 }
