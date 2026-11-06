@@ -167,10 +167,10 @@ async function backHtml(run, codes, warn) {
       const sideV = async (code, X) => X ? `<div class="col qv"><div class="sq">${await qr(code, true)}</div><div class="lab fit"><span>${esc(X.label || '').replace(/\n/g, '<br>')}</span></div></div>` : '<div class="col"></div>';
       const l4 = (k, wd, lg, snd, m, sn) => `<div class="l4"><div class="r1"><span class="k">${k}</span><span class="ow" lang="${lg}">${esc(wd)}</span><span class="tr">(${esc(snd)})</span></div><div class="mn4 fit"><span>${esc(m)}</span></div>${sn ? `<div class="st4">STRONG’S ${esc(sn)}</div>` : ''}</div>`;
       return `<div class="pg" style="width:${f2(W + 2 * BLEED)}mm;height:${f2(H + 2 * BLEED)}mm"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${W}mm;height:${H}mm">
-  <div class="wt4 fit" style="top:3.3mm;height:6.6mm"><span>${esc(B.heading || d.title)}</span></div>
-  <div class="gh4" style="top:10.0mm;height:13.9mm">${l4('GREEK', d.gkw, 'el', d.gks, d.gkm, st.g)}<div class="dv"></div>${l4('HEBREW', d.hbw, 'he', d.hbs, d.hbm, st.h)}</div>
-  <div class="rf rf3 rf4" style="top:24.5mm;height:20.3mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
-  <div class="strip inv" style="top:45.5mm;height:21.15mm">${await sideV(codes.left, L)}
+  <div class="wt4 fit" style="top:2.2mm;height:6.6mm"><span>${esc(B.heading || d.title)}</span></div>
+  <div class="gh4" style="top:9.3mm;height:13.9mm">${l4('GREEK', d.gkw, 'el', d.gks, d.gkm, st.g)}<div class="dv"></div>${l4('HEBREW', d.hbw, 'he', d.hbs, d.hbm, st.h)}</div>
+  <div class="rf rf3 rf4" style="top:23.7mm;height:20.3mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
+  <div class="strip inv" style="top:44.8mm;height:22.8mm">${await sideV(codes.left, L)}
     <div class="col mid"><div class="sb">${esc(credit)}</div>${ml ? `<div class="sl"><img src="${ml}"></div>` : `<div class="sn fit${verse ? ' sv' : ''}"><span>${esc(mn)}</span></div>`}</div>
     ${await sideV(codes.right, Rt)}</div></div></div>`;
     }
@@ -251,10 +251,10 @@ const BACKCSS = () => `@font-face{font-family:'Lilita One';src:url(${font('lilit
 .l4 .ow{font:400 5mm/1.1 'MFGkHb',serif}.l4 .tr{font:italic 400 2.2mm/1.2 'Spectral',serif;color:#cfd8dc}
 .l4 .mn4{font:italic 400 2.5mm/1.2 'Spectral',serif;width:100%;display:flex;align-items:center;justify-content:center;white-space:nowrap;height:3.2mm}
 .l4 .st4{font:700 1.8mm/1 'Archivo Narrow',sans-serif;letter-spacing:.25mm;color:#8fb8ff;border-bottom:.2mm solid #8fb8ff;padding-bottom:.3mm}
-.strip.inv{background:none;color:#fff;left:7mm!important;right:7mm!important;padding:0;gap:3mm;grid-template-columns:1fr .9fr 1fr}
-.strip.inv .qv{justify-content:space-between;gap:.9mm}.strip.inv .qv .sq{width:14.6mm;height:14.6mm}
-.strip.inv .qv .lab{height:5.7mm;width:100%;color:#fff;font-size:2.6mm;line-height:1.05;white-space:normal;align-items:flex-start;text-align:center}
-.strip.inv .mid{justify-content:space-between;padding:0}.strip.inv .sb{color:#fff;font-size:2.8mm;margin:0;line-height:1}.strip.inv .sl{flex:none;height:16.2mm}
+.strip.inv{background:none;color:#fff;left:3.2mm!important;right:3.2mm!important;padding:0;gap:2mm;grid-template-columns:23mm 1fr 23mm}
+.strip.inv .qv{justify-content:space-between;gap:.9mm}.strip.inv .qv .sq{width:15.2mm;height:15.2mm}
+.strip.inv .qv .lab{height:5.8mm;width:100%;color:#fff;font-size:2.6mm;line-height:1.05;white-space:normal;align-items:flex-start;text-align:center}
+.strip.inv .mid{justify-content:space-between;padding:0}.strip.inv .sb{color:#fff;font-size:2.8mm;margin:0;line-height:1}.strip.inv .sl{flex:none;height:17.4mm}
 .rf4{left:3.2mm!important;right:3.2mm!important;grid-auto-rows:auto;align-content:space-around;row-gap:1mm}.rf4 div{padding-top:.4mm;overflow:visible}.rf4 i{font-size:1.8mm;line-height:1.05;margin-top:0}.rf4 b{font-size:2.3mm;line-height:1.05}
 .rf i{display:block;font:italic 400 2mm/1.15 'Spectral',serif;color:#e6ecef;margin-top:.3mm}`;
 // words that don't fit get smaller until they do
