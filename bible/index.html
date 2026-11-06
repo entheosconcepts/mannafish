@@ -509,12 +509,12 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function ogVerse(v,keep){ var x=ogOf(), o=x&&x.J.v[String(v)]; if(!o) return Promise.resolve(); var el=document.querySelector('#txt .ogc[data-v="'+v+'"]');
     [].forEach.call(document.querySelectorAll('#txt .ogc.saying'),function(y){ y.classList.remove('saying'); }); if(el){ el.classList.add('saying'); if(keep) el.scrollIntoView({block:'center',behavior:'smooth'}); }
     return sayP(ogClean(o.w.map(function(w){ return w[0]; }).join(' ')),x.P.l).then(function(){ if(el) el.classList.remove('saying'); }); }
-  function ogAll(from){ var x=ogOf(); if(!x) return; ogStop(); var me=OGP, vs=Object.keys(x.J.v).map(Number).sort(function(a,b){ return a-b; }).filter(function(v){ return v>=(from||1); }), b=document.querySelector('#txt [data-ogall]');
+  function ogAll(from){ var x=ogOf(); if(!x) return; stopSay(); ogStop(); var me=OGP, vs=Object.keys(x.J.v).map(Number).sort(function(a,b){ return a-b; }).filter(function(v){ return v>=(from||1); }), b=document.querySelector('#txt [data-ogall]');
     if(b){ b.setAttribute('aria-pressed','true'); b.innerHTML='&#9632;&#xFE0E;<span class="hlab"> Stop</span>'; }
     (function next(i){ if(me!==OGP) return; if(i>=vs.length){ ogStop(); return; } ogVerse(vs[i],true).then(function(){ next(i+1); }); })(0); }
   function ogTap(e){ var b=e.target.closest('[data-ogall]'); if(b){ if(b.getAttribute('aria-pressed')==='true') ogStop(); else ogAll(1); return true; }
-    var s=e.target.closest('[data-ogs]'); if(s){ ogStop(); ogVerse(+s.dataset.ogs); return true; }
-    var w=e.target.closest('.ogc .ow'); if(w){ var x=ogOf(), v=+w.closest('.ogc').dataset.v, o=x&&x.J.v[String(v)], ww=o&&o.w[+w.dataset.oi]; if(!ww) return true; ogStop();
+    var s=e.target.closest('[data-ogs]'); if(s){ stopSay(); ogStop(); ogVerse(+s.dataset.ogs); return true; }
+    var w=e.target.closest('.ogc .ow'); if(w){ var x=ogOf(), v=+w.closest('.ogc').dataset.v, o=x&&x.J.v[String(v)], ww=o&&o.w[+w.dataset.oi]; if(!ww) return true; stopSay(); ogStop();
       w.classList.add('saying'); sayP(ogClean(ww[0]),x.P.l).then(function(){ w.classList.remove('saying'); }); toast(ww[0]+' · '+ww[1]+' · “'+String(ww[2]||'').replace(/[<>]/g,'')+'”'); return true; }
     return false; }
   // the book and chapter at the top; on a narrow phone, a long book name shortened so it is not cut off
@@ -813,7 +813,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     if(want){ var w=vs.filter(function(v){ return v.voiceURI===want||v.name===want; })[0]; if(w) return w; }
     return vs.filter(function(v){ return /en-(US|GB)/i.test(v.lang)&&/natural|premium|enhanced|samantha|daniel|google/i.test(v.name); })[0]||vs[0]||null; }
   function stopSay(){ SAY.on=false; try{ speechSynthesis.cancel(); }catch(e){} [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); }); $('say').setAttribute('aria-pressed','false'); }
-  function startSay(v){ if(!window.speechSynthesis){ toast('This device cannot read aloud'); return; } stopSay(); SAY={on:true,i:Math.max(0,(v||1)-1)}; $('say').setAttribute('aria-pressed','true'); next(); }
+  function startSay(v){ if(!window.speechSynthesis){ toast('This device cannot read aloud'); return; } ogStop(); stopSay(); SAY={on:true,i:Math.max(0,(v||1)-1)}; $('say').setAttribute('aria-pressed','true'); next(); }
   function next(){ if(!SAY.on) return; var L=[].slice.call($('txt').querySelectorAll('.v')); [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); });
     var el=L[SAY.i]; if(!el){ var nb=$('next').dataset.to; stopSay(); if(SET('cont',true)&&nb){ AUTOSAY=1; $('next').click(); } return; } el.classList.add('say'); var r=el.getBoundingClientRect(); if(r.top<70||r.bottom>innerHeight-80) window.scrollBy({top:r.top-innerHeight/3,behavior:'smooth'});
     var u=new SpeechSynthesisUtterance((SAY.i===0&&vlang()==='en'?B[AT.b][0]+' chapter '+AT.c+'. ':'')+el.querySelector('.vt').textContent), vv=voice(); if(vv){ u.voice=vv; u.lang=vv.lang; } else u.lang=LC[vlang()]||'en-US'; u.rate=+SET('rate',0.95)||0.95;
