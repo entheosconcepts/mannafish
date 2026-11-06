@@ -313,7 +313,7 @@ textarea.field{min-height:92px;resize:vertical}
     var k=STEPS[i].k; if(k==='list'){ var c=sec.querySelector('.pc'); parts=['From my prayer list.'].concat(parts); }
     duck(true); (function next(){ if(run!==SAY.run) return; var t=parts.shift(); if(!t){ duck(false); if(SAY.mode==='auto'&&i<STEPS.length-1&&STEPS[i].wait) SAY.tm=setTimeout(function(){ if(run===SAY.run) goTo(i+1); },STEPS[i].wait*1000); return; } speak(t,next,run); })(); }
   function raw(k){ try{ return localStorage.getItem(k)||''; }catch(e){ return ''; } }   // the voice and speed are kept as plain text by the other pages
-  function speak(t,cb,run){ var v=raw('mf-voice')||'sage', r=parseFloat(raw('mf-speed'))||1; r=Math.min(1.25,r); var fell=0;
+  function speak(t,cb,run){ var v=raw('mf-voice')||'sage', r=parseFloat(raw('mf-speed'))||1; r=Math.min(1.75,r); var fell=0;
     var dev=function(){ if(fell++) return; if(run===SAY.run) sayStop(); };   /* the natural voice could not play: stop quietly (no phone voice) */
     if(v==='device') v='sage';
     player.src='/api/say?t='+encodeURIComponent(t)+'&l=en&v='+encodeURIComponent(v); player.playbackRate=r; player.onended=function(){ if(run===SAY.run) setTimeout(cb,350); }; player.onerror=function(){ if(run===SAY.run) dev(); };
@@ -327,7 +327,7 @@ textarea.field{min-height:92px;resize:vertical}
   function voxTry(){ unlock(); sayStop(); var run=SAY.run; speak('The Lord is my shepherd; I shall not want. He leadeth me beside the still waters.',function(){},run); }
   $('voxTry').addEventListener('click',voxTry);
   // Ken, 26 Oct: a ▾ beside Listen opens the voices (fish-lang/voicepick.js), the same choice as everywhere
-  window.MFvpHook=function(){ if(!window.MFvoice) return; MFvoice.attach($('sayBtn'),{lang:'en',cls:'vpsm'});
+  window.MFvpHook=function(){ if(!window.MFvoice) return; MFvoice.attach($('sayBtn'),{lang:'en',cls:'vpsm',speedDefault:1});
     window.addEventListener('mfvoice',function(e){ $('voxSel').value=e.detail.v; }); };
   function bgUI(){ var k=bgKey(); $('bgChips').innerHTML=BGS.map(function(b){ return '<button type="button" data-bg="'+b.k+'" aria-pressed="'+(k===b.k)+'"><i style="background:linear-gradient(180deg,'+b.c[0]+','+b.c[1]+' 45%,'+b.c[2]+' 62%,'+b.c[3]+')"></i>'+b.n+'</button>'; }).join('')
     +'<button type="button" data-bg="daily" aria-pressed="'+(k==='daily')+'">&#127749;&#xFE0E; A new one each day</button>'; }

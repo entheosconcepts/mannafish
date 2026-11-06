@@ -4411,7 +4411,8 @@ window.MF=(function(){
     // the Listen button of the reader and the bottom player: the narrator button beside them too (Ken, 6 Nov)
     var lb=document.getElementById('listenBtn'); if(lb) MFvoice.attach(lb,{wrap:true,lang:function(){ return MF.lang; }});
     var mp=document.getElementById('mpPlay'); if(mp) MFvoice.attach(mp,{wrap:true,cls:'vpsm',lang:function(){ return MF.lang; }});
-    window.addEventListener('mfvoice',function(e){ setVoice(e.detail.v); }); };
+    window.addEventListener('mfvoice',function(e){ setVoice(e.detail.v); });
+    window.addEventListener('mfspeed',function(){ try{ if(sp.audio) sp.audio.playbackRate=RATE(); }catch(er){} }); };
   // Ken, 11 Oct: "a delay" before a fish is heard -- the Word and Verse of each fish on screen are fetched in the background
   var FISHC={};
   function fishClip(l,k,part){ var v=aiVoice(), key=l+'|'+k+'|'+part+'|'+v; if(FISHC[key]) return FISHC[key];

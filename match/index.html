@@ -397,7 +397,7 @@ html,body{overflow-x:hidden}
   $('spkBtn').addEventListener('click',function(){ muted=!muted; store('mf-match-mute',muted?'on':'off'); if(muted) stopSpeak(); spkUI(); });
   spkUI();
   // Ken, 26 Oct: a ▾ beside the sound button opens the voices (fish-lang/voicepick.js), the same choice as everywhere
-  window.MFvpHook=function(){ if(window.MFvoice) MFvoice.attach($('spkBtn'),{lang:function(){ return l1||ui; },onPick:function(){ stopSpeak(); }}); };
+  window.MFvpHook=function(){ if(window.MFvoice) MFvoice.attach($('spkBtn'),{speedDefault:1,lang:function(){ return l1||ui; },onPick:function(){ stopSpeak(); }}); };
   $('sayChk').addEventListener('change',function(){ sayOn=this.checked; store('mf-match-say',sayOn?'on':'off'); });
 
   var V={}, BACK='', POND='', FISH={};
@@ -786,7 +786,7 @@ html,body{overflow-x:hidden}
     function device(){ if(id!==sp.id) return; done(); }   /* the natural voice could not play: carry on quietly, never the phone's own voice */
     clip(l,k,part).then(function(url){
       if(id!==sp.id) return;
-      var a=new Audio(url); sp.audio=a; a.onended=done; a.onerror=device;
+      var a=new Audio(url); sp.audio=a; a.defaultPlaybackRate=a.playbackRate=(window.MFvoice&&MFvoice.speed?MFvoice.speed(1):1); a.onended=done; a.onerror=device;
       return a.play();
     }).catch(function(err){ if(id!==sp.id) return; if(err&&err.name==='NotAllowedError') return done(); device(); });
     }

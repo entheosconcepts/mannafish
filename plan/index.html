@@ -350,6 +350,8 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
   function stopSay(){ SAY.on=false; SAY.run++; try{ if(PA) PA.pause(); }catch(e){} [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); }); $('rSay').innerHTML='&#9654;&#xFE0E; Listen'; }
   // Ken, 26 Oct: a ▾ beside Listen picks one of this phone's voices (fish-lang/voicepick.js); natural voices only, never the phone's own
   window.MFvpHook=function(){ if(window.MFvoice) MFvoice.attach($('rSay'),{mode:'natural',noDevice:true,lang:'en',onPick:function(){ if(SAY.on) stopSay(); }}); };
+  function pspd(){ return window.MFvoice&&MFvoice.speed?MFvoice.speed(1.25):1.25; }
+  window.addEventListener('mfspeed',function(){ try{ if(PA) PA.playbackRate=pspd(); }catch(e){} });
   function pvoice(){ var v=window.MFvoice&&MFvoice.get?MFvoice.get():'sage'; return !v||v==='device'?'sage':v; }
   function pchunk(t,n){ var out=[], r=String(t||'').replace(/\s+/g,' ').trim(); while(r.length>n){ var k=Math.max(r.lastIndexOf('. ',n),r.lastIndexOf('; ',n),r.lastIndexOf(', ',n),r.lastIndexOf(' ',n)); if(k<40) k=n; out.push(r.slice(0,k+1).trim()); r=r.slice(k+1).trim(); } if(r) out.push(r); return out; }
   function sayNext(){ if(!SAY.on) return; [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); });
@@ -358,7 +360,7 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
     var me=SAY.run, parts=pchunk(head+el.textContent,280), v=pvoice(); if(!PA) PA=new Audio();
     (function nx(i){ if(me!==SAY.run||!SAY.on) return; if(i>=parts.length){ SAY.i++; sayNext(); return; }
       var bad=function(){ if(me===SAY.run){ toast('The voice could not play just now. Please try again.'); stopSay(); } };
-      PA.onended=function(){ nx(i+1); }; PA.onerror=bad; PA.src='/api/say?t='+encodeURIComponent(parts[i])+'&l=en&v='+encodeURIComponent(v);
+      PA.onended=function(){ nx(i+1); }; PA.onerror=bad; PA.defaultPlaybackRate=pspd(); PA.src='/api/say?t='+encodeURIComponent(parts[i])+'&l=en&v='+encodeURIComponent(v);
       var pr=PA.play(); if(pr&&pr.catch) pr.catch(function(e){ if(!(e&&e.name==='AbortError')) bad(); }); })(0); }
   $('rSay').addEventListener('click',function(){
     if(SAY.on){ stopSay(); return; } SAY.list=[].slice.call(document.querySelectorAll('#rTxt .v')); if(!SAY.list.length) return;

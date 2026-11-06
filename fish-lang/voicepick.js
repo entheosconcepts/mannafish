@@ -30,6 +30,10 @@
   function uiLang(){ var l=(window.MF&&window.MF.lang)||ls('mf-lang')||(document.documentElement.lang||'en').slice(0,2); return TX[l]?l:'en'; }
   function T(i){ return (TX[uiLang()]||TX.en)[i]; }
   var ELV=/^el:[A-Za-z0-9]{10,40}$/;   // an ElevenLabs voice from Ken's account (picked on the /voices/ page or in this menu): "el:<id>"
+  // the listening speed, kept as mf-speed (the same setting as the Today player, the Translator and You → Settings)
+  var SPL=[0.75,1,1.25,1.5,1.75], SPW={en:'Speed',es:'Velocidad',tl:'Bilis',zh:'语速',hi:'गति',el:'Ταχύτητα',de:'Tempo',ko:'속도',he:'מהירות',ar:'السرعة',ru:'Скорость'};
+  function speed(def){ var r=+ls('mf-speed'); return SPL.indexOf(r)>=0?r:(def||1.25); }
+  function setSpeed(r){ ls('mf-speed',String(r)); if(window.MFacct&&MFacct.touch) MFacct.touch('set'); try{ window.dispatchEvent(new CustomEvent('mfspeed',{detail:{r:r}})); }catch(e){} }
   function get(){ var v=ls('mf-voice')||''; return ELV.test(v)||NAT.some(function(o){ return o[0]===v; })?v:'sage'; }
   function setNat(v){ ls('mf-voice',v); if(window.MFacct&&MFacct.touch) MFacct.touch('set');
     try{ window.dispatchEvent(new CustomEvent('mfvoice',{detail:{v:v}})); }catch(e){} }
@@ -51,7 +55,7 @@
   // ── the menu ──
   var css=false, open=null, nodev=false;
   function style(){ if(css) return; css=true; var s=document.createElement('style');
-    s.textContent='.vpc{display:inline-flex;align-items:center;justify-content:center;min-width:34px;min-height:34px;margin-left:4px;padding:0 8px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:inherit;font:700 .95rem/1 system-ui,sans-serif;cursor:pointer;vertical-align:middle}'
+    s.textContent='.vpc{display:inline-flex;align-items:center;justify-content:center;min-width:34px;min-height:34px;margin-left:4px;padding:0 8px;border-radius:999px;border:1px solid rgba(255,226,140,.5);background:rgba(255,226,140,.10);color:#f4e6b0;font:700 .95rem/1 system-ui,sans-serif;cursor:pointer;vertical-align:middle}'
       +'.vpc .vpi{flex:none}.vpc .vpa{font-size:.8em;opacity:.8;margin-left:3px}.vpc .vpnm{margin-left:5px;font-weight:700}.vpwrap{display:inline-flex;align-items:center}.vpc:focus-visible,.vpw button:focus-visible{outline:3px solid #6c9cf0;outline-offset:2px}'
       +'.vpw{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.45);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}'
       +'.vpw .vpin{width:min(440px,100%);max-height:min(80dvh,620px);overflow:auto;background:#121a24;color:#eef3f8;border:1px solid #2b3a4d;border-radius:20px 20px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 40px rgba(0,0,0,.4)}'
@@ -64,8 +68,9 @@
       +'.vpw .vpo{width:20px;height:20px;border-radius:50%;border:2px solid #6b7c8f;flex:none;display:grid;place-items:center}.vpw .vpr[aria-checked=true] .vpo{border-color:#3370ff}.vpw .vpr[aria-checked=true] .vpo::after{content:"";width:10px;height:10px;border-radius:50%;background:#3370ff}'
       +'.vpw .vpk b{font-weight:700}.vpw .vpk small{color:#9fb0c2;margin-left:6px}'
       +'.vpw .vpp{border:1px solid #2b3a4d;background:none;color:inherit;border-radius:999px;padding:6px 12px;font:600 .85rem system-ui,sans-serif;cursor:pointer;flex:none}'
+      +'.vpw .vps{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;padding-top:10px;border-top:1px solid #2b3a4d}.vpw .vps span{font-weight:700;margin-right:4px}.vpw .vps button{border:1px solid #2b3a4d;background:none;color:inherit;border-radius:999px;padding:6px 11px;font:600 .85rem system-ui,sans-serif;cursor:pointer}.vpw .vps button[aria-checked=true]{background:rgba(255,226,140,.16);border-color:rgba(255,226,140,.7)}'
       +'.vpw .vpt{margin-top:10px;min-height:1.2em;color:#7fd18b;font-weight:600;font-size:.9rem}'
-      +':root[data-mode=light] .vpw .vpin{background:#fbfaf6;color:#1c2228;border-color:#d8d4c8}:root[data-mode=light] .vpw .vpn,:root[data-mode=light] .vpw .vpk small{color:#5b6570}:root[data-mode=light] .vpw .vpp{border-color:#d8d4c8}:root[data-mode=light] .vpw .vpt{color:#1f7a35}:root[data-mode=light] .vpc{border-color:rgba(0,0,0,.2);background:rgba(0,0,0,.04)}';
+      +':root[data-mode=light] .vpw .vpin{background:#fbfaf6;color:#1c2228;border-color:#d8d4c8}:root[data-mode=light] .vpw .vpn,:root[data-mode=light] .vpw .vpk small{color:#5b6570}:root[data-mode=light] .vpw .vpp{border-color:#d8d4c8}:root[data-mode=light] .vpw .vpt{color:#1f7a35}:root[data-mode=light] .vpc{border-color:rgba(150,110,0,.5);background:rgba(255,214,90,.25);color:#6b5200}';
     document.head.appendChild(s); }
   function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function close(){ hush(); if(open){ var b=open.back; open.el.remove(); open=null; if(b) try{ b.focus(); }catch(e){} } }
@@ -78,12 +83,14 @@
     w.innerHTML='<div class="vpin"><div class="vph"><h2>'+esc(T(0))+'</h2><button type="button" class="vpx" aria-label="'+esc(T(7))+'">✕</button></div>'
       +'<p class="vpn">'+esc(mode==='device'?T(5):T(1))+'</p>'
       +(rows.length?rows.map(rowHtml).join(''):'<p class="vpn">'+esc(T(6))+'</p>')
+      +'<div class="vps" role="radiogroup" aria-label="'+esc(SPW[uiLang()]||SPW.en)+'"><span>'+esc(SPW[uiLang()]||SPW.en)+'</span>'+SPL.map(function(r){ return '<button type="button" role="radio" data-sp="'+r+'" aria-checked="'+(r===speed(opts.speedDefault))+'">'+r+'×</button>'; }).join('')+'</div>'
       +'<p class="vpt" role="status"></p></div>';
     document.body.appendChild(w); open={el:w,back:back};
     if(mode!=='device') fetch('/api/say?list=1').then(function(r){ return r.ok?r.json():null; }).then(function(j){
       var el=j&&j.voices?j.voices.filter(function(v){ return v.provider==='elevenlabs'; }):[]; if(!el.length||open===null||open.el!==w) return;
       var t=w.querySelector('.vpt'); if(!t) return; t.insertAdjacentHTML('beforebegin','<p class="vpn" style="margin-top:14px"><b>ElevenLabs</b></p>'+el.map(function(v){ return rowHtml([v.id,v.name,v.sounds]); }).join('')); }).catch(function(){});
     w.addEventListener('click',function(e){ if(e.target===w||e.target.closest('.vpx')){ close(); return; }
+      var spb=e.target.closest('.vps [data-sp]'); if(spb){ setSpeed(+spb.dataset.sp); [].forEach.call(w.querySelectorAll('.vps [data-sp]'),function(x){ x.setAttribute('aria-checked',String(x===spb)); }); w.querySelector('.vpt').textContent=(SPW[uiLang()]||SPW.en)+' '+spb.dataset.sp+'×'; return; }
       var r=e.target.closest('.vpr'); if(!r) return; var id=r.dataset.id;
       if(e.target.closest('.vpp')){ sample(mode,id,lang); return; }
       [].forEach.call(w.querySelectorAll('.vpr'),function(x){ x.setAttribute('aria-checked',String(x===r)); });
@@ -104,5 +111,5 @@
     c.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); lab(); menu(opts,c); });
     if(opts.wrap){ var w=document.createElement('span'); w.className='vpwrap'; btn.parentNode.insertBefore(w,btn); w.appendChild(btn); w.appendChild(c); }   // keep the two together in a grid
     else btn.insertAdjacentElement('afterend',c); return c; }
-  window.MFvoice={attach:attach,menu:function(o){ menu(o||{},document.activeElement); },get:get,set:setNat,device:device,voices:NAT};
+  window.MFvoice={speed:speed,setSpeed:setSpeed,attach:attach,menu:function(o){ menu(o||{},document.activeElement); },get:get,set:setNat,device:device,voices:NAT};
 })();

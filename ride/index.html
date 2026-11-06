@@ -116,7 +116,7 @@ body.rider main{max-width:980px}
   function say(text,lang,cb){ var fin=false, done=function(){ if(fin) return; fin=true; if(cb) cb(); };
     var dev=function(){ done(); };   /* the natural voice could not play: end quietly, never the phone's own voice */
     try{ player.pause(); player.src='/api/say?t='+encodeURIComponent(text)+'&l='+encodeURIComponent(lang)+'&v='+encodeURIComponent((get('mf-voice','sage')==='device'?'sage':get('mf-voice','sage')));
-      player.onended=done; player.onerror=function(){ if(!fin) dev(); }; var p=player.play(); if(p&&p.catch) p.catch(function(){ if(!fin) dev(); }); }catch(e){ dev(); } }
+      player.defaultPlaybackRate=player.playbackRate=([0.75,1,1.25,1.5,1.75].indexOf(+get('mf-speed','1.25'))>=0?+get('mf-speed','1.25'):1.25); player.onended=done; player.onerror=function(){ if(!fin) dev(); }; var p=player.play(); if(p&&p.catch) p.catch(function(){ if(!fin) dev(); }); }catch(e){ dev(); } }
   var WL=null;
   function wake(on){ try{ if(on&&!WL&&navigator.wakeLock) navigator.wakeLock.request('screen').then(function(l){ WL=l; l.addEventListener('release',function(){ WL=null; }); }).catch(function(){}); if(!on&&WL){ WL.release(); WL=null; } }catch(e){} }
   document.addEventListener('visibilitychange',function(){ if(!document.hidden&&RIDE.c){ wake(true); pollNow(); } });

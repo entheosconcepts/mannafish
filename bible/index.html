@@ -508,12 +508,14 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   var OGA=null, CP={i:-1};
   function bvoice(){ var v=window.MFvoice&&MFvoice.get?MFvoice.get():'sage'; return !v||v==='device'?'sage':v; }
   function chunk(t,n){ var out=[], r=String(t||'').replace(/\s+/g,' ').trim(); while(r.length>n){ var k=Math.max(r.lastIndexOf('. ',n),r.lastIndexOf('; ',n),r.lastIndexOf(', ',n),r.lastIndexOf(' ',n)); if(k<40) k=n; out.push(r.slice(0,k+1).trim()); r=r.slice(k+1).trim(); } if(r) out.push(r); return out; }
+  function spd(){ return window.MFvoice&&MFvoice.speed?MFvoice.speed(1.25):1.25; }   /* the listening speed (mf-speed): set in the narrator menu */
+  window.addEventListener('mfspeed',function(){ try{ if(OGA) OGA.playbackRate=spd(); }catch(e){} });
   function halt(){ OGP++; try{ if(OGA) OGA.pause(); }catch(e){} }
   function sayP(t,l){ var me=OGP, parts=chunk(t,280), v=bvoice();
     return new Promise(function(done){ if(!OGA) OGA=new Audio();
       (function nx(i){ if(me!==OGP||i>=parts.length){ done(); return; } var a=OGA;
         var bad=function(){ if(me===OGP){ toast('The voice could not play just now. Please try again.'); stopSay(); ogStop(); } done(); };
-        a.onended=function(){ nx(i+1); }; a.onerror=bad;
+        a.onended=function(){ nx(i+1); }; a.onerror=bad; a.defaultPlaybackRate=spd();
         a.src='/api/say?t='+encodeURIComponent(parts[i])+'&l='+encodeURIComponent(l)+'&v='+encodeURIComponent(v);
         var pr=a.play(); if(pr&&pr.catch) pr.catch(function(e){ if(e&&e.name==='AbortError') return; bad(); }); })(0); }); }
   function hearUI(){ [].forEach.call(document.querySelectorAll('#txt [data-hear]'),function(b){ var id=b.dataset.hear, on=id==='m'?SAY.on:CP.i===+id;
