@@ -138,10 +138,10 @@
    },
    "warn": [
     "The sponsor logo is a stand-in (assets/ktech-round-logo-DRAFT.svg). Upload the original logo before printing.",
-    "QR \"Today's free MannaFish devotional\" opens https://manna-fish.com/?devo=1: the devotional (?devo=1) only opens there once the new site is live on manna-fish.com.",
+    "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-06T18:20:57.448Z"
+   "made": "2026-11-06T19:56:49.393Z"
   }
  ]
 }

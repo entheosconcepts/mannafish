@@ -12,6 +12,8 @@ Everything here is on the test site (https://yadamannafishtest.netlify.app/) unt
 - [ ] **Ken:** word size and place: pick templates on the edit sheet, tap 📋 Copy the averages, paste to Claude.
 
 ## Sponsors and printing
+- [ ] **Ken:** scan a printed proof of R0006 (inverted QR codes) with your own phones; if any will not scan, we switch to normal black-on-white tiles.
+- [ ] **Claude (on Ken's word):** a proper landing page for the card QR (today's devotional, and a clear sign-up by email and by text), and update the website's sign-up path so people click the right thing. Texting needs the US carrier registration first (see Growing it).
 - [ ] **Ken:** pricing for sponsored card orders (the cart shows no price; requests come to /print/orders/).
 - [ ] **Ken:** the printer (StickerApp or another) and who mails the cards.
 - [ ] **Ken:** the legal home for sponsorships (Yadah Collaborative, with a CPA or nonprofit attorney).

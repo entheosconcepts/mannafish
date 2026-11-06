@@ -1,6 +1,9 @@
 /docs/*  /404  404!
 /tools/*  /404  404!
 /terms  /privacy/#terms  301
+# the permanent address on the printed cards' QR codes: the free-devotional sign-up (Ken, 6 Nov). Kept as a redirect so the page behind it can change
+/devotional  /?devotional=1  302
+/devotional/  /?devotional=1  302
 /privacy.html  /privacy/  301
 /translator  /translate/  301
 /game  /match/  301

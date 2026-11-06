@@ -13,7 +13,7 @@
   "show": true
  },
  "ship_to": "",
- "qr_direct": true,
+ "qr_direct": false,
  "back": {
   "template": "study",
   "refs": 9,
@@ -22,11 +22,11 @@
    "to": "https://k-tech-porch-enclosures.netlify.app/"
   },
   "right": {
-   "label": "Today's free MannaFish devotional",
-   "to": "https://manna-fish.com/?devo=1"
+   "label": "Free MannaFish devo and merch",
+   "to": "https://manna-fish.com/devotional"
   },
   "orientation": "landscape",
   "layout": "stack"
  },
- "notes": "Ken, 6 Nov: the Believe word study like the website's card (the word on top, Greek | Hebrew under it, nine verses), but without the line \"Trace it through Scripture — tap a verse\" and everything moved up, so the QR codes sit at the bottom left and bottom right with \"Sponsored by K-Tech Construction\" in the middle. The K-Tech logo is still the stand-in."
+ "notes": "Ken, 6 Nov: the Believe word study like the website's card (the word on top, Greek | Hebrew under it, nine verses), but without the line \"Trace it through Scripture — tap a verse\" and everything moved up, so the QR codes sit at the bottom left and bottom right with \"Sponsored by K-Tech Construction\" in the middle. The K-Tech logo is still the stand-in. Ken, 6 Nov: strip on black with no white box, QR codes inverted and moved in from the edges with their words underneath in white, \"Sponsored by\" in white and a little lower; the right QR now goes to the permanent address manna-fish.com/devotional (the free-devotional sign-up), not ?devo=1. Both QR codes use the short manna-fish.com/q/ addresses (counted, can be re-pointed after printing)."
 }
