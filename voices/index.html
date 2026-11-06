@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#000000">
+<title>MannaFish Voices</title>
+<link rel="icon" href="/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Spectral:wght@400;600&display=swap" rel="stylesheet">
+<!-- Ken, 6 Nov: the voice taste test. The same words in every voice (your ElevenLabs voices first, then MannaFish's built-in ones),
+     so you can pick. Play, ⭐ the ones you like, "Use this voice" to try it everywhere on this device, and "Copy my favorites"
+     to paste to Claude. The list comes from /api/say?list=1; each clip is made once, then kept. -->
+<style>
+:root{--ink:#000;--ink2:#0b1620;--foam:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--blue2:#6f9be0;--line:rgba(200,215,218,.16);--green:#7fd18b;--red:#e06a64}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ink);color:var(--foam)}
+body{font:1rem/1.5 'Archivo',system-ui,sans-serif;min-height:100dvh}
+button,select,textarea{font:inherit;color:inherit}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));border-bottom:1px solid var(--line)}
+.top a{color:var(--foam);text-decoration:none;font-weight:800;font-size:1.15rem}.top a b{color:var(--blue2)}
+.top span{font:700 .7rem 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--blue2)}
+main{max-width:760px;margin:0 auto;padding:16px 16px 80px}
+h1{font-size:1.5rem;margin:6px 0 4px}
+.sub{color:var(--dim);font-size:.92rem;margin:0 0 14px}
+.ctl{display:grid;gap:10px;background:var(--ink2);border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:14px}
+.ctl label{font:700 .76rem 'Archivo',sans-serif;color:var(--dim);display:block;margin-bottom:4px}
+.ctl select,.ctl textarea{width:100%;background:#000;border:1px solid var(--line);border-radius:12px;padding:9px 10px}
+.ctl textarea{min-height:74px;font:1rem/1.45 'Spectral',serif;resize:vertical}
+.note{font-size:.84rem;color:var(--dim);margin:6px 0 0}
+.note b{color:var(--foam)}
+h2{font-size:1.05rem;margin:20px 0 8px;display:flex;align-items:center;gap:8px}
+.row{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid var(--line);border-radius:14px;margin-bottom:8px;background:var(--ink2)}
+.row.on{border-color:var(--blue2)}
+.row .nm{flex:1;min-width:0}.row .nm b{display:block;font-size:1rem}.row .nm small{color:var(--dim);display:block;font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.b{border:1px solid var(--line);background:transparent;border-radius:999px;padding:7px 12px;font-weight:700;font-size:.85rem;cursor:pointer;white-space:nowrap}
+.b.play{background:var(--blue);border-color:var(--blue);color:#fff;min-width:78px}
+.b.play[aria-pressed=true]{background:var(--red);border-color:var(--red)}
+.b.fav[aria-pressed=true]{color:#ffd45c;border-color:#ffd45c}
+.b.use[aria-pressed=true]{background:rgba(127,209,139,.14);border-color:var(--green);color:var(--green)}
+.b:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #6c9cf0;outline-offset:2px}
+.msg{min-height:1.3em;font-size:.88rem;margin:8px 0;color:var(--green)}
+.msg.err{color:var(--red)}
+.copy{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:18px}
+@media(max-width:520px){.row{flex-wrap:wrap}.row .nm{flex:1 1 100%}.row .b{flex:1}}
+</style>
+</head>
+<body>
+<div class="top"><a href="/">Manna<b>Fish</b></a><span>Voices</span></div>
+<main>
+  <h1>Voice taste test</h1>
+  <p class="sub">The same words in every voice. Press ▶, ⭐ the ones you like.</p>
+  <div class="ctl">
+    <div><label for="lang">Language</label><select id="lang"></select></div>
+    <div><label for="txt">Words to hear (short is best)</label><textarea id="txt" maxlength="280"></textarea></div>
+    <p class="note" id="elnote"></p>
+  </div>
+  <p class="msg" id="msg" role="status"></p>
+  <div id="list"><p class="sub">Loading the voices…</p></div>
+  <div class="copy"><button type="button" class="b" id="copy">📋 Copy my favorites</button><span class="sub" id="copied" style="margin:0"></span></div>
+</main>
+<script>
+(function(){
+  var $=function(i){ return document.getElementById(i); };
+  function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
+  var SAMPLE={en:'The Lord is my shepherd; I shall not want. He makes me lie down in green pastures; he leads me beside still waters.',es:'El Señor es mi pastor; nada me faltará. En lugares de delicados pastos me hará descansar.',tl:'Ang Panginoon ay aking pastor; hindi ako mangangailangan.',zh:'耶和华是我的牧者，我必不致缺乏。他使我躺卧在青草地上。',hi:'यहोवा मेरा चरवाहा है, मुझे कुछ घटी न होगी।',el:'Ο Κύριος με ποιμαίνει· δεν θα μου λείψει τίποτα.',de:'Der Herr ist mein Hirte; mir wird nichts mangeln.',ko:'여호와는 나의 목자시니 내가 부족함이 없으리로다.',he:'יְהוָה רֹעִי לֹא אֶחְסָר. בִּנְאוֹת דֶּשֶׁא יַרְבִּיצֵנִי.',ar:'الرب راعيّ فلا يعوزني شيء.',ru:'Господь — Пастырь мой; я ни в чем не буду нуждаться.'};
+  var LN={en:'English',es:'Español',tl:'Tagalog',zh:'中文',hi:'हिन्दी',el:'Ελληνικά',de:'Deutsch',ko:'한국어',he:'עברית',ar:'العربية',ru:'Русский'};
+  var lang=$('lang'), txt=$('txt'), listEl=$('list'), cur=null, au=null, VS=[];
+  lang.innerHTML=Object.keys(LN).map(function(k){ return '<option value="'+k+'">'+LN[k]+'</option>'; }).join('');
+  txt.value=SAMPLE.en;
+  lang.addEventListener('change',function(){ txt.value=SAMPLE[lang.value]||SAMPLE.en; stop(); });
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function favs(){ try{ return JSON.parse(ls('mf-voice-fav')||'[]')||[]; }catch(e){ return []; } }
+  function say(m,err){ $('msg').textContent=m||''; $('msg').className='msg'+(err?' err':''); }
+  function stop(){ if(au){ try{ au.pause(); }catch(e){} au=null; } cur=null; [].forEach.call(document.querySelectorAll('.b.play'),function(b){ b.setAttribute('aria-pressed','false'); b.textContent='▶ Play'; }); }
+  function rows(a){ var f=favs(), mine=ls('mf-voice')||'sage';
+    return a.map(function(v){ return '<div class="row'+(v.id===mine?' on':'')+'" data-id="'+esc(v.id)+'" data-name="'+esc(v.name)+'"><div class="nm"><b>'+esc(v.name)+'</b><small>'+esc(v.sounds||'')+'</small></div>'
+      +'<button type="button" class="b play" data-a="play" aria-pressed="false">▶ Play</button>'
+      +'<button type="button" class="b fav" data-a="fav" aria-pressed="'+(f.indexOf(v.id)>=0)+'" aria-label="Favorite '+esc(v.name)+'">⭐</button>'
+      +'<button type="button" class="b use" data-a="use" aria-pressed="'+(v.id===mine)+'">'+(v.id===mine?'✓ In use':'Use this voice')+'</button></div>'; }).join(''); }
+  function draw(){ var el=VS.filter(function(v){ return v.provider==='elevenlabs'; }), bi=VS.filter(function(v){ return v.provider!=='elevenlabs'; });
+    listEl.innerHTML=(el.length?'<h2>ElevenLabs voices</h2>'+rows(el):'')+'<h2>MannaFish built-in voices</h2>'+rows(bi); }
+  listEl.addEventListener('click',function(e){ var b=e.target.closest('.b'); if(!b) return; var r=b.closest('.row'), id=r.dataset.id, name=r.dataset.name, a=b.dataset.a;
+    if(a==='fav'){ var f=favs(), i=f.indexOf(id); if(i>=0) f.splice(i,1); else f.push(id); ls('mf-voice-fav',JSON.stringify(f)); b.setAttribute('aria-pressed',String(i<0)); return; }
+    if(a==='use'){ ls('mf-voice',id); ls('mf-voice-name',name); try{ if(window.MFacct&&MFacct.touch) MFacct.touch('set'); }catch(er){}
+      [].forEach.call(document.querySelectorAll('.row'),function(x){ var on=x===r; x.classList.toggle('on',on); var u=x.querySelector('.use'); u.setAttribute('aria-pressed',String(on)); u.textContent=on?'✓ In use':'Use this voice'; });
+      say(name+' is now your voice everywhere on this device (Bible, Plans, Today, the game).'); return; }
+    if(a==='play'){ if(cur===id){ stop(); say(''); return; } stop(); var t=txt.value.trim(); if(!t){ say('Type or choose some words first.',true); return; }
+      cur=id; b.setAttribute('aria-pressed','true'); b.textContent='■ Stop'; say('Making it… the first time can take a few seconds.');
+      var x=new Audio('/api/say?t='+encodeURIComponent(t)+'&l='+encodeURIComponent(lang.value)+'&v='+encodeURIComponent(id)); au=x;
+      x.onplaying=function(){ if(au===x) say(''); }; x.onended=function(){ if(au===x){ stop(); } };
+      x.onerror=function(){ if(au===x){ stop(); say('That voice could not play just now. Try again in a moment.',true); } };
+      var p=x.play(); if(p&&p.catch) p.catch(function(er){ if(er&&er.name==='AbortError') return; if(au===x){ stop(); say('Your phone blocked the sound. Tap Play again.',true); } }); } });
+  $('copy').addEventListener('click',function(){ var f=favs(), byId={}; VS.forEach(function(v){ byId[v.id]=v; });
+    var out=f.length?f.map(function(id){ var v=byId[id]; return (v?v.name:'?')+' = '+id; }).join('\n'):'(no favorites picked yet)';
+    var done=function(){ $('copied').textContent=f.length?'Copied. Paste it to Claude.':'Pick some ⭐ first.'; };
+    try{ navigator.clipboard.writeText(out).then(done,function(){ prompt('Copy this:',out); }); }catch(e){ prompt('Copy this:',out); } });
+  fetch('/api/say?list=1').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ VS=j.voices||[]; draw();
+    var el=VS.filter(function(v){ return v.provider==='elevenlabs'; }).length;
+    $('elnote').innerHTML=j.elevenlabs?(el?'<b>ElevenLabs is connected</b> ('+el+' voices). Each new line you play uses ElevenLabs credits once; playing it again is free.':'ElevenLabs is connected, but no voices came back. Open Voices in your ElevenLabs account and add some to “My Voices”.'):'ElevenLabs is not connected yet (the key is not set on this site).'; })
+  .catch(function(){ listEl.innerHTML='<p class="sub">The voice list could not load. Please reload.</p>'; });
+})();
+</script>
+</body>
+</html>

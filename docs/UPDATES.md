@@ -18,7 +18,8 @@ Everything here is on the test site (https://yadamannafishtest.netlify.app/) unt
 - [ ] **Claude:** a print run from a card order (logo, link, the fish) once a first order comes in.
 
 ## Voices
-- [ ] **Ken:** an ElevenLabs account and `ELEVENLABS_API_KEY` in Netlify (never in a chat); then Claude adds the voices everywhere.
+- [x] **Ken:** ElevenLabs account and `ELEVENLABS_API_KEY` in Netlify (done 6 Nov). Claude built the support and /voices/.
+- [ ] **Ken:** open /voices/, ⭐ favorites, press Copy my favorites, paste to Claude, and say where to feature them.
 - [ ] **Claude:** a voice taste-test page (the same verse in each voice).
 - [ ] **Ken:** paste docs/HANDOFF-CRM-VOICES.md into the CRM chat for the CRM tour speaker.
 

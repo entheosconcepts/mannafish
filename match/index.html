@@ -755,7 +755,7 @@ html,body{overflow-x:hidden}
 
   // ── hearing a word: the site's natural voice (/api/tts), else this device's own voice ──
   var CLIP={}, apiOff=false, sp={id:0,audio:null,card:null,next:null,busy:false};
-  function aiVoice(){ var v=store('mf-voice')||''; return VOICES.indexOf(v)>=0?v:'sage'; }
+  function aiVoice(){ var v=store('mf-voice')||''; return /^el:[A-Za-z0-9]{10,40}$/.test(v)||VOICES.indexOf(v)>=0?v:'sage'; }
   function clip(l,k,part){ part=part||'word';
     var v=aiVoice(); if(apiOff) return Promise.reject(new Error('off'));
     var key=l+'|'+k+'|'+v+'|'+part; if(CLIP[key]) return CLIP[key];

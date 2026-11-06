@@ -26,7 +26,8 @@
   function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
   function uiLang(){ var l=(window.MF&&window.MF.lang)||ls('mf-lang')||(document.documentElement.lang||'en').slice(0,2); return TX[l]?l:'en'; }
   function T(i){ return (TX[uiLang()]||TX.en)[i]; }
-  function get(){ var v=ls('mf-voice')||''; return NAT.some(function(o){ return o[0]===v; })?v:'sage'; }
+  var ELV=/^el:[A-Za-z0-9]{10,40}$/;   // an ElevenLabs voice from Ken's account (picked on the /voices/ page or in this menu): "el:<id>"
+  function get(){ var v=ls('mf-voice')||''; return ELV.test(v)||NAT.some(function(o){ return o[0]===v; })?v:'sage'; }
   function setNat(v){ ls('mf-voice',v); if(window.MFacct&&MFacct.touch) MFacct.touch('set');
     try{ window.dispatchEvent(new CustomEvent('mfvoice',{detail:{v:v}})); }catch(e){} }
   function devVoices(){ return []; }   // the phone's own voices are never offered (Ken, 6 Nov)
@@ -65,6 +66,7 @@
     document.head.appendChild(s); }
   function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function close(){ hush(); if(open){ var b=open.back; open.el.remove(); open=null; if(b) try{ b.focus(); }catch(e){} } }
+  function rowHtml(r){ return '<div class="vpr" role="radio" aria-checked="'+(r[0]===get())+'" data-id="'+esc(r[0])+'"><button type="button" class="vpk"><span class="vpo" aria-hidden="true"></span><span><b>'+esc(r[1])+'</b>'+(r[2]?'<small>'+esc(r[2])+'</small>':'')+'</span></button><button type="button" class="vpp" aria-label="'+esc(T(3)+': '+r[1])+'">▶ '+esc(T(3))+'</button></div>'; }
   function menu(opts,back){ style(); close(); nodev=!!opts.noDevice; var mode=opts.mode||'natural', lang=(typeof opts.lang==='function'?opts.lang():opts.lang)||uiLang(), es=uiLang()==='es';
     var rows, cur;
     if(mode==='device'){ var vs=devVoices(lang); cur=(device(lang)||{}).voiceURI||''; rows=vs.map(function(v){ return [v.voiceURI,v.name.replace(/\s*\(.*\)$/,''),v.lang]; }); }
@@ -72,14 +74,17 @@
     var w=document.createElement('div'); w.className='vpw'; w.setAttribute('role','dialog'); w.setAttribute('aria-modal','true'); w.setAttribute('aria-label',T(0));
     w.innerHTML='<div class="vpin"><div class="vph"><h2>'+esc(T(0))+'</h2><button type="button" class="vpx" aria-label="'+esc(T(7))+'">✕</button></div>'
       +'<p class="vpn">'+esc(mode==='device'?T(5):T(1))+'</p>'
-      +(rows.length?rows.map(function(r){ return '<div class="vpr" role="radio" aria-checked="'+(r[0]===cur)+'" data-id="'+esc(r[0])+'"><button type="button" class="vpk"><span class="vpo" aria-hidden="true"></span><span><b>'+esc(r[1])+'</b>'+(r[2]?'<small>'+esc(r[2])+'</small>':'')+'</span></button><button type="button" class="vpp" aria-label="'+esc(T(3)+': '+r[1])+'">▶ '+esc(T(3))+'</button></div>'; }).join(''):'<p class="vpn">'+esc(T(6))+'</p>')
+      +(rows.length?rows.map(rowHtml).join(''):'<p class="vpn">'+esc(T(6))+'</p>')
       +'<p class="vpt" role="status"></p></div>';
     document.body.appendChild(w); open={el:w,back:back};
+    if(mode!=='device') fetch('/api/say?list=1').then(function(r){ return r.ok?r.json():null; }).then(function(j){
+      var el=j&&j.voices?j.voices.filter(function(v){ return v.provider==='elevenlabs'; }):[]; if(!el.length||open===null||open.el!==w) return;
+      var t=w.querySelector('.vpt'); if(!t) return; t.insertAdjacentHTML('beforebegin','<p class="vpn" style="margin-top:14px"><b>ElevenLabs</b></p>'+el.map(function(v){ return rowHtml([v.id,v.name,v.sounds]); }).join('')); }).catch(function(){});
     w.addEventListener('click',function(e){ if(e.target===w||e.target.closest('.vpx')){ close(); return; }
       var r=e.target.closest('.vpr'); if(!r) return; var id=r.dataset.id;
       if(e.target.closest('.vpp')){ sample(mode,id,lang); return; }
       [].forEach.call(w.querySelectorAll('.vpr'),function(x){ x.setAttribute('aria-checked',String(x===r)); });
-      if(mode==='device') ls('mf-dvoice-'+lang,id); else setNat(id);
+      if(mode==='device') ls('mf-dvoice-'+lang,id); else { ls('mf-voice-name',r.querySelector('b').textContent); setNat(id); }
       w.querySelector('.vpt').textContent=r.querySelector('b').textContent+' '+T(4)+'.';
       if(opts.onPick) try{ opts.onPick(id); }catch(er){}
       sample(mode,id,lang); });
@@ -90,7 +95,7 @@
     var c=document.createElement('button'); c.type='button'; c.className='vpc'+(opts.cls?' '+opts.cls:''); c.textContent='▾'; c.setAttribute('aria-haspopup','dialog');
     // name:true shows the voice's name on the button ("Sage ▾"), kept up to date
     function nm(){ if(!opts.name) return; var v=opts.mode==='device'?(device((typeof opts.lang==='function'?opts.lang():opts.lang)||uiLang())||{}).name:get(), o=NAT.filter(function(x){ return x[0]===v; })[0];
-      c.textContent=(opts.mode==='device'?(v||T(2)):(o?o[1]:T(2)))+' ▾'; }
+      c.textContent=(opts.mode==='device'?(v||T(2)):(o?o[1]:(ELV.test(v||'')&&ls('mf-voice-name')?ls('mf-voice-name'):T(2))))+' ▾'; }
     function lab(){ c.setAttribute('aria-label',T(0)); c.title=T(0); nm(); } lab();
     window.addEventListener('mfvoice',nm);
     c.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); lab(); menu(opts,c); });

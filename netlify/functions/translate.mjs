@@ -10,6 +10,7 @@ import { getStore } from '@netlify/blobs';
 import { NAMES, MODEL, translatePair, translateTo, polish } from './lib/tr.mjs';
 const VOICE = process.env.MF_TTS_VOICE || 'sage';
 import { ALL, speaker, LABELS } from './lib/voices.mjs';
+import { EL, isEl, elevenOn, elevenVoices, elevenBudget, elevenSpeak } from './lib/eleven.mjs';
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];
 const MAX = 300, PER_HOUR = 80, SAY_PER_HOUR = 400;  // the Bible reader reads a chapter verse by verse
 const okOrigin = (o) => /^https:\/\/([a-z0-9-]+\.)?manna-fish\.com$|^https:\/\/([a-z0-9-]+--)?yadamannafishtest\.netlify\.app$|^http:\/\/localhost(:\d+)?$/.test(o || '');
@@ -39,8 +40,9 @@ export default async (req, context) => {
   if (get) {
     if (!new URL(req.url).pathname.endsWith('/say')) return bad('POST only', 405);
     // GET /api/say?list=1: every voice, its name and how it sounds (for a voice picker on another of Ken's sites)
-    if (new URL(req.url).searchParams.get('list')) return Response.json({ voices: ALL.map((id) => ({ id, name: (LABELS[id] || [id])[0], sounds: (LABELS[id] || ['', ''])[1] })),
-      languages: Object.keys(NAMES), play: '/api/say?t=<words>&l=<language>&v=<voice>' }, { headers: { 'access-control-allow-origin': '*', 'cache-control': 'public, max-age=3600' } });
+    if (new URL(req.url).searchParams.get('list')) { const el = await elevenVoices();
+      return Response.json({ voices: [...ALL.map((id) => ({ id, name: (LABELS[id] || [id])[0], sounds: (LABELS[id] || ['', ''])[1], provider: 'builtin' })), ...el.map((v) => ({ ...v, provider: 'elevenlabs' }))],
+        languages: Object.keys(NAMES), elevenlabs: elevenOn(), play: '/api/say?t=<words>&l=<language>&v=<voice>' }, { headers: { 'access-control-allow-origin': '*', 'cache-control': 'public, max-age=600' } }); }
     if (!(okOrigin(req.headers.get('origin')) || req.headers.get('sec-fetch-site') === 'same-origin' || okRef(req.headers.get('referer'))
       || okOther(req.headers.get('origin')) || okOther(req.headers.get('referer')))) return bad('Not allowed', 403);
   } else {
@@ -123,13 +125,17 @@ export default async (req, context) => {
     // spoken too: its code (am, yo, ne ...) and its name come with the words
     const anyL = !NAMES[b.lang] && /^[a-z]{2,3}$/.test(String(b.lang || '')), lang = NAMES[b.lang] || anyL ? b.lang : 'en';
     const lname = NAMES[lang] || String(b.name || '').replace(/[^\p{L} ()'-]/gu, '').trim().slice(0, 40) || lang;
-    const voice = ALL.includes(b.voice) ? b.voice : VOICE;
-    const store = getStore('mannafish-tts'), id = `live/${lang}-${await sha(voice + '|' + text)}.mp3`;
-    let audio = await store.get(id, { type: 'arrayBuffer' });
+    let voice = ALL.includes(b.voice) ? b.voice : (isEl(b.voice) && elevenOn() ? b.voice : VOICE);
+    const store = getStore('mannafish-tts'), idOf = async (v) => `live/${lang}-${await sha(v + '|' + text)}.mp3`;
+    let id = await idOf(voice), audio = await store.get(id, { type: 'arrayBuffer' });
+    // ElevenLabs is metered: if this month's allowance is used up, the built-in voice reads it instead
+    if (!audio && isEl(voice) && !(await elevenBudget(text.length))) { voice = VOICE; id = await idOf(voice); audio = await store.get(id, { type: 'arrayBuffer' }); }
     if (!audio) {
       // only new recordings count toward the hourly limit; anything said before is simply played again
       if (await limited(context && context.ip, 'say', SAY_PER_HOUR)) return bad('Please wait a little', 429, 'busy');
-      const r = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST', headers: H,
+      let r = null;
+      if (isEl(voice)) { r = await elevenSpeak(voice, text).catch(() => null); if (!r || !r.ok) { r = null; voice = VOICE; id = await idOf(voice); } }   // ElevenLabs could not answer: the built-in voice
+      if (!r) r = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST', headers: H,
         body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice: speaker(voice, lang).voice, input: text, response_format: 'mp3',
           instructions: speaker(voice, lang).style + `Speak warmly, clearly and a little slowly, like a kind friend talking face to face, in ${lname}.` }) });
       if (r.status === 401 || r.status === 403) return bad('Key not allowed', 503, 'key');
