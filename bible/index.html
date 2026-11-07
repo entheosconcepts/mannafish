@@ -46,6 +46,13 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 /* Ken, 2 Nov: the chapter's name centred above the verses, an arrow each side for the chapter before and after, ▾ for the picker */
 .th{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:18px 0 4px}.th h1{margin:0;flex:1;min-width:0;text-align:center}
 .tbtn{border:0;background:none;color:inherit;font:inherit;cursor:pointer;padding:0;max-width:100%}.tbtn .ar{font-size:.5em;color:var(--dim);margin-left:6px;vertical-align:middle}
+.tbtn .ar{display:inline-block;transition:transform .2s}.tbtn[aria-expanded=true] .ar{transform:rotate(180deg)}
+/* Ken, 7 Nov: "I want the books to show up same size as Galatians directly beneath that book when clicking the arrow": the books list drops down right under the heading, each book in the heading's own size; a book opens its chapters right under it */
+.bkdrop{margin:6px 0 10px;border:1px solid var(--line);background:var(--card);border-radius:16px;max-height:min(68vh,640px);overflow:auto;padding:4px 6px 10px;-webkit-overflow-scrolling:touch}
+.bkdrop h5{margin:12px 8px 2px;font:800 .72rem 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.bkdrop .bkb{display:block;width:100%;border:0;background:none;color:inherit;text-align:center;font:600 1.7rem 'Fraunces',Georgia,serif;padding:7px 8px;border-radius:12px;cursor:pointer}
+.bkdrop .bkb.on{color:var(--blue2)}.bkdrop .bkb[aria-expanded=true]{background:rgba(68,143,255,.12)}
+.bkdrop .bkch{margin:2px 4px 8px}.bkdrop .bkmore{display:block;margin:6px auto 2px;border:1px solid var(--line);background:none;color:var(--dim);border-radius:999px;padding:6px 14px;font:700 .8rem 'Archivo',sans-serif;cursor:pointer}
 .chv{flex:none;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;background:none;color:var(--text);font-size:1.7rem;line-height:1;padding:0 0 4px;cursor:pointer}.chv:disabled{opacity:.25;cursor:default}
 #main>.sub{text-align:center}
 .ht{text-align:center;margin:0 0 10px}.htb{border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:6px 14px;font-weight:700;font-size:.85rem;cursor:pointer}
@@ -270,7 +277,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 </div></div>
 <div class="menu" id="menu" role="menu" hidden></div>
 <main id="main">
-  <div class="th"><button type="button" class="chv" id="prevT" aria-label="Previous chapter">&lsaquo;</button><h1><button type="button" class="tbtn" id="titleB" aria-haspopup="dialog" aria-label="Choose a book and chapter"><span id="title"></span><span class="ar" aria-hidden="true">▾</span></button></h1><button type="button" class="chv" id="nextT" aria-label="Next chapter">&rsaquo;</button></div><p class="sub" id="sub"></p><div class="ht"><button type="button" class="htb" id="htB" aria-expanded="false">&#129520;&#xFE0E; Bible tools <span class="ar" aria-hidden="true">&#9662;</span></button><div class="htp" id="htP" hidden></div></div><button type="button" class="cn" id="cnote" hidden></button><div class="stb" id="stb" hidden></div><button type="button" class="hlm" id="hlmBtn" aria-expanded="false" hidden></button><div class="hlopts" id="hlOpts" hidden></div>
+  <div class="th"><button type="button" class="chv" id="prevT" aria-label="Previous chapter">&lsaquo;</button><h1><button type="button" class="tbtn" id="titleB" aria-haspopup="true" aria-expanded="false" aria-controls="bkDrop" aria-label="Choose a book and chapter"><span id="title"></span><span class="ar" aria-hidden="true">▾</span></button></h1><button type="button" class="chv" id="nextT" aria-label="Next chapter">&rsaquo;</button></div><div class="bkdrop" id="bkDrop" hidden></div><p class="sub" id="sub"></p><div class="ht"><button type="button" class="htb" id="htB" aria-expanded="false">&#129520;&#xFE0E; Bible tools <span class="ar" aria-hidden="true">&#9662;</span></button><div class="htp" id="htP" hidden></div></div><button type="button" class="cn" id="cnote" hidden></button><div class="stb" id="stb" hidden></div><button type="button" class="hlm" id="hlmBtn" aria-expanded="false" hidden></button><div class="hlopts" id="hlOpts" hidden></div>
   <div class="txt" id="txt"><p class="msg">Opening…</p></div>
   <p class="pace" id="paceRow" hidden><button type="button" class="hlm" id="paceBtn" aria-pressed="false"></button></p>
   <div class="pn"><button type="button" id="prev"></button><button type="button" id="next"></button></div>
@@ -446,7 +453,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   // ── where we are ──
   var AT={b:42,c:1,sel:0}, HIST=[];
   var AUTOSAY=0;
-  function go(b,c,v,keep){ var say=AUTOSAY; AUTOSAY=0; stopSay(); closeAct(); closeWc(); if(HLM) hlmEnd(); AT={b:b,c:c,sel:v||0}; OGJ=null; TK={}; ls('mf-bible-last',JSON.stringify({b:b,c:c})); remember(b,c);
+  function go(b,c,v,keep){ bkClose(); var say=AUTOSAY; AUTOSAY=0; stopSay(); closeAct(); closeWc(); if(HLM) hlmEnd(); AT={b:b,c:c,sel:v||0}; OGJ=null; TK={}; ls('mf-bible-last',JSON.stringify({b:b,c:c})); remember(b,c);
     whereUI(); htUI(); $('title').textContent=B[b][0]+' '+c; $('sub').textContent=ver().n; document.title=B[b][0]+' '+c+' · MannaFish Bible';
     try{ history.replaceState(null,'','?r='+encodeURIComponent(B[b][0]+' '+c+(v?':'+v:''))+(EMBED?'&embed=1':'')); }catch(e){}
     var pb=c>1?[b,c-1]:b>0?[b-1,B[b-1][1]]:null, nb=c<B[b][1]?[b,c+1]:b<B.length-1?[b+1,1]:null;
@@ -556,7 +563,6 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     toast(on?(o>0?'🐟 A fish is waiting for you · Plans → My pace':'✓ '+n+' of 1,189 chapters'):'Marked as not read'); });
   // Ken, 2 Nov: arrows beside the chapter's name for the previous and next chapter; the name opens the picker
   $('prevT').addEventListener('click',function(){ $('prev').click(); }); $('nextT').addEventListener('click',function(){ $('next').click(); });
-  $('titleB').addEventListener('click',function(){ $('where').click(); });
   $('prev').addEventListener('click',function(){ var t=this.dataset.to.split(',').map(Number); if(t.length===2) go(t[0],t[1]); });
   $('next').addEventListener('click',function(){ var t=this.dataset.to.split(',').map(Number); if(t.length===2) go(t[0],t[1]); });
   document.addEventListener('keydown',function(e){ if(e.target.closest&&e.target.closest('input,select,textarea')) return; if(e.key==='ArrowLeft') $('prev').click(); if(e.key==='ArrowRight') $('next').click(); if(e.key==='Escape'){ closeAct(); closePick(); closeWc(); closeMenu(); closeStuff(); } });
@@ -1165,6 +1171,24 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 
   // ── the book and chapter picker ──
   var OM='read'; try{ OM=sessionStorage.getItem('mf-bible-om')||'read'; }catch(e){}
+  // the books list right under the heading (Ken, 7 Nov): tap the heading or its ▾; a book opens its chapters right under it
+  var BKO=false;
+  function bkClose(){ if(!BKO) return; BKO=false; $('bkDrop').hidden=true; $('titleB').setAttribute('aria-expanded','false'); }
+  function bkOpen(){ BKO=true; var h='<button type="button" class="bkmore" data-bkmore="1">Version, search and recent &rsaquo;</button><h5>Old Testament</h5>', row=function(n){ return '<div class="bkr" data-bkr="'+n+'"><button type="button" class="bkb'+(n===AT.b?' on':'')+'" data-bkn="'+n+'" aria-expanded="false">'+esc(B[n][0])+'</button></div>'; };
+    for(var n=0;n<39;n++) h+=row(n); h+='<h5>New Testament</h5>'; for(n=39;n<66;n++) h+=row(n);
+    $('bkDrop').innerHTML=h; $('bkDrop').hidden=false; $('titleB').setAttribute('aria-expanded','true');
+    var cur=$('bkDrop').querySelector('.bkb.on'); if(cur) $('bkDrop').scrollTop=Math.max(0,cur.offsetTop-$('bkDrop').clientHeight/2+20); }
+  $('titleB').addEventListener('click',function(e){ e.stopPropagation(); if(BKO) bkClose(); else bkOpen(); });
+  $('bkDrop').addEventListener('click',function(e){
+    if(e.target.closest('[data-bkmore]')){ bkClose(); openPick(); return; }
+    var c=e.target.closest('[data-bkc]'); if(c){ var bn=+c.dataset.bkn; bkClose(); unlockSay(); go(bn,+c.dataset.bkc); return; }
+    var b=e.target.closest('[data-bkn]'); if(!b) return; var n=+b.dataset.bkn, open=b.getAttribute('aria-expanded')==='true';
+    [].forEach.call($('bkDrop').querySelectorAll('.bkch'),function(x){ x.remove(); }); [].forEach.call($('bkDrop').querySelectorAll('.bkb[aria-expanded=true]'),function(x){ x.setAttribute('aria-expanded','false'); });
+    if(open) return; if(B[n][1]===1){ bkClose(); unlockSay(); go(n,1); return; }
+    var g='<div class="chs bkch">'; for(var k=1;k<=B[n][1];k++) g+='<button type="button" data-bkn="'+n+'" data-bkc="'+k+'" class="'+(n===AT.b&&k===AT.c?'on':'')+'">'+k+'</button>'; g+='</div>';
+    b.setAttribute('aria-expanded','true'); b.parentNode.insertAdjacentHTML('beforeend',g); b.scrollIntoView({block:'nearest'}); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&BKO) bkClose(); });
+  document.addEventListener('click',function(e){ if(BKO&&!e.target.closest('#bkDrop,#titleB')) bkClose(); });
   function openPick(){ $('pick').classList.add('open'); books(); }
   // opened to listen: the natural voice starts with the chapter (a sound now, while the tap counts, so a phone lets it speak later)
   function unlockSay(){ if(OM!=='listen') return; try{ if(!OGA) OGA=new Audio(); OGA.src='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA='; var pr=OGA.play(); if(pr&&pr.catch) pr.catch(function(){}); }catch(e){} AUTOSAY=1; }
