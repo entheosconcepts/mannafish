@@ -1,2 +1,6 @@
 [build]
   edge_functions = "netlify/edge-functions"
+
+# the fish-picture function draws a PNG with a native library (resvg); if it ever cannot load, it sends the person to the saved picture instead
+[functions]
+  external_node_modules = ["@resvg/resvg-js"]

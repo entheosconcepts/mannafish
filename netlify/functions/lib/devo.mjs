@@ -54,7 +54,9 @@ export function emailFor(m, lang, unsub, opts = {}) {
   const fishRef = (k, url) => { const g = fishInfo(k, lang); return { ref: g.ref, snip: ' — “' + g.top + ' ' + g.bottom + '”', url: SITE() + url + (es ? '&lang=es' : '') }; };
   const refs = m.catch ? [fishRef(m.key, m.url)] : (m.refs || [{ ref: m.ref, snippet: m.snippet, url: m.url }]).map((x) => ({ ref: refEs(x.ref), snip: es ? '' : ' — “' + x.snippet + '”', url: SITE() + x.url + (es ? '&lang=es' : '') }));
   const read = SITE() + m.url + (es ? '&lang=es' : '');
-  const img = SITE() + (es ? '/w/img/es/' + m.key.toLowerCase() + '.jpg' : '/w/img/' + m.key.toLowerCase() + '.png');
+  // Ken, 6 Nov: the W and D fish are drawn by the server from the edit sheet's settings (the standard word size), so the email always matches the editor
+  const fishPic = (key) => es ? SITE() + '/w/img/es/' + key.toLowerCase() + '.jpg' : /^[DW]\d/i.test(key) ? SITE() + '/api/fish-img?k=' + key : SITE() + '/w/img/' + key.toLowerCase() + '.png';
+  const img = fishPic(m.key);
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const T = es
     ? { dbl: 'Tu porción doble', dblNote: 'En el sexto día recogieron doble porción (Éxodo 16:22). El versículo de hoy, y uno para el día de reposo.', sab: 'Para el día de reposo', sabRead: 'Leerlo', sabSub: ' · porción doble',
@@ -129,7 +131,7 @@ export function emailFor(m, lang, unsub, opts = {}) {
   const head = (k, alt) => pic(k, alt, 'display:block;margin:0 auto;color:#2a5fb0;font:900 15px Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase');
   const button = (href, k, alt) => `<a href="${href}" style="display:inline-block;margin:5px;text-decoration:none">${pic(k, alt, 'display:inline-block;vertical-align:middle;color:#ffffff;font:bold 16px Arial,sans-serif')}</a>`;
   const rule = td('padding:0 22px;font-size:0;line-height:0', `<img src="${P}rule.png" width="516" height="1" alt="" style="display:block;width:100%;height:1px;border:0">`);
-  if (two) { const r2 = fishRef(two.key, two.url), img2 = SITE() + (es ? '/w/img/es/' + two.key.toLowerCase() + '.jpg' : '/w/img/' + two.key.toLowerCase() + '.png'), see2 = seeOf(two);
+  if (two) { const r2 = fishRef(two.key, two.url), img2 = fishPic(two.key), see2 = seeOf(two);
     catch2 = td('padding:20px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;color:#2a5fb0;font:900 19px Arial,sans-serif')) + '\n'
       + td('padding:6px 30px 4px;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(T.dblNote))) + '\n'
       + td('padding:12px 18px', `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #3a4148;border-radius:14px;border-collapse:separate"><tr><td bgcolor="#000000" style="${BG}padding:14px;border-radius:14px"><a href="${r2.url}" style="text-decoration:none"><img src="${img2}" width="496" alt="${esc(word2)}" style="width:100%;max-width:496px;height:auto;display:block;border:0;margin:0 auto"></a></td></tr></table>`) + '\n'
