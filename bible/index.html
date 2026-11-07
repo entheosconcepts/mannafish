@@ -244,7 +244,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 .cc .cv b{font-size:.9rem}.cc .cv span{display:block;font:400 .98rem/1.5 'Spectral',Georgia,serif;color:var(--dim);margin-top:2px}.cc .cv span b{color:var(--text);font-weight:600;font-size:inherit}
 /* side by side (Ken, 24 Oct: "I like the translation side by side option too") */
 .phd{display:grid;grid-template-columns:repeat(var(--pc,2),minmax(0,1fr));gap:14px;align-items:center;position:sticky;top:var(--barh,100px);z-index:5;background:var(--bg);padding:6px 0;border-bottom:1px solid var(--line);font:800 .8rem 'Archivo',sans-serif}
-.phd .p2{display:flex;gap:6px;align-items:center}.phd select{flex:1;min-width:0;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 8px;font-weight:700;font-size:.8rem}
+.phd .phc{display:flex;flex-direction:column;gap:5px;min-width:0}.phd .pbc select[data-mch],.phd .pbc select[data-pch]{flex:0 0 4.2em}.phd .pbc select{font-weight:600}.phd .p2{display:flex;gap:6px;align-items:center}.phd select{flex:1;min-width:0;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 8px;font-weight:700;font-size:.8rem}
 .par .txt{font-size:calc(var(--fs,1.18rem) * .86);line-height:1.65}
 .par .txt .pr{display:grid;grid-template-columns:repeat(var(--pc,2),minmax(0,1fr));gap:0 14px;padding:6px 0;border-bottom:1px solid var(--line)}
 .par3 .txt{font-size:calc(var(--fs,1.18rem) * .8)}
@@ -462,7 +462,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     $('prev').innerHTML=pb?'&lsaquo; Previous<small>'+esc(B[pb[0]][0]+' '+pb[1])+'</small>':''; $('next').innerHTML=nb?'Next &rsaquo;<small>'+esc(B[nb[0]][0]+' '+nb[1])+'</small>':'';
     if(!keep) window.scrollTo(0,0); $('txt').innerHTML='<p class="msg">Opening…</p>';
     cnoteUI(); studyUI(); var PS=parVers(); ogStop();
-    Promise.all([chapter(b,c)].concat(PS.map(function(P){ return (P.og?ogText(b,c):chapter(b,c,P)).catch(function(){ return null; }); }))).then(function(R){ var o=R[0]; if(AT.b!==b||AT.c!==c) return;
+    Promise.all([chapter(b,c)].concat(PS.map(function(P){ var bb=P.at?P.at.b:b, cc=P.at?P.at.c:c; return (P.og?ogText(bb,cc):chapter(bb,cc,P)).catch(function(){ return null; }); }))).then(function(R){ var o=R[0]; if(AT.b!==b||AT.c!==c) return;
       VT={}; TK={}; o.t.forEach(function(t,i){ if(t) VT[i+1]=t; });
       PX=PS.map(function(P,i){ var oi=R[i+1], m={}; if(oi) oi.t.forEach(function(t,j){ if(t) m[j+1]=t; }); return {P:P,T:m,J:oi&&oi.J,none:!oi}; });
       draw(PX); marksUI(); paceUI(); $('note').innerHTML=esc(o.note)+PX.filter(function(x){ return !x.P.og&&!x.none; }).map(function(x){ return ' · '+esc(R[PX.indexOf(x)+1].note); }).join('')+' · Cross references: <a href="https://www.openbible.info/labs/cross-references/" target="_blank" rel="noopener">OpenBible.info</a> (CC BY) · Greek and Hebrew: <a href="https://www.stepbible.org/" target="_blank" rel="noopener">STEPBible.org</a> (CC BY)'; paint(); studyLoad();
@@ -475,13 +475,21 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   var PX=[], TK={};
   // Ken, 3 Nov: "let user choose what side by side options they want to use, even up to 3 side by side, and make it easy to hear the
   // Greek or Hebrew": up to two more columns beside this version (any version, or the original Hebrew or Greek, 'og'), kept as 'web,og'
-  function ogV(){ var L=ogLang(); return {k:'og',s:L.n,n:L.n+' (the original)',l:L.l,rtl:L.d==='rtl',og:1}; }
-  function parKeys(){ var out=[]; String(SET('par','')||'').split(',').forEach(function(k){ k=k.trim(); if(k&&k!==ver().k&&out.indexOf(k)<0&&(k==='og'||VERS.some(function(x){ return x.k===k; }))) out.push(k); }); return out.slice(0,2); }
-  function parVers(){ return parKeys().map(function(k){ return k==='og'?ogV():VERS.filter(function(x){ return x.k===k; })[0]; }); }
+  function ogV(bk){ var L=ogLang(bk); return {k:'og',s:L.n,n:L.n+' (the original)',l:L.l,rtl:L.d==='rtl',og:1}; }
+  // each side column may show its own passage (Ken, 7 Nov: "see side by side 2 different books ... with drop downs in each column"):
+  // the saved list is "web,og" or with a passage "web@42.3,og@0.1" (book number . chapter); no passage = the same chapter as the first column
+  function parRaw(){ var out=[]; String(SET('par','')||'').split(',').forEach(function(t){ t=t.trim(); var m=/^([a-z0-9]+)(?:@(\d+)\.(\d+))?$/.exec(t); if(!m) return; var k=m[1];
+      if(k===ver().k||out.some(function(o){ return o.k===k; })||!(k==='og'||VERS.some(function(x){ return x.k===k; }))) return;
+      var b=m[2]==null?-1:+m[2], c=m[2]==null?0:+m[3]; out.push({k:k,at:B[b]&&c>=1&&c<=B[b][1]?{b:b,c:c}:null}); }); return out.slice(0,2); }
+  function parKeys(){ return parRaw().map(function(o){ return o.k; }); }
+  function parStore(a){ putSet('par',a.map(function(o){ return o.k+(o.at?'@'+o.at.b+'.'+o.at.c:''); }).join(',')||undefined); }
+  function parVers(){ return parRaw().map(function(o){ var P=o.k==='og'?ogV(o.at?o.at.b:null):Object.assign({},VERS.filter(function(x){ return x.k===o.k; })[0]); P.at=o.at; return P; }); }
   function parVer(){ return parVers()[0]||null; }
-  function putPar(i,k){ var a=parKeys(); if(k) a[i]=k; else a.splice(i,1); putSet('par',a.filter(function(x,j){ return x&&a.indexOf(x)===j; }).join(',')); }
-  function parAdd(){ var a=parKeys(), pick=['og','kjv','web','asv','ylt'].filter(function(k){ return k!==ver().k&&a.indexOf(k)<0; })[0]; if(pick){ a.push(pick); putSet('par',a.join(',')); } }
-  function parOpts(i,sh){ var a=parKeys(), cur=a[i]||'', L=ogLang();
+  function putPar(i,k){ var a=parRaw(); if(k) a[i]={k:k,at:(a[i]&&a[i].at)||null}; else a.splice(i,1); parStore(a.filter(function(x,j){ return x&&a.findIndex(function(y){ return y&&y.k===x.k; })===j; })); }
+  function putParAt(i,b,c){ var a=parRaw(); if(!a[i]) return; a[i].at=(b===AT.b&&c===AT.c)?null:{b:b,c:c}; parStore(a); }
+  function parAdd(){ var a=parRaw(), ks=a.map(function(o){ return o.k; }), pick=['og','kjv','web','asv','ylt'].filter(function(k){ return k!==ver().k&&ks.indexOf(k)<0; })[0]; if(pick){ a.push({k:pick,at:null}); parStore(a); } }
+  function colAt(i){ return PX[i]&&PX[i].P.at||null; }
+  function parOpts(i,sh){ var a=parKeys(), cur=a[i]||'', at=colAt(i), L=ogLang(at?at.b:null);
     return (i>0?'<option value="">No third</option>':'')+'<option value="og"'+(cur==='og'?' selected':'')+(a.indexOf('og')>=0&&cur!=='og'?' disabled':'')+'>'+L.n+(sh?'':' (the original)')+'</option>'
       +VERS.filter(function(x){ return x.k!==ver().k; }).map(function(x){ return '<option value="'+x.k+'"'+(x.k===cur?' selected':'')+(a.indexOf(x.k)>=0&&x.k!==cur?' disabled':'')+'>'+esc(VL(x))+'</option>'; }).join(''); }
   function parSels(id){ var a=parKeys(); return '<div class="mi2"><span class="sub" style="margin:0;align-self:center">'+esc(ver().s)+' and</span><select id="'+id+'0" data-pi="0" aria-label="The version beside it">'+parOpts(0)+'</select>'
@@ -494,10 +502,12 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     $('txt').setAttribute('lang',vlang(V1)); $('txt').dir=!n&&V1.rtl?'rtl':'ltr'; $('txt').style.setProperty('--pc',String(1+n));   // Hebrew and Arabic read right to left
     if(!n){ $('txt').innerHTML='<p>'+ns.map(function(n){ return verseH(n)+' '; }).join('')+'</p>'; xrMark(); return; }
     var all=ns.slice(); PK.forEach(function(x){ Object.keys(x.T).map(Number).forEach(function(v){ if(all.indexOf(v)<0) all.push(v); }); }); all.sort(num);
-    var head='<div class="phd"><span class="p2"><select data-mver="1" aria-label="The first column\u2019s version">'+$('ver').innerHTML+'</select><button type="button" class="ogall" data-hear="m" aria-pressed="false" title="Hear the whole chapter in '+esc(V1.s)+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button></span>'+PK.map(function(x,i){ return '<span class="p2"><select data-pi="'+i+'" aria-label="'+(i?'The third column':'The version beside it')+'">'+parOpts(i,1)+'</select>'
+    var bkSel=function(cur,attr){ var o=function(a,z){ return B.slice(a,z).map(function(x,k){ return '<option value="'+(a+k)+'"'+(a+k===cur?' selected':'')+'>'+esc(x[0])+'</option>'; }).join(''); }; return '<select '+attr+' aria-label="Book"><optgroup label="Old Testament">'+o(0,39)+'</optgroup><optgroup label="New Testament">'+o(39,66)+'</optgroup></select>'; },
+      chSel=function(bk,cur,attr){ var h=''; for(var q=1;q<=B[bk][1];q++) h+='<option value="'+q+'"'+(q===cur?' selected':'')+'>'+q+'</option>'; return '<select '+attr+' aria-label="Chapter">'+h+'</select>'; };
+    var head='<div class="phd"><span class="phc"><span class="p2"><select data-mver="1" aria-label="The first column\u2019s version">'+$('ver').innerHTML+'</select><button type="button" class="ogall" data-hear="m" aria-pressed="false" title="Hear the whole chapter in '+esc(V1.s)+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button></span><span class="p2 pbc">'+bkSel(AT.b,'data-mbk="1"')+chSel(AT.b,AT.c,'data-mch="1"')+'</span></span>'+PK.map(function(x,i){ var at=x.P.at||{b:AT.b,c:AT.c}; return '<span class="phc"><span class="p2"><select data-pi="'+i+'" aria-label="'+(i?'The third column':'The version beside it')+'">'+parOpts(i,1)+'</select>'
         +(!x.none?'<button type="button" class="ogall" data-hear="'+i+'" aria-pressed="false" title="Hear the whole chapter in '+esc(x.P.s)+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button>':'')
         +(i===n-1&&n<2?'<button type="button" class="padd" data-padd="1" aria-label="Add a third column">&#65291; 3rd</button>':'')
-        +'<button type="button" class="ib sm" data-px="'+i+'" aria-label="'+(n===1?'Close side by side':'Take this column away')+'">&#10005;</button></span>'; }).join('')+'</div>';
+        +'<button type="button" class="ib sm" data-px="'+i+'" aria-label="'+(n===1?'Close side by side':'Take this column away')+'">&#10005;</button></span><span class="p2 pbc">'+bkSel(at.b,'data-pbk="'+i+'"')+chSel(at.b,at.c,'data-pch="'+i+'"')+'</span></span>'; }).join('')+'</div>';
     $('txt').innerHTML=head+all.map(function(v){ return '<div class="pr"><div class="c1" lang="'+vlang(V1)+'" dir="'+(V1.rtl?'rtl':'ltr')+'">'+(VT[v]?verseH(v):'')+'</div>'
       +PK.map(function(x,i){ var P=x.P, d=P.rtl?'rtl':'ltr';
         if(P.og){ var o=x.J&&x.J.v[String(v)];
@@ -505,7 +515,11 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
             +o.w.map(function(w,j){ return '<span class="ow" data-oi="'+j+'">'+esc(w[0])+'</span>'; }).join(' ')
             +'<span class="otr">'+esc(o.w.map(function(w){ return w[1]; }).join(' '))+'</span>':(x.none&&v===all[0]?'<small>'+P.s+' could not be opened.</small>':''))+'</div>'; }
         return '<div class="v2" data-v="'+v+'" data-pi="'+i+'" lang="'+vlang(P)+'" dir="'+d+'">'+(x.T[v]?'<span class="vn">'+v+'</span>'+esc(x.T[v]):'')+'</div>'; }).join('')+'</div>'; }).join(''); var mv=$('txt').querySelector('[data-mver]'); if(mv) mv.value=ver().k; xrMark(); }
-  $('txt').addEventListener('change',function(e){ if(e.target.dataset&&e.target.dataset.mver){ $('ver').value=e.target.value; $('ver').dispatchEvent(new Event('change')); return; } var p=e.target.dataset&&e.target.dataset.pi; if(p!=null&&e.target.tagName==='SELECT'){ putPar(+p,e.target.value); go(AT.b,AT.c,0,true); htUI(); } });
+  $('txt').addEventListener('change',function(e){ var d=e.target.dataset||{};
+    if(d.mbk!=null){ go(+e.target.value,1,0,true); return; } if(d.mch!=null){ go(AT.b,+e.target.value,0,true); return; }
+    if(d.pbk!=null){ putParAt(+d.pbk,+e.target.value,1); go(AT.b,AT.c,0,true); return; }
+    if(d.pch!=null){ var at=colAt(+d.pch)||{b:AT.b}; putParAt(+d.pch,at.b,+e.target.value); go(AT.b,AT.c,0,true); return; }
+    if(e.target.dataset&&e.target.dataset.mver){ $('ver').value=e.target.value; $('ver').dispatchEvent(new Event('change')); return; } var p=e.target.dataset&&e.target.dataset.pi; if(p!=null&&e.target.tagName==='SELECT'){ putPar(+p,e.target.value); go(AT.b,AT.c,0,true); htUI(); } });
   // hearing the Hebrew or Greek: tap a word for it alone (and how to say it, and what it means), 🔊 for the verse, ▶ Hear for the chapter
   var OGP=0;
   function ogOf(){ return PX.filter(function(x){ return x.P.og&&x.J; })[0]||null; }
@@ -596,7 +610,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     if(HLM){ var mk0=e.target.closest('mark.ph'), v1=e.target.closest('.v.hl'), k0=mk0?mk0.dataset.k:v1?hkey(AT.b,AT.c,+v1.dataset.v):null; if(k0){ if(HLM[k0]) delete HLM[k0]; else HLM[k0]=1; paint(); } return; }
     if(studyOn()&&!e.target.closest('.vn')){ var wd=e.target.closest('.w'); if(wd&&wd.closest('.v')){ wordCard(+wd.closest('.v').dataset.v,+wd.dataset.j); return; } }
     var mk=e.target.closest('mark.ph'); if(mk&&!PHS){ var v0=+mk.closest('.v').dataset.v; PHS=[{v:v0,s:+mk.dataset.s,e:+mk.dataset.e}]; SEL=[v0]; selUI(); return; }
-    var s=e.target.closest('.v,.v2'); if(!s) return; TAPW=tapWord(e,s); if(PHS){ PHS=null; SEL=[]; fdShow(null); }
+    var s=e.target.closest('.v,.v2'); if(!s) return; if(s.classList.contains('v2')&&colAt(+s.dataset.pi)) return; TAPW=tapWord(e,s); if(PHS){ PHS=null; SEL=[]; fdShow(null); }
     var v=+s.dataset.v, i=SEL.indexOf(v); if(i>=0) SEL.splice(i,1); else SEL.push(v); SEL.sort(function(a,b){ return a-b; }); selUI(); });
   function selLabel(){ if(!SEL.length) return ''; var parts=[], a=SEL[0], z=a;
     for(var i=1;i<=SEL.length;i++){ if(SEL[i]===z+1){ z=SEL[i]; continue; } parts.push(a===z?''+a:a+'–'+z); a=z=SEL[i]; }
@@ -757,7 +771,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   function strongN(st){ var m=/^([HG])0*(\d+)/.exec(st||''); return m?m[1]+m[2]:''; }
   var UNIRE=/[\u3400-\u9fff\uf900-\ufaff]|[\p{L}\p{M}\p{N}]+(?:['’][\p{L}\p{M}]+)*/gu;
   function toks(t,re){ re=re||(ver().k==='kjv'?TOKRE:UNIRE); var out=[], m; re.lastIndex=0; while((m=re.exec(t))) out.push({s:m.index,e:m.index+m[0].length,w:m[0]}); return out; }
-  function ogLang(){ return AT.b<39?{n:'Hebrew',l:'he',d:'rtl',i:'&#1488;'}:{n:'Greek',l:'el',d:'ltr',i:'&alpha;'}; }
+  function ogLang(b){ if(b==null) b=AT.b; return b<39?{n:'Hebrew',l:'he',d:'rtl',i:'&#1488;'}:{n:'Greek',l:'el',d:'ltr',i:'&alpha;'}; }
   function ogTile(){ var L=ogLang(); $('aOrigL').textContent=L.n; $('aOrigI').innerHTML=L.i; }
   // which original words: the ones the words picked translate (KJV), else every word of the verse
   function ogPicks(J){ var out=[]; (PHS||SEL.map(function(v){ return {v:v}; })).slice(0,4).forEach(function(p){ var o=J.v[String(p.v)]; if(!o) return; var hit=[], kw={};
