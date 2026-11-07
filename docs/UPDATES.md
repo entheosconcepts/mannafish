@@ -3,6 +3,9 @@
 Everything here is on the test site (https://yadamannafishtest.netlify.app/) until Ken says "push it live".
 
 ## Before family and friends (soft launch)
+- [ ] **Ken:** try 💡 Explain & apply on a few chapters you know well (Bible → toolbox → Explain & apply, or select a verse → Explain). Tell Claude anything wrong, strange or off-tradition; Claude tightens the rules. Have a pastor spot-check a sample before launch.
+- [ ] **Ken:** decide which tradition the explanations should lean toward (the safest is broad, widely shared Christian teaching, which is what it is told to do now).
+- [ ] **Later:** Matthew Henry, Spurgeon, Barnes, Clarke, Gill and Jamieson-Fausset-Brown (public domain) need a source the build environment can reach; Chuck Smith and David Guzik need permission.
 - [ ] **Ken:** after the test site deploys, open https://yadamannafishtest.netlify.app/api/fish-img?k=D007 (the Visit picture) and https://yadamannafishtest.netlify.app/api/fish-standard (your saved word-size rules). Tell Claude if Visit looks right; then Claude runs `redraw-standard.mjs --write --png` so the saved fish files (site pages, print) match too.
 - [ ] **Ken:** go through the test checklist (••• → Admin view → ✅ Test checklist). Note anything with 📝 Note something to change.
 - [ ] **Ken:** check the live site's Netlify settings match the test site (BREVO_API_KEY, OPENAI_API_KEY, SUPABASE_SECRET_KEY, MF_ADMIN_KEY, PROOF_KEY), then say "push it live".

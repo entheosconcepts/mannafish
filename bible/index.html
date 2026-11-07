@@ -137,6 +137,20 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 .mine b{font-size:.92rem}.mine span{display:block;color:var(--dim);font-size:.85rem;margin-top:2px}
 /* the book and chapter picker */
 @media (max-width:400px){.bar .r1 .ib.sm{width:34px;height:34px;min-width:34px}.bar .r1 .lt,.bar .r1 .rt{gap:4px}.bar .r1 .brand{font-size:.95em}}
+.exsheet{position:fixed;inset:0;z-index:47;background:var(--bg);display:flex;flex-direction:column}.exsheet[hidden]{display:none}
+.exsheet .hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}.exsheet .hd b{font:700 1.1rem 'Archivo',sans-serif}.exsheet .ibsp{width:44px}
+.exbar{padding:8px 14px 0;border-bottom:1px solid var(--line);max-width:760px;width:100%;margin:0 auto}.exnav{display:flex;align-items:center;gap:8px}.exref{flex:1;text-align:center;min-width:0}.exref b{display:block;font:700 1.1rem 'Fraunces',Georgia,serif}.exref small{display:block;color:var(--dim);font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.extabs{display:flex;gap:4px;margin-top:8px}.extabs button{flex:1;border:0;border-bottom:3px solid transparent;background:none;color:var(--dim);padding:9px 4px;font:800 .82rem 'Archivo',sans-serif;cursor:pointer}.extabs button[aria-selected=true]{color:#fff;border-color:var(--blue2)}
+.exsheet .body{flex:1;overflow:auto;padding:12px 16px 24px;max-width:760px;width:100%;margin:0 auto;-webkit-overflow-scrolling:touch;font:1.02rem/1.6 'Spectral',Georgia,serif}
+.exsheet h4{margin:16px 0 4px;font:800 .72rem 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--blue2)}.exsheet .body p{margin:6px 0}.exsheet .body ul{margin:4px 0;padding-left:1.2em}.exsheet .body li{margin:5px 0}
+.exsheet .kw{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin:6px 0}.exsheet .kw b{font-family:'Archivo',sans-serif}
+.exsheet .pr{font-style:italic;border-left:3px solid var(--blue2);padding-left:12px;margin-top:12px}
+.exsheet textarea{width:100%;min-height:84px;background:var(--card);border:1px solid var(--line);color:inherit;border-radius:12px;padding:10px 12px;font:inherit;font-size:1rem;resize:vertical}
+.exsheet .exgo{display:block;margin:10px 0;border:0;background:var(--blue);color:#fff;border-radius:999px;padding:11px 18px;font:800 .95rem 'Archivo',sans-serif;cursor:pointer}.exsheet .exgo:disabled{opacity:.6}
+.exsheet .me{background:rgba(111,155,224,.12);border:1px solid var(--blue2);border-radius:14px;padding:10px 14px;margin:10px 0}
+.exsheet .cv{border-top:1px solid var(--line);padding:10px 0}.exsheet .cv b.a{font:800 .86rem 'Archivo',sans-serif}.exsheet .cv small{color:var(--dim)}.exsheet .cv .q{white-space:pre-line;font-size:.98rem;margin:4px 0}.exsheet .cv a{color:var(--blue2);font:700 .82rem 'Archivo',sans-serif}
+.exsheet .vh{font:800 .9rem 'Archivo',sans-serif;margin:16px 0 0;color:var(--text)}
+.exnote{margin:0;padding:8px 16px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);font:.76rem/1.4 'Archivo',sans-serif;color:var(--dim);text-align:center;max-width:760px;width:100%;margin:0 auto}
 .srsheet{position:fixed;inset:0;z-index:46;background:var(--bg);display:flex;flex-direction:column}.srsheet[hidden]{display:none}
 .srsheet .hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}.srsheet .hd b{font:700 1.1rem 'Archivo',sans-serif}.srsheet .ibsp{width:44px}
 .srbar{padding:10px 14px 6px;border-bottom:1px solid var(--line);max-width:760px;width:100%;margin:0 auto}
@@ -329,6 +343,7 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
     <button type="button" class="tile" id="aNote"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>Note</span></button>
     <button type="button" class="tile" id="aPray"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c-1.5 2-2 5-2 8v6l-3 3M12 3c1.5 2 2 5 2 8v6l3 3"/><path d="M10 11l-3 2M14 11l3 2"/></svg><span>Pray</span></button>
     <button type="button" class="tile" id="aLink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Link</span></button>
+    <button type="button" class="tile" id="aExplain"><span class="ogi" aria-hidden="true">&#128161;&#xFE0E;</span><span>Explain</span></button>
     <button type="button" class="tile" id="aOrigT" aria-pressed="false"><span class="ogi" id="aOrigI" aria-hidden="true">&alpha;</span><span id="aOrigL">Greek</span></button>
     <button type="button" class="tile" id="aCopy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><span>Copy</span></button></div>
   <div class="arow" id="aRmRow" hidden><button type="button" class="chip" id="aRm">&#10005; Remove highlight</button><button type="button" class="chip" id="aRmAll">Remove all in this chapter</button></div>
@@ -352,6 +367,11 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
   <div class="hd"><span style="width:40px"></span><b id="sTitle">My stuff</b><button type="button" class="ib" id="sX" aria-label="Close">&#10005;</button></div>
   <div class="body"><div class="sseg" id="sSeg" role="group"></div><div class="sl" id="sBody"></div></div>
 </div>
+<div class="exsheet" id="exSheet" role="dialog" aria-modal="true" aria-labelledby="exT" hidden><div class="hd"><button type="button" class="ib" id="exX" aria-label="Close">&#10005;</button><b id="exT">Understand this passage</b><span class="ibsp"></span></div>
+  <div class="exbar"><div class="exnav"><button type="button" class="ib sm" id="exPrev" aria-label="The passage before">&lsaquo;</button><div class="exref" id="exRef"></div><button type="button" class="ib sm" id="exNext" aria-label="The passage after">&rsaquo;</button></div>
+    <div class="extabs" id="exTabs" role="tablist"></div></div>
+  <div class="body" id="exBody"></div>
+  <p class="exnote">Explanations are written with AI to help you read Scripture. They can be wrong: always check them against the Bible itself, and talk with a pastor or a trusted friend about the big questions. The words of the church writers are real, from public-domain books.</p></div>
 <div class="srsheet" id="srSheet" role="dialog" aria-modal="true" aria-labelledby="srT" hidden><div class="hd"><button type="button" class="ib" id="srX" aria-label="Close">&#10005;</button><b id="srT">Search the Bible</b><span class="ibsp"></span></div>
   <div class="srbar"><input type="search" id="srQ" placeholder="A word, a “phrase”, or a Strong’s number like G3056" enterkeyhint="search" autocomplete="off"><div class="srrow"><select id="srV" aria-label="Which Bible"></select><span class="srsc" id="srSc" role="group" aria-label="Where"></span></div><div class="srprog" id="srP" hidden></div></div>
   <div class="body" id="srBody"></div></div>
@@ -1076,7 +1096,8 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
     var sw=function(id,ic,t,sm,on){ return '<button type="button" class="mi" role="switch" data-h="'+id+'" aria-pressed="'+!!on+'"><span class="ic">'+ic+'</span><span class="tx">'+t+'<small>'+sm+'</small></span><span class="sw"></span></button>'; };
     var tool=function(id,ic,t,sm){ return '<button type="button" class="mi" data-h="'+id+'"><span class="ic">'+ic+'</span><span class="tx">'+t+'<small>'+sm+'</small></span></button>'; };
     var link=function(u,ic,t,sm){ return '<a class="mi" href="'+u+'" target="_top"><span class="ic">'+ic+'</span><span class="tx">'+t+'<small>'+sm+'</small></span></a>'; };
-    p.innerHTML=sw('par','&#9707;&#xFE0E;','Side by side','Up to 3 columns: versions, or the '+L.n+' to hear',!!P2)
+    p.innerHTML=tool('explain','&#128161;&#xFE0E;','Explain &amp; apply','Understand this passage and how to live it')
+      +sw('par','&#9707;&#xFE0E;','Side by side','Up to 3 columns: versions, or the '+L.n+' to hear',!!P2)
       +(P2?parSels('htPar'):'')
       +'<details class="htmore"'+(ls('mf-bible-htm')==='1'?' open':'')+'><summary>More tools <span class="ar" aria-hidden="true">&#9662;</span></summary>'
       +sw('study','<span class="og2">'+L.i+'</span>','Word study','Tap any word for its '+L.n+' root',studyOn())
@@ -1099,6 +1120,7 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
     else if(k==='study'){ setStudy(!studyOn()); htUI(); }
     else if(k==='pen'){ setPen(!PEN); htUI(); }
     else if(k==='words') openWords();
+    else if(k==='explain') exOpen();
     else if(k==='listen'){ if(!SAY.on) $('say').click(); }
     else if(k==='note') openCnote();
     else if(TIPS[k]) toast(k==='tipOrig'?'Tap a verse, then the '+ogLang().n+' button in the window':TIPS[k]); });
@@ -1239,6 +1261,63 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
     b.setAttribute('aria-expanded','true'); b.parentNode.insertAdjacentHTML('beforeend',g); b.scrollIntoView({block:'nearest'}); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&BKO) bkClose(); });
   document.addEventListener('click',function(e){ if(BKO&&!e.target.closest('#bkDrop,#titleB')) bkClose(); });
+  // ── Explain and apply (Ken, 7 Nov: "commentaries, or explanations of passages and how to understand or apply it to the user's life") ──
+  // The passage is a section (from fish-lang/bible/sect/) around the verse; Explain and Apply come from /api/explain (written with AI, kept per passage and
+  // language); Voices are public-domain excerpts from older Christian writers (fish-lang/bible/comm/, tools/bible-comm/build.py).
+  var EX={b:0,c:1,v1:1,v2:10,tab:'explain',head:'',busy:0,sect:null,comm:null,authors:null,showN:12};
+  var EXT=[['explain','Explain'],['apply','Apply to me'],['voices','Church voices']];
+  function exLang(){ var l=ls('mf-lang')||'en'; return ['en','es','tl','zh','hi','el','de','ko','he','ar','ru'].indexOf(l)>=0?l:'en'; }
+  function exSect(b){ var f=B[b][0].replace(/ /g,'_'); return EX.sect&&EX.sect.b===b?Promise.resolve(EX.sect.list):fetch('/fish-lang/bible/sect/'+f+'.json').then(function(r){ return r.ok?r.json():[]; }).catch(function(){ return []; }).then(function(l){ EX.sect={b:b,list:l}; return l; }); }
+  function exRange(list,c,v){ // the section holding c:v, clamped to this chapter and to 24 verses
+    var s=null; list.forEach(function(x){ var a=x[0]*1000+x[1], z=x[2]*1000+x[3], p=c*1000+v; if(!s&&p>=a&&p<=z) s=x; });
+    var n=(BV[EX.b]&&BV[EX.b][c])||0, v1=1, v2=Math.min(n||v+9,v+9), head='';
+    if(s){ v1=s[0]===c?s[1]:1; v2=s[2]===c?s[3]:(n||s[3]); head=s[4]||''; }
+    if(v2-v1>23){ v1=Math.max(v1,v-6); v2=Math.min(v2,v1+23); } return {v1:v1,v2:Math.max(v1,v2),head:head}; }
+  var BV={}; // verses per chapter, as we learn them
+  function exOpen(v){ EX.b=AT.b; EX.c=AT.c; v=v||(SEL.length?SEL[0]:1); EX.tab='explain'; $('exSheet').hidden=false; exSet(AT.b,AT.c,v); }
+  function exSet(b,c,v){ EX.b=b; EX.c=c; exSect(b).then(function(list){ var nv=Object.keys(VT).length; if(b===AT.b&&c===AT.c) (BV[b]=BV[b]||{})[c]=Math.max.apply(null,Object.keys(VT).map(Number).concat([0]))||nv;
+      var r=exRange(list,c,v); EX.v1=r.v1; EX.v2=r.v2; EX.head=r.head; EX.list=list; EX.data=null; EX.personal=null; EX.showN=12; exDraw(); exFetch(); }); }
+  function exStep(d){ var list=EX.list||[], p=EX.c*1000+EX.v1, i=-1; list.forEach(function(x,k){ if(x[0]*1000+x[1]<=p) i=k; }); var j=i+d;
+    if(j<0||j>=list.length){ // past the ends of this book's sections: stay in the chapter
+      var n=d>0?EX.v2+1:EX.v1-1; if(n<1) return; exSet(EX.b,EX.c,n); return; }
+    var x=list[j]; exSet(EX.b,x[0],x[1]); }
+  function exFetch(){ var my=++EX.busy; EX.data=null; if(EX.tab==='voices') return exVoices();
+    fetch('/api/explain',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({b:B[EX.b][0],c:EX.c,v1:EX.v1,v2:EX.v2,lang:exLang()})})
+      .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw j; return j; }); }).then(function(j){ if(my!==EX.busy) return; EX.data=j; exDraw(); })
+      .catch(function(e){ if(my!==EX.busy) return; EX.data={error:(e&&e.error)==='nokey'?'This helper is not switched on yet.':(e&&e.error)==='busy'?'Lots of people are asking right now. Please try again in a few minutes.':'The explanation could not be made just now. Please try again.'}; exDraw(); }); }
+  function li(a){ return '<ul>'+(a||[]).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('')+'</ul>'; }
+  function exDraw(){ var ref=B[EX.b][0]+' '+EX.c+':'+EX.v1+(EX.v2>EX.v1?'–'+EX.v2:''); $('exRef').innerHTML='<b>'+esc(ref)+'</b>'+(EX.head?'<small>'+esc(EX.head)+'</small>':'');
+    $('exTabs').innerHTML=EXT.map(function(t){ return '<button type="button" role="tab" data-xt="'+t[0]+'" aria-selected="'+(EX.tab===t[0])+'">'+t[1]+'</button>'; }).join('');
+    var body=$('exBody'), d=EX.data, h='';
+    if(EX.tab==='voices'){ exVoices(); return; }
+    if(!d){ body.innerHTML='<p>Reading the passage…</p>'; return; }
+    if(d.error){ body.innerHTML='<p>'+esc(d.error)+'</p><button type="button" class="exgo" data-retry="1">Try again</button>'; return; }
+    if(EX.tab==='explain'){
+      h+='<h4>What it says</h4><p>'+esc(d.summary)+'</p><h4>Background</h4><p>'+esc(d.context)+'</p><h4>Understanding it</h4>'+li(d.understand);
+      if(d.keywords&&d.keywords.length) h+='<h4>Words worth knowing</h4>'+d.keywords.map(function(k){ return '<div class="kw"><b>'+esc(k.word)+'</b> · '+esc(k.meaning)+'</div>'; }).join('');
+      h+='<p class="pr">'+esc(d.prayer)+'</p>'; }
+    else { h+='<h4>Living it out today</h4>'+li(d.apply)+'<h4>Think about it</h4>'+li(d.questions)
+        +'<h4>What is on your mind?</h4><p>Tell me what you are facing, in your own words, and I will connect this passage to it. Nothing you write here is saved.</p><textarea id="exSit" maxlength="500" placeholder="For example: I am worried about money, or I am angry at someone I love."></textarea><button type="button" class="exgo" id="exAsk">Help me apply this</button><div id="exMe">'+exMe()+'</div>'; }
+    body.innerHTML=h; }
+  function exMe(){ var p=EX.personal; if(!p) return ''; if(p.error) return '<p>'+esc(p.error)+'</p>'; return '<div class="me"><p>'+esc(p.message)+'</p>'+li(p.steps)+'<p class="pr">'+esc(p.prayer)+'</p></div>'; }
+  function exAsk(){ var t=($('exSit')||{}).value||''; if(t.trim().length<3) return; var btn=$('exAsk'); btn.disabled=true; btn.textContent='Thinking…'; var my=EX.busy;
+    fetch('/api/explain',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({b:B[EX.b][0],c:EX.c,v1:EX.v1,v2:EX.v2,lang:exLang(),situation:t})})
+      .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw j; return j; }); }).then(function(j){ EX.personal=j; }).catch(function(e){ EX.personal={error:(e&&e.error)==='busy'?'Please wait a little and try again.':'That could not be made just now. Please try again.'}; })
+      .then(function(){ if(my!==EX.busy) return; var me=$('exMe'); if(me) me.innerHTML=exMe(); btn.disabled=false; btn.textContent='Help me apply this'; }); }
+  function exVoices(){ var body=$('exBody'); body.innerHTML='<p>Looking in the old books…</p>'; var f=B[EX.b][0].replace(/ /g,'_'), my=EX.busy;
+    Promise.all([EX.comm&&EX.comm.f===f?EX.comm.d:fetch('/fish-lang/bible/comm/'+f+'.json').then(function(r){ return r.ok?r.json():{}; }).catch(function(){ return {}; }),EX.authors||fetch('/fish-lang/bible/comm/_authors.json').then(function(r){ return r.json(); }).catch(function(){ return []; })]).then(function(a){
+      EX.comm={f:f,d:a[0]}; EX.authors=a[1]; if(EX.tab!=='voices'||my!==EX.busy&&false) return; var rows=[];
+      for(var v=EX.v1;v<=EX.v2;v++) (a[0][EX.c+':'+v]||[]).forEach(function(e){ rows.push([v,e]); });
+      if(!rows.length){ body.innerHTML='<p>The older writers in this collection (John Chrysostom, Augustine, Thomas Aquinas, Jerome, John Calvin, John Wesley, Martin Luther) did not comment on these verses in the pieces we have. Try the next passage, or tap Explain.</p>'; return; }
+      var h='', last=0; rows.slice(0,EX.showN).forEach(function(x){ var e=x[1], au=(EX.authors||[])[e[0]]||{n:'',y:''}; if(x[0]!==last){ h+='<div class="vh">Verse '+x[0]+'</div>'; last=x[0]; }
+        h+='<div class="cv"><b class="a">'+esc(au.n)+'</b> <small>'+esc(au.y)+' · '+esc(e[1])+(e[4]?' · verses '+x[0]+'–'+e[4]:'')+'</small><p class="q">'+esc(e[2])+'</p>'+(e[3]?'<a href="'+esc(e[3])+'" target="_blank" rel="noopener">Read the full text ›</a>':'')+'</div>'; });
+      if(rows.length>EX.showN) h+='<button type="button" class="exgo" data-vmore="1">Show more ('+(rows.length-EX.showN)+' left)</button>'; body.innerHTML=h; }); }
+  $('exX').addEventListener('click',function(){ $('exSheet').hidden=true; });
+  $('exPrev').addEventListener('click',function(){ exStep(-1); }); $('exNext').addEventListener('click',function(){ exStep(1); });
+  $('exTabs').addEventListener('click',function(e){ var b=e.target.closest('[data-xt]'); if(!b) return; EX.tab=b.dataset.xt; if(EX.tab==='voices') exDraw(); else { exDraw(); if(!EX.data) exFetch(); } });
+  $('exBody').addEventListener('click',function(e){ if(e.target.closest('#exAsk')) exAsk(); else if(e.target.closest('[data-retry]')) exFetch(); else if(e.target.closest('[data-vmore]')){ EX.showN+=12; exVoices(); } });
+  $('aExplain').addEventListener('click',function(){ var v=SEL[0]; closeAct(); exOpen(v); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('exSheet').hidden) $('exSheet').hidden=true; });
   // ── Search the Bible (Ken, 7 Nov: "do them all"): a word, a "phrase" or a Strong's number, in any Bible stored on the site (the KJV and the
   // ten other languages). The first search in a Bible downloads its text once (about 1189 small files) and keeps it on this device (IndexedDB),
   // so every later search is instant and works offline. A Strong's number (G3056, H8085) lists its verses from fish-lang/bible/conc/ in the KJV.
