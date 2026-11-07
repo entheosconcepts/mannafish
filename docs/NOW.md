@@ -4,12 +4,15 @@ Updated 7 Nov 2026. Claude updates this at the end of every job, without being a
 Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live site manna-fish.com is the old decal shop page on `main` until Ken says "push it live".
 
 ## Just finished (7 Nov)
+- New card in one command: `node tools/print/new-run.mjs --name ... --logo ... --url ... --word ...` (template `print/templates/sponsor-back.json`, see `print/README.md`). Home sign-up reads "free MannaFish Devotional and merch" with the monthly basket wording.
 - Home page: What is MannaFish? now comes first, then What is 2 Fish?; sign-up heading "Sign up for free MannaFish devo and merch!" with a merch checkbox. Bible page: collapsible Today's MannaFish card (`/api/today-fish`).
 - Print backs (word study, two QR codes, sponsor logo) for K-Tech (Build, R0007) and Market Street Tires (Repair, R0008 English, R0009 Spanish). `/flip/` shows the card front and back in English or Spanish to a customer (admin menu has the link).
 - Notes on any fish in any language: `/fish/review/` (language picker, 📝 notes) and the 📝 button in `/edit/`. Server side (`/api/fish-notes`).
 - Bible reader: Explain & apply, search, side-by-side columns, ElevenLabs voices (`/voices/`), no phone voice anywhere.
 
 ## Waiting on Ken
+- Monthly basket drawing (one random sign-up a month gets the 2 Fish and 5 Loaves gift basket; one per household per year): the wording and the merch checkbox are on the home page; the draw tool is not built. Say go and I will build the admin draw.
+- "Got Eternal Life?" (left QR when MannaFish is the sponsor): where should it go? I can write a short page from Scripture.
 - Surprise baskets (about 1 in 30 of the merch sign-ups): the checkbox is built, the draw is not. Decide how (suggestion in DECISIONS.md, 7 Nov). Also: does the Bible app need a separate "about" landing page, or is the collapsible fish enough?
 - Market Street: pick the Repair verse (A Isa 61:4, B Isa 58:12, C 2 Kings 12:5, D 2 Chr 24:4, E 2 Chr 34:10, F Neh 3:28) and the Spanish word (Reparen / Reparador / Restaurad); the shop's web address or phone for the left QR; a Spanish speaker to check the Spanish card.
 - K-Tech's real logo (a stand-in is on the card).

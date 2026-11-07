@@ -18,7 +18,13 @@ Every file has a 1/8 in bleed on each side, and all the fish-side files line up 
 The proof (`-proof.png` / `.pdf`) shows all four, how they look before and after peeling, where every QR code goes, and
 what is still missing. `-printer-notes.md` is the note to send with the files, and `-print-files.zip` holds everything to attach.
 
-## A new run
+## The fast way: a new sponsored card in one command (Ken, 7 Nov)
+
+`node tools/print/new-run.mjs --name "Market Street Tires" --logo /path/logo.png --url https://their-site.com --word REPAIR`
+Add `--lang es` for Spanish, `--left "Free tire check"` for the words under the left QR code, `--svg print/assets/<fish>.svg` when the word is not one of the catalogue fish, `--qty 100`. It uses the template `print/templates/sponsor-back.json`, copies the logo, writes the next `print/runs/R000n.json` and builds the files.
+The left QR goes to the sponsor's website; the right one is always "Free MannaFish" → https://manna-fish.com/devotional (the free devotional sign-up). With no `--name` it is a MannaFish card and the left QR says "Got Eternal Life?" (its web address is still to be set). The word needs a word study in `print/study/<WORD>.json` (copy `REPAIR.json`). A logo with dark lettering must be turned white first (it sits on black).
+
+## A new run (by hand)
 
 1. Copy `print/runs/R0001.json` to the next number and change it:
    - `fish`: the word (`LIVE`, `LOVE`, ...) and the language (`en`, `es`, ...). Any fish in `fish/` works; for the others give its `id` too (`"id": "W19b"` is Build).

@@ -1,0 +1,15 @@
+{
+ "_about": "The standard sponsored card back (Ken, 7 Nov): the word study, nine verses, then two QR codes with their words under them and the sponsor logo in the middle. tools/print/new-run.mjs fills this in. The right QR always goes to the free devotional sign-up; the left one to the sponsor's website. When MannaFish is the sponsor, the left one says Got Eternal Life?",
+ "en": {
+  "back": { "template": "study", "layout": "stack", "orientation": "landscape", "refs": 9,
+    "left": { "label": "{{LEFT_LABEL}}", "to": "{{URL}}" },
+    "right": { "label": "Free MannaFish", "to": "https://manna-fish.com/devotional" } }
+ },
+ "es": {
+  "back": { "template": "study", "layout": "stack", "orientation": "landscape", "refs": 9, "credit": "Patrocinado por",
+    "words": { "greek": "GRIEGO", "hebrew": "HEBREO", "strongs": "STRONG" },
+    "left": { "label": "{{LEFT_LABEL}}", "to": "{{URL}}" },
+    "right": { "label": "MannaFish gratis", "to": "https://manna-fish.com/devotional" } }
+ },
+ "self": { "left_label": "Got Eternal Life?", "left_label_es": "¿Tienes vida eterna?", "to": "" }
+}

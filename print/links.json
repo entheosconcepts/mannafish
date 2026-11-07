@@ -72,7 +72,7 @@
  "R0007m": {
   "to": "https://manna-fish.com/devotional",
   "run": "R0007",
-  "what": "Free MannaFish\ndevo and merch"
+  "what": "Free MannaFish"
  },
  "R0008s": {
   "to": "https://manna-fish.com/",
@@ -82,7 +82,7 @@
  "R0008m": {
   "to": "https://manna-fish.com/devotional",
   "run": "R0008",
-  "what": "Free MannaFish\ndevo and merch"
+  "what": "Free MannaFish"
  },
  "R0009s": {
   "to": "https://manna-fish.com/",
@@ -92,6 +92,16 @@
  "R0009m": {
   "to": "https://manna-fish.com/devotional",
   "run": "R0009",
-  "what": "Devocional y regalos\nMannaFish gratis"
+  "what": "MannaFish gratis"
+ },
+ "R0010s": {
+  "to": "https://example.com",
+  "run": "R0010",
+  "what": "Visit us"
+ },
+ "R0010m": {
+  "to": "https://manna-fish.com/devotional",
+  "run": "R0010",
+  "what": "Free MannaFish"
  }
 }
