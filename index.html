@@ -2603,7 +2603,7 @@ window.MF=(function(){
     el.innerHTML='<div class="sb-top">'+lg('GREEK',d.gkw,'el',d.gks,d.gkm)+'<div class="sb-w">'+esc(d.title)+'</div>'+lg('HEBREW',d.hbw,'he',d.hbs,d.hbm)+'</div>'
       +'<div class="sb-hq">Still hungry? Do this word study &amp; look up the following Scriptures</div>'
       +'<div class="sb-rf">'+(d.refs||[]).slice(0,9).map(function(r){ return '<div><b>'+esc(r[0])+'</b><i>&ldquo;'+esc(r[1])+'&rdquo;</i></div>'; }).join('')+'</div>'
-      +'<div class="sb-strip"><div class="sb-side"><div class="sb-qr">'+q+'</div><span>'+esc(CD.lab||'Your website, podcast or ministry')+'</span></div>'
+      +'<div class="sb-strip"><div class="sb-side"><div class="sb-qr">'+q+'</div><span>'+esc(CD.lab||((CD.name||CD.logo)?'Your website, podcast or ministry':'Got Eternal Life?'))+'</span></div>'
       +'<div class="sb-mid">Sponsored by'+(CD.logo?'<div class="sb-logo sb-img"><img src="'+CD.logo+'" alt=""></div>':CD.name?'<div class="sb-logo sb-nm">'+esc(CD.name)+'</div>':'<div class="sb-logo">Your<br>logo</div>')+'</div>'
       +'<div class="sb-side r"><span>Today&rsquo;s free MannaFish devotional</span><div class="sb-qr">'+q+'</div></div></div>'; }
   // ── Make the back yours, and the cart (Ken, 3 Nov) ──
