@@ -168,10 +168,10 @@ async function backHtml(run, codes, warn) {
       const sideV = async (code, X) => X ? `<div class="col qv"><div class="sq">${await qr(code, true)}</div><div class="lab fit"><span>${esc(X.label || '').replace(/\n/g, '<br>')}</span></div></div>` : '<div class="col"></div>';
       const l4 = (k, wd, lg, snd, m, sn) => `<div class="l4"><div class="r1 fit"><span class="rr"><span class="k">${k}</span><span class="ow" lang="${lg}">${esc(wd)}</span><span class="tr">(${esc(snd)})</span></span></div><div class="mn4 fit"><span>${esc(m)}</span></div>${sn ? `<div class="st4">${esc((B.words && B.words.strongs) || 'STRONG’S')} ${esc(sn)}</div>` : ''}</div>`;
       return `<div class="pg" style="width:${f2(W + 2 * BLEED)}mm;height:${f2(H + 2 * BLEED)}mm"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${W}mm;height:${H}mm">
-  <div class="wt4 fit" style="top:2.2mm;height:6.6mm"><span>${esc(B.heading || d.title)}</span></div>
-  <div class="gh4" style="top:9.3mm;height:13.9mm">${l4((B.words && B.words.greek) || 'GREEK', d.gkw, 'el', d.gks, d.gkm, d.gst || st.g)}<div class="dv"></div>${l4((B.words && B.words.hebrew) || 'HEBREW', d.hbw, 'he', d.hbs, d.hbm, d.hst || st.h)}</div>
-  <div class="rf rf3 rf4" style="top:23.7mm;height:20.3mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
-  <div class="strip inv" style="top:44.8mm;height:22.8mm">${await sideV(codes.left, L)}
+  <div class="wt4 fit" style="top:0.9mm;height:6.6mm"><span>${esc(B.heading || d.title)}</span></div>
+  <div class="gh4" style="top:8.1mm;height:13.9mm">${l4((B.words && B.words.greek) || 'GREEK', d.gkw, 'el', d.gks, d.gkm, d.gst || st.g)}<div class="dv"></div>${l4((B.words && B.words.hebrew) || 'HEBREW', d.hbw, 'he', d.hbs, d.hbm, d.hst || st.h)}</div>
+  <div class="rf rf3 rf4" style="top:22.6mm;height:21.4mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
+  <div class="strip inv" style="top:46.0mm;height:22.4mm">${await sideV(codes.left, L)}
     <div class="col mid"><div class="sb">${esc(credit)}</div>${ml ? `<div class="sl"><img src="${ml}"></div>` : `<div class="sn fit${verse ? ' sv' : ''}"><span>${esc(mn)}</span></div>`}</div>
     ${await sideV(codes.right, Rt)}</div></div></div>`;
     }
