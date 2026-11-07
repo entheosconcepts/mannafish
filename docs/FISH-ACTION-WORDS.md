@@ -1,0 +1,276 @@
+# Fish words: action words and the rest (7 Nov 2026)
+
+Ken: "the main idea of MannaFish is a call to action from the one word in the middle of the fish. Any words that are not action words, I want to separate for a different series."
+
+Sorted by hand from the word on each of the 665 fish (the words drawn on the fish and in `fish/catch.json` agree). An **action word** is a verb you can say as a command (Seek, Rest, Go, Build). **Not action** = nouns, adjectives, names, small words, past forms. **Maybe** = can be a verb or a noun; the fish's verse decides.
+
+| | fish | action | maybe | not action |
+|---|---|---|---|---|
+| The 24 (Ken's originals) | 24 | 24 | 0 | 0 |
+| New fish (W) | 128 | 66 | 8 | 54 |
+| Designs (X001 to X006) | 6 | 6 | 0 | 0 |
+| Reading-plan fish (D) | 507 | 251 | 30 | 226 |
+| **All** | **665** | **347** | **38** | **280** |
+
+479 different words in all (the same word is on several fish).
+
+## Not action words (280 fish)
+- **Abba**: D297
+- **Abraham**: D502
+- **Advice**: D466
+- **Advocate**: D675
+- **Alive**: W44b
+- **Alleluia**: D679
+- **Almighty**: D005
+- **Alpha**: D676
+- **Altar**: D374
+- **Amen**: W52a
+- **Angel**: D421
+- **Apart**: D619
+- **Ark**: D366, D459
+- **Armour**: W49d
+- **Arms**: D057
+- **Battle**: W12b
+- **Begat**: D503
+- **Beloved**: D207
+- **Blessing**: D130
+- **Body**: D663
+- **Bold**: W50b
+- **Born**: W44c
+- **Bread**: W08a, D570
+- **Breath**: D593
+- **Brethren**: D638
+- **Brother**: D617, D651
+- **Candle**: D631
+- **Captain**: D465
+- **Captives**: D628
+- **Cedar**: D577
+- **Charity**: D329
+- **Children**: D334
+- **Chosen**: D550
+- **City**: D523
+- **Clave**: D101
+- **Clay**: W34b
+- **Content**: D670
+- **Courage**: W09a, D471
+- **Covenant**: D003, D099, D180
+- **Creator**: D205
+- **Daily**: W41c
+- **Daughter**: D531
+- **Deep**: D584
+- **Dew**: D268
+- **Doer**: D673
+- **Doing**: D526
+- **Dominion**: D594
+- **Done**: D396
+- **Double**: W14b
+- **Eagle**: D439
+- **Earth**: D533
+- **Eden**: D583
+- **Evening**: D605
+- **Ever**: D464
+- **Evidence**: W51b
+- **Exploits**: D596
+- **Eyes**: D118
+- **Faith**: W42b
+- **Faithful**: W38b, D292
+- **Father**: D167
+- **Finger**: D384
+- **Fire**: D425, D591
+- **Firstborn**: D411
+- **Flock**: D170
+- **Fortress**: W25a
+- **Found**: W15b
+- **Fountain**: D283
+- **Fruit**: W48c
+- **Fruitful**: D377
+- **Garden**: D423
+- **Gate**: D497
+- **Generation**: D375
+- **Gift**: W49a
+- **Gladness**: D133
+- **Glory**: W04b, D230, D582
+- **Gold**: W21a
+- **Good**: W03b, D560
+- **Goodness**: D513
+- **Gospel**: D320
+- **Grace**: W48a, D525
+- **Gracious**: D100
+- **Grapes**: D597
+- **Guilty**: D378
+- **Hand**: D079, D496
+- **Handmaid**: D626
+- **Hard**: W34c
+- **Harp**: D509
+- **Heart**: W11a, D461, D527
+- **Heartily**: D340
+- **Heavens**: D152
+- **Heir**: D661
+- **Here**: D474
+- **Hid**: D516
+- **Hills**: D184
+- **Hitherto**: D074
+- **Holy**: W05a, D259
+- **Honey**: D417
+- **Hosanna**: D291
+- **House**: D432, D622
+- **Incense**: D395
+- **Jesus**: D284
+- **Joy**: W40c, D156
+- **Judgment**: D270
+- **Justice**: D115
+- **Kindness**: W13a
+- **King**: W41b, D476
+- **Kinsman**: D457
+- **Lamb**: D305
+- **Lamp**: W27a
+- **Land**: D367
+- **Left**: D424
+- **Liberal**: D196
+- **Liberty**: D563
+- **Life**: W46a
+- **Living**: D402, D636
+- **Made**: W27b
+- **Majesty**: D113
+- **Maker**: D213
+- **Manna**: D388
+- **Mansion**: D646
+- **Master**: D390
+- **Meek**: D039
+- **Might**: D501, D544
+- **Mine**: D405
+- **Ministry**: D656
+- **Mother**: D554
+- **Mountain**: D061
+- **Music**: D507
+- **Mustard**: D634
+- **Mystery**: D668
+- **Names**: D409
+- **Nations**: D677
+- **New**: W35a, D585
+- **News**: D543
+- **Offering**: D089
+- **Oil**: W14a, D487
+- **Olive**: D452
+- **One**: D512
+- **Palms**: D551
+- **Paradise**: D639
+- **Passover**: D522
+- **Pastor**: D555
+- **Patience**: W51a
+- **Patient**: D204
+- **Peace**: W31a, D407, D454, D455, D669
+- **Pearl**: D609
+- **People**: D017
+- **Perfect**: D486
+- **Pillar**: D387, D481
+- **Plenty**: D371
+- **Portion**: D169
+- **Possible**: W43c
+- **Potter**: D553
+- **Power**: W45e, D600
+- **Priest**: D674
+- **Prophet**: D052
+- **Pure**: D201
+- **Purpose**: D091, D261
+- **Rain**: D316
+- **Redeemer**: W20a
+- **Reed**: D608
+- **Refuge**: W10b
+- **Rich**: D332
+- **Right**: D443, D579
+- **River**: W38a
+- **Rock**: D088
+- **Room**: D370
+- **Salt**: D397
+- **Sanctuary**: D588
+- **Saviour**: W43b
+- **Sceptre**: D382
+- **Season**: W29c
+- **Secret**: D590
+- **Seed**: D365
+- **Servant**: D093
+- **Shadow**: D218
+- **Sheep**: D044
+- **Shoulder**: D392
+- **Side**: D394
+- **Signet**: D603
+- **Sinner**: D635
+- **Small**: D604
+- **Son**: D087
+- **Song**: W03c, D106, D158
+- **Sorrow**: D571
+- **Sought**: D120
+- **Soul**: D229
+- **Spirit**: W36b, D534
+- **Star**: D264
+- **Steps**: D537
+- **Stone**: D217
+- **Stranger**: D404, D436
+- **Strength**: W19a
+- **Strong**: D469, D263
+- **Sun**: D450
+- **Sword**: D451
+- **Temple**: D326
+- **Throne**: D478, D246
+- **Tidings**: D493, D224
+- **Time**: W19c
+- **Treasure**: D302
+- **Trumpet**: D519
+- **Truth**: D082, D281
+- **Upright**: D468
+- **Valley**: D488
+- **Valour**: D066
+- **Veil**: D616
+- **Vessel**: D331
+- **Victory**: W48b
+- **Voice**: W14d, D413, D547
+- **Wall**: D279
+- **Watchman**: D247
+- **Water**: D420
+- **Waters**: D228
+- **Way**: W45d, D008, D559
+- **Ways**: D483
+- **Wept**: D456
+- **Wheat**: D645
+- **Whole**: D618
+- **Will**: D615
+- **Willing**: D529
+- **Wings**: D020, D164
+- **Wisdom**: W29a, D393
+- **With**: W02b, D428, D438, D242
+- **Wonders**: D440
+- **Word**: W50a, D495, D575, D361
+- **Worthy**: W52d
+- **Wound**: W32d
+- **Young**: D521
+
+## Maybe (38 fish)
+- **Anchor**: D671
+- **Balance**: D589
+- **Blossom**: D041, D602
+- **Burden**: D412
+- **Clean**: D401, D492
+- **Cost**: D508
+- **Counsel**: D137
+- **Crown**: D227
+- **Fashion**: D532
+- **Favour**: D132
+- **Fish**: W41a
+- **Free**: W44a
+- **Journey**: D414, D427
+- **Light**: W23b, D385, D653
+- **Long**: D472
+- **Minister**: D510, D612
+- **Name**: W32c, D134, D149, D232, D313
+- **Quiet**: D216
+- **Ransom**: D143
+- **Reason**: W30c
+- **Reward**: D117
+- **Seal**: D664
+- **Shepherd**: W22a
+- **Shield**: D004
+- **Steady**: D389
+- **Still**: W23a
+- **Tithe**: D408
+- **Wonder**: W31b
