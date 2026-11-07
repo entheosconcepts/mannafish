@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<meta name="theme-color" content="#000000"><title>MannaFish Card Preview</title>
+<!-- Ken, 7 Nov: a flip example to show a prospect (Market Street Tires): tap the card to flip front/back, English / Español. Mock-up: QR codes are placeholders. -->
+<style>
+:root{--ink:#000;--foam:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--line:rgba(200,215,218,.2)}
+*{box-sizing:border-box}html,body{margin:0;background:#000;color:var(--foam)}
+body{font:1rem/1.4 system-ui,sans-serif;min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:16px;padding-top:max(16px,env(safe-area-inset-top))}
+h1{font-size:1.2rem;margin:4px 0 2px;text-align:center}p{color:var(--dim);margin:0 0 14px;text-align:center;font-size:.9rem}
+.lg{display:flex;gap:8px;margin-bottom:16px}.lg button{border:1px solid var(--line);background:transparent;color:var(--foam);border-radius:999px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer}
+.lg button[aria-pressed=true]{background:var(--blue);border-color:var(--blue)}
+.scene{width:min(94vw,820px);aspect-ratio:4.5/2.75;perspective:1600px;cursor:pointer;border:0;background:none;padding:0}
+.card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s}
+.card.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px var(--line),0 10px 40px rgba(0,0,0,.6)}
+.face img{width:100%;height:100%;display:block;object-fit:cover}.face.b{transform:rotateY(180deg)}
+.go{margin-top:16px;border:1px solid var(--line);background:var(--blue);color:#fff;border-radius:999px;padding:11px 24px;font:inherit;font-weight:700;cursor:pointer}
+.go:focus-visible,.lg button:focus-visible,.scene:focus-visible{outline:3px solid #6c9cf0;outline-offset:3px}
+small{color:var(--dim);margin-top:14px;text-align:center;max-width:520px}
+@media(prefers-reduced-motion:reduce){.card{transition:none}}
+</style></head><body>
+<h1 id="h">Your MannaFish</h1><p id="s">Tap the card to flip it.</p>
+<div class="lg" role="group" aria-label="Language"><button type="button" id="en" aria-pressed="true">English</button><button type="button" id="es" aria-pressed="false">Español</button></div>
+<button type="button" class="scene" id="sc" aria-label="Flip the card"><div class="card" id="cd">
+<div class="face f"><img id="fi" src="ms-en-front.png" alt="Front of the card: the word Repair in a fish"></div>
+<div class="face b"><img id="bi" src="ms-en-back.png" alt="Back of the card: the word study and Market Street Tires"></div></div></button>
+<button type="button" class="go" id="go">Flip</button>
+<small id="n">Example only. The QR codes are placeholders.</small>
+<script>
+(function(){var $=function(i){return document.getElementById(i)},cd=$('cd'),L='en';
+var T={en:{h:'Your MannaFish',s:'Tap the card to flip it.',go:'Flip',n:'Example only. The QR codes are placeholders.',fa:'Front of the card: the word Repair in a fish',ba:'Back of the card: the word study and Market Street Tires'},
+es:{h:'Su MannaFish',s:'Toque la tarjeta para voltearla.',go:'Voltear',n:'Solo un ejemplo. Los códigos QR son de muestra.',fa:'Frente de la tarjeta: la palabra Reparen en un pez',ba:'Reverso de la tarjeta: el estudio de la palabra y Market Street Tires'}};
+function flip(){cd.classList.toggle('flip')}
+$('sc').addEventListener('click',flip);$('go').addEventListener('click',flip);
+function set(l){L=l;$('en').setAttribute('aria-pressed',String(l==='en'));$('es').setAttribute('aria-pressed',String(l==='es'));document.documentElement.lang=l;
+$('fi').src='ms-'+l+'-front.png';$('bi').src='ms-'+l+'-back.png';$('fi').alt=T[l].fa;$('bi').alt=T[l].ba;$('h').textContent=T[l].h;$('s').textContent=T[l].s;$('go').textContent=T[l].go;$('n').textContent=T[l].n}
+$('en').addEventListener('click',function(){set('en')});$('es').addEventListener('click',function(){set('es')});
+if(/^#es/.test(location.hash))set('es');
+})();
+</script></body></html>

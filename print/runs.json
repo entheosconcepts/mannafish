@@ -191,7 +191,32 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-07T15:58:37.859Z"
+   "made": "2026-11-07T16:06:06.117Z"
+  },
+  {
+   "id": "R0009",
+   "title": "Reparar (2 Reyes 12:5) · Spanish MOCK-UP back for Market Street Tires",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "REPARAR",
+    "word": "REPAREN",
+    "lang": "es",
+    "study": "REPAIR-ES",
+    "svg": "assets/repair-fish-ES-DRAFT.svg"
+   },
+   "sponsor": "Market Street Tires",
+   "anonymous": false,
+   "codes": {
+    "main": "R0009",
+    "left": "R0009s",
+    "right": "R0009m"
+   },
+   "warn": [
+    "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "made": "2026-11-07T16:06:00.391Z"
   }
  ]
 }

@@ -1,0 +1,41 @@
+{
+ "id": "R0009",
+ "title": "Reparar (2 Reyes 12:5) · Spanish MOCK-UP back for Market Street Tires",
+ "status": "draft",
+ "qty": 100,
+ "fish": {
+  "id": "REPARAR",
+  "word": "REPAREN",
+  "lang": "es",
+  "study": "REPAIR-ES",
+  "svg": "assets/repair-fish-ES-DRAFT.svg"
+ },
+ "sponsor": {
+  "name": "Market Street Tires",
+  "logo": "assets/marketstreet-logo.png",
+  "show": true
+ },
+ "ship_to": "",
+ "qr_direct": false,
+ "back": {
+  "template": "study",
+  "refs": 9,
+  "left": {
+   "label": "Revisión de\nllantas gratis",
+   "to": "https://manna-fish.com/"
+  },
+  "right": {
+   "label": "Devocional y regalos\nMannaFish gratis",
+   "to": "https://manna-fish.com/devotional"
+  },
+  "orientation": "landscape",
+  "layout": "stack",
+  "credit": "Patrocinado por",
+  "words": {
+   "greek": "GRIEGO",
+   "hebrew": "HEBREO",
+   "strongs": "STRONG"
+  }
+ },
+ "notes": "Spanish version of R0008 for showing a prospect (Reina-Valera 1909). Mock-up: QR targets are placeholders."
+}
