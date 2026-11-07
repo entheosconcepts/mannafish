@@ -32,6 +32,7 @@
       ed='<a href="/edit/?find='+encodeURIComponent(f.word)+(set?'&set='+set:'&code=en')+'">✏️ Edit this fish: '+esc(f.word)+'<small>Word size, place, lines, on the edit sheet</small></a><hr>'; }
     p.innerHTML=ed
       +'<a href="/edit/">✏️ Edit sheet<small>Every fish; templates for word size and place</small></a>'
+      +'<a href="/fish/review/">✅ Review all fish<small>Tick Edit or Remove on every fish</small></a>'
       +'<a href="/fish/">🐟 The 153<small>Print, edit or ask for a change</small></a><a href="/fish/?year=1">📅 The 365</a>'
       +'<a href="/voices/">🎙 Voices<small>Hear every voice, pick favorites (ElevenLabs too)</small></a>'
       +'<a href="/hubs/admin/">📍 Hubs admin</a><a href="/pond/admin/">🎣 Pond admin</a><a href="/stories/admin/">💬 Fish stories to approve</a>'

@@ -5192,6 +5192,8 @@ window.MF=(function(){
   // (John 21:17), from fish/net.json (tools/fish/net.py). A devotional fish caught becomes your fish; another one is shown big, with its
   // verse, to read in the Bible, put in the basket or share.
   // Ken, 28 Oct: new designs outside the 153 (Stop and Go, Repent, Rebuild ...), from fish/designs.json (tools/fish/net.py)
+  // Ken, 7 Nov: the fish review page (/fish/review/) is offered here while the site is only the test site, or in Admin view
+  function gfReview(){ try{ return /(^|\.)yadamannafishtest\.netlify\.app$/.test(location.hostname)||localStorage.getItem('mf-admin-on')==='1'; }catch(e){ return false; } }
   var NET=null, DES=[];
   function netLoad(){ return NET?Promise.resolve(NET):Promise.all([fetch('/fish/net.json').then(function(r){ return r.ok?r.json():[]; }),fetch('/fish/designs.json').then(function(r){ return r.ok?r.json():[]; }).catch(function(){ return []; })])
     .then(function(a){ NET=a[0]; DES=a[1]; return NET; },function(){ return []; }); }
@@ -5223,7 +5225,7 @@ window.MF=(function(){
         d.hidden=true; planSet(nk); if(cmpShown()) $('cmpClear').click(); if(nk!==cur) pick(nk,false); ftUI();
         if(r){ var tb=$('mfToast'); if(tb){ tb.textContent='🎣 '+(GFT[MF.lang]||GFT.en).got.replace('{w}',titleIn(MF.lang,nk)); tb.hidden=false; clearTimeout(tb._t); tb._t=setTimeout(function(){ tb.hidden=true; },2200); } }
         $('stage').scrollIntoView({block:'center',behavior:'smooth'}); }); }
-    d.innerHTML='<div class="in"><button type="button" class="gfx" data-gf="x" aria-label="'+esc(T.x)+'">&#10005;</button><h3>🎣 '+esc((GFL[l]||GFL.en)[1])+'</h3><p class="gfn"><b>'+esc(T.net)+'</b><br>'+esc(T.jn)+'</p>'
+    d.innerHTML='<div class="in"><button type="button" class="gfx" data-gf="x" aria-label="'+esc(T.x)+'">&#10005;</button><h3>🎣 '+esc((GFL[l]||GFL.en)[1])+'</h3><p class="gfn"><b>'+esc(T.net)+'</b><br>'+esc(T.jn)+'</p>'+(gfReview()?'<p class="gfn"><a href="/fish/review/" style="color:#8fb6ff;font-weight:800">🛠 Review all fish: mark Edit or Remove</a></p>':'')
       +'<button type="button" class="gfcast" data-gf="cast"><b>🎣 '+esc(T.cast)+'</b><small>'+esc(T.sub)+'</small></button>'
       +'<div class="gfcatch" hidden></div>'
       +'<h4>'+esc(T.mine)+' <small>'+esc(T.mineSub)+'</small></h4><div class="gfgrid">'
