@@ -36,6 +36,7 @@ const dataUrl = (file) => { const b = fs.readFileSync(file), ext = path.extname(
 
 // ── the fish ──
 function fishFile(f) {
+  if (f.svg) { const p = path.join(PRINT, f.svg); if (!fs.existsSync(p)) throw new Error('No fish file ' + p); return p; }
   const id = String(f.word || f.id || '').toUpperCase(), l = f.lang || 'en';
   const tries = [path.join(ROOT, 'fish', l, id + '.svg'), path.join(ROOT, 'fish', id + '.svg'), path.join(ROOT, 'fish', l, f.word + '.svg'), path.join(ROOT, 'fish', String(f.id || f.word) + '.svg')];
   const hit = tries.find((p) => fs.existsSync(p));

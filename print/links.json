@@ -73,5 +73,15 @@
   "to": "https://manna-fish.com/devotional",
   "run": "R0007",
   "what": "Free MannaFish\ndevo and merch"
+ },
+ "R0008s": {
+  "to": "https://manna-fish.com/",
+  "run": "R0008",
+  "what": "Free tire\ncheck"
+ },
+ "R0008m": {
+  "to": "https://manna-fish.com/devotional",
+  "run": "R0008",
+  "what": "Free MannaFish\ndevo and merch"
  }
 }

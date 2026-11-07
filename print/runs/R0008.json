@@ -1,0 +1,35 @@
+{
+ "id": "R0008",
+ "title": "Repair (2 Kings 12:5) · MOCK-UP back for Market Street Tires (stacked layout)",
+ "status": "draft",
+ "qty": 100,
+ "fish": {
+  "id": "REPAIR",
+  "word": "REPAIR",
+  "lang": "en",
+  "study": "REPAIR",
+  "svg": "assets/repair-fish-C-DRAFT.svg"
+ },
+ "sponsor": {
+  "name": "Market Street Tires",
+  "logo": "assets/marketstreet-logo.png",
+  "show": true
+ },
+ "ship_to": "",
+ "qr_direct": false,
+ "back": {
+  "template": "study",
+  "refs": 9,
+  "left": {
+   "label": "Free tire\ncheck",
+   "to": "https://manna-fish.com/"
+  },
+  "right": {
+   "label": "Free MannaFish\ndevo and merch",
+   "to": "https://manna-fish.com/devotional"
+  },
+  "orientation": "landscape",
+  "layout": "stack"
+ },
+ "notes": "Ken, 7 Nov: Market Street Tires, word REPAIR. MOCK-UP: verse C (2 Kings 12:5) is a stand-in until Ken picks; left QR goes to a placeholder (needs the shop's real web address or phone) and its label is a guess. Logo: bottom words turned white (print/assets/marketstreet-logo.png)."
+}

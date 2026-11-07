@@ -672,3 +672,8 @@ Names only. Never write the values. All are Netlify environment variables. A key
 6. Keep sentences short and plain. Mark anything you could not confirm as "(unconfirmed)".
 7. Before a session gets long, or when Ken says the chat is costly, finish steps 1 to 5 and tell Ken he can start a fresh session. One topic per session is cheaper.
 8. Never put a secret, a key value, a token, a password, an EIN, or Ken's home address in this file. Never put model names in it. No dollar amounts for MannaFish products on the site (the cost figures in B and C are internal; `/docs/*` is not served).
+
+### 7 Nov, Market Street Tires logo and mock-up back (R0008)
+- Ken: "Convert this logo... just the bottom part that says used tires and service... make that white... give me a mock up or print file for the back of a manna fish."
+- Done: logo text turned white, transparent background kept (`print/assets/marketstreet-logo.png`). `print/study/REPAIR.json` (Greek G2675, Hebrew H2388, nine verses). `tools/print/make.mjs` `fishFile` now accepts `fish.svg` (a path under `print/`) for non-catalog fish. `print/runs/R0008.json` builds the stacked back; the stand-in fish is verse C (2 Kings 12:5), `print/assets/repair-fish-C-DRAFT.svg`.
+- Still open (B): Ken has not picked the REPAIR verse (A-F). Need the shop's web address or phone for the left QR (now a placeholder) and the label (guess: "Free tire check"). The tire is black on the black card, so it fades a little; a thin silver outline is an option. Not tested: a real phone scan.
