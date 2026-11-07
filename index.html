@@ -631,6 +631,7 @@ section.section.bundles{display:block;margin-top:0}
 .offerbtn.prime{background:var(--brass);border-color:var(--brass);color:#fff}
 .offerbtn .chev{display:inline-block;transition:transform .2s;margin-left:6px}
 .offerbtn.open .chev{transform:rotate(180deg)}
+.merchck{display:flex!important;flex-direction:row!important;align-items:flex-start;gap:10px;text-align:left;font:600 .95rem/1.35 'Archivo',sans-serif}.merchck input{width:22px;height:22px;flex:none;margin-top:2px}.merchck small{display:block;opacity:.85;font-weight:500}
 .btn-devo{background:transparent;color:#fff;border:1.5px solid #eaf0f0}
 .btn-devo:hover{background:rgba(255,255,255,.08)}
 .devobox{border-color:rgba(234,240,240,.45);background:linear-gradient(165deg,rgba(255,255,255,.05),transparent 70%)}
@@ -1476,9 +1477,12 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 .dgbtn .dgs{font-weight:600;opacity:.9}
 @media(max-width:520px){.dgbtn .dgs{display:none}}
 .offerrow{margin-top:56px!important}
-.offerhd{margin:56px auto 4px;text-align:center}
-.offerrow.offercap{margin-top:0!important;gap:14px}.offerrow.offercap span{flex:1 1 0;min-width:0;text-align:center;white-space:nowrap;font:600 clamp(.74rem,3.2vw,.88rem)/1.3 'Archivo',sans-serif;color:var(--foam-dim,#9fb2b6)}
-.offerrow.offerbtns{margin-top:6px!important}
+.offerhd{margin:28px auto 10px;text-align:center}
+.offerttl{margin:0 auto;max-width:560px;font:800 clamp(1.25rem,5.6vw,1.7rem)/1.2 'Archivo',system-ui,sans-serif;color:#fff;text-align:center}
+:root[data-mode="light"] .offerttl{color:#14181d}
+.offerrow.offercap{margin-top:0!important;gap:14px}.offerrow.offercap span{flex:1 1 0;min-width:0;text-align:center;white-space:nowrap;font:700 clamp(.82rem,3.6vw,1rem)/1.3 'Archivo',sans-serif;color:#fff}
+:root[data-mode="light"] .offerrow.offercap span{color:#14181d}
+.offerrow.offerbtns{margin-top:4px!important}
 /* phones: light/dark moves into the ••• menu, so the MannaFish name can be bigger */
 #smMode{display:none!important}
 @media(max-width:560px){ .nav #modeBtn{display:none} .nav .cmpbtn{left:10px!important} }
@@ -1968,7 +1972,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <div id="readerSlot"></div>
   <!-- Ken, 7 Oct: the two buttons side by side under the fish; the one tapped opens below them. -->
   <!-- Ken, 12 Oct: say what the two buttons are: sign up, it's free -->
-  <div class="offerhd"><span class="eyebrow">Sign up · it’s free</span></div>
+  <div class="offerhd"><h2 class="offerttl">Sign up for free MannaFish devo and merch!</h2></div>
   <!-- Ken, 25 Oct: one clear path for launch -- today's fish, then the free devotional every morning; decals are coming soon -->
   <div class="offerrow offercap"><span>Devotional by email</span><span>Decals: coming soon</span></div>
   <div class="offerrow offerbtns">
@@ -1995,6 +1999,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
       <label id="devoEmailL">Email<input name="email" type="email" autocomplete="email" required></label>
       <label id="devoPhoneL" hidden>Mobile<input name="phone" type="tel" autocomplete="tel"></label>
       <p class="wide consent">Free. By signing up for texts, you agree to receive the MannaFish devotional by text (daily, weekly or monthly, as you choose). Msg &amp; data rates may apply. Reply HELP for help, STOP to cancel. <a href="/privacy/">Privacy &amp; Terms</a></p>
+      <label class="wide merchck"><input type="checkbox" name="merch" value="yes"> <span>I would also like free MannaFish merch. <small>Some people who sign up get a surprise MannaFish Basket.</small></span></label>
       <button class="btn btn-devo giftsend" type="submit">Send Me the Devotional</button>
     </form>
     <p class="rnote" id="devoFormMsg"></p>
@@ -2033,6 +2038,30 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   </div>
 </div></section>
 
+<section class="section reach" id="reach"><div class="wrap">
+  <!-- Ken, 11 Oct: the vision of MannaFish, first -- why we give, that a free gift is never free, receive first,
+       the 2 Fish Challenge, who pays the price, and why we gather. Then the sponsorship picker. -->
+  <div class="section-head vision-head">
+    <span class="eyebrow">The vision</span>
+    <!-- Ken, 7 Nov: the page starts with "What is MannaFish?", then "What is 2 Fish?" right after -->
+    <h2>What is MannaFish?</h2>
+    <p class="vline">Take 2, keep one, give one.</p>
+    <p>The vision of MannaFish is to nurture people in their faith, and equip them to do the same for others.</p>
+    <p>It’s been said, “Give a man a fish, and you feed him for a day. Teach a man to fish, and you feed him for a lifetime.”</p>
+    <p>The multiplying of the two fish and five loaves began when one lad gave what he had to Jesus, and the result was a miracle (John 6:9–13).</p>
+    <p class="vline">This is the vision of MannaFish: take 2, keep one, give one. Give thanks, read the Scriptures, and pray.</p>
+    <button type="button" class="secspk" data-sec="reach" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg><span>Listen</span></button>
+  </div>
+  <div class="vision">
+    <article class="vcard"><h3>Why is MannaFish free?</h3><p>Because the vision behind MannaFish is to help people become gift givers.</p><blockquote>A man’s gift maketh room for him, and bringeth him before great men.<cite>Proverbs 18:16</cite></blockquote><p>We believe a gift also makes room, and makes a way, for someone to hear about the greatest gift ever given.</p><blockquote>For God so loved the world, that he gave his only begotten Son.<cite>John 3:16</cite></blockquote></article>
+    <article class="vcard"><h3>A free gift is never free.</h3><p>Someone always pays the price. Jesus paid with His life. A gift costs the giver something too.</p><p>But a gift is God’s way of demonstrating His love.</p><blockquote>For God so loved the world, that He gave His one and only Son.<cite>John 3:16</cite></blockquote><p>So MannaFish is always a free gift. It is never sold and never resold. You cannot buy a MannaFish shirt, hat, decal or anything that carries the MannaFish name. It may only be given away. The cost is carried by the followers and sponsors who give.</p></article>
+    <article class="vcard"><h3>Receive first. Then give.</h3><p>You cannot give what you have not received. Jesus rose while it was still dark and went to a quiet place to be with the Father. He received freely from the Father, and gave freely to us.</p><blockquote>Freely ye have received, freely give.<cite>Matthew 10:8</cite></blockquote><p>So start each day with the devotional. Feed yourself first, then be ready to give.</p><blockquote>Be ready always to give an answer to every man that asketh you a reason of the hope that is in you.<cite>1 Peter 3:15</cite></blockquote></article>
+    <article class="vcard"><img class="v2f" src="/brand/2fish-teach-a-man.webp" width="1202" height="699" alt="2 Fish: Teach a man 2 Fish, feed him for life" loading="lazy"><h3>The 2 Fish Challenge</h3><p>Wherever MannaFish is given away, at a coffee shop, a bookstore or a church lobby, take two: one for you, and one for a friend.</p><p>Every gift points to the free daily devotional, and carries an invitation from the one who gave it.</p></article>
+    <article class="vcard"><h3>Will you pay the price?</h3><p>Are you a Christian business owner, a bookstore, a church, an evangelist, a teacher, a pastor, a podcaster, a content creator, a Christian musician, a movie producer or an actor, and you want to share the gospel by giving gifts? This is a great place to do it.</p><p>Sow into other businesses and ministries and let them stock their ponds for giving. Or stock this pond, and we will pay it forward.</p><p>The goal is to keep MannaFish free. And everyone who gives a gift also gives an invitation: a QR code on the back to their church, ministry, podcast or gathering.</p></article>
+    <article class="vcard"><h3>Why gather?</h3><p>Every MannaFish is an invitation into connection, community, and growing together in faith.</p><blockquote>He that gathereth not with me scattereth abroad.<cite>Matthew 12:30</cite></blockquote></article>
+  </div>
+</div></section>
+
 <!-- Ken, 2 Nov: "What is 2 Fish?" above the 2 Fish section, on the site's own background -->
 <section class="story" id="story"><div class="wrap">
   <span class="eyebrow">The heart of it</span>
@@ -2056,27 +2085,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   </div>
 </div></section>
 
-<section class="section reach" id="reach"><div class="wrap">
-  <!-- Ken, 11 Oct: the vision of MannaFish, first -- why we give, that a free gift is never free, receive first,
-       the 2 Fish Challenge, who pays the price, and why we gather. Then the sponsorship picker. -->
-  <div class="section-head vision-head">
-    <span class="eyebrow">The vision</span>
-    <!-- Ken, 23 Oct: "Take 2, keep one, give one" -- the vision in his words -->
-    <h2>Take 2,<br>keep one, give one.</h2>
-    <p>The vision of MannaFish is to nurture people in their faith, and equip them to do the same for others.</p>
-    <p>It’s been said, “Give a man a fish, and you feed him for a day. Teach a man to fish, and you feed him for a lifetime.”</p>
-    <p>The multiplying of the two fish and five loaves began when one lad gave what he had to Jesus, and the result was a miracle (John 6:9–13).</p>
-    <p class="vline">This is the vision of MannaFish: take 2, keep one, give one. Give thanks, read the Scriptures, and pray.</p>
-    <button type="button" class="secspk" data-sec="reach" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg><span>Listen</span></button>
-  </div>
-  <div class="vision">
-    <article class="vcard"><h3>Why is MannaFish free?</h3><p>Because the vision behind MannaFish is to help people become gift givers.</p><blockquote>A man’s gift maketh room for him, and bringeth him before great men.<cite>Proverbs 18:16</cite></blockquote><p>We believe a gift also makes room, and makes a way, for someone to hear about the greatest gift ever given.</p><blockquote>For God so loved the world, that he gave his only begotten Son.<cite>John 3:16</cite></blockquote></article>
-    <article class="vcard"><h3>A free gift is never free.</h3><p>Someone always pays the price. Jesus paid with His life. A gift costs the giver something too.</p><p>But a gift is God’s way of demonstrating His love.</p><blockquote>For God so loved the world, that He gave His one and only Son.<cite>John 3:16</cite></blockquote><p>So MannaFish is always a free gift. It is never sold and never resold. You cannot buy a MannaFish shirt, hat, decal or anything that carries the MannaFish name. It may only be given away. The cost is carried by the followers and sponsors who give.</p></article>
-    <article class="vcard"><h3>Receive first. Then give.</h3><p>You cannot give what you have not received. Jesus rose while it was still dark and went to a quiet place to be with the Father. He received freely from the Father, and gave freely to us.</p><blockquote>Freely ye have received, freely give.<cite>Matthew 10:8</cite></blockquote><p>So start each day with the devotional. Feed yourself first, then be ready to give.</p><blockquote>Be ready always to give an answer to every man that asketh you a reason of the hope that is in you.<cite>1 Peter 3:15</cite></blockquote></article>
-    <article class="vcard"><img class="v2f" src="/brand/2fish-teach-a-man.webp" width="1202" height="699" alt="2 Fish: Teach a man 2 Fish, feed him for life" loading="lazy"><h3>The 2 Fish Challenge</h3><p>Wherever MannaFish is given away, at a coffee shop, a bookstore or a church lobby, take two: one for you, and one for a friend.</p><p>Every gift points to the free daily devotional, and carries an invitation from the one who gave it.</p></article>
-    <article class="vcard"><h3>Will you pay the price?</h3><p>Are you a Christian business owner, a bookstore, a church, an evangelist, a teacher, a pastor, a podcaster, a content creator, a Christian musician, a movie producer or an actor, and you want to share the gospel by giving gifts? This is a great place to do it.</p><p>Sow into other businesses and ministries and let them stock their ponds for giving. Or stock this pond, and we will pay it forward.</p><p>The goal is to keep MannaFish free. And everyone who gives a gift also gives an invitation: a QR code on the back to their church, ministry, podcast or gathering.</p></article>
-    <article class="vcard"><h3>Why gather?</h3><p>Every MannaFish is an invitation into connection, community, and growing together in faith.</p><blockquote>He that gathereth not with me scattereth abroad.<cite>Matthew 12:30</cite></blockquote></article>
-  </div>
+<section class="section reach" id="reach2"><div class="wrap">
   <div class="section-head reach-sub">
     <span class="eyebrow">Sponsor a Gift Giver</span>
     <h2>Point your sponsorship at someone real.</h2>
