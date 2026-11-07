@@ -687,3 +687,4 @@ Names only. Never write the values. All are Netlify environment variables. A key
 - 7 Nov (outline boxes round the QR codes) · Ken: "move the outline boxes from above to outline that text and QR codes." `index.html`: each QR code and its words now sit in the same outline box as Greek and Hebrew (home-page back preview only). The Greek and Hebrew boxes were kept; Ken to say if he wanted them removed. · (this commit)
 - 7 Nov · Ken: "No outline on top." Greek and Hebrew boxes lose their outline on the home-page back preview (`.sback .sb-lg`); the boxes round the QR codes stay. The printed back (`tools/print/make.mjs`) was not changed. · (this commit)
 - 7 Nov · Ken: "No outlines at all." The outline boxes round the QR codes are removed too (`.sback .sb-side`); the back preview has no boxes. · (this commit)
+- 7 Nov · Ken: "Justify center the 3 rows." The words beside each QR code are centred (home-page back preview, `.sback .sb-side span`). · (this commit)
