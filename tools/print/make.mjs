@@ -253,7 +253,7 @@ const BACKCSS = () => `@font-face{font-family:'Lilita One';src:url(${font('lilit
 .l4 .ow{font:400 5em/1.1 'MFGkHb',serif}.l4 .tr{font:italic 400 2.2em/1.2 'Spectral',serif;color:#cfd8dc}
 .l4 .mn4{font:italic 400 2.5mm/1.2 'Spectral',serif;width:100%;display:flex;align-items:center;justify-content:center;white-space:nowrap;height:3.2mm}
 .l4 .st4{font:700 1.8mm/1 'Archivo Narrow',sans-serif;letter-spacing:.25mm;color:#8fb8ff;border-bottom:.2mm solid #8fb8ff;padding-bottom:.3mm}
-.strip.inv{background:none;color:#fff;left:3.2mm!important;right:3.2mm!important;padding:0;gap:2mm;grid-template-columns:23mm 1fr 23mm}
+.strip.inv{border-top:.25mm solid rgba(255,255,255,.3);padding-top:.8mm!important;box-sizing:border-box;background:none;color:#fff;left:3.2mm!important;right:3.2mm!important;padding:0;gap:2mm;grid-template-columns:23mm 1fr 23mm}
 .strip.inv .qv{justify-content:space-between;gap:.9mm}.strip.inv .qv .sq{width:15.2mm;height:15.2mm}
 .strip.inv .qv .lab{height:5.8mm;width:100%;color:#fff;font-size:2.6mm;line-height:1.05;white-space:normal;align-items:flex-start;text-align:center}
 .strip.inv .mid{justify-content:space-between;padding:0}.strip.inv .sb{color:#fff;font-size:2.8mm;margin:0;line-height:1}.strip.inv .sl{flex:none;height:17.4mm}
