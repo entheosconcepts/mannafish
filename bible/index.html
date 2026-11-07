@@ -136,6 +136,18 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 .mine{margin:4px 0 6px}.mine button{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px;margin:0 0 6px;cursor:pointer}
 .mine b{font-size:.92rem}.mine span{display:block;color:var(--dim);font-size:.85rem;margin-top:2px}
 /* the book and chapter picker */
+@media (max-width:400px){.bar .r1 .ib.sm{width:34px;height:34px;min-width:34px}.bar .r1 .lt,.bar .r1 .rt{gap:4px}.bar .r1 .brand{font-size:.95em}}
+.srsheet{position:fixed;inset:0;z-index:46;background:var(--bg);display:flex;flex-direction:column}.srsheet[hidden]{display:none}
+.srsheet .hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}.srsheet .hd b{font:700 1.1rem 'Archivo',sans-serif}.srsheet .ibsp{width:44px}
+.srbar{padding:10px 14px 6px;border-bottom:1px solid var(--line);max-width:760px;width:100%;margin:0 auto}
+.srbar input{width:100%;background:var(--card);border:1px solid var(--line);color:inherit;border-radius:14px;padding:11px 14px;font:inherit;font-size:1.05rem}
+.srrow{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}.srrow select{background:var(--card);border:1px solid var(--line);color:inherit;border-radius:999px;padding:6px 10px;font-weight:700;font-size:.85rem;max-width:48%}
+.srsc{display:inline-flex;gap:5px}.srsc button{border:1px solid var(--line);background:none;color:var(--dim);border-radius:999px;padding:6px 11px;font:700 .8rem 'Archivo',sans-serif;cursor:pointer}.srsc button[aria-pressed=true]{background:rgba(111,155,224,.2);border-color:var(--blue2);color:#fff}
+.srprog{margin-top:8px;font-size:.82rem;color:var(--dim)}.srprog i{display:block;height:4px;border-radius:3px;background:rgba(255,255,255,.12);margin-top:4px;overflow:hidden}.srprog i b{display:block;height:100%;background:var(--blue2);width:0}
+.srsheet .body{flex:1;overflow:auto;padding:6px 14px 60px;max-width:760px;width:100%;margin:0 auto;-webkit-overflow-scrolling:touch}
+.srsum{color:var(--dim);font-size:.85rem;margin:8px 0}.srr{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:none;color:inherit;padding:11px 2px;cursor:pointer;font:inherit}
+.srr b{display:block;font:800 .9rem 'Archivo',sans-serif;color:var(--blue2);margin-bottom:2px}.srr span{font:1.02rem/1.5 'Spectral',Georgia,serif}.srr mark{background:rgba(245,215,110,.3);color:inherit;border-radius:3px;padding:0 1px}
+.srmore{display:block;margin:14px auto;border:1px solid var(--line);background:var(--card);color:inherit;border-radius:999px;padding:9px 18px;font:800 .9rem 'Archivo',sans-serif;cursor:pointer}
 .bksheet{position:fixed;inset:0;z-index:45;background:var(--bg);display:flex;flex-direction:column}.bksheet[hidden]{display:none}
 .bksheet .hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}.bksheet .hd b{font:700 1.1rem 'Archivo',sans-serif}.bksheet .ibsp{width:44px}
 .bksheet .body{flex:1;overflow:auto;padding:4px 18px 60px;max-width:760px;width:100%;margin:0 auto;-webkit-overflow-scrolling:touch}
@@ -286,7 +298,7 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 <body>
 <div class="bar"><div class="in r1">
   <span class="lt"><button type="button" class="ib back sm" id="back" aria-label="Back to the devotional">&lsaquo;<span class="bl">&nbsp;Devotional</span></button>
-    <button type="button" class="ib sm" id="mode" aria-label="Light or dark">&#9728;&#xFE0E;</button><button type="button" class="ib sm" id="toolsRound" aria-expanded="false" aria-controls="htP" aria-label="Tools" title="Tools">&#129520;&#xFE0E;</button></span>
+    <button type="button" class="ib sm" id="mode" aria-label="Light or dark">&#9728;&#xFE0E;</button><button type="button" class="ib sm" id="toolsRound" aria-expanded="false" aria-controls="htP" aria-label="Tools" title="Tools">&#129520;&#xFE0E;</button><button type="button" class="ib sm" id="searchBtn" aria-label="Search the Bible" title="Search the Bible">&#128269;&#xFE0E;</button></span>
   <a class="brand" href="/">Manna<b>Fish</b></a>
   <span class="rt"><button type="button" class="ib sm" id="penB" aria-pressed="false" aria-label="Highlighter pen" title="Highlighter: slide across the words">&#128397;&#xFE0E;</button><button type="button" class="ib sm" id="studyB" aria-pressed="false" aria-label="Word study: Hebrew and Greek" title="Word study"><span class="og2" id="studyI">&alpha;</span></button>
     <button type="button" class="ib sm" id="dots" aria-haspopup="menu" aria-expanded="false" aria-label="More"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button></span>
@@ -340,6 +352,9 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
   <div class="hd"><span style="width:40px"></span><b id="sTitle">My stuff</b><button type="button" class="ib" id="sX" aria-label="Close">&#10005;</button></div>
   <div class="body"><div class="sseg" id="sSeg" role="group"></div><div class="sl" id="sBody"></div></div>
 </div>
+<div class="srsheet" id="srSheet" role="dialog" aria-modal="true" aria-labelledby="srT" hidden><div class="hd"><button type="button" class="ib" id="srX" aria-label="Close">&#10005;</button><b id="srT">Search the Bible</b><span class="ibsp"></span></div>
+  <div class="srbar"><input type="search" id="srQ" placeholder="A word, a “phrase”, or a Strong’s number like G3056" enterkeyhint="search" autocomplete="off"><div class="srrow"><select id="srV" aria-label="Which Bible"></select><span class="srsc" id="srSc" role="group" aria-label="Where"></span></div><div class="srprog" id="srP" hidden></div></div>
+  <div class="body" id="srBody"></div></div>
 <div class="bksheet" id="bkSheet" role="dialog" aria-modal="true" aria-labelledby="bksT" hidden><div class="hd"><button type="button" class="ib" id="bksX" aria-label="Close">&#10005;</button><b id="bksT">Books</b><span class="ibsp"></span></div><div class="body" id="bksBody"></div></div>
 <div class="pick" id="pick" role="dialog" aria-modal="true" aria-labelledby="pTitle">
   <div class="hd"><button type="button" class="ib pbk" id="pBack" aria-label="Back">&lsaquo; Back</button><b id="pTitle">Books</b><button type="button" class="ib" id="pX" aria-label="Close">&#10005;</button></div>
@@ -1224,6 +1239,56 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
     b.setAttribute('aria-expanded','true'); b.parentNode.insertAdjacentHTML('beforeend',g); b.scrollIntoView({block:'nearest'}); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&BKO) bkClose(); });
   document.addEventListener('click',function(e){ if(BKO&&!e.target.closest('#bkDrop,#titleB')) bkClose(); });
+  // ── Search the Bible (Ken, 7 Nov: "do them all"): a word, a "phrase" or a Strong's number, in any Bible stored on the site (the KJV and the
+  // ten other languages). The first search in a Bible downloads its text once (about 1189 small files) and keeps it on this device (IndexedDB),
+  // so every later search is instant and works offline. A Strong's number (G3056, H8085) lists its verses from fish-lang/bible/conc/ in the KJV.
+  var SR={idx:{},nrm:{},dir:'kjv',scope:'all',q:'',res:[],show:0,strong:null,tok:0};
+  function srVers(){ return VERS.filter(function(v){ return v.k==='kjv'||v.f; }); }
+  function srNorm(t){ return String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f\u0591-\u05c7\u064b-\u065f]/g,''); }
+  function srDb(){ return new Promise(function(ok,no){ try{ var r=indexedDB.open('mf-bible-search',1); r.onupgradeneeded=function(){ r.result.createObjectStore('s'); }; r.onsuccess=function(){ ok(r.result); }; r.onerror=function(){ no(); }; }catch(e){ no(); } }); }
+  function srGet(k){ return srDb().then(function(d){ return new Promise(function(ok){ var q=d.transaction('s').objectStore('s').get(k); q.onsuccess=function(){ ok(q.result||null); }; q.onerror=function(){ ok(null); }; }); }).catch(function(){ return null; }); }
+  function srPut(k,v){ return srDb().then(function(d){ d.transaction('s','readwrite').objectStore('s').put(v,k); }).catch(function(){}); }
+  function srLoad(dir,prog){ if(SR.idx[dir]) return Promise.resolve(SR.idx[dir]);
+    return srGet('v1-'+dir).then(function(hit){ if(hit&&hit.length===66){ SR.idx[dir]=hit; return hit; }
+      var jobs=[]; B.forEach(function(bk,b){ for(var c=1;c<=bk[1];c++) jobs.push([b,c]); });
+      var out=B.map(function(){ return []; }), n=0, i=0, fin=false;
+      return new Promise(function(ok){ function next(){ if(i>=jobs.length){ if(n>=jobs.length&&!fin){ fin=true; SR.idx[dir]=out; srPut('v1-'+dir,out); ok(out); } return; } var j=jobs[i++];
+          fetch('/fish-lang/bible/'+dir+'/'+B[j[0]][0].replace(/ /g,'_')+'-'+j[1]+'.json').then(function(r){ return r.ok?r.json():{t:[]}; }).catch(function(){ return {t:[]}; })
+            .then(function(x){ out[j[0]][j[1]-1]=(x.t||[]).map(String); n++; if(prog) prog(n/jobs.length); next(); }); }
+        for(var k=0;k<24;k++) next(); }); }); }
+  function srN(dir){ if(!SR.nrm[dir]){ SR.nrm[dir]=SR.idx[dir].map(function(ch){ return ch.map(function(vs){ return vs.map(srNorm); }); }); } return SR.nrm[dir]; }
+  function srRx(tok,phrase){ var e=srNorm(tok).replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); if(phrase) e=e.replace(/\s+/g,'\\s+'); return /[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af\u0e00-\u0e7f]/.test(tok)?new RegExp(e,'u'):new RegExp('(^|[^\\p{L}\\p{N}])'+e,'u'); }
+  function srToks(q){ var out=[], m, re=/"([^"]+)"|(\S+)/g; while((m=re.exec(q))) out.push(srRx(m[1]||m[2],!!m[1])); return out; }
+  function srRun(){ var q=SR.q.trim(), body=$('srBody'); SR.res=[]; SR.strong=null; if(!q){ body.innerHTML='<p class="srsum">Type a word or phrase. Put a phrase in “quotes”. Try a Strong’s number such as G3056 (logos) or H8085 (shama).</p>'; return; }
+    var sm=/^([GHgh])\s*0*(\d{1,4})$/.exec(q), my=++SR.tok;
+    if(sm){ var L=sm[1].toUpperCase(), n=+sm[2], key=L+n; SR.strong=key; body.innerHTML='<p class="srsum">Looking up '+key+'…</p>';
+      Promise.all([fetch('/fish-lang/bible/conc/'+L+Math.floor(n/100)+'.json').then(function(r){ return r.ok?r.json():{}; }).catch(function(){ return {}; }),srLoad('kjv',srProg)]).then(function(a){ if(my!==SR.tok) return; srProgOff();
+        SR.res=(a[0][key]||[]).filter(function(r){ return SR.scope==='all'||(SR.scope==='ot'?r[0]<39:r[0]>=39); }).map(function(r){ return [r[0],r[1],r[2]]; }); SR.dirShown='kjv'; SR.show=60; srDraw(); }); return; }
+    var rx=srToks(q); if(!rx.length){ body.innerHTML=''; return; }
+    srLoad(SR.dir,srProg).then(function(){ if(my!==SR.tok) return; srProgOff(); var N=srN(SR.dir), b0=SR.scope==='nt'?39:0, b1=SR.scope==='ot'?39:66, res=[];
+      for(var b=b0;b<b1;b++) for(var c=0;c<N[b].length;c++){ var vs=N[b][c]||[]; for(var v=0;v<vs.length;v++){ var t=vs[v]; if(t&&rx.every(function(r){ return r.test(t); })) res.push([b,c+1,v+1]); } }
+      SR.res=res; SR.dirShown=SR.dir; SR.show=60; srDraw(); }); }
+  function srProg(f){ var p=$('srP'); p.hidden=false; p.innerHTML='Getting this Bible ready for searching (first time only)… '+Math.round(f*100)+'%<i><b style="width:'+Math.round(f*100)+'%"></b></i>'; }
+  function srProgOff(){ $('srP').hidden=true; }
+  function srHl(t,q){ var out=esc(t); String(q).replace(/"/g,' ').split(/\s+/).filter(Boolean).forEach(function(w){ try{ var re=new RegExp('('+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','giu'); out=out.replace(re,function(m,a,off){ return /^[^<]*>/.test(out.slice(off))&&!/^[^<]*<\//.test(out.slice(off))?m:'<mark>'+m+'</mark>'; }); }catch(e){} }); return out; }
+  function srDraw(){ var body=$('srBody'), r=SR.res, d=SR.dirShown||SR.dir, I=SR.idx[d]||[], n=Math.min(SR.show,r.length), chs={}; r.forEach(function(x){ chs[x[0]+':'+x[1]]=1; });
+    var h='<p class="srsum">'+(r.length?r.length.toLocaleString()+' verse'+(r.length===1?'':'s')+' in '+Object.keys(chs).length.toLocaleString()+' chapter'+(Object.keys(chs).length===1?'':'s')+(SR.strong?' · Strong’s '+SR.strong+' (King James)':''):'No verses found. Try fewer words, or another spelling.')+'</p>';
+    for(var i=0;i<n;i++){ var x=r[i], t=((I[x[0]]||[])[x[1]-1]||[])[x[2]-1]||''; h+='<button type="button" class="srr" data-g="'+x.join(',')+'"><b>'+esc(B[x[0]][0]+' '+x[1]+':'+x[2])+'</b><span>'+(SR.strong?esc(t):srHl(t,SR.q))+'</span></button>'; }
+    if(n<r.length) h+='<button type="button" class="srmore" data-more="1">Show more ('+(r.length-n).toLocaleString()+' left)</button>'; body.innerHTML=h; }
+  function srUI(){ $('srV').innerHTML=srVers().map(function(v){ return '<option value="'+srDir(v)+'"'+(srDir(v)===SR.dir?' selected':'')+'>'+esc(VL(v))+'</option>'; }).join('');
+    $('srSc').innerHTML=[['all','All'],['ot','Old Testament'],['nt','New Testament']].map(function(x){ return '<button type="button" data-sc="'+x[0]+'" aria-pressed="'+(SR.scope===x[0])+'">'+x[1]+'</button>'; }).join(''); }
+  function srDir(v){ return v.k==='kjv'?'kjv':v.f; }
+  var srT=null;
+  function srOpen(q){ var v=ver(); SR.dir=(v.k==='kjv'||v.f)?srDir(v):'kjv'; if(q!=null) SR.q=q; $('srQ').value=SR.q; srUI(); $('srSheet').hidden=false; srRun(); setTimeout(function(){ try{ $('srQ').focus(); }catch(e){} },80); }
+  $('searchBtn').addEventListener('click',function(){ srOpen(); });
+  $('srX').addEventListener('click',function(){ $('srSheet').hidden=true; });
+  $('srQ').addEventListener('input',function(){ SR.q=this.value; clearTimeout(srT); srT=setTimeout(srRun,260); });
+  $('srQ').addEventListener('keydown',function(e){ if(e.key==='Enter'){ clearTimeout(srT); srRun(); this.blur(); } });
+  $('srV').addEventListener('change',function(){ SR.dir=this.value; srRun(); });
+  $('srSc').addEventListener('click',function(e){ var b=e.target.closest('[data-sc]'); if(!b) return; SR.scope=b.dataset.sc; srUI(); srRun(); });
+  $('srBody').addEventListener('click',function(e){ if(e.target.closest('[data-more]')){ SR.show+=100; srDraw(); return; } var g=e.target.closest('[data-g]'); if(!g) return; var p=g.dataset.g.split(',').map(Number); $('srSheet').hidden=true; unlockSay(); go(p[0],p[1],p[2]); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('srSheet').hidden) $('srSheet').hidden=true; });
+  // the Books box: Enter on something that is not a reference searches the Bible for it
   // the Books sheet (Ken, 7 Nov: big book names; a book opens its chapter numbers right under it): used by every column's Book button
   var BKS='m';
   function bksClose(){ $('bkSheet').hidden=true; }
@@ -1259,7 +1324,7 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
     $('pBody').innerHTML='<input class="find" id="pFind" type="search" placeholder="Find a book, or type a reference like John 3:16" value="'+esc(q)+'" autocomplete="off">'
       +top+mine+'<h5>Old Testament</h5>'+grid(0,39)+'<h5>New Testament</h5>'+grid(39,66);
     var f=$('pFind'); f.addEventListener('input',function(){ var pos=this.value; books(pos); var g=$('pFind'); g.focus(); g.setSelectionRange(pos.length,pos.length); });
-    f.addEventListener('keydown',function(e){ if(e.key!=='Enter') return; var r=parseRef(this.value); if(r){ closePick(); unlockSay(); go(r.b,r.c,r.v); } }); }
+    f.addEventListener('keydown',function(e){ if(e.key!=='Enter') return; var r=parseRef(this.value); if(r){ closePick(); unlockSay(); go(r.b,r.c,r.v); } else if(this.value.trim().length>1){ var q=this.value; closePick(); srOpen(q); } }); }
   function chapters(b){ $('pTitle').textContent=B[b][0]; $('pBack').dataset.to='books'; var h='<div class="chs">'; for(var c=1;c<=B[b][1];c++) h+='<button type="button" data-c="'+c+'" class="'+(b===AT.b&&c===AT.c?'on':'')+'">'+c+'</button>'; $('pBody').innerHTML=h+'</div>'; $('pBody').dataset.bk=b; }
   $('pBody').addEventListener('click',function(e){ var vb=e.target.closest('[data-ver]'); if(vb){ ls('mf-bible-version',vb.dataset.ver); $('ver').value=vb.dataset.ver; go(AT.b,AT.c,0,true); books(); if(window.MFacct) MFacct.touch('set'); return; }
     var om=e.target.closest('[data-om]'); if(om){ OM=om.dataset.om; try{ sessionStorage.setItem('mf-bible-om',OM); }catch(er){} books(); return; }
