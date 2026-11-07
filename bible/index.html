@@ -44,6 +44,9 @@ main{max-width:760px;margin:0 auto;padding:6px 18px 130px}
 h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 .sub{color:var(--dim);font-size:.85rem;margin:0 0 10px}
 /* Ken, 2 Nov: the chapter's name centred above the verses, an arrow each side for the chapter before and after, ▾ for the picker */
+.htb{display:none}
+body:not(.tools-open) #sub,body:not(.tools-open) #stb,body:not(.tools-open) #htP{display:none!important}
+body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{background:rgba(68,143,255,.2);border-color:var(--blue2)}
 .th{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:18px 0 4px}.th h1{margin:0;flex:1;min-width:0;text-align:center}
 .tbtn{border:0;background:none;color:inherit;font:inherit;cursor:pointer;padding:0;max-width:100%}.tbtn .ar{font-size:.5em;color:var(--dim);margin-left:6px;vertical-align:middle}
 .tbtn .ar{display:inline-block;transition:transform .2s}.tbtn[aria-expanded=true] .ar{transform:rotate(180deg)}
@@ -283,7 +286,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 <body>
 <div class="bar"><div class="in r1">
   <span class="lt"><button type="button" class="ib back sm" id="back" aria-label="Back to the devotional">&lsaquo;<span class="bl">&nbsp;Devotional</span></button>
-    <button type="button" class="ib sm" id="mode" aria-label="Light or dark">&#9728;&#xFE0E;</button></span>
+    <button type="button" class="ib sm" id="mode" aria-label="Light or dark">&#9728;&#xFE0E;</button><button type="button" class="ib sm" id="toolsRound" aria-expanded="false" aria-controls="htP" aria-label="Tools" title="Tools">&#129520;&#xFE0E;</button></span>
   <a class="brand" href="/">Manna<b>Fish</b></a>
   <span class="rt"><button type="button" class="ib sm" id="penB" aria-pressed="false" aria-label="Highlighter pen" title="Highlighter: slide across the words">&#128397;&#xFE0E;</button><button type="button" class="ib sm" id="studyB" aria-pressed="false" aria-label="Word study: Hebrew and Greek" title="Word study"><span class="og2" id="studyI">&alpha;</span></button>
     <button type="button" class="ib sm" id="dots" aria-haspopup="menu" aria-expanded="false" aria-label="More"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button></span>
@@ -1206,6 +1209,9 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     for(var n=0;n<39;n++) h+=row(n); h+='<h5>New Testament</h5>'; for(n=39;n<66;n++) h+=row(n);
     $('bkDrop').innerHTML=h; $('bkDrop').hidden=false; $('titleB').setAttribute('aria-expanded','true');
     var cur=$('bkDrop').querySelector('.bkb.on'); if(cur) $('bkDrop').scrollTop=Math.max(0,cur.offsetTop-$('bkDrop').clientHeight/2+20); }
+  // Tools: the version line, Bible tools and the word study bar sit behind the round toolbox button (Ken, 7 Nov: "clutter")
+  function toolsSet(on){ document.body.classList.toggle('tools-open',on); $('toolsRound').setAttribute('aria-expanded',String(on)); ls('mf-bible-ht',on?'1':'0'); try{ htUI(); studyUI(); }catch(e){} }
+  $('toolsRound').addEventListener('click',function(){ toolsSet(!document.body.classList.contains('tools-open')); });
   $('add2').addEventListener('click',function(){ putSet('par',ver().k==='kjv'?'web':'kjv'); go(AT.b,AT.c,0,true); htUI(); });
   $('titleB').addEventListener('click',function(e){ e.stopPropagation(); if(BKO) bkClose(); else bkOpen(); });
   $('bkDrop').addEventListener('click',function(e){
