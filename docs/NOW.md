@@ -11,6 +11,7 @@ Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live sit
 - Bible reader: Explain & apply, search, side-by-side columns, ElevenLabs voices (`/voices/`), no phone voice anywhere.
 
 ## Waiting on Ken
+- Bulk sponsorship page (`/sponsor/`): confirm the prices ($2 each at 1,000 or more, $3 under 1,000, minimum 100), how people pay (invoice first, or card payment), StickerApp's real cost, and the name "MannaFish Hub". Nothing is on the site yet.
 - Monthly basket drawing (one random sign-up a month gets the 2 Fish and 5 Loaves gift basket; one per household per year): the wording and the merch checkbox are on the home page; the draw tool is not built. Say go and I will build the admin draw.
 - "Got Eternal Life?" (left QR when MannaFish is the sponsor): where should it go? I can write a short page from Scripture.
 - Surprise baskets (about 1 in 30 of the merch sign-ups): the checkbox is built, the draw is not. Decide how (suggestion in DECISIONS.md, 7 Nov). Also: does the Bible app need a separate "about" landing page, or is the collapsible fish enough?
