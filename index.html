@@ -2606,7 +2606,7 @@ window.MF=(function(){
       +'<div class="sb-rf">'+(d.refs||[]).slice(0,9).map(function(r){ return '<div><b>'+esc(r[0])+'</b><i>&ldquo;'+esc(r[1])+'&rdquo;</i></div>'; }).join('')+'</div>'
       +'<div class="sb-strip"><div class="sb-side"><div class="sb-qr">'+q+'</div><span>'+esc(CD.lab||((CD.name||CD.logo)?'Your website, podcast or ministry':'Got Eternal Life?'))+'</span></div>'
       +'<div class="sb-mid">Sponsored by'+(CD.logo?'<div class="sb-logo sb-img"><img src="'+CD.logo+'" alt=""></div>':CD.name?'<div class="sb-logo sb-nm">'+esc(CD.name)+'</div>':'<div class="sb-logo">Your<br>logo</div>')+'</div>'
-      +'<div class="sb-side r"><span>Free MannaFish Devotional</span><div class="sb-qr">'+q+'</div></div></div>'; }
+      +'<div class="sb-side r"><span>Free MannaFish</span><div class="sb-qr">'+q+'</div></div></div>'; }
   // ── Make the back yours, and the cart (Ken, 3 Nov) ──
   var CD={k:'',name:'',url:'',lab:'',logo:''};
   function cdCart(){ try{ return JSON.parse(localStorage.getItem('mf-card-cart')||'[]')||[]; }catch(e){ return []; } }
