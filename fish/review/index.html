@@ -39,6 +39,13 @@ main{padding:12px 10px 90px;max-width:1100px;margin:0 auto}
 .chip input{width:17px;height:17px;margin:0;accent-color:var(--gold)}.chip.r input{accent-color:var(--red)}
 .chip:has(input:checked){background:rgba(245,215,110,.16);border-color:var(--gold)}.chip.r:has(input:checked){background:rgba(224,106,100,.18);border-color:var(--red)}
 .empty{color:var(--dim);text-align:center;padding:50px 0}
+.nb{width:100%;margin-top:5px;border:1px solid var(--line);background:none;color:var(--dim);border-radius:999px;padding:6px 4px;font:700 .72rem Archivo,sans-serif;cursor:pointer;min-height:34px}.nb.has{border-color:var(--blue2);color:#fff;background:rgba(111,155,224,.16)}
+.langs{background:var(--card);border:1px solid var(--line);color:inherit;border-radius:999px;padding:7px 10px;font:700 .8rem Archivo,sans-serif;max-width:100%}
+.nts{margin-top:10px;text-align:left;border-top:1px solid var(--line);padding-top:8px}.nts h3{margin:0 0 6px;font:800 .9rem Archivo,sans-serif}
+.nt{border:1px solid var(--line);border-radius:10px;padding:7px 9px;margin-bottom:6px;font-size:.9rem;background:#000}.nt.done{opacity:.55}.nt small{display:block;color:var(--dim);margin-top:3px}.nt .k{color:var(--blue2);font-weight:800;text-transform:uppercase;font-size:.7rem;letter-spacing:.06em}
+.nt .a{display:flex;gap:6px;margin-top:5px}.nt .a button{border:1px solid var(--line);background:none;color:var(--dim);border-radius:999px;padding:4px 10px;font:700 .72rem Archivo,sans-serif;cursor:pointer}
+.nf{display:grid;gap:6px;margin-top:6px}.nf select,.nf input,.nf textarea{background:#000;border:1px solid var(--line);color:inherit;border-radius:10px;padding:8px 10px;font:inherit;width:100%}.nf textarea{min-height:70px;resize:vertical}
+
 .lb{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;padding:14px}.lb.on{display:flex}
 .lb .in{width:min(560px,100%);max-height:100%;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px}
 .lb .big{background:#000;border-radius:12px;aspect-ratio:2/1}.lb .big img{width:100%;height:100%;object-fit:contain;display:block}
@@ -50,7 +57,7 @@ main{padding:12px 10px 90px;max-width:1100px;margin:0 auto}
 <div class="top">
   <div class="row1"><a class="brand" href="/">Manna<b>Fish</b></a><h1>Fish review <span id="count" style="color:var(--dim);font-weight:600"></span></h1><button class="btn p" id="copy" type="button">📋 Copy my list</button></div>
   <div class="tabs" id="tabs" role="group" aria-label="Show"></div>
-  <div class="row2"><input type="search" id="q" placeholder="Find a word, verse or ID" autocomplete="off"><span class="seg" role="group" aria-label="Which picture"><button type="button" data-m="saved" aria-pressed="true">As saved</button><button type="button" data-m="std" aria-pressed="false">As the standard draws it</button></span></div>
+  <div class="row2"><input type="search" id="q" placeholder="Find a word, verse or ID" autocomplete="off"><select class="langs" id="lang" aria-label="Language of the 24 fish"></select><span class="seg" role="group" aria-label="Which picture"><button type="button" data-m="saved" aria-pressed="true">As saved</button><button type="button" data-m="std" aria-pressed="false">As the standard draws it</button></span></div>
   <div class="status" id="st" role="status"></div>
 </div>
 <main><div class="grid" id="grid"></div><p class="empty" id="empty" hidden>No fish match.</p></main>
@@ -59,23 +66,26 @@ main{padding:12px 10px 90px;max-width:1100px;margin:0 auto}
 (function(){
   var $=function(i){ return document.getElementById(i); };
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-  var FISH=[], FL={}, FILTER='all', Q='', MODE='saved', byId={};
+  var FISH=[], FL={}, NT={}, FILTER='all', Q='', MODE='saved', byId={}, LANG='en', LW={}, LN={}, KINDN={spelling:'Spelling',placement:'Placement',meaning:'Meaning',verse:'Verse',other:'Other'};
   var SETN={'24':'The 24','new':'New fish','design':'Designs','plan':'Plan fish'};
   function st(t,c){ $('st').textContent=t||''; $('st').className='status'+(c?' '+c:''); }
   function src(f){ if(MODE==='std'&&(f.set==='new'||f.set==='plan')) return '/api/fish-img?k='+encodeURIComponent(f.id)+'&fmt=svg'; return f.img; }
-  function editLink(f){ return f.set==='24'?'/edit/':'/edit/?find='+encodeURIComponent(f.id)+'&set='+(f.id.charAt(0)==='D'?'daily':'new'); }
-  function counts(){ var c={all:FISH.length,'24':0,new:0,design:0,plan:0,edit:0,remove:0};
+  function editLink(f){ return f.set==='24'?'/edit/?find='+encodeURIComponent(f.word)+'&code='+(f.lang||'en'):'/edit/?find='+encodeURIComponent(f.id)+'&set='+(f.id.charAt(0)==='D'?'daily':'new'); }
+  function counts(){ var c={all:FISH.length,'24':0,new:0,design:0,plan:0,edit:0,remove:0,notes:0};
+    Object.keys(NT).forEach(function(k){ if(open(k)) c.notes++; });
     FISH.forEach(function(f){ c[f.set]++; var m=FL[f.id]; if(m&&m.edit) c.edit++; if(m&&m.remove) c.remove++; }); return c; }
-  function tabs(){ var c=counts(), T=[['all','All'],['24','The 24'],['new','New fish'],['design','Designs'],['plan','Plan fish'],['edit','✏ Edit'],['remove','🗑 Remove']];
+  function tabs(){ var c=counts(), T=[['all','All'],['24','The 24'],['new','New fish'],['design','Designs'],['plan','Plan fish'],['edit','✏ Edit'],['remove','🗑 Remove'],['notes','📝 Notes']];
     $('tabs').innerHTML=T.map(function(t){ return '<button type="button" data-t="'+t[0]+'" aria-pressed="'+(FILTER===t[0])+'">'+t[1]+' '+c[t[0]]+'</button>'; }).join('');
     $('count').textContent='· '+c.edit+' to edit · '+c.remove+' to remove'; }
-  function shown(){ var q=Q.trim().toLowerCase(); return FISH.filter(function(f){ var m=FL[f.id]||{};
-      if(FILTER==='edit'&&!m.edit) return false; if(FILTER==='remove'&&!m.remove) return false; if(FILTER!=='all'&&FILTER!=='edit'&&FILTER!=='remove'&&f.set!==FILTER) return false;
+  function open(id){ return (NT[id]||[]).filter(function(x){ return !x.done; }).length; }
+  function view(f){ if(f.set!=='24'||LANG==='en') return f; var id=f.id+'.'+LANG; if(!byId[id]) byId[id]={id:id,word:(LW[f.id]&&LW[f.id][LANG])||f.word,ref:f.ref,set:'24',lang:LANG,en:f.word,img:'/fish/'+LANG+'/'+f.id+'.svg'}; return byId[id]; }
+  function shown(){ var q=Q.trim().toLowerCase(); return FISH.map(view).filter(function(f){ var m=FL[f.id]||{}; if(FILTER==='notes'&&!open(f.id)) return false;
+      if(FILTER==='edit'&&!m.edit) return false; if(FILTER==='remove'&&!m.remove) return false; if(FILTER!=='all'&&FILTER!=='edit'&&FILTER!=='remove'&&FILTER!=='notes'&&f.set!==FILTER) return false;
       return !q||(f.word+' '+f.ref+' '+f.id+' '+(f.top||'')+' '+(f.bot||'')).toLowerCase().indexOf(q)>=0; }); }
   function card(f){ var m=FL[f.id]||{};
     return '<div class="c'+(m.edit?' fe':'')+(m.remove?' fr':'')+'" data-id="'+esc(f.id)+'"><button class="thumb" type="button" data-open="1" aria-label="Look at '+esc(f.word)+'"><img loading="lazy" decoding="async" alt="" src="'+esc(src(f))+'" data-f="'+esc(f.img)+'"></button>'
       +'<div class="w">'+esc(f.word)+'</div><div class="id">'+esc(f.id)+' · '+esc(f.ref)+'</div>'
-      +'<div class="chips"><label class="chip"><input type="checkbox" data-k="edit"'+(m.edit?' checked':'')+'> ✏ Edit</label><label class="chip r"><input type="checkbox" data-k="remove"'+(m.remove?' checked':'')+'> 🗑 Remove</label></div></div>'; }
+      +'<div class="chips"><label class="chip"><input type="checkbox" data-k="edit"'+(m.edit?' checked':'')+'> ✏ Edit</label><label class="chip r"><input type="checkbox" data-k="remove"'+(m.remove?' checked':'')+'> 🗑 Remove</label></div><button class="nb'+(open(f.id)?' has':'')+'" type="button" data-note="1">📝 '+(open(f.id)?open(f.id)+' note'+(open(f.id)>1?'s':''):'Add a note')+'</button></div>'; }
   function draw(){ tabs(); var a=shown(); $('empty').hidden=a.length>0; $('grid').innerHTML=a.map(card).join(''); }
   // a fish picture that cannot be drawn by the server falls back to the saved one
   document.addEventListener('error',function(e){ var i=e.target; if(i&&i.tagName==='IMG'&&i.dataset.f&&i.getAttribute('src')!==i.dataset.f){ i.src=i.dataset.f; } },true);
@@ -85,27 +95,42 @@ main{padding:12px 10px 90px;max-width:1100px;margin:0 auto}
       .then(function(j){ FL=j.flags||{}; st('Saved ✓','ok'); tabs(); }).catch(function(){ st('Could not save that mark. Check your connection and tap it again.','err'); }); }
   function mark(el){ var c=el.closest('.c'); if(!c) return; var id=c.dataset.id, k=el.dataset.k, v=el.checked; c.classList.toggle(k==='edit'?'fe':'fr',v); save(id,k,v); var lbm=$('lb').querySelector('[data-lbid="'+id+'"]'); if(lbm){ lbm.querySelectorAll('input[data-k]').forEach(function(x){ if(x.dataset.k===k) x.checked=v; }); } }
   $('grid').addEventListener('change',function(e){ if(e.target.matches('input[data-k]')) mark(e.target); });
-  $('grid').addEventListener('click',function(e){ var b=e.target.closest('[data-open]'); if(!b) return; look(b.closest('.c').dataset.id); });
+  $('grid').addEventListener('click',function(e){ var b=e.target.closest('[data-open],[data-note]'); if(!b) return; look(b.closest('.c').dataset.id); if(b.dataset.note) setTimeout(function(){ var t=$('lb').querySelector('#ntext'); if(t) t.focus(); },50); });
+  function notesHtml(id){ var L=NT[id]||[], who=''; try{ who=localStorage.getItem('mf-proof-name')||''; }catch(e){}
+    return '<div class="nts" data-nid="'+esc(id)+'"><h3>📝 Notes'+(L.length?' ('+L.length+')':'')+'</h3>'+L.map(function(x){ return '<div class="nt'+(x.done?' done':'')+'"><span class="k">'+esc(KINDN[x.kind]||'Other')+'</span> '+esc(x.text)+'<small>'+esc(x.by||'Someone')+' · '+esc((x.at||'').slice(0,10))+(x.done?' · done':'')+'</small><div class="a"><button type="button" data-nd="'+x.n+'">'+(x.done?'Open again':'✓ Done')+'</button><button type="button" data-nr="'+x.n+'">Delete</button></div></div>'; }).join('')
+      +'<div class="nf"><select id="nkind" aria-label="What kind of note">'+Object.keys(KINDN).map(function(k){ return '<option value="'+k+'">'+KINDN[k]+'</option>'; }).join('')+'</select><textarea id="ntext" maxlength="800" placeholder="What should change? For example: the spelling, where the word sits, or what this word means in this language."></textarea><input id="nby" maxlength="60" placeholder="Your name" value="'+esc(who)+'"><button class="btn p" type="button" data-nadd="1">Add the note</button></div></div>'; }
+  function noteCall(body){ st('Saving…'); return fetch('/api/fish-notes',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}).then(function(r){ if(!r.ok) return r.json().then(function(j){ throw new Error(j.error||'x'); }); return r.json(); })
+      .then(function(j){ Object.keys(j.notes).forEach(function(k){ if(j.notes[k].length) NT[k]=j.notes[k]; else delete NT[k]; }); st('Saved ✓','ok'); tabs(); var h=$('lb').querySelector('.nts'); if(h){ h.outerHTML=notesHtml(body.id); } }).catch(function(e){ st(e&&e.message&&e.message!=='x'?e.message:'Could not save that note. Check your connection and try again.','err'); }); }
   function look(id){ var f=byId[id], m=FL[id]||{};
-    $('lbin').innerHTML='<div data-lbid="'+esc(id)+'"><div class="big"><img alt="" src="'+esc(src(f))+'" data-f="'+esc(f.img)+'"></div><h2>'+esc(f.word)+'</h2><p>'+esc(f.id)+' · '+esc(SETN[f.set])+' · '+esc(f.ref)+'</p>'+(f.verse?'<p class="v">“'+esc(f.verse)+'”</p>':'')
+    $('lbin').innerHTML='<div data-lbid="'+esc(id)+'"><div class="big"><img alt="" src="'+esc(src(f))+'" data-f="'+esc(f.img)+'"></div><h2>'+esc(f.word)+'</h2><p>'+esc(f.id)+' · '+esc(SETN[f.set])+(f.lang?' · '+esc(LN[f.lang]||f.lang):'')+' · '+esc(f.ref)+'</p>'+(f.verse?'<p class="v">“'+esc(f.verse)+'”</p>':'')
       +'<div class="chips"><label class="chip"><input type="checkbox" data-k="edit"'+(m.edit?' checked':'')+'> ✏ Edit</label><label class="chip r"><input type="checkbox" data-k="remove"'+(m.remove?' checked':'')+'> 🗑 Remove</label></div>'
-      +'<div class="acts"><a class="btn" href="'+esc(editLink(f))+'" target="_blank" rel="noopener">Open in the edit sheet</a><a class="btn" href="/fish/?id='+esc(f.id)+'" target="_blank" rel="noopener">Open the fish page</a><button class="btn" type="button" data-x="1">Close</button></div></div>';
+      +notesHtml(id)+'<div class="acts"><a class="btn" href="'+esc(editLink(f))+'" target="_blank" rel="noopener">Open in the edit sheet</a><a class="btn" href="/fish/?id='+esc(f.id)+'" target="_blank" rel="noopener">Open the fish page</a><button class="btn" type="button" data-x="1">Close</button></div></div>';
     $('lb').classList.add('on'); }
   $('lb').addEventListener('click',function(e){ if(e.target===$('lb')||e.target.closest('[data-x]')){ $('lb').classList.remove('on'); draw(); return; }
+    var nb=e.target.closest('[data-nadd],[data-nd],[data-nr]');
+    if(nb){ var nid=nb.closest('[data-nid]').dataset.nid;
+      if(nb.dataset.nadd){ var tx=$('ntext').value.trim(); if(!tx){ st('Write the note first.','err'); return; } var by=$('nby').value.trim(); try{ localStorage.setItem('mf-proof-name',by); }catch(er){} noteCall({id:nid,text:tx,kind:$('nkind').value,by:by}); }
+      else if(nb.dataset.nd){ var cur=(NT[nid]||[]).filter(function(x){ return x.n===+nb.dataset.nd; })[0]; noteCall({id:nid,n:+nb.dataset.nd,done:!(cur&&cur.done)}); }
+      else if(window.confirm('Delete this note?')) noteCall({id:nid,n:+nb.dataset.nr,remove:true});
+      return; }
     if(e.target.matches('input[data-k]')){ var id=e.target.closest('[data-lbid]').dataset.lbid, k=e.target.dataset.k, v=e.target.checked; save(id,k,v); } });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&$('lb').classList.contains('on')){ $('lb').classList.remove('on'); draw(); } });
   $('tabs').addEventListener('click',function(e){ var b=e.target.closest('[data-t]'); if(!b) return; FILTER=b.dataset.t; draw(); });
   $('q').addEventListener('input',function(){ Q=this.value; draw(); });
+  $('lang').addEventListener('change',function(){ LANG=this.value; draw(); });
   document.querySelector('.seg').addEventListener('click',function(e){ var b=e.target.closest('[data-m]'); if(!b) return; MODE=b.dataset.m; [].forEach.call(this.children,function(x){ x.setAttribute('aria-pressed',String(x===b)); }); draw(); });
   $('copy').addEventListener('click',function(){
     var line=function(f){ return f.id+' '+f.word+(f.set==='24'?' (the 24)':''); }, E=FISH.filter(function(f){ return (FL[f.id]||{}).edit; }), R=FISH.filter(function(f){ return (FL[f.id]||{}).remove; });
     var t='MannaFish fish review: '+E.length+' to edit, '+R.length+' to remove\n\nEDIT (fix the format by the 2 to 9 letter rules): '+(E.length?'\n'+E.map(line).join('\n'):'none')+'\n\nREMOVE: '+(R.length?'\n'+R.map(line).join('\n'):'none');
+    var NL=Object.keys(NT).filter(open); t+='\n\nNOTES (open): '+(NL.length?NL.map(function(id){ var f=byId[id]||byId[id.split('.')[0]]||{}; return '\n'+id+' '+(f.word||'')+(id.indexOf('.')>0?' ('+(LN[id.split('.')[1]]||id.split('.')[1])+')':'')+':\n'+NT[id].filter(function(x){ return !x.done; }).map(function(x){ return '  - ['+(KINDN[x.kind]||'Other')+'] '+x.text+(x.by?' ('+x.by+')':''); }).join('\n'); }).join(''):'none');
     (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){ st('Copied. Paste it to Claude.','ok'); },function(){ window.prompt('Copy this and paste it to Claude:',t); }); });
-  Promise.all([fetch('/fish/catch.json').then(function(r){ return r.json(); }),fetch('/api/fish-flags').then(function(r){ return r.ok?r.json():{flags:{}}; }).catch(function(){ return {flags:{}}; })]).then(function(a){
-    var C=a[0]; FL=a[1].flags||{}; var seen={};
+  Promise.all([fetch('/fish/catch.json').then(function(r){ return r.json(); }),fetch('/api/fish-flags').then(function(r){ return r.ok?r.json():{flags:{}}; }).catch(function(){ return {flags:{}}; }),fetch('/api/fish-notes').then(function(r){ return r.ok?r.json():{notes:{}}; }).catch(function(){ return {notes:{}}; }),fetch('/edit/data.json').then(function(r){ return r.json(); }).catch(function(){ return null; })]).then(function(a){
+    var C=a[0]; FL=a[1].flags||{}; NT=a[2].notes||{}; var ED=a[3];
+    if(ED){ ED.langs.forEach(function(l){ LN[l.code]=l.name+(l.native!==l.name?' · '+l.native:''); }); ED.words.forEach(function(w){ LW[w.key]={}; ED.langs.forEach(function(l){ var r=ED.f[w.n+l.l]; if(r) LW[w.key][l.code]=r.word; }); }); }
+    $('lang').innerHTML=Object.keys(LN).map(function(c){ return '<option value="'+c+'">'+(c==='en'?'The 24 in: ':'The 24 in: ')+LN[c]+'</option>'; }).join(''); var seen={};
     C.core.forEach(function(c){ FISH.push({id:c.k,word:c.title,ref:c.ref,set:'24',img:'/fish/en/'+c.k+'.svg'}); seen[c.k]=1; });
     Object.keys(C.fish).forEach(function(id){ var x=C.fish[id]; if(seen[id]) return; FISH.push({id:id,word:x.title,ref:x.ref,top:x.top,bot:x.bottom,verse:x.verse,set:id.charAt(0)==='W'?'new':id.charAt(0)==='X'?'design':'plan',img:'/fish/'+id+'.svg'}); });
-    FISH.forEach(function(f){ byId[f.id]=f; }); draw(); st(FISH.length+' fish. Tick ✏ Edit to have a fish fixed by the standard, 🗑 Remove to take it out. Nothing changes until you tell Claude.'); })
+    FISH.forEach(function(f){ byId[f.id]=f; }); draw(); st(FISH.length+' fish. Tick ✏ Edit to have a fish fixed by the standard, 🗑 Remove to take it out, 📝 to leave a note. Nothing changes until it is edited.'); })
   .catch(function(){ st('The fish list could not load. Please reload.','err'); });
 })();
 </script>

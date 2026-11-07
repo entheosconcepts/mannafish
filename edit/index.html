@@ -141,8 +141,9 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 <main id="list"><p class="empty">Loading the fish…</p></main>
 </div>
 
+<div id="ntm" role="dialog" aria-modal="true" aria-label="Notes on this fish" style="position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;padding:14px"><div id="ntin" style="width:min(520px,100%);max-height:100%;overflow:auto;background:#0b1118;border:1px solid rgba(200,215,218,.25);border-radius:18px;padding:14px;color:#eaf0f0"></div></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="false" aria-labelledby="shTitle">
-  <div class="sh-hd"><b id="shTitle"></b><div class="sh-tabs" id="shTabs"></div><button class="hb sh-done" type="button" id="shDone">Done ✓</button></div>
+  <div class="sh-hd"><b id="shTitle"></b><div class="sh-tabs" id="shTabs"></div><button class="hb" type="button" id="shNote">📝 Notes</button><button class="hb sh-done" type="button" id="shDone">Done ✓</button></div>
   <div class="sh-body" id="shBody"></div>
 </div>
 
@@ -397,13 +398,31 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     var sb=X.el.querySelector('.star'); if(sb) sb.setAttribute('aria-pressed',String(!!S.tpl[id])); }
 
   // ── the tools slide up from the bottom ──
+  // Notes (Ken, 7 Nov): anyone can leave a note on a fish in any language (spelling, placement, meaning, what should change); kept on the server (/api/fish-notes).
+  var NTS={}, NKIND={spelling:'Spelling',placement:'Placement',meaning:'Meaning',verse:'Verse',other:'Other'};
+  function noteId(X){ return X.set==='24'?D.words[X.num-1].key+(X.code==='en'?'':'.'+X.code):X.id; }
+  function noteBody(id){ var L=NTS[id]||[], who=$('who').value||''; function e(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+    return '<div data-nid="'+e(id)+'"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b>📝 Notes · '+e(SH?$('shTitle').textContent:id)+'</b><button class="hb" type="button" data-nx="1">Close</button></div>'
+      +(L.length?L.map(function(x){ return '<div style="border:1px solid rgba(200,215,218,.2);border-radius:10px;padding:7px 9px;margin-top:6px;background:#000;'+(x.done?'opacity:.55':'')+'"><b style="color:#6f9be0;font-size:.72rem;text-transform:uppercase">'+e(NKIND[x.kind]||'Other')+'</b> '+e(x.text)+'<div style="color:#9fb2b6;font-size:.78rem">'+e(x.by||'Someone')+' · '+e((x.at||'').slice(0,10))+(x.done?' · done':'')+'</div><div style="display:flex;gap:6px;margin-top:4px"><button class="hb" type="button" data-nd="'+x.n+'">'+(x.done?'Open again':'✓ Done')+'</button><button class="hb" type="button" data-nr="'+x.n+'">Delete</button></div></div>'; }).join(''):'<p style="color:#9fb2b6">No notes yet.</p>')
+      +'<div style="display:grid;gap:6px;margin-top:10px"><select id="nkind" aria-label="What kind of note" style="background:#000;color:inherit;border:1px solid rgba(200,215,218,.25);border-radius:10px;padding:8px">'+Object.keys(NKIND).map(function(k){ return '<option value="'+k+'">'+NKIND[k]+'</option>'; }).join('')+'</select><textarea id="ntext" maxlength="800" placeholder="What should change? The spelling, where the word sits, or what it means in this language." style="background:#000;color:inherit;border:1px solid rgba(200,215,218,.25);border-radius:10px;padding:8px;min-height:80px;font:inherit"></textarea><button class="hb" type="button" data-nadd="1" style="background:#2a5fb0;color:#fff">Add the note</button></div><p id="nmsg" style="color:#9fb2b6;font-size:.82rem;min-height:1.2em;margin:6px 0 0"></p></div>'; }
+  function noteShow(id){ $('ntin').innerHTML=noteBody(id); $('ntm').style.display='flex'; }
+  function noteCall(id,body){ body.id=id; body.by=$('who').value.trim(); $('nmsg')&&($('nmsg').textContent='Saving…');
+    fetch('/api/fish-notes',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||'x'); return j; }); })
+      .then(function(j){ Object.keys(j.notes).forEach(function(k){ if(j.notes[k].length) NTS[k]=j.notes[k]; else delete NTS[k]; }); noteShow(id); noteBtn(); $('nmsg').textContent='Saved ✓'; })
+      .catch(function(er){ if($('nmsg')) $('nmsg').textContent=er&&er.message&&er.message!=='x'?er.message:'Could not save the note. Check your connection and try again.'; }); }
+  function noteBtn(){ if(!SH) return; var n=(NTS[noteId(SH.X)]||[]).filter(function(x){ return !x.done; }).length; $('shNote').textContent='📝 Notes'+(n?' ('+n+')':''); }
+  $('shNote').addEventListener('click',function(){ if(!SH) return; var id=noteId(SH.X); fetch('/api/fish-notes?id='+encodeURIComponent(id),{cache:'no-store'}).then(function(r){ return r.json(); }).then(function(j){ NTS[id]=j.notes[id]||[]; if(!NTS[id].length) delete NTS[id]; }).catch(function(){}).then(function(){ noteShow(id); noteBtn(); }); });
+  $('ntm').addEventListener('click',function(e){ if(e.target===$('ntm')||e.target.closest('[data-nx]')){ $('ntm').style.display='none'; return; } var b=e.target.closest('[data-nadd],[data-nd],[data-nr]'); if(!b) return; var id=b.closest('[data-nid]').dataset.nid;
+    if(b.dataset.nadd){ var t=$('ntext').value.trim(); if(!t){ $('nmsg').textContent='Write the note first.'; return; } noteCall(id,{text:t,kind:$('nkind').value}); }
+    else if(b.dataset.nd){ var c=(NTS[id]||[]).filter(function(x){ return x.n===+b.dataset.nd; })[0]; noteCall(id,{n:+b.dataset.nd,done:!(c&&c.done)}); }
+    else if(confirm('Delete this note?')) noteCall(id,{n:+b.dataset.nr,remove:true}); });
   var SH=null;
   function openSheet(X,tab){ if(SH&&SH.X!==X) closeSheet(); var tabs=tabsOf(X); if(!tabs.some(function(t){ return t[0]===tab; })) tab=tabs[0][0];
     if(SH) putBack();
     SH={X:X,tab:tab}; $('shTitle').textContent=X.title+(X.set==='24'?' · '+X.langName:'');
     $('shTabs').innerHTML=tabs.map(function(t){ return '<button type="button" data-tab="'+t[0]+'" aria-pressed="'+(t[0]===tab)+'">'+t[1]+'</button>'; }).join('');
     var p=X.el.querySelector('.p-'+tab); if(p) $('shBody').appendChild(p);
-    $('sheet').classList.add('open'); document.body.classList.add('sheet-open'); X.el.classList.add('on');
+    $('sheet').classList.add('open'); document.body.classList.add('sheet-open'); X.el.classList.add('on'); noteBtn();
     fitView(X); if(X.tool) X.tool.refresh(); lineHeads(X); }
   // Ken, 19 Oct: "When I click on the word to center it it bounces back down on my mobile device. So I cant resize it"
   // Keep the fish itself in the open space above the tools, and leave the page alone when it is already there.
@@ -602,6 +621,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 
   // ═════ start ═════
   $('who').value=ls('mf-proof-name')||''; primeSigs(); pull();
+  fetch('/api/fish-notes',{cache:'no-store'}).then(function(r){ return r.ok?r.json():{notes:{}}; }).then(function(j){ NTS=j.notes||{}; noteBtn(); }).catch(function(){});
   Promise.all([fetch('/edit/data.json',{cache:'no-store'}).then(function(r){ return r.json(); }),fetch('/edit/new/data.json').then(function(r){ return r.json(); }),fetch('/edit/new/base.svg').then(function(r){ return r.text(); }),document.fonts.load('100px MFHobo'),fetch('/edit/daily/data.json').then(function(r){ return r.json(); }).catch(function(){ return {fish:[]}; }),
       Promise.all([fetch('/fish-lang/fishgeo.json').then(function(r){ return r.json(); }),fetch('/fish-lang/hobo.otf').then(function(r){ return r.arrayBuffer(); })]).catch(function(){ return null; })])
     .then(function(x){ D=x[0]; N=x[1]; BASE=x[2]; DY=x[4];

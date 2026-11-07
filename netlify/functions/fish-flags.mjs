@@ -9,7 +9,7 @@ import { getStore } from '@netlify/blobs';
 
 const okOrigin = (o) => !o || /^https:\/\/([a-z0-9-]+\.)?manna-fish\.com$|^https:\/\/([a-z0-9-]+--)?yadamannafishtest\.netlify\.app$|^http:\/\/localhost(:\d+)?$/.test(o);
 const bad = (msg, status) => Response.json({ error: msg }, { status });
-const ID = /^[A-Za-z0-9_-]{2,16}$/;
+const ID = /^[A-Za-z0-9_-]{2,16}(\.[a-z]{2})?$/;
 
 export default async (req) => {
   if (!okOrigin(req.headers.get('origin'))) return bad('Not allowed', 403);
