@@ -44,8 +44,8 @@ function lineRule(list, n) {
   const r = lo || hi; return { size: r.size, slide: r.slide, lw: r.lw || 1 };
 }
 // the settings one fish ends up with, and why (used by the picture and by /api/fish-standard)
-export function settingsFor(k, S) {
-  const X = findFish(k); if (!X) return null;
+export function settingsFor(k, S) { const X = findFish(k); return X ? settingsOf(X, k, S) : null; }
+function settingsOf(X, k, S) {
   const own = ((S && S.d) || {})[k] || {}, rules = (S && S.rules) || { word: {}, top: {}, bot: {} };
   const val = (f) => (own[f] != null ? own[f] : X.base[f] == null ? '' : X.base[f]);
   const f = { word: val('word'), top: val('top'), bot: val('bot'), ref: val('ref'), refShort: val('ref') === X.base.ref ? (X.base.refShort || '') : '' };
@@ -63,5 +63,10 @@ export function settingsFor(k, S) {
 }
 export function drawFish(k, S) {
   const s = settingsFor(k, S); if (!s) return null; const e = engine(), R = GEO.rule;
+  return F.draw(e, s.f, F.fromSheet(e, s.f, s.o, R, F.layout(e, s.f, R)), R);
+}
+// a fish that is not in any list yet (a new idea for a sponsor): the same drawing, from {word, top, bot, ref, refShort}
+export function drawCustom(rec, S) {
+  const s = settingsOf({ base: rec, code: 'en' }, rec.k || '_', S), e = engine(), R = GEO.rule;
   return F.draw(e, s.f, F.fromSheet(e, s.f, s.o, R, F.layout(e, s.f, R)), R);
 }
