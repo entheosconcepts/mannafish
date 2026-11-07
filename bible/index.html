@@ -133,6 +133,12 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 .mine{margin:4px 0 6px}.mine button{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px;margin:0 0 6px;cursor:pointer}
 .mine b{font-size:.92rem}.mine span{display:block;color:var(--dim);font-size:.85rem;margin-top:2px}
 /* the book and chapter picker */
+.bksheet{position:fixed;inset:0;z-index:45;background:var(--bg);display:flex;flex-direction:column}.bksheet[hidden]{display:none}
+.bksheet .hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}.bksheet .hd b{font:700 1.1rem 'Archivo',sans-serif}.bksheet .ibsp{width:44px}
+.bksheet .body{flex:1;overflow:auto;padding:4px 18px 60px;max-width:760px;width:100%;margin:0 auto;-webkit-overflow-scrolling:touch}
+.bksheet h5{margin:18px 0 2px;font:800 .72rem 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.bksheet .bkb{display:block;width:100%;text-align:left;border:0;background:none;color:inherit;font:700 1.9rem/1.2 'Archivo',sans-serif;padding:13px 0;cursor:pointer}.bksheet .bkb.on{color:var(--blue2)}
+.bksheet .chs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:2px 0 12px}.bksheet .chs button{font-size:1.35rem;font-weight:700;padding:16px 0;border-radius:12px;background:var(--card);border:1px solid var(--line);color:inherit;cursor:pointer}.bksheet .chs button.on{border-color:var(--blue2);color:var(--blue2)}
 .pick{position:fixed;inset:0;z-index:40;background:var(--bg);display:none;flex-direction:column}
 .pick.open{display:flex}
 .pick .hd{display:flex;align-items:center;gap:8px;padding:max(10px,env(safe-area-inset-top)) 12px 10px;border-bottom:1px solid var(--line)}
@@ -244,7 +250,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 .cc .cv b{font-size:.9rem}.cc .cv span{display:block;font:400 .98rem/1.5 'Spectral',Georgia,serif;color:var(--dim);margin-top:2px}.cc .cv span b{color:var(--text);font-weight:600;font-size:inherit}
 /* side by side (Ken, 24 Oct: "I like the translation side by side option too") */
 .phd{display:grid;grid-template-columns:repeat(var(--pc,2),minmax(0,1fr));gap:14px;align-items:center;position:sticky;top:var(--barh,100px);z-index:5;background:var(--bg);padding:6px 0;border-bottom:1px solid var(--line);font:800 .8rem 'Archivo',sans-serif}
-.phd .phc{display:flex;flex-direction:column;gap:5px;min-width:0}.phd .pbc select[data-mch],.phd .pbc select[data-pch]{flex:0 0 4.2em}.phd .pbc select{font-weight:600}.phd .p2{display:flex;gap:6px;align-items:center}.phd select{flex:1;min-width:0;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 8px;font-weight:700;font-size:.8rem}
+.phd .phc{display:flex;flex-direction:column;gap:5px;min-width:0}.phd .pbtn{flex:1;min-width:0;border:1px solid var(--line);background:var(--card);color:inherit;border-radius:999px;padding:7px 12px;font:700 .95rem 'Archivo',sans-serif;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}.phd .pbtn .ar{color:var(--dim);font-size:.8em}.phd .p2{display:flex;gap:6px;align-items:center}.phd select{flex:1;min-width:0;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 8px;font-weight:700;font-size:.8rem}
 .par .txt{font-size:calc(var(--fs,1.18rem) * .86);line-height:1.65}
 .par .txt .pr{display:grid;grid-template-columns:repeat(var(--pc,2),minmax(0,1fr));gap:0 14px;padding:6px 0;border-bottom:1px solid var(--line)}
 .par3 .txt{font-size:calc(var(--fs,1.18rem) * .8)}
@@ -261,9 +267,9 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 .par3 .phd .ogall,.par3 .phd .ib.sm,.par3 .phd .padd{flex:0 0 calc(50% - 2px);width:auto;min-width:0;height:30px;padding:0 4px;font-size:.8rem}
 /* Ken, 7 Nov: in each column the Book comes first, then Hear and ✕ (every Hear button the same size), then the Version, then the Chapter */
 .par3 .phd .phc{flex-direction:row;flex-wrap:wrap;align-content:flex-start;gap:4px}.par3 .phd .phc .p2,.par3 .phd .phc .pbc{display:contents}
-.par3 .phd .phc select{flex:0 0 100%;width:100%}
-.par3 .phd select[data-mbk],.par3 .phd select[data-pbk]{order:1}.par3 .phd .ogall{order:2}.par3 .phd .ib.sm{order:3}
-.par3 .phd select[data-mver],.par3 .phd select[data-pi]{order:4}.par3 .phd select[data-mch],.par3 .phd select[data-pch]{order:5}
+.par3 .phd .phc select{flex:0 0 100%;width:100%}.par3 .phd .pbtn{padding:6px 10px;font-size:.9rem}
+.par3 .phd .pbtn{order:1;flex:0 0 100%}.par3 .phd .ogall{order:2}.par3 .phd .ib.sm{order:3}
+.par3 .phd select[data-mver],.par3 .phd select[data-pi]{order:4}
 .par3 .txt{font-size:calc(var(--fs,1.18rem) * .72)}.par3 .txt .v2.ogc{font-size:.98em;line-height:1.7}.par3 .txt .ogc .ogs{width:1.6em;height:1.6em;margin:0 2px}}
 .par .txt .v2{opacity:.9;cursor:pointer}.par .txt .v2 .vn{font:700 .66rem 'Archivo',sans-serif;color:var(--dim);vertical-align:super;margin:0 3px 0 2px}
 </style>
@@ -331,6 +337,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   <div class="hd"><span style="width:40px"></span><b id="sTitle">My stuff</b><button type="button" class="ib" id="sX" aria-label="Close">&#10005;</button></div>
   <div class="body"><div class="sseg" id="sSeg" role="group"></div><div class="sl" id="sBody"></div></div>
 </div>
+<div class="bksheet" id="bkSheet" role="dialog" aria-modal="true" aria-labelledby="bksT" hidden><div class="hd"><button type="button" class="ib" id="bksX" aria-label="Close">&#10005;</button><b id="bksT">Books</b><span class="ibsp"></span></div><div class="body" id="bksBody"></div></div>
 <div class="pick" id="pick" role="dialog" aria-modal="true" aria-labelledby="pTitle">
   <div class="hd"><button type="button" class="ib pbk" id="pBack" aria-label="Back">&lsaquo; Back</button><b id="pTitle">Books</b><button type="button" class="ib" id="pX" aria-label="Close">&#10005;</button></div>
   <div class="body" id="pBody"></div>
@@ -513,12 +520,11 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     $('txt').setAttribute('lang',vlang(V1)); $('txt').dir=!n&&V1.rtl?'rtl':'ltr'; $('txt').style.setProperty('--pc',String(1+n));   // Hebrew and Arabic read right to left
     if(!n){ $('txt').innerHTML='<p>'+ns.map(function(n){ return verseH(n)+' '; }).join('')+'</p>'; xrMark(); return; }
     var all=ns.slice(); PK.forEach(function(x){ Object.keys(x.T).map(Number).forEach(function(v){ if(all.indexOf(v)<0) all.push(v); }); }); all.sort(num);
-    var bkSel=function(cur,attr){ var o=function(a,z){ return B.slice(a,z).map(function(x,k){ return '<option value="'+(a+k)+'"'+(a+k===cur?' selected':'')+'>'+esc(x[0])+'</option>'; }).join(''); }; return '<select '+attr+' aria-label="Book"><optgroup label="Old Testament">'+o(0,39)+'</optgroup><optgroup label="New Testament">'+o(39,66)+'</optgroup></select>'; },
-      chSel=function(bk,cur,attr){ var h=''; for(var q=1;q<=B[bk][1];q++) h+='<option value="'+q+'"'+(q===cur?' selected':'')+'>'+q+'</option>'; return '<select '+attr+' aria-label="Chapter">'+h+'</select>'; };
-    var head='<div class="phd"><span class="phc"><span class="p2"><select data-mver="1" aria-label="The first column\u2019s version">'+$('ver').innerHTML+'</select><button type="button" class="ogall" data-hear="m" aria-pressed="false" title="Hear the whole chapter in '+esc(V1.s)+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button></span><span class="p2 pbc">'+bkSel(AT.b,'data-mbk="1"')+chSel(AT.b,AT.c,'data-mch="1"')+'</span></span>'+PK.map(function(x,i){ var at=x.P.at||{b:AT.b,c:AT.c}; return '<span class="phc"><span class="p2"><select data-pi="'+i+'" aria-label="'+(i?'The third column':'The version beside it')+'">'+parOpts(i,1)+'</select>'
+    var bkBtn=function(bk,ch,t){ return '<button type="button" class="pbtn" data-bks="'+t+'" aria-haspopup="dialog" aria-label="Choose the book and chapter">'+esc(B[bk][0]+' '+ch)+' <span class="ar" aria-hidden="true">▾</span></button>'; };
+    var head='<div class="phd"><span class="phc"><span class="p2"><select data-mver="1" aria-label="The first column\u2019s version">'+$('ver').innerHTML+'</select><button type="button" class="ogall" data-hear="m" aria-pressed="false" title="Hear the whole chapter in '+esc(V1.s)+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button></span><span class="p2 pbc">'+bkBtn(AT.b,AT.c,'m')+'</span></span>'+PK.map(function(x,i){ var at=x.P.at||{b:AT.b,c:AT.c}; return '<span class="phc"><span class="p2"><select data-pi="'+i+'" aria-label="'+(i?'The third column':'The version beside it')+'">'+parOpts(i,1)+'</select>'
         +(!x.none?'<button type="button" class="ogall" data-hear="'+i+'" aria-pressed="false" title="Hear the whole chapter in '+esc(x.P.s)+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button>':'')
         +(i===n-1&&n<2?'<button type="button" class="padd" data-padd="1" aria-label="Add a third column">&#65291; 3rd</button>':'')
-        +'<button type="button" class="ib sm" data-px="'+i+'" aria-label="'+(n===1?'Close side by side':'Take this column away')+'">&#10005;</button></span><span class="p2 pbc">'+bkSel(at.b,'data-pbk="'+i+'"')+chSel(at.b,at.c,'data-pch="'+i+'"')+'</span></span>'; }).join('')+'</div>';
+        +'<button type="button" class="ib sm" data-px="'+i+'" aria-label="'+(n===1?'Close side by side':'Take this column away')+'">&#10005;</button></span><span class="p2 pbc">'+bkBtn(at.b,at.c,i)+'</span></span>'; }).join('')+'</div>';
     $('txt').innerHTML=head+all.map(function(v){ return '<div class="pr"><div class="c1" lang="'+vlang(V1)+'" dir="'+(V1.rtl?'rtl':'ltr')+'">'+(VT[v]?verseH(v):'')+'</div>'
       +PK.map(function(x,i){ var P=x.P, d=P.rtl?'rtl':'ltr';
         if(P.og){ var o=x.J&&x.J.v[String(v)];
@@ -527,9 +533,6 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
             +'<span class="otr">'+esc(o.w.map(function(w){ return w[1]; }).join(' '))+'</span>':(x.none&&v===all[0]?'<small>'+P.s+' could not be opened.</small>':''))+'</div>'; }
         return '<div class="v2" data-v="'+v+'" data-pi="'+i+'" lang="'+vlang(P)+'" dir="'+d+'">'+(x.T[v]?'<span class="vn">'+v+'</span>'+esc(x.T[v]):'')+'</div>'; }).join('')+'</div>'; }).join(''); var mv=$('txt').querySelector('[data-mver]'); if(mv) mv.value=ver().k; xrMark(); }
   $('txt').addEventListener('change',function(e){ var d=e.target.dataset||{};
-    if(d.mbk!=null){ go(+e.target.value,1,0,true); return; } if(d.mch!=null){ go(AT.b,+e.target.value,0,true); return; }
-    if(d.pbk!=null){ putParAt(+d.pbk,+e.target.value,1); go(AT.b,AT.c,0,true); return; }
-    if(d.pch!=null){ var at=colAt(+d.pch)||{b:AT.b}; putParAt(+d.pch,at.b,+e.target.value); go(AT.b,AT.c,0,true); return; }
     if(e.target.dataset&&e.target.dataset.mver){ $('ver').value=e.target.value; $('ver').dispatchEvent(new Event('change')); return; } var p=e.target.dataset&&e.target.dataset.pi; if(p!=null&&e.target.tagName==='SELECT'){ putPar(+p,e.target.value); go(AT.b,AT.c,0,true); htUI(); } });
   // hearing the Hebrew or Greek: tap a word for it alone (and how to say it, and what it means), 🔊 for the verse, ▶ Hear for the chapter
   var OGP=0;
@@ -614,7 +617,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
   $('act').addEventListener('mousedown',function(e){ if(!e.target.closest('textarea,input,select')) e.preventDefault(); });   // the words stay picked
   $('txt').addEventListener('click',function(e){ var sel=window.getSelection(); if(sel&&!sel.isCollapsed&&$('txt').contains(sel.anchorNode)) return; if(Date.now()-TDRAG<600) return;
     if(ogTap(e)) return;
-    if(e.target.closest('.phd')){ var px=e.target.closest('[data-px]'), pa=e.target.closest('[data-padd]'); if(px){ putPar(+px.dataset.px,''); go(AT.b,AT.c,0,true); htUI(); } else if(pa){ parAdd(); go(AT.b,AT.c,0,true); htUI(); } return; }
+    if(e.target.closest('.phd')){ var px=e.target.closest('[data-px]'), pa=e.target.closest('[data-padd]'); var bk=e.target.closest('[data-bks]'); if(bk){ bksOpen(bk.dataset.bks); return; } if(px){ putPar(+px.dataset.px,''); go(AT.b,AT.c,0,true); htUI(); } else if(pa){ parAdd(); go(AT.b,AT.c,0,true); htUI(); } return; }
     var ni=e.target.closest('.ni:not(.li)'); if(ni){ SEL=ni.dataset.vs.split(',').map(Number); PHS=null; selUI(); openNote(); return; }
     var li=e.target.closest('.li'); if(li){ SEL=[+li.dataset.v]; PHS=null; selUI(); more(true); return; }
     if(LINKING){ var s0=e.target.closest('.v'); if(s0) finishLink(+s0.dataset.v); return; }
@@ -1215,6 +1218,21 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     b.setAttribute('aria-expanded','true'); b.parentNode.insertAdjacentHTML('beforeend',g); b.scrollIntoView({block:'nearest'}); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&BKO) bkClose(); });
   document.addEventListener('click',function(e){ if(BKO&&!e.target.closest('#bkDrop,#titleB')) bkClose(); });
+  // the Books sheet (Ken, 7 Nov: big book names; a book opens its chapter numbers right under it): used by every column's Book button
+  var BKS='m';
+  function bksClose(){ $('bkSheet').hidden=true; }
+  function bksOpen(t){ BKS=t; var at=t==='m'?{b:AT.b,c:AT.c}:(colAt(+t)||{b:AT.b,c:AT.c}), h='<h5>Old Testament</h5>', row=function(n){ return '<div class="bkr" data-bkr="'+n+'"><button type="button" class="bkb'+(n===at.b?' on':'')+'" data-bkn="'+n+'" aria-expanded="false">'+esc(B[n][0])+'</button></div>'; };
+    for(var n=0;n<39;n++) h+=row(n); h+='<h5>New Testament</h5>'; for(n=39;n<66;n++) h+=row(n);
+    $('bksBody').innerHTML=h; $('bkSheet').hidden=false; $('bksT').textContent=t==='m'?'Books':'Books · column '+(+t+2);
+    var cur=$('bksBody').querySelector('.bkb.on'); if(cur){ bksChapters(cur,at.c); cur.scrollIntoView({block:'start'}); } }
+  function bksChapters(b,cur){ var n=+b.dataset.bkn; [].forEach.call($('bksBody').querySelectorAll('.chs'),function(x){ x.remove(); }); [].forEach.call($('bksBody').querySelectorAll('.bkb[aria-expanded=true]'),function(x){ x.setAttribute('aria-expanded','false'); });
+    var g='<div class="chs">'; for(var k=1;k<=B[n][1];k++) g+='<button type="button" data-bkn="'+n+'" data-bkc="'+k+'" class="'+(k===cur?'on':'')+'">'+k+'</button>'; g+='</div>'; b.setAttribute('aria-expanded','true'); b.parentNode.insertAdjacentHTML('beforeend',g); }
+  function bksPick(n,c){ bksClose(); if(BKS==='m'){ unlockSay(); go(n,c); } else { putParAt(+BKS,n,c); go(AT.b,AT.c,0,true); } }
+  $('bksX').addEventListener('click',bksClose);
+  $('bksBody').addEventListener('click',function(e){ var c=e.target.closest('[data-bkc]'); if(c){ bksPick(+c.dataset.bkn,+c.dataset.bkc); return; }
+    var b=e.target.closest('.bkb'); if(!b) return; var n=+b.dataset.bkn; if(b.getAttribute('aria-expanded')==='true'){ b.setAttribute('aria-expanded','false'); var g=b.parentNode.querySelector('.chs'); if(g) g.remove(); return; }
+    if(B[n][1]===1){ bksPick(n,1); return; } bksChapters(b,0); b.scrollIntoView({block:'nearest'}); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('bkSheet').hidden) bksClose(); });
   function openPick(){ $('pick').classList.add('open'); books(); }
   // opened to listen: the natural voice starts with the chapter (a sound now, while the tap counts, so a phone lets it speak later)
   function unlockSay(){ if(OM!=='listen') return; try{ if(!OGA) OGA=new Audio(); OGA.src='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA='; var pr=OGA.play(); if(pr&&pr.catch) pr.catch(function(){}); }catch(e){} AUTOSAY=1; }
