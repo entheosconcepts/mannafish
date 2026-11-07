@@ -253,7 +253,13 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 .par .txt .v2.ogc{opacity:1;font-size:1.1em;line-height:1.75}.par .txt .ogc .ow{cursor:pointer;border-radius:5px;padding:0 1px}.par .txt .ogc .ow:hover{background:rgba(68,143,255,.18)}.par .txt .ogc .ow.saying{background:rgba(68,143,255,.38)}
 .par .txt .ogc .ogs{border:1px solid var(--line);background:var(--card);color:inherit;border-radius:999px;width:1.9em;height:1.9em;padding:0;font-size:.8em;line-height:1;cursor:pointer;margin:0 4px;vertical-align:middle}
 .par .txt .v2.saying,.par .txt .ogc.saying{background:rgba(68,143,255,.1);border-radius:8px}.par .txt .ogc .otr{display:block;direction:ltr;text-align:left;font-size:.68em;line-height:1.45;color:var(--dim);font-style:italic;margin-top:2px}
-@media (max-width:620px){.par3 .txt{--pc:2 !important}.phd .ogall .hlab{display:none}.par3 .txt .pr>.c1,.par3 .phd>span:first-child{grid-column:1/-1}.par3 .txt .pr>.c1{margin-bottom:6px}}
+/* Ken, 7 Nov: on a phone, three side-by-side columns stay three columns (the controls stack inside each column, the header scrolls with the text) */
+@media (max-width:620px){.phd .ogall .hlab{display:none}
+.par3 .txt .pr{gap:0 8px}.par3 .phd{gap:8px;align-items:start;position:static}.par3 .phd .phc{gap:4px}.par3 .phd .p2{flex-wrap:wrap;gap:4px}
+.par3 .phd select{flex:1 1 100%;width:100%;max-width:100%;box-sizing:border-box;font-size:.7rem;padding:5px 6px;min-height:30px;min-width:0}.par3 .phd .phc{overflow:hidden}
+.par3 .phd .ogall,.par3 .phd .ib.sm,.par3 .phd .padd{flex:1 1 0;width:auto;min-width:0;height:30px;padding:0 4px;font-size:.8rem}
+.par3 .phd .pbc{flex-direction:column;align-items:stretch}.par3 .phd .pbc select,.par3 .phd .pbc select[data-mch],.par3 .phd .pbc select[data-pch]{flex:none;width:100%}
+.par3 .txt{font-size:calc(var(--fs,1.18rem) * .72)}.par3 .txt .v2.ogc{font-size:.98em;line-height:1.7}.par3 .txt .ogc .ogs{width:1.6em;height:1.6em;margin:0 2px}}
 .par .txt .v2{opacity:.9;cursor:pointer}.par .txt .v2 .vn{font:700 .66rem 'Archivo',sans-serif;color:var(--dim);vertical-align:super;margin:0 3px 0 2px}
 </style>
 <script src="/fish-lang/tabbar.js" defer></script>
