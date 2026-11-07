@@ -7,6 +7,7 @@
   var BOOKS=["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther","Job","Psalm","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi","Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"];
   // [go deeper, used in {n} verses, Old Testament, New Testament, most in, first used, one word with more than one meaning,
   //  the KJV says it as, times, on the {f} fish, more at, loading, nothing found, Hebrew, Greek]
+  var LX={en:['Full lexicon entry','Abbott-Smith’s Manual Greek Lexicon (public domain), by way of STEPBible.org, CC BY 4.0','Brown-Driver-Briggs (public domain), by way of OpenScriptures and STEPBible.org, CC BY 4.0'],es:['Entrada completa del léxico','Léxico griego manual de Abbott-Smith (dominio público), vía STEPBible.org, CC BY 4.0','Brown-Driver-Briggs (dominio público), vía OpenScriptures y STEPBible.org, CC BY 4.0']};
   var TX={en:['Go deeper','Used in {n} verses','Old Testament','New Testament','Most in','First used','One word, more than one meaning','The KJV says it as','times','This is the word on the {f} fish','More at','Loading…','No more about this word yet.','Hebrew','Greek'],
     es:['Profundizar','Aparece en {n} versículos','Antiguo Testamento','Nuevo Testamento','Más en','Primera vez','Una palabra, más de un sentido','La KJV la traduce','veces','Es la palabra del pez {f}','Más en','Cargando…','Aún no hay más sobre esta palabra.','Hebreo','Griego'],
     tl:['Palalimin','Nasa {n} talata','Lumang Tipan','Bagong Tipan','Pinakamarami sa','Unang gamit','Isang salita, higit sa isang kahulugan','Isinalin ito ng KJV bilang','beses','Ito ang salita sa isdang {f}','Higit pa sa','Naglo-load…','Wala pang dagdag tungkol sa salitang ito.','Hebreo','Griyego'],
@@ -18,11 +19,13 @@
     he:['להעמיק','מופיע ב־{n} פסוקים','הברית הישנה','הברית החדשה','הכי הרבה ב','הופעה ראשונה','מילה אחת, יותר ממשמעות אחת','ה־KJV מתרגם','פעמים','זו המילה על הדג {f}','עוד ב','טוען…','אין עדיין עוד על מילה זו.','עברית','יוונית'],
     ar:['تعمّق أكثر','وردت في {n} آية','العهد القديم','العهد الجديد','أكثر ما وردت في','أول ورود','كلمة واحدة، أكثر من معنى','ترجمتها KJV','مرة','هذه كلمة سمكة {f}','المزيد في','جارٍ التحميل…','لا مزيد عن هذه الكلمة بعد.','العبرية','اليونانية'],ru:["Глубже","Встречается в {n} стихах","Ветхий Завет","Новый Завет","Чаще всего в","Впервые","Одно слово, несколько значений","В KJV переведено как","раз","Это слово на рыбе «{f}»","Подробнее:","Загрузка…","Пока больше ничего об этом слове.","Еврейский","Греческий"]};
   function ul(){ var l=(window.MF&&window.MF.lang)||(function(){ try{ return localStorage.getItem('mf-lang'); }catch(e){ return ''; } })()||'en'; return TX[l]?l:'en'; }
-  function T(i){ return (TX[ul()]||TX.en)[i]; }
+  function T(i){ if(i>=15) return (LX[ul()]||LX.en)[i-15]; return (TX[ul()]||TX.en)[i]||TX.en[i]; }
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function num(n){ try{ return Number(n).toLocaleString(); }catch(e){ return String(n); } }
   var FILES={};
   function file(k){ var f=k[0]+Math.floor(+k.slice(1)/100); if(!FILES[f]) FILES[f]=fetch('/fish-lang/bible/deep/'+f+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }); FILES[f].catch(function(){ delete FILES[f]; }); return FILES[f]; }
+  var LF={};
+  function lexfull(k){ var f=k[0]+Math.floor(+k.slice(1)/100); if(!LF[f]) LF[f]=fetch('/fish-lang/bible/lexfull/'+f+'.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }); LF[f].catch(function(){ delete LF[f]; }); return LF[f].then(function(d){ return d[k]||''; }).catch(function(){ return ''; }); }
   function norm(sn){ var m=/^([HG])0*(\d+)/.exec(String(sn||'').toUpperCase()); return m?m[1]+m[2]:null; }
   var css=false;
   function style(){ if(css) return; css=true; var s=document.createElement('style');
@@ -31,7 +34,7 @@
       +'.mfdeep .dd{margin:0;opacity:.9}.mfdeep .dn{margin:0;opacity:.85}.mfdeep h5{margin:4px 0 0;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;opacity:.75}'
       +'.mfdeep .ds{border-left:3px solid #3370ff;padding:2px 0 2px 10px}.mfdeep .ds b{font-size:1.02rem}.mfdeep .ds small{opacity:.75}.mfdeep .ds q{display:block;margin-top:3px;font-style:italic;quotes:"“" "”"}'
       +'.mfdeep mark{background:#f5d76e;color:#1c2228;border-radius:3px;padding:0 2px;font-style:normal}.mfdeep a{color:#6c9cf0}.mfdeep .dk{margin:0;opacity:.85}'
-      +'.mfdeep .df{background:rgba(51,112,255,.12);border-radius:10px;padding:8px 10px;font-weight:600}.mfdeep .dl{display:flex;flex-wrap:wrap;gap:12px;font-size:.88rem}'
+      +'.mfdeep .dx{margin:8px 0;border:1px solid rgba(160,170,180,.3);border-radius:10px;padding:6px 10px}.mfdeep .dx summary{cursor:pointer;font-weight:700}.mfdeep .dxb{font-size:.92rem;line-height:1.55;max-height:48vh;overflow:auto;margin-top:6px}.mfdeep .dxb p.dn{margin:8px 0 0}.mfdeep .df{background:rgba(51,112,255,.12);border-radius:10px;padding:8px 10px;font-weight:600}.mfdeep .dl{display:flex;flex-wrap:wrap;gap:12px;font-size:.88rem}'
       +':root[data-mode=light] .mfdeep a{color:#2a5fb0}';
     document.head.appendChild(s); }
   // the main 24 fish and their Greek and Hebrew (the same as STRONGS in index.html), so a word study can say which fish it is on
@@ -46,6 +49,7 @@
     return file(k).then(function(d){ var e=d[k]; if(!e) throw 0; var he=k[0]==='H', h='';
       h+='<div class="dh"><b lang="'+(he?'he':'el')+'" dir="'+(he?'rtl':'ltr')+'">'+esc(e.l)+'</b><i>'+esc(e.t)+'</i><small>'+esc(T(he?13:14))+' · Strong’s '+esc(k)+'</small></div>';
       if(e.d) h+='<p class="dd">'+esc(e.d.replace(/^[a-z]{1,4};\s*/,''))+'</p>';
+      h+='<details class="dx"><summary>'+esc(T(15))+'</summary><div class="dxb"></div></details>';
       var where=e.ot&&e.nt?T(2)+' '+num(e.ot)+' · '+T(3)+' '+num(e.nt):(e.ot?T(2):T(3));
       h+='<p class="dn">'+esc(T(1).replace('{n}',num(e.v)))+' ('+esc(where)+'). '+esc(T(4))+' '+e.b.map(function(x){ return esc(BOOKS[x[0]])+' ('+num(x[1])+')'; }).join(', ')+'. '+esc(T(5))+': '+link(e.f)+'.</p>';
       var fish=opt.fish===undefined?fishOf(k):opt.fish;
@@ -57,6 +61,7 @@
       var n=k.slice(1), blb=(he?'h':'g')+n;
       h+='<div class="dl">'+esc(T(10))+' <a href="https://www.blueletterbible.org/lexicon/'+blb+'/kjv/" target="_blank" rel="noopener">Blue Letter Bible ›</a><a href="https://www.stepbible.org/?q=strong='+k+'" target="_blank" rel="noopener">STEP Bible ›</a></div>';
       el.firstChild.innerHTML=h;
+      var dx=el.firstChild.querySelector('details.dx'); if(dx) dx.addEventListener('toggle',function(){ if(!dx.open||dx._on) return; dx._on=1; var box=dx.querySelector('.dxb'); box.innerHTML='<p class="dn">'+esc(T(11))+'</p>'; lexfull(k).then(function(t){ box.innerHTML=t?t+'<p class="dn">'+esc(T(he?17:16))+'</p>':'<p class="dn">'+esc(T(12))+'</p>'; }); });
       if(opt.onRef) el.firstChild.addEventListener('click',function(ev){ var a=ev.target.closest('a[data-ref]'); if(!a) return; var r=a.dataset.ref.split(',').map(Number); if(opt.onRef(r[0],r[1],r[2])!==false) return; ev.preventDefault(); });
       return e; })
       .catch(function(){ el.firstChild.innerHTML='<p class="dn">'+esc(T(12))+'</p>'; return null; }); }
