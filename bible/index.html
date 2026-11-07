@@ -248,7 +248,8 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 .par .txt{font-size:calc(var(--fs,1.18rem) * .86);line-height:1.65}
 .par .txt .pr{display:grid;grid-template-columns:repeat(var(--pc,2),minmax(0,1fr));gap:0 14px;padding:6px 0;border-bottom:1px solid var(--line)}
 .par3 .txt{font-size:calc(var(--fs,1.18rem) * .8)}
-.phd .p2 .ib.sm{flex:none}.phd .padd{flex:none;border:1px dashed var(--line);background:none;color:inherit;border-radius:999px;padding:4px 9px;font:800 .74rem 'Archivo',sans-serif;cursor:pointer;white-space:nowrap}
+.phd .p2 .ib.sm{flex:none}.padd1{border:1px dashed var(--line);background:none;color:inherit;border-radius:999px;padding:6px 12px;font:800 .8rem 'Archivo',sans-serif;cursor:pointer;white-space:nowrap;margin-left:6px}body.par .padd1{display:none}
+.phd .padd{flex:none;border:1px dashed var(--line);background:none;color:inherit;border-radius:999px;padding:4px 9px;font:800 .74rem 'Archivo',sans-serif;cursor:pointer;white-space:nowrap}
 .phd .ogall{flex:none;border:0;background:var(--blue,#2a5fb0);color:#fff;border-radius:999px;padding:5px 10px;font:800 .74rem 'Archivo',sans-serif;cursor:pointer;white-space:nowrap}.phd .ogall[aria-pressed=true]{background:#c0392b}
 .par .txt .v2.ogc{opacity:1;font-size:1.1em;line-height:1.75}.par .txt .ogc .ow{cursor:pointer;border-radius:5px;padding:0 1px}.par .txt .ogc .ow:hover{background:rgba(68,143,255,.18)}.par .txt .ogc .ow.saying{background:rgba(68,143,255,.38)}
 .par .txt .ogc .ogs{border:1px solid var(--line);background:var(--card);color:inherit;border-radius:999px;width:1.9em;height:1.9em;padding:0;font-size:.8em;line-height:1;cursor:pointer;margin:0 4px;vertical-align:middle}
@@ -283,7 +284,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
 </div></div>
 <div class="menu" id="menu" role="menu" hidden></div>
 <main id="main">
-  <div class="th"><button type="button" class="chv" id="prevT" aria-label="Previous chapter">&lsaquo;</button><h1><button type="button" class="tbtn" id="titleB" aria-haspopup="true" aria-expanded="false" aria-controls="bkDrop" aria-label="Choose a book and chapter"><span id="title"></span><span class="ar" aria-hidden="true">▾</span></button></h1><button type="button" class="chv" id="nextT" aria-label="Next chapter">&rsaquo;</button></div><div class="bkdrop" id="bkDrop" hidden></div><p class="sub" id="sub"></p><div class="ht"><button type="button" class="htb" id="htB" aria-expanded="false">&#129520;&#xFE0E; Bible tools <span class="ar" aria-hidden="true">&#9662;</span></button><div class="htp" id="htP" hidden></div></div><button type="button" class="cn" id="cnote" hidden></button><div class="stb" id="stb" hidden></div><button type="button" class="hlm" id="hlmBtn" aria-expanded="false" hidden></button><div class="hlopts" id="hlOpts" hidden></div>
+  <div class="th"><button type="button" class="chv" id="prevT" aria-label="Previous chapter">&lsaquo;</button><h1><button type="button" class="tbtn" id="titleB" aria-haspopup="true" aria-expanded="false" aria-controls="bkDrop" aria-label="Choose a book and chapter"><span id="title"></span><span class="ar" aria-hidden="true">▾</span></button></h1><button type="button" class="chv" id="nextT" aria-label="Next chapter">&rsaquo;</button></div><div class="bkdrop" id="bkDrop" hidden></div><p class="sub" id="sub"></p><div class="ht"><button type="button" class="htb" id="htB" aria-expanded="false">&#129520;&#xFE0E; Bible tools <span class="ar" aria-hidden="true">&#9662;</span></button> <button type="button" class="padd1" id="add2" aria-label="Add a second column to read side by side">&#65291; 2nd</button><div class="htp" id="htP" hidden></div></div><button type="button" class="cn" id="cnote" hidden></button><div class="stb" id="stb" hidden></div><button type="button" class="hlm" id="hlmBtn" aria-expanded="false" hidden></button><div class="hlopts" id="hlOpts" hidden></div>
   <div class="txt" id="txt"><p class="msg">Opening…</p></div>
   <p class="pace" id="paceRow" hidden><button type="button" class="hlm" id="paceBtn" aria-pressed="false"></button></p>
   <div class="pn"><button type="button" id="prev"></button><button type="button" id="next"></button></div>
@@ -1198,6 +1199,7 @@ h1{font:600 1.7rem 'Fraunces',Georgia,serif;margin:18px 0 4px}
     for(var n=0;n<39;n++) h+=row(n); h+='<h5>New Testament</h5>'; for(n=39;n<66;n++) h+=row(n);
     $('bkDrop').innerHTML=h; $('bkDrop').hidden=false; $('titleB').setAttribute('aria-expanded','true');
     var cur=$('bkDrop').querySelector('.bkb.on'); if(cur) $('bkDrop').scrollTop=Math.max(0,cur.offsetTop-$('bkDrop').clientHeight/2+20); }
+  $('add2').addEventListener('click',function(){ putSet('par',ver().k==='kjv'?'web':'kjv'); go(AT.b,AT.c,0,true); htUI(); });
   $('titleB').addEventListener('click',function(e){ e.stopPropagation(); if(BKO) bkClose(); else bkOpen(); });
   $('bkDrop').addEventListener('click',function(e){
     if(e.target.closest('[data-bkmore]')){ bkClose(); openPick(); return; }
