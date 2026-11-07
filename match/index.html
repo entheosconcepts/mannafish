@@ -64,6 +64,7 @@ button,select,input{font:inherit;color:inherit}
 .wm small{display:block;font:700 .56rem/1 'Archivo',sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-top:4px}
 
 /* ── language pickers ── */
+.levels{display:flex;justify-content:center;gap:6px;padding-top:6px}.levels button{flex:1 1 0;max-width:150px;min-width:0;border:1px solid var(--line);background:var(--bg2);color:var(--text);border-radius:14px;padding:7px 6px;font:800 .85rem inherit;font-family:inherit;cursor:pointer;line-height:1.15}.levels button small{display:block;font-weight:600;font-size:.66rem;color:var(--dim);margin-top:1px}.levels button[aria-checked=true]{background:#2a5fb0;border-color:#6f9be0;color:#fff}.levels button[aria-checked=true] small{color:#dbe7ff}.levels button:disabled{opacity:.5}
 .opts{display:flex;justify-content:center;gap:8px;padding-top:4px}
 .pickl{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;padding:8px 0 2px}.pickl span{flex-basis:100%;text-align:center;font-size:.72rem;color:var(--dim)}
 .pickl button{border:1px solid var(--line);background:var(--bg2);color:var(--text);border-radius:999px;padding:6px 11px;font:700 .8rem inherit;font-family:inherit;cursor:pointer}.pickl button[aria-pressed=true]{background:#2a5fb0;border-color:#2a5fb0;color:#fff}
@@ -198,6 +199,7 @@ html,body{overflow-x:hidden}
   <span class="topr"><button class="pill blue" id="newBtn" type="button" data-t="new">New game</button><button class="pill more" id="moreBtn" type="button" aria-label="More" aria-expanded="false">&bull;&bull;&bull;</button>
     <span class="mmenu" id="mMenu" hidden><button type="button" id="howBtn">❓ <span data-t="how">How to play</span></button><button type="button" id="playersBtn">👥 <span data-t="mPlayers">Players on this device</span></button><button type="button" id="onlineBtn">🌐 <span data-t="mOnline">Play online</span></button><button type="button" id="fbBtn" onclick="document.getElementById('mMenu').hidden=true;window.MFfeedback&&MFfeedback.open()">💬 <span data-t="mFb">Tell us what you think</span></button></span></span>
 </header>
+<div class="wrapw levels" id="levels" role="radiogroup"></div>
 <div class="wrapw opts">
   <label class="pick"><span data-t="first">First language</span><select id="l1"></select></label>
   <label class="pick"><span data-t="second">Second language</span><select id="l2"></select></label>
@@ -294,7 +296,7 @@ html,body{overflow-x:hidden}
   var VOICES=['thunder','titan','abyss','bedrock','canyon','hush','murmur','lullaby','midnight','narrator','highland','onyx','ash','fable','grace','magnolia','heather','elder','pastor','scholar','campfire','herald','prophet','cowboy','bard','dove','rose','deborah','lily','hannah','erin','sage','coral','ballad','alloy','echo','nova','shimmer','verse'];
   var PAIRS=12, TRIES=3, MAXP=4, PC=['#3370FF','#f5d76e','#7fd18b','#e8735c'];
   var T={
-    en:{home:'Home',sub:'MannaFish Memory',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',pickl:'Choose languages…',pickls:'Choose…',pickh:'Tap the languages to play with:',none:'None (one language only)',nones:'None (one language)',
+    en:{lvl:'Level',lvE:'Easy',lvEs:'One language',lvM:'Medium',lvMs:'Two languages · you choose',lvH:'Hard',lvHs:'Many languages · you choose',lang:'Language',surprise:'🎲 Surprise me',pickhH:'Tap the languages you want to play in',home:'Home',sub:'MannaFish Memory',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',pickl:'Choose languages…',pickls:'Choose…',pickh:'Tap the languages to play with:',none:'None (one language only)',nones:'None (one language)',
       say:'Say words when flipped',spkOn:'Sound on: tap to turn it off',spkOff:'Sound off: tap to hear the game',spkOnS:'Sound on',spkOffS:'Sound off',moves:'Moves',pairs:'pairs',winsub:'Tap any card to hear its verse.',
       again:'Play again',look:'See the cards',how:'How to play',mFb:'Tell us what you think',howok:'Let’s play',peekGo:'▶ Start the game',peekHint:'Look where each fish is. When you start, they all turn face down.',peekSee:'See them all in {l}',peekOther:'the other language',
       gfh:'Go fish!',hidden:'Hidden fish {i}',gfmult:'Catch multiplied!',gfnob:'No bonus',gfnob2:'Your catch stays ×{m}',gfnob3:'{p}’s catch stays ×{m}',gfmults:'Now ×{m} · +{b} points',matches:'Matches',caught:'Caught',gfsub:'Catch <b>{w}</b>. Every fish is hidden until you catch it: pick one!',gfskip:'Skip',gfok:'{p} caught {w}! Catch ×{m}',gfokme:'You caught {w}! Catch ×{m}',gfno:'That was {w}. {n} left',gfaway:'It got away. Catch stays ×{m}',score:'Score',catch:'Catch',fish:'fish',
@@ -316,7 +318,7 @@ html,body{overflow-x:hidden}
       h6:'Every pair lets you go fish for the same word. The fish are hidden: tap one to reel it in and see its word. You have 3 tries. Each catch raises your catch multiplier (×2, ×3 …), and every pair scores 10 × your multiplier.',
       h7:'More players? ⋯ → Players on this device (take turns), or Play online with a friend. A match lets you go again.',
       down:'Card {i}, face down',matched:'matched',match:'Match',verse:'Hear the verse',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
-    es:{home:'Inicio',sub:'MannaFish Memory',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',pickl:'Elegir idiomas…',pickls:'Elegir…',pickh:'Toca los idiomas para jugar:',none:'Ninguno (un solo idioma)',nones:'Ninguno (un idioma)',
+    es:{lvl:'Nivel',lvE:'Fácil',lvEs:'Un idioma',lvM:'Medio',lvMs:'Dos idiomas · tú eliges',lvH:'Difícil',lvHs:'Varios idiomas · tú eliges',lang:'Idioma',surprise:'🎲 Sorpréndeme',pickhH:'Toca los idiomas con los que quieres jugar',home:'Inicio',sub:'MannaFish Memory',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',pickl:'Elegir idiomas…',pickls:'Elegir…',pickh:'Toca los idiomas para jugar:',none:'Ninguno (un solo idioma)',nones:'Ninguno (un idioma)',
       say:'Decirlas al voltear',spkOn:'Sonido activado: toca para apagarlo',spkOff:'Sonido apagado: toca para oír el juego',spkOnS:'Sonido',spkOffS:'Sin sonido',moves:'Jugadas',pairs:'pares',winsub:'Toca cualquier carta para oír su versículo.',
       again:'Jugar otra vez',look:'Ver las cartas',how:'Cómo se juega',mFb:'Cuéntanos qué piensas',peekGo:'▶ Empezar el juego',peekHint:'Mira dónde está cada pez. Al empezar, todos se voltean.',peekSee:'Verlos todos en {l}',peekOther:'el otro idioma',howok:'¡A jugar!',
       gfh:'¡A pescar!',hidden:'Pez escondido {i}',gfmult:'¡Pesca multiplicada!',gfnob:'Sin bono',gfnob2:'Tu pesca sigue ×{m}',gfnob3:'La pesca de {p} sigue ×{m}',gfmults:'Ahora ×{m} · +{b} puntos',matches:'Parejas',caught:'Atrapados',gfsub:'Atrapa <b>{w}</b>. Cada pez está escondido hasta que lo atrapes: ¡elige uno!',gfskip:'Saltar',gfok:'¡{p} atrapó {w}! Pesca ×{m}',gfokme:'¡Atrapaste {w}! Pesca ×{m}',gfno:'Era {w}. Quedan {n}',gfaway:'Se escapó. La pesca sigue ×{m}',score:'Puntos',catch:'Pesca',fish:'peces',
@@ -364,6 +366,15 @@ html,body{overflow-x:hidden}
   // in one of the languages ticked)
   var PICK=(store('mf-match-pick')||'').split(',').filter(function(l){ return LANGS.indexOf(l)>=0; });
   function picks(){ var p=PICK.filter(function(l){ return l!==l1; }); return p.length?p:[l1==='en'?'es':'en']; }
+  // Ken, 7 Nov: "levels of difficulty: easy is just one language, then 2 more levels where the user chooses":
+  // Easy = one language; Medium = a second language you choose; Hard = several languages you choose (or a surprise mix)
+  var LEVEL=store('mf-match-level'); if(['easy','medium','hard'].indexOf(LEVEL)<0) LEVEL=l2==='none'?'easy':(l2==='pick'||l2==='mix')?'hard':'medium';
+  (function(){ if(LEVEL==='easy') l2='none'; else if(LEVEL==='medium'&&LANGS.indexOf(l2)<0) l2=LANGS.indexOf(store('mf-match-l2s'))>=0&&store('mf-match-l2s')!==l1?store('mf-match-l2s'):(l1==='en'?'es':'en'); else if(LEVEL==='hard'&&l2!=='pick'&&l2!=='mix') l2='pick'; })();
+  function setLevel(lv){ if(lock0()||lv===LEVEL) return; LEVEL=lv; store('mf-match-level',lv);
+    if(lv==='easy') l2='none';
+    else if(lv==='medium'){ var last=store('mf-match-l2s'); l2=LANGS.indexOf(last)>=0&&last!==l1?last:(l1==='en'?'es':'en'); }
+    else { l2='pick'; if(!PICK.length){ PICK=picks(); store('mf-match-pick',PICK.join(',')); } }
+    store('mf-match-l2',l2); fillPickers(); deal(); }
   function oneLang(){ return l2==='none'; }
   function lock0(){ return !!(NET&&!NET.host); }
   function narrow(){ return document.documentElement.clientWidth<600; }
@@ -372,14 +383,17 @@ html,body{overflow-x:hidden}
   var EN={en:'English',es:'Spanish',tl:'Tagalog',zh:'Chinese',hi:'Hindi',el:'Greek',de:'German',ko:'Korean',he:'Hebrew',ar:'Arabic',ru:'Russian'};
   function lname(l){ if(l===ui||l==='tl') return NAME[l]; var mine='', D=dn(); try{ mine=D?D.of(l):''; }catch(e){} if(!mine||mine===l) mine=ui==='en'||!D?EN[l]:''; mine=mine?mine.charAt(0).toLocaleUpperCase(ui)+mine.slice(1):''; return mine&&mine!==NAME[l]?mine+' · '+NAME[l]:NAME[l]; }
   function fillPickers(){
+    var lock=lock0();
+    $('levels').innerHTML=[['easy','lvE','lvEs'],['medium','lvM','lvMs'],['hard','lvH','lvHs']].map(function(x){ return '<button type="button" role="radio" data-lv="'+x[0]+'" aria-checked="'+(LEVEL===x[0])+'"'+(lock?' disabled':'')+'>'+esc(t(x[1]))+'<small>'+esc(t(x[2]))+'</small></button>'; }).join('');
+    $('levels').setAttribute('aria-label',t('lvl'));
     $('l1').innerHTML=LANGS.map(function(l){ return '<option value="'+l+'"'+(l===l1?' selected':'')+'>'+esc(lname(l))+'</option>'; }).join('');
-    $('l2').innerHTML=LANGS.map(function(l){ return '<option value="'+l+'"'+(l===l2?' selected':'')+(l===l1?' disabled':'')+'>'+esc(lname(l))+'</option>'; }).join('')+
-      '<option value="mix" title="'+esc(t('mix'))+'"'+(l2==='mix'?' selected':'')+'>'+esc(narrow()?t('mixs'):t('mix'))+'</option>'+
-      '<option value="pick"'+(l2==='pick'?' selected':'')+'>'+esc(narrow()?t('pickls'):t('pickl'))+'</option>'+
-      '<option value="none"'+(l2==='none'?' selected':'')+'>'+esc(narrow()?t('nones'):t('none'))+'</option>';
-    var pk=$('pickL'); pk.hidden=l2!=='pick'; if(l2==='pick'){ var on=picks();
-      pk.innerHTML='<span>'+esc(t('pickh'))+'</span>'+LANGS.filter(function(l){ return l!==l1; }).map(function(l){ return '<button type="button" data-l="'+l+'" aria-pressed="'+(on.indexOf(l)>=0)+'"'+(lock0()?' disabled':'')+'>'+NAME[l]+'</button>'; }).join(''); }
-    var lock=lock0(); $('l1').disabled=lock; $('l2').disabled=lock; $('newBtn').disabled=lock;
+    $('l1').parentNode.querySelector('span').textContent=t(LEVEL==='easy'?'lang':'first');
+    $('l2').parentNode.hidden=LEVEL!=='medium';
+    $('l2').innerHTML=LANGS.map(function(l){ return '<option value="'+l+'"'+(l===l2?' selected':'')+(l===l1?' disabled':'')+'>'+esc(lname(l))+'</option>'; }).join('');
+    var pk=$('pickL'); pk.hidden=LEVEL!=='hard'; if(LEVEL==='hard'){ var on=picks(), mix=l2==='mix';
+      pk.innerHTML='<span>'+esc(t('pickhH'))+'</span>'+LANGS.filter(function(l){ return l!==l1; }).map(function(l){ return '<button type="button" data-l="'+l+'" aria-pressed="'+(!mix&&on.indexOf(l)>=0)+'"'+(lock?' disabled':'')+'>'+NAME[l]+'</button>'; }).join('')
+        +'<button type="button" data-mix="1" aria-pressed="'+mix+'"'+(lock?' disabled':'')+'>'+esc(t('surprise'))+'</button>'; }
+    $('l1').disabled=lock; $('l2').disabled=lock; $('newBtn').disabled=lock;
   }
   function applyUI(){ spkUI();
     ui=l1==='es'?'es':'en'; document.documentElement.lang=ui;
@@ -387,9 +401,11 @@ html,body{overflow-x:hidden}
     $('board').setAttribute('aria-label',t('cards'));
     fillPickers(); hud();
   }
-  $('l1').addEventListener('change',function(){ l1=this.value; if(l2===l1) l2=l1==='es'?'en':'es'; store('mf-match-l1',l1); store('mf-match-l2',l2); applyUI(); deal(); });
-  $('l2').addEventListener('change',function(){ l2=this.value; store('mf-match-l2',l2); if(l2==='pick'&&!PICK.length){ PICK=picks(); store('mf-match-pick',PICK.join(',')); } fillPickers(); deal(); });
-  $('pickL').addEventListener('click',function(e){ var b=e.target.closest('[data-l]'); if(!b) return; var l=b.dataset.l, on=picks(), i=on.indexOf(l);
+  $('l1').addEventListener('change',function(){ l1=this.value; if(l2===l1&&LANGS.indexOf(l2)>=0) l2=l1==='es'?'en':'es'; store('mf-match-l1',l1); store('mf-match-l2',l2); applyUI(); deal(); });
+  $('levels').addEventListener('click',function(e){ var b=e.target.closest('[data-lv]'); if(b) setLevel(b.dataset.lv); });
+  $('l2').addEventListener('change',function(){ l2=this.value; store('mf-match-l2',l2); store('mf-match-l2s',l2); if(l2==='pick'&&!PICK.length){ PICK=picks(); store('mf-match-pick',PICK.join(',')); } fillPickers(); deal(); });
+  $('pickL').addEventListener('click',function(e){ if(e.target.closest('[data-mix]')){ l2=l2==='mix'?'pick':'mix'; store('mf-match-l2',l2); fillPickers(); deal(); return; }
+    var b=e.target.closest('[data-l]'); if(!b) return; if(l2==='mix') l2='pick'; store('mf-match-l2',l2); var l=b.dataset.l, on=picks(), i=on.indexOf(l);
     if(i>=0){ if(on.length===1) return; on.splice(i,1); } else on.push(l); PICK=on; store('mf-match-pick',PICK.join(',')); fillPickers(); deal(); });
   $('sayChk').checked=sayOn;
   // the speaker: off means the game says nothing at all (no words when flipped, no verses when tapped)
