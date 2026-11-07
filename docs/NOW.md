@@ -1,0 +1,24 @@
+# MannaFish: where we are (read this first; keep it to one page)
+
+Updated 7 Nov 2026. Claude updates this at the end of every job, without being asked. The long history is in `docs/DECISIONS.md` (open it only when a detail is missing).
+Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live site manna-fish.com is the old decal shop page on `main` until Ken says "push it live".
+
+## Just finished (7 Nov)
+- Print backs (word study, two QR codes, sponsor logo) for K-Tech (Build, R0007) and Market Street Tires (Repair, R0008 English, R0009 Spanish). `/flip/` shows the card front and back in English or Spanish to a customer (admin menu has the link).
+- Notes on any fish in any language: `/fish/review/` (language picker, 📝 notes) and the 📝 button in `/edit/`. Server side (`/api/fish-notes`).
+- Bible reader: Explain & apply, search, side-by-side columns, ElevenLabs voices (`/voices/`), no phone voice anywhere.
+
+## Waiting on Ken
+- Market Street: pick the Repair verse (A Isa 61:4, B Isa 58:12, C 2 Kings 12:5, D 2 Chr 24:4, E 2 Chr 34:10, F Neh 3:28) and the Spanish word (Reparen / Reparador / Restaurad); the shop's web address or phone for the left QR; a Spanish speaker to check the Spanish card.
+- K-Tech's real logo (a stand-in is on the card).
+- Go-live decisions below.
+- Daily-email fish choice ("Song", B1): do nothing until Ken says.
+
+## Go live this week (Ken, 7 Nov: "make this devotional go live on manna-fish.com")
+Claude's part: bring `test-site` into `main`; check Today, sign-up and welcome email, Pray, Bible, Plans, privacy page; confirm Google can index it. The live Netlify site is separate from the test one.
+Ken's part (about an hour): 1. In Netlify, open the manna-fish.com site → Environment variables: same names as the test site (BREVO_API_KEY, OPENAI_API_KEY, SUPABASE_SECRET_KEY, MF_ADMIN_KEY, PROOF_KEY, ESV_API_KEY, ELEVENLABS_API_KEY). 2. Sign up on the test site with your own email and read it for a few days (or accept going live with fewer days). 3. Say "push it live".
+Claude does before going live: put the admin key on `/api/fish-notes` and `/api/fish-flags`; check Brevo is allowed to send from manna-fish.com; make sure the old decal shop page is not lost (it is replaced by the new site). After going live: set `MF_SEND_OFF=1` on the test site so only one site sends the daily email.
+Not needed for launch: texting (carrier registration), app stores, sponsor pricing, decal sales (the basket stays a waitlist).
+
+## Open lists
+- Ken's to-do list: `docs/UPDATES.md`. Launch plan: `docs/LAUNCH.md`. Every open question with its options: `docs/DECISIONS.md` section B.

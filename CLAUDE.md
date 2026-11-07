@@ -4,16 +4,17 @@ MannaFish gives Scripture away: one word of Scripture in the middle of a fish, w
 
 **The branch trap (read this first):** the repo's default branch **`main` is the LIVE decal shop page** (a different, older site: no Bible, no translator). All the real work (Bible reader, Translator, Hubs, Ride, fish tools) is on branch **`test-site`**. A new session may start on `main` or on its own `claude/...` branch and wrongly report "the Bible reader isn't in this repo". Fix before anything else: `git fetch origin test-site && git checkout -B test-site origin/test-site` (then `bible/index.html` exists). Ken authorises pushing to `test-site`; never push to `main`.
 
-## Start every session by reading docs/DECISIONS.md (then docs/UPDATES.md)
-- `docs/DECISIONS.md` is the full record: Ken's rules and how he likes replies (A), every open question waiting on him (B), a map of every feature with its files, routes, storage and how to test it (C), a dated log of everything he asked (D), every error we hit and its fix (E), the environment variable names (F).
-- Then read `docs/UPDATES.md` (Ken's to-do list).
+## Start every session by reading docs/NOW.md (one page), nothing else first
+- `docs/NOW.md` is the short "where we are": what was just finished, what waits on Ken, what is next. Read it, then say "continue" style: answer Ken's message directly. Ken never has to re-explain anything.
+- Open the long records only when a detail is missing: `docs/DECISIONS.md` (A: Ken's rules and how he likes replies, B: every open question, C: feature map with files, routes, storage and tests, D: dated log, E: errors and fixes, F: environment variable names), `docs/UPDATES.md` (Ken's to-do list), `docs/LAUNCH.md`.
 - **Ask Ken nothing that DECISIONS.md already answers.** If a question is listed in section B, it is still open: do not change that behaviour until Ken answers. Do nothing about the daily-email fish choice ("Song", B1) until he says so.
 - Ken dictates by voice, so read for meaning ("manifest" means MannaFish). Reply short and plain, and end with only https://yadamannafishtest.netlify.app/
 
-## Session handoff protocol
-- At the **end of each job**, append one dated entry to section D of `docs/DECISIONS.md` (date, Ken's request in his words, what was done, commit hash). Refresh B (move answered questions out, add new ones with the options given) and C (files, routes, storage keys, how to test) for the area you changed. Add new errors to E and new variable names (never values) to F.
+## Handoff (do this yourself, quietly, without being asked)
+- **Ken does not start new chats.** Never tell him a chat is long or to start a fresh one. Keep one conversation going; if the context fills, the system summarises it, and the repo files below are what carry on.
+- At the **end of each job**, update `docs/NOW.md` (keep it to one page: just finished, waiting on Ken, next) and append one dated entry to section D of `docs/DECISIONS.md` (date, Ken's request in his words, what was done, commit hash). Refresh B and C for the area you changed. Add new errors to E and new variable names (never values) to F.
 - Add an item to the test checklist artifact for each new thing Ken should try.
-- **Before a session gets long**, write the handoff (the steps above) and tell Ken he can start a fresh session. Long sessions cost Ken extra usage. **One topic per session saves cost.**
+- Keep replies short: Ken pays for extra usage. Don't re-read big files you don't need; search them instead.
 - Never put a secret, a token, a password, an EIN, Ken's home address or a model name in any file.
 
 ## Where to work
@@ -49,5 +50,5 @@ MannaFish gives Scripture away: one word of Scripture in the middle of a fish, w
 - Commit with `git -c user.name="Claude" -c user.email="noreply@anthropic.com"` and push to `test-site`. Add the attribution trailer lines the session gives. Don't put model names in files.
 
 ## Lists to keep up
-- `docs/DECISIONS.md`: the full record and handoff (keep it current). `docs/UPDATES.md`: Ken's to-do list. `docs/LAUNCH.md`: app and launch plan. `docs/TODO.md`: the older master list.
+- `docs/NOW.md`: the one-page current state (read first, keep it current). `docs/DECISIONS.md`: the full record. `docs/UPDATES.md`: Ken's to-do list. `docs/LAUNCH.md`: app and launch plan. `docs/TODO.md`: the older master list.
 - The test checklist (a Claude artifact) is linked from the admin menu; add an item for each new thing Ken should try.
