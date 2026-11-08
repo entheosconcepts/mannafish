@@ -36,6 +36,13 @@ const CHAR = {
   deborah: { v: 'sage', how: 'Voice: a strong, confident, commanding woman\'s voice, a rich alto with leadership and courage; clear, decisive and encouraging.' },
   lily: { v: 'nova', how: 'Voice: a bright, sweet, young woman\'s voice, cheerful and sincere, full of wonder and joy.' },
   hannah: { v: 'coral', how: 'Voice: a gentle, prayerful woman\'s voice, hushed and heartfelt, like praying quietly beside you.' },
+  // expressive, enthusiastic voices (Ken, 8 Nov: "a few voice options that have inflection ... a little more enthusiasm"); described only by how they sound
+  sunrise: { v: 'nova', how: 'Voice: an upbeat, enthusiastic morning host: bright and energetic with big, natural inflection. The pitch rises and falls freely and is never flat or monotone; smiling, excited to share good news, with lively emphasis on the important words.' },
+  sparkle: { v: 'coral', how: 'Voice: a bright, lively woman, full of expression and warmth. Wide, musical inflection, a smile and a little laugh in the voice, enthusiastic and sincere, emphasising the words that matter.' },
+  rally: { v: 'echo', how: 'Voice: an energetic, encouraging man, like a great youth leader cheering people on. Dynamic, expressive inflection, rising with excitement, warm and sincere, never flat.' },
+  jubilee: { v: 'ash', how: 'Voice: a joyful, bold man full of praise and celebration. Big, expressive inflection and energy, each line lifted with gladness, strong and warm, never monotone.' },
+  tale: { v: 'fable', how: 'Voice: a gifted storyteller with a wide pitch range and dramatic, natural inflection. Vivid and animated, bringing every line to life with feeling and good timing, lightly enthusiastic.' },
+  awe: { v: 'verse', how: 'Voice: a warm voice full of wonder and delight, as if discovering something wonderful. Lively, varied inflection, enthusiastic but gentle, with sincere emphasis and a little awe.' },
   erin: { v: 'shimmer', how: 'Voice: a warm, musical woman, friendly and bright with a smile in her voice.', acc: ' She speaks with a soft Irish accent.' },
 };
 export const ALL = [...BASE, ...Object.keys(CHAR)];
@@ -64,6 +71,12 @@ export const LABELS = {
   lily: ['Lily', 'bright, young, joyful'],
   hannah: ['Hannah', 'prayerful, hushed'],
   erin: ['Erin', 'musical Irish lady'],
+  sunrise: ['Sunrise', 'upbeat, enthusiastic host'],
+  sparkle: ['Sparkle', 'bright, lively, very expressive'],
+  rally: ['Rally', 'energetic, encouraging man'],
+  jubilee: ['Jubilee', 'joyful, bold, full of praise'],
+  tale: ['Tale', 'expressive storyteller'],
+  awe: ['Awe', 'full of wonder, very expressive'],
   titan: ['Titan', 'colossal deep bass'],
   abyss: ['Abyss', 'cavernous, far deeper'],
   bedrock: ['Bedrock', 'the deepest of all'],
