@@ -661,7 +661,9 @@ section.section.bundles{display:block;margin-top:0}
 .prown{display:flex;gap:8px;align-items:flex-start;text-align:left;margin:10px 0 0;font:600 .9rem 'Archivo',sans-serif}.prown input{width:20px;height:20px;flex:none;margin-top:2px}
 .merchh{margin:14px 0 0;text-align:center;font:800 1.25rem 'Archivo',system-ui,sans-serif}.merchfields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;min-width:0;max-width:100%}.merchfields label{min-width:0}.merchfields input{width:100%;min-width:0;box-sizing:border-box}.merchck span{min-width:0;overflow-wrap:anywhere}.merchck{max-width:100%;min-width:0}.merchfields[hidden]{display:none}.merchfields label:first-child{grid-column:1/-1}.merchfields .rnote{grid-column:1/-1;margin:0;text-align:center}
 .card .nav,.card section:not(#today),.card footer,.card .mfbkfab,.card #resumeBar,.card .offerhd,.card .offerrow,.card .giftbox{display:none!important}
-html.card,html.card body{margin:0!important;padding:0!important;max-width:none!important;width:100%!important;background:#000}.card .mf{margin:0!important;padding:0!important;max-width:none!important;width:100%!important}.card .wrap,.card .hero .wrap.today{padding-left:4px!important;padding-right:4px!important;max-width:none!important;width:100%!important;box-sizing:border-box}.card .stage-col,.card .stage{max-width:100%!important}.card .hero{padding-top:6px!important;padding-bottom:10px!important}
+html.card,html.card body{margin:0!important;padding:0!important;max-width:none!important;width:100%!important;background:#000}
+html.card{overflow:hidden}html.card body{overflow:hidden}
+.card .hero .wrap.today{padding-bottom:4px!important;padding-top:4px!important}.card .hero{padding-bottom:0!important}   /* Ken, 8 Nov: no slide bar inside the card on a desktop */.card .mf{margin:0!important;padding:0!important;max-width:none!important;width:100%!important}.card .wrap,.card .hero .wrap.today{padding-left:4px!important;padding-right:4px!important;max-width:none!important;width:100%!important;box-sizing:border-box}.card .stage-col,.card .stage{max-width:100%!important}.card .hero{padding-top:6px!important;padding-bottom:10px!important}
 .merchck{display:flex!important;flex-direction:row!important;align-items:flex-start;gap:10px;text-align:left;font:600 .95rem/1.35 'Archivo',sans-serif}.merchck input{width:22px;height:22px;flex:none;margin-top:2px}.merchck small{display:block;opacity:.85;font-weight:500}
 .btn-devo{background:transparent;color:#fff;border:1.5px solid #eaf0f0}
 .btn-devo:hover{background:rgba(255,255,255,.08)}
@@ -5776,7 +5778,7 @@ body.mfediting{padding-top:54px!important}
 /* the fish card inside the Bible page: tell the page how tall it is, and when something needs the whole screen (the devotional, full screen, a sheet) */
 (function(){ if(!document.documentElement.classList.contains('card')||window.top===window.self) return; var last='';
   function send(){ var t=document.getElementById('today'), st=document.getElementById('stage'), full=document.documentElement.style.overflow==='hidden'||document.body.style.overflow==='hidden'||(st&&st.classList.contains('fs'));
-    var h=t?Math.ceil(t.getBoundingClientRect().height):0, k=h+'|'+full; if(k===last) return; last=k; try{ parent.postMessage({mfcard:1,h:h,full:full},location.origin); }catch(e){} }
+    var h=t?Math.ceil(t.getBoundingClientRect().height):0; h=Math.max(h,document.body.scrollHeight||0); var k=h+'|'+full; if(k===last) return; last=k; try{ parent.postMessage({mfcard:1,h:h,full:full},location.origin); }catch(e){} }
   if(window.ResizeObserver){ var ro=new ResizeObserver(send); var t=document.getElementById('today'); if(t) ro.observe(t); }
   new MutationObserver(send).observe(document.documentElement,{attributes:true,subtree:true,attributeFilter:['hidden','class','style']});
   window.addEventListener('load',function(){ send(); setTimeout(send,800); setTimeout(send,2500); }); })();
