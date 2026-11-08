@@ -16,6 +16,19 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="MannaFish">
 <meta name="theme-color" content="#000000">
+<script>
+/* Ken, 8 Nov: a subscriber's main page is the Bible app. A link from the email or a text (it carries devo=) marks this phone as a subscriber and opens
+   /bible/ at the fish's verse; so does the plain address once someone has signed up here. New visitors still get this sign-up page. ?today=1 stays here;
+   ?card=1 is the fish card shown at the top of the Bible page (an iframe). */
+(function(){ try{ var q=location.search, h=location.hash;
+  if(/[?&]card=1\b/.test(q)){ document.documentElement.classList.add('card'); return; }
+  if(window.top!==window.self) return;
+  var devo=/[?&]devo=/.test(q); if(devo) localStorage.setItem('mf-sub','1');
+  var sub=localStorage.getItem('mf-sub')==='1', stay=/[?&](today|devotional|nored|year|embed|flip)=/.test(q);
+  if(stay||!(devo||(sub&&!h))) return;
+  var P=function(k){ var m=new RegExp('[?&]'+k+'=([^&#]+)').exec(q); return m?m[1]:''; };
+  location.replace('/bible/?fish='+(P('fish')||P('w')||'today')+(P('lang')?'&lang='+P('lang'):'')); }catch(e){} })();
+</script>
 <meta property="og:title" content="MannaFish — a free word study">
 <meta property="og:description" content="Give a MannaFish, feed him a meal. Teach a man 2 Fish, feed him for life.">
 <meta property="og:image" content="https://yadamannafishtest.netlify.app/w/img/hope.png">
@@ -636,6 +649,8 @@ section.section.bundles{display:block;margin-top:0}
 .offerbtn .chev{display:inline-block;transition:transform .2s;margin-left:6px}
 .offerbtn.open .chev{transform:rotate(180deg)}
 .merchh{margin:14px 0 0;text-align:center;font:800 1.25rem 'Archivo',system-ui,sans-serif}.merchfields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;min-width:0;max-width:100%}.merchfields label{min-width:0}.merchfields input{width:100%;min-width:0;box-sizing:border-box}.merchck span{min-width:0;overflow-wrap:anywhere}.merchck{max-width:100%;min-width:0}.merchfields[hidden]{display:none}.merchfields label:first-child{grid-column:1/-1}.merchfields .rnote{grid-column:1/-1;margin:0;text-align:center}
+.card .nav,.card section:not(#today),.card footer,.card .mfbkfab,.card #resumeBar,.card .offerhd,.card .offerrow,.card .giftbox{display:none!important}
+.card body{padding-bottom:0!important;background:#000}.card .hero{padding-top:6px!important;padding-bottom:10px!important}
 .merchck{display:flex!important;flex-direction:row!important;align-items:flex-start;gap:10px;text-align:left;font:600 .95rem/1.35 'Archivo',sans-serif}.merchck input{width:22px;height:22px;flex:none;margin-top:2px}.merchck small{display:block;opacity:.85;font-weight:500}
 .btn-devo{background:transparent;color:#fff;border:1.5px solid #eaf0f0}
 .btn-devo:hover{background:rgba(255,255,255,.08)}
@@ -5496,7 +5511,7 @@ window.MF=(function(){
       fetch('/',{method:'POST',headers:H,body:body})
         .then(function(r){ if(r.ok) return r; return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); },
               function(){ return fetch('/api/form-backup',{method:'POST',headers:H,body:body}); })
-        .then(function(r){if(!r.ok) throw 0; if(f.id==='giftForm'&&!fd.waitlist) fetch('/api/order-record',{method:'POST',headers:H,body:body}).catch(function(){}); if(f.id==='devoForm'||f.id==='signup') fetch('/api/devo-subscribe',{method:'POST',headers:H,body:body}).then(function(r){ return r.json(); }).then(function(j){
+        .then(function(r){if(!r.ok) throw 0; if(f.id==='giftForm'&&!fd.waitlist) fetch('/api/order-record',{method:'POST',headers:H,body:body}).catch(function(){}); if(f.id==='devoForm'||f.id==='signup'){ try{ localStorage.setItem('mf-sub','1'); }catch(e){} } if(f.id==='devoForm'||f.id==='signup') fetch('/api/devo-subscribe',{method:'POST',headers:H,body:body}).then(function(r){ return r.json(); }).then(function(j){
             if(!j||!j.already) return; var FQ={Daily:es?'diario':'Daily',Weekly:es?'semanal':'Weekly',Monthly:es?'mensual':'Monthly'};
             msg.textContent=es?'Ya estabas suscrito, así que lo actualizamos: '+(FQ[j.freq]||j.freq)+'. Recibirás un solo correo, no dos.':'You were already signed up, so we updated it to '+(FQ[j.freq]||j.freq)+'. You will get one email, not two.'; }).catch(function(){}); f.reset(); f.querySelectorAll('input[name=send-by]:checked').forEach(function(r){ r.dispatchEvent(new Event('change',{bubbles:true})); });
           if(f.id==='stockForm'){ msg.textContent=es?'¡Gracias! Le escribiremos pronto con cómo dar.':'Thank you! We will write to you soon with how to give.'; return; } msg.textContent = MF.t({signup:'th_signup',giftForm:'th_gift',devoForm:'th_devo'}[f.id]||'th_net'); showOk(f.id,fd);})
@@ -5674,4 +5689,13 @@ body.mfediting{padding-top:54px!important}
 (function(){ if(!/[?&]devotional=1\b/.test(location.search)&&location.hash!=='#devotional') return;
   var tries=0; (function go(){ var b=document.getElementById('devoBtn'), x=document.getElementById('devoBox'); if(!b||!x){ if(++tries<40) setTimeout(go,150); return; }
     if(x.hidden) b.click(); setTimeout(function(){ if(window.MFsecOpen) try{ MFsecOpen('#devoBox'); }catch(e){} x.scrollIntoView({block:'center',behavior:'smooth'}); var i=x.querySelector('input[type=email]'); if(i) try{ i.focus({preventScroll:true}); }catch(e){} },250); })(); })();
+</script>
+<script>
+/* the fish card inside the Bible page: tell the page how tall it is, and when something needs the whole screen (the devotional, full screen, a sheet) */
+(function(){ if(!document.documentElement.classList.contains('card')||window.top===window.self) return; var last='';
+  function send(){ var t=document.getElementById('today'), st=document.getElementById('stage'), full=document.documentElement.style.overflow==='hidden'||document.body.style.overflow==='hidden'||(st&&st.classList.contains('fs'));
+    var h=t?Math.ceil(t.getBoundingClientRect().height):0, k=h+'|'+full; if(k===last) return; last=k; try{ parent.postMessage({mfcard:1,h:h,full:full},location.origin); }catch(e){} }
+  if(window.ResizeObserver){ var ro=new ResizeObserver(send); var t=document.getElementById('today'); if(t) ro.observe(t); }
+  new MutationObserver(send).observe(document.documentElement,{attributes:true,subtree:true,attributeFilter:['hidden','class','style']});
+  window.addEventListener('load',function(){ send(); setTimeout(send,800); setTimeout(send,2500); }); })();
 </script>

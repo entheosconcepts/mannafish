@@ -316,6 +316,27 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 .tfimg{display:block;background:#000;border-radius:12px;padding:6px}.tfimg img{display:block;width:100%;height:auto;max-height:210px;object-fit:contain}
 .tfr{margin:8px 0 2px;color:var(--dim);font-size:.9rem}.tfgo{font-weight:700;color:var(--blue2);text-decoration:none;font-size:.9rem}
 @media(prefers-reduced-motion:reduce){.tfc{transition:none}}
+.tfcard{display:block;width:100%;height:440px;border:0;background:#000;border-radius:12px;color-scheme:dark}
+.tfcard.full{position:fixed;inset:0;width:100%;height:100%;z-index:300;border-radius:0}
+.tfb{padding:0 8px 8px}
+.dnav h5{margin:12px 6px 4px;font:800 .72rem 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.dnav .dbb{display:block;width:100%;text-align:left;border:0;background:none;color:inherit;font:600 1rem 'Fraunces',Georgia,serif;padding:6px 10px;border-radius:10px;cursor:pointer}
+.dnav .dbb:hover{background:var(--card2)}.dnav .dbk.on>.dbb{background:var(--sel);font-weight:700}
+.dnav .dch{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:4px;padding:6px 6px 8px}.dnav .dch[hidden]{display:none}
+.dnav .dch button{border:1px solid var(--line);background:var(--card);color:inherit;border-radius:8px;padding:6px 0;font:700 .85rem 'Archivo',sans-serif;cursor:pointer}.dnav .dch button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+/* Ken, 8 Nov: a desktop gets a desktop page: wide, a left rail with today's fish and every book and chapter always in view, labelled buttons, bigger text, columns with room */
+@media(min-width:1000px){
+.bar .in{max-width:1360px}
+.bar .ib.sm::after{content:attr(aria-label);font:700 .78rem 'Archivo',sans-serif;margin-left:5px;white-space:nowrap}
+.bar .ib.sm{padding:0 12px}
+main{max-width:1360px;display:grid;grid-template-columns:380px minmax(0,1fr);column-gap:40px;align-items:start;padding-left:28px;padding-right:28px}
+.rail{grid-column:1;grid-row:1 / span 8;position:sticky;top:calc(var(--barh,100px) + 10px);max-height:calc(100vh - var(--barh,100px) - 24px);overflow:hidden;display:flex;flex-direction:column;gap:12px;padding-right:4px}
+.rail .tfish{margin:0;flex:none}.rail .dnav{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:4px 6px 10px;min-height:160px;flex:1 1 auto;overflow:auto;overscroll-behavior:contain}
+main>.th,main>.txt,main>.pace,main>#paceRow,main>.pn,main>.note{grid-column:2}
+main .txt{font-size:calc(var(--fs,1.18rem) * 1.12);line-height:1.8}
+.par .txt,.par3 .txt,.par4 .txt{font-size:calc(var(--fs,1.18rem) * 1.0);line-height:1.7}
+.par .txt .pr{gap:0 28px}.phd{gap:28px}
+}
 </style>
 <script src="/fish-lang/tabbar.js" defer></script>
 <script src="/fish-lang/voicepick.js" defer onload="window.MFvpHook&&MFvpHook()"></script>
@@ -338,11 +359,14 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 </div></div>
 <div class="menu" id="menu" role="menu" hidden></div>
 <main id="main">
-  <!-- Ken, 7 Nov: today's word up top like the devotional, collapsible so it can be out of the way of the Bible -->
-  <section class="tfish" id="tfish" aria-label="Today's MannaFish" hidden>
-    <button type="button" class="tfh" id="tfT" aria-expanded="true" aria-controls="tfB"><span class="tfk">Today&rsquo;s MannaFish</span><b id="tfW"></b><span class="tfc" aria-hidden="true">&#9662;</span></button>
-    <div class="tfb" id="tfB"><a class="tfimg" id="tfL" href="/#today"><img id="tfI" alt="" width="400" height="200"></a><p class="tfr" id="tfR"></p><a class="tfgo" href="/#today">Open today&rsquo;s devotional &rsaquo;</a></div>
-  </section>
+  <!-- Ken, 8 Nov: the left rail (desktop) / top (phone): today's MannaFish as the home page's own flip card, and on a desktop the books -->
+  <aside class="rail" id="rail">
+    <section class="tfish" id="tfish" aria-label="Today's MannaFish">
+      <button type="button" class="tfh" id="tfT" aria-expanded="true" aria-controls="tfB"><span class="tfk">Today&rsquo;s MannaFish</span><b id="tfW"></b><span class="tfc" aria-hidden="true">&#9662;</span></button>
+      <div class="tfb" id="tfB"><iframe class="tfcard" id="tfF" title="Today&rsquo;s MannaFish: tap the fish to flip it" allow="autoplay"></iframe></div>
+    </section>
+    <nav class="dnav" id="dnav" aria-label="Books and chapters" hidden></nav>
+  </aside>
   <div class="th"><button type="button" class="chv" id="prevT" aria-label="Previous chapter">&lsaquo;</button><h1><button type="button" class="tbtn" id="titleB" aria-haspopup="true" aria-expanded="false" aria-controls="bkDrop" aria-label="Choose a book and chapter"><span id="title"></span><span class="ar" aria-hidden="true">▾</span></button></h1><button type="button" class="chv" id="nextT" aria-label="Next chapter">&rsaquo;</button></div><div class="bkdrop" id="bkDrop" hidden></div><p class="sub" id="sub"></p><div class="ht"><button type="button" class="htb" id="htB" aria-expanded="false">&#129520;&#xFE0E; Bible tools <span class="ar" aria-hidden="true">&#9662;</span></button> <button type="button" class="padd1" id="add2" aria-label="Add a second column to read side by side">&#65291; 2nd</button><div class="htp" id="htP" hidden></div></div><button type="button" class="cn" id="cnote" hidden></button><div class="stb" id="stb" hidden></div><button type="button" class="hlm" id="hlmBtn" aria-expanded="false" hidden></button><div class="hlopts" id="hlOpts" hidden></div>
   <div class="txt" id="txt"><p class="msg">Opening…</p></div>
   <p class="pace" id="paceRow" hidden><button type="button" class="hlm" id="paceBtn" aria-pressed="false"></button></p>
@@ -425,14 +449,16 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
   // light or dark: the same choice as the main site
   var root=document.documentElement;
   function mode(l){ if(l) root.setAttribute('data-mode','light'); else root.removeAttribute('data-mode'); $('mode').innerHTML=l?'&#9790;&#xFE0E;':'&#9728;&#xFE0E;'; }
-  // today's MannaFish card: open or closed is remembered on this device (a personal convenience)
-  (function(){ var box=$('tfish'); if(!box) return; var tz=''; try{ tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''; }catch(e){}
-    var lang=(ls('mf-lang')==='es')?'es':'en';
+  // Ken, 8 Nov: today's MannaFish on top is the home page's own flip card (an iframe of /?card=1), so it flips and has Word, Verse, Go Fish, Listen and Read exactly as there
+  (function(){ var box=$('tfish'); if(!box) return; var qq=new URLSearchParams(location.search), fq=qq.get('fish')||qq.get('w')||'', lang=(ls('mf-lang')==='es')?'es':'en', f=$('tfF');
+    f.src='/?card=1'+(fq&&fq!=='today'?(/^[a-z]+$/.test(fq)?'&w=':'&fish=')+encodeURIComponent(fq):'')+(qq.get('lang')?'&lang='+encodeURIComponent(qq.get('lang')):'');
     function set(open){ $('tfT').setAttribute('aria-expanded',String(open)); $('tfB').hidden=!open; ls('mf-bible-fish',open?'open':'closed'); }
     $('tfT').addEventListener('click',function(){ set($('tfT').getAttribute('aria-expanded')!=='true'); });
-    fetch('/api/today-fish?tz='+encodeURIComponent(tz)+'&lang='+lang).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){
-      $('tfW').textContent=j.title; $('tfI').src=j.img; $('tfI').alt=j.title+': '+j.ref; $('tfR').textContent=j.ref; box.hidden=false; set(ls('mf-bible-fish')!=='closed'); }).catch(function(){});
-  })();
+    window.addEventListener('message',function(e){ if(e.origin!==location.origin||!e.data||!e.data.mfcard||e.source!==f.contentWindow) return;
+      if(e.data.full){ f.classList.add('full'); document.documentElement.style.overflow='hidden'; } else { f.classList.remove('full'); document.documentElement.style.overflow=''; if(e.data.h>60) f.style.height=e.data.h+'px'; } });
+    var tz=''; try{ tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''; }catch(e){}
+    fetch('/api/today-fish?id='+encodeURIComponent(fq||'today')+'&tz='+encodeURIComponent(tz)+'&lang='+lang).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(j) $('tfW').textContent=j.title; }).catch(function(){});
+    set(ls('mf-bible-fish')!=='closed'); })();
   mode(ls('mf-mode')==='light'); $('mode').addEventListener('click',function(){ var l=root.getAttribute('data-mode')!=='light'; ls('mf-mode',l?'light':'dark'); mode(l); });
 
   var B=[["Genesis",50],["Exodus",40],["Leviticus",27],["Numbers",36],["Deuteronomy",34],["Joshua",24],["Judges",21],["Ruth",4],["1 Samuel",31],["2 Samuel",24],["1 Kings",22],["2 Kings",25],["1 Chronicles",29],["2 Chronicles",36],["Ezra",10],["Nehemiah",13],["Esther",10],["Job",42],["Psalm",150],["Proverbs",31],["Ecclesiastes",12],["Song of Solomon",8],["Isaiah",66],["Jeremiah",52],["Lamentations",5],["Ezekiel",48],["Daniel",12],["Hosea",14],["Joel",3],["Amos",9],["Obadiah",1],["Jonah",4],["Micah",7],["Nahum",3],["Habakkuk",3],["Zephaniah",3],["Haggai",2],["Zechariah",14],["Malachi",4],["Matthew",28],["Mark",16],["Luke",24],["John",21],["Acts",28],["Romans",16],["1 Corinthians",16],["2 Corinthians",13],["Galatians",6],["Ephesians",6],["Philippians",4],["Colossians",4],["1 Thessalonians",5],["2 Thessalonians",3],["1 Timothy",6],["2 Timothy",4],["Titus",3],["Philemon",1],["Hebrews",13],["James",5],["1 Peter",5],["2 Peter",3],["1 John",5],["2 John",1],["3 John",1],["Jude",1],["Revelation",22]];
@@ -537,7 +563,15 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
   // ── where we are ──
   var AT={b:42,c:1,sel:0}, HIST=[];
   var AUTOSAY=0;
-  function go(b,c,v,keep){ bkClose(); var say=AUTOSAY; AUTOSAY=0; stopSay(); closeAct(); closeWc(); if(HLM) hlmEnd(); AT={b:b,c:c,sel:v||0}; OGJ=null; TK={}; ls('mf-bible-last',JSON.stringify({b:b,c:c})); remember(b,c);
+  /* Ken, 8 Nov: on a desktop every book and its chapters sit in the left rail */
+  function dnavSync(){ var el=$('dnav'); if(!el) return; if(!window.matchMedia('(min-width:1000px)').matches){ el.hidden=true; return; } el.hidden=false;
+    if(!el.dataset.built){ el.dataset.built='1'; var h=''; B.forEach(function(bk,i){ if(i===0) h+='<h5>Old Testament</h5>'; if(i===39) h+='<h5>New Testament</h5>'; h+='<div class="dbk" data-i="'+i+'"><button type="button" class="dbb" data-b="'+i+'">'+esc(bk[0])+'</button><div class="dch" hidden></div></div>'; }); el.innerHTML=h;
+      el.addEventListener('click',function(e){ var cc=e.target.closest('[data-c]'), bb=e.target.closest('[data-b]'); if(cc){ go(+cc.dataset.bk,+cc.dataset.c); return; } if(bb){ var i=+bb.dataset.b; if(i===AT.b){ var d=bb.nextElementSibling; d.hidden=!d.hidden; } else go(i,1); } }); }
+    [].forEach.call(el.querySelectorAll('.dbk'),function(d){ var i=+d.dataset.i, on=i===AT.b, ch=d.querySelector('.dch'); d.classList.toggle('on',on);
+      if(on){ if(!ch.dataset.n){ ch.dataset.n='1'; var h2=''; for(var c=1;c<=B[i][1];c++) h2+='<button type="button" data-bk="'+i+'" data-c="'+c+'">'+c+'</button>'; ch.innerHTML=h2; } ch.hidden=false; [].forEach.call(ch.children,function(b2){ b2.classList.toggle('on',+b2.dataset.c===AT.c); }); } else ch.hidden=true; });
+    var cu=el.querySelector('.dbk.on'); if(cu) el.scrollTop=Math.max(0,cu.offsetTop-el.offsetTop-el.clientHeight/4); }
+  window.addEventListener('resize',function(){ dnavSync(); });
+  function go(b,c,v,keep){ bkClose(); var say=AUTOSAY; AUTOSAY=0; stopSay(); closeAct(); closeWc(); if(HLM) hlmEnd(); AT={b:b,c:c,sel:v||0}; try{ dnavSync(); }catch(er){} OGJ=null; TK={}; ls('mf-bible-last',JSON.stringify({b:b,c:c})); remember(b,c);
     whereUI(); htUI(); $('title').textContent=B[b][0]+' '+c; $('sub').textContent=ver().n; document.title=B[b][0]+' '+c+' · MannaFish Bible';
     try{ history.replaceState(null,'','?r='+encodeURIComponent(B[b][0]+' '+c+(v?':'+v:''))+(EMBED?'&embed=1':'')); }catch(e){}
     var pb=c>1?[b,c-1]:b>0?[b-1,B[b-1][1]]:null, nb=c<B[b][1]?[b,c+1]:b<B.length-1?[b+1,1]:null;
@@ -1444,7 +1478,13 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 
   // start: a reference in the link, else where this person last read, else John 1
   var r=parseRef(Q.get('r')||''), last=null; try{ last=JSON.parse(ls('mf-bible-last')||'null'); }catch(e){}
-  if(r) go(r.b,r.c,r.v); else if(last&&B[last.b]) go(last.b,Math.min(last.c,B[last.b][1])); else go(42,1);
+  /* Ken, 8 Nov: from the email or a text (?fish=ID or ?fish=today) the Bible opens at the chapter of that fish's verse */
+  function startDefault(){ if(last&&B[last.b]) go(last.b,Math.min(last.c,B[last.b][1])); else go(42,1); }
+  var FQ=Q.get('fish')||Q.get('w')||'';
+  if(r) go(r.b,r.c,r.v);
+  else if(FQ){ var tz2=''; try{ tz2=Intl.DateTimeFormat().resolvedOptions().timeZone||''; }catch(e){}
+    fetch('/api/today-fish?id='+encodeURIComponent(FQ)+'&tz='+encodeURIComponent(tz2)+'&lang='+((ls('mf-lang')==='es')?'es':'en')).then(function(r2){ if(!r2.ok) throw 0; return r2.json(); }).then(function(j){ var x=parseRef(j.ref); if(x) go(x.b,x.c,x.v); else startDefault(); }).catch(startDefault); }
+  else startDefault();
   if(Q.get('toc')==='1'&&!r){ openPick(); try{ history.replaceState(null,'',location.pathname+location.search.replace(/([?&])toc=1&?/,'$1').replace(/[?&]$/,'')); }catch(e){} }
   // signed in: what comes back from the account shows at once; settings changed on the You page (another tab) too
   function refresh(){ applySet(); studyUI(); cnoteUI(); paint(); marksUI(); if($('pick').classList.contains('open')&&$('pTitle').textContent==='Books') books(($('pFind')||{}).value||''); }
