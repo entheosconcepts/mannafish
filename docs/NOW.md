@@ -4,7 +4,7 @@ Updated 7 Nov 2026. Claude updates this at the end of every job, without being a
 Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live site manna-fish.com is the old decal shop page on `main` until Ken says "push it live".
 
 ## Just finished (8 Nov)
-- Subscribers (an email or text link, or signed up on that phone) now land on the Bible app at the fish's chapter, with the home page's flip card on top (collapsible). Desktop gets a left rail with the card and all the books. Paste note for other sessions: `docs/HANDOFF-PASTE.md`.
+- Subscribers (an email or text link, or signed up on that phone) now land on the Bible app where they last read (Ken, 8 Nov: not at the fish's verse), with a "The Bible" block under the card, with the home page's flip card on top (collapsible). Desktop gets a left rail with the card and all the books. Paste note for other sessions: `docs/HANDOFF-PASTE.md`.
 - Today now opens on today's catch from the one mixed pot of 347 action fish (same as the email); held fish are hidden; Weekly and Monthly emails use the pot.
 
 ## Earlier (7 Nov)

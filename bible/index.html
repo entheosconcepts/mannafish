@@ -327,6 +327,12 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 .dnav .dch button{border:1px solid var(--line);background:var(--card);color:inherit;border-radius:8px;padding:6px 0;font:700 .85rem 'Archivo',sans-serif;cursor:pointer}.dnav .dch button.on{background:var(--blue);border-color:var(--blue);color:#fff}
 /* Ken, 8 Nov: a desktop gets a desktop page: wide, a left rail with today's fish and every book and chapter always in view, labelled buttons, bigger text, columns with room */
 .laysw{display:none}
+.bibhd{text-align:center;margin:4px 0 8px;padding:4px 2px 0}
+.bibhd h2{margin:0;font:700 1.7rem/1.1 'Fraunces',Georgia,serif}
+.bibhd p{margin:6px auto 10px;max-width:520px;color:var(--dim);font-size:.95rem;line-height:1.45}
+.bibact{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.bibact button{border:1px solid var(--line);background:var(--card);color:inherit;border-radius:999px;padding:9px 14px;font:700 .85rem 'Archivo',sans-serif;cursor:pointer;min-height:40px}
+.bibact button:hover{background:var(--card2)}
 @media(min-width:1000px){
 .bar .in{max-width:1360px}
 .bar .ib.sm::after{content:attr(aria-label);font:700 .78rem 'Archivo',sans-serif;margin-left:5px;white-space:nowrap}
@@ -349,7 +355,7 @@ body.lay-c .par .txt,body.lay-c .par3 .txt,body.lay-c .par4 .txt{font-size:calc(
 body.lay-l main{display:grid;grid-template-columns:380px minmax(0,1fr);column-gap:40px;align-items:start;padding-left:28px;padding-right:28px}
 body.lay-l .rail{grid-column:1;grid-row:1 / span 8;position:sticky;top:calc(var(--barh,100px) + 10px);max-height:calc(100vh - var(--barh,100px) - 24px);overflow:hidden;display:flex;flex-direction:column;gap:12px;padding-right:4px}
 body.lay-l .rail .tfish{margin:0;flex:none}
-body.lay-l main>.th,body.lay-l main>.txt,body.lay-l main>.pace,body.lay-l main>#paceRow,body.lay-l main>.pn,body.lay-l main>.note{grid-column:2}
+body.lay-l main>.bibhd,body.lay-l main>.th,body.lay-l main>.txt,body.lay-l main>.pace,body.lay-l main>#paceRow,body.lay-l main>.pn,body.lay-l main>.note{grid-column:2}
 body.lay-l main .txt{font-size:calc(var(--fs,1.18rem) * 1.16);line-height:1.85}
 body.lay-l .par .txt,body.lay-l .par3 .txt,body.lay-l .par4 .txt{font-size:calc(var(--fs,1.18rem) * 1.0);line-height:1.7}
 /* 3. three panes: books on the left, the text in the middle, today's fish on the right */
@@ -357,7 +363,7 @@ body.lay-t main{display:grid;grid-template-columns:270px minmax(0,1fr) 390px;col
 body.lay-t .rail{display:contents}
 body.lay-t .dnav{grid-column:1;grid-row:1 / span 8;position:sticky;top:calc(var(--barh,100px) + 10px);max-height:calc(100vh - var(--barh,100px) - 24px);align-self:start}
 body.lay-t .tfish{grid-column:3;grid-row:1 / span 8;position:sticky;top:calc(var(--barh,100px) + 10px);align-self:start;margin:0}
-body.lay-t main>.th,body.lay-t main>.txt,body.lay-t main>.pace,body.lay-t main>#paceRow,body.lay-t main>.pn,body.lay-t main>.note{grid-column:2}
+body.lay-t main>.bibhd,body.lay-t main>.th,body.lay-t main>.txt,body.lay-t main>.pace,body.lay-t main>#paceRow,body.lay-t main>.pn,body.lay-t main>.note{grid-column:2}
 body.lay-t main .txt{font-size:calc(var(--fs,1.18rem) * 1.2);line-height:1.9}
 body.lay-t .par .txt,body.lay-t .par3 .txt,body.lay-t .par4 .txt{font-size:calc(var(--fs,1.18rem) * .98);line-height:1.7}
 .rail .dnav,.dnav{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:4px 6px 10px;min-height:160px;overflow:auto;overscroll-behavior:contain}
@@ -394,6 +400,12 @@ body.lay-l .rail .dnav{flex:1 1 auto}
     </section>
     <nav class="dnav" id="dnav" aria-label="Books and chapters" hidden></nav>
   </aside>
+  <!-- Ken, 8 Nov: make it clear that under the fish is the entire Bible -->
+  <section class="bibhd" id="bibhd" aria-label="The Bible">
+    <h2>The Bible</h2>
+    <p>All 66 books, in any translation. Read it or listen to it, and put two, three or four translations side by side.</p>
+    <div class="bibact"><button type="button" data-a="books">&#128214; Choose a book</button><button type="button" data-a="ver">&#127760; Translations</button><button type="button" data-a="side">&#10697; Side by side</button><button type="button" data-a="say">&#128266; Listen</button></div>
+  </section>
   <div class="th"><button type="button" class="chv" id="prevT" aria-label="Previous chapter">&lsaquo;</button><h1><button type="button" class="tbtn" id="titleB" aria-haspopup="true" aria-expanded="false" aria-controls="bkDrop" aria-label="Choose a book and chapter"><span id="title"></span><span class="ar" aria-hidden="true">▾</span></button></h1><button type="button" class="chv" id="nextT" aria-label="Next chapter">&rsaquo;</button></div><div class="bkdrop" id="bkDrop" hidden></div><p class="sub" id="sub"></p><div class="ht"><button type="button" class="htb" id="htB" aria-expanded="false">&#129520;&#xFE0E; Bible tools <span class="ar" aria-hidden="true">&#9662;</span></button> <button type="button" class="padd1" id="add2" aria-label="Add a second column to read side by side">&#65291; 2nd</button><div class="htp" id="htP" hidden></div></div><button type="button" class="cn" id="cnote" hidden></button><div class="stb" id="stb" hidden></div><button type="button" class="hlm" id="hlmBtn" aria-expanded="false" hidden></button><div class="hlopts" id="hlOpts" hidden></div>
   <div class="txt" id="txt"><p class="msg">Opening…</p></div>
   <p class="pace" id="paceRow" hidden><button type="button" class="hlm" id="paceBtn" aria-pressed="false"></button></p>
@@ -590,6 +602,11 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   // ── where we are ──
   var AT={b:42,c:1,sel:0}, HIST=[];
   var AUTOSAY=0;
+  $('bibhd').addEventListener('click',function(e){ var b=e.target.closest('[data-a]'); if(!b) return; var a=b.dataset.a;
+    if(a==='books'){ var t=$('titleB'); if(t) t.click(); }
+    else if(a==='ver'){ var v=$('ver'); if(v){ v.scrollIntoView({block:'center'}); try{ v.focus(); if(v.showPicker) v.showPicker(); }catch(er){} } }
+    else if(a==='side'){ var pa=document.querySelector('.padd1,.padd'); if(pa) pa.click(); else toast('Side by side is open: use the + button at the top of the columns.'); }
+    else if(a==='say'){ var sy=$('say'); if(sy) sy.click(); } });
   /* Ken, 8 Nov: three desktop layouts (Centered, Left rail, Three panes); the choice is kept in the settings, so it follows the account */
   (function(){ var sw=$('laySw'); if(!sw) return; var L=SET('lay','c'); if(!/^[clt]$/.test(L)) L='c';
     function apply(l){ L=l; ['c','l','t'].forEach(function(x){ document.body.classList.toggle('lay-'+x,x===l); }); [].forEach.call(sw.querySelectorAll('button'),function(b){ b.setAttribute('aria-pressed',String(b.dataset.lay===l)); }); try{ dnavSync(); }catch(e){} }
@@ -1512,10 +1529,8 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   var r=parseRef(Q.get('r')||''), last=null; try{ last=JSON.parse(ls('mf-bible-last')||'null'); }catch(e){}
   /* Ken, 8 Nov: from the email or a text (?fish=ID or ?fish=today) the Bible opens at the chapter of that fish's verse */
   function startDefault(){ if(last&&B[last.b]) go(last.b,Math.min(last.c,B[last.b][1])); else go(42,1); }
-  var FQ=Q.get('fish')||Q.get('w')||'';
+  /* Ken, 8 Nov: an email, text or notification link opens the Bible app where the person last read (the whole Bible is under the fish); only ?r= opens a verse */
   if(r) go(r.b,r.c,r.v);
-  else if(FQ){ var tz2=''; try{ tz2=Intl.DateTimeFormat().resolvedOptions().timeZone||''; }catch(e){}
-    fetch('/api/today-fish?id='+encodeURIComponent(FQ)+'&tz='+encodeURIComponent(tz2)+'&lang='+((ls('mf-lang')==='es')?'es':'en')).then(function(r2){ if(!r2.ok) throw 0; return r2.json(); }).then(function(j){ var x=parseRef(j.ref); if(x){ go(x.b,x.c,0); setTimeout(function(){ window.scrollTo(0,0); },60); } else startDefault(); }).catch(startDefault); }
   else startDefault();
   if(Q.get('toc')==='1'&&!r){ openPick(); try{ history.replaceState(null,'',location.pathname+location.search.replace(/([?&])toc=1&?/,'$1').replace(/[?&]$/,'')); }catch(e){} }
   // signed in: what comes back from the account shows at once; settings changed on the You page (another tab) too
