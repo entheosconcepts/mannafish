@@ -328,6 +328,8 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 .dnav .dch{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:4px;padding:6px 6px 8px}.dnav .dch[hidden]{display:none}
 .dnav .dch button{border:1px solid var(--line);background:var(--card);color:inherit;border-radius:8px;padding:6px 0;font:700 .85rem 'Archivo',sans-serif;cursor:pointer}.dnav .dch button.on{background:var(--blue);border-color:var(--blue);color:#fff}
 /* Ken, 8 Nov: a desktop gets a desktop page: wide, a left rail with today's fish and every book and chapter always in view, labelled buttons, bigger text, columns with room */
+mark.ph2{border-radius:3px;padding:0 1px;box-decoration-break:clone;-webkit-box-decoration-break:clone}.hlhide mark.ph2{background:transparent!important;color:inherit!important}
+.colrm{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:none;color:inherit;font-size:.9rem;cursor:pointer}
 .laysw{display:none}
 .bibhd{text-align:center;margin:4px 0 8px;padding:4px 2px 0}
 .bibhd h2{margin:0;font:700 1.7rem/1.1 'Fraunces',Georgia,serif}
@@ -419,6 +421,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
 <div class="linkbar" id="linkbar" hidden><b></b><button type="button" class="chip" id="linkX">Cancel</button></div>
 <div class="linkbar" id="hlbar" hidden><b>Tap the ones to remove</b><button type="button" class="chip" id="hlAll">All</button><button type="button" class="chip" id="hlGo" style="background:#e8735c;border-color:#e8735c">Remove</button><button type="button" class="chip" id="hlX">Done</button></div>
 <button type="button" class="histb" id="hist" hidden></button>
+<div class="penbar" id="colbar" hidden><b>&#128397;&#xFE0E; Highlight</b><span id="colDots" style="display:flex;gap:4px;align-items:center"></span><button type="button" class="chip" id="colX">Done</button></div>
 <div class="penbar" id="penbar" hidden><b>&#128397;&#xFE0E; Slide across the words</b><span id="penDots" style="display:flex;gap:4px"></span><button type="button" class="chip" id="penX">Done</button></div>
 <div class="act xrsheet" id="xrs" role="dialog" aria-label="Cross references"><div class="in" id="xrsIn"></div></div>
 <div class="act" id="act" role="dialog" aria-label="Verse"><div class="in"><button type="button" class="actx" id="aClose" aria-label="Close">&#10005;</button>
@@ -567,7 +570,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
     var ph=x?[]:phrases(v,h), at=0, P=[]; ph.forEach(function(p){ var a=Math.max(p.s,at), z=Math.min(p.e,t.length); if(z<=a) return; n++; P.push({k:p.k,c:p.c,s:a,e:z}); at=z; });
     var out=vtHtml(v,t,P,!!x), vt=sp.querySelector('.vt'); if(vt.innerHTML!==out) vt.innerHTML=out; }); if(WC) markWord();
     var hid=hlHid(); $('hlmBtn').hidden=(!n&&!hid)||!!HLM; $('hlmBtn').innerHTML='🖍 '+(n?n+' highlight'+(n===1?'':'s')+(hid?' (hidden)':''):'Highlights hidden')+'<span class="ar" aria-hidden="true">▾</span>';
-    if($('hlmBtn').hidden) hlOpts(false); if(HLM) hlmUI(); }
+    if($('hlmBtn').hidden) hlOpts(false); if(HLM) hlmUI(); colPaint(); }
   // Ken, 1 Nov: "use an arrow to hide or show and add or remove highlights, or just hide/show highlights for all the Bibles"
   function hlHid(){ return ls('mf-hl-hide')==='1'; }
   function hlHide(on){ ls('mf-hl-hide',on?'1':''); document.documentElement.classList.toggle('hlhide',on); paint(); toast(on?'Highlights hidden in every Bible · they are kept':'Highlights showing'); }
@@ -681,7 +684,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
           return '<div class="v2 ogc" data-v="'+v+'" data-pi="'+i+'" lang="'+P.l+'" dir="'+d+'">'+(o?'<span class="vn">'+v+'</span><button type="button" class="ogs" data-ogs="'+v+'" aria-label="Hear verse '+v+' in '+P.s+'">🔊</button>'
             +o.w.map(function(w,j){ return '<span class="ow" data-oi="'+j+'">'+esc(w[0])+'</span>'; }).join(' ')
             +'<span class="otr">'+esc(o.w.map(function(w){ return w[1]; }).join(' '))+'</span>':(x.none&&v===all[0]?'<small>'+P.s+' could not be opened.</small>':''))+'</div>'; }
-        return '<div class="v2" data-v="'+v+'" data-pi="'+i+'" lang="'+vlang(P)+'" dir="'+d+'">'+(x.T[v]?'<span class="vn">'+v+'</span>'+esc(x.T[v]):'')+'</div>'; }).join('')+'</div>'; }).join(''); var mv=$('txt').querySelector('[data-mver]'); if(mv) mv.value=ver().k; xrMark(); }
+        return '<div class="v2" data-v="'+v+'" data-pi="'+i+'" lang="'+vlang(P)+'" dir="'+d+'">'+(x.T[v]?'<span class="vn">'+v+'</span><span class="vt2">'+colHtml(colInfoOf(x,i),v)+'</span>':'')+'</div>'; }).join('')+'</div>'; }).join(''); var mv=$('txt').querySelector('[data-mver]'); if(mv) mv.value=ver().k; xrMark(); }
   $('txt').addEventListener('change',function(e){ var d=e.target.dataset||{};
     if(e.target.dataset&&e.target.dataset.mver){ $('ver').value=e.target.value; $('ver').dispatchEvent(new Event('change')); return; } var p=e.target.dataset&&e.target.dataset.pi; if(p!=null&&e.target.tagName==='SELECT'){ putPar(+p,e.target.value); go(AT.b,AT.c,0,true); htUI(); } });
   // hearing the Hebrew or Greek: tap a word for it alone (and how to say it, and what it means), 🔊 for the verse, ▶ Hear for the chapter
@@ -1067,6 +1070,64 @@ body.lay-l .rail .dnav{flex:1 1 auto}
       saveHls(h); hlTouched(); closeAct(); paint(); toast('Highlight removed'); return; }
     applyHl(colour()); LASTPEN={L:L.map(function(p){ return {v:p.v,s:p.s,e:p.e}; }),at:Date.now()}; }
   // a colour picked just after a slide (within half a minute) changes that highlight too, not only the next one
+
+  // ═══ Ken, 8 Nov: "we need the ability to highlight all columns individually; as it is I can only highlight the first column." ═══
+  // Every column (any version, any chapter) keeps its own highlights: stored in the same list as the first column's (mf-hl, so My highlights and the account see them),
+  // keyed by that column's own chapter and version. Drag across words with the pen on (or press and slide on a phone) to highlight; slide across highlighted words in the same colour to take it off.
+  function colInfoOf(x,i){ if(!x||!x.P||x.P.og) return null; var at=x.P.at||{b:AT.b,c:AT.c}; return {pi:i,x:x,b:at.b,c:at.c,vc:vlang(x.P)+':'+x.P.k,lang:vlang(x.P),re:x.P.k==='kjv'?TOKRE:UNIRE}; }
+  function colInfo(i){ return colInfoOf(PX[i],i); }
+  function colPhrases(h,ci,v){ var pre=plain(ci.b,ci.c,v)+'#', out=[]; Object.keys(h).forEach(function(k){ var y=h[k]; if(y.kind==='phrase'&&y.ver===ci.vc&&String(y.ref).indexOf(pre)===0) out.push({k:k,s:+y.s,e:+y.e,c:HLC[y.c]?y.c:'gold'}); }); return out.sort(function(a,b){ return a.s-b.s; }); }
+  function colHtml(ci,v){ if(!ci) return ''; var t=ci.x.T[v]||'', h=hls(), vx=h[plain(ci.b,ci.c,v)+'|'+ci.vc], mk=function(txt,c,k){ return '<mark class="ph2"'+(k?' data-k="'+esc(k)+'"':'')+' style="background:'+HLC[c]+';color:'+ink(c)+'">'+esc(txt)+'</mark>'; };
+    if(vx){ return mk(t,HLC[vx.c]?vx.c:'gold'); }
+    var out='', at=0; colPhrases(h,ci,v).forEach(function(p){ var a=Math.max(p.s,at), z=Math.min(p.e,t.length); if(z<=a) return; out+=esc(t.slice(at,a))+mk(t.slice(a,z),p.c,p.k); at=z; }); return out+esc(t.slice(at)); }
+  function colPaint(){ [].forEach.call($('txt').querySelectorAll('.v2:not(.ogc)'),function(cell){ var vt=cell.querySelector('.vt2'); if(!vt) return; var ci=colInfo(+cell.dataset.pi); if(!ci) return; var out=colHtml(ci,+cell.dataset.v); if(vt.innerHTML!==out) vt.innerHTML=out; }); }
+  function colSnap(ci,v,s,e){ var t=ci.x.T[v]||'', T=toks(t,ci.re).filter(function(x){ return x.e>s&&x.s<e; }); return T.length?{s:T[0].s,e:T[T.length-1].e}:null; }
+  function colAddPh(h,ci,v,s,e,c){ var t=ci.x.T[v]||'', G=/^[\s\p{P}]*$/u; while(s<e&&/[\s\p{P}]/u.test(t[s])) s++; while(e>s&&/[\s\p{P}]/u.test(t[e-1])) e--; if(e-s<1) return;
+    colPhrases(h,ci,v).forEach(function(x){ if(x.c!==c) return; if((x.s<=e&&x.e>=s)||(x.e<=s&&G.test(t.slice(x.e,s)))||(x.s>=e&&G.test(t.slice(e,x.s)))){ s=Math.min(s,x.s); e=Math.max(e,x.e); unHl(h,x.k); } });
+    var ref=plain(ci.b,ci.c,v)+'#'+s+'-'+e; h[ref+'|'+ci.vc]={kind:'phrase',ref:ref,ver:ci.vc,k:'',i:0,l:ci.lang,v:v,s:s,e:e,c:c,text:t.slice(s,e).slice(0,220),at:Date.now(),bible:1}; }
+  // c = a colour to put on these words, or null to take their highlight off
+  function colApply(rs,c){ var h=hls(); if(c&&ls('mf-hl-hide')==='1'){ ls('mf-hl-hide',''); document.documentElement.classList.remove('hlhide'); }
+    rs.forEach(function(p){ var ci=colInfo(p.pi); if(!ci) return; var t=ci.x.T[p.v]||'', vk=plain(ci.b,ci.c,p.v)+'|'+ci.vc, vx=h[vk];
+      if(vx){ var vc=HLC[vx.c]?vx.c:'gold'; unHl(h,vk); colAddPh(h,ci,p.v,0,p.s,vc); colAddPh(h,ci,p.v,p.e,t.length,vc); }
+      colPhrases(h,ci,p.v).forEach(function(x){ if(x.s<p.e&&x.e>p.s){ unHl(h,x.k); colAddPh(h,ci,p.v,x.s,p.s,x.c); colAddPh(h,ci,p.v,p.e,x.e,x.c); } });
+      if(c) colAddPh(h,ci,p.v,p.s,p.e,c); });
+    if(c) ls('mf-hl-color',c); saveHls(h); hlTouched(); paint(); }
+  function colCovered(rs){ var h=hls(), pc=colour(); return rs.every(function(p){ var ci=colInfo(p.pi); if(!ci) return true; var vx=h[plain(ci.b,ci.c,p.v)+'|'+ci.vc]; if(vx) return (HLC[vx.c]?vx.c:'gold')===pc; var ph=colPhrases(h,ci,p.v);
+      return toks(ci.x.T[p.v]||'',ci.re).filter(function(t){ return t.e>p.s&&t.s<p.e; }).every(function(t){ return ph.some(function(x){ return x.s<t.e&&x.e>t.s&&x.c===pc; }); }); }); }
+  function colPen(rs){ if(colCovered(rs)){ colApply(rs,null); toast('Highlight removed'); } else colApply(rs,colour()); }
+  // where a point on the screen falls in a column's text: {pi, v, o} (o = the letter position in that verse)
+  function colPoint(x,y){ var el=document.elementFromPoint(x,y), cell=el&&el.closest&&el.closest('.v2:not(.ogc)'); if(!cell||!$('txt').contains(cell)) return null; var vt=cell.querySelector('.vt2'); if(!vt) return null;
+    var node=null, off=0; if(document.caretPositionFromPoint){ var cp=document.caretPositionFromPoint(x,y); if(cp){ node=cp.offsetNode; off=cp.offset; } } else if(document.caretRangeFromPoint){ var cr=document.caretRangeFromPoint(x,y); if(cr){ node=cr.startContainer; off=cr.startOffset; } }
+    return {pi:+cell.dataset.pi,v:+cell.dataset.v,o:(node&&vt.contains(node))?offIn(vt,node,off):0}; }
+  function colRange(a,z){ if(a.pi!==z.pi) z={pi:a.pi,v:a.v,o:a.o}; if(a.v>z.v||(a.v===z.v&&a.o>z.o)){ var t=a; a=z; z=t; } var ci=colInfo(a.pi), out=[]; if(!ci) return out;
+    Object.keys(ci.x.T).map(Number).sort(function(p,q){ return p-q; }).forEach(function(v){ if(v<a.v||v>z.v) return; var len=(ci.x.T[v]||'').length, sn=colSnap(ci,v,v===a.v?a.o:0,v===z.v?Math.max(z.o,v===a.v?a.o+1:0):len); if(sn) out.push({pi:a.pi,v:v,s:sn.s,e:sn.e}); }); return out; }
+  // the words picked with a mouse or a long selection (desktop): the ranges, in the one column the selection began in
+  function colSel(){ var sel=window.getSelection(); if(!sel||sel.isCollapsed||!sel.rangeCount) return null; var r=sel.getRangeAt(0); if(!$('txt').contains(r.commonAncestorContainer)) return null; var out=[];
+    [].forEach.call($('txt').querySelectorAll('.v2:not(.ogc)'),function(cell){ var vt=cell.querySelector('.vt2'); if(!vt||!r.intersectsNode(vt)) return; var ci=colInfo(+cell.dataset.pi); if(!ci) return; var v=+cell.dataset.v, t=ci.x.T[v]||'';
+      if(!vt.contains(r.startContainer)&&(vt.compareDocumentPosition(r.startContainer)&Node.DOCUMENT_POSITION_FOLLOWING)) return;   /* this verse is before where the selection starts */
+      var a=vt.contains(r.startContainer)?offIn(vt,r.startContainer,r.startOffset):0, z=vt.contains(r.endContainer)?offIn(vt,r.endContainer,r.endOffset):t.length, sn=colSnap(ci,v,a,z); if(sn) out.push({pi:ci.pi,v:v,s:sn.s,e:sn.e}); });
+    if(!out.length) return null; return out.filter(function(x){ return x.pi===out[0].pi; }); }
+  function colShow(L,c){ if(!HLAPI) return; ['sel'].concat(Object.keys(HLC)).forEach(function(k){ CSS.highlights.delete('mfdrag-'+k); }); if(!L||!L.length) return; c=c||'sel';
+    if(!dgCss){ dgCss={}; var st=document.createElement('style'); st.id='dgCss'; st.textContent='::highlight(mfdrag-sel){background-color:rgba(51,112,255,.38)}'; document.head.appendChild(st); }
+    if(c!=='sel'&&!dgCss[c]){ dgCss[c]=1; $('dgCss').textContent+='::highlight(mfdrag-'+c+'){background-color:'+HLC[c]+';color:#14181c}'; }
+    var hl=new Highlight(); L.forEach(function(p){ var vt=$('txt').querySelector('.v2[data-pi="'+p.pi+'"][data-v="'+p.v+'"] .vt2'), r=vt&&rangeIn(vt,p.s,p.e); if(r) hl.add(r); }); CSS.highlights.set('mfdrag-'+c,hl); }
+  // a slide of a finger (long press first when the pen is off), like the first column
+  var CF=null, COLSEL=null;
+  $('txt').addEventListener('touchstart',function(e){ if(CF){ clearTimeout(CF.tm); CF=null; } if(e.touches.length!==1||LINKING||HLM) return; var t=e.touches[0], p=colPoint(t.clientX,t.clientY); if(!p) return;
+    CF={x:t.clientX,y:t.clientY,a:p,z:p,on:false}; if(!PEN){ var me=CF; CF.tm=setTimeout(function(){ if(CF!==me) return; me.on=true; try{ if(navigator.vibrate) navigator.vibrate(10); }catch(er){} colShow(colRange(me.a,me.z)); },320); } },{passive:true});
+  $('txt').addEventListener('touchmove',function(e){ if(!CF) return; var t=e.touches[0], dx=t.clientX-CF.x, dy=t.clientY-CF.y;
+    if(!CF.on){ if(Math.abs(dx)<8&&Math.abs(dy)<8) return; if(Math.abs(dx)>Math.abs(dy)){ clearTimeout(CF.tm); CF.on=true; } else { clearTimeout(CF.tm); CF=null; return; } }
+    e.preventDefault(); var p=colPoint(t.clientX,t.clientY); if(p&&p.pi===CF.a.pi) CF.z=p; colShow(colRange(CF.a,CF.z),PEN?colour():'sel');
+    var bh=(parseFloat(getComputedStyle(root).getPropertyValue('--barh'))||100)+($('selbar').classList.contains('on')?34:0);
+    if(t.clientY>innerHeight-70) window.scrollBy(0,12); else if(t.clientY<bh+30) window.scrollBy(0,-12); },{passive:false});
+  $('txt').addEventListener('touchend',function(e){ if(!CF) return; clearTimeout(CF.tm); var f=CF; CF=null; if(!f.on) return; if(e.cancelable) e.preventDefault(); TDRAG=Date.now(); colShow(null);
+    var L=colRange(f.a,f.z); if(!L.length) return; closeWc(); if(PEN) colPen(L); else { colApply(L,colour()); COLSEL=L; colBar(true); toast('Highlighted · tap a colour to change it'); } },{passive:false});
+  $('txt').addEventListener('touchcancel',function(){ if(CF){ clearTimeout(CF.tm); CF=null; colShow(null); } });
+  // with a mouse: drag across the words; with the pen on it is highlighted at once, otherwise the colours appear to choose from
+  $('txt').addEventListener('mouseup',function(){ setTimeout(function(){ var rs=colSel(); if(!rs) return; if(PEN){ colPen(rs); try{ window.getSelection().removeAllRanges(); }catch(er){} } else { COLSEL=rs; colBar(true); } },0); });
+  function colBar(on){ var b=$('colbar'); if(!b) return; b.hidden=!on; if(on){ $('colDots').innerHTML=swatches(BASE,colour())+'<button type="button" data-c="" aria-label="Take the highlight off" class="colrm">&#10005;</button>'; } }
+  $('colbar').addEventListener('click',function(e){ var d=e.target.closest('[data-c]'); if(d&&COLSEL){ var c=d.dataset.c; colApply(COLSEL,c||null); if(!c) { COLSEL=null; colBar(false); } else colBar(true); try{ window.getSelection().removeAllRanges(); }catch(er){} return; } if(e.target.closest('#colX')){ COLSEL=null; colBar(false); try{ window.getSelection().removeAllRanges(); }catch(er){} } });
+  window.MFcol={sel:colSel,info:colInfo,apply:colApply,pen:colPen};   /* for testing */
   var LASTPEN=null;
   function penColour(c){ ls('mf-hl-color',c); penUI(); if(LASTPEN&&Date.now()-LASTPEN.at<30000){ PHS=LASTPEN.L; SEL=PHS.map(function(p){ return p.v; }); LASTPEN.at=Date.now(); applyHl(c); } }
   function penUI(){ document.body.classList.toggle('pen',PEN); $('penbar').hidden=!PEN; $('penB').setAttribute('aria-pressed',PEN); $('penB').classList.toggle('on',PEN); if(!PEN) return;
