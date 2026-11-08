@@ -69,7 +69,8 @@ h2{font:400 1.6rem 'MFHobo',cursive;margin:28px 0 10px}.g{display:grid;grid-temp
       M.innerHTML=h+'</div>'; }).catch(function(){ M.innerHTML='<p class="empty">Couldn’t open the year just now.</p>'; });
     M.addEventListener('click',function(e){ var b=e.target.closest('[data-req]'); if(!b) return; if(window.MFfeedback) MFfeedback.open({kind:'design',feature:'The fish',fish:b.dataset.req+' · '+b.dataset.ref}); });
     return; }
-  if(!id){ document.title='The 153 · MannaFish'; fetch('/fish/catch.json').then(function(r){ return r.json(); }).then(function(C){
+  if(!id){ document.title='The 153 · MannaFish'; Promise.all([fetch('/fish/catch.json').then(function(r){ return r.json(); }),fetch('/fish/series.json').then(function(r){ return r.ok?r.json():null; }).catch(function(){ return null; })]).then(function(z){ var C=z[0], U=null; if(z[1]&&z[1].use){ U={}; z[1].use.forEach(function(k){ U[k]=1; }); }   /* Ken, 8 Nov: only the action fish are shown */
+      if(U){ C.net=C.net.filter(function(k){ return U[k]; }); C.designs=(C.designs||[]).filter(function(k){ return U[k]; }); }
       // Ken, 1 Nov: "a list of the fish designs as a printable or digital version where I might be able to edit the design or request changes":
       // 🖨 prints the list; on each fish ✏️ opens it on the edit sheet (/edit/), 💬 sends a change request (feedback, design)
       var card=function(src,href,w,ref,set){ return '<div class="c"><a href="'+href+'"><img loading="lazy" src="'+src+'" alt=""><b>'+esc(w)+'</b><small>'+esc(ref)+'</small></a>'

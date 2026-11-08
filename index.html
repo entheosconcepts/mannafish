@@ -5219,8 +5219,9 @@ window.MF=(function(){
   // Ken, 7 Nov: the fish review page (/fish/review/) is offered here while the site is only the test site, or in Admin view
   function gfReview(){ try{ return /(^|\.)yadamannafishtest\.netlify\.app$/.test(location.hostname)||localStorage.getItem('mf-admin-on')==='1'; }catch(e){ return false; } }
   var NET=null, DES=[];
-  function netLoad(){ return NET?Promise.resolve(NET):Promise.all([fetch('/fish/net.json').then(function(r){ return r.ok?r.json():[]; }),fetch('/fish/designs.json').then(function(r){ return r.ok?r.json():[]; }).catch(function(){ return []; })])
-    .then(function(a){ NET=a[0]; DES=a[1]; return NET; },function(){ return []; }); }
+  function netLoad(){ return NET?Promise.resolve(NET):Promise.all([fetch('/fish/net.json').then(function(r){ return r.ok?r.json():[]; }),fetch('/fish/designs.json').then(function(r){ return r.ok?r.json():[]; }).catch(function(){ return []; }),fetch('/fish/series.json').then(function(r){ return r.ok?r.json():null; }).catch(function(){ return null; })])
+    .then(function(a){ var U=null; if(a[2]&&a[2].use){ U={}; a[2].use.forEach(function(k){ U[k]=1; }); }   /* Ken, 8 Nov: only the action fish (fish/series.json) are shown; the rest are held back */
+      var keep=function(x){ return !U||U[String(x.id).slice(2)]; }; NET=a[0].filter(keep); DES=a[1].filter(keep); return NET; },function(){ return []; }); }
   function netAll(){ return (NET||[]).concat(DES); }
   function gfCatch(d,x){ var T=GFT[MF.lang]||GFT.en, c=d.querySelector('.gfcatch');
     c.innerHTML='<div class="gfbig"><img src="/fish/'+esc(x.id.slice(2))+'.svg" alt=""></div><h3>'+esc(x.word)+'</h3><p class="gfv">“'+esc(x.verse)+'” <b>'+esc(x.ref+(x.ver?' ('+x.ver+')':''))+'</b></p>'

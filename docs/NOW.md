@@ -11,6 +11,7 @@ Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live sit
 - Bible reader: Explain & apply, search, side-by-side columns, ElevenLabs voices (`/voices/`), no phone voice anywhere.
 
 ## Waiting on Ken
+- 365 action words: 222 different words exist; about 143 more are needed (one command a day, none repeated). Say go and Claude drafts candidates (word + KJV verse that contains it) for approval. Also: hide the held fish in the Bible-in-a-year plan too?
 - 318 held fish (Uncategorized): name their series later; decide the 38 "maybe" ones. Only the 347 action fish go in the daily pot now.
 - Weekly / Monthly / Spanish only send the 24: tell Claude your sign-up type and say go to put everything in one pot.
 - **Daily email links are broken** (8 Nov): they go through r.em.manna-fish.com, which shows a Google 404. Needs a fix in Brevo and the manna-fish.com DNS (see DECISIONS.md, 8 Nov). Must be fixed before going live.
