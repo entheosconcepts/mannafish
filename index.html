@@ -635,6 +635,7 @@ section.section.bundles{display:block;margin-top:0}
 .offerbtn.prime{background:var(--brass);border-color:var(--brass);color:#fff}
 .offerbtn .chev{display:inline-block;transition:transform .2s;margin-left:6px}
 .offerbtn.open .chev{transform:rotate(180deg)}
+.merchh{margin:14px 0 0;text-align:center;font:800 1.25rem 'Archivo',system-ui,sans-serif}.merchfields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;min-width:0;max-width:100%}.merchfields label{min-width:0}.merchfields input{width:100%;min-width:0;box-sizing:border-box}.merchck span{min-width:0;overflow-wrap:anywhere}.merchck{max-width:100%;min-width:0}.merchfields[hidden]{display:none}.merchfields label:first-child{grid-column:1/-1}.merchfields .rnote{grid-column:1/-1;margin:0;text-align:center}
 .merchck{display:flex!important;flex-direction:row!important;align-items:flex-start;gap:10px;text-align:left;font:600 .95rem/1.35 'Archivo',sans-serif}.merchck input{width:22px;height:22px;flex:none;margin-top:2px}.merchck small{display:block;opacity:.85;font-weight:500}
 .btn-devo{background:transparent;color:#fff;border:1.5px solid #eaf0f0}
 .btn-devo:hover{background:rgba(255,255,255,.08)}
@@ -1481,7 +1482,7 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 .dgbtn .dgs{font-weight:600;opacity:.9}
 @media(max-width:520px){.dgbtn .dgs{display:none}}
 .offerrow{margin-top:56px!important}
-.offerhd{margin:28px auto 10px;text-align:center}
+.offerhd{margin:22px auto 0;text-align:center}
 .offerttl{margin:0 auto;max-width:560px;font:800 clamp(1.25rem,5.6vw,1.7rem)/1.2 'Archivo',system-ui,sans-serif;color:#fff;text-align:center}
 :root[data-mode="light"] .offerttl{color:#14181d}
 .offerrow.offercap{margin-top:0!important;gap:14px}.offerrow.offercap span{flex:1 1 0;min-width:0;text-align:center;white-space:nowrap;font:700 clamp(.82rem,3.6vw,1rem)/1.3 'Archivo',sans-serif;color:#fff}
@@ -1976,7 +1977,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <div id="readerSlot"></div>
   <!-- Ken, 7 Oct: the two buttons side by side under the fish; the one tapped opens below them. -->
   <!-- Ken, 12 Oct: say what the two buttons are: sign up, it's free -->
-  <div class="offerhd"><h2 class="offerttl">Sign up for The Free<br>MannaFish Devotional &amp;<br>Free MannaFish Merch!</h2></div>
+  <div class="offerhd"></div>
   <!-- Ken, 25 Oct: one clear path for launch -- today's fish, then the free devotional every morning; decals are coming soon -->
   <div class="offerrow offercap"><span>Devotional by email</span><span>Decals: coming soon</span></div>
   <div class="offerrow offerbtns">
@@ -2003,10 +2004,20 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
       <label id="devoEmailL">Email<input name="email" type="email" autocomplete="email" required></label>
       <label id="devoPhoneL" hidden>Mobile<input name="phone" type="tel" autocomplete="tel"></label>
       <p class="wide consent">Free. By signing up for texts, you agree to receive the MannaFish devotional by text (daily, weekly or monthly, as you choose). Msg &amp; data rates may apply. Reply HELP for help, STOP to cancel. <a href="/privacy/">Privacy &amp; Terms</a></p>
-      <label class="wide merchck"><input type="checkbox" name="merch" value="yes"> <span>I would also like free MannaFish merchandise. <small>Free merchandise once a month: we draw one sign-up at random to receive the 2 Fish and 5 Loaves gift basket of MannaFish merchandise and gifts. One basket per household per year.</small></span></label>
+      <!-- Ken, 8 Nov: the free-merch offer lives inside the devotional sign-up, with the address to send it to -->
+      <h3 class="wide merchh">Free MannaFish Merch!</h3>
+      <label class="wide merchck"><input type="checkbox" name="merch" value="yes" id="merchYes"> <span>I would also like free MannaFish merchandise. <small>Free merchandise once a month: we draw one sign-up at random to receive the 2 Fish and 5 Loaves gift basket of MannaFish merchandise and gifts. One basket per household per year.</small></span></label>
+      <div class="wide merchfields" id="merchFields" hidden>
+        <label>Street address<input name="address" autocomplete="street-address"></label>
+        <label>City<input name="city" autocomplete="address-level2"></label>
+        <label>State<input name="state" autocomplete="address-level1"></label>
+        <label>ZIP code<input name="zip" autocomplete="postal-code" inputmode="numeric"></label>
+        <p class="rnote">Only used to send you MannaFish merchandise, never shared or sold. <a href="/privacy/">Privacy &amp; Terms</a></p>
+      </div>
       <button class="btn btn-devo giftsend" type="submit">Send Me the Devotional</button>
     </form>
     <p class="rnote" id="devoFormMsg"></p>
+    <script>(function(){ var c=document.getElementById("merchYes"),f=document.getElementById("merchFields"); if(!c||!f) return; function t(){ f.hidden=!c.checked; [].forEach.call(f.querySelectorAll("input"),function(i){ i.required=c.checked&&(i.name==="address"||i.name==="city"||i.name==="zip"); }); } c.addEventListener("change",t); t(); })();</script>
   </div>
   <div class="giftbox" id="giftBox" hidden>
     <!-- Ken, 3 Nov: "when clicking on Free MannaFish, show Find a MannaFish Hub near you, or Nominate a MannaFish Hub near you" -->
