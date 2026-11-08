@@ -4278,7 +4278,7 @@ window.MF=(function(){
 
   // A shared link opens on its word: /?w=hope or /w/hope/
   (function(){var m=(location.search+location.hash).match(/[?&#]w=([a-z]+)/i); if(m && DATA[m[1].toUpperCase()]) cur=m[1].toUpperCase();
-    else { try{ cur=planFish(); }catch(e){} } })();   /* Ken, 16 Oct: it flashed Hope, then went to Rest -- the page opens on your fish */
+    else { try{ var cc=JSON.parse(localStorage.getItem('mf-catch-today')||'null'); if(cc&&cc.d===new Date().toDateString()&&DATA[cc.k]) cur=cc.k; else cur=planFish(); }catch(e){} } })();   /* Ken, 16 Oct: it flashed Hope, then went to Rest -- the page opens on your fish */
   // Ken, 3 Nov: "today's devo in my inbox went to this" (the fish's own page) -- every fish, the 24 and the 640 more in the daily email,
   // opens here on the Today page: /?fish=D368 (the email adds &devo=1). Its word study is built from the Bible files the site has
   // (the KJV's own alignment to the Hebrew or Greek, Strong's, cross references), so it turns over, and the devotional runs under it.
@@ -4306,7 +4306,13 @@ window.MF=(function(){
           STRONGS[id]=ot?['',num]:[num,'']; SAY.en[id]=[f.title,f.verse,f.ref]; FISH[id]=a[1]; EXTRA[id]=f; return id; }); }); }); }
   (function(){ var m=(location.search+location.hash).match(/[?&#]fish=([A-Za-z0-9]+)/);
     if(!m&&!/[?&#]w=/.test(location.search+location.hash)){ try{ var tf=JSON.parse(localStorage.getItem('mf-today-fish')||'null'); if(tf&&tf.d===new Date().toDateString()&&tf.k) m=[0,tf.k]; }catch(e){} }   // the fish picked in Go Fish, for today
-    if(!m) return;
+    if(!m){ if(/[?&#]w=/.test(location.search+location.hash)) return;
+      /* Ken, 8 Nov: Today opens on today's catch, the same fish as the email and the Bible page card: one mixed pot (the original 24 among them) */
+      var tz=''; try{ tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''; }catch(e){}
+      XF=fetch('/api/today-fish?tz='+encodeURIComponent(tz)+'&lang='+((window.MF&&MF.lang==='es')?'es':'en')).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){
+          var K=String(j.key||''); try{ localStorage.setItem('mf-catch-today',JSON.stringify({d:new Date().toDateString(),k:K})); }catch(e){}
+          if(K===cur) return K; if(DATA[K]){ pick(K,false); return K; } return loadExtra(K).then(function(k){ pick(k,false); return k; }); }).catch(function(){ return null; });
+      return; }
     XF=loadExtra(m[1]).then(function(k){ pick(k,false); if(/[?&]flip=1/.test(location.search)){ $('stage').classList.add('on'); sizeStage(); } return k; }).catch(function(){ return null; }); })();
   if($('shareWord')) $('shareWord').addEventListener('click',function(e){e.stopPropagation();
     var url=location.origin+'/w/'+cur.toLowerCase()+'/', title=DATA[cur].title+' \u2014 a MannaFish word study';

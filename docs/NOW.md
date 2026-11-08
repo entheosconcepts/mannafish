@@ -3,7 +3,10 @@
 Updated 7 Nov 2026. Claude updates this at the end of every job, without being asked. The long history is in `docs/DECISIONS.md` (open it only when a detail is missing).
 Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live site manna-fish.com is the old decal shop page on `main` until Ken says "push it live".
 
-## Just finished (7 Nov)
+## Just finished (8 Nov)
+- Today now opens on today's catch from the one mixed pot of 347 action fish (same as the email); held fish are hidden; Weekly and Monthly emails use the pot.
+
+## Earlier (7 Nov)
 - New card in one command: `node tools/print/new-run.mjs --name ... --logo ... --url ... --word ...` (template `print/templates/sponsor-back.json`, see `print/README.md`). Home sign-up reads "free MannaFish Devotional and merch" with the monthly basket wording.
 - Home page: What is MannaFish? now comes first, then What is 2 Fish?; sign-up heading "Sign up for free MannaFish devo and merch!" with a merch checkbox. Bible page: collapsible Today's MannaFish card (`/api/today-fish`).
 - Print backs (word study, two QR codes, sponsor logo) for K-Tech (Build, R0007) and Market Street Tires (Repair, R0008 English, R0009 Spanish). `/flip/` shows the card front and back in English or Spanish to a customer (admin menu has the link).
@@ -11,6 +14,7 @@ Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live sit
 - Bible reader: Explain & apply, search, side-by-side columns, ElevenLabs voices (`/voices/`), no phone voice anywhere.
 
 ## Waiting on Ken
+- The plan pages (Bible in a year, One word) still use fixed day-by-day fish, 98 and 144 of which are held fish. Fixing them is the same job as the 365 action words (an action word that really is in each day's reading). Say go to draft the 365 list and the plan together.
 - 365 action words: 222 different words exist; about 143 more are needed (one command a day, none repeated). Say go and Claude drafts candidates (word + KJV verse that contains it) for approval. Also: hide the held fish in the Bible-in-a-year plan too?
 - 318 held fish (Uncategorized): name their series later; decide the 38 "maybe" ones. Only the 347 action fish go in the daily pot now.
 - Spanish still sends only the original 24 (the only fish drawn in Spanish). Daily, Weekly and Monthly in English all draw from one mixed pot of the 347 action fish (8 Nov).
