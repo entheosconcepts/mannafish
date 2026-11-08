@@ -4,6 +4,7 @@ Updated 7 Nov 2026. Claude updates this at the end of every job, without being a
 Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live site manna-fish.com is the old decal shop page on `main` until Ken says "push it live".
 
 ## Just finished (8 Nov)
+- Listen now: catch of the day and word, invitation to the Lord, a human prayer (or a quiet pause) with time to pray, the fish and its verse, "now we go deeper" (nine Scriptures on the back), the 2 Fish challenge, then a share panel. Prayers: `/api/prayers`, approve at `/prayers/admin/`.
 - Subscribers (an email or text link, or signed up on that phone) now land on the Bible app where they last read (Ken, 8 Nov: not at the fish's verse), with a "The Bible" block under the card, with the home page's flip card on top (collapsible). Desktop gets a left rail with the card and all the books. Paste note for other sessions: `docs/HANDOFF-PASTE.md`.
 - Today now opens on today's catch from the one mixed pot of 347 action fish (same as the email); held fish are hidden; Weekly and Monthly emails use the pot.
 
@@ -15,6 +16,7 @@ Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live sit
 - Bible reader: Explain & apply, search, side-by-side columns, ElevenLabs voices (`/voices/`), no phone voice anywhere.
 
 ## Waiting on Ken
+- **Write the first 20 to 30 prayers** (human, 15 to 30 words each): paste them at `/prayers/admin/` (admin menu → 🙏 Prayers). Until then the Listen button says "take a quiet moment" with a pause instead of a community prayer. Then listen to the new flow on your phone and tell Claude what to adjust (the pause length, the wording).
 - **The 365 draft** (`docs/365-ACTION-WORDS.md`): approve or strike the 143 new words and their verses. Then Claude draws the new fish and adds them to the pot and the plans.
 - Check on a phone: tap the fish in tomorrow's email; the Today tab at the bottom still goes to `/`, which now bounces a subscriber to the Bible (tell Claude if the Today tab should open the sign-up page instead).
 - The plan pages (Bible in a year, One word) still use fixed day-by-day fish, 98 and 144 of which are held fish. Fixing them is the same job as the 365 action words (an action word that really is in each day's reading). Say go to draft the 365 list and the plan together.

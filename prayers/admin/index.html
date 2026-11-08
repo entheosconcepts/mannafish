@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Prayers · MannaFish</title>
+<link rel="icon" href="/icon-192.png">
+<!-- Ken, 8 Nov: the human-written prayer archive. Prayers sent in by listeners wait here until Ken approves them; Ken adds his own (and the first 20-30) with "Add prayers".
+     Server: /api/prayers (netlify/functions/prayers.mjs). Nothing plays before it is approved. -->
+<style>
+:root{--bg:#000;--card:#0b1620;--line:rgba(200,215,218,.18);--text:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--green:#7fd18b;--red:#e06a64}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,sans-serif}
+main{max-width:820px;margin:0 auto;padding:16px 14px 80px}h1{font-size:1.4rem;margin:6px 0 4px}h2{font-size:1.05rem;margin:22px 0 8px}
+.sub{color:var(--dim);margin:0 0 14px;font-size:.92rem}
+.box{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:12px;margin:0 0 10px}
+.box p{margin:0 0 6px;font:1.05rem/1.45 Georgia,serif}.box small{color:var(--dim)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+button,select{font:inherit;color:inherit}.b{border:1px solid var(--line);background:none;border-radius:999px;padding:8px 14px;font-weight:700;cursor:pointer}
+.b.ok{background:var(--green);border-color:var(--green);color:#000}.b.no{border-color:var(--red);color:var(--red)}.b.p{background:var(--blue);border-color:var(--blue);color:#fff}
+textarea,input{width:100%;background:#000;border:1px solid var(--line);border-radius:10px;padding:10px;color:inherit;font:inherit}
+textarea{min-height:140px}.msg{min-height:1.3em;color:var(--green);margin:8px 0}.msg.err{color:var(--red)}
+.tabs{display:flex;gap:6px;margin:10px 0}.tabs button[aria-pressed=true]{background:rgba(111,155,224,.2);border-color:#6f9be0}
+</style>
+</head>
+<body><main>
+<h1>Prayers</h1>
+<p class="sub">Human-written prayers read before the devotional. Prayers sent in wait here until you approve them. About 15 to 30 words each, 200 characters at most.</p>
+<div id="gate" class="box" hidden><p>Admin password</p><input id="k" type="password" autocomplete="current-password"><div class="row"><button class="b p" id="go" type="button">Open</button></div></div>
+<div id="app" hidden>
+  <div class="tabs" role="group"><button class="b" data-l="en" aria-pressed="true" type="button">English</button><button class="b" data-l="es" aria-pressed="false" type="button">Español</button></div>
+  <p class="msg" id="msg" role="status"></p>
+  <h2>Waiting for you <span id="pc"></span></h2><div id="pend"></div>
+  <h2>Add prayers <span class="sub" style="display:inline">(one per line; approved at once)</span></h2>
+  <div class="box"><textarea id="add" placeholder="One prayer per line. Write them yourself: these are the human prayers."></textarea>
+    <input id="by" placeholder="Name to show (optional, like Ken or a first name)" style="margin-top:8px"><div class="row"><button class="b p" id="addb" type="button">Add these prayers</button></div></div>
+  <h2>In the archive <span id="ac"></span></h2><div id="appr"></div>
+</div>
+</main>
+<script>
+(function(){
+  var $=function(i){ return document.getElementById(i); }, L='en', D=null;
+  function key(){ try{ return localStorage.getItem('mf-admin-key')||''; }catch(e){ return ''; } }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function say(t,err){ $('msg').textContent=t||''; $('msg').className='msg'+(err?' err':''); }
+  function call(o){ return fetch('/api/prayers',{method:'POST',headers:{'content-type':'application/json','x-mf-key':key()},body:JSON.stringify(o)}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||'x'); return j; }); }); }
+  function load(){ if(!key()){ $('gate').hidden=false; $('app').hidden=true; return; }
+    fetch('/api/prayers?admin=1',{headers:{'x-mf-key':key()},cache:'no-store'}).then(function(r){ if(r.status===401){ $('gate').hidden=false; $('app').hidden=true; say('',false); throw 0; } return r.json(); })
+      .then(function(j){ D=j; $('gate').hidden=true; $('app').hidden=false; draw(); }).catch(function(){}); }
+  function draw(){ var pend=D.pending.filter(function(p){ return p.l===L; }), ap=D.approved[L]||[];
+    $('pc').textContent='('+pend.length+')'; $('ac').textContent='('+ap.length+')';
+    $('pend').innerHTML=pend.length?pend.map(function(p){ return '<div class="box" data-id="'+esc(p.id)+'"><p contenteditable="true" spellcheck="true">'+esc(p.text)+'</p><small>'+esc(p.by||'No name')+' · '+esc((p.at||'').slice(0,10))+'</small><div class="row"><button class="b ok" data-a="approve" type="button">Approve</button><button class="b no" data-a="reject" type="button">Reject</button></div></div>'; }).join(''):'<p class="sub">Nothing waiting.</p>';
+    $('appr').innerHTML=ap.length?ap.map(function(p){ return '<div class="box" data-id="'+esc(p.id)+'"><p>'+esc(p.text)+'</p><small>'+esc(p.by||'No name')+'</small><div class="row"><button class="b no" data-a="delete" type="button">Remove</button></div></div>'; }).join(''):'<p class="sub">No prayers yet. Add the first ones above.</p>'; }
+  $('go').onclick=function(){ try{ localStorage.setItem('mf-admin-key',$('k').value.trim()); }catch(e){} load(); };
+  document.querySelector('.tabs').addEventListener('click',function(e){ var b=e.target.closest('[data-l]'); if(!b) return; L=b.dataset.l; [].forEach.call(this.children,function(x){ x.setAttribute('aria-pressed',String(x===b)); }); if(D) draw(); });
+  document.addEventListener('click',function(e){ var b=e.target.closest('[data-a]'); if(!b) return; var box=b.closest('[data-id]'), a=b.dataset.a, text=a==='approve'?box.querySelector('p').textContent.trim():undefined;
+    if(a==='delete'&&!confirm('Remove this prayer from the archive?')) return; say('Saving…');
+    call({action:a,id:box.dataset.id,l:L,text:text}).then(function(){ say('Done.'); load(); }).catch(function(er){ say(er.message==='x'?'Could not save.':er.message,true); }); });
+  $('addb').onclick=function(){ var lines=$('add').value.split('\n').map(function(x){ return x.trim(); }).filter(Boolean); if(!lines.length){ say('Write at least one prayer.',true); return; } var n=0, bad=[];
+    (function next(i){ if(i>=lines.length){ say(n+' added'+(bad.length?'; '+bad.length+' not added: '+bad.join(' | '):'.'),bad.length>0); if(!bad.length) $('add').value=''; load(); return; }
+      call({action:'add',text:lines[i],by:$('by').value.trim(),l:L}).then(function(){ n++; next(i+1); }).catch(function(er){ bad.push('“'+lines[i].slice(0,30)+'…” ('+er.message+')'); next(i+1); }); })(0); };
+  load();
+})();
+</script>
+</body>
+</html>

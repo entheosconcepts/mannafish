@@ -648,6 +648,17 @@ section.section.bundles{display:block;margin-top:0}
 .offerbtn.prime{background:var(--brass);border-color:var(--brass);color:#fff}
 .offerbtn .chev{display:inline-block;transition:transform .2s;margin-left:6px}
 .offerbtn.open .chev{transform:rotate(180deg)}
+.dvpraybtn{margin-top:6px;border:1px solid rgba(255,255,255,.3);background:rgba(245,215,110,.12);color:#f5d76e;border-radius:999px;padding:5px 12px;font:700 .8rem 'Archivo',sans-serif;cursor:pointer}.dvpraybtn[hidden]{display:none}
+.dvpraylink{display:block;margin:10px auto 0;border:0;background:none;color:var(--foam-dim,#9fb2b6);font:600 .85rem 'Archivo',sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.dvshare{position:fixed;left:0;right:0;bottom:0;z-index:200;display:flex;justify-content:center;padding:0 10px max(14px,env(safe-area-inset-bottom))}.dvshare[hidden]{display:none}
+.prsheet{top:0;align-items:flex-end;background:rgba(0,0,0,.6)}
+.dvshare .in{width:min(520px,100%);background:#0e1116;color:#eaf0f0;border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:16px 16px 12px;text-align:center;box-shadow:0 -10px 40px rgba(0,0,0,.6)}
+.dvshare .in>b{display:block;font:800 1.1rem 'Archivo',sans-serif;margin-bottom:10px}
+.dvsb{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}.dvsb .dgbtn{flex:1 1 120px;text-align:center;text-decoration:none;display:inline-block}
+.dvsm{color:#9fb2b6;font-size:.85rem;margin:8px 0;min-height:1.1em}
+.dvsx{margin-top:8px;border:0;background:none;color:#9fb2b6;font:700 .9rem 'Archivo',sans-serif;cursor:pointer;padding:8px 12px}
+.prsheet textarea,.prsheet input[type=text],.prsheet input:not([type]){width:100%;background:#000;color:inherit;border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:10px;font:inherit;margin-top:6px}
+.prown{display:flex;gap:8px;align-items:flex-start;text-align:left;margin:10px 0 0;font:600 .9rem 'Archivo',sans-serif}.prown input{width:20px;height:20px;flex:none;margin-top:2px}
 .merchh{margin:14px 0 0;text-align:center;font:800 1.25rem 'Archivo',system-ui,sans-serif}.merchfields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;min-width:0;max-width:100%}.merchfields label{min-width:0}.merchfields input{width:100%;min-width:0;box-sizing:border-box}.merchck span{min-width:0;overflow-wrap:anywhere}.merchck{max-width:100%;min-width:0}.merchfields[hidden]{display:none}.merchfields label:first-child{grid-column:1/-1}.merchfields .rnote{grid-column:1/-1;margin:0;text-align:center}
 .card .nav,.card section:not(#today),.card footer,.card .mfbkfab,.card #resumeBar,.card .offerhd,.card .offerrow,.card .giftbox{display:none!important}
 html.card,html.card body{margin:0!important;padding:0!important;max-width:none!important;width:100%!important;background:#000}.card .mf{margin:0!important;padding:0!important;max-width:none!important;width:100%!important}.card .wrap,.card .hero .wrap.today{padding-left:4px!important;padding-right:4px!important;max-width:none!important;width:100%!important;box-sizing:border-box}.card .stage-col,.card .stage{max-width:100%!important}.card .hero{padding-top:6px!important;padding-bottom:10px!important}
@@ -1936,7 +1947,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
 
   <div class="fishspk" id="spkMain"><button class="spk" type="button" data-part="word"><span aria-hidden="true">&#128266;</span> <span class="spkw">Word</span></button><span class="spklang" id="spkLang"></span><button class="spk" type="button" data-part="verse"><span aria-hidden="true">&#128266;</span> <span class="spkv">Verse</span></button></div>
   <!-- Ken, 12 Oct: "the main impression is that this is a devotional": under the fish, listen or read it; the free offers move down -->
-  <div class="devogo" translate="no"><span class="devogok" id="dgK">Today’s devotional</span><div class="devogor"><button type="button" class="dgbtn" id="dgListen"></button><button type="button" class="dgbtn" id="dgRead"></button></div></div>
+  <div class="devogo" translate="no"><span class="devogok" id="dgK">Today’s devotional</span><div class="devogor"><button type="button" class="dgbtn" id="dgListen"></button><button type="button" class="dgbtn" id="dgRead"></button></div><button type="button" class="dvpraylink" id="dvPrayLink">&#128591;&#xFE0E; Add a prayer for others to hear</button></div>
   <div class="saybox" id="sayMain" hidden></div>
   <div class="sharerow"><span class="rnote" id="shareMsg"></span></div>
   <!-- Ken, 7 Oct: hear the verse, and keep notes (typed or spoken). Notes stay on this device until accounts come. -->
@@ -2332,7 +2343,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
      bottom of the screen: play / pause, a verse back or forward, a bar to move through the chapter, speed and voice. -->
 <div class="mfplayer" id="mfPlayer" hidden role="region" aria-label="Read aloud">
   <button type="button" class="mpgrab" id="mpMin" aria-label="Make smaller"><span></span><svg class="ga" viewBox="0 0 24 12" aria-hidden="true"><path d="M5 9.5l7-6 7 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-  <div class="mphead"><div class="mpt" id="mpTitle"></div><div class="mps" id="mpSub"></div></div>
+  <div class="mphead"><div class="mpt" id="mpTitle"></div><div class="mps" id="mpSub"></div><button type="button" class="dvpraybtn" id="dvPrayBtn" hidden>&#128591;&#xFE0E; Add a prayer</button></div>
   <div class="mpctl">
     <button type="button" class="mpb" id="mpPrev" aria-label="Back one verse"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6 3 12l8 6zM21 6l-8 6 8 6z" fill="currentColor"/></svg></button>
     <button type="button" class="mpb mpplay" id="mpPlay" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true" id="mpIco"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg></button>
@@ -2915,7 +2926,13 @@ window.MF=(function(){
     var pr=a.play(); if(pr&&pr.then) pr.then(function(){ a.__ok=true; }).catch(function(){}); }
   ['touchend','click'].forEach(function(ev){ document.addEventListener(ev,auUnlock,true); });
   var SAYC={}, SAYQ=[];
-  function sayUrl(text,L,v){ var k=L+'|'+v+'|'+text; if(SAYC[k]) return SAYC[k];
+  // Ken, 8 Nov: a part written "⏸12" is twelve seconds of quiet (the pause for prayer in the devotional), not spoken
+  var SILC={};
+  function silentUrl(sec){ if(SILC[sec]) return SILC[sec]; var rate=8000,n=rate*sec,b=new ArrayBuffer(44+n),v=new DataView(b);
+    function w(o,t){ for(var i=0;i<t.length;i++) v.setUint8(o+i,t.charCodeAt(i)); } w(0,'RIFF'); v.setUint32(4,36+n,true); w(8,'WAVE'); w(12,'fmt '); v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true); v.setUint32(24,rate,true); v.setUint32(28,rate,true); v.setUint16(32,1,true); v.setUint16(34,8,true); w(36,'data'); v.setUint32(40,n,true);
+    new Uint8Array(b,44).fill(128); return SILC[sec]=URL.createObjectURL(new Blob([b],{type:'audio/wav'})); }
+  function sayUrl(text,L,v){ var pm=/^\u23F8(\d+)/.exec(text); if(pm) return Promise.resolve(silentUrl(Math.min(60,+pm[1])));
+    var k=L+'|'+v+'|'+text; if(SAYC[k]) return SAYC[k];
     var pr=fetch('/api/say?t='+encodeURIComponent(text)+'&l='+encodeURIComponent(L)+'&v='+encodeURIComponent(v)).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){ return URL.createObjectURL(b); });
     pr.catch(function(){ delete SAYC[k]; }); SAYC[k]=pr; SAYQ.push(k);
     if(SAYQ.length>40){ var old=SAYQ.shift(), op=SAYC[old]; delete SAYC[old]; if(op) op.then(function(u){ setTimeout(function(){ URL.revokeObjectURL(u); },60000); }).catch(function(){}); }
@@ -3964,21 +3981,77 @@ window.MF=(function(){
   // Read turns the card over to the word study.
   var DV={on:false,k:null,n:0};
   function dvTurn(on){ var st=$('stage'); if(st.classList.contains('on')!==on){ st.classList.toggle('on',on); sizeStage(); } }
-  function dvLines(k){ var l=MF.lang, sy=(SAY[l]&&SAY[l][k])||SAY.en[k], d=DATA[k], m=meansIn(l,k), L=studyLabels(l), w=titleIn(l,k), T=(DEVO[l]||DEVO.en);
-    var out=[w+'. '+sy[1]+' '+sy[2]+'.'];
-    if(d.gkw) out.push(L.gk+': '+d.gkw+', '+d.gks+'. '+m[0]); if(d.hbw) out.push(L.hb+': '+d.hbw+', '+d.hbs+'. '+m[1]);
-    var refs=(d.refs||[]).slice(0,9);
-    return Promise.all(refs.map(function(r,i){ var pr=parseRef(r[0]), lab=refLab(l,k,i);
-      return (pr?chGet(pr,l).then(function(ct){ var v=ct[+pr.vs-1]; return v?lab+'. '+v:lab+'. '+refSnip(l,k,i); }):Promise.reject()).catch(function(){ return lab+'. '+refSnip(l,k,i); }); }))
-      .then(function(R2){ return out.concat(R2); }); }
-  function dvListen(){ var k=cur; if(PL.src===$('dgListen')&&!$('mfPlayer').hidden){ plToggle(); return; } auUnlock&&auUnlock(); dvTurn(false);
+  // Ken, 8 Nov: the order of the Listen button: the catch of the day and its word, an invitation to the Lord, a prayer written by a person (never AI) with
+  // time to pray, then the fish and its verse, then "deeper": the back of the fish with the Greek, the Hebrew and nine Scriptures, then the 2 Fish challenge
+  // and how to share it. Prayers come from the archive (/api/prayers); anyone can add one with the praying hands (it waits for Ken to approve it).
+  var NUMW={en:['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'],es:['cero','una','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez','once','doce']};
+  var DVT={"en":{ann:"Today’s catch of the day. The word of the day is {w}.",inv:"Let’s take a moment. Acknowledge the Lord, and invite Him into your thoughts and into your situation right now. Ask Him to fill you with the Holy Spirit, and to give you eyes to see and ears to hear what He wants to say to you through His word.",
+      not:"This next prayer was not written by AI. It was written by a brother or sister in the MannaFish community, to help get you started. If you would like to add yours, tap the praying hands.",pray:"Now pray in your own words, or agree with this prayer.",prayq:"Take a quiet moment to pray in your own words.",
+      fish:"Today’s MannaFish is {w}.",deep:"Now we go deeper. On the back of this MannaFish {are} {n} {scr}.",
+      end:"That is today’s MannaFish. If you hear a verse you would like to go back to, tap it. The vision of MannaFish is to feed yourself first, and then share it with someone else. That is the 2 Fish challenge. Give a man a fish, and you feed him for a day: that is what this is. We are giving you a free MannaFish. Teach a man 2 Fish, and you feed him for life. This is where the miracle of multiplication happens. To share this fish, tap Share below, and send it by text or email, or send the link to a friend.",
+      sc1:"Scripture",scn:"Scriptures",is:"is",ar:"are",share:"Share today’s MannaFish",text:"Text it",mail:"Email it",copy:"Copy the link",more:"Share…",copied:"Link copied",msg:"Today’s MannaFish: {w} ({ref}). “{v}”",subj:"A MannaFish for you",close:"Done",
+      add:"Add a prayer",addh:"Add a prayer for others to hear",addp:"A short prayer in your own words (5 to 10 seconds to say, 200 characters at most).",addn:"Your first name (optional)",addo:"I wrote this prayer myself, not with AI.",send:"Send",thanks:"Thank you. We read every prayer before it is shared.",addt:"These prayers are written by people in the MannaFish community, not by AI."},
+    "es":{ann:"La pesca del día de hoy. La palabra del día es {w}.",inv:"Tomemos un momento. Reconoce al Señor e invítalo a tus pensamientos y a tu situación ahora mismo. Pídele que te llene del Espíritu Santo y que te dé ojos para ver y oídos para oír lo que quiere decirte por medio de su palabra.",
+      not:"Esta oración no fue escrita por inteligencia artificial. La escribió un hermano o una hermana de la comunidad de MannaFish para ayudarte a comenzar. Si quieres añadir la tuya, toca las manos en oración.",pray:"Ahora ora con tus propias palabras, o une tu corazón a esta oración.",prayq:"Toma un momento en silencio para orar con tus propias palabras.",
+      fish:"El MannaFish de hoy es {w}.",deep:"Ahora vamos más profundo. En el reverso de este MannaFish {are} {n} {scr}.",
+      end:"Ese es el MannaFish de hoy. Si escuchas un versículo al que quieras volver, tócalo. La visión de MannaFish es alimentarte primero a ti mismo y luego compartirlo con otra persona. Ese es el desafío de los 2 Fish. Dale un pescado a un hombre y lo alimentas por un día: eso es esto. Te estamos regalando un MannaFish gratis. Enséñale a un hombre 2 Fish y lo alimentas de por vida. Aquí es donde ocurre el milagro de la multiplicación. Para compartir este pez, toca Compartir abajo y envíalo por mensaje de texto o correo, o manda el enlace a un amigo.",
+      sc1:"Escritura",scn:"Escrituras",is:"hay",ar:"hay",share:"Comparte el MannaFish de hoy",text:"Por mensaje",mail:"Por correo",copy:"Copiar el enlace",more:"Compartir…",copied:"Enlace copiado",msg:"El MannaFish de hoy: {w} ({ref}). “{v}”",subj:"Un MannaFish para ti",close:"Listo",
+      add:"Añadir una oración",addh:"Añade una oración para que otros la escuchen",addp:"Una oración corta con tus palabras (5 a 10 segundos, 200 caracteres como máximo).",addn:"Tu nombre (opcional)",addo:"Escribí esta oración yo mismo, sin IA.",send:"Enviar",thanks:"Gracias. Leemos cada oración antes de compartirla.",addt:"Estas oraciones las escriben personas de la comunidad de MannaFish, no la IA."}};
+  function dvT(){ return DVT[MF.lang]||null; }
+  function dvLines(k){ var l=MF.lang, sy=(SAY[l]&&SAY[l][k])||SAY.en[k], d=DATA[k], m=meansIn(l,k), L=studyLabels(l), w=titleIn(l,k), T=dvT(), pre=[], g=(d.gkw?1:0)+(d.hbw?1:0), refs=(d.refs||[]).slice(0,9);
+    var fishLine=w+'. '+sy[1]+' '+sy[2]+'.', back=[];
+    if(d.gkw) back.push(L.gk+': '+d.gkw+', '+d.gks+'. '+m[0]); if(d.hbw) back.push(L.hb+': '+d.hbw+', '+d.hbs+'. '+m[1]);
+    var prayerP=T?fetch('/api/prayers?l='+(l==='es'?'es':'en')+'&last='+encodeURIComponent(lsGet('mf-prayer-last')||'')).then(function(r){ return r.ok?r.json():{prayer:null}; }).then(function(j){ return j.prayer||null; }).catch(function(){ return null; }):Promise.resolve(null);
+    return prayerP.then(function(pr){
+      return Promise.all(refs.map(function(r,i){ var p2=parseRef(r[0]), lab=refLab(l,k,i);
+        return (p2?chGet(p2,l).then(function(ct){ var v=ct[+p2.vs-1]; return v?lab+'. '+v:lab+'. '+refSnip(l,k,i); }):Promise.reject()).catch(function(){ return lab+'. '+refSnip(l,k,i); }); }))
+      .then(function(R2){
+        if(!T){ DV.pre=0; DV.g=g; DV.nrefs=R2.length; DV.intro=false; return [fishLine].concat(back).concat(R2); }
+        var out=[T.ann.replace('{w}',w),T.inv];
+        if(pr){ lsPut('mf-prayer-last',pr.id); out.push(T.not,pr.text,T.pray,'⏸12'); } else out.push(T.prayq,'⏸12');
+        DV.pre=out.length; DV.g=g; DV.nrefs=R2.length; DV.intro=true;
+        var nw=(NUMW[l]||NUMW.en)[R2.length]||String(R2.length);
+        out.push(T.fish.replace('{w}',w)+' '+sy[1]+' '+sy[2]+'.',T.deep.replace('{are}',R2.length===1?T.is:T.ar).replace('{n}',nw).replace('{scr}',R2.length===1?T.sc1:T.scn));
+        out=out.concat(back).concat(R2); out.push(T.end); return out; }); }); }
+  function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function lsPut(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function dvListen(){ var k=cur; if(PL.src===$('dgListen')&&!$('mfPlayer').hidden){ plToggle(); return; } auUnlock&&auUnlock(); dvTurn(false); dvShareClose();
     try{ $('stage').scrollIntoView({block:'start',behavior:'smooth'}); }catch(e){}
-    dvLines(k).then(function(t){ if(k!==cur) return; DV={on:true,k:k,n:0};
+    dvLines(k).then(function(t){ if(k!==cur) return; DV.on=true; DV.k=k; DV.n=0; DV.shared=false;
       openPlayer({ctx:{root:SECR,data:{l:MF.lang,t:t},box:null},src:$('dgListen'),start:1,unit:'part',title:titleIn(MF.lang,k)+' · '+((PTS[MF.lang]||PTS.en).k_welcome||'Today’s MannaFish')}); $('mfPlayer').classList.add('mini'); plStart(1); }); }
-  // as it reads: the front for the verse, then the back, with the Scripture being read lit up
-  window.MFdvSync=function(){ if(!DV.on) return; if(PL.src!==$('dgListen')||$('mfPlayer').hidden){ DV.on=false; document.querySelectorAll('#stage .ref.saying').forEach(function(e){ e.classList.remove('saying'); }); return; }
-    var n=PL.n, d=DATA[DV.k]||{}, g=(d.gkw?1:0)+(d.hbw?1:0); dvTurn(n>1);
-    document.querySelectorAll('#stage .ref').forEach(function(e){ var i=+e.getAttribute('data-i'); e.classList.toggle('saying',n>1+g&&i===n-2-g); }); };
+  // as it reads: the front for the verse, then the back, with the Scripture being read lit up; at the end, the share panel
+  window.MFdvSync=function(){ var pb=$('dvPrayBtn'); if(!DV.on){ if(pb) pb.hidden=true; return; }
+    if(PL.src!==$('dgListen')||$('mfPlayer').hidden){ DV.on=false; if(pb) pb.hidden=true; document.querySelectorAll('#stage .ref.saying').forEach(function(e){ e.classList.remove('saying'); }); return; }
+    var n=PL.n, pre=DV.pre||0; if(pb) pb.hidden=!(DV.intro&&n<=pre);
+    dvTurn(DV.intro?n>pre+1:n>1);
+    var first=DV.intro?pre+3+(DV.g||0):2+(DV.g||0);
+    document.querySelectorAll('#stage .ref').forEach(function(e){ var i=+e.getAttribute('data-i'); e.classList.toggle('saying',n>=first&&i===n-first); });
+    if(PL.done&&DV.intro&&!DV.shared){ DV.shared=true; dvShareOpen(); } };
+  // ── share the fish at the end of the devotional
+  function dvShareLink(k){ return location.origin+(DATA[k]?'/?w='+k.toLowerCase():'/?fish='+k); }
+  function dvShareClose(){ var e=$('dvShare'); if(e) e.hidden=true; }
+  function dvShareOpen(){ var T=dvT(); if(!T) return; var k=DV.k||cur, sy=(SAY[MF.lang]&&SAY[MF.lang][k])||SAY.en[k], w=titleIn(MF.lang,k), url=dvShareLink(k), body=T.msg.replace('{w}',w).replace('{ref}',sy[2]).replace('{v}',sy[1])+' '+url, e=$('dvShare');
+    if(!e){ e=document.createElement('div'); e.id='dvShare'; e.className='dvshare'; e.setAttribute('role','dialog'); e.setAttribute('aria-modal','false'); document.body.appendChild(e); }
+    e.innerHTML='<div class="in"><b>'+esc(T.share)+'</b><div class="dvsb">'
+      +'<a class="dgbtn" href="sms:?&body='+encodeURIComponent(body)+'">'+esc(T.text)+'</a><a class="dgbtn" href="mailto:?subject='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(T.mail)+'</a>'
+      +'<button type="button" class="dgbtn" data-a="copy">'+esc(T.copy)+'</button>'+(navigator.share?'<button type="button" class="dgbtn" data-a="share">'+esc(T.more)+'</button>':'')+'</div><p class="dvsm" id="dvShareMsg"></p><button type="button" class="dvsx" data-a="x">'+esc(T.close)+'</button></div>';
+    e.hidden=false; e._u=url; e._b=body; e._t=T; }
+  document.addEventListener('click',function(ev){ var e=$('dvShare'); if(!e||e.hidden) return; var b=ev.target.closest('#dvShare [data-a]'); if(!b) return; var a=b.dataset.a;
+    if(a==='x') e.hidden=true; else if(a==='copy'){ try{ navigator.clipboard.writeText(e._u).then(function(){ $('dvShareMsg').textContent=e._t.copied; }); }catch(er){ window.prompt('',e._u); } }
+    else if(a==='share'){ try{ navigator.share({title:e._t.subj,text:e._b.replace(' '+e._u,''),url:e._u}).catch(function(){}); }catch(er){} } });
+  // ── the praying hands: add a prayer (it waits for Ken to approve it; never AI)
+  function prOpen(){ var T=dvT()||DVT.en, e=$('prSheet');
+    if(!e){ e=document.createElement('div'); e.id='prSheet'; e.className='dvshare prsheet'; e.setAttribute('role','dialog'); e.setAttribute('aria-modal','true'); document.body.appendChild(e); }
+    e.innerHTML='<div class="in"><b>'+esc(T.addh)+'</b><p class="dvsm">'+esc(T.addt)+'</p><textarea id="prText" maxlength="200" rows="4" placeholder="'+esc(T.addp)+'"></textarea><div class="dvsm"><span id="prCount">0</span> / 200</div>'
+      +'<input id="prBy" maxlength="40" placeholder="'+esc(T.addn)+'" autocomplete="given-name"><label class="prown"><input type="checkbox" id="prOwn"> <span>'+esc(T.addo)+'</span></label><p class="dvsm" id="prMsg" role="status"></p>'
+      +'<div class="dvsb"><button type="button" class="dgbtn" data-p="send">'+esc(T.send)+'</button><button type="button" class="dvsx" data-p="x">'+esc(T.close)+'</button></div></div>'; e.hidden=false; e._T=T;
+    var ta=$('prText'); ta.addEventListener('input',function(){ $('prCount').textContent=ta.value.length; }); setTimeout(function(){ try{ ta.focus(); }catch(er){} },60); }
+  document.addEventListener('click',function(ev){ var b=ev.target.closest('#prSheet [data-p]'); if(!b){ if(ev.target.closest('#dvPrayBtn,#dvPrayLink')) prOpen(); return; } var e=$('prSheet'), a=b.dataset.p;
+    if(a==='x'){ e.hidden=true; return; }
+    var T=e._T, txt=$('prText').value.trim(), own=$('prOwn').checked; if(txt.length<15){ $('prMsg').textContent=MF.lang==='es'?'Escribe un poco más.':'Please write a little more.'; return; } if(!own){ $('prMsg').textContent=T.addo; return; }
+    $('prMsg').textContent='…'; fetch('/api/prayers',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({text:txt,by:$('prBy').value.trim(),l:MF.lang==='es'?'es':'en',own:true})})
+      .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||'x'); return j; }); }).then(function(){ $('prMsg').textContent=T.thanks; $('prText').value=''; setTimeout(function(){ e.hidden=true; },2600); })
+      .catch(function(er){ $('prMsg').textContent=(er&&er.message&&er.message!=='x')?er.message:'Could not send it. Please try again.'; }); });
   $('dgListen').addEventListener('click',dvListen);
   $('dgRead').addEventListener('click',function(){ if(PT.on) ptClose(); dvTurn(true); try{ $('stage').scrollIntoView({block:'start',behavior:'smooth'}); }catch(e){} });
   // ── The fishing excursion (Ken, 12 Oct): a sponsor stocks the pond; each gift takes two fish; one gift per home
