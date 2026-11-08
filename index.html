@@ -4000,7 +4000,9 @@ window.MF=(function(){
   function dvT(){ return DVT[MF.lang]||null; }
   function dvLines(k){ var l=MF.lang, sy=(SAY[l]&&SAY[l][k])||SAY.en[k], d=DATA[k], m=meansIn(l,k), L=studyLabels(l), w=titleIn(l,k), T=dvT(), pre=[], g=(d.gkw?1:0)+(d.hbw?1:0), refs=(d.refs||[]).slice(0,9);
     var fishLine=w+'. '+sy[1]+' '+sy[2]+'.', back=[];
-    if(d.gkw) back.push(L.gk+': '+d.gkw+', '+d.gks+'. '+m[0]); if(d.hbw) back.push(L.hb+': '+d.hbw+', '+d.hbs+'. '+m[1]);
+    /* Ken, 8 Nov: "I heard the Greek introduced but not the Hebrew": each is introduced in words ("In Hebrew, the word is paw-LAL. It means ...") and read by its sounded-out spelling, not the Hebrew or Greek letters, which the voice swallowed the introduction around */
+    var say2=function(lab,w,sound,mean){ return l==='es'?('En '+String(lab).toLowerCase()+', la palabra es '+sound+'. Significa: '+mean):('In '+lab+', the word is '+sound+'. It means: '+mean); };
+    if(d.gkw) back.push(T?say2(L.gk,d.gkw,d.gks,m[0]):L.gk+': '+d.gkw+', '+d.gks+'. '+m[0]); if(d.hbw) back.push(T?say2(L.hb,d.hbw,d.hbs,m[1]):L.hb+': '+d.hbw+', '+d.hbs+'. '+m[1]);
     var prayerP=T?fetch('/api/prayers?l='+(l==='es'?'es':'en')+'&last='+encodeURIComponent(lsGet('mf-prayer-last')||'')).then(function(r){ return r.ok?r.json():{prayer:null}; }).then(function(j){ return j.prayer||null; }).catch(function(){ return null; }):Promise.resolve(null);
     return prayerP.then(function(pr){
       return Promise.all(refs.map(function(r,i){ var p2=parseRef(r[0]), lab=refLab(l,k,i);
