@@ -326,17 +326,42 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 .dnav .dch{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:4px;padding:6px 6px 8px}.dnav .dch[hidden]{display:none}
 .dnav .dch button{border:1px solid var(--line);background:var(--card);color:inherit;border-radius:8px;padding:6px 0;font:700 .85rem 'Archivo',sans-serif;cursor:pointer}.dnav .dch button.on{background:var(--blue);border-color:var(--blue);color:#fff}
 /* Ken, 8 Nov: a desktop gets a desktop page: wide, a left rail with today's fish and every book and chapter always in view, labelled buttons, bigger text, columns with room */
+.laysw{display:none}
 @media(min-width:1000px){
 .bar .in{max-width:1360px}
 .bar .ib.sm::after{content:attr(aria-label);font:700 .78rem 'Archivo',sans-serif;margin-left:5px;white-space:nowrap}
 .bar .ib.sm{padding:0 12px}
-main{max-width:1360px;display:grid;grid-template-columns:380px minmax(0,1fr);column-gap:40px;align-items:start;padding-left:28px;padding-right:28px}
-.rail{grid-column:1;grid-row:1 / span 8;position:sticky;top:calc(var(--barh,100px) + 10px);max-height:calc(100vh - var(--barh,100px) - 24px);overflow:hidden;display:flex;flex-direction:column;gap:12px;padding-right:4px}
-.rail .tfish{margin:0;flex:none}.rail .dnav{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:4px 6px 10px;min-height:160px;flex:1 1 auto;overflow:auto;overscroll-behavior:contain}
-main>.th,main>.txt,main>.pace,main>#paceRow,main>.pn,main>.note{grid-column:2}
-main .txt{font-size:calc(var(--fs,1.18rem) * 1.12);line-height:1.8}
-.par .txt,.par3 .txt,.par4 .txt{font-size:calc(var(--fs,1.18rem) * 1.0);line-height:1.7}
+.laysw{display:inline-flex;flex:none;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-left:6px}
+.laysw button{border:0;background:none;color:var(--dim);padding:0 12px;height:38px;font:700 .8rem 'Archivo',sans-serif;cursor:pointer;white-space:nowrap}
+.laysw button[aria-pressed=true]{background:var(--sel);color:var(--text)}
 .par .txt .pr{gap:0 28px}.phd{gap:28px}
+/* Ken, 8 Nov: three desktop layouts to choose from (the choice is kept): Centered (as before, but larger), Left rail, Three panes */
+main{max-width:1360px}
+/* 1. centered: one column in the middle, big easy text, today's fish above it, books from the Books button */
+body.lay-c main{max-width:940px;display:block}
+body.lay-c.par main{max-width:1260px}
+body.lay-c .rail{display:block;position:static;max-height:none;overflow:visible}
+body.lay-c .dnav{display:none!important}
+body.lay-c .tfish{max-width:540px;margin:6px auto 16px}
+body.lay-c main .txt{font-size:calc(var(--fs,1.18rem) * 1.32);line-height:1.95}
+body.lay-c .par .txt,body.lay-c .par3 .txt,body.lay-c .par4 .txt{font-size:calc(var(--fs,1.18rem) * 1.08);line-height:1.75}
+/* 2. left rail: today's fish and every book on the left, the text on the right */
+body.lay-l main{display:grid;grid-template-columns:380px minmax(0,1fr);column-gap:40px;align-items:start;padding-left:28px;padding-right:28px}
+body.lay-l .rail{grid-column:1;grid-row:1 / span 8;position:sticky;top:calc(var(--barh,100px) + 10px);max-height:calc(100vh - var(--barh,100px) - 24px);overflow:hidden;display:flex;flex-direction:column;gap:12px;padding-right:4px}
+body.lay-l .rail .tfish{margin:0;flex:none}
+body.lay-l main>.th,body.lay-l main>.txt,body.lay-l main>.pace,body.lay-l main>#paceRow,body.lay-l main>.pn,body.lay-l main>.note{grid-column:2}
+body.lay-l main .txt{font-size:calc(var(--fs,1.18rem) * 1.16);line-height:1.85}
+body.lay-l .par .txt,body.lay-l .par3 .txt,body.lay-l .par4 .txt{font-size:calc(var(--fs,1.18rem) * 1.0);line-height:1.7}
+/* 3. three panes: books on the left, the text in the middle, today's fish on the right */
+body.lay-t main{display:grid;grid-template-columns:270px minmax(0,1fr) 390px;column-gap:32px;align-items:start;padding-left:24px;padding-right:24px}
+body.lay-t .rail{display:contents}
+body.lay-t .dnav{grid-column:1;grid-row:1 / span 8;position:sticky;top:calc(var(--barh,100px) + 10px);max-height:calc(100vh - var(--barh,100px) - 24px);align-self:start}
+body.lay-t .tfish{grid-column:3;grid-row:1 / span 8;position:sticky;top:calc(var(--barh,100px) + 10px);align-self:start;margin:0}
+body.lay-t main>.th,body.lay-t main>.txt,body.lay-t main>.pace,body.lay-t main>#paceRow,body.lay-t main>.pn,body.lay-t main>.note{grid-column:2}
+body.lay-t main .txt{font-size:calc(var(--fs,1.18rem) * 1.2);line-height:1.9}
+body.lay-t .par .txt,body.lay-t .par3 .txt,body.lay-t .par4 .txt{font-size:calc(var(--fs,1.18rem) * .98);line-height:1.7}
+.rail .dnav,.dnav{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:4px 6px 10px;min-height:160px;overflow:auto;overscroll-behavior:contain}
+body.lay-l .rail .dnav{flex:1 1 auto}
 }
 </style>
 <script src="/fish-lang/tabbar.js" defer></script>
@@ -357,6 +382,7 @@ main .txt{font-size:calc(var(--fs,1.18rem) * 1.12);line-height:1.8}
   <button type="button" class="where" id="where" aria-haspopup="dialog">John 1</button>
   <select class="ver" id="ver" aria-label="Bible version"></select>
   <button type="button" class="ib" id="say" aria-pressed="false" aria-label="Listen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button>
+  <span class="laysw" id="laySw" role="group" aria-label="Page layout" hidden><button type="button" data-lay="c" title="One centred column, large text">Centered</button><button type="button" data-lay="l" title="Today's fish and the books on the left">Left rail</button><button type="button" data-lay="t" title="Books left, text middle, today's fish right">Three panes</button></span>
 </div></div>
 <div class="menu" id="menu" role="menu" hidden></div>
 <main id="main">
@@ -564,8 +590,13 @@ main .txt{font-size:calc(var(--fs,1.18rem) * 1.12);line-height:1.8}
   // ── where we are ──
   var AT={b:42,c:1,sel:0}, HIST=[];
   var AUTOSAY=0;
+  /* Ken, 8 Nov: three desktop layouts (Centered, Left rail, Three panes); the choice is kept in the settings, so it follows the account */
+  (function(){ var sw=$('laySw'); if(!sw) return; var L=SET('lay','c'); if(!/^[clt]$/.test(L)) L='c';
+    function apply(l){ L=l; ['c','l','t'].forEach(function(x){ document.body.classList.toggle('lay-'+x,x===l); }); [].forEach.call(sw.querySelectorAll('button'),function(b){ b.setAttribute('aria-pressed',String(b.dataset.lay===l)); }); try{ dnavSync(); }catch(e){} }
+    sw.hidden=false; sw.addEventListener('click',function(e){ var b=e.target.closest('[data-lay]'); if(!b) return; apply(b.dataset.lay); putSet('lay',b.dataset.lay==='c'?undefined:b.dataset.lay); try{ if(window.MFacct&&MFacct.touch) MFacct.touch('set'); }catch(er){} });
+    apply(L); })();
   /* Ken, 8 Nov: on a desktop every book and its chapters sit in the left rail */
-  function dnavSync(){ var el=$('dnav'); if(!el) return; if(!window.matchMedia('(min-width:1000px)').matches){ el.hidden=true; return; } el.hidden=false;
+  function dnavSync(){ var el=$('dnav'); if(!el) return; if(!window.matchMedia('(min-width:1000px)').matches||document.body.classList.contains('lay-c')){ el.hidden=true; return; } el.hidden=false;
     if(!el.dataset.built){ el.dataset.built='1'; var h=''; B.forEach(function(bk,i){ if(i===0) h+='<h5>Old Testament</h5>'; if(i===39) h+='<h5>New Testament</h5>'; h+='<div class="dbk" data-i="'+i+'"><button type="button" class="dbb" data-b="'+i+'">'+esc(bk[0])+'</button><div class="dch" hidden></div></div>'; }); el.innerHTML=h;
       el.addEventListener('click',function(e){ var cc=e.target.closest('[data-c]'), bb=e.target.closest('[data-b]'); if(cc){ go(+cc.dataset.bk,+cc.dataset.c); return; } if(bb){ var i=+bb.dataset.b; if(i===AT.b){ var d=bb.nextElementSibling; d.hidden=!d.hidden; } else go(i,1); } }); }
     [].forEach.call(el.querySelectorAll('.dbk'),function(d){ var i=+d.dataset.i, on=i===AT.b, ch=d.querySelector('.dch'); d.classList.toggle('on',on);
