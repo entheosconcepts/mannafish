@@ -109,13 +109,13 @@ export function emailFor(m, lang, unsub, opts = {}) {
   const logo = SITE() + '/w/img/logo-email.png';
   // Ken, 9 Oct: no audio from the email (it felt invasive) -- this button opens the day's fish on the site
   // a fish outside the 24 (Ken, 1 Nov: every fish in the inbox) opens its own page, /fish/?id=
-  const seeOf = (x) => SITE() + (x.extra ? x.url : '/?w=' + x.key.toLowerCase() + (es ? '&lang=es' : ''));
+  const seeOf = (x) => SITE() + (x.extra ? x.url : '/?w=' + x.key.toLowerCase() + '&e=1' + (es ? '&lang=es' : ''));
   const listen = seeOf(m);
   // Ken, 11 Oct: Friday is a double portion (Exodus 16:22, 29) -- today's verse, and the verse on the fish for the Sabbath
   const dbl = !!m.friday, two = m.catch && m.second;
   const word2 = two ? (es ? (ES.titles[two.key] || two.title) : two.title) : '';
   const fishIdx = m.extra ? -1 : WORDS.words[m.key].refs.findIndex((r) => r[0] === FISH.en[m.key].ref);
-  const sabLink = m.extra ? SITE() + m.url : SITE() + '/?w=' + m.key.toLowerCase() + (fishIdx >= 0 ? '&r=' + fishIdx : '') + (es ? '&lang=es' : '');
+  const sabLink = m.extra ? SITE() + m.url : SITE() + '/?w=' + m.key.toLowerCase() + (fishIdx >= 0 ? '&r=' + fishIdx : '') + '&e=1' + (es ? '&lang=es' : '');
   // the Friday catch: the second fish, for the Sabbath -- built further down, once the picture helpers are there
   let catch2 = '';
   // Ken, 11 Oct: Gmail on iPhone (dark mode) flips an email's colours -- black turned white. It leaves pictures alone,

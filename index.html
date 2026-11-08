@@ -23,7 +23,7 @@
 (function(){ try{ var q=location.search, h=location.hash;
   if(/[?&]card=1\b/.test(q)){ document.documentElement.classList.add('card'); return; }
   if(window.top!==window.self) return;
-  var devo=/[?&]devo=/.test(q); if(devo) localStorage.setItem('mf-sub','1');
+  var devo=/[?&](devo|e)=/.test(q); if(devo) localStorage.setItem('mf-sub','1');   /* e=1 is on every fish link in our email, texts and notifications */
   var sub=localStorage.getItem('mf-sub')==='1', stay=/[?&](today|devotional|nored|year|embed|flip)=/.test(q);
   if(stay||!(devo||(sub&&!h))) return;
   var P=function(k){ var m=new RegExp('[?&]'+k+'=([^&#]+)').exec(q); return m?m[1]:''; };
