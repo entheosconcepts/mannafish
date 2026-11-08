@@ -1550,6 +1550,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   function refresh(){ applySet(); studyUI(); cnoteUI(); paint(); marksUI(); if($('pick').classList.contains('open')&&$('pTitle').textContent==='Books') books(($('pFind')||{}).value||''); }
   window.addEventListener('storage',function(e){ if(!e.key||/^mf-(set|hl|notes2|bible-links|bible-hist)$/.test(e.key)) refresh(); });
   (function hook(n){ if(!window.MFacct){ if(n<50) setTimeout(function(){ hook(n+1); },200); return; } MFacct.on(function(u,what){ refresh(); }); })(0);
+  window.MFstopAudio=function(){ try{ stopSay(); }catch(e){} };
   window.MFbible={go:function(ref){ var x=parseRef(ref); if(x) go(x.b,x.c,x.v); }};
 })();
 </script>

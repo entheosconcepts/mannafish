@@ -41,15 +41,18 @@
   function device(lang){ var name=ls('mf-dvoice-'+lang); if(!name) return null; return devVoices(lang).filter(function(v){ return v.voiceURI===name||v.name===name; })[0]||null; }
 
   // ── hearing a sample ──
-  var au=null;
-  function hush(){ if(au){ try{ au.pause(); }catch(e){} au=null; } }
+  /* Ken, 8 Nov: "when I switch narrator voices they overlap and play over each other." One sample at a time: a new sample (or closing the menu) stops the old one, cancels
+     a sample that is still being made, and the page's own reading is stopped too. A page can define window.MFstopAudio to stop its reading. */
+  var au=null, seq=0, ac=null;
+  function hush(){ seq++; if(ac){ try{ ac.abort(); }catch(e){} ac=null; } if(au){ try{ au.onended=null; au.pause(); }catch(e){} au=null; } }
   function sayDevice(){}
-  function sample(mode,id,lang){ hush();
+  function sample(mode,id,lang){ hush(); var my=seq; try{ if(window.MFstopAudio) window.MFstopAudio(); }catch(e){}
     if(mode==='device'){ sayDevice(SAMPLE[lang]||SAMPLE.en,lang,devVoices(lang).filter(function(v){ return v.voiceURI===id; })[0]); return; }
     if(id==='device'){ sayDevice(SAMPLE[lang]||SAMPLE.en,lang,null); return; }
     // the HOPE fish's verse, in the page's language, in that voice (made once, then kept)
-    fetch('/api/tts?lang='+lang+'&w=HOPE&part=verse&v='+id).then(function(r){ if(!r.ok) throw 0; return r.blob(); })
-      .then(function(b){ au=new Audio(URL.createObjectURL(b)); return au.play(); })
+    ac=window.AbortController?new AbortController():null;
+    fetch('/api/tts?lang='+lang+'&w=HOPE&part=verse&v='+id,ac?{signal:ac.signal}:undefined).then(function(r){ if(!r.ok) throw 0; return r.blob(); })
+      .then(function(b){ if(my!==seq) return; var a=new Audio(URL.createObjectURL(b)); au=a; a.onended=function(){ if(au===a) au=null; }; return a.play(); })
       .catch(function(){}); }
 
   // ── the menu ──
@@ -96,7 +99,8 @@
       [].forEach.call(w.querySelectorAll('.vpr'),function(x){ x.setAttribute('aria-checked',String(x===r)); });
       if(mode==='device') ls('mf-dvoice-'+lang,id); else { ls('mf-voice-name',r.querySelector('b').textContent); setNat(id); }
       w.querySelector('.vpt').textContent=r.querySelector('b').textContent+' '+T(4)+'.';
-      if(opts.onPick) try{ opts.onPick(id); }catch(er){}
+      var handled=false; if(opts.onPick) try{ handled=opts.onPick(id)===true; }catch(er){}
+      if(handled){ hush(); return; }   /* the page restarts its own reading in the new voice: no sample on top of it */
       sample(mode,id,lang); });
     w.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
     var f=w.querySelector('.vpr[aria-checked=true] .vpk')||w.querySelector('.vpk')||w.querySelector('.vpx'); if(f) f.focus(); }

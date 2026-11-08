@@ -4526,12 +4526,13 @@ window.MF=(function(){
   window.MFvpHook=function(){ if(!window.MFvoice) return; var dl=document.getElementById('dgListen'), vb=document.querySelector('#spkMain .spk[data-part="verse"]');
     MFvoice.attach(dl,{lang:function(){ return MF.lang; }});
     // the devotional's own bar: the voice it reads in, by name, beside Listen and Read (Ken, 27 Oct)
-    var pm=document.querySelector('#pt .ptmode'); if(pm) MFvoice.attach(pm,{name:true,lang:function(){ return MF.lang; },onPick:function(){ setTimeout(function(){ if(window.MFptRevoice) MFptRevoice(); },60); }});
+    var pm=document.querySelector('#pt .ptmode'); if(pm) MFvoice.attach(pm,{name:true,lang:function(){ return MF.lang; },onPick:function(){ setTimeout(function(){ if(window.MFptRevoice) MFptRevoice(); },60); return true; }});
     if(vb) MFvoice.attach(vb,{wrap:true,lang:function(){ var s=document.querySelector('#spkLang select'); return (s&&s.value)||MF.lang; }});
     // the Listen button of the reader and the bottom player: the narrator button beside them too (Ken, 6 Nov)
     var lb=document.getElementById('listenBtn'); if(lb) MFvoice.attach(lb,{wrap:true,lang:function(){ return MF.lang; }});
     var mp=document.getElementById('mpPlay'); if(mp) MFvoice.attach(mp,{wrap:true,cls:'vpsm',lang:function(){ return MF.lang; }});
     window.addEventListener('mfvoice',function(e){ setVoice(e.detail.v); });
+    window.MFstopAudio=function(){ stopSpeak(); };
     window.addEventListener('mfspeed',function(){ try{ if(sp.audio) sp.audio.playbackRate=RATE(); }catch(er){} }); };
   // Ken, 11 Oct: "a delay" before a fish is heard -- the Word and Verse of each fish on screen are fetched in the background
   var FISHC={};
