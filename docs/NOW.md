@@ -15,6 +15,7 @@ Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live sit
 - Bible reader: Explain & apply, search, side-by-side columns, ElevenLabs voices (`/voices/`), no phone voice anywhere.
 
 ## Waiting on Ken
+- **The 365 draft** (`docs/365-ACTION-WORDS.md`): approve or strike the 143 new words and their verses. Then Claude draws the new fish and adds them to the pot and the plans.
 - Check on a phone: tap the fish in tomorrow's email; the Today tab at the bottom still goes to `/`, which now bounces a subscriber to the Bible (tell Claude if the Today tab should open the sign-up page instead).
 - The plan pages (Bible in a year, One word) still use fixed day-by-day fish, 98 and 144 of which are held fish. Fixing them is the same job as the 365 action words (an action word that really is in each day's reading). Say go to draft the 365 list and the plan together.
 - 365 action words: 222 different words exist; about 143 more are needed (one command a day, none repeated). Say go and Claude drafts candidates (word + KJV verse that contains it) for approval. Also: hide the held fish in the Bible-in-a-year plan too?

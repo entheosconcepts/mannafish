@@ -1,0 +1,2184 @@
+{
+ "note": "Draft for Ken to approve (8 Nov). Made with tools in /tmp; see docs/365-ACTION-WORDS.md",
+ "existing": [
+  {
+   "word": "Abide",
+   "fish": [
+    "W45a",
+    "D380"
+   ]
+  },
+  {
+   "word": "Abound",
+   "fish": [
+    "W46c",
+    "D325"
+   ]
+  },
+  {
+   "word": "Accept",
+   "fish": [
+    "ACCEPT"
+   ]
+  },
+  {
+   "word": "Acknowledge",
+   "fish": [
+    "D376"
+   ]
+  },
+  {
+   "word": "Agree",
+   "fish": [
+    "D598"
+   ]
+  },
+  {
+   "word": "Amend",
+   "fish": [
+    "D236"
+   ]
+  },
+  {
+   "word": "Anoint",
+   "fish": [
+    "D314"
+   ]
+  },
+  {
+   "word": "Answer",
+   "fish": [
+    "D541"
+   ]
+  },
+  {
+   "word": "Arise",
+   "fish": [
+    "W33b"
+   ]
+  },
+  {
+   "word": "Ask",
+   "fish": [
+    "ASK",
+    "D448"
+   ]
+  },
+  {
+   "word": "Atone",
+   "fish": [
+    "W05b"
+   ]
+  },
+  {
+   "word": "Baptize",
+   "fish": [
+    "D658"
+   ]
+  },
+  {
+   "word": "Bathe",
+   "fish": [
+    "D403"
+   ]
+  },
+  {
+   "word": "Bear",
+   "fish": [
+    "D047",
+    "D572"
+   ]
+  },
+  {
+   "word": "Beat",
+   "fish": [
+    "D545"
+   ]
+  },
+  {
+   "word": "Behold",
+   "fish": [
+    "W30b"
+   ]
+  },
+  {
+   "word": "Believe",
+   "fish": [
+    "BELIEVE"
+   ]
+  },
+  {
+   "word": "Bless",
+   "fish": [
+    "W02a"
+   ]
+  },
+  {
+   "word": "Breathe",
+   "fish": [
+    "BREATHE"
+   ]
+  },
+  {
+   "word": "Bring",
+   "fish": [
+    "D567"
+   ]
+  },
+  {
+   "word": "Build",
+   "fish": [
+    "W19b",
+    "X004"
+   ]
+  },
+  {
+   "word": "Burn",
+   "fish": [
+    "D030",
+    "D558",
+    "D640"
+   ]
+  },
+  {
+   "word": "Call",
+   "fish": [
+    "W35b",
+    "D539"
+   ]
+  },
+  {
+   "word": "Calm",
+   "fish": [
+    "D295"
+   ]
+  },
+  {
+   "word": "Care",
+   "fish": [
+    "W51c"
+   ]
+  },
+  {
+   "word": "Carry",
+   "fish": [
+    "D222"
+   ]
+  },
+  {
+   "word": "Cast",
+   "fish": [
+    "W45c",
+    "D580"
+   ]
+  },
+  {
+   "word": "Cease",
+   "fish": [
+    "D657"
+   ]
+  },
+  {
+   "word": "Charge",
+   "fish": [
+    "D479"
+   ]
+  },
+  {
+   "word": "Cheer",
+   "fish": [
+    "D318",
+    "D659"
+   ]
+  },
+  {
+   "word": "Choose",
+   "fish": [
+    "CHOOSE"
+   ]
+  },
+  {
+   "word": "Cleanse",
+   "fish": [
+    "D032",
+    "D355"
+   ]
+  },
+  {
+   "word": "Cleave",
+   "fish": [
+    "D433",
+    "D652"
+   ]
+  },
+  {
+   "word": "Clothe",
+   "fish": [
+    "D518"
+   ]
+  },
+  {
+   "word": "Come",
+   "fish": [
+    "W33a",
+    "D415",
+    "D643",
+    "D678"
+   ]
+  },
+  {
+   "word": "Comfort",
+   "fish": [
+    "W32b",
+    "D504"
+   ]
+  },
+  {
+   "word": "Command",
+   "fish": [
+    "D444"
+   ]
+  },
+  {
+   "word": "Commit",
+   "fish": [
+    "D135"
+   ]
+  },
+  {
+   "word": "Confess",
+   "fish": [
+    "W47b",
+    "D441"
+   ]
+  },
+  {
+   "word": "Consider",
+   "fish": [
+    "D075",
+    "D540"
+   ]
+  },
+  {
+   "word": "Consume",
+   "fish": [
+    "W14c"
+   ]
+  },
+  {
+   "word": "Contain",
+   "fish": [
+    "D511"
+   ]
+  },
+  {
+   "word": "Contend",
+   "fish": [
+    "D556"
+   ]
+  },
+  {
+   "word": "Create",
+   "fish": [
+    "W01b"
+   ]
+  },
+  {
+   "word": "Crucify",
+   "fish": [
+    "D666"
+   ]
+  },
+  {
+   "word": "Cry",
+   "fish": [
+    "D054"
+   ]
+  },
+  {
+   "word": "Declare",
+   "fish": [
+    "D018",
+    "D569"
+   ]
+  },
+  {
+   "word": "Dedicate",
+   "fish": [
+    "D524"
+   ]
+  },
+  {
+   "word": "Deliver",
+   "fish": [
+    "W03a",
+    "X005",
+    "D011"
+   ]
+  },
+  {
+   "word": "Deny",
+   "fish": [
+    "D620"
+   ]
+  },
+  {
+   "word": "Desire",
+   "fish": [
+    "D672"
+   ]
+  },
+  {
+   "word": "Devise",
+   "fish": [
+    "D473"
+   ]
+  },
+  {
+   "word": "Direct",
+   "fish": [
+    "W28b"
+   ]
+  },
+  {
+   "word": "Divide",
+   "fish": [
+    "D391"
+   ]
+  },
+  {
+   "word": "Draw",
+   "fish": [
+    "D212"
+   ]
+  },
+  {
+   "word": "Drink",
+   "fish": [
+    "W44d",
+    "D506",
+    "D644"
+   ]
+  },
+  {
+   "word": "Dwell",
+   "fish": [
+    "W25b",
+    "D480",
+    "D187"
+   ]
+  },
+  {
+   "word": "Eat",
+   "fish": [
+    "D557"
+   ]
+  },
+  {
+   "word": "Edify",
+   "fish": [
+    "D662"
+   ]
+  },
+  {
+   "word": "Encourage",
+   "fish": [
+    "D429"
+   ]
+  },
+  {
+   "word": "Endure",
+   "fish": [
+    "D614"
+   ]
+  },
+  {
+   "word": "Enjoy",
+   "fish": [
+    "ENJOY"
+   ]
+  },
+  {
+   "word": "Enlarge",
+   "fish": [
+    "D104"
+   ]
+  },
+  {
+   "word": "Enquire",
+   "fish": [
+    "D490"
+   ]
+  },
+  {
+   "word": "Enter",
+   "fish": [
+    "W26b"
+   ]
+  },
+  {
+   "word": "Escape",
+   "fish": [
+    "D573",
+    "D328"
+   ]
+  },
+  {
+   "word": "Establish",
+   "fish": [
+    "W12a",
+    "D250"
+   ]
+  },
+  {
+   "word": "Exalt",
+   "fish": [
+    "D649"
+   ]
+  },
+  {
+   "word": "Extol",
+   "fish": [
+    "D592"
+   ]
+  },
+  {
+   "word": "Fast",
+   "fish": [
+    "D126"
+   ]
+  },
+  {
+   "word": "Fear",
+   "fish": [
+    "D498",
+    "D142"
+   ]
+  },
+  {
+   "word": "Feast",
+   "fish": [
+    "D434"
+   ]
+  },
+  {
+   "word": "Feed",
+   "fish": [
+    "D648",
+    "D470"
+   ]
+  },
+  {
+   "word": "Fight",
+   "fish": [
+    "W50c",
+    "D128"
+   ]
+  },
+  {
+   "word": "Fill",
+   "fish": [
+    "D027",
+    "D491",
+    "D171"
+   ]
+  },
+  {
+   "word": "Find",
+   "fish": [
+    "W34a"
+   ]
+  },
+  {
+   "word": "Finish",
+   "fish": [
+    "W45b"
+   ]
+  },
+  {
+   "word": "Flee",
+   "fish": [
+    "D046"
+   ]
+  },
+  {
+   "word": "Follow",
+   "fish": [
+    "FOLLOW",
+    "D426",
+    "D485",
+    "D265"
+   ]
+  },
+  {
+   "word": "Forbear",
+   "fish": [
+    "D528"
+   ]
+  },
+  {
+   "word": "Forgive",
+   "fish": [
+    "FORGIVE",
+    "D029"
+   ]
+  },
+  {
+   "word": "Gain",
+   "fish": [
+    "D667"
+   ]
+  },
+  {
+   "word": "Gather",
+   "fish": [
+    "GATHER"
+   ]
+  },
+  {
+   "word": "Give",
+   "fish": [
+    "GIVE",
+    "D445",
+    "D561"
+   ]
+  },
+  {
+   "word": "Glorify",
+   "fish": [
+    "D327"
+   ]
+  },
+  {
+   "word": "Go",
+   "fish": [
+    "W04a",
+    "X002",
+    "D071"
+   ]
+  },
+  {
+   "word": "Grant",
+   "fish": [
+    "D514"
+   ]
+  },
+  {
+   "word": "Grow",
+   "fish": [
+    "GROW"
+   ]
+  },
+  {
+   "word": "Guide",
+   "fish": [
+    "D552"
+   ]
+  },
+  {
+   "word": "Hallow",
+   "fish": [
+    "D406",
+    "D482"
+   ]
+  },
+  {
+   "word": "Heal",
+   "fish": [
+    "W15a"
+   ]
+  },
+  {
+   "word": "Hear",
+   "fish": [
+    "D048",
+    "D587",
+    "D599"
+   ]
+  },
+  {
+   "word": "Hearken",
+   "fish": [
+    "D431",
+    "D060"
+   ]
+  },
+  {
+   "word": "Help",
+   "fish": [
+    "D053",
+    "D122"
+   ]
+  },
+  {
+   "word": "Hold",
+   "fish": [
+    "D369",
+    "D549"
+   ]
+  },
+  {
+   "word": "Honor",
+   "fish": [
+    "HONOR"
+   ]
+  },
+  {
+   "word": "Honour",
+   "fish": [
+    "D347"
+   ]
+  },
+  {
+   "word": "Hope",
+   "fish": [
+    "HOPE"
+   ]
+  },
+  {
+   "word": "Humble",
+   "fish": [
+    "W17a",
+    "D489",
+    "D520"
+   ]
+  },
+  {
+   "word": "Impart",
+   "fish": [
+    "D627"
+   ]
+  },
+  {
+   "word": "Increase",
+   "fish": [
+    "D136"
+   ]
+  },
+  {
+   "word": "Intreat",
+   "fish": [
+    "D484"
+   ]
+  },
+  {
+   "word": "Judge",
+   "fish": [
+    "D368",
+    "D449"
+   ]
+  },
+  {
+   "word": "Keep",
+   "fish": [
+    "W06a",
+    "D022"
+   ]
+  },
+  {
+   "word": "Knit",
+   "fish": [
+    "D463"
+   ]
+  },
+  {
+   "word": "Knock",
+   "fish": [
+    "KNOCK"
+   ]
+  },
+  {
+   "word": "Know",
+   "fish": [
+    "D024",
+    "D111",
+    "D536"
+   ]
+  },
+  {
+   "word": "Labour",
+   "fish": [
+    "D301"
+   ]
+  },
+  {
+   "word": "Laugh",
+   "fish": [
+    "LAUGH"
+   ]
+  },
+  {
+   "word": "Launch",
+   "fish": [
+    "W43a"
+   ]
+  },
+  {
+   "word": "Lead",
+   "fish": [
+    "D660"
+   ]
+  },
+  {
+   "word": "Learn",
+   "fish": [
+    "D288"
+   ]
+  },
+  {
+   "word": "Lend",
+   "fish": [
+    "D629"
+   ]
+  },
+  {
+   "word": "Lift",
+   "fish": [
+    "D103",
+    "D181",
+    "D203",
+    "D352"
+   ]
+  },
+  {
+   "word": "Listen",
+   "fish": [
+    "LISTEN"
+   ]
+  },
+  {
+   "word": "Live",
+   "fish": [
+    "LIVE",
+    "D255",
+    "D257",
+    "D309"
+   ]
+  },
+  {
+   "word": "Lodge",
+   "fish": [
+    "D505"
+   ]
+  },
+  {
+   "word": "Look",
+   "fish": [
+    "W07a",
+    "D475",
+    "D637",
+    "D650"
+   ]
+  },
+  {
+   "word": "Loose",
+   "fish": [
+    "D565"
+   ]
+  },
+  {
+   "word": "Love",
+   "fish": [
+    "LOVE",
+    "D623"
+   ]
+  },
+  {
+   "word": "Make",
+   "fish": [
+    "D422"
+   ]
+  },
+  {
+   "word": "Mark",
+   "fish": [
+    "D574"
+   ]
+  },
+  {
+   "word": "Marvel",
+   "fish": [
+    "D362"
+   ]
+  },
+  {
+   "word": "Meditate",
+   "fish": [
+    "W21b",
+    "D538"
+   ]
+  },
+  {
+   "word": "Meet",
+   "fish": [
+    "D023",
+    "D341"
+   ]
+  },
+  {
+   "word": "Nourish",
+   "fish": [
+    "D381"
+   ]
+  },
+  {
+   "word": "Obey",
+   "fish": [
+    "D144",
+    "D231"
+   ]
+  },
+  {
+   "word": "Observe",
+   "fish": [
+    "D542"
+   ]
+  },
+  {
+   "word": "Offer",
+   "fish": [
+    "D026",
+    "D398"
+   ]
+  },
+  {
+   "word": "Open",
+   "fish": [
+    "W52b",
+    "D051",
+    "D098",
+    "D214"
+   ]
+  },
+  {
+   "word": "Overcome",
+   "fish": [
+    "D356"
+   ]
+  },
+  {
+   "word": "Overtake",
+   "fish": [
+    "D437"
+   ]
+  },
+  {
+   "word": "Pardon",
+   "fish": [
+    "W40a",
+    "D243"
+   ]
+  },
+  {
+   "word": "Pass",
+   "fish": [
+    "D386",
+    "D446"
+   ]
+  },
+  {
+   "word": "Pitch",
+   "fish": [
+    "D410"
+   ]
+  },
+  {
+   "word": "Plant",
+   "fish": [
+    "D241",
+    "D254"
+   ]
+  },
+  {
+   "word": "Possess",
+   "fish": [
+    "D062"
+   ]
+  },
+  {
+   "word": "Pour",
+   "fish": [
+    "W39c",
+    "D586"
+   ]
+  },
+  {
+   "word": "Praise",
+   "fish": [
+    "W28a",
+    "D124"
+   ]
+  },
+  {
+   "word": "Pray",
+   "fish": [
+    "PRAY"
+   ]
+  },
+  {
+   "word": "Preach",
+   "fish": [
+    "D315"
+   ]
+  },
+  {
+   "word": "Prepare",
+   "fish": [
+    "W39b",
+    "D125"
+   ]
+  },
+  {
+   "word": "Preserve",
+   "fish": [
+    "D013",
+    "D109",
+    "D568"
+   ]
+  },
+  {
+   "word": "Press",
+   "fish": [
+    "W49c"
+   ]
+  },
+  {
+   "word": "Prevail",
+   "fish": [
+    "W42c",
+    "D655"
+   ]
+  },
+  {
+   "word": "Proclaim",
+   "fish": [
+    "W06b"
+   ]
+  },
+  {
+   "word": "Profess",
+   "fish": [
+    "D349"
+   ]
+  },
+  {
+   "word": "Promise",
+   "fish": [
+    "D092"
+   ]
+  },
+  {
+   "word": "Prosper",
+   "fish": [
+    "D012"
+   ]
+  },
+  {
+   "word": "Provide",
+   "fish": [
+    "W01a"
+   ]
+  },
+  {
+   "word": "Publish",
+   "fish": [
+    "D624"
+   ]
+  },
+  {
+   "word": "Purify",
+   "fish": [
+    "D150"
+   ]
+  },
+  {
+   "word": "Put",
+   "fish": [
+    "D086"
+   ]
+  },
+  {
+   "word": "Raise",
+   "fish": [
+    "D271",
+    "D458",
+    "D123"
+   ]
+  },
+  {
+   "word": "Read",
+   "fish": [
+    "D442"
+   ]
+  },
+  {
+   "word": "Receive",
+   "fish": [
+    "D621"
+   ]
+  },
+  {
+   "word": "Reconcile",
+   "fish": [
+    "D665"
+   ]
+  },
+  {
+   "word": "Recover",
+   "fish": [
+    "D081"
+   ]
+  },
+  {
+   "word": "Redeem",
+   "fish": [
+    "W11b"
+   ]
+  },
+  {
+   "word": "Refine",
+   "fish": [
+    "D606"
+   ]
+  },
+  {
+   "word": "Reign",
+   "fish": [
+    "D235",
+    "D360"
+   ]
+  },
+  {
+   "word": "Rejoice",
+   "fish": [
+    "W49b",
+    "D530"
+   ]
+  },
+  {
+   "word": "Remember",
+   "fish": [
+    "REMEMBER",
+    "X006",
+    "D372",
+    "D418"
+   ]
+  },
+  {
+   "word": "Render",
+   "fish": [
+    "D467",
+    "D613"
+   ]
+  },
+  {
+   "word": "Repair",
+   "fish": [
+    "D517"
+   ]
+  },
+  {
+   "word": "Repent",
+   "fish": [
+    "X003",
+    "D576"
+   ]
+  },
+  {
+   "word": "Respect",
+   "fish": [
+    "D515"
+   ]
+  },
+  {
+   "word": "Rest",
+   "fish": [
+    "REST",
+    "D034",
+    "D116",
+    "D546"
+   ]
+  },
+  {
+   "word": "Restore",
+   "fish": [
+    "W39a",
+    "D494"
+   ]
+  },
+  {
+   "word": "Return",
+   "fish": [
+    "W18a",
+    "D219"
+   ]
+  },
+  {
+   "word": "Reveal",
+   "fish": [
+    "D055"
+   ]
+  },
+  {
+   "word": "Revive",
+   "fish": [
+    "D069",
+    "D172"
+   ]
+  },
+  {
+   "word": "Rise",
+   "fish": [
+    "D642"
+   ]
+  },
+  {
+   "word": "Roll",
+   "fish": [
+    "D564"
+   ]
+  },
+  {
+   "word": "Rule",
+   "fish": [
+    "D067"
+   ]
+  },
+  {
+   "word": "Run",
+   "fish": [
+    "W29b"
+   ]
+  },
+  {
+   "word": "Sanctify",
+   "fish": [
+    "D399",
+    "D578",
+    "D647"
+   ]
+  },
+  {
+   "word": "Satisfy",
+   "fish": [
+    "D179"
+   ]
+  },
+  {
+   "word": "Save",
+   "fish": [
+    "W46b",
+    "D435",
+    "D304",
+    "D342"
+   ]
+  },
+  {
+   "word": "Search",
+   "fish": [
+    "W37b",
+    "D654"
+   ]
+  },
+  {
+   "word": "See",
+   "fish": [
+    "D416",
+    "D308"
+   ]
+  },
+  {
+   "word": "Seek",
+   "fish": [
+    "SEEK",
+    "D430"
+   ]
+  },
+  {
+   "word": "Send",
+   "fish": [
+    "W30a",
+    "D566"
+   ]
+  },
+  {
+   "word": "Serve",
+   "fish": [
+    "W10a",
+    "D453"
+   ]
+  },
+  {
+   "word": "Sharpen",
+   "fish": [
+    "D200"
+   ]
+  },
+  {
+   "word": "Shine",
+   "fish": [
+    "W41d",
+    "D258"
+   ]
+  },
+  {
+   "word": "Shout",
+   "fish": [
+    "D400",
+    "D059",
+    "D535"
+   ]
+  },
+  {
+   "word": "Sing",
+   "fish": [
+    "SING"
+   ]
+  },
+  {
+   "word": "Sow",
+   "fish": [
+    "D267"
+   ]
+  },
+  {
+   "word": "Speak",
+   "fish": [
+    "W11c",
+    "D581"
+   ]
+  },
+  {
+   "word": "Spread",
+   "fish": [
+    "D477",
+    "D499",
+    "D548"
+   ]
+  },
+  {
+   "word": "Stand",
+   "fish": [
+    "W37a",
+    "D460"
+   ]
+  },
+  {
+   "word": "Stay",
+   "fish": [
+    "D419"
+   ]
+  },
+  {
+   "word": "Stop",
+   "fish": [
+    "X001"
+   ]
+  },
+  {
+   "word": "Strengthen",
+   "fish": [
+    "D070"
+   ]
+  },
+  {
+   "word": "Stretch",
+   "fish": [
+    "D610"
+   ]
+  },
+  {
+   "word": "Strive",
+   "fish": [
+    "D633"
+   ]
+  },
+  {
+   "word": "Study",
+   "fish": [
+    "D345"
+   ]
+  },
+  {
+   "word": "Sustain",
+   "fish": [
+    "D163"
+   ]
+  },
+  {
+   "word": "Take",
+   "fish": [
+    "W52c"
+   ]
+  },
+  {
+   "word": "Taste",
+   "fish": [
+    "W23c"
+   ]
+  },
+  {
+   "word": "Teach",
+   "fish": [
+    "W42a",
+    "D383",
+    "D068",
+    "D190"
+   ]
+  },
+  {
+   "word": "Tell",
+   "fish": [
+    "D625"
+   ]
+  },
+  {
+   "word": "Thank",
+   "fish": [
+    "W16a",
+    "D110"
+   ]
+  },
+  {
+   "word": "Thirst",
+   "fish": [
+    "W24b"
+   ]
+  },
+  {
+   "word": "Touch",
+   "fish": [
+    "D595",
+    "D607"
+   ]
+  },
+  {
+   "word": "Train",
+   "fish": [
+    "D199"
+   ]
+  },
+  {
+   "word": "Transform",
+   "fish": [
+    "W47a"
+   ]
+  },
+  {
+   "word": "Trust",
+   "fish": [
+    "TRUST",
+    "D240"
+   ]
+  },
+  {
+   "word": "Turn",
+   "fish": [
+    "W36a",
+    "D319"
+   ]
+  },
+  {
+   "word": "Understand",
+   "fish": [
+    "W13b",
+    "D107"
+   ]
+  },
+  {
+   "word": "Visit",
+   "fish": [
+    "D007"
+   ]
+  },
+  {
+   "word": "Vow",
+   "fish": [
+    "D045"
+   ]
+  },
+  {
+   "word": "Wait",
+   "fish": [
+    "W32a"
+   ]
+  },
+  {
+   "word": "Walk",
+   "fish": [
+    "W01c",
+    "D601",
+    "D357"
+   ]
+  },
+  {
+   "word": "Wash",
+   "fish": [
+    "W24a",
+    "D630"
+   ]
+  },
+  {
+   "word": "Watch",
+   "fish": [
+    "D373",
+    "D194"
+   ]
+  },
+  {
+   "word": "Witness",
+   "fish": [
+    "D447",
+    "D138"
+   ]
+  },
+  {
+   "word": "Work",
+   "fish": [
+    "W47c",
+    "D462"
+   ]
+  },
+  {
+   "word": "Worship",
+   "fish": [
+    "W26a"
+   ]
+  },
+  {
+   "word": "Write",
+   "fish": [
+    "W40b",
+    "D562"
+   ]
+  },
+  {
+   "word": "Yearn",
+   "fish": [
+    "D379"
+   ]
+  }
+ ],
+ "new": [
+  {
+   "word": "Abhor",
+   "ref": "Romans 12:9",
+   "verse": "Let love be without dissimulation. Abhor that which is evil; cleave to that which is good."
+  },
+  {
+   "word": "Abstain",
+   "ref": "1 Thessalonians 5:22",
+   "verse": "Abstain from all appearance of evil."
+  },
+  {
+   "word": "Admonish",
+   "ref": "2 Thessalonians 3:15",
+   "verse": "Yet count him not as an enemy, but admonish him as a brother."
+  },
+  {
+   "word": "Adorn",
+   "ref": "Titus 2:10",
+   "verse": "Not purloining, but shewing all good fidelity; that they may adorn the doctrine of God our Saviour in all things."
+  },
+  {
+   "word": "Apply",
+   "ref": "Proverbs 22:17",
+   "verse": "Bow down thine ear, and hear the words of the wise, and apply thine heart unto my knowledge."
+  },
+  {
+   "word": "Arm",
+   "ref": "1 Peter 4:1",
+   "verse": "Forasmuch then as Christ hath suffered for us in the flesh, arm yourselves likewise with the same mind: for he that hath suffered in the flesh hath ceased from sin;"
+  },
+  {
+   "word": "Ascend",
+   "ref": "Psalm 24:3",
+   "verse": "Who shall ascend into the hill of the LORD? or who shall stand in his holy place?"
+  },
+  {
+   "word": "Assemble",
+   "ref": "Hebrews 10:25",
+   "verse": "Not forsaking the assembling of ourselves together, as the manner of some is; but exhorting one another: and so much the more, as ye see the day approaching."
+  },
+  {
+   "word": "Assure",
+   "ref": "1 John 3:19",
+   "verse": "And hereby we know that we are of the truth, and shall assure our hearts before him."
+  },
+  {
+   "word": "Attain",
+   "ref": "Philippians 3:11",
+   "verse": "If by any means I might attain unto the resurrection of the dead."
+  },
+  {
+   "word": "Attend",
+   "ref": "Proverbs 4:20",
+   "verse": "My son, attend to my words; incline thine ear unto my sayings."
+  },
+  {
+   "word": "Avoid",
+   "ref": "Proverbs 4:15",
+   "verse": "Avoid it, pass not by it, turn from it, and pass away."
+  },
+  {
+   "word": "Awake",
+   "ref": "Ephesians 5:14",
+   "verse": "Wherefore he saith, Awake thou that sleepest, and arise from the dead, and Christ shall give thee light."
+  },
+  {
+   "word": "Beseech",
+   "ref": "Ephesians 4:1",
+   "verse": "I therefore, the prisoner of the Lord, beseech you that ye walk worthy of the vocation wherewith ye are called,"
+  },
+  {
+   "word": "Bestow",
+   "ref": "1 Corinthians 13:3",
+   "verse": "And though I bestow all my goods to feed the poor, and though I give my body to be burned, and have not charity, it profiteth me nothing."
+  },
+  {
+   "word": "Beware",
+   "ref": "Luke 12:15",
+   "verse": "And he said unto them, Take heed, and beware of covetousness: for a man’s life consisteth not in the abundance of the things which he possesseth."
+  },
+  {
+   "word": "Bind",
+   "ref": "Proverbs 3:3",
+   "verse": "Let not mercy and truth forsake thee: bind them about thy neck; write them upon the table of thine heart:"
+  },
+  {
+   "word": "Blossom",
+   "ref": "Isaiah 35:1",
+   "verse": "The wilderness and the solitary place shall be glad for them; and the desert shall rejoice, and blossom as the rose."
+  },
+  {
+   "word": "Blow",
+   "ref": "Joel 2:15",
+   "verse": "Blow the trumpet in Zion, sanctify a fast, call a solemn assembly:"
+  },
+  {
+   "word": "Bow",
+   "ref": "Psalm 86:1",
+   "verse": "Bow down thine ear, O LORD, hear me: for I am poor and needy."
+  },
+  {
+   "word": "Buy",
+   "ref": "Proverbs 23:23",
+   "verse": "Buy the truth, and sell it not; also wisdom, and instruction, and understanding."
+  },
+  {
+   "word": "Catch",
+   "ref": "Luke 5:10",
+   "verse": "And so was also James, and John, the sons of Zebedee, which were partners with Simon. And Jesus said unto Simon, Fear not; from henceforth thou shalt catch men."
+  },
+  {
+   "word": "Chase",
+   "ref": "Leviticus 26:8",
+   "verse": "And five of you shall chase an hundred, and an hundred of you shall put ten thousand to flight: and your enemies shall fall before you by the sword."
+  },
+  {
+   "word": "Cherish",
+   "ref": "Ephesians 5:29",
+   "verse": "For no man ever yet hated his own flesh; but nourisheth and cherisheth it, even as the Lord the church:"
+  },
+  {
+   "word": "Clap",
+   "ref": "Psalm 47:1",
+   "verse": "O clap your hands, all ye people; shout unto God with the voice of triumph."
+  },
+  {
+   "word": "Commend",
+   "ref": "Luke 23:46",
+   "verse": "And when Jesus had cried with a loud voice, he said, Father, into thy hands I commend my spirit: and having said thus, he gave up the ghost."
+  },
+  {
+   "word": "Compel",
+   "ref": "Luke 14:23",
+   "verse": "And the lord said unto the servant, Go out into the highways and hedges, and compel them to come in, that my house may be filled."
+  },
+  {
+   "word": "Consecrate",
+   "ref": "1 Chronicles 29:5",
+   "verse": "The gold for things of gold, and the silver for things of silver, and for all manner of work to be made by the hands of artificers. And who then is willing to consecrate his service this day unto the LORD?"
+  },
+  {
+   "word": "Continue",
+   "ref": "Colossians 4:2",
+   "verse": "Continue in prayer, and watch in the same with thanksgiving;"
+  },
+  {
+   "word": "Count",
+   "ref": "James 1:2",
+   "verse": "My brethren, count it all joy when ye fall into divers temptations;"
+  },
+  {
+   "word": "Cover",
+   "ref": "1 Peter 4:8",
+   "verse": "And above all things have fervent charity among yourselves: for charity shall cover the multitude of sins."
+  },
+  {
+   "word": "Dance",
+   "ref": "Psalm 150:4",
+   "verse": "Praise him with the timbrel and dance: praise him with stringed instruments and organs."
+  },
+  {
+   "word": "Decree",
+   "ref": "Job 22:28",
+   "verse": "Thou shalt also decree a thing, and it shall be established unto thee: and the light shall shine upon thy ways."
+  },
+  {
+   "word": "Defend",
+   "ref": "Psalm 82:3",
+   "verse": "Defend the poor and fatherless: do justice to the afflicted and needy."
+  },
+  {
+   "word": "Delight",
+   "ref": "Psalm 37:4",
+   "verse": "Delight thyself also in the LORD; and he shall give thee the desires of thine heart."
+  },
+  {
+   "word": "Depart",
+   "ref": "Psalm 37:27",
+   "verse": "Depart from evil, and do good; and dwell for evermore."
+  },
+  {
+   "word": "Discern",
+   "ref": "Hebrews 5:14",
+   "verse": "But strong meat belongeth to them that are of full age, even those who by reason of use have their senses exercised to discern both good and evil."
+  },
+  {
+   "word": "Distribute",
+   "ref": "1 Timothy 6:18",
+   "verse": "That they do good, that they be rich in good works, ready to distribute, willing to communicate;"
+  },
+  {
+   "word": "Dress",
+   "ref": "Genesis 2:15",
+   "verse": "And the LORD God took the man, and put him into the garden of Eden to dress it and to keep it."
+  },
+  {
+   "word": "Endeavour",
+   "ref": "Ephesians 4:3",
+   "verse": "Endeavouring to keep the unity of the Spirit in the bond of peace."
+  },
+  {
+   "word": "Enlighten",
+   "ref": "Ephesians 1:18",
+   "verse": "The eyes of your understanding being enlightened; that ye may know what is the hope of his calling, and what the riches of the glory of his inheritance in the saints,"
+  },
+  {
+   "word": "Entertain",
+   "ref": "Hebrews 13:2",
+   "verse": "Be not forgetful to entertain strangers: for thereby some have entertained angels unawares."
+  },
+  {
+   "word": "Esteem",
+   "ref": "Philippians 2:3",
+   "verse": "Let nothing be done through strife or vainglory; but in lowliness of mind let each esteem other better than themselves."
+  },
+  {
+   "word": "Examine",
+   "ref": "1 Corinthians 11:28",
+   "verse": "But let a man examine himself, and so let him eat of that bread, and drink of that cup."
+  },
+  {
+   "word": "Excel",
+   "ref": "1 Corinthians 14:12",
+   "verse": "Even so ye, forasmuch as ye are zealous of spiritual gifts, seek that ye may excel to the edifying of the church."
+  },
+  {
+   "word": "Exercise",
+   "ref": "1 Timothy 4:7",
+   "verse": "But refuse profane and old wives’ fables, and exercise thyself rather unto godliness."
+  },
+  {
+   "word": "Exhort",
+   "ref": "Titus 2:15",
+   "verse": "These things speak, and exhort, and rebuke with all authority. Let no man despise thee."
+  },
+  {
+   "word": "Feel",
+   "ref": "Acts 17:27",
+   "verse": "That they should seek the Lord, if haply they might feel after him, and find him, though he be not far from every one of us:"
+  },
+  {
+   "word": "Flourish",
+   "ref": "Psalm 92:12",
+   "verse": "The righteous shall flourish like the palm tree: he shall grow like a cedar in Lebanon."
+  },
+  {
+   "word": "Forget",
+   "ref": "Philippians 3:13",
+   "verse": "Brethren, I count not myself to have apprehended: but this one thing I do, forgetting those things which are behind, and reaching forth unto those things which are before,"
+  },
+  {
+   "word": "Forsake",
+   "ref": "Isaiah 55:7",
+   "verse": "Let the wicked forsake his way, and the unrighteous man his thoughts: and let him return unto the LORD, and he will have mercy upon him; and to our God, for he will abundantly pardon."
+  },
+  {
+   "word": "Fulfil",
+   "ref": "Philippians 2:2",
+   "verse": "Fulfil ye my joy, that ye be likeminded, having the same love, being of one accord, of one mind."
+  },
+  {
+   "word": "Get",
+   "ref": "Proverbs 4:5",
+   "verse": "Get wisdom, get understanding: forget it not; neither decline from the words of my mouth."
+  },
+  {
+   "word": "Gird",
+   "ref": "Luke 12:35",
+   "verse": "Let your loins be girded about, and your lights burning;"
+  },
+  {
+   "word": "Glean",
+   "ref": "Ruth 2:2",
+   "verse": "And Ruth the Moabitess said unto Naomi, Let me now go to the field, and glean ears of corn after him in whose sight I shall find grace. And she said unto her, Go, my daughter."
+  },
+  {
+   "word": "Glory",
+   "ref": "1 Chronicles 16:10",
+   "verse": "Glory ye in his holy name: let the heart of them rejoice that seek the LORD."
+  },
+  {
+   "word": "Greet",
+   "ref": "2 Corinthians 13:12",
+   "verse": "Greet one another with an holy kiss."
+  },
+  {
+   "word": "Handle",
+   "ref": "Luke 24:39",
+   "verse": "Behold my hands and my feet, that it is I myself: handle me, and see; for a spirit hath not flesh and bones, as ye see me have."
+  },
+  {
+   "word": "Hate",
+   "ref": "Psalm 97:10",
+   "verse": "Ye that love the LORD, hate evil: he preserveth the souls of his saints; he delivereth them out of the hand of the wicked."
+  },
+  {
+   "word": "Heed",
+   "ref": "Mark 13:23",
+   "verse": "But take ye heed: behold, I have foretold you all things."
+  },
+  {
+   "word": "Hide",
+   "ref": "Psalm 119:11",
+   "verse": "Thy word have I hid in mine heart, that I might not sin against thee."
+  },
+  {
+   "word": "Hunger",
+   "ref": "Matthew 5:6",
+   "verse": "Blessed are they which do hunger and thirst after righteousness: for they shall be filled."
+  },
+  {
+   "word": "Incline",
+   "ref": "Psalm 78:1",
+   "verse": "Give ear, O my people, to my law: incline your ears to the words of my mouth."
+  },
+  {
+   "word": "Inherit",
+   "ref": "Matthew 5:5",
+   "verse": "Blessed are the meek: for they shall inherit the earth."
+  },
+  {
+   "word": "Join",
+   "ref": "Acts 8:29",
+   "verse": "Then the Spirit said unto Philip, Go near, and join thyself to this chariot."
+  },
+  {
+   "word": "Kiss",
+   "ref": "Psalm 2:12",
+   "verse": "Kiss the Son, lest he be angry, and ye perish from the way, when his wrath is kindled but a little. Blessed are all they that put their trust in him."
+  },
+  {
+   "word": "Kneel",
+   "ref": "Acts 20:36",
+   "verse": "And when he had thus spoken, he kneeled down, and prayed with them all."
+  },
+  {
+   "word": "Lay",
+   "ref": "1 Timothy 6:12",
+   "verse": "Fight the good fight of faith, lay hold on eternal life, whereunto thou art also called, and hast professed a good profession before many witnesses."
+  },
+  {
+   "word": "Leap",
+   "ref": "Luke 6:23",
+   "verse": "Rejoice ye in that day, and leap for joy: for, behold, your reward is great in heaven: for in the like manner did their fathers unto the prophets."
+  },
+  {
+   "word": "Leave",
+   "ref": "Matthew 5:24",
+   "verse": "Leave there thy gift before the altar, and go thy way; first be reconciled to thy brother, and then come and offer thy gift."
+  },
+  {
+   "word": "Lighten",
+   "ref": "Psalm 13:3",
+   "verse": "Consider and hear me, O LORD my God: lighten mine eyes, lest I sleep the sleep of death;"
+  },
+  {
+   "word": "Magnify",
+   "ref": "Psalm 34:3",
+   "verse": "O magnify the LORD with me, and let us exalt his name together."
+  },
+  {
+   "word": "Maintain",
+   "ref": "Titus 3:8",
+   "verse": "This is a faithful saying, and these things I will that thou affirm constantly, that they which have believed in God might be careful to maintain good works. These things are good and profitable unto men."
+  },
+  {
+   "word": "Measure",
+   "ref": "Revelation 11:1",
+   "verse": "And there was given me a reed like unto a rod: and the angel stood, saying, Rise, and measure the temple of God, and the altar, and them that worship therein."
+  },
+  {
+   "word": "Mend",
+   "ref": "Matthew 4:21",
+   "verse": "And going on from thence, he saw other two brethren, James the son of Zebedee, and John his brother, in a ship with Zebedee their father, mending their nets; and he called them."
+  },
+  {
+   "word": "Minister",
+   "ref": "1 Peter 4:10",
+   "verse": "As every man hath received the gift, even so minister the same one to another, as good stewards of the manifold grace of God."
+  },
+  {
+   "word": "Mourn",
+   "ref": "Matthew 5:4",
+   "verse": "Blessed are they that mourn: for they shall be comforted."
+  },
+  {
+   "word": "Multiply",
+   "ref": "Genesis 1:28",
+   "verse": "And God blessed them, and God said unto them, Be fruitful, and multiply, and replenish the earth, and subdue it: and have dominion over the fish of the sea, and over the fowl of the air, and over every living thing that moveth upon the earth."
+  },
+  {
+   "word": "Number",
+   "ref": "Psalm 90:12",
+   "verse": "So teach us to number our days, that we may apply our hearts unto wisdom."
+  },
+  {
+   "word": "Obtain",
+   "ref": "1 Corinthians 9:24",
+   "verse": "Know ye not that they which run in a race run all, but one receiveth the prize? So run, that ye may obtain."
+  },
+  {
+   "word": "Occupy",
+   "ref": "Luke 19:13",
+   "verse": "And he called his ten servants, and delivered them ten pounds, and said unto them, Occupy till I come."
+  },
+  {
+   "word": "Pay",
+   "ref": "Psalm 50:14",
+   "verse": "Offer unto God thanksgiving; and pay thy vows unto the most High:"
+  },
+  {
+   "word": "Persuade",
+   "ref": "2 Corinthians 5:11",
+   "verse": "Knowing therefore the terror of the Lord, we persuade men; but we are made manifest unto God; and I trust also are made manifest in your consciences."
+  },
+  {
+   "word": "Please",
+   "ref": "Hebrews 11:6",
+   "verse": "But without faith it is impossible to please him: for he that cometh to God must believe that he is, and that he is a rewarder of them that diligently seek him."
+  },
+  {
+   "word": "Plead",
+   "ref": "Isaiah 1:17",
+   "verse": "Learn to do well; seek judgment, relieve the oppressed, judge the fatherless, plead for the widow."
+  },
+  {
+   "word": "Ponder",
+   "ref": "Proverbs 4:26",
+   "verse": "Ponder the path of thy feet, and let all thy ways be established."
+  },
+  {
+   "word": "Prefer",
+   "ref": "Romans 12:10",
+   "verse": "Be kindly affectioned one to another with brotherly love; in honour preferring one another;"
+  },
+  {
+   "word": "Present",
+   "ref": "Romans 12:1",
+   "verse": "I beseech you therefore, brethren, by the mercies of God, that ye present your bodies a living sacrifice, holy, acceptable unto God, which is your reasonable service."
+  },
+  {
+   "word": "Prophesy",
+   "ref": "Ezekiel 37:4",
+   "verse": "Again he said unto me, Prophesy upon these bones, and say unto them, O ye dry bones, hear the word of the LORD."
+  },
+  {
+   "word": "Prove",
+   "ref": "1 Thessalonians 5:21",
+   "verse": "Prove all things; hold fast that which is good."
+  },
+  {
+   "word": "Purge",
+   "ref": "1 Corinthians 5:7",
+   "verse": "Purge out therefore the old leaven, that ye may be a new lump, as ye are unleavened. For even Christ our passover is sacrificed for us:"
+  },
+  {
+   "word": "Pursue",
+   "ref": "Psalm 34:14",
+   "verse": "Depart from evil, and do good; seek peace, and pursue it."
+  },
+  {
+   "word": "Quicken",
+   "ref": "Psalm 119:25",
+   "verse": "My soul cleaveth unto the dust: quicken thou me according to thy word."
+  },
+  {
+   "word": "Quit",
+   "ref": "1 Corinthians 16:13",
+   "verse": "Watch ye, stand fast in the faith, quit you like men, be strong."
+  },
+  {
+   "word": "Reach",
+   "ref": "John 20:27",
+   "verse": "Then saith he to Thomas, Reach hither thy finger, and behold my hands; and reach hither thy hand, and thrust it into my side: and be not faithless, but believing."
+  },
+  {
+   "word": "Reap",
+   "ref": "Psalm 126:5",
+   "verse": "They that sow in tears shall reap in joy."
+  },
+  {
+   "word": "Rebuke",
+   "ref": "Luke 17:3",
+   "verse": "Take heed to yourselves: If thy brother trespass against thee, rebuke him; and if he repent, forgive him."
+  },
+  {
+   "word": "Recall",
+   "ref": "Lamentations 3:21",
+   "verse": "This I recall to my mind, therefore have I hope."
+  },
+  {
+   "word": "Reckon",
+   "ref": "Romans 6:11",
+   "verse": "Likewise reckon ye also yourselves to be dead indeed unto sin, but alive unto God through Jesus Christ our Lord."
+  },
+  {
+   "word": "Refrain",
+   "ref": "Proverbs 10:19",
+   "verse": "In the multitude of words there wanteth not sin: but he that refraineth his lips is wise."
+  },
+  {
+   "word": "Rely",
+   "ref": "2 Chronicles 16:8",
+   "verse": "Were not the Ethiopians and the Lubims a huge host, with very many chariots and horsemen? yet, because thou didst rely on the LORD, he delivered them into thine hand."
+  },
+  {
+   "word": "Rend",
+   "ref": "Joel 2:13",
+   "verse": "And rend your heart, and not your garments, and turn unto the LORD your God: for he is gracious and merciful, slow to anger, and of great kindness, and repenteth him of the evil."
+  },
+  {
+   "word": "Renew",
+   "ref": "Psalm 51:10",
+   "verse": "Create in me a clean heart, O God; and renew a right spirit within me."
+  },
+  {
+   "word": "Reprove",
+   "ref": "2 Timothy 4:2",
+   "verse": "Preach the word; be instant in season, out of season; reprove, rebuke, exhort with all longsuffering and doctrine."
+  },
+  {
+   "word": "Resist",
+   "ref": "1 Peter 5:9",
+   "verse": "Whom resist stedfast in the faith, knowing that the same afflictions are accomplished in your brethren that are in the world."
+  },
+  {
+   "word": "Retain",
+   "ref": "Proverbs 4:4",
+   "verse": "He taught me also, and said unto me, Let thine heart retain my words: keep my commandments, and live."
+  },
+  {
+   "word": "Root",
+   "ref": "Colossians 2:7",
+   "verse": "Rooted and built up in him, and stablished in the faith, as ye have been taught, abounding therein with thanksgiving."
+  },
+  {
+   "word": "Sacrifice",
+   "ref": "Psalm 107:22",
+   "verse": "And let them sacrifice the sacrifices of thanksgiving, and declare his works with rejoicing."
+  },
+  {
+   "word": "Salute",
+   "ref": "Romans 16:13",
+   "verse": "Salute Rufus chosen in the Lord, and his mother and mine."
+  },
+  {
+   "word": "Season",
+   "ref": "Colossians 4:6",
+   "verse": "Let your speech be alway with grace, seasoned with salt, that ye may know how ye ought to answer every man."
+  },
+  {
+   "word": "Sell",
+   "ref": "Matthew 19:21",
+   "verse": "Jesus said unto him, If thou wilt be perfect, go and sell that thou hast, and give to the poor, and thou shalt have treasure in heaven: and come and follow me."
+  },
+  {
+   "word": "Separate",
+   "ref": "2 Corinthians 6:17",
+   "verse": "Wherefore come out from among them, and be ye separate, saith the Lord, and touch not the unclean thing; and I will receive you,"
+  },
+  {
+   "word": "Settle",
+   "ref": "Luke 21:14",
+   "verse": "Settle it therefore in your hearts, not to meditate before what ye shall answer:"
+  },
+  {
+   "word": "Shake",
+   "ref": "Isaiah 52:2",
+   "verse": "Shake thyself from the dust; arise, and sit down, O Jerusalem: loose thyself from the bands of thy neck, O captive daughter of Zion."
+  },
+  {
+   "word": "Shun",
+   "ref": "2 Timothy 2:16",
+   "verse": "But shun profane and vain babblings: for they will increase unto more ungodliness."
+  },
+  {
+   "word": "Sit",
+   "ref": "Psalm 110:1",
+   "verse": "The LORD said unto my Lord, Sit thou at my right hand, until I make thine enemies thy footstool."
+  },
+  {
+   "word": "Sleep",
+   "ref": "Psalm 4:8",
+   "verse": "I will both lay me down in peace, and sleep: for thou, LORD, only makest me dwell in safety."
+  },
+  {
+   "word": "Stir",
+   "ref": "2 Timothy 1:6",
+   "verse": "Wherefore I put thee in remembrance that thou stir up the gift of God, which is in thee by the putting on of my hands."
+  },
+  {
+   "word": "Submit",
+   "ref": "James 4:7",
+   "verse": "Submit yourselves therefore to God. Resist the devil, and he will flee from you."
+  },
+  {
+   "word": "Succour",
+   "ref": "Hebrews 2:18",
+   "verse": "For in that he himself hath suffered being tempted, he is able to succour them that are tempted."
+  },
+  {
+   "word": "Support",
+   "ref": "1 Thessalonians 5:14",
+   "verse": "Now we exhort you, brethren, warn them that are unruly, comfort the feebleminded, support the weak, be patient toward all men."
+  },
+  {
+   "word": "Tarry",
+   "ref": "Luke 24:49",
+   "verse": "And, behold, I send the promise of my Father upon you: but tarry ye in the city of Jerusalem, until ye be endued with power from on high."
+  },
+  {
+   "word": "Testify",
+   "ref": "Acts 20:24",
+   "verse": "But none of these things move me, neither count I my life dear unto myself, so that I might finish my course with joy, and the ministry, which I have received of the Lord Jesus, to testify the gospel of the grace of God."
+  },
+  {
+   "word": "Think",
+   "ref": "Philippians 4:8",
+   "verse": "Finally, brethren, whatsoever things are true, whatsoever things are honest, whatsoever things are just, whatsoever things are pure, whatsoever things are lovely, whatsoever things are of good report; if there be any virtue, and if there be any praise, think on these things."
+  },
+  {
+   "word": "Tread",
+   "ref": "Joshua 1:3",
+   "verse": "Every place that the sole of your foot shall tread upon, that have I given unto you, as I said unto Moses."
+  },
+  {
+   "word": "Tremble",
+   "ref": "Psalm 114:7",
+   "verse": "Tremble, thou earth, at the presence of the Lord, at the presence of the God of Jacob;"
+  },
+  {
+   "word": "Triumph",
+   "ref": "2 Corinthians 2:14",
+   "verse": "Now thanks be unto God, which always causeth us to triumph in Christ, and maketh manifest the savour of his knowledge by us in every place."
+  },
+  {
+   "word": "Try",
+   "ref": "Lamentations 3:40",
+   "verse": "Let us search and try our ways, and turn again to the LORD."
+  },
+  {
+   "word": "Unite",
+   "ref": "Psalm 86:11",
+   "verse": "Teach me thy way, O LORD; I will walk in thy truth: unite my heart to fear thy name."
+  },
+  {
+   "word": "Uphold",
+   "ref": "Psalm 119:116",
+   "verse": "Uphold me according unto thy word, that I may live: and let me not be ashamed of my hope."
+  },
+  {
+   "word": "Warn",
+   "ref": "Acts 20:31",
+   "verse": "Therefore watch, and remember, that by the space of three years I ceased not to warn every one night and day with tears."
+  },
+  {
+   "word": "Weep",
+   "ref": "Romans 12:15",
+   "verse": "Rejoice with them that do rejoice, and weep with them that weep."
+  },
+  {
+   "word": "Win",
+   "ref": "Philippians 3:8",
+   "verse": "Yea doubtless, and I count all things but loss for the excellency of the knowledge of Christ Jesus my Lord: for whom I have suffered the loss of all things, and do count them but dung, that I may win Christ,"
+  },
+  {
+   "word": "Wipe",
+   "ref": "Revelation 21:4",
+   "verse": "And God shall wipe away all tears from their eyes; and there shall be no more death, neither sorrow, nor crying, neither shall there be any more pain: for the former things are passed away."
+  },
+  {
+   "word": "Withstand",
+   "ref": "Ephesians 6:13",
+   "verse": "Wherefore take unto you the whole armour of God, that ye may be able to withstand in the evil day, and having done all, to stand."
+  },
+  {
+   "word": "Wrestle",
+   "ref": "Ephesians 6:12",
+   "verse": "For we wrestle not against flesh and blood, but against principalities, against powers, against the rulers of the darkness of this world, against spiritual wickedness in high places."
+  },
+  {
+   "word": "Yield",
+   "ref": "Romans 6:13",
+   "verse": "Neither yield ye your members as instruments of unrighteousness unto sin: but yield yourselves unto God, as those that are alive from the dead, and your members as instruments of righteousness unto God."
+  },
+  {
+   "word": "Sweep",
+   "ref": "Luke 15:8",
+   "verse": "Either what woman having ten pieces of silver, if she lose one piece, doth not light a candle, and sweep the house, and seek diligently till she find it?"
+  },
+  {
+   "word": "Add",
+   "ref": "2 Peter 1:5",
+   "verse": "And beside this, giving all diligence, add to your faith virtue; and to virtue knowledge;"
+  },
+  {
+   "word": "Relieve",
+   "ref": "1 Timothy 5:10",
+   "verse": "Well reported of for good works; if she have brought up children, if she have lodged strangers, if she have washed the saints’ feet, if she have relieved the afflicted, if she have diligently followed every good work."
+  },
+  {
+   "word": "Execute",
+   "ref": "Zechariah 7:9",
+   "verse": "Thus speaketh the LORD of hosts, saying, Execute true judgment, and shew mercy and compassions every man to his brother:"
+  },
+  {
+   "word": "Chasten",
+   "ref": "Proverbs 19:18",
+   "verse": "Chasten thy son while there is hope, and let not thy soul spare for his crying."
+  },
+  {
+   "word": "Bridle",
+   "ref": "James 3:2",
+   "verse": "For in many things we offend all. If any man offend not in word, the same is a perfect man, and able also to bridle the whole body."
+  },
+  {
+   "word": "Covet",
+   "ref": "1 Corinthians 12:31",
+   "verse": "But covet earnestly the best gifts: and yet shew I unto you a more excellent way."
+  }
+ ]
+}
