@@ -4,6 +4,7 @@ Updated 7 Nov 2026. Claude updates this at the end of every job, without being a
 Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live site manna-fish.com is the old decal shop page on `main` until Ken says "push it live".
 
 ## Just finished (8 Nov)
+- Subscribers (an email or text link, or signed up on that phone) now land on the Bible app at the fish's chapter, with the home page's flip card on top (collapsible). Desktop gets a left rail with the card and all the books. Paste note for other sessions: `docs/HANDOFF-PASTE.md`.
 - Today now opens on today's catch from the one mixed pot of 347 action fish (same as the email); held fish are hidden; Weekly and Monthly emails use the pot.
 
 ## Earlier (7 Nov)
@@ -14,6 +15,7 @@ Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live sit
 - Bible reader: Explain & apply, search, side-by-side columns, ElevenLabs voices (`/voices/`), no phone voice anywhere.
 
 ## Waiting on Ken
+- Check on a phone: tap the fish in tomorrow's email; the Today tab at the bottom still goes to `/`, which now bounces a subscriber to the Bible (tell Claude if the Today tab should open the sign-up page instead).
 - The plan pages (Bible in a year, One word) still use fixed day-by-day fish, 98 and 144 of which are held fish. Fixing them is the same job as the 365 action words (an action word that really is in each day's reading). Say go to draft the 365 list and the plan together.
 - 365 action words: 222 different words exist; about 143 more are needed (one command a day, none repeated). Say go and Claude drafts candidates (word + KJV verse that contains it) for approval. Also: hide the held fish in the Bible-in-a-year plan too?
 - 318 held fish (Uncategorized): name their series later; decide the 38 "maybe" ones. Only the 347 action fish go in the daily pot now.
