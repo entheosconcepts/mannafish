@@ -44,15 +44,14 @@ days_since = (datetime.date.today() - datetime.date(2026, 10, 11)).days
 prev_path = os.path.join(ROOT, 'netlify/functions/lib/catch.json')
 prev = json.load(open(prev_path))['order'] if os.path.exists(prev_path) else []
 if prev and series:
-    cut = max(0, min(len(prev), days_since + 1)); order = list(prev[:cut]); seen = set(order); pool = []
-    for k in prev[cut:] + others:
-        if k in use and k not in core and k not in seen and k not in pool: pool.append(k)
-    idx = cut
-    while pool or idx % 7:
-        if idx % 7 == 0: order.append(core[(idx // 7) % len(core)])
-        elif pool: order.append(pool.pop(0))
-        else: order.append(others[idx % len(others)])
-        idx += 1
+    # Ken, 8 Nov: "Do not keep the original 24 separate. I want them all grouped together and mixed up together." One pot: every fish in use,
+    # the original 24 among them, shuffled once (always the same shuffle) and dealt out from tomorrow on. Days already sent keep their fish.
+    import random
+    cut = max(0, min(len(prev), days_since + 1)); order = list(prev[:cut]); seen = set(order)
+    pool = [k for k in sorted(use) if k not in seen]
+    random.Random(8).shuffle(pool)
+    order += pool
+    while len(order) % 7: order.append(pool[len(order) % len(pool)])
 elif prev:
     have = set(k for k in prev if k in fish); missing = [k for k in others if k not in have]; order = []
     for idx, k in enumerate(prev):
@@ -69,7 +68,7 @@ else:
     while w * 6 < len(others):
         order.append(core[w % len(core)]); order += others[w * 6:(w + 1) * 6]; w += 1
     while len(order) % 7: order.append(others[(len(order)) % len(others)])
-out = {'note': 'Ken, 1 Nov: every fish in the English daily inbox. Sunday is one of the 24; Monday to Saturday the rest. Made by tools/fish/catch.py',
+out = {'note': 'Ken, 1 Nov: every fish in the English daily inbox. One pot of all the action fish, the original 24 mixed in (from 8 Nov). Made by tools/fish/catch.py',
        'order': order, 'fish': fish}
 json.dump(out, open(os.path.join(ROOT, 'netlify/functions/lib/catch.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
 FL = J('netlify/functions/lib/fishlines.json')['en']

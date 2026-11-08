@@ -81,7 +81,7 @@ export function emailFor(m, lang, unsub, opts = {}) {
     note: d.day === 6 ? DBLW : '', refs: d.refs.map((x) => ({ ref: refEs(x.ref), url: SITE() + x.url + (es ? '&lang=es' : '') })) }));
   if (m.week && m.week.length) { const sat = m.week[m.week.length - 1].t + 86400000; weekRows.push({ past: false, today: false, rest: true, label: fmtDay(sat), refs: [], note: RESTW }); }
   // Ken, 16 Oct: the monthly email lists every day of the month, each week's fish above its days
-  const monthRows = opts.freq === 'Monthly' && m.t ? monthOf(m.t).map((d) => ({ past: d.t < m.t, today: d.t === m.t, rest: d.sabbath, key: d.key,
+  const monthRows = opts.freq === 'Monthly' && m.t && !m.catch ? monthOf(m.t).map((d) => ({ past: d.t < m.t, today: d.t === m.t, rest: d.sabbath, key: d.key,
     word: es ? (ES.titles[d.key] || d.title) : d.title, label: fmtDay(d.t), note: d.friday ? DBLW : (d.sabbath ? RESTW : ''),
     refs: d.refs.map((x) => ({ ref: refEs(x.ref), url: SITE() + x.url + (es ? '&lang=es' : '') })) })) : [];
   const rowsOf = (rows) => {
@@ -207,7 +207,8 @@ export async function subscribe(f, now = new Date(), site = null) {
 }
 
 // Ken, 19 Oct: a Daily sign-up gets the catch of the day (a different fish each day, two on Friday); Weekly and Monthly the week's fish
-export function welcomeFor(rec, now, tz) { return rec.freq === 'Weekly' || rec.freq === 'Monthly' ? welcomeManna(now, tz) : welcomeCatch(now, tz, rec.lang); }
+// Ken, 8 Nov: every sign-up (Daily, Weekly, Monthly) draws from the same pot of action fish, the original 24 mixed in (not just the 24)
+export function welcomeFor(rec, now, tz) { return welcomeCatch(now, tz, rec.lang); }
 
 // is today one of this person's days?
 export function dueToday(freq, here) {
@@ -246,7 +247,7 @@ export async function sendDue(now = new Date()) {
       catch (e) { failed++; console.log('held welcome failed', b.key, String(e).slice(0, 200)); }
     }
     if (here.hour < SEND_HOUR || rec.lastSent === here.date || !dueToday(rec.freq, here)) { skipped++; continue; }
-    const m = rec.freq === 'Weekly' || rec.freq === 'Monthly' ? todaysManna(now, tz) : todaysCatch(now, tz, rec.lang);
+    const m = todaysCatch(now, tz, rec.lang);
     if (!m) { skipped++; continue; }
     try { await deliver(rec, m, { weekly: rec.freq === 'Weekly' }); sent++; await s.setJSON(b.key, { ...rec, lastSent: here.date }); }
     catch (e) { failed++; console.log('devo email failed', b.key, String(e).slice(0, 200)); }
