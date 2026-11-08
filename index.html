@@ -4001,7 +4001,7 @@ window.MF=(function(){
   function dvLines(k){ var l=MF.lang, sy=(SAY[l]&&SAY[l][k])||SAY.en[k], d=DATA[k], m=meansIn(l,k), L=studyLabels(l), w=titleIn(l,k), T=dvT(), pre=[], g=(d.gkw?1:0)+(d.hbw?1:0), refs=(d.refs||[]).slice(0,9);
     var fishLine=w+'. '+sy[1]+' '+sy[2]+'.', back=[];
     /* Ken, 8 Nov: "I heard the Greek introduced but not the Hebrew": each is introduced in words ("In Hebrew, the word is paw-LAL. It means ...") and read by its sounded-out spelling, not the Hebrew or Greek letters, which the voice swallowed the introduction around */
-    var say2=function(lab,w,sound,mean){ return l==='es'?('En '+String(lab).toLowerCase()+', la palabra es '+sound+'. Significa: '+mean):('In '+lab+', the word is '+sound+'. It means: '+mean); };
+    var say2=function(lab,wd,sound,mean){ return l==='es'?('La palabra en '+String(lab).toLowerCase()+' para '+w+' es '+sound+'. Significa: '+mean):('The '+lab+' word for '+w+' is '+sound+'. It means: '+mean); };
     if(d.gkw) back.push(T?say2(L.gk,d.gkw,d.gks,m[0]):L.gk+': '+d.gkw+', '+d.gks+'. '+m[0]); if(d.hbw) back.push(T?say2(L.hb,d.hbw,d.hbs,m[1]):L.hb+': '+d.hbw+', '+d.hbs+'. '+m[1]);
     var prayerP=T?fetch('/api/prayers?l='+(l==='es'?'es':'en')+'&last='+encodeURIComponent(lsGet('mf-prayer-last')||'')).then(function(r){ return r.ok?r.json():{prayer:null}; }).then(function(j){ return j.prayer||null; }).catch(function(){ return null; }):Promise.resolve(null);
     return prayerP.then(function(pr){
@@ -4377,7 +4377,7 @@ window.MF=(function(){
   function xSnip(t){ t=String(t||'').replace(/\s+/g,' ').trim(); if(t.length<=46) return t.replace(/[,;:.]$/,''); var c=t.slice(0,46); return c.slice(0,c.lastIndexOf(' '))+'…'; }
   function xBooks(){ return new Promise(function(res){ var n=0; (function w(){ if(window.MFdeep) res(MFdeep.books); else if(++n<100) setTimeout(w,50); else res(null); })(); }); }
   function loadExtra(id){ id=String(id||'').replace(/[^A-Za-z0-9]/g,''); id=id.charAt(0).toUpperCase()+id.slice(1);   // W02b, D368, X005 if(DATA[id]) return Promise.resolve(id);
-    return Promise.all([xJ('/fish/catch.json'),fetch('/fish/'+id+'.svg').then(function(r){ if(!r.ok) throw 0; return r.text(); }),xBooks()]).then(function(a){
+    return Promise.all([xJ('/fish/catch.json'),fetch('/fish/'+id+'.svg').then(function(r){ if(!r.ok) throw 0; return r.text(); }),xBooks(),xJ('/fish/studies.json').catch(function(){ return {}; })]).then(function(a){
       var f=a[0].fish[id], BOOKS=a[2], m=f&&/^(.+?)\s+(\d+):(\d+)/.exec(f.ref||''); if(!f||!BOOKS||!m) throw 0;
       var b=BOOKS.indexOf(m[1]), c=+m[2], v=+m[3], fn=m[1].replace(/ /g,'_'), ot=b<39, w=String(f.title).toLowerCase(), base=w.replace(/e$/,'');
       return Promise.all([xJ('/fish-lang/bible/kjv/'+fn+'-'+c+'.json').catch(function(){ return null; }),xJ('/fish-lang/bible/orig/'+fn+'-'+c+'.json').catch(function(){ return null; }),xJ('/fish-lang/bible/xref/'+fn+'.json').catch(function(){ return {}; })]).then(function(x){
@@ -4393,7 +4393,13 @@ window.MF=(function(){
           mean=mean?mean.charAt(0).toUpperCase()+mean.slice(1)+(/[.!?]$/.test(mean)?'':'.'):'';
           var num=mm?String(+mm[2]):'';
           DATA[id]={title:f.title,gkw:ot?'':wd,gks:ot?'':snd,gkm:ot?'':mean,hbw:ot?wd:'',hbs:ot?snd:'',hbm:ot?mean:'',refs:refs.length?refs:[[f.ref,xSnip(f.verse)]]};
-          STRONGS[id]=ot?['',num]:[num,'']; SAY.en[id]=[f.title,f.verse,f.ref]; FISH[id]=a[1]; EXTRA[id]=f; return id; }); }); }); }
+          STRONGS[id]=ot?['',num]:[num,'']; SAY.en[id]=[f.title,f.verse,f.ref]; FISH[id]=a[1]; EXTRA[id]=f;
+          /* Ken, 8 Nov: "it's supposed to have the Greek and the Hebrew, side by side": the other language's word for this fish's word comes from fish/studies.json (tools/fish/studies.py),
+             the one the whole Bible most often translates with it; the language of the fish's own verse keeps the word found in that verse */
+          var sd=(a[3]||{})[String(f.title).toLowerCase()]||{}, D2=DATA[id], num2=function(n){ var m2=/\d+/.exec(n||''); return m2?String(+m2[0]):''; };
+          if(sd.g&&!D2.gkw){ D2.gkw=sd.g.w; D2.gks=sd.g.t; D2.gkm=sd.g.m; STRONGS[id][0]=num2(sd.g.n); }
+          if(sd.h&&!D2.hbw){ D2.hbw=sd.h.w; D2.hbs=sd.h.t; D2.hbm=sd.h.m; STRONGS[id][1]=num2(sd.h.n); }
+          return id; }); }); }); }
   (function(){ var m=(location.search+location.hash).match(/[?&#]fish=([A-Za-z0-9]+)/);
     if(!m&&!/[?&#]w=/.test(location.search+location.hash)){ try{ var tf=JSON.parse(localStorage.getItem('mf-today-fish')||'null'); if(tf&&tf.d===new Date().toDateString()&&tf.k) m=[0,tf.k]; }catch(e){} }   // the fish picked in Go Fish, for today
     if(!m){ if(/[?&#]w=/.test(location.search+location.hash)) return;
