@@ -34,9 +34,26 @@ while i < len(year) or j < len(daily):
 # Ken, 3 Nov ("I got Judge yesterday and today"): the round never moves. A fish added (Deliver went in near the front on 2 Nov)
 # had pushed every later day back one, so Judge came twice. Now the days already set keep their fish: a fish that is gone is
 # replaced in its own place by a new one, and the other new fish go on at the end. Only a first run lays the round out afresh.
+# Ken, 8 Nov: only action fish go round. fish/series.json (tools/fish/series.py) lists the fish in use; the rest are held back ("Uncategorized")
+# and are not sent anywhere. Days already sent (up to today) keep their fish; the held ones are taken out from tomorrow on.
+import datetime
+sp = os.path.join(ROOT, 'fish/series.json'); series = json.load(open(sp)) if os.path.exists(sp) else None
+use = set(series['use']) if series else set(fish)
+others = [k for k in others if k in use]
+days_since = (datetime.date.today() - datetime.date(2026, 10, 11)).days
 prev_path = os.path.join(ROOT, 'netlify/functions/lib/catch.json')
 prev = json.load(open(prev_path))['order'] if os.path.exists(prev_path) else []
-if prev:
+if prev and series:
+    cut = max(0, min(len(prev), days_since + 1)); order = list(prev[:cut]); seen = set(order); pool = []
+    for k in prev[cut:] + others:
+        if k in use and k not in core and k not in seen and k not in pool: pool.append(k)
+    idx = cut
+    while pool or idx % 7:
+        if idx % 7 == 0: order.append(core[(idx // 7) % len(core)])
+        elif pool: order.append(pool.pop(0))
+        else: order.append(others[idx % len(others)])
+        idx += 1
+elif prev:
     have = set(k for k in prev if k in fish); missing = [k for k in others if k not in have]; order = []
     for idx, k in enumerate(prev):
         if idx % 7 == 0: order.append(k if k in core else core[(idx // 7) % len(core)]); continue

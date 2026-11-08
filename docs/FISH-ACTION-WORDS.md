@@ -1,5 +1,7 @@
 # Fish words: action words and the rest (7 Nov 2026)
 
+**8 Nov: applied.** `tools/fish/series.py` turns the lists below into `fish/series.json`: 347 action fish are in use (the daily email, push and text pot); the 280 "not action" and 38 "maybe" fish (318) are held back as **Uncategorized, not in use** until Ken names their series. The review page (`/fish/review/`, tab Uncategorized) and the edit sheet (`/edit/`, New fish and Plan fish, filter Uncategorized) show them at the bottom. Of the 347, 346 have their word in their own verse; the one that does not is Remember (Luke 22:19 says "remembrance"), kept for now (Ken's open question). To change a fish's group, edit the lists below and run `python3 tools/fish/series.py && python3 tools/fish/catch.py`.
+
 Ken: "the main idea of MannaFish is a call to action from the one word in the middle of the fish. Any words that are not action words, I want to separate for a different series."
 
 Sorted by hand from the word on each of the 665 fish (the words drawn on the fish and in `fish/catch.json` agree). An **action word** is a verb you can say as a command (Seek, Rest, Go, Build). **Not action** = nouns, adjectives, names, small words, past forms. **Maybe** = can be a verb or a noun; the fish's verse decides.

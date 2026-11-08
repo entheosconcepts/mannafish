@@ -11,6 +11,8 @@ Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live sit
 - Bible reader: Explain & apply, search, side-by-side columns, ElevenLabs voices (`/voices/`), no phone voice anywhere.
 
 ## Waiting on Ken
+- 318 held fish (Uncategorized): name their series later; decide the 38 "maybe" ones. Only the 347 action fish go in the daily pot now.
+- Weekly / Monthly / Spanish only send the 24: tell Claude your sign-up type and say go to put everything in one pot.
 - **Daily email links are broken** (8 Nov): they go through r.em.manna-fish.com, which shows a Google 404. Needs a fix in Brevo and the manna-fish.com DNS (see DECISIONS.md, 8 Nov). Must be fixed before going live.
 - Bulk sponsorship page (`/sponsor/`): confirm the prices ($2 each at 1,000 or more, $3 under 1,000, minimum 100), how people pay (invoice first, or card payment), StickerApp's real cost, and the name "MannaFish Hub". Nothing is on the site yet.
 - Monthly basket drawing (one random sign-up a month gets the 2 Fish and 5 Loaves gift basket; one per household per year): the wording and the merch checkbox are on the home page; the draw tool is not built. Say go and I will build the admin draw.
