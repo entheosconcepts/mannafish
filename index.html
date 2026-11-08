@@ -24,7 +24,7 @@
   if(/[?&]card=1\b/.test(q)){ document.documentElement.classList.add('card'); return; }
   if(window.top!==window.self) return;
   var devo=/[?&](devo|e)=/.test(q); if(devo) localStorage.setItem('mf-sub','1');   /* e=1 is on every fish link in our email, texts and notifications */
-  var sub=localStorage.getItem('mf-sub')==='1', stay=/[?&](today|devotional|nored|year|embed|flip)=/.test(q);
+  var sub=localStorage.getItem('mf-sub')==='1', stay=/[?&](today|devotional|nored|year|embed|flip|do)=/.test(q);
   if(stay||!(devo||(sub&&!h))) return;
   var P=function(k){ var m=new RegExp('[?&]'+k+'=([^&#]+)').exec(q); return m?m[1]:''; };
   location.replace('/bible/?fish='+(P('fish')||P('w')||'today')+(P('lang')?'&lang='+P('lang'):'')); }catch(e){} })();
@@ -5698,4 +5698,9 @@ body.mfediting{padding-top:54px!important}
   if(window.ResizeObserver){ var ro=new ResizeObserver(send); var t=document.getElementById('today'); if(t) ro.observe(t); }
   new MutationObserver(send).observe(document.documentElement,{attributes:true,subtree:true,attributeFilter:['hidden','class','style']});
   window.addEventListener('load',function(){ send(); setTimeout(send,800); setTimeout(send,2500); }); })();
+</script>
+<script>
+/* ?do=tour|vision|stories|admin: the Bible page's three-dots menu opens these here (Ken, 8 Nov) */
+(function(){ var m=/[?&]do=([a-z]+)/.exec(location.search); if(!m) return; var map={tour:'tourBtn',vision:'vsBtn',stories:'smStories',admin:'smAdmin'}, id=map[m[1]]; if(!id) return;
+  setTimeout(function(){ var b=document.getElementById(id); if(b) b.click(); },1400); })();
 </script>

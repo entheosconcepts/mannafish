@@ -1277,10 +1277,22 @@ body.lay-l .rail .dnav{flex:1 1 auto}
       +'<hr><div class="mi" style="cursor:default"><span class="ic">Aa</span><span class="tx">Text size</span><span class="mts"><button type="button" data-fs="-1" aria-label="Smaller">A&minus;</button><button type="button" data-fs="1" aria-label="Bigger">A+</button></span></div>'
       +'<a class="mi" href="/you/#st" target="_top"><span class="ic">&#9881;&#xFE0E;</span><span class="tx">Settings<small>Font, spacing, verse numbers, voice and more</small></span></a>'
       +(window.MFfeedback?'<button type="button" class="mi" data-m="fb"><span class="ic">&#128172;&#xFE0E;</span><span class="tx">Tell us what you think<small>What you like, what confused you</small></span></button>':''); }
-  $('dots').addEventListener('click',function(e){ e.stopPropagation(); if(menuOpen()){ closeMenu(); return; } closeAct(); closeWc(); menuUI(); $('menu').hidden=false; $('menu').scrollTop=0; $('dots').setAttribute('aria-expanded','true'); });
+  /* Ken, 8 Nov: the three dots list the same things they did on the home page (Bible, Time with God, The vision, Bible in a Year, Fish stories, Take a tour ...); the Bible's own tools, notes and recent chapters are the last item */
+  function siteMenuUI(){ var it=function(k,ic,t,sm){ return '<button type="button" class="mi" role="menuitem" data-site="'+k+'"><span class="ic">'+ic+'</span><span class="tx">'+t+'<small>'+sm+'</small></span></button>'; };
+    $('menu').innerHTML=it('bible','&#10013;&#xFE0E;','Bible','Every book and chapter')+it('pray','&#128330;&#xFE0E;','Time with God','A few quiet minutes of prayer')+it('vision','&#9654;&#xFE0E;','The vision','Listen &middot; 3 min')
+      +it('plan','&#128214;&#xFE0E;','Bible in a Year','Day and night readings, 2 Fish a day')+it('stories','&#128031;&#xFE0E;','Fish stories','Share your catch')+it('tour','&#10024;&#xFE0E;','Take a tour','How it works')
+      +it('match','&#127924;&#xFE0E;','MannaFish Memory','Match a pair, then go fish')+it('translate','&#128172;&#xFE0E;','Translator','Talk with anyone')
+      +'<hr>'+it('prof','&#128100;&#xFE0E;','My stuff','Prayers, notes, highlights, orders, history')+it('set','&#9881;&#xFE0E;','Settings','Plan, language, light or dark, listening')+it('acct','&#128273;&#xFE0E;','Sign in','Keep your notes on every device')
+      +it('fb','&#128172;&#xFE0E;','Tell us what you think','What you like, what confused you')+it('admin','&#128736;&#xFE0E;','Admin view','For testing: edit tools and admin pages')
+      +'<hr>'+it('chapter','&#129520;&#xFE0E;','This chapter','Notes, recent chapters and Bible tools'); }
+  function siteAct(k){ closeMenu(); var go2=function(u){ location.href=u; };
+    if(k==='bible'){ var tb=$('titleB'); if(tb) tb.click(); } else if(k==='pray') go2('/pray/'); else if(k==='vision') go2('/?today=1&do=vision'); else if(k==='plan') go2('/plan/'); else if(k==='stories') go2('/?today=1&do=stories'); else if(k==='tour') go2('/?today=1&do=tour');
+    else if(k==='match') go2('/go/'); else if(k==='translate') go2('/translate/'); else if(k==='prof'||k==='acct') go2('/you/'); else if(k==='set') go2('/you/#st'); else if(k==='admin') go2('/?today=1&do=admin');
+    else if(k==='fb'){ if(window.MFfeedback) MFfeedback.open(); } else if(k==='chapter'){ closeAct(); closeWc(); menuUI(); $('menu').hidden=false; $('menu').scrollTop=0; $('dots').setAttribute('aria-expanded','true'); } }
+  $('dots').addEventListener('click',function(e){ e.stopPropagation(); if(menuOpen()){ closeMenu(); return; } closeAct(); closeWc(); siteMenuUI(); $('menu').hidden=false; $('menu').scrollTop=0; $('dots').setAttribute('aria-expanded','true'); });
   document.addEventListener('click',function(e){ if(menuOpen()&&!e.target.closest('#menu,#dots')) closeMenu(); });
   $('menu').addEventListener('change',function(e){ if(e.target.dataset.pi!=null){ putPar(+e.target.dataset.pi,e.target.value); go(AT.b,AT.c,0,true); menuUI(); } });
-  $('menu').addEventListener('click',function(e){ var g=e.target.closest('[data-go]'); if(g){ var t=g.dataset.go.split(',').map(Number); closeMenu(); go(t[0],t[1],t[2]); return; }
+  $('menu').addEventListener('click',function(e){ var sm=e.target.closest('[data-site]'); if(sm){ e.stopPropagation(); siteAct(sm.dataset.site); return; } var g=e.target.closest('[data-go]'); if(g){ var t=g.dataset.go.split(',').map(Number); closeMenu(); go(t[0],t[1],t[2]); return; }
     var f=e.target.closest('[data-fs]'); if(f){ var z=Math.max(14,Math.min(30,(+SET('size',0)||19)+(+f.dataset.fs))); putSet('size',z===19?undefined:z); applySet(); toast('Text size '+(z===19?'standard':z+' px')); return; }
     var st=e.target.closest('[data-st]'); if(st){ closeMenu(); openStuff(st.dataset.st); return; }
     var m=e.target.closest('[data-m]'); if(!m) return; var k=m.dataset.m;
