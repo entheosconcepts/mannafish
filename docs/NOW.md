@@ -1,9 +1,12 @@
 # MannaFish: where we are (read this first; keep it to one page)
 
-Updated 7 Nov 2026. Claude updates this at the end of every job, without being asked. The long history is in `docs/DECISIONS.md` (open it only when a detail is missing).
+Updated 9 Nov 2026. Claude updates this at the end of every job, without being asked. The long history is in `docs/DECISIONS.md` (open it only when a detail is missing).
 Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live site manna-fish.com is the old decal shop page on `main` until Ken says "push it live".
 
-## Just finished (8 Nov)
+## Just finished (9 Nov)
+- English dictionary on the Bible page (Ken: "some people do not know what naïve means"). Tap a word, then 📖 Dictionary (or 📖 Define in a side-by-side English column). Webster's, public domain, 102,000 words, loaded one small file per lookup; old words like saith/hath/begotten point to say/have/beget. English versions only. Not tested on a real phone.
+
+## Before (8 Nov)
 - Listen now: catch of the day and word, invitation to the Lord, a human prayer (or a quiet pause) with time to pray, the fish and its verse, "now we go deeper" (nine Scriptures on the back), the 2 Fish challenge, then a share panel. Prayers: `/api/prayers`, approve at `/prayers/admin/`.
 - Subscribers (an email or text link, or signed up on that phone) now land on the Bible app where they last read (Ken, 8 Nov: not at the fish's verse), with a "The Bible" block under the card, with the home page's flip card on top (collapsible). Desktop gets a left rail with the card and all the books. Paste note for other sessions: `docs/HANDOFF-PASTE.md`.
 - Today now opens on today's catch from the one mixed pot of 347 action fish (same as the email); held fish are hidden; Weekly and Monthly emails use the pot.

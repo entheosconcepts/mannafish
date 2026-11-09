@@ -331,6 +331,13 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 mark.ph2{border-radius:3px;padding:0 1px;box-decoration-break:clone;-webkit-box-decoration-break:clone}.hlhide mark.ph2{background:transparent!important;color:inherit!important}
 .colrm{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:none;color:inherit;font-size:.9rem;cursor:pointer}
 .txt .v2.sel .vt2,.txt .v2.sel .ow{text-decoration:underline dotted 2px;text-underline-offset:6px}
+.dictsheet{position:fixed;left:8px;right:8px;bottom:8px;z-index:60;display:flex;justify-content:center}.dictsheet[hidden]{display:none}
+.dictsheet .in{width:min(560px,100%);max-height:62vh;overflow:auto;background:var(--card2);border:1px solid var(--line);border-radius:22px;box-shadow:0 -14px 34px -10px rgba(0,0,0,.7);padding:14px 16px 12px}
+.dictsheet .dh{display:flex;align-items:center;justify-content:space-between;gap:10px}.dictsheet .dh b{font:700 1.5rem 'Fraunces',Georgia,serif}
+.dictsheet .dx{border:0;background:none;color:inherit;font-size:1.3rem;cursor:pointer;padding:4px 8px}
+.dictsheet .dchips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.dictsheet .dchips button{border:1px solid var(--line);background:none;color:inherit;border-radius:999px;padding:5px 11px;font:700 .85rem 'Archivo',sans-serif;cursor:pointer}.dictsheet .dchips button[aria-pressed=true]{background:var(--sel)}
+.dictsheet .dbody{font:400 1.02rem/1.5 'Spectral',Georgia,serif}.dictsheet .dbody small{display:block;color:var(--dim);margin-bottom:4px}
+.dictsheet .dsrc{margin:10px 0 0;color:var(--dim);font-size:.75rem}
 .laysw{display:none}
 .bibhd{text-align:center;margin:4px 0 8px;padding:4px 2px 0}
 .bibhd h2{margin:0;font:700 1.7rem/1.1 'Fraunces',Georgia,serif}
@@ -380,6 +387,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
 <script src="/fish-lang/deep.js" defer></script>
 <script src="/fish-lang/basket.js" defer></script>
 <script src="/fish-lang/makefish.js" defer></script>
+<script src="/fish-lang/dict.js" defer></script>
 <script src="/fish-lang/account.js" defer></script>
 </head>
 <body>
@@ -424,6 +432,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
 <button type="button" class="histb" id="hist" hidden></button>
 <div class="penbar" id="colbar" hidden><b>&#128397;&#xFE0E; Highlight</b><span id="colDots" style="display:flex;gap:4px;align-items:center"></span><button type="button" class="chip" id="colX">Done</button></div>
 <div class="penbar" id="penbar" hidden><b>&#128397;&#xFE0E; Slide across the words</b><span id="penDots" style="display:flex;gap:4px"></span><button type="button" class="chip" id="penX">Done</button></div>
+<div class="dictsheet" id="dictS" role="dialog" aria-label="Dictionary" hidden><div class="in"><div class="dh"><b id="dictW"></b><button type="button" class="dx" id="dictX" aria-label="Close">&#10005;</button></div><div class="dchips" id="dictC"></div><div class="dbody" id="dictB"></div><p class="dsrc">Webster&rsquo;s Dictionary, public domain. Old and unusual words are marked (old).</p></div></div>
 <div class="act xrsheet" id="xrs" role="dialog" aria-label="Cross references"><div class="in" id="xrsIn"></div></div>
 <div class="act" id="act" role="dialog" aria-label="Verse"><div class="in"><button type="button" class="actx" id="aClose" aria-label="Close">&#10005;</button>
   <button type="button" class="grab" id="aGrab" aria-label="More"><span class="gl"></span><svg class="ga" viewBox="0 0 24 12" aria-hidden="true"><path d="M5 9.5l7-6 7 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -436,7 +445,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
     <button type="button" class="tile" id="aOrigT" aria-pressed="false"><span class="ogi" id="aOrigI" aria-hidden="true">&alpha;</span><span id="aOrigL">Greek</span></button>
     <button type="button" class="tile" id="aCopy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><span>Copy</span></button></div>
   <div class="arow" id="aRmRow" hidden><button type="button" class="chip" id="aRm">&#10005; Remove highlight</button><button type="button" class="chip" id="aRmAll">Remove all in this chapter</button></div>
-  <div class="arow wl" id="aWl" hidden><span class="wlw"><b id="aWlW"></b><button type="button" class="wls" id="aWlSay0" aria-label="Hear it">🔊</button></span><button type="button" class="chip" id="aWlMk" hidden>&#128031; Make it a MannaFish</button><button type="button" class="chip" id="aWlHl" hidden>&#128397;&#xFE0E; Highlight just this word</button><select id="aWlL" aria-label="See and hear it in another language"></select><span class="wlr" id="aWlR" aria-live="polite"></span><button type="button" class="wls" id="aWlSay" aria-label="Hear it in that language" hidden>🔊</button></div>
+  <div class="arow wl" id="aWl" hidden><span class="wlw"><b id="aWlW"></b><button type="button" class="wls" id="aWlSay0" aria-label="Hear it">🔊</button></span><button type="button" class="chip" id="aWlMk" hidden>&#128031; Make it a MannaFish</button><button type="button" class="chip" id="aWlHl" hidden>&#128397;&#xFE0E; Highlight just this word</button><button type="button" class="chip" id="aWlDict" hidden>&#128214;&#xFE0E; Dictionary</button><select id="aWlL" aria-label="See and hear it in another language"></select><span class="wlr" id="aWlR" aria-live="polite"></span><button type="button" class="wls" id="aWlSay" aria-label="Hear it in that language" hidden>🔊</button></div>
   <p class="tip" id="aTip" hidden>Tip: hold a word, then slide your finger to pick just those words</p>
   <button type="button" class="moreh" id="aMore">&#8963; Swipe up for more</button>
   <div class="more">
@@ -613,6 +622,16 @@ body.lay-l .rail .dnav{flex:1 1 auto}
     else if(a==='ver'){ var v=$('ver'); if(v){ v.scrollIntoView({block:'center'}); try{ v.focus(); if(v.showPicker) v.showPicker(); }catch(er){} } }
     else if(a==='side'){ var pa=document.querySelector('.padd1,.padd'); if(pa) pa.click(); else toast('Side by side is open: use the + button at the top of the columns.'); }
     else if(a==='say'){ var sy=$('say'); if(sy) sy.click(); } });
+  /* Ken, 9 Nov: an English dictionary on any word (Webster's, public domain): the word you tapped, or each word of a highlighted phrase */
+  var DICTW=[];
+  function dictOpen(text,pick){ var ws=(window.MFdict?MFdict.words(text):[]).filter(function(w,i,a){ return a.indexOf(w)===i; }).slice(0,14); if(!ws.length) return; DICTW=ws; var cur=pick||ws[0];
+    $('dictC').innerHTML=ws.length>1?ws.map(function(w){ return '<button type="button" data-dw="'+esc(w)+'" aria-pressed="'+(w===cur)+'">'+esc(w)+'</button>'; }).join(''):''; $('dictS').hidden=false; dictShow(cur); }
+  function dictShow(w){ $('dictW').textContent=w; $('dictB').innerHTML='<small>…</small>'; [].forEach.call($('dictC').querySelectorAll('button'),function(b){ b.setAttribute('aria-pressed',String(b.dataset.dw===w)); });
+    MFdict.lookup(w).then(function(r){ if($('dictW').textContent!==w) return; $('dictB').innerHTML=r?(r.base!==MFdict.norm(w)?'<small>from “'+esc(r.base)+'”</small>':'')+esc(r.text).split(' | ').join('<br><br>'):'No definition found for “'+esc(w)+'”.'; }); }
+  $('dictC').addEventListener('click',function(e){ var b=e.target.closest('[data-dw]'); if(b) dictShow(b.dataset.dw); });
+  $('dictX').addEventListener('click',function(){ $('dictS').hidden=true; });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('dictS').hidden) $('dictS').hidden=true; });
+  $('aWlDict').addEventListener('click',function(){ var W=wlWord(); if(W) dictOpen(W.w); });
   /* Ken, 8 Nov: three desktop layouts (Centered, Left rail, Three panes); the choice is kept in the settings, so it follows the account */
   (function(){ var sw=$('laySw'); if(!sw) return; var L=SET('lay','c'); if(!/^[clt]$/.test(L)) L='c';
     function apply(l){ L=l; ['c','l','t'].forEach(function(x){ document.body.classList.toggle('lay-'+x,x===l); }); [].forEach.call(sw.querySelectorAll('button'),function(b){ b.setAttribute('aria-pressed',String(b.dataset.lay===l)); }); try{ dnavSync(); }catch(e){} }
@@ -780,7 +799,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
     var mk=e.target.closest('mark.ph'); if(mk&&!PHS){ var v0=+mk.closest('.v').dataset.v; PHS=[{v:v0,s:+mk.dataset.s,e:+mk.dataset.e}]; SEL=[v0]; selUI(); return; }
     var s=e.target.closest('.v,.v2'); if(!s) return;
     /* Ken, 8 Nov: a tap on a verse in another column selects that column's verse (and nothing in the first column) */
-    if(s.classList.contains('v2')){ if(e.target.closest('.ow,.ogs')||Date.now()-TDRAG<700) return; colVerseTap(s); return; }
+    if(s.classList.contains('v2')){ if(e.target.closest('.ow,.ogs')||Date.now()-TDRAG<700) return; colVerseTap(s,e); return; }
     if(COLV){ COLV=null; COLSEL=null; colBar(false); }
     TAPW=tapWord(e,s); if(PHS){ PHS=null; SEL=[]; fdShow(null); }
     var v=+s.dataset.v, i=SEL.indexOf(v); if(i>=0) SEL.splice(i,1); else SEL.push(v); SEL.sort(function(a,b){ return a-b; }); selUI(); });
@@ -845,7 +864,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
       return t?{v:v,s:t.s,e:t.e,w:t.w}:null; }catch(er){ return null; } }
   function wlWord(){ if(PHS&&PHS.length===1){ var p=PHS[0], t=(VT[p.v]||'').slice(p.s,p.e).trim(); if(t&&t.length<=40) return {v:p.v,s:p.s,e:p.e,w:t}; }
     if(!PHS&&TAPW&&SEL.length===1&&SEL[0]===TAPW.v) return TAPW; return null; }
-  function wlUI(){ var W=wlWord(), sel=$('aWlL'); $('aWl').hidden=!W; if(!W) return; $('aWlW').textContent=W.w; $('aWlHl').hidden=!!PHS; $('aWlMk').hidden=!(window.MFmake&&MFmake.latin(VT[W.v]||'')); var L=ogLang(), cur=ls('mf-bw-lang')||'';
+  function wlUI(){ var W=wlWord(), sel=$('aWlL'); $('aWl').hidden=!W; if(!W) return; $('aWlDict').hidden=vlang()!=='en'; $('aWlW').textContent=W.w; $('aWlHl').hidden=!!PHS; $('aWlMk').hidden=!(window.MFmake&&MFmake.latin(VT[W.v]||'')); var L=ogLang(), cur=ls('mf-bw-lang')||'';
     sel.innerHTML='<option value="">🌐 In another language…</option><option value="orig">'+L.n+' (the original)</option>'+WLN.filter(function(x){ return x[0]!==vlang(); }).map(function(x){ return '<option value="'+x[0]+'">'+esc(x[1])+'</option>'; }).join('');
     sel.value=cur&&sel.querySelector('option[value="'+cur+'"]')?cur:''; $('aWlR').innerHTML=''; $('aWlSay').hidden=true; if(sel.value) wlShow(); }
   function say(t,l){ stopSay(); ogStop(); sayP(t,l); }   // one word in another language: the natural voice, and nothing else playing
@@ -1146,13 +1165,16 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   $('txt').addEventListener('mouseup',function(){ setTimeout(function(){ var rs=colSel(); if(!rs) return; if(PEN){ colPen(rs); try{ window.getSelection().removeAllRanges(); }catch(er){} } else { COLSEL=rs; colBar(true); } },0); });
   var COLV=null;   // a whole verse picked in another column: {pi,v}
   function colBar(on){ var b=$('colbar'); if(!b) return; b.hidden=!on; if(!on){ COLV=null; [].forEach.call($('txt').querySelectorAll('.v2.sel'),function(x){ x.classList.remove('sel'); }); return; }
-    $('colDots').innerHTML=swatches(BASE,colour())+'<button type="button" data-c="" aria-label="Take the highlight off" class="colrm">&#10005;</button>'+(COLV?'<button type="button" class="chip colcp" data-copy="1">Copy</button>':''); }
-  function colVerseTap(cell){ var pi=+cell.dataset.pi, v=+cell.dataset.v, ci=colInfo(pi); if(!ci) return;
+    $('colDots').innerHTML=swatches(BASE,colour())+'<button type="button" data-c="" aria-label="Take the highlight off" class="colrm">&#10005;</button>'+(COLV?'<button type="button" class="chip colcp" data-copy="1">Copy</button>':'')+(colDefText()?'<button type="button" class="chip coldf" data-def="1">&#128214;&#xFE0E; Define</button>':''); }
+  var COLW='';   // the word tapped in a column's verse
+  function colDefText(){ if(!COLSEL||!COLSEL.length) return ''; var ci=colInfo(COLSEL[0].pi); if(!ci||ci.og||ci.lang!=='en') return ''; if(COLV) return COLW; return COLSEL.map(function(p){ return colText(ci,p.v).slice(p.s,p.e); }).join(' '); }
+  function colVerseTap(cell,e){ var pi=+cell.dataset.pi, v=+cell.dataset.v, ci=colInfo(pi); if(!ci) return;
+    COLW=''; if(e&&!ci.og){ var cp=colPoint(e.clientX,e.clientY); if(cp&&cp.pi===pi&&cp.v===v){ var tk2=colToks(ci,v).filter(function(t){ return t.s<=cp.o&&t.e>=cp.o; })[0]; if(tk2) COLW=colText(ci,v).slice(tk2.s,tk2.e); } }
     if(COLV&&COLV.pi===pi&&COLV.v===v){ COLSEL=null; colBar(false); return; }
     closeAct(); closeWc(); [].forEach.call($('txt').querySelectorAll('.v2.sel'),function(x){ x.classList.remove('sel'); }); cell.classList.add('sel'); COLV={pi:pi,v:v}; COLSEL=[{pi:pi,v:v,s:0,e:colText(ci,v).length}]; colBar(true); }
   function colCopy(){ if(!COLV) return; var ci=colInfo(COLV.pi); if(!ci) return; var o=colText(ci,COLV.v), t=o+' \u2014 '+plain(ci.b,ci.c,COLV.v)+' ('+((ci.x.P&&ci.x.P.s)||'')+')';
     try{ navigator.clipboard.writeText(t).then(function(){ toast('Copied'); }); }catch(er){ window.prompt('',t); } }
-  $('colbar').addEventListener('click',function(e){ if(e.target.closest('[data-copy]')){ colCopy(); return; } var d=e.target.closest('[data-c]'); if(d&&COLSEL){ var c=d.dataset.c, keepV=COLV; colApply(COLSEL,c||null); if(!c) { COLSEL=null; colBar(false); } else { COLV=keepV; colBar(true); } try{ window.getSelection().removeAllRanges(); }catch(er){} return; } if(e.target.closest('#colX')){ COLSEL=null; colBar(false); try{ window.getSelection().removeAllRanges(); }catch(er){} } });
+  $('colbar').addEventListener('click',function(e){ if(e.target.closest('[data-copy]')){ colCopy(); return; } if(e.target.closest('[data-def]')){ var dt=colDefText(); if(dt) dictOpen(dt); return; } var d=e.target.closest('[data-c]'); if(d&&COLSEL){ var c=d.dataset.c, keepV=COLV; colApply(COLSEL,c||null); if(!c) { COLSEL=null; colBar(false); } else { COLV=keepV; colBar(true); } try{ window.getSelection().removeAllRanges(); }catch(er){} return; } if(e.target.closest('#colX')){ COLSEL=null; colBar(false); try{ window.getSelection().removeAllRanges(); }catch(er){} } });
   window.MFcol={sel:colSel,info:colInfo,apply:colApply,pen:colPen};   /* for testing */
   var LASTPEN=null;
   function penColour(c){ ls('mf-hl-color',c); penUI(); if(LASTPEN&&Date.now()-LASTPEN.at<30000){ PHS=LASTPEN.L; SEL=PHS.map(function(p){ return p.v; }); LASTPEN.at=Date.now(); applyHl(c); } }
