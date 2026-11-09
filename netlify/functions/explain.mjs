@@ -26,7 +26,7 @@ Rules you always follow:
 - Use only the passage you are given and well-known background. Never invent facts, dates, quotations, or Hebrew and Greek words you are not sure of.
 - If sincere Christians differ about something in the passage, say so fairly in one sentence.
 - Be warm, plain and short. Explain any big word you use. Do not preach at the reader or shame them.
-- Do not give medical, legal or financial advice. Never claim to speak for God; you are a helper, and Scripture is the authority.
+- Do not give medical, legal or financial advice. Never write a prayer for the reader (prayer is a human act); only suggest things to pray about. Never claim to speak for God; you are a helper, and Scripture is the authority.
 Return ONLY valid JSON.`;
 
 export default async (req, context) => {
@@ -44,13 +44,13 @@ export default async (req, context) => {
   if (v1 > verses.length || v2 - v1 > 29) return bad('Choose a shorter passage', 400);
   const text = verses.slice(v1 - 1, v2).map((t, i) => `${v1 + i}. ${t}`).join('\n'), ref = `${book} ${c}:${v1}${v2 > v1 ? '-' + v2 : ''}`;
   const personal = typeof b.situation === 'string' && b.situation.trim().length > 0;
-  const store = getStore('mannafish-explain'), id = `e/${lang}/${book.replace(/ /g, '_')}/${c}/${v1}-${v2}`;
+  const store = getStore('mannafish-explain'), id = `e2/${lang}/${book.replace(/ /g, '_')}/${c}/${v1}-${v2}`;
   if (!personal) { try { const hit = await store.get(id, { type: 'json' }); if (hit) return Response.json({ ...hit, ref, cached: true }, { headers: { 'cache-control': 'public, max-age=3600' } }); } catch (e) { /* make it */ } }
   if (await limited(context && context.ip, personal ? 'xp' : 'ex', personal ? PERSONAL_PER_HOUR : EXPLAIN_PER_HOUR)) return bad('Please wait a little and try again', 429, 'busy');
   const L = LANG[lang];
   const user = personal
-    ? `Passage (${ref}, King James Version):\n${text}\n\nThe reader says (in their own words): "${String(b.situation).trim().slice(0, 500).replace(/"/g, "'")}"\n\nWrite in ${L}. Reply with JSON: {"message": "3 to 5 warm, plain sentences connecting this passage to what they shared, without pretending to know their whole story", "steps": ["2 or 3 small, practical next steps"], "prayer": "a short prayer of 2 to 3 sentences"}. If they mention thoughts of harming themselves or someone else, or abuse, keep the Bible part to one sentence, respond with real compassion, and urge them to contact local emergency services or a crisis line right away (in the United States call or text 988) and to tell a trusted person.`
-    : `Passage (${ref}, King James Version):\n${text}\n\nWrite in ${L}. Reply with JSON: {"summary": "2 or 3 sentences: what this passage says", "context": "1 to 3 sentences: who is speaking, to whom, when or where, and why", "understand": ["3 or 4 short strings: the main ideas in plain words"], "keywords": [{"word": "an important word in the passage", "meaning": "what it means here in plain words"}] (up to 3), "apply": ["3 short, practical ways to live this out today"], "questions": ["3 reflection questions"], "prayer": "a short prayer of 2 to 3 sentences"}`;
+    ? `Passage (${ref}, King James Version):\n${text}\n\nThe reader says (in their own words): "${String(b.situation).trim().slice(0, 500).replace(/"/g, "'")}"\n\nWrite in ${L}. Reply with JSON: {"message": "3 to 5 warm, plain sentences connecting this passage to what they shared, without pretending to know their whole story", "steps": ["2 or 3 small, practical next steps"], "pray_about": ["3 or 4 short bullet points: things this person could bring to God in their own prayer, taken from what they shared and this passage, each starting with a word like Thank, Ask, Confess, Trust or Pray for. Do NOT write a prayer; only list what to pray about"]}. If they mention thoughts of harming themselves or someone else, or abuse, keep the Bible part to one sentence, respond with real compassion, and urge them to contact local emergency services or a crisis line right away (in the United States call or text 988) and to tell a trusted person.`
+    : `Passage (${ref}, King James Version):\n${text}\n\nWrite in ${L}. Reply with JSON: {"summary": "2 or 3 sentences: what this passage says", "context": "1 to 3 sentences: who is speaking, to whom, when or where, and why", "understand": ["3 or 4 short strings: the main ideas in plain words"], "keywords": [{"word": "an important word in the passage", "meaning": "what it means here in plain words"}] (up to 3), "apply": ["3 short, practical ways to live this out today"], "questions": ["3 reflection questions"], "pray_about": ["3 short bullet points: things a reader could bring to God in their own prayer after this passage. Do NOT write a prayer; only list what to pray about"]}`;
   let r;
   try {
     r = await fetch('https://api.openai.com/v1/chat/completions', { method: 'POST', headers: { authorization: 'Bearer ' + key, 'content-type': 'application/json' },
@@ -61,10 +61,10 @@ export default async (req, context) => {
   let out; try { out = JSON.parse((await r.json()).choices[0].message.content); } catch (e) { return bad('The answer could not be read', 502); }
   const arr = (x, n) => (Array.isArray(x) ? x.map((s) => String(s).slice(0, 400)).slice(0, n) : []);
   const clean = personal
-    ? { message: String(out.message || '').slice(0, 1200), steps: arr(out.steps, 3), prayer: String(out.prayer || '').slice(0, 500) }
+    ? { message: String(out.message || '').slice(0, 1200), steps: arr(out.steps, 3), pray_about: arr(out.pray_about, 4) }
     : { summary: String(out.summary || '').slice(0, 700), context: String(out.context || '').slice(0, 700), understand: arr(out.understand, 4),
         keywords: (Array.isArray(out.keywords) ? out.keywords : []).slice(0, 3).map((k) => ({ word: String(k.word || '').slice(0, 40), meaning: String(k.meaning || '').slice(0, 250) })),
-        apply: arr(out.apply, 3), questions: arr(out.questions, 3), prayer: String(out.prayer || '').slice(0, 500) };
+        apply: arr(out.apply, 3), questions: arr(out.questions, 3), pray_about: arr(out.pray_about, 4) };
   if (!personal && clean.summary) { try { await store.setJSON(id, clean); } catch (e) { /* still answer */ } }
   return Response.json({ ...clean, ref }, { headers: { 'cache-control': personal ? 'no-store' : 'public, max-age=3600' } });
 };
