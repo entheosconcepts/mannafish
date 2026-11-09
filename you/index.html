@@ -182,7 +182,7 @@ input[type=range]{width:46%;accent-color:var(--blue2)}
   function drawNo(){ var q=$('noFind').value.trim().toLowerCase(), L=allNotes(); $('nNo').textContent=L.length||'';
     L=L.filter(function(x){ return !q||x.n.text.toLowerCase().indexOf(q)>=0||x.k.toLowerCase().indexOf(q)>=0; });
     $('noList').innerHTML=L.length?L.map(function(x){ var ap=x.k.indexOf('APPLY:')===0, bi=ap||x.k.indexOf('BIBLE:')===0, name=bi?x.k.slice(6):word(x.k);
-      return '<div class="card"><div class="h"><b class="t">'+(ap?'🕊️ Applied to me · ':bi?'📖 ':'🐟 ')+esc(name)+'</b><span class="d">'+esc(day(x.n.at))+(x.n.ed?' · edited':'')+'</span></div>'+(x.n.words?'<p class="q">“'+esc(x.n.words)+'”</p>':'')+'<p style="white-space:pre-wrap">'+esc(x.n.text)+'</p>'
+      return '<div class="card"><div class="h"><b class="t">'+(ap?'🕊️ '+esc(day(x.n.at))+' · Applied to me · '+esc(name):(bi?'📖 ':'🐟 ')+esc(name))+'</b><span class="d">'+esc(day(x.n.at))+(x.n.ed?' · edited':'')+'</span></div>'+(x.n.words?'<p class="q">“'+esc(x.n.words)+'”</p>':'')+'<p style="white-space:pre-wrap">'+esc(x.n.text)+'</p>'
         +'<div class="row"><a class="b" href="'+(bi?bible(name):'/?w='+x.k.toLowerCase())+'">'+(bi?'📖 Open in the Bible':'🐟 Open the fish')+'</a><button type="button" class="b" data-nd="'+esc(x.k)+'|'+esc(String(x.n.id))+'">Delete</button></div></div>'; }).join(''):'<p class="empty">'+(q?'No notes match.':'No notes yet. Write one on a fish, or tap Note on a verse in the Bible.')+'</p>'; }
   $('noFind').addEventListener('input',drawNo);
   $('noList').addEventListener('click',function(e){ var b=e.target.closest('[data-nd]'); if(!b||!confirm('Delete this note?')) return; var i=b.dataset.nd.lastIndexOf('|'), k=b.dataset.nd.slice(0,i), id=b.dataset.nd.slice(i+1), N=get('mf-notes2',{});
