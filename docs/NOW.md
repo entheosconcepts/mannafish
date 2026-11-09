@@ -43,7 +43,7 @@ Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live sit
 
 ## Go live this week (Ken, 7 Nov: "make this devotional go live on manna-fish.com")
 Claude's part: bring `test-site` into `main`; check Today, sign-up and welcome email, Pray, Bible, Plans, privacy page; confirm Google can index it. The live Netlify site is separate from the test one.
-Ken's part (about an hour): 1. In Netlify, open the manna-fish.com site → Environment variables: same names as the test site (BREVO_API_KEY, OPENAI_API_KEY, SUPABASE_SECRET_KEY, MF_ADMIN_KEY, PROOF_KEY, ESV_API_KEY, ELEVENLABS_API_KEY). 2. Sign up on the test site with your own email and read it for a few days (or accept going live with fewer days). 3. Say "push it live".
+Ken's part (about an hour): 1. In Netlify, open the manna-fish.com site → Environment variables: the test site has only three (BREVO_API_KEY, ELEVENLABS_API_KEY, OPENAI_API_KEY; checked 9 Nov from Ken's screenshot). Their values are locked and cannot be copied, so Ken makes a new key in each service and adds it to manna-fish.com (Project configuration → Environment variables). Brevo first. 2. Sign up on the test site with your own email and read it for a few days (or accept going live with fewer days). 3. Say "push it live".
 Claude does before going live: put the admin key on `/api/fish-notes` and `/api/fish-flags`; check Brevo is allowed to send from manna-fish.com; make sure the old decal shop page is not lost (it is replaced by the new site). After going live: set `MF_SEND_OFF=1` on the test site so only one site sends the daily email.
 Not needed for launch: texting (carrier registration), app stores, sponsor pricing, decal sales (the basket stays a waitlist).
 
