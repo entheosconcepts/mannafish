@@ -330,6 +330,7 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 /* Ken, 8 Nov: a desktop gets a desktop page: wide, a left rail with today's fish and every book and chapter always in view, labelled buttons, bigger text, columns with room */
 mark.ph2{border-radius:3px;padding:0 1px;box-decoration-break:clone;-webkit-box-decoration-break:clone}.hlhide mark.ph2{background:transparent!important;color:inherit!important}
 .colrm{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:none;color:inherit;font-size:.9rem;cursor:pointer}
+.txt .v2.sel .vt2,.txt .v2.sel .ow{text-decoration:underline dotted 2px;text-underline-offset:6px}
 .laysw{display:none}
 .bibhd{text-align:center;margin:4px 0 8px;padding:4px 2px 0}
 .bibhd h2{margin:0;font:700 1.7rem/1.1 'Fraunces',Georgia,serif}
@@ -684,7 +685,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
           return '<div class="v2 ogc" data-v="'+v+'" data-pi="'+i+'" lang="'+P.l+'" dir="'+d+'">'+(o?'<span class="vn">'+v+'</span><button type="button" class="ogs" data-ogs="'+v+'" aria-label="Hear verse '+v+' in '+P.s+'">🔊</button>'
             +o.w.map(function(w,j){ return '<span class="ow" data-oi="'+j+'">'+esc(w[0])+'</span>'; }).join(' ')
             +'<span class="otr">'+esc(o.w.map(function(w){ return w[1]; }).join(' '))+'</span>':(x.none&&v===all[0]?'<small>'+P.s+' could not be opened.</small>':''))+'</div>'; }
-        return '<div class="v2" data-v="'+v+'" data-pi="'+i+'" lang="'+vlang(P)+'" dir="'+d+'">'+(x.T[v]?'<span class="vn">'+v+'</span><span class="vt2">'+colHtml(colInfoOf(x,i),v)+'</span>':'')+'</div>'; }).join('')+'</div>'; }).join(''); var mv=$('txt').querySelector('[data-mver]'); if(mv) mv.value=ver().k; xrMark(); }
+        return '<div class="v2" data-v="'+v+'" data-pi="'+i+'" lang="'+vlang(P)+'" dir="'+d+'">'+(x.T[v]?'<span class="vn">'+v+'</span><span class="vt2">'+colHtml(colInfoOf(x,i),v)+'</span>':'')+'</div>'; }).join('')+'</div>'; }).join(''); var mv=$('txt').querySelector('[data-mver]'); if(mv) mv.value=ver().k; xrMark(); colPaint(); }
   $('txt').addEventListener('change',function(e){ var d=e.target.dataset||{};
     if(e.target.dataset&&e.target.dataset.mver){ $('ver').value=e.target.value; $('ver').dispatchEvent(new Event('change')); return; } var p=e.target.dataset&&e.target.dataset.pi; if(p!=null&&e.target.tagName==='SELECT'){ putPar(+p,e.target.value); go(AT.b,AT.c,0,true); htUI(); } });
   // hearing the Hebrew or Greek: tap a word for it alone (and how to say it, and what it means), 🔊 for the verse, ▶ Hear for the chapter
@@ -777,7 +778,11 @@ body.lay-l .rail .dnav{flex:1 1 auto}
     if(HLM){ var mk0=e.target.closest('mark.ph'), v1=e.target.closest('.v.hl'), k0=mk0?mk0.dataset.k:v1?hkey(AT.b,AT.c,+v1.dataset.v):null; if(k0){ if(HLM[k0]) delete HLM[k0]; else HLM[k0]=1; paint(); } return; }
     if(studyOn()&&!e.target.closest('.vn')){ var wd=e.target.closest('.w'); if(wd&&wd.closest('.v')){ wordCard(+wd.closest('.v').dataset.v,+wd.dataset.j); return; } }
     var mk=e.target.closest('mark.ph'); if(mk&&!PHS){ var v0=+mk.closest('.v').dataset.v; PHS=[{v:v0,s:+mk.dataset.s,e:+mk.dataset.e}]; SEL=[v0]; selUI(); return; }
-    var s=e.target.closest('.v,.v2'); if(!s) return; if(s.classList.contains('v2')&&colAt(+s.dataset.pi)) return; TAPW=tapWord(e,s); if(PHS){ PHS=null; SEL=[]; fdShow(null); }
+    var s=e.target.closest('.v,.v2'); if(!s) return;
+    /* Ken, 8 Nov: a tap on a verse in another column selects that column's verse (and nothing in the first column) */
+    if(s.classList.contains('v2')){ if(e.target.closest('.ow,.ogs')||Date.now()-TDRAG<700) return; colVerseTap(s); return; }
+    if(COLV){ COLV=null; COLSEL=null; colBar(false); }
+    TAPW=tapWord(e,s); if(PHS){ PHS=null; SEL=[]; fdShow(null); }
     var v=+s.dataset.v, i=SEL.indexOf(v); if(i>=0) SEL.splice(i,1); else SEL.push(v); SEL.sort(function(a,b){ return a-b; }); selUI(); });
   function selLabel(){ if(!SEL.length) return ''; var parts=[], a=SEL[0], z=a;
     for(var i=1;i<=SEL.length;i++){ if(SEL[i]===z+1){ z=SEL[i]; continue; } parts.push(a===z?''+a:a+'–'+z); a=z=SEL[i]; }
@@ -787,7 +792,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
     if(!SEL.length){ closeAct(); return; } var w=PHS?selText():''; $('selbar').textContent='Selected: '+(PHS?'“'+(w.length>40?w.slice(0,38)+'…':w)+'” ':'')+selLabel()+' '+ver().s; $('selbar').classList.add('on');
     if(!$('act').classList.contains('open')){ $('act').classList.remove('big'); $('aNoteBox').hidden=true; $('aLinkBox').hidden=true; $('aOrig').hidden=true; } ogTile(); $('aTip').hidden=!(TOUCH&&!PHS); $('act').classList.add('open'); dots(); rmUI(); wlUI(); $('aSave').setAttribute('aria-pressed',String(!!savedAt()));
     if($('act').classList.contains('big')) mineRefs(); }
-  function closeAct(){ SEL=[]; PHS=null; OGSEL=null; fdShow(null); $('act').classList.remove('open','big'); $('selbar').classList.remove('on'); $('aNoteBox').hidden=true; $('aLinkBox').hidden=true; if($('aOrig')) $('aOrig').hidden=true;
+  function closeAct(){ SEL=[]; PHS=null; OGSEL=null; fdShow(null); if(typeof COLV!=='undefined'&&COLV){ COLV=null; COLSEL=null; var cb=$('colbar'); if(cb) cb.hidden=true; [].forEach.call(document.querySelectorAll('.v2.sel'),function(x){ x.classList.remove('sel'); }); } $('act').classList.remove('open','big'); $('selbar').classList.remove('on'); $('aNoteBox').hidden=true; $('aLinkBox').hidden=true; if($('aOrig')) $('aOrig').hidden=true;
     [].forEach.call(document.querySelectorAll('.v.sel'),function(x){ x.classList.remove('sel'); }); try{ var sl=window.getSelection(); if(sl&&!sl.isCollapsed&&$('txt').contains(sl.anchorNode)) sl.removeAllRanges(); }catch(e){} }
   $('aX').addEventListener('click',closeAct); $('aClose').addEventListener('click',closeAct); $('wcClose').addEventListener('click',function(){ closeWc(); });
   function more(on){ $('act').classList.toggle('big',on); if(on&&SEL.length) mineRefs(); }
@@ -1074,40 +1079,54 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   // ═══ Ken, 8 Nov: "we need the ability to highlight all columns individually; as it is I can only highlight the first column." ═══
   // Every column (any version, any chapter) keeps its own highlights: stored in the same list as the first column's (mf-hl, so My highlights and the account see them),
   // keyed by that column's own chapter and version. Drag across words with the pen on (or press and slide on a phone) to highlight; slide across highlighted words in the same colour to take it off.
-  function colInfoOf(x,i){ if(!x||!x.P||x.P.og) return null; var at=x.P.at||{b:AT.b,c:AT.c}; return {pi:i,x:x,b:at.b,c:at.c,vc:vlang(x.P)+':'+x.P.k,lang:vlang(x.P),re:x.P.k==='kjv'?TOKRE:UNIRE}; }
+  function colInfoOf(x,i){ if(!x||!x.P) return null; var at=x.P.at||{b:AT.b,c:AT.c}; return {pi:i,x:x,og:!!x.P.og,b:at.b,c:at.c,vc:vlang(x.P)+':'+x.P.k,lang:vlang(x.P),re:x.P.k==='kjv'?TOKRE:UNIRE}; }
+  // the Hebrew or Greek column: its text for highlighting is its words joined by a space; a highlight is a stretch of those letters, shown on the words it covers
+  function ogOffs(ci,v){ var o=ci.x.J&&ci.x.J.v[String(v)], a=[], p=0; (o?o.w:[]).forEach(function(w){ a.push({s:p,e:p+w[0].length}); p+=w[0].length+1; }); return a; }
+  function colText(ci,v){ if(!ci.og) return ci.x.T[v]||''; var o=ci.x.J&&ci.x.J.v[String(v)]; return o?o.w.map(function(w){ return w[0]; }).join(' '):''; }
+  function colToks(ci,v){ return ci.og?ogOffs(ci,v):toks(colText(ci,v),ci.re); }
+  function colVerses(ci){ return Object.keys(ci.og?((ci.x.J&&ci.x.J.v)||{}):ci.x.T).map(Number).sort(function(p,q){ return p-q; }); }
   function colInfo(i){ return colInfoOf(PX[i],i); }
   function colPhrases(h,ci,v){ var pre=plain(ci.b,ci.c,v)+'#', out=[]; Object.keys(h).forEach(function(k){ var y=h[k]; if(y.kind==='phrase'&&y.ver===ci.vc&&String(y.ref).indexOf(pre)===0) out.push({k:k,s:+y.s,e:+y.e,c:HLC[y.c]?y.c:'gold'}); }); return out.sort(function(a,b){ return a.s-b.s; }); }
-  function colHtml(ci,v){ if(!ci) return ''; var t=ci.x.T[v]||'', h=hls(), vx=h[plain(ci.b,ci.c,v)+'|'+ci.vc], mk=function(txt,c,k){ return '<mark class="ph2"'+(k?' data-k="'+esc(k)+'"':'')+' style="background:'+HLC[c]+';color:'+ink(c)+'">'+esc(txt)+'</mark>'; };
+  function colHtml(ci,v){ if(!ci||ci.og) return ''; var t=colText(ci,v), h=hls(), vx=h[plain(ci.b,ci.c,v)+'|'+ci.vc], mk=function(txt,c,k){ return '<mark class="ph2"'+(k?' data-k="'+esc(k)+'"':'')+' style="background:'+HLC[c]+';color:'+ink(c)+'">'+esc(txt)+'</mark>'; };
     if(vx){ return mk(t,HLC[vx.c]?vx.c:'gold'); }
     var out='', at=0; colPhrases(h,ci,v).forEach(function(p){ var a=Math.max(p.s,at), z=Math.min(p.e,t.length); if(z<=a) return; out+=esc(t.slice(at,a))+mk(t.slice(a,z),p.c,p.k); at=z; }); return out+esc(t.slice(at)); }
-  function colPaint(){ [].forEach.call($('txt').querySelectorAll('.v2:not(.ogc)'),function(cell){ var vt=cell.querySelector('.vt2'); if(!vt) return; var ci=colInfo(+cell.dataset.pi); if(!ci) return; var out=colHtml(ci,+cell.dataset.v); if(vt.innerHTML!==out) vt.innerHTML=out; }); }
-  function colSnap(ci,v,s,e){ var t=ci.x.T[v]||'', T=toks(t,ci.re).filter(function(x){ return x.e>s&&x.s<e; }); return T.length?{s:T[0].s,e:T[T.length-1].e}:null; }
-  function colAddPh(h,ci,v,s,e,c){ var t=ci.x.T[v]||'', G=/^[\s\p{P}]*$/u; while(s<e&&/[\s\p{P}]/u.test(t[s])) s++; while(e>s&&/[\s\p{P}]/u.test(t[e-1])) e--; if(e-s<1) return;
+  function colPaint(){ [].forEach.call($('txt').querySelectorAll('.v2:not(.ogc)'),function(cell){ var vt=cell.querySelector('.vt2'); if(!vt) return; var ci=colInfo(+cell.dataset.pi); if(!ci) return; var out=colHtml(ci,+cell.dataset.v); if(vt.innerHTML!==out) vt.innerHTML=out; });
+    var h=null; [].forEach.call($('txt').querySelectorAll('.v2.ogc'),function(cell){ var ci=colInfo(+cell.dataset.pi); if(!ci||!ci.og) return; h=h||hls(); var v=+cell.dataset.v, offs=ogOffs(ci,v), vx=h[plain(ci.b,ci.c,v)+'|'+ci.vc], ph=vx?[]:colPhrases(h,ci,v);
+      [].forEach.call(cell.querySelectorAll('.ow'),function(w){ var j=+w.dataset.oi, o=offs[j], c=null; if(!o) return; if(vx) c=HLC[vx.c]?vx.c:'gold'; else ph.forEach(function(x){ if(x.s<o.e&&x.e>o.s) c=x.c; }); w.style.background=c?HLC[c]:''; w.style.color=c?ink(c):''; }); }); }
+  function colSnap(ci,v,s,e){ var T=colToks(ci,v).filter(function(x){ return x.e>s&&x.s<e; }); return T.length?{s:T[0].s,e:T[T.length-1].e}:null; }
+  function colAddPh(h,ci,v,s,e,c){ var t=colText(ci,v), G=/^[\s\p{P}]*$/u; while(s<e&&/[\s\p{P}]/u.test(t[s])) s++; while(e>s&&/[\s\p{P}]/u.test(t[e-1])) e--; if(e-s<1) return;
     colPhrases(h,ci,v).forEach(function(x){ if(x.c!==c) return; if((x.s<=e&&x.e>=s)||(x.e<=s&&G.test(t.slice(x.e,s)))||(x.s>=e&&G.test(t.slice(e,x.s)))){ s=Math.min(s,x.s); e=Math.max(e,x.e); unHl(h,x.k); } });
     var ref=plain(ci.b,ci.c,v)+'#'+s+'-'+e; h[ref+'|'+ci.vc]={kind:'phrase',ref:ref,ver:ci.vc,k:'',i:0,l:ci.lang,v:v,s:s,e:e,c:c,text:t.slice(s,e).slice(0,220),at:Date.now(),bible:1}; }
   // c = a colour to put on these words, or null to take their highlight off
   function colApply(rs,c){ var h=hls(); if(c&&ls('mf-hl-hide')==='1'){ ls('mf-hl-hide',''); document.documentElement.classList.remove('hlhide'); }
-    rs.forEach(function(p){ var ci=colInfo(p.pi); if(!ci) return; var t=ci.x.T[p.v]||'', vk=plain(ci.b,ci.c,p.v)+'|'+ci.vc, vx=h[vk];
+    rs.forEach(function(p){ var ci=colInfo(p.pi); if(!ci) return; var t=colText(ci,p.v), vk=plain(ci.b,ci.c,p.v)+'|'+ci.vc, vx=h[vk];
       if(vx){ var vc=HLC[vx.c]?vx.c:'gold'; unHl(h,vk); colAddPh(h,ci,p.v,0,p.s,vc); colAddPh(h,ci,p.v,p.e,t.length,vc); }
       colPhrases(h,ci,p.v).forEach(function(x){ if(x.s<p.e&&x.e>p.s){ unHl(h,x.k); colAddPh(h,ci,p.v,x.s,p.s,x.c); colAddPh(h,ci,p.v,p.e,x.e,x.c); } });
       if(c) colAddPh(h,ci,p.v,p.s,p.e,c); });
     if(c) ls('mf-hl-color',c); saveHls(h); hlTouched(); paint(); }
   function colCovered(rs){ var h=hls(), pc=colour(); return rs.every(function(p){ var ci=colInfo(p.pi); if(!ci) return true; var vx=h[plain(ci.b,ci.c,p.v)+'|'+ci.vc]; if(vx) return (HLC[vx.c]?vx.c:'gold')===pc; var ph=colPhrases(h,ci,p.v);
-      return toks(ci.x.T[p.v]||'',ci.re).filter(function(t){ return t.e>p.s&&t.s<p.e; }).every(function(t){ return ph.some(function(x){ return x.s<t.e&&x.e>t.s&&x.c===pc; }); }); }); }
+      return colToks(ci,p.v).filter(function(t){ return t.e>p.s&&t.s<p.e; }).every(function(t){ return ph.some(function(x){ return x.s<t.e&&x.e>t.s&&x.c===pc; }); }); }); }
   function colPen(rs){ if(colCovered(rs)){ colApply(rs,null); toast('Highlight removed'); } else colApply(rs,colour()); }
   // where a point on the screen falls in a column's text: {pi, v, o} (o = the letter position in that verse)
-  function colPoint(x,y){ var el=document.elementFromPoint(x,y), cell=el&&el.closest&&el.closest('.v2:not(.ogc)'); if(!cell||!$('txt').contains(cell)) return null; var vt=cell.querySelector('.vt2'); if(!vt) return null;
-    var node=null, off=0; if(document.caretPositionFromPoint){ var cp=document.caretPositionFromPoint(x,y); if(cp){ node=cp.offsetNode; off=cp.offset; } } else if(document.caretRangeFromPoint){ var cr=document.caretRangeFromPoint(x,y); if(cr){ node=cr.startContainer; off=cr.startOffset; } }
-    return {pi:+cell.dataset.pi,v:+cell.dataset.v,o:(node&&vt.contains(node))?offIn(vt,node,off):0}; }
+  function colPoint(x,y){ var el=document.elementFromPoint(x,y), cell=el&&el.closest&&el.closest('.v2'); if(!cell||!$('txt').contains(cell)) return null; var vt=cell.querySelector('.vt2'); if(!vt&&!cell.classList.contains('ogc')) return null;
+    var node=null, off=0;
+    if(cell.classList.contains('ogc')){ var ow=el.closest('.ow'); if(!ow) return null; var oci=colInfo(+cell.dataset.pi), oo=oci&&oci.og?ogOffs(oci,+cell.dataset.v)[+ow.dataset.oi]:null; return oo?{pi:+cell.dataset.pi,v:+cell.dataset.v,o:oo.s+Math.floor((oo.e-oo.s)/2)}:null; }
+    if(document.caretPositionFromPoint){ var cp=document.caretPositionFromPoint(x,y); if(cp){ node=cp.offsetNode; off=cp.offset; } } else if(document.caretRangeFromPoint){ var cr=document.caretRangeFromPoint(x,y); if(cr){ node=cr.startContainer; off=cr.startOffset; } }
+    return {pi:+cell.dataset.pi,v:+cell.dataset.v,o:(node&&vt&&vt.contains(node))?offIn(vt,node,off):0}; }
   function colRange(a,z){ if(a.pi!==z.pi) z={pi:a.pi,v:a.v,o:a.o}; if(a.v>z.v||(a.v===z.v&&a.o>z.o)){ var t=a; a=z; z=t; } var ci=colInfo(a.pi), out=[]; if(!ci) return out;
-    Object.keys(ci.x.T).map(Number).sort(function(p,q){ return p-q; }).forEach(function(v){ if(v<a.v||v>z.v) return; var len=(ci.x.T[v]||'').length, sn=colSnap(ci,v,v===a.v?a.o:0,v===z.v?Math.max(z.o,v===a.v?a.o+1:0):len); if(sn) out.push({pi:a.pi,v:v,s:sn.s,e:sn.e}); }); return out; }
+    colVerses(ci).forEach(function(v){ if(v<a.v||v>z.v) return; var len=colText(ci,v).length, sn=colSnap(ci,v,v===a.v?a.o:0,v===z.v?Math.max(z.o,v===a.v?a.o+1:0):len); if(sn) out.push({pi:a.pi,v:v,s:sn.s,e:sn.e}); }); return out; }
   // the words picked with a mouse or a long selection (desktop): the ranges, in the one column the selection began in
   function colSel(){ var sel=window.getSelection(); if(!sel||sel.isCollapsed||!sel.rangeCount) return null; var r=sel.getRangeAt(0); if(!$('txt').contains(r.commonAncestorContainer)) return null; var out=[];
     [].forEach.call($('txt').querySelectorAll('.v2:not(.ogc)'),function(cell){ var vt=cell.querySelector('.vt2'); if(!vt||!r.intersectsNode(vt)) return; var ci=colInfo(+cell.dataset.pi); if(!ci) return; var v=+cell.dataset.v, t=ci.x.T[v]||'';
       if(!vt.contains(r.startContainer)&&(vt.compareDocumentPosition(r.startContainer)&Node.DOCUMENT_POSITION_FOLLOWING)) return;   /* this verse is before where the selection starts */
       var a=vt.contains(r.startContainer)?offIn(vt,r.startContainer,r.startOffset):0, z=vt.contains(r.endContainer)?offIn(vt,r.endContainer,r.endOffset):t.length, sn=colSnap(ci,v,a,z); if(sn) out.push({pi:ci.pi,v:v,s:sn.s,e:sn.e}); });
+    [].forEach.call($('txt').querySelectorAll('.v2.ogc'),function(cell){ var ci=colInfo(+cell.dataset.pi); if(!ci||!ci.og||!r.intersectsNode(cell)) return; var v=+cell.dataset.v, offs=ogOffs(ci,v), s0=null, e0=null;
+      [].forEach.call(cell.querySelectorAll('.ow'),function(w){ if(!r.intersectsNode(w)) return; var o=offs[+w.dataset.oi]; if(!o) return; if(s0==null||o.s<s0) s0=o.s; if(e0==null||o.e>e0) e0=o.e; });
+      if(s0!=null) out.push({pi:ci.pi,v:v,s:s0,e:e0}); });
     if(!out.length) return null; return out.filter(function(x){ return x.pi===out[0].pi; }); }
-  function colShow(L,c){ if(!HLAPI) return; ['sel'].concat(Object.keys(HLC)).forEach(function(k){ CSS.highlights.delete('mfdrag-'+k); }); if(!L||!L.length) return; c=c||'sel';
+  function colShow(L,c){ [].forEach.call($('txt').querySelectorAll('.ow.dg2'),function(w){ w.classList.remove('dg2'); w.style.outline=''; });
+    if(L&&L.length&&PX[L[0].pi]&&PX[L[0].pi].P.og){ var ci0=colInfo(L[0].pi); L.forEach(function(p){ var offs=ogOffs(ci0,p.v); [].forEach.call($('txt').querySelectorAll('.v2.ogc[data-pi="'+p.pi+'"][data-v="'+p.v+'"] .ow'),function(w){ var o=offs[+w.dataset.oi]; if(o&&o.s<p.e&&o.e>p.s){ w.classList.add('dg2'); w.style.outline='2px solid '+((c&&HLC[c])||'rgba(51,112,255,.9)'); } }); }); return; }
+    if(!HLAPI) return; ['sel'].concat(Object.keys(HLC)).forEach(function(k){ CSS.highlights.delete('mfdrag-'+k); }); if(!L||!L.length) return; c=c||'sel';
     if(!dgCss){ dgCss={}; var st=document.createElement('style'); st.id='dgCss'; st.textContent='::highlight(mfdrag-sel){background-color:rgba(51,112,255,.38)}'; document.head.appendChild(st); }
     if(c!=='sel'&&!dgCss[c]){ dgCss[c]=1; $('dgCss').textContent+='::highlight(mfdrag-'+c+'){background-color:'+HLC[c]+';color:#14181c}'; }
     var hl=new Highlight(); L.forEach(function(p){ var vt=$('txt').querySelector('.v2[data-pi="'+p.pi+'"][data-v="'+p.v+'"] .vt2'), r=vt&&rangeIn(vt,p.s,p.e); if(r) hl.add(r); }); CSS.highlights.set('mfdrag-'+c,hl); }
@@ -1125,8 +1144,15 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   $('txt').addEventListener('touchcancel',function(){ if(CF){ clearTimeout(CF.tm); CF=null; colShow(null); } });
   // with a mouse: drag across the words; with the pen on it is highlighted at once, otherwise the colours appear to choose from
   $('txt').addEventListener('mouseup',function(){ setTimeout(function(){ var rs=colSel(); if(!rs) return; if(PEN){ colPen(rs); try{ window.getSelection().removeAllRanges(); }catch(er){} } else { COLSEL=rs; colBar(true); } },0); });
-  function colBar(on){ var b=$('colbar'); if(!b) return; b.hidden=!on; if(on){ $('colDots').innerHTML=swatches(BASE,colour())+'<button type="button" data-c="" aria-label="Take the highlight off" class="colrm">&#10005;</button>'; } }
-  $('colbar').addEventListener('click',function(e){ var d=e.target.closest('[data-c]'); if(d&&COLSEL){ var c=d.dataset.c; colApply(COLSEL,c||null); if(!c) { COLSEL=null; colBar(false); } else colBar(true); try{ window.getSelection().removeAllRanges(); }catch(er){} return; } if(e.target.closest('#colX')){ COLSEL=null; colBar(false); try{ window.getSelection().removeAllRanges(); }catch(er){} } });
+  var COLV=null;   // a whole verse picked in another column: {pi,v}
+  function colBar(on){ var b=$('colbar'); if(!b) return; b.hidden=!on; if(!on){ COLV=null; [].forEach.call($('txt').querySelectorAll('.v2.sel'),function(x){ x.classList.remove('sel'); }); return; }
+    $('colDots').innerHTML=swatches(BASE,colour())+'<button type="button" data-c="" aria-label="Take the highlight off" class="colrm">&#10005;</button>'+(COLV?'<button type="button" class="chip colcp" data-copy="1">Copy</button>':''); }
+  function colVerseTap(cell){ var pi=+cell.dataset.pi, v=+cell.dataset.v, ci=colInfo(pi); if(!ci) return;
+    if(COLV&&COLV.pi===pi&&COLV.v===v){ COLSEL=null; colBar(false); return; }
+    closeAct(); closeWc(); [].forEach.call($('txt').querySelectorAll('.v2.sel'),function(x){ x.classList.remove('sel'); }); cell.classList.add('sel'); COLV={pi:pi,v:v}; COLSEL=[{pi:pi,v:v,s:0,e:colText(ci,v).length}]; colBar(true); }
+  function colCopy(){ if(!COLV) return; var ci=colInfo(COLV.pi); if(!ci) return; var o=colText(ci,COLV.v), t=o+' \u2014 '+plain(ci.b,ci.c,COLV.v)+' ('+((ci.x.P&&ci.x.P.s)||'')+')';
+    try{ navigator.clipboard.writeText(t).then(function(){ toast('Copied'); }); }catch(er){ window.prompt('',t); } }
+  $('colbar').addEventListener('click',function(e){ if(e.target.closest('[data-copy]')){ colCopy(); return; } var d=e.target.closest('[data-c]'); if(d&&COLSEL){ var c=d.dataset.c, keepV=COLV; colApply(COLSEL,c||null); if(!c) { COLSEL=null; colBar(false); } else { COLV=keepV; colBar(true); } try{ window.getSelection().removeAllRanges(); }catch(er){} return; } if(e.target.closest('#colX')){ COLSEL=null; colBar(false); try{ window.getSelection().removeAllRanges(); }catch(er){} } });
   window.MFcol={sel:colSel,info:colInfo,apply:colApply,pen:colPen};   /* for testing */
   var LASTPEN=null;
   function penColour(c){ ls('mf-hl-color',c); penUI(); if(LASTPEN&&Date.now()-LASTPEN.at<30000){ PHS=LASTPEN.L; SEL=PHS.map(function(p){ return p.v; }); LASTPEN.at=Date.now(); applyHl(c); } }
