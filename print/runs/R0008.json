@@ -12,7 +12,7 @@
  },
  "sponsor": {
   "name": "Market Street Tires",
-  "logo": "assets/marketstreet-logo.png",
+  "logo": "assets/marketstreet-logo-bilingual.png",
   "show": true
  },
  "ship_to": "",
@@ -22,7 +22,7 @@
   "refs": 9,
   "left": {
    "label": "Free tire\ncheck",
-   "to": "https://manna-fish.com/"
+   "to": "https://www.marketsttiresandauto.com/"
   },
   "right": {
    "label": "Free MannaFish",

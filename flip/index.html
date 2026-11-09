@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
 <meta name="theme-color" content="#000000"><title>MannaFish Card Preview</title>
-<!-- Ken, 7 Nov: a flip example to show a prospect (Market Street Tires): tap the card to flip front/back, English / Español. Mock-up: QR codes are placeholders. -->
+<!-- Ken, 7 Nov: a flip example to show a prospect (Market Street Tires): tap the card to flip front/back, English / Español. The left QR goes to the shop website; the right one to the free devotional sign-up. -->
 <style>
 :root{--ink:#000;--foam:#eaf0f0;--dim:#9fb2b6;--blue:#2a5fb0;--line:rgba(200,215,218,.2)}
 *{box-sizing:border-box}html,body{margin:0;background:#000;color:var(--foam)}
@@ -25,10 +25,10 @@ small{color:var(--dim);margin-top:14px;text-align:center;max-width:520px}
 <div class="face f"><img id="fi" src="ms-en-front.png" alt="Front of the card: the word Repair in a fish"></div>
 <div class="face b"><img id="bi" src="ms-en-back.png" alt="Back of the card: the word study and Market Street Tires"></div></div></button>
 <button type="button" class="go" id="go">Flip</button>
-<small id="n">Example only. The QR codes are placeholders.</small>
+<small id="n">Example card.</small>
 <script>
 (function(){var $=function(i){return document.getElementById(i)},cd=$('cd'),L='en';
-var T={en:{h:'Your MannaFish',s:'Tap the card to flip it.',go:'Flip',n:'Example only. The QR codes are placeholders.',fa:'Front of the card: the word Repair in a fish',ba:'Back of the card: the word study and Market Street Tires'},
+var T={en:{h:'Your MannaFish',s:'Tap the card to flip it.',go:'Flip',n:'Example card.',fa:'Front of the card: the word Repair in a fish',ba:'Back of the card: the word study and Market Street Tires'},
 es:{h:'Su MannaFish',s:'Toque la tarjeta para voltearla.',go:'Voltear',n:'Solo un ejemplo. Los códigos QR son de muestra.',fa:'Frente de la tarjeta: la palabra Reparen en un pez',ba:'Reverso de la tarjeta: el estudio de la palabra y Market Street Tires'}};
 function flip(){cd.classList.toggle('flip')}
 $('sc').addEventListener('click',flip);$('go').addEventListener('click',flip);

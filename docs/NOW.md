@@ -4,6 +4,7 @@ Updated 9 Nov 2026. Claude updates this at the end of every job, without being a
 Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live site manna-fish.com is the old decal shop page on `main` until Ken says "push it live".
 
 ## Just finished (9 Nov)
+- Market Street Tires cards (R0008 English, R0009 Spanish) now use the shop's logo with its two-line bottom (Used Tires and Auto Services / Taller Mecanico en General), and the left QR goes to https://www.marketsttiresandauto.com/ (through manna-fish.com/q/..., which must be live before printing). `/flip/` shows both. manna-fish.com plan: see LAUNCH.md and Ken's 9 Nov question (keep it hidden until launch).
 - No AI-written prayers anywhere in Explain / Apply to me: both now give a bullet list of "Things to pray about" (the person writes the prayer). Saved to My prayers with their own words above the list. Old kept explanations are remade under a new key.
 - Apply to me: 🙏 Save the prayer to My prayers puts the person's own words and the prayer into their prayer list (You → Prayers), and both saved items are titled by date.
 - Apply to me can now be kept: 🔖 Save this in My stuff under the answer saves what the person shared, the reply and the prayer as "Applied to me" (My stuff → Applied to me, and You → Notes; synced to the account when signed in). Nothing is saved unless they tap Save.

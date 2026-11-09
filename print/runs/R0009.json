@@ -12,7 +12,7 @@
  },
  "sponsor": {
   "name": "Market Street Tires",
-  "logo": "assets/marketstreet-logo.png",
+  "logo": "assets/marketstreet-logo-bilingual.png",
   "show": true
  },
  "ship_to": "",
@@ -22,7 +22,7 @@
   "refs": 9,
   "left": {
    "label": "Revisión de\nllantas gratis",
-   "to": "https://manna-fish.com/"
+   "to": "https://www.marketsttiresandauto.com/"
   },
   "right": {
    "label": "MannaFish gratis",
@@ -37,5 +37,5 @@
    "strongs": "STRONG"
   }
  },
- "notes": "Spanish version of R0008 for showing a prospect (Reina-Valera 1909). Mock-up: QR targets are placeholders."
+ "notes": "Spanish version of R0008 for showing a prospect (Reina-Valera 1909). Left QR goes to the shop website (Ken, 9 Nov); right QR to the free devotional sign-up."
 }
