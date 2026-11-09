@@ -1,1 +1,3 @@
 node_modules/
+# unzipped copies of the zips beside them (docs/crm-handoff/HIGHRES)
+docs/crm-handoff/HIGHRES/*/
