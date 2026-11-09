@@ -4,6 +4,7 @@ Updated 9 Nov 2026. Claude updates this at the end of every job, without being a
 Test site: https://yadamannafishtest.netlify.app/ (branch `test-site`). Live site manna-fish.com is the old decal shop page on `main` until Ken says "push it live".
 
 ## Just finished (9 Nov)
+- Apply to me can now be kept: 🔖 Save this in My stuff under the answer saves what the person shared, the reply and the prayer as "Applied to me" (My stuff → Applied to me, and You → Notes; synced to the account when signed in). Nothing is saved unless they tap Save.
 - English dictionary on the Bible page (Ken: "some people do not know what naïve means"). Tap a word, then 📖 Dictionary (or 📖 Define in a side-by-side English column). Webster's, public domain, 102,000 words, loaded one small file per lookup; old words like saith/hath/begotten point to say/have/beget. English versions only. Not tested on a real phone.
 
 ## Before (8 Nov)

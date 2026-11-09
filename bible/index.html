@@ -1380,7 +1380,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
         +'<a class="mi" href="/voices/" target="_top"><span class="ic">&#127897;&#xFE0E;</span><span class="tx">Voices<small>Hear every voice and pick yours</small></span></a>'
         +'</div>':'')
       +'<hr><h6>My stuff</h6><div class="mgrid">'
-      +[['hl','&#128397;&#xFE0E;','Highlights'],['notes','&#128221;&#xFE0E;','Notes'],['saved','&#128278;&#xFE0E;','Saved'],['links','&#128279;&#xFE0E;','Links'],['hist','&#128337;&#xFE0E;','History']].map(function(x){ return '<button type="button" data-st="'+x[0]+'"><span class="ic">'+x[1]+'</span>'+x[2]+'<small>'+n[x[0]]+'</small></button>'; }).join('')
+      +[['apply','&#128330;&#xFE0E;','Applied to me'],['hl','&#128397;&#xFE0E;','Highlights'],['notes','&#128221;&#xFE0E;','Notes'],['saved','&#128278;&#xFE0E;','Saved'],['links','&#128279;&#xFE0E;','Links'],['hist','&#128337;&#xFE0E;','History']].map(function(x){ return '<button type="button" data-st="'+x[0]+'"><span class="ic">'+x[1]+'</span>'+x[2]+'<small>'+n[x[0]]+'</small></button>'; }).join('')
       +'<a href="/my-fish/" target="_top"><span class="ic">&#128031;</span>My MannaFish<small>'+((window.MFmake?MFmake.mine().length:0)||'')+'</small></a>'
       +'<a href="/you/" target="_top"><span class="ic">&#128100;&#xFE0E;</span>You<small>Everything</small></a></div>'
       +'<hr><div class="mi" style="cursor:default"><span class="ic">Aa</span><span class="tx">Text size</span><span class="mts"><button type="button" data-fs="-1" aria-label="Smaller">A&minus;</button><button type="button" data-fs="1" aria-label="Bigger">A+</button></span></div>'
@@ -1421,7 +1421,8 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   function hlList(){ var h=hls(); return Object.keys(h).map(function(k){ var x=h[k], r=parseRef(String(x.ref||'').split('#')[0]); return r&&r.v?{k:k,x:x,r:r}:null; }).filter(Boolean).sort(function(a,b){ return (b.x.at||0)-(a.x.at||0); }); }
   function noteList(){ var N=nall(), o=[]; Object.keys(N).forEach(function(k){ if(k.indexOf('BIBLE:')!==0) return; var L=N[k]||[], n=L[L.length-1], r=parseRef(k.slice(6)); if(n&&r) o.push({ref:k.slice(6),r:r,n:n}); });
     return o.sort(function(a,b){ return (b.n.ed||b.n.at||0)-(a.n.ed||a.n.at||0); }); }
-  function counts(){ return {hl:hlList().length,notes:noteList().length,saved:saved().length,links:links().length,hist:hist().length}; }
+  function applyList(){ var N=nall(), o=[]; Object.keys(N).forEach(function(k){ if(k.indexOf('APPLY:')!==0) return; (N[k]||[]).forEach(function(n){ if(n&&n.text) o.push({k:k,ref:k.slice(6),n:n}); }); }); return o.sort(function(a,b){ return (b.n.at||0)-(a.n.at||0); }); }
+  function counts(){ return {apply:applyList().length,hl:hlList().length,notes:noteList().length,saved:saved().length,links:links().length,hist:hist().length}; }
   function day0(t){ var d=new Date(t); return new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime(); }
   function ago(t){ if(!t) return ''; var d=new Date(t), n=Math.round((day0(Date.now())-day0(t))/864e5);
     return n===0?d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}):n===1?'Yesterday':d.toLocaleDateString([],{month:'short',day:'numeric',year:d.getFullYear()!==new Date().getFullYear()?'numeric':undefined}); }
@@ -1432,6 +1433,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   function closeStuff(){ $('stuff').classList.remove('open'); }
   $('sX').addEventListener('click',closeStuff);
   function stuffUI(){ var n=counts(), T=[['hl','Highlights'],['notes','Notes'],['saved','Saved'],['links','Links'],['hist','History']], h='';
+    T.splice(2,0,['apply','Applied to me']); n.apply=applyList().length;
     $('sTitle').textContent='My stuff'; $('sSeg').hidden=false;
     $('sSeg').innerHTML=T.map(function(t){ return '<button type="button" data-t="'+t[0]+'" aria-pressed="'+(STAB===t[0])+'">'+t[1]+' <small>'+n[t[0]]+'</small></button>'; }).join('');
     if(STAB==='hl'){ var L=hlList(), cs={}; L.forEach(function(y){ cs[HLC[y.x.c]?y.x.c:'gold']=1; }); if(SHC&&!cs[SHC]) SHC='';
@@ -1441,6 +1443,8 @@ body.lay-l .rail .dnav{flex:1 1 auto}
         return item(y.r,'<span class="dt" style="background:'+HLC[HLC[y.x.c]?y.x.c:'gold']+'"></span>',String(y.x.ref).split('#')[0]+(vs?' · '+vs:''),y.x.text||'',y.x.at,vk); }).join('')
         :none(n.hl?'None in this colour.':'No highlights yet. Tap a verse and pick a colour, or hold a word and slide across the words.'); }
     else if(STAB==='notes'){ var N=noteList(); h=N.length?N.map(function(y){ return item(y.r,'',y.ref,y.n.text,y.n.ed||y.n.at); }).join(''):none('No Bible notes yet. Tap a verse, then Note; or ••• → Add a note on the chapter.'); }
+    else if(STAB==='apply'){ var AL=applyList(); h=AL.length?AL.map(function(y){ var r=parseRef(y.ref.replace('-',':').split(':').slice(0,2).join(':'))||{b:0,c:1,v:0};
+        return '<div class="cn" style="cursor:default"><b>&#128330;&#xFE0E; '+esc(y.ref)+' · '+esc(ago(y.n.at))+'</b><span>'+esc(y.n.text)+'</span><div class="row" style="margin-top:8px"><button type="button" class="chip" data-go="'+r.b+','+r.c+','+(r.v||0)+'">Open passage</button><button type="button" class="chip" data-ad="'+esc(y.k)+'|'+esc(String(y.n.id))+'">Delete</button></div></div>'; }).join(''):none('Nothing yet. In Understand this passage, tap Apply to me, share what is on your mind, then tap Save.'); }
     else if(STAB==='saved'){ var S=saved(); h=S.length?S.map(function(x){ return item({b:x.b,c:x.c,v:x.v},'',x.ref+(x.ver?' · '+x.ver:''),x.text,x.at); }).join(''):none('Nothing saved yet. Tap a verse, then Save.'); }
     else if(STAB==='links'){ var K=links(); h=K.length?K.map(function(l){ return item({b:l.a.b,c:l.a.c,v:l.a.vs?l.a.vs[0]:0},'',l.a.ref+' → '+l.z.ref,(l.a.words?'“'+l.a.words+'” ':'')+(l.note||''),l.at); }).join(''):none('No links yet. Tap a verse, then Link, to join it to another passage.'); }
     else { var Hh=hist().filter(function(x){ return B[x.b]; }), last='';
@@ -1448,6 +1452,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
       h=Hh.length?h+'<div class="ft"><button type="button" class="chip" data-clr="1">Clear history</button></div>':none(SET('hist',true)?'Chapters you read will be listed here.':'Reading history is off (You → Settings).'); }
     $('sBody').innerHTML=h+'<div class="ft"><a class="chip" href="/you/" target="_top">Everything on the You page &rsaquo;</a></div>'; }
   $('stuff').addEventListener('click',function(e){ var t=e.target.closest('[data-t]'); if(t){ STAB=t.dataset.t; stuffUI(); $('stuff').querySelector('.body').scrollTop=0; return; }
+    var ad=e.target.closest('[data-ad]'); if(ad){ if(!confirm('Delete this?')) return; var ai=ad.dataset.ad.lastIndexOf('|'), ak=ad.dataset.ad.slice(0,ai), aid=ad.dataset.ad.slice(ai+1), AN=nall(); AN[ak]=(AN[ak]||[]).filter(function(x){ return String(x.id)!==aid; }); if(!AN[ak].length) delete AN[ak]; ls('mf-notes2',JSON.stringify(AN)); if(window.MFacct) MFacct.noteGone(aid); stuffUI(); return; }
     var hc=e.target.closest('[data-hc]'); if(hc){ SHC=hc.dataset.hc; stuffUI(); return; }
     if(e.target.closest('[data-clr]')){ if(confirm('Clear your reading history on this device?')){ ls('mf-bible-hist','[]'); if(window.MFacct) MFacct.touch('hist'); stuffUI(); } return; }
     if(e.target.closest('#cnSave')){ var tx=$('cnT').value.trim(), N=nall(), k=chKey(); if(!tx){ $('cnT').focus(); return; } var L=N[k]||(N[k]=[]), x=L[L.length-1];
@@ -1530,12 +1535,16 @@ body.lay-l .rail .dnav{flex:1 1 auto}
       if(d.keywords&&d.keywords.length) h+='<h4>Words worth knowing</h4>'+d.keywords.map(function(k){ return '<div class="kw"><b>'+esc(k.word)+'</b> · '+esc(k.meaning)+'</div>'; }).join('');
       h+='<p class="pr">'+esc(d.prayer)+'</p>'; }
     else { h+='<h4>Living it out today</h4>'+li(d.apply)+'<h4>Think about it</h4>'+li(d.questions)
-        +'<h4>What is on your mind?</h4><p>Tell me what you are facing, in your own words, and I will connect this passage to it. Nothing you write here is saved.</p><textarea id="exSit" maxlength="500" placeholder="For example: I am worried about money, or I am angry at someone I love."></textarea><button type="button" class="exgo" id="exAsk">Help me apply this</button><div id="exMe">'+exMe()+'</div>'; }
+        +'<h4>What is on your mind?</h4><p>Tell me what you are facing, in your own words, and I will connect this passage to it. Nothing is saved unless you tap Save under the answer.</p><textarea id="exSit" maxlength="500" placeholder="For example: I am worried about money, or I am angry at someone I love."></textarea><button type="button" class="exgo" id="exAsk">Help me apply this</button><div id="exMe">'+exMe()+'</div>'; }
     body.innerHTML=h; }
-  function exMe(){ var p=EX.personal; if(!p) return ''; if(p.error) return '<p>'+esc(p.error)+'</p>'; return '<div class="me"><p>'+esc(p.message)+'</p>'+li(p.steps)+'<p class="pr">'+esc(p.prayer)+'</p></div>'; }
+  function exMe(){ var p=EX.personal; if(!p) return ''; if(p.error) return '<p>'+esc(p.error)+'</p>'; return '<div class="me"><p>'+esc(p.message)+'</p>'+li(p.steps)+'<p class="pr">'+esc(p.prayer)+'</p><button type="button" class="exgo" id="exKeep">'+(p.kept?'&#10003; Saved in My stuff':'&#128278; Save this in My stuff')+'</button><small class="tip" style="display:block">Saved on this phone, and in your account if you are signed in. Only you can see it.</small></div>'; }
+  /* Ken, 9 Nov: keep what the person shared, the answer and the prayer, as "How it applies to me" in My stuff (a note under APPLY:<reference>, so it also goes to the account and Export) */
+  function exKeep(){ var p=EX.personal; if(!p||p.error||p.kept) return; var ref=B[EX.b][0]+' '+EX.c+':'+EX.v1+(EX.v2>EX.v1?'-'+EX.v2:''), N=nall(), k='APPLY:'+ref, L=N[k]||(N[k]=[]);
+    var tx='What I shared: '+(p.said||'')+'\n\n'+p.message+(p.steps&&p.steps.length?'\n\nNext steps:\n- '+p.steps.join('\n- '):'')+'\n\nPrayer (written with AI): '+p.prayer;
+    L.push({id:'d'+Date.now(),text:tx,at:Date.now(),ed:0,b:EX.b,c:EX.c,vs:null}); ls('mf-notes2',JSON.stringify(N)); if(window.MFacct) MFacct.touch(); p.kept=1; toast('Saved in My stuff · Applied to me'); var me=$('exMe'); if(me) me.innerHTML=exMe(); }
   function exAsk(){ var t=($('exSit')||{}).value||''; if(t.trim().length<3) return; var btn=$('exAsk'); btn.disabled=true; btn.textContent='Thinking…'; var my=EX.busy;
     fetch('/api/explain',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({b:B[EX.b][0],c:EX.c,v1:EX.v1,v2:EX.v2,lang:exLang(),situation:t})})
-      .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw j; return j; }); }).then(function(j){ EX.personal=j; }).catch(function(e){ EX.personal={error:(e&&e.error)==='busy'?'Please wait a little and try again.':'That could not be made just now. Please try again.'}; })
+      .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw j; return j; }); }).then(function(j){ j.said=t.trim().slice(0,500); EX.personal=j; }).catch(function(e){ EX.personal={error:(e&&e.error)==='busy'?'Please wait a little and try again.':'That could not be made just now. Please try again.'}; })
       .then(function(){ if(my!==EX.busy) return; var me=$('exMe'); if(me) me.innerHTML=exMe(); btn.disabled=false; btn.textContent='Help me apply this'; }); }
   function exVoices(){ var body=$('exBody'); body.innerHTML='<p>Looking in the old books…</p>'; var f=B[EX.b][0].replace(/ /g,'_'), my=EX.busy;
     Promise.all([EX.comm&&EX.comm.f===f?EX.comm.d:fetch('/fish-lang/bible/comm/'+f+'.json').then(function(r){ return r.ok?r.json():{}; }).catch(function(){ return {}; }),EX.authors||fetch('/fish-lang/bible/comm/_authors.json').then(function(r){ return r.json(); }).catch(function(){ return []; })]).then(function(a){
@@ -1548,7 +1557,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   $('exX').addEventListener('click',function(){ $('exSheet').hidden=true; });
   $('exPrev').addEventListener('click',function(){ exStep(-1); }); $('exNext').addEventListener('click',function(){ exStep(1); });
   $('exTabs').addEventListener('click',function(e){ var b=e.target.closest('[data-xt]'); if(!b) return; EX.tab=b.dataset.xt; if(EX.tab==='voices') exDraw(); else { exDraw(); if(!EX.data) exFetch(); } });
-  $('exBody').addEventListener('click',function(e){ if(e.target.closest('#exAsk')) exAsk(); else if(e.target.closest('[data-retry]')) exFetch(); else if(e.target.closest('[data-vmore]')){ EX.showN+=12; exVoices(); } });
+  $('exBody').addEventListener('click',function(e){ if(e.target.closest('#exAsk')) exAsk(); else if(e.target.closest('#exKeep')) exKeep(); else if(e.target.closest('[data-retry]')) exFetch(); else if(e.target.closest('[data-vmore]')){ EX.showN+=12; exVoices(); } });
   $('aExplain').addEventListener('click',function(){ var v=SEL[0]; closeAct(); exOpen(v); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('exSheet').hidden) $('exSheet').hidden=true; });
   // ── Search the Bible (Ken, 7 Nov: "do them all"): a word, a "phrase" or a Strong's number, in any Bible stored on the site (the KJV and the
