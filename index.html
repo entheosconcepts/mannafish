@@ -495,7 +495,7 @@ a{color:inherit}
 .hero .conc{display:inline-block;margin-top:6px;font-family:'Archivo',sans-serif;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sea);text-decoration:none;border-bottom:1px solid rgba(79,155,184,.4)}
 .hero .conc:hover{color:var(--brass-soft)}
 .hero .trace{font-size:.7rem;margin-top:2px}
-.hero .refs{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 16px;margin-top:16px}
+.hero .refs{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 16px;margin-top:16px}
 .hero .ref{min-width:0}
 .hero .ref .r{font-size:.82rem}
 .hero .ref .s{font-size:.74rem}
@@ -512,7 +512,7 @@ a{color:inherit}
   .hero .deck .langs:not(.one) .conc{font-size:.52rem;letter-spacing:.06em}
   .hero .deck .dstudy .wtitle{font-size:1.9rem}.hero .deck .dstudy .hr{margin:6px 0 !important}
   .hero .deck .dcard.dstudy{padding-top:12px;padding-bottom:36px}
-  .hero .refs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero .refs{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px}
 }
 .rtools{display:flex;gap:8px;align-items:center;flex:0 0 auto}
 .rmode{background:none;border:1px solid rgba(42,95,176,.4);color:var(--parch-ink);border-radius:18px;padding:7px 11px;cursor:pointer;font-family:'Archivo',sans-serif;font-size:.68rem;letter-spacing:.06em}
@@ -2628,10 +2628,12 @@ window.MF=(function(){
       :(l!=='en'&&S)?{gk:S.labels.gk,hb:S.labels.hb,conc:S.labels.conc+' \u00b7 Strong ',trace:S.labels.trace}
       :{gk:'Greek',hb:'Hebrew',conc:'Concordance \u00b7 Strong\u2019s ',trace:'Trace it through Scripture \u2014 tap a verse'}; }
   function meansIn(l,k){ var d=DATA[k], w=studyOf(l,k); return l==='es'?(MF.es.means[k]||[d.gkm,d.hbm]):w?[w.gkm,w.hbm]:[d.gkm,d.hbm]; }
+  /* Ken, 8 Nov: nine Scriptures on the back, in three columns: 9, or 6 or 3 when there are fewer, never 8, 7, 5 or 4 */
+  function nineOf(n){ return n>=9?9:(n>3?n-n%3:n); }
   function renderRefs(k,l){ l=l||MF.lang;
     var d=DATA[k], es=l==='es', w=studyOf(l,k), q=l==='de'?['\u201e','\u201c']:l==='he'?['"','"']:l==='ar'?['\u00ab','\u00bb']:['\u201c','\u201d'];
-    if(w && l!=='en') return w.refs.map(function(r,i){ return '<button class="ref" type="button" data-i="'+i+'" data-l="'+l+'"><span class="r">'+esc(r[0])+'</span>'+(r[1]?'<span class="s">'+q[0]+esc(r[1])+q[1]+'</span>':'')+'</button>'; }).join('');
-    return d.refs.map(function(r,i){
+    if(w && l!=='en') return w.refs.slice(0,nineOf(w.refs.length)).map(function(r,i){ return '<button class="ref" type="button" data-i="'+i+'" data-l="'+l+'"><span class="r">'+esc(r[0])+'</span>'+(r[1]?'<span class="s">'+q[0]+esc(r[1])+q[1]+'</span>':'')+'</button>'; }).join('');
+    return d.refs.slice(0,nineOf(d.refs.length)).map(function(r,i){
       return '<button class="ref" type="button" data-i="'+i+'" data-l="'+(es?'es':'en')+'"><span class="r">'+esc(es?esRef(r[0]):r[0])+'</span>'+
         (es?'':'<span class="s">&ldquo;'+esc(r[1])+'&rdquo;</span>')+'</button>';
     }).join('');
@@ -4385,7 +4387,12 @@ window.MF=(function(){
       return Promise.all([xJ('/fish-lang/bible/kjv/'+fn+'-'+c+'.json').catch(function(){ return null; }),xJ('/fish-lang/bible/orig/'+fn+'-'+c+'.json').catch(function(){ return null; }),xJ('/fish-lang/bible/xref/'+fn+'.json').catch(function(){ return {}; })]).then(function(x){
         var text=x[0]&&x[0].t?x[0].t[v-1]||'':'', o=x[1]&&x[1].v?x[1].v[String(v)]:null, ow=null;
         if(o&&text){ var re=/[A-Za-z]+(?:'[A-Za-z]+)?/g, t, j=0; while((t=re.exec(text))){ var tl=t[0].toLowerCase(); if(!ow&&(tl===w||(base.length>=3&&tl.indexOf(base)===0))){ var i=o.a[j]; if(i!=null&&i>=0) ow=o.w[i]; } j++; } }
-        var XR=(x[2][c+':'+v]||[]).slice(0,9), chs={};
+        /* Ken, 8 Nov: nine Scriptures on every back (or 6 or 3, never 8 or 7): first the verses where this word is used (fish/studies.json), then the cross-references of this fish's verse */
+        var sd1=(a[3]||{})[w]||{}, XR=[], seenR={};
+        (sd1.r||[]).concat([]).forEach(function(rs){ var mr=/^(.+?)\s+(\d+):(\d+)/.exec(rs), bi=mr?BOOKS.indexOf(mr[1]):-1; if(bi<0) return; var kr=bi+':'+mr[2]+':'+mr[3]; if(!seenR[kr]){ seenR[kr]=1; XR.push([bi,+mr[2],+mr[3]]); } });
+        (x[2][c+':'+v]||[]).forEach(function(r){ var kr=r[0]+':'+r[1]+':'+r[2]; if(XR.length<9&&!seenR[kr]){ seenR[kr]=1; XR.push(r); } });
+        XR=XR.slice(0,9); if(XR.length<9&&XR.length>3) XR=XR.slice(0,XR.length-XR.length%3);
+        var chs={};
         XR.forEach(function(r){ var k2=BOOKS[r[0]].replace(/ /g,'_')+'-'+r[1]; chs[k2]=chs[k2]||xJ('/fish-lang/bible/kjv/'+k2+'.json').catch(function(){ return null; }); });
         var st=ow?String(ow[3]):'', mm=/^([HG])(\d+)/.exec(st);
         var lex=mm?xJ('/fish-lang/bible/lex/'+mm[1]+Math.floor(+mm[2]/250)+'.json').then(function(d){ return d[st]||d[st.replace(/[A-Za-z]$/,'')]||null; }).catch(function(){ return null; }):Promise.resolve(null);

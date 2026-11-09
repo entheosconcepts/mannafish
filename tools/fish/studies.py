@@ -14,27 +14,35 @@ def forms(w):
     b = w[:-1] if w.endswith('e') else w; f = {w, w + 's', w + 'es', w + 'd', w + 'ed', w + 'eth', w + 'th', b + 'ing', b + 'eth', b + 'ed', b + 'es', b + 'est', w + 'est'}
     if re.search(r'[^aeiou][aeiou][bdglmnprt]$', w): f |= {w + w[-1] + x for x in ('ed', 'ing', 'eth', 'er')}
     if w.endswith('y'): f |= {w[:-1] + x for x in ('ied', 'ieth', 'ies')}
+    if w.endswith('or'): f |= forms(w[:-2] + 'our')   # honor: the King James spells it honour
     return f
 F = collections.defaultdict(set)
 for w in words:
     for f in forms(w): F[f].add(w)
 cnt = {w: collections.Counter() for w in words}
+occ = {w: [] for w in words}
+txt = {w: [] for w in words}   # every verse that has the word in it, aligned or not   # (book order, ref, strong, letters) of every verse the word is translated in
+BOOKORD = {}
 tok = re.compile(r"[A-Za-z]+(?:'[A-Za-z]+)?")
 for fo in sorted(glob.glob(R + '/fish-lang/bible/orig/*.json')):
     name = os.path.basename(fo); kj = R + '/fish-lang/bible/kjv/' + name
     if not os.path.exists(kj): continue
+    bk, ch = name[:-5].rsplit('-', 1); bk = bk.replace('_', ' ')
     O = json.load(open(fo))['v']; K = json.load(open(kj))['t']
     for vs, o in O.items():
         i = int(vs) - 1
         if i >= len(K): continue
         for j, t in enumerate(tok.findall(K[i])):
             ws = F.get(t.lower())
+            if ws:
+                for w in ws: txt[w].append((bk, int(ch), int(vs), '', len(K[i])))
             if not ws or j >= len(o['a']): continue
             ix = o['a'][j]
             if ix is None or ix < 0 or ix >= len(o['w']): continue
             st = str(o['w'][ix][3]); m = re.match(r'^([HG])(\d+)', st)
             if m:
-                for w in ws: cnt[w][st] += 1
+                for w in ws:
+                    cnt[w][st] += 1; occ[w].append((bk, int(ch), int(vs), st, len(K[i])))
 LEX = {}
 def lex(st):
     num = re.match(r'^[HG](\d+)', st).group(1); k = st[0] + str(int(num) // 250)
@@ -44,6 +52,7 @@ def lex(st):
 def sound(t): return re.sub('[āâ]', 'a', re.sub('[ēê]', 'e', re.sub('[īî]', 'i', re.sub('[ōô]', 'o', re.sub('[ūû]', 'u', t))))) if t else ''
 PART = {'please', 'behold', 'not', 'no', 'and', 'the', 'now', 'if', 'yea', 'also', 'but', 'for', 'that', 'which', 'with', 'in', 'to', 'of', 'oh', 'o', 'i', 'he', 'she', 'it'}
 # by hand (checked against the lexicon): words whose Greek or Hebrew counterpart the alignment could not find; the Strong's numbers are read in the lexicon, so the word, sound and meaning are the lexicon's
+BOOKS_ORDER = ['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalm','Proverbs','Ecclesiastes','Song of Solomon','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi','Matthew','Mark','Luke','John','Acts','Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon','Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation']
 MAN = {'acknowledge': {'g': 'G1921'}, 'atone': {'g': 'G2433', 'h': 'H3722'}, 'bathe': {'g': 'G3068', 'h': 'H7364'}, 'cheer': {'g': 'G2293'}, 'dedicate': {'g': 'G1457'},
   'encourage': {'g': 'G3870', 'h': 'H2388'}, 'forbear': {'g': 'G430'}, 'hallow': {'g': 'G37'}, 'hearken': {'g': 'G191'}, 'honor': {'g': 'G5091', 'h': 'H3513'},
   'intreat': {'g': 'G3870', 'h': 'H6279'}, 'launch': {'g': 'G321'}, 'listen': {'g': 'G191'}, 'overtake': {'g': 'G2638'}, 'prosper': {'g': 'G2137'}, 'publish': {'g': 'G2784'},
@@ -85,6 +94,25 @@ for w in words:
             e[L] = {'n': n, 'w': x.get('l', ''), 't': sound(x.get('t', '')), 'm': g[0].upper() + g[1:] + ('' if g[-1] in '.!?' else '.'), 'c': 0, 'by': 'hand'}
     for L in list(e): 
         if (w, L) in MEAN: e[L]['m'] = MEAN[(w, L)] + '.'
+    # nine Scriptures where this word is used (Ken, 8 Nov: nine on every back; if there are not enough, 6 or 3): verses where it is translated by the chosen Greek or Hebrew word,
+    # spread over the books, short ones first, in the order of the Bible
+    keep = {e[L]['n'] for L in ('g', 'h') if L in e}; keepn = {re.sub(r'[A-Za-z]$', '', n) for n in keep}
+    pool = [o for o in occ[w] if re.sub(r'[A-Za-z]$', '', o[3]) in keepn] or occ[w]
+    seen_v = set(); uniq = []
+    for o in sorted(pool, key=lambda o: o[4]) + sorted(txt[w], key=lambda o: o[4]):
+        k = (o[0], o[1], o[2])
+        if k not in seen_v: seen_v.add(k); uniq.append(o)
+    pick = []; used_b = collections.Counter()
+    for rnd in range(3):                                     # first at most one a book, then two, then any
+        for o in uniq:
+            if len(pick) >= 9: break
+            if o in pick or used_b[o[0]] > rnd or o[4] > (200 if rnd == 0 else 400): continue
+            pick.append(o); used_b[o[0]] += 1
+    n = len(pick) - len(pick) % 3 if len(pick) < 9 else 9
+    pick = pick[:n]
+    order = [x for x in sorted(set(o[0] for o in pick), key=lambda b: BOOKS_ORDER.index(b) if b in BOOKS_ORDER else 99)]
+    pick.sort(key=lambda o: (BOOKS_ORDER.index(o[0]) if o[0] in BOOKS_ORDER else 99, o[1], o[2]))
+    e['r'] = ['%s %d:%d' % (o[0], o[1], o[2]) for o in pick]
     out[w] = e
 json.dump(out, open(R + '/fish/studies.json', 'w'), ensure_ascii=False, separators=(',', ':'))
 both = sum(1 for e in out.values() if 'g' in e and 'h' in e)
