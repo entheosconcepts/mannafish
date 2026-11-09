@@ -1,0 +1,34 @@
+{
+ "id": "R0014",
+ "title": "DEMO Gather · Shattered into Beautiful Podcast (QR direct)",
+ "status": "draft",
+ "qty": 100,
+ "fish": {
+  "id": "GATHER",
+  "word": "GATHER",
+  "lang": "en",
+  "study": "GATHER"
+ },
+ "sponsor": {
+  "name": "Shattered into Beautiful Podcast",
+  "logo": "assets/shattered-into-beautiful-DRAFT.png",
+  "show": true
+ },
+ "ship_to": "",
+ "qr_direct": true,
+ "back": {
+  "template": "study",
+  "refs": 9,
+  "left": {
+   "label": "Listen to the\npodcast",
+   "to": "https://yadamannafishtest.netlify.app/"
+  },
+  "right": {
+   "label": "Free MannaFish",
+   "to": "https://yadamannafishtest.netlify.app/devotional"
+  },
+  "orientation": "landscape",
+  "layout": "stack"
+ },
+ "notes": "DEMO for showing the customer: every QR goes straight to its address so it scans today. The print version (tracked scans through manna-fish.com/q/) is R0007. Left QR is a placeholder until the podcast web address is given."
+}

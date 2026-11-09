@@ -103,5 +103,50 @@
   "to": "https://manna-fish.com/devotional",
   "run": "R0010",
   "what": "Free MannaFish"
+ },
+ "R0011s": {
+  "to": "https://k-tech-porch-enclosures.netlify.app/",
+  "run": "R0011",
+  "what": "Free porch\nenclosure quote"
+ },
+ "R0011m": {
+  "to": "https://yadamannafishtest.netlify.app/devotional",
+  "run": "R0011",
+  "what": "Free MannaFish"
+ },
+ "R0012s": {
+  "to": "https://www.marketsttiresandauto.com/",
+  "run": "R0012",
+  "what": "Free tire\ncheck"
+ },
+ "R0012m": {
+  "to": "https://yadamannafishtest.netlify.app/devotional",
+  "run": "R0012",
+  "what": "Free MannaFish"
+ },
+ "R0013s": {
+  "to": "https://www.marketsttiresandauto.com/",
+  "run": "R0013",
+  "what": "Revisión de\nllantas gratis"
+ },
+ "R0013m": {
+  "to": "https://yadamannafishtest.netlify.app/devotional",
+  "run": "R0013",
+  "what": "MannaFish gratis"
+ },
+ "R0014s": {
+  "to": "https://yadamannafishtest.netlify.app/",
+  "run": "R0014",
+  "what": "Listen to the\npodcast"
+ },
+ "R0014m": {
+  "to": "https://yadamannafishtest.netlify.app/devotional",
+  "run": "R0014",
+  "what": "Free MannaFish"
+ },
+ "SITE": {
+  "to": "https://manna-fish.com/",
+  "run": "",
+  "what": "MannaFish (the main web address)"
  }
 }

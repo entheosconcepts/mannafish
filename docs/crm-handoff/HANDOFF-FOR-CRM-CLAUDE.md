@@ -23,7 +23,7 @@ The generator lives in the MannaFish repo (`tools/print/`, needs Node and Playwr
 It writes `print/runs/R000n.json` and builds `print/out/R000n/`:
 `-front-preview.png` and `-4-back.png` (customer mock-ups), `-proof.png`/`.pdf` (all layers), and `-print-files.zip` (decal white ink, backing front, cut lines, back). Spanish: add `--lang es`. Full notes: `print/README.md`.
 Each card has a word on the fish, its Greek and Hebrew meaning, nine verses, two QR codes: left to the sponsor's website, right "Free MannaFish" (the free devotional sign-up). The QR codes open manna-fish.com/q/<code> first (counts scans), then go on. **That only works once manna-fish.com is live** (Ken is still deciding when; until then QRs on mock-ups are examples).
-Samples are in this folder: R0007 (K-Tech, Build), R0008 (Market Street, Repair, English), R0009 (Market Street, Spanish).
+Samples are in the folders beside this file (one per customer): `-mockup-FRONT.png`, `-mockup-BACK.png` (QR codes go straight to the real addresses, so they scan today), `-proof-all-layers.png` and `-PRINT-FILES.zip` (QR codes go through manna-fish.com/q/, scans counted, work once the site is live). Runs: R0007/R0008/R0009 print, R0011-R0014 demo.
 
 ## The tie-in (my recommendation, for Ken and you to confirm)
 - **v1 (do this now):** keep the generator in the MannaFish repo. In the CRM, a prospect record collects the inputs (word, language, logo, website). A person (Ken, via a MannaFish session) runs the one command above, and the files are uploaded to the prospect record. This works today with no new infrastructure.
@@ -46,6 +46,7 @@ Include an unsubscribe line if the CRM requires one.
 |---|---|---|---|---|
 | K-Tech Construction (Ken's brother) | Build | English | https://k-tech-porch-enclosures.netlify.app/ | R0007 here (real logo still wanted) |
 | Market Street Tires | Repair | English and Spanish | https://www.marketsttiresandauto.com/ | R0008 / R0009 here |
+| Shattered into Beautiful (podcast) | Gather | English | not given yet (placeholder) | demo only |
 | Archaic Construction | not chosen yet | English | Ken to give | needs logo and website |
 Next: Shattered into Beautiful (podcast), word and website to come.
 

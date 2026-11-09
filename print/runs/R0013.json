@@ -1,0 +1,41 @@
+{
+ "id": "R0013",
+ "title": "DEMO Reparar · Market Street Tires, Spanish (QR direct)",
+ "status": "draft",
+ "qty": 100,
+ "fish": {
+  "id": "REPARAR",
+  "word": "REPAREN",
+  "lang": "es",
+  "study": "REPAIR-ES",
+  "svg": "assets/repair-fish-ES-DRAFT.svg"
+ },
+ "sponsor": {
+  "name": "Market Street Tires",
+  "logo": "assets/marketstreet-logo-bilingual.png",
+  "show": true
+ },
+ "ship_to": "",
+ "qr_direct": true,
+ "back": {
+  "template": "study",
+  "refs": 9,
+  "left": {
+   "label": "Revisión de\nllantas gratis",
+   "to": "https://www.marketsttiresandauto.com/"
+  },
+  "right": {
+   "label": "MannaFish gratis",
+   "to": "https://yadamannafishtest.netlify.app/devotional"
+  },
+  "orientation": "landscape",
+  "layout": "stack",
+  "credit": "Patrocinado por",
+  "words": {
+   "greek": "GRIEGO",
+   "hebrew": "HEBREO",
+   "strongs": "STRONG"
+  }
+ },
+ "notes": "DEMO for showing the customer: every QR goes straight to its address so it scans today. The print version (tracked scans through manna-fish.com/q/) is R0009."
+}

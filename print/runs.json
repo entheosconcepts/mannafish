@@ -242,6 +242,102 @@
     "Status is \"draft\": approve the proof before ordering."
    ],
    "made": "2026-11-07T19:25:09.707Z"
+  },
+  {
+   "id": "R0011",
+   "title": "DEMO Build · K-Tech Construction (QR direct)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "X004",
+    "word": "BUILD",
+    "lang": "en",
+    "study": "BUILD-JUDE"
+   },
+   "sponsor": "K-Tech Construction",
+   "anonymous": false,
+   "codes": {
+    "main": "R0011",
+    "left": "R0011s",
+    "right": "R0011m"
+   },
+   "warn": [
+    "The sponsor logo is a stand-in (assets/ktech-round-logo-DRAFT.svg). Upload the original logo before printing.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "made": "2026-11-09T18:26:11.474Z"
+  },
+  {
+   "id": "R0012",
+   "title": "DEMO Repair · Market Street Tires, English (QR direct)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "REPAIR",
+    "word": "REPAIR",
+    "lang": "en",
+    "study": "REPAIR",
+    "svg": "assets/repair-fish-C-DRAFT.svg"
+   },
+   "sponsor": "Market Street Tires",
+   "anonymous": false,
+   "codes": {
+    "main": "R0012",
+    "left": "R0012s",
+    "right": "R0012m"
+   },
+   "warn": [
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "made": "2026-11-09T18:26:16.457Z"
+  },
+  {
+   "id": "R0013",
+   "title": "DEMO Reparar · Market Street Tires, Spanish (QR direct)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "REPARAR",
+    "word": "REPAREN",
+    "lang": "es",
+    "study": "REPAIR-ES",
+    "svg": "assets/repair-fish-ES-DRAFT.svg"
+   },
+   "sponsor": "Market Street Tires",
+   "anonymous": false,
+   "codes": {
+    "main": "R0013",
+    "left": "R0013s",
+    "right": "R0013m"
+   },
+   "warn": [
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "made": "2026-11-09T18:26:21.577Z"
+  },
+  {
+   "id": "R0014",
+   "title": "DEMO Gather · Shattered into Beautiful Podcast (QR direct)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "GATHER",
+    "word": "GATHER",
+    "lang": "en",
+    "study": "GATHER"
+   },
+   "sponsor": "Shattered into Beautiful Podcast",
+   "anonymous": false,
+   "codes": {
+    "main": "R0014",
+    "left": "R0014s",
+    "right": "R0014m"
+   },
+   "warn": [
+    "The sponsor logo is a stand-in (assets/shattered-into-beautiful-DRAFT.png). Upload the original logo before printing.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "made": "2026-11-09T18:26:26.359Z"
   }
  ]
 }
