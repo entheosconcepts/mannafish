@@ -9,6 +9,13 @@ Ken, 25 Oct: launch the free devotional first (digital only), decals "coming soo
 3. **The live site's settings.** manna-fish.com is a separate Netlify site from the test site. In Netlify, open the **manna-fish.com** site → Site configuration → Environment variables, and check it has the same settings as the test site: `BREVO_API_KEY`, `OPENAI_API_KEY`, `SUPABASE_SECRET_KEY`, `MF_ADMIN_KEY` and `PROOF_KEY`. Never paste a key into a chat.
 4. **Say "push it live".**
 
+## The gate (keeps manna-fish.com hidden until Ken opens it; built 9 Nov, `netlify/edge-functions/gate.js`)
+- On manna-fish.com only, the public sees a "MannaFish is coming soon" page until `MF_LAUNCHED` = `1`. The test site is never gated.
+- Ken opens `https://manna-fish.com/?preview=<MF_PREVIEW_KEY>` once on each phone he wants in; a cookie remembers it.
+- In Netlify on the manna-fish.com site set `MF_PREVIEW_KEY` (any private word) and `MF_SEND_OFF` = `1` (no daily emails or texts yet). Open to the public: set `MF_LAUNCHED` = `1`, remove `MF_SEND_OFF`, redeploy.
+- Stay open while gated: `/q/<code>`, `/print/links.json`, `/api/qr`, unsubscribe, the text-reply webhook.
+- Emails need Brevo (verified sender and domain DNS) and texts need Twilio approval before `MF_SEND_OFF` is removed.
+
 ## Claude's part, on "push it live"
 
 1. Bring the test-site branch into `main`, so manna-fish.com gets everything.
