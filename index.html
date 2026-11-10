@@ -290,6 +290,7 @@ a{color:inherit}
 .chapter .vn{font-family:'Archivo',sans-serif;font-size:.62rem;color:var(--brass);vertical-align:super;
   margin-right:3px;font-weight:700}
 .pullquote:is([lang=zh],[lang=ko],[lang=hi]){font-style:normal}
+.chapter .far{display:none}.chapter.all .far{display:inline}.chapter .allch{display:block;margin:12px auto 0;background:none;border:1px solid rgba(143,182,255,.5);color:#8fb6ff;border-radius:999px;padding:7px 14px;font:700 .8rem Archivo,sans-serif;cursor:pointer}
 .chapter .hi{background:rgba(120,175,255,.3);border-radius:3px;padding:0 2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 .reader-actions{padding:16px 24px 24px;border-top:1px solid rgba(42,95,176,.25);
   display:flex;flex-direction:column;gap:10px}
@@ -1915,7 +1916,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <div class="resumebar" id="resumeBar" hidden><span id="resumeTxt"></span><span class="rbtns"><button type="button" class="toolbtn" id="resumeGo">Pick up where I left off</button><button type="button" class="rx" id="resumeX" aria-label="Dismiss">&#215;</button></span></div>
   <div class="stage-col">
     <!-- Ken, 11 Oct (mock-up): "One fish" and "Two fish" in the top corners of the fish card -->
-    <div class="fishtog" id="fishTog"><button type="button" id="ftOne" aria-pressed="false"></button><span class="ftmid"><button type="button" class="stb" id="fsBtn" aria-label="Full screen" title="Full screen">⤢</button><button type="button" class="stb" id="bkAdd" aria-label="Love this fish" title="Love this fish (your vote for it at a MannaFish Hub)">🧺<b>+</b></button></span><button type="button" id="ftTwo" aria-pressed="false"></button></div>
+    <div class="fishtog" id="fishTog"><button type="button" id="ftOne" aria-pressed="false"></button><span class="ftmid"><button type="button" class="stb" id="fsBtn" aria-label="Full screen" title="Full screen">⤢</button><button type="button" class="stb" id="shBtn" aria-label="Share this fish" title="Share this fish">&#8599;&#xFE0E;</button><button type="button" class="stb" id="bkAdd" aria-label="Love this fish" title="Love this fish (your vote for it at a MannaFish Hub)">🧺<b>+</b></button></span><button type="button" id="ftTwo" aria-pressed="false"></button></div>
     <button type="button" class="stb fsx" id="fsX" aria-label="Exit full screen" hidden>✕</button>
     <div class="cmpgrid onebar" id="oneBar" hidden><button type="button" class="cmpclear" id="twoBtn"></button></div>
     <div class="cmpgrid" id="cmpGrid" hidden><button type="button" class="cmpclear" id="cmpClear"></button><span class="gpwrap"><span id="cmpGridLab">Per row</span><span class="gp" id="gp" role="group"></span><span class="gpsz" id="gpSz"></span><button type="button" id="gpAuto">Auto</button></span></div>
@@ -2599,7 +2600,7 @@ window.MF=(function(){
     deckShow(deck, +(deck.dataset.at||0)+(b.classList.contains('dprev')?-1:1)); },true);
   // verses and Strong's on any card of the single fish
   document.querySelector('#stage .face.back').addEventListener('click',function(e){ var r=e.target.closest('.deck .ref'), c=e.target.closest('.deck .lang[data-c]');
-    if(r){ e.stopPropagation(); fishBible(cur,+r.dataset.i,r.dataset.l); }
+    if(r){ e.stopPropagation(); openReader(cur,+r.dataset.i,r.dataset.l); }   /* Ken, 10 Nov: like Listen, show that verse in its place, not the whole Bible */
     else if(c){ e.stopPropagation(); e.preventDefault(); openStrongs(cur,c.dataset.c==='g'); } });
   window.addEventListener('resize',function(){ clearTimeout(window.__dkT); window.__dkT=setTimeout(function(){ document.querySelectorAll('.face.back.decked').forEach(function(f){ if(f.offsetParent) buildDeck(f); }); },200); });
   // Ken, 31 Oct: a verse on the back of the fish opens the Bible (the same one as ••• Bible, in the reader's own version and language) over
@@ -2837,6 +2838,7 @@ window.MF=(function(){
     $('rNote').textContent=x.credit;
     showPanel();
   }
+  document.addEventListener('click',function(e){ var b=e.target.closest&&e.target.closest('#rAll'); if(!b) return; var c=$('rChapter'); c.classList.add('all'); b.remove(); setTimeout(function(){ readerFit(); },30); });
   function openReader(k,i,l){ l=l||MF.lang; unbig(); reader.classList.remove('lexmode'); RO=false;
     window.MFreader={kind:'ref',k:k,i:i,l:l}; if(window.MFsave) setTimeout(MFsave,0);
     ['rKicker','rRef','rQuote','rChapter'].forEach(function(id){ $(id).setAttribute('lang',l); });
@@ -4036,15 +4038,69 @@ window.MF=(function(){
   // ── share the fish at the end of the devotional
   function dvShareLink(k){ return location.origin+(DATA[k]?'/?w='+k.toLowerCase():'/?fish='+k); }
   function dvShareClose(){ var e=$('dvShare'); if(e) e.hidden=true; }
-  function dvShareOpen(){ var T=dvT(); if(!T) return; var k=DV.k||cur, sy=(SAY[MF.lang]&&SAY[MF.lang][k])||SAY.en[k], w=titleIn(MF.lang,k), url=dvShareLink(k), body=T.msg.replace('{w}',w).replace('{ref}',sy[2]).replace('{v}',sy[1])+' '+url, e=$('dvShare');
+  /* Ken, 10 Nov: share up front (not only after Listen), from the three dots, and from a computer: Text it and Email it opened a "Pick an app" box there.
+     On a computer: Text it copies the message (a computer cannot text), Email it offers Gmail, Outlook or the mail app. */
+  var SHN={en:{skip:'Skip to share',catchT:'Catch a fish and share it',catchS:'Random, or pick one',again:'Catch another',pick:'Choose a fish',find:'Search for a word',shareThis:'Share this fish',gmail:'Gmail',outlook:'Outlook',mailapp:'Mail app',textHelp:'A computer cannot send a text. The message is copied: paste it into your phone’s messages, or email it.',copiedM:'Message copied',none:'No fish found'},
+    es:{skip:'Ir a compartir',catchT:'Pesca un pez y compártelo',catchS:'Al azar, o elige uno',again:'Pescar otro',pick:'Elegir un pez',find:'Buscar una palabra',shareThis:'Compartir este pez',gmail:'Gmail',outlook:'Outlook',mailapp:'App de correo',textHelp:'Una computadora no puede enviar mensajes de texto. El mensaje se copió: pégalo en los mensajes de tu teléfono, o envíalo por correo.',copiedM:'Mensaje copiado',none:'No se encontró ningún pez'}};
+  function shn(){ return SHN[MF.lang]||SHN.en; }
+  var MOBILE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform));
+  function dvShareOpen(){ var T=dvT(); if(!T) return; var k=DV.k||cur, sy=(SAY[MF.lang]&&SAY[MF.lang][k])||SAY.en[k]; if(!sy) return;
+    shareRender({w:titleIn(MF.lang,k),ref:sy[2],v:sy[1],url:dvShareLink(k)}); }
+  function shareRender(o){ var T=dvT()||DVT.en, N=shn(), body=(o.msg||T.msg).replace('{w}',o.w).replace('{ref}',o.ref).replace('{v}',o.v)+' '+o.url, e=$('dvShare');
     if(!e){ e=document.createElement('div'); e.id='dvShare'; e.className='dvshare'; e.setAttribute('role','dialog'); e.setAttribute('aria-modal','false'); document.body.appendChild(e); }
-    e.innerHTML='<div class="in"><b>'+esc(T.share)+'</b><div class="dvsb">'
-      +'<a class="dgbtn" href="sms:?&body='+encodeURIComponent(body)+'">'+esc(T.text)+'</a><a class="dgbtn" href="mailto:?subject='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(T.mail)+'</a>'
-      +'<button type="button" class="dgbtn" data-a="copy">'+esc(T.copy)+'</button>'+(navigator.share?'<button type="button" class="dgbtn" data-a="share">'+esc(T.more)+'</button>':'')+'</div><p class="dvsm" id="dvShareMsg"></p><button type="button" class="dvsx" data-a="x">'+esc(T.close)+'</button></div>';
-    e.hidden=false; e._u=url; e._b=body; e._t=T; }
+    var txt=MOBILE?'<a class="dgbtn" href="sms:'+(/iPhone|iPad/.test(navigator.userAgent)?'&':'?')+'body='+encodeURIComponent(body)+'">'+esc(T.text)+'</a>':'<button type="button" class="dgbtn" data-a="text">'+esc(T.text)+'</button>',
+        mail=MOBILE?'<a class="dgbtn" href="mailto:?subject='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(T.mail)+'</a>':'<button type="button" class="dgbtn" data-a="email">'+esc(T.mail)+'</button>';
+    e.innerHTML='<div class="in"><b>'+esc(o.title||T.share)+'</b><div class="dvsb">'+txt+mail
+      +'<button type="button" class="dgbtn" data-a="copy">'+esc(T.copy)+'</button>'+(navigator.share?'<button type="button" class="dgbtn" data-a="share">'+esc(T.more)+'</button>':'')+'</div>'
+      +'<div class="dvsb" id="dvMailRow" hidden><a class="dgbtn" target="_blank" rel="noopener" href="https://mail.google.com/mail/?view=cm&fs=1&su='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(N.gmail)+'</a>'
+      +'<a class="dgbtn" target="_blank" rel="noopener" href="https://outlook.live.com/mail/0/deeplink/compose?subject='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(N.outlook)+'</a>'
+      +'<a class="dgbtn" href="mailto:?subject='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(N.mailapp)+'</a></div>'
+      +'<p class="dvsm" id="dvShareMsg"></p><button type="button" class="dvsx" data-a="x">'+esc(T.close)+'</button></div>';
+    e.hidden=false; e._u=o.url; e._b=body; e._t=T; e._n=N; }
   document.addEventListener('click',function(ev){ var e=$('dvShare'); if(!e||e.hidden) return; var b=ev.target.closest('#dvShare [data-a]'); if(!b) return; var a=b.dataset.a;
-    if(a==='x') e.hidden=true; else if(a==='copy'){ try{ navigator.clipboard.writeText(e._u).then(function(){ $('dvShareMsg').textContent=e._t.copied; }); }catch(er){ window.prompt('',e._u); } }
+    if(a==='x') e.hidden=true; else if(a==='email'){ var mr=$('dvMailRow'); if(mr) mr.hidden=!mr.hidden; }
+    else if(a==='text'){ $('dvShareMsg').textContent=e._n.textHelp; try{ navigator.clipboard.writeText(e._b).catch(function(){ window.prompt('',e._b); }); }catch(er){ window.prompt('',e._b); } }
+    else if(a==='copy'){ try{ navigator.clipboard.writeText(e._u).then(function(){ $('dvShareMsg').textContent=e._t.copied; }); }catch(er){ window.prompt('',e._u); } }
     else if(a==='share'){ try{ navigator.share({title:e._t.subj,text:e._b.replace(' '+e._u,''),url:e._u}).catch(function(){}); }catch(er){} } });
+
+/* Ken, 10 Nov: share up front, skip to share, and "Catch a fish and share it" (random, or pick one) in the three dots */
+(function(){ var CFL=null, CFC=null;
+  var css=document.createElement('style'); css.textContent='.cfs{position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.72);display:flex;align-items:flex-end;justify-content:center}.cfs[hidden]{display:none}'
+    +'.cfs .in{width:min(560px,100%);max-height:92vh;overflow:auto;background:#0e1116;color:#eaf0f0;border:1px solid rgba(255,255,255,.18);border-radius:20px 20px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom));text-align:center}'
+    +'.cfs h3{margin:0 0 4px;font:800 1.15rem Archivo,sans-serif}.cfs .sub{color:#9fb0b6;font-size:.85rem;margin:0 0 10px}.cfs img{display:block;width:100%;max-width:420px;margin:8px auto;background:#000;border-radius:12px;aspect-ratio:2/1;object-fit:contain}'
+    +'.cfs .cap{font:600 1rem Spectral,Georgia,serif;margin:4px 0 12px}.cfs .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0}'
+    +'.cfs input{width:100%;box-sizing:border-box;margin:6px 0;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.22);background:#05080b;color:#eaf0f0;font:1rem Archivo,sans-serif}'
+    +'.cfs .lst{max-height:34vh;overflow:auto;text-align:left;margin:4px 0}.cfs .lst button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.1);color:#eaf0f0;padding:9px 4px;font:600 .95rem Archivo,sans-serif;cursor:pointer}.cfs .lst small{color:#9fb0b6;font-weight:400;margin-left:6px}'
+    +'.dvskip{display:block;margin:6px auto 0;background:none;border:0;color:#8fb6ff;font:700 .8rem Archivo,sans-serif;cursor:pointer;text-decoration:underline}';
+  document.head.appendChild(css);
+  function lst(){ return CFL?Promise.resolve(CFL):fetch('/api/catch-list?lang='+(MF.lang==='es'?'es':'en')).then(function(r){ return r.json(); }).then(function(j){ CFL=j.fish||[]; return CFL; }); }
+  function img(f){ return f.core?'/w/img/'+f.k.toLowerCase()+'.png':'/api/fish-img?k='+encodeURIComponent(f.k)+'&w=800'; }
+  function sheet(){ var e=$('cfSheet'); if(!e){ e=document.createElement('div'); e.id='cfSheet'; e.className='cfs'; e.hidden=true; e.setAttribute('role','dialog'); e.setAttribute('aria-modal','true'); document.body.appendChild(e);
+      e.addEventListener('click',function(ev){ if(ev.target===e){ e.hidden=true; return; } var b=ev.target.closest('[data-cf]'); if(!b) return; var a=b.dataset.cf;
+        if(a==='x') e.hidden=true; else if(a==='again') rnd(); else if(a==='share'&&CFC){ shareRender({title:shn().shareThis,msg:(MF.lang==='es'?'Un MannaFish para ti: {w} ({ref}). “{v}”':'A MannaFish for you: {w} ({ref}). “{v}”'),w:CFC.t,ref:CFC.r,v:CFC.v,url:location.origin+(CFC.core?'/?w='+CFC.k.toLowerCase():'/?fish='+CFC.k)}); }
+        else if(a==='pick'){ var l=$('cfList'); l.hidden=!l.hidden; $('cfFind').hidden=l.hidden; if(!l.hidden) $('cfFind').focus(); }
+        else if(a==='f'){ var f=(CFL||[]).filter(function(x){ return x.k===b.dataset.k; })[0]; if(f) show(f); } });
+      e.addEventListener('input',function(ev){ if(ev.target.id==='cfFind') draw(ev.target.value); }); }
+    return e; }
+  function show(f){ CFC=f; var e=sheet(); $('cfImg').src=img(f); $('cfImg').alt=f.t; $('cfCap').textContent=f.t+' · '+f.r; $('cfList').hidden=true; $('cfFind').hidden=true; $('cfFind').value=''; e.querySelector('.in').scrollTop=0; }
+  function rnd(){ lst().then(function(L){ if(!L.length) return; var f; do{ f=L[Math.floor(Math.random()*L.length)]; }while(L.length>1&&CFC&&f.k===CFC.k); show(f); }); }
+  function draw(q){ var N=shn(); q=(q||'').trim().toLowerCase(); var L=(CFL||[]).filter(function(f){ return !q||f.t.toLowerCase().indexOf(q)>=0||f.r.toLowerCase().indexOf(q)>=0; }).slice(0,80);
+    $('cfList').innerHTML=L.length?L.map(function(f){ return '<button type="button" data-cf="f" data-k="'+esc(f.k)+'">'+esc(f.t)+'<small>'+esc(f.r)+'</small></button>'; }).join(''):'<p class="sub">'+esc(N.none)+'</p>'; }
+  window.MFcatch=function(){ var N=shn(), e=sheet();
+    e.innerHTML='<div class="in"><h3>'+esc(N.catchT)+'</h3><p class="sub">'+esc(N.catchS)+'</p><img id="cfImg" alt=""><div class="cap" id="cfCap"></div>'
+      +'<div class="row"><button type="button" class="dgbtn" data-cf="again">&#127907;&#xFE0E; '+esc(N.again)+'</button><button type="button" class="dgbtn" data-cf="pick">'+esc(N.pick)+'</button><button type="button" class="dgbtn" data-cf="share">&#8599;&#xFE0E; '+esc(N.shareThis)+'</button></div>'
+      +'<input id="cfFind" type="search" placeholder="'+esc(N.find)+'" hidden><div class="lst" id="cfList" hidden></div><button type="button" class="dvsx" data-cf="x">'+esc((dvT()||DVT.en).close)+'</button></div>';
+    e.hidden=false; CFC=null; lst().then(function(){ draw(''); rnd(); }); };
+  // up-front Share, and Skip to share under Listen / Read
+  var sb=$('shBtn'); if(sb) sb.addEventListener('click',function(e){ e.stopPropagation(); dvShareOpen(); });
+  var dg=document.querySelector('.devogo'); if(dg){ var k=document.createElement('button'); k.type='button'; k.className='dvskip'; k.id='dgSkip'; k.textContent=shn().skip+' \u2197\uFE0E'; dg.insertAdjacentElement('afterend',k);
+    k.addEventListener('click',function(){ try{ if(PL&&PL.src===$('dgListen')&&!$('mfPlayer').hidden) plToggle(); }catch(er){} dvShareOpen(); }); }
+  // the three dots on this page
+  var more=$('siteMore'), menu=$('siteMenu'); if(menu){ var it=document.createElement('button'); it.type='button'; it.className='hbtn smi'; it.id='smCatch'; it.setAttribute('role','menuitem');
+    it.innerHTML='<span class="hbi" aria-hidden="true">&#127907;&#xFE0E;</span><span class="hbt"><b>'+esc(shn().catchT)+'</b><small>'+esc(shn().catchS)+'</small></span>'; var st=$('smStories'); if(st) st.insertAdjacentElement('afterend',it); else menu.appendChild(it);
+    it.addEventListener('click',function(){ menu.hidden=true; if(more) more.setAttribute('aria-expanded','false'); window.MFcatch(); }); }
+  var m=/[?&]do=catch\b/.exec(location.search); if(m) setTimeout(window.MFcatch,1400);
+})();
   // ── the praying hands: add a prayer (it waits for Ken to approve it; never AI)
   function prOpen(){ var T=dvT()||DVT.en, e=$('prSheet');
     if(!e){ e=document.createElement('div'); e.id='prSheet'; e.className='dvshare prsheet'; e.setAttribute('role','dialog'); e.setAttribute('aria-modal','true'); document.body.appendChild(e); }
@@ -4352,10 +4408,11 @@ window.MF=(function(){
       done=true;clearTimeout(t);
       if(!o||!o.t.length){throw 0;}
       var html='<p>', vt=[];
-      o.t.forEach(function(x,i){ if(x==null) return; var n=i+1, hi=(''+n===''+p.vs); vt[i]=x;
-        html+='<span class="vn">'+n+'</span><span data-v="'+n+'" class="'+(hi?'hi':'')+'">'+esc(x)+'</span> ';
+      var vm=/^(\d+)(?:\D+(\d+))?/.exec(''+p.vs), lo=vm?+vm[1]:0, hiN=vm&&vm[2]?+vm[2]:lo, near=lo>0&&o.t.length>12;   /* Ken, 10 Nov: the verse with two before and two after; the rest of the chapter one tap away */
+      o.t.forEach(function(x,i){ if(x==null) return; var n=i+1, hi=(''+n===''+p.vs)||(lo&&n>=lo&&n<=hiN); vt[i]=x; var far=near&&(n<lo-2||n>hiN+2);
+        html+='<span class="vn'+(far?' far':'')+'">'+n+'</span><span data-v="'+n+'" class="'+(hi?'hi':'')+(far?' far':'')+'">'+esc(x)+'</span> ';
       });
-      html+='</p>';
+      html+='</p>'+(near?'<button type="button" class="allch" id="rAll">Show the whole chapter</button>':'');
       $('rChapter').innerHTML=html; setTimeout(readerFit,60); if(window.MFhlMarkStage) MFhlMarkStage();
       RD={l:'en',t:vt,vs:+p.vs}; rdPrefetch(RD,rIntro(false));
       var h=reader.querySelector('.hi'), bd=reader.querySelector('.reader-body');

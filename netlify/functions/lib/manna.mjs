@@ -58,6 +58,7 @@ export function todaysManna(now = new Date(), tz = DEFAULT_TZ) {
 // Sunday one of the 24, the other days the year fish, the Bible-in-a-year fish and the new designs. In Spanish, the 24 (the
 // only ones drawn in Spanish).
 export const CATCHFISH = CATCH.fish;
+export const CATCHORDER = CATCH.order;
 export function fishInfo(k, lang = 'en') { if (WORDS.words[k]) { const f = FISH[lang === 'es' ? 'es' : 'en'][k]; return { title: WORDS.words[k].title, ref: f.ref, top: f.top, bottom: f.bottom }; }
   const c = CATCH.fish[k]; return c ? { title: c.title, ref: c.ref, top: c.top, bottom: c.bottom } : null; }
 function fishOf(k, lang = 'en') {
