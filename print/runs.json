@@ -216,7 +216,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-09T16:26:20.958Z"
+   "made": "2026-11-10T19:17:46.344Z"
   },
   {
    "id": "R0010",
@@ -313,7 +313,7 @@
    "warn": [
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-09T18:26:21.577Z"
+   "made": "2026-11-10T19:17:51.160Z"
   },
   {
    "id": "R0014",

@@ -49,6 +49,7 @@ function settingsOf(X, k, S) {
   const own = ((S && S.d) || {})[k] || {}, rules = (S && S.rules) || { word: {}, top: {}, bot: {} };
   const val = (f) => (own[f] != null ? own[f] : X.base[f] == null ? '' : X.base[f]);
   const f = { word: val('word'), top: val('top'), bot: val('bot'), ref: val('ref'), refShort: val('ref') === X.base.ref ? (X.base.refShort || '') : '' };
+  if (X.base.tag != null) f.tag = X.base.tag;   // what follows the reference, for a fish in another Bible (default " (KJV)")
   const o = {}, why = {};
   if (own.wl) { o.wl = Object.assign({ hh: 1 }, own.wl); why.word = 'set on the fish'; }
   else { const r = ruleWord((rules.word || {})[X.code], letters(f.word));
