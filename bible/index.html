@@ -799,7 +799,11 @@ body.lay-l .rail .dnav{flex:1 1 auto}
     var mk=e.target.closest('mark.ph'); if(mk&&!PHS){ var v0=+mk.closest('.v').dataset.v; PHS=[{v:v0,s:+mk.dataset.s,e:+mk.dataset.e}]; SEL=[v0]; selUI(); return; }
     var s=e.target.closest('.v,.v2'); if(!s) return;
     /* Ken, 8 Nov: a tap on a verse in another column selects that column's verse (and nothing in the first column) */
-    if(s.classList.contains('v2')){ if(e.target.closest('.ow,.ogs')||Date.now()-TDRAG<700) return; colVerseTap(s,e); return; }
+    if(s.classList.contains('v2')){ if(e.target.closest('.ow,.ogs')||Date.now()-TDRAG<700) return;
+      /* Ken, 10 Nov: a tap on a word that is not highlighted does nothing (no sheet, no underline); on a highlighted word it opens the tools */
+      if(!e.target.closest('mark.ph2,.vn')){ if(COLV||COLSEL){ COLSEL=null; colBar(false); } return; }
+      colVerseTap(s,e); return; }
+    if(!e.target.closest('.vn')&&!s.classList.contains('hl')&&SEL.indexOf(+s.dataset.v)<0){ if(SEL.length||PHS) closeAct(); return; }
     if(COLV){ COLV=null; COLSEL=null; colBar(false); }
     TAPW=tapWord(e,s); if(PHS){ PHS=null; SEL=[]; fdShow(null); }
     var v=+s.dataset.v, i=SEL.indexOf(v); if(i>=0) SEL.splice(i,1); else SEL.push(v); SEL.sort(function(a,b){ return a-b; }); selUI(); });
@@ -843,7 +847,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
         if(c) addPh(h,p.v,p.s,p.e,c); }); }
     else SEL.forEach(function(v){ var k=hkey(AT.b,AT.c,v); Object.keys(h).forEach(function(x){ if(h[x].kind==='phrase'&&h[x].ver===vcode()&&String(h[x].ref).indexOf(plain(AT.b,AT.c,v)+'#')===0) unHl(h,x); });
       if(!c) unHl(h,k); else h[k]={kind:'verse',ref:plain(AT.b,AT.c,v),ver:vcode(),k:'',i:0,l:vlang(),v:v,c:c,text:(VT[v]||'').slice(0,220),at:Date.now(),bible:1}; });
-    if(c) ls('mf-hl-color',c); saveHls(h); hlTouched(); paint(); toast(c?(quiet?'Highlighted · tap a colour to change it':'Highlighted · saved to My highlights'):'Highlight removed'); closeAct(); }
+    if(c) ls('mf-hl-color',c); saveHls(h); hlTouched(); paint(); toast(c?(quiet?'Highlighted · tap the words to change it':'Highlighted · saved to My highlights'):'Highlight removed'); closeAct(); }
   // ── Ken, 2 Nov: take highlights off from the window: this one, or every one in the chapter (the eraser was taken out: it got in
   // the way of highlighting) ──
   var TAPW=null;
@@ -1080,7 +1084,8 @@ body.lay-l .rail .dnav{flex:1 1 auto}
     var L=fdRange(f.a,f.z); if(!L.length){ fdShow(null); return; } closeWc(); PHS=L; SEL=L.map(function(x){ return x.v; });
     // Ken, 1 Nov ("still can't tap and drag to highlight"): a slide highlights at once, in your colour; the colours stay open to change
     // it (or ✕ to take it off), with Save, Note, Copy and the rest for the same words
-    if(PEN){ fdShow(null); penApply(); } else { fdShow(null); var keep=L.slice(); applyHl(colour(),true); PHS=keep; SEL=keep.map(function(x){ return x.v; }); selUI(); } },{passive:false});
+    /* Ken, 10 Nov: the sheet no longer opens over the words just highlighted; tap the highlighted words to change the colour or see the tools */
+    if(PEN){ fdShow(null); penApply(); } else { fdShow(null); applyHl(colour(),true); } },{passive:false});
   $('txt').addEventListener('touchcancel',function(){ if(FD){ clearTimeout(FD.tm); FD=null; fdShow(null); } });
   $('txt').addEventListener('contextmenu',function(e){ if(TOUCH&&(FD||Date.now()-TDRAG<1500)) e.preventDefault(); });
   // the pen: highlight the words slid across; slide across ones already highlighted in the pen's colour to take it off them (only
@@ -1159,7 +1164,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
     var bh=(parseFloat(getComputedStyle(root).getPropertyValue('--barh'))||100)+($('selbar').classList.contains('on')?34:0);
     if(t.clientY>innerHeight-70) window.scrollBy(0,12); else if(t.clientY<bh+30) window.scrollBy(0,-12); },{passive:false});
   $('txt').addEventListener('touchend',function(e){ if(!CF) return; clearTimeout(CF.tm); var f=CF; CF=null; if(!f.on) return; if(e.cancelable) e.preventDefault(); TDRAG=Date.now(); colShow(null);
-    var L=colRange(f.a,f.z); if(!L.length) return; closeWc(); if(PEN) colPen(L); else { colApply(L,colour()); COLSEL=L; colBar(true); toast('Highlighted · tap a colour to change it'); } },{passive:false});
+    var L=colRange(f.a,f.z); if(!L.length) return; closeWc(); if(PEN) colPen(L); else { colApply(L,colour()); COLSEL=null; colBar(false); toast('Highlighted · tap the words to change it'); } },{passive:false});
   $('txt').addEventListener('touchcancel',function(){ if(CF){ clearTimeout(CF.tm); CF=null; colShow(null); } });
   // with a mouse: drag across the words; with the pen on it is highlighted at once, otherwise the colours appear to choose from
   $('txt').addEventListener('mouseup',function(){ setTimeout(function(){ var rs=colSel(); if(!rs) return; if(PEN){ colPen(rs); try{ window.getSelection().removeAllRanges(); }catch(er){} } else { COLSEL=rs; colBar(true); } },0); });
