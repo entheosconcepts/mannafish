@@ -5409,7 +5409,10 @@ window.MF=(function(){
     c.hidden=false; c.dataset.id=x.id; c.dataset.k=x.dev; d._x=x; d.querySelector('.in').scrollTop=0; }
   function goFish(){ var l=MF.lang, T=GFT[l]||GFT.en, d=document.getElementById('gfSheet'), fl=/^(en|es|tl|zh|hi|el|de|ko|he|ar|ru)$/.test(l)?l:'en';
     if(!d){ d=document.createElement('div'); d.id='gfSheet'; d.className='gfsheet'; d.setAttribute('role','dialog'); d.setAttribute('aria-modal','true'); document.body.appendChild(d);
-      d.addEventListener('click',function(e){ if(e.target===d||e.target.closest('[data-gf=x]')){ d.hidden=true; return; }
+      /* Ken, 11 Nov (phone): inside the Bible page this is a small frame, so Go Fish was cut off and the Memory game opened inside it. While the sheet is open the frame asks the page for the whole screen, and its links open the whole page. */
+      new MutationObserver(function(){ document.documentElement.style.overflow=d.hidden?'':'hidden'; }).observe(d,{attributes:true,attributeFilter:['hidden']});
+      d.addEventListener('click',function(e){ var ln=e.target.closest('a[href]'); if(ln&&window.top!==window.self){ e.preventDefault(); try{ window.top.location.href=ln.href; }catch(er){ window.open(ln.href,'_top'); } return; }
+        if(e.target===d||e.target.closest('[data-gf=x]')){ d.hidden=true; return; }
         var c=d.querySelector('.gfcatch'), extra=netAll().filter(function(x){ return x.id===c.dataset.id; })[0], dev=c.dataset.k||'';
         if(e.target.closest('[data-gf=back]')){ c.hidden=true; return; }
         // Ken, 3 Nov: "if I go fish, allow me or other users to make that their fish of the day" -- it shows on Today, with its word
@@ -5440,7 +5443,7 @@ window.MF=(function(){
       +'<h4>'+esc(T.mine)+' <small>'+esc(T.mineSub)+'</small></h4><div class="gfgrid">'
       +ORDER.filter(function(k){ return DATA[k]; }).map(function(k){ return '<button type="button" data-gk="'+k+'" aria-pressed="'+(k===cur)+'"><img loading="lazy" src="/fish/'+fl+'/'+k+'.svg" alt=""><span>'+esc(titleIn(l,k))+'</span></button>'; }).join('')
       +'</div><h4>'+esc(T.more)+' <small>'+esc(T.moreSub)+'</small></h4><div class="gfgrid" id="gfMore"></div><div id="gfNewW" hidden><h4>'+esc(T.newd||GFT.en.newd)+' <small>'+esc(T.newdSub||GFT.en.newdSub)+'</small></h4><div class="gfgrid" id="gfNew"></div></div></details><a class="gfgame" href="/go/">🃏 '+esc(T.game)+' &rsaquo;</a></div>';
-    d.hidden=false;
+    d.hidden=false; document.documentElement.style.overflow='hidden';
     netLoad().then(function(L){ var cell=function(x){ return '<button type="button" data-gx="'+esc(x.id)+'"><img loading="lazy" src="/fish/'+esc(x.id.slice(2))+'.svg" alt=""><span>'+esc(x.word)+'</span></button>'; };
       var m=document.getElementById('gfMore'); if(m) m.innerHTML=L.map(cell).join('');
       var n=document.getElementById('gfNew'); if(n&&DES.length){ n.innerHTML=DES.map(cell).join(''); document.getElementById('gfNewW').hidden=false; }
