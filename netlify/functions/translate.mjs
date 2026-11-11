@@ -8,7 +8,7 @@
 // an hourly limit per visitor, so it cannot be used as a free translator by others.
 import { getStore } from '@netlify/blobs';
 import { NAMES, MODEL, translatePair, translateTo, polish } from './lib/tr.mjs';
-const VOICE = process.env.MF_TTS_VOICE || 'sage';
+const VOICE = process.env.MF_TTS_VOICE || 'thunder';
 import { ALL, speaker, LABELS, wavAt } from './lib/voices.mjs';
 import { EL, isEl, elevenOn, elevenVoices, elevenBudget, elevenSpeak } from './lib/eleven.mjs';
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];

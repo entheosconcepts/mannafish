@@ -8,7 +8,7 @@ import { createHash } from 'node:crypto';
 import WORDS from './lib/words.json';
 import ES from './lib/es.json';
 import SPEAK from './lib/speak.json';
-const VOICE = process.env.MF_TTS_VOICE || 'sage';
+const VOICE = process.env.MF_TTS_VOICE || 'thunder';
 import { ALL, speaker } from './lib/voices.mjs';
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];
 const SITE = () => (process.env.URL || 'https://manna-fish.com').replace(/\/$/, '');

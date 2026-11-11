@@ -162,7 +162,7 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
     $('phBtn').textContent=T.ph; $('histBtn').textContent=T.hist; $('kbBtn').textContent=T.kb; $('clrBtn').textContent=T.clr; $('typeIn').placeholder=T.typ; $('voice').setAttribute('aria-label',T.voice);
     [['micA',pair[0]],['micB',pair[1]]].forEach(function(x){ var n=x[1]==='auto'?'':nm(x[1]); $(x[0]).innerHTML='<b>🎤 '+esc(x[1]==='auto'?'🔍 '+(typeof DET!=='undefined'&&DET?DET.name:T.detS):L[x[1]])+'</b>'+(n?'<small>'+esc(n)+'</small>':''); }); if(typeof CV!=='undefined'){ uiRec(); if(CV.on&&!$('cv').hidden&&CV.state==='listen') banner('now','🎤 '); } else $('micLab').textContent=T.talk; }
   fill($('la'),pair[0]); fill($('lb'),pair[1]);
-  $('voice').innerHTML=VOICES.map(function(v){ return '<option value="'+v[0]+'">'+v[1]+'</option>'; }).join(''); $('voice').value=get('mf-voice','sage');
+  $('voice').innerHTML=VOICES.map(function(v){ return '<option value="'+v[0]+'">'+v[1]+'</option>'; }).join(''); $('voice').value=get('mf-voice','thunder');
   $('voice').addEventListener('change',function(){ put('mf-voice',this.value); });
   var DET=null;   // a language Detect found that isn't in the list: {code, name}
   function setPair(a,b){ DET=null; if(a==='auto') a=site; if(a===b) b=(a==='en'?'es':'en'); pair=[a,b]; put('mf-tr-pair',pair.join(',')); labels(); fill($('la'),a); fill($('lb'),b); }
@@ -186,10 +186,10 @@ main{flex:1;overflow-y:auto;padding:8px 14px 16px;display:flex;flex-direction:co
       k.threshold.value=-26; k.knee.value=18; k.ratio.value=5; k.attack.value=0.003; k.release.value=0.2; g.gain.value=2.6;
       src.connect(k); k.connect(g); g.connect(C.destination); BOOST=C; }catch(e){ BOOST=false; } }
   function session(t){ try{ if(navigator.audioSession) navigator.audioSession.type=t; }catch(e){} }
-  function say(text,lang,btn,cb){ var v=get('mf-voice','sage'), fin=false; if(btn) btn.disabled=true;
+  function say(text,lang,btn,cb){ var v=get('mf-voice','thunder'), fin=false; if(btn) btn.disabled=true;
     var done=function(){ if(fin) return; fin=true; if(btn) btn.disabled=false; if(cb) cb(); };
     var dev=function(){ done(); };   /* the natural voice could not play: end quietly, never the phone's own voice */
-    if(v==='device') v='sage';
+    if(v==='device') v='thunder';
     // the same words always make the same clip, so phones and the CDN keep it (the "Speak now" prompts come back at once)
     // Ken, 21 Oct: "there is a great delay" -- the player is pointed straight at the voice, so it starts with the first sound that arrives
     if(BOOST&&BOOST.state!=='running') BOOST.resume(); player.pause(); player.src='/api/say?t='+encodeURIComponent(text)+'&l='+encodeURIComponent(lang)+'&v='+encodeURIComponent(v)+(!L[lang]&&DET&&DET.code===lang?'&n='+encodeURIComponent(DET.name):''); player.playbackRate=rate();

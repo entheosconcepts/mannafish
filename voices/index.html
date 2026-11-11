@@ -74,7 +74,7 @@ h2{font-size:1.05rem;margin:20px 0 8px;display:flex;align-items:center;gap:8px}
   function favs(){ try{ return JSON.parse(ls('mf-voice-fav')||'[]')||[]; }catch(e){ return []; } }
   function say(m,err){ $('msg').textContent=m||''; $('msg').className='msg'+(err?' err':''); }
   function stop(){ if(au){ try{ au.pause(); }catch(e){} au=null; } cur=null; [].forEach.call(document.querySelectorAll('.b.play'),function(b){ b.setAttribute('aria-pressed','false'); b.textContent='▶ Play'; }); }
-  function rows(a){ var f=favs(), mine=ls('mf-voice')||'sage';
+  function rows(a){ var f=favs(), mine=ls('mf-voice')||'thunder';
     return a.map(function(v){ return '<div class="row'+(v.id===mine?' on':'')+'" data-id="'+esc(v.id)+'" data-name="'+esc(v.name)+'"><div class="nm"><b>'+esc(v.name)+'</b><small>'+esc(v.sounds||'')+'</small></div>'
       +'<button type="button" class="b play" data-a="play" aria-pressed="false">▶ Play</button>'
       +'<button type="button" class="b fav" data-a="fav" aria-pressed="'+(f.indexOf(v.id)>=0)+'" aria-label="Favorite '+esc(v.name)+'">⭐</button>'

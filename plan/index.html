@@ -352,7 +352,7 @@ details.wk[open]>summary{border-bottom:1px solid var(--line)}
   window.MFvpHook=function(){ if(window.MFvoice) MFvoice.attach($('rSay'),{mode:'natural',noDevice:true,lang:'en',onPick:function(){ if(SAY.on) stopSay(); }}); };
   function pspd(){ return window.MFvoice&&MFvoice.speed?MFvoice.speed(1.25):1.25; }
   window.addEventListener('mfspeed',function(){ try{ if(PA) PA.playbackRate=pspd(); }catch(e){} });
-  function pvoice(){ var v=window.MFvoice&&MFvoice.get?MFvoice.get():'sage'; return !v||v==='device'?'sage':v; }
+  function pvoice(){ var v=window.MFvoice&&MFvoice.get?MFvoice.get():'thunder'; return !v||v==='device'?'thunder':v; }
   function pchunk(t,n){ var out=[], r=String(t||'').replace(/\s+/g,' ').trim(); while(r.length>n){ var k=Math.max(r.lastIndexOf('. ',n),r.lastIndexOf('; ',n),r.lastIndexOf(', ',n),r.lastIndexOf(' ',n)); if(k<40) k=n; out.push(r.slice(0,k+1).trim()); r=r.slice(k+1).trim(); } if(r) out.push(r); return out; }
   function sayNext(){ if(!SAY.on) return; [].forEach.call(document.querySelectorAll('.v.say'),function(s){ s.classList.remove('say'); });
     var el=SAY.list[SAY.i]; if(!el){ stopSay(); return; } el.classList.add('say'); var b=$('rBody'), t=el.getBoundingClientRect(), bb=b.getBoundingClientRect(); if(t.top<bb.top+40||t.bottom>bb.bottom-60) b.scrollTop+=t.top-bb.top-bb.height/3;

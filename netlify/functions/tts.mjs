@@ -9,7 +9,7 @@ import SPEAK from './lib/speak.json';
 import TONGUE from './lib/tongue.json';
 import { ALL, speaker, wavAt } from './lib/voices.mjs';
 import { isEl, elevenOn, elevenBudget, elevenSpeak } from './lib/eleven.mjs';
-const VOICE = process.env.MF_TTS_VOICE || 'sage';
+const VOICE = process.env.MF_TTS_VOICE || 'thunder';
 // the listener may pick another natural voice (Ken, 9 Oct)
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];
 const HOW = { en: 'Read calmly and warmly, like a devotional.', es: 'Lee con calma y calidez, como un devocional.' };
