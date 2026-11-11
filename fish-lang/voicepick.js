@@ -34,7 +34,7 @@
   var SPL=[0.75,1,1.25,1.5,1.75], SPW={en:'Speed',es:'Velocidad',tl:'Bilis',zh:'语速',hi:'गति',el:'Ταχύτητα',de:'Tempo',ko:'속도',he:'מהירות',ar:'السرعة',ru:'Скорость'};
   function speed(def){ var r=+ls('mf-speed'); return SPL.indexOf(r)>=0?r:(def||1.25); }
   function setSpeed(r){ ls('mf-speed',String(r)); if(window.MFacct&&MFacct.touch) MFacct.touch('set'); try{ window.dispatchEvent(new CustomEvent('mfspeed',{detail:{r:r}})); }catch(e){} }
-  function get(){ var v=ls('mf-voice')||''; return ELV.test(v)||NAT.some(function(o){ return o[0]===v; })?v:'sage'; }
+  function get(){ var v=ls('mf-voice')||''; return ELV.test(v)||NAT.some(function(o){ return o[0]===v; })?v:'thunder'; }   /* Ken, 11 Nov: Thunder is the default narrator for the Bible app and the devotional */
   function setNat(v){ ls('mf-voice',v); if(window.MFacct&&MFacct.touch) MFacct.touch('set');
     try{ window.dispatchEvent(new CustomEvent('mfvoice',{detail:{v:v}})); }catch(e){} }
   function devVoices(){ return []; }   // the phone's own voices are never offered (Ken, 6 Nov)

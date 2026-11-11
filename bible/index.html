@@ -714,7 +714,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   // never the phone's or computer's own voice (Ken, 6 Nov: "get rid of Microsoft ... I do not like that old electronic voice").
   // OGP is a ticket number: stopping bumps it, so anything still queued from before quietly ends.
   var OGA=null, CP={i:-1};
-  function bvoice(){ var v=window.MFvoice&&MFvoice.get?MFvoice.get():'sage'; return !v||v==='device'?'sage':v; }
+  function bvoice(){ var v=window.MFvoice&&MFvoice.get?MFvoice.get():'thunder'; return !v||v==='device'?'thunder':v; }
   function chunk(t,n){ var out=[], r=String(t||'').replace(/\s+/g,' ').trim(); while(r.length>n){ var k=Math.max(r.lastIndexOf('. ',n),r.lastIndexOf('; ',n),r.lastIndexOf(', ',n),r.lastIndexOf(' ',n)); if(k<40) k=n; out.push(r.slice(0,k+1).trim()); r=r.slice(k+1).trim(); } if(r) out.push(r); return out; }
   function spd(){ return window.MFvoice&&MFvoice.speed?MFvoice.speed(1.25):1.25; }   /* the listening speed (mf-speed): set in the narrator menu */
   window.addEventListener('mfspeed',function(){ try{ if(OGA) OGA.playbackRate=spd(); }catch(e){} });
