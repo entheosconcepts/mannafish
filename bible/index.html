@@ -356,12 +356,12 @@ mark.ph2{border-radius:3px;padding:0 1px;box-decoration-break:clone;-webkit-box-
 /* Ken, 8 Nov: three desktop layouts to choose from (the choice is kept): Centered (as before, but larger), Left rail, Three panes */
 main{max-width:1360px}
 /* 1. centered: one column in the middle, big easy text, today's fish above it, books from the Books button */
-body.lay-c main{max-width:940px;display:block}
+body.lay-c main{max-width:576px;display:block}   /* Ken, 12 Nov: the Bible column is as wide as today's fish card above it (540px of content) */
 body.lay-c.par main{max-width:1260px}
 body.lay-c .rail{display:block;position:static;max-height:none;overflow:visible}
 body.lay-c .dnav{display:none!important}
 body.lay-c .tfish{max-width:540px;margin:6px auto 16px}
-body.lay-c main .txt{font-size:calc(var(--fs,1.18rem) * 1.32);line-height:1.95}
+body.lay-c main .txt{font-size:calc(var(--fs,1.18rem) * 1.14);line-height:1.85}
 body.lay-c .par .txt,body.lay-c .par3 .txt,body.lay-c .par4 .txt{font-size:calc(var(--fs,1.18rem) * 1.08);line-height:1.75}
 /* 2. left rail: today's fish and every book on the left, the text on the right */
 body.lay-l main{display:grid;grid-template-columns:380px minmax(0,1fr);column-gap:40px;align-items:start;padding-left:28px;padding-right:28px}
