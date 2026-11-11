@@ -41,6 +41,7 @@ h4{margin:14px 0 6px;font:800 .72rem Archivo,sans-serif;letter-spacing:.16em;tex
 .go.on{background:none;border:1px solid var(--gold);color:var(--gold)}.go.y{background:var(--gold);color:#111}.go.w{width:100%}
 .ask{display:grid;gap:8px}.ask label{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--card);cursor:pointer}
 .ask label:has(input:checked){border-color:var(--gold)}.ask label.mine{border-color:rgba(127,211,160,.6)}.ask input{margin-top:5px;width:18px;height:18px;flex:none}.ask .t{flex:1;min-width:0}.ask small{display:block;color:var(--dim);font-size:.82rem}
+.hrow{border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--card)}.hrow .d{float:right;font-size:.78rem;opacity:.8}.hrow small{display:block}
 .ok2{color:var(--ok);font-weight:800}.ask .bar{display:block;max-width:260px;height:7px;margin:6px 0 2px}
 .sticky{position:sticky;bottom:0;background:linear-gradient(transparent,#000 30%);padding:18px 0 max(10px,env(safe-area-inset-bottom))}
 form.f{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;border:1px solid var(--line);border-radius:18px;padding:14px;background:var(--card)}
@@ -56,7 +57,7 @@ main>h1,main>h2,.lead,.verse,main>p.meta,.how div,.st,.host,.empty,.bar0,#kinds,
 </style>
 </head>
 <body>
-<header><a class="brand" href="/">Manna<b>Fish</b></a><nav><a href="#ask">Ask</a><a href="#sponsor">Sponsor</a><a href="/">Today’s fish</a></nav></header>
+<header><a class="brand" href="/">Manna<b>Fish</b></a><nav><a href="#ask">Pick up</a><a href="#sponsor">Sponsor</a><a href="/">Today’s fish</a></nav></header>
 <main>
 <h1>MannaFish Hubs</h1>
 <!-- Ken, 1 Nov: "justify all text block to center ... change pray for fish here to cast your bread upon the waters: this puts a request in
@@ -71,15 +72,17 @@ main>h1,main>h2,.lead,.verse,main>p.meta,.how div,.st,.host,.empty,.bar0,#kinds,
 <h2>Open Hubs</h2>
 <div id="list"><p class="empty">Finding the Hubs…</p></div>
 
-<h2 id="ask">Ask for a Hub</h2>
-<p class="meta" style="margin:0 0 10px">Places that may want to host MannaFish. Tick every place you would like, then ask. One request per person per place; sign in to ask. When a place has <b id="goal">enough</b> requests, it qualifies, and we talk with them about becoming a Hub. A Hub may draw new people through its door, the way a return counter does.</p>
+<h2 id="ask">Where to pick up free MannaFish</h2>
+<p class="meta" style="margin:0 0 10px">These places are MannaFish Hubs: you can pick up free MannaFish merchandise there. Love your favorite fish (🧺) and the most-loved ones are printed and sent to the Hubs.</p>
 <div class="bar0" id="kinds"></div>
-<section><div class="ask" id="askList"><p class="empty">Finding the places…</p></div>
-<div class="sticky"><button type="button" class="go y w" id="askGo" disabled>🙋 I would like these places as MannaFish Hubs</button><div id="si"></div><p class="msg" id="askMsg" aria-live="polite"></p></div></section>
-<details style="margin-top:6px"><summary class="meta" style="cursor:pointer">Don’t see a place? Suggest one</summary>
-<form class="f" id="sgF" novalidate style="margin-top:10px"><label>Name of the place<input id="sgName" required></label><label>What kind<select id="sgKind"><option value="coffee">☕ Coffee shop</option><option value="store">🏪 Store</option><option value="church">⛪ Church</option><option value="books">📚 Books</option><option value="food">🍽️ Food</option><option value="other">📍 Other</option></select></label>
-<label class="w">Address<input id="sgAddr" placeholder="Street, city"></label><label class="w">Why there? (optional)<textarea id="sgWhy" rows="2" maxlength="600"></textarea></label>
-<div class="w"><button type="submit" class="go">Suggest this place</button><div id="sgSi"></div><p class="msg" id="sgMsg" aria-live="polite"></p></div></form></details>
+<section><div class="ask" id="askList"><p class="empty">Finding the places…</p></div></section>
+<details style="margin-top:10px" id="nomD"><summary class="go y" style="cursor:pointer;list-style:none;text-align:center;padding:14px 16px;border-radius:999px">🙋 I would like to nominate a new location to be a MannaFish Hub</summary>
+<form class="f" id="sgF" novalidate style="margin-top:10px"><p class="meta w" style="margin:0">A shop, a church, a coffee house, a business or a person you know. Tell us who, and we will reach out. Or become a Hub yourself: put your own details in.</p>
+<label>Your name<input id="sgContact" autocomplete="name" required></label><label>Your email<input id="sgEmail" type="email" autocomplete="email" required></label>
+<label>Place or business name<input id="sgName" required></label><label>What kind<select id="sgKind"><option value="coffee">☕ Coffee shop</option><option value="store">🏪 Store</option><option value="church">⛪ Church</option><option value="books">📚 Books</option><option value="food">🍽️ Food</option><option value="other">📍 Other</option></select></label>
+<label class="w">Address<input id="sgAddr" autocomplete="street-address" placeholder="Street, city"></label><label class="w">Phone (optional)<input id="sgPhone" type="tel" autocomplete="tel"></label><label class="w">Anything else (optional)<textarea id="sgWhy" rows="2" maxlength="600"></textarea></label>
+<input type="text" id="sgHp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+<div class="w"><button type="submit" class="go">Send the nomination</button><p class="msg" id="sgMsg" aria-live="polite"></p></div></form></details>
 
 <h2 id="sponsor">Sponsor a Hub</h2>
 <p class="meta" style="margin:0 0 10px">A church, a business or anyone can give the fish for a place, on this list or not. A sponsored place doesn’t wait for requests: we reach out to the host, set it up with them, and write back to you. Every fish is free to the person who receives it: never sold, never resold.</p>
@@ -120,12 +123,9 @@ document.addEventListener('DOMContentLoaded',function(){
         +'<p class="meta" style="margin-top:6px">Love any fish for this Hub. The most-loved fish are printed and sent here.</p></div>'; }).join(''); }
   function kinds(){ var have={}; H.proposed().forEach(function(p){ have[p.kind]=1; });
     $('kinds').innerHTML=KINDS.filter(function(k){ return k[0]==='all'||have[k[0]]; }).map(function(k){ return '<button type="button" class="chip" data-k="'+k[0]+'" aria-pressed="'+(KIND===k[0])+'">'+k[1]+'</button>'; }).join(''); }
-  function asks(){ var G=H.goal(), L=H.byNear(H.proposed()).filter(function(p){ return KIND==='all'||p.kind===KIND; }); $('goal').textContent=G;
-    $('askList').innerHTML=L.length?L.map(function(p){ var m=H.isMine(p.id);
-      return '<label class="'+(m?'mine':'')+'"><input type="checkbox" value="'+esc(p.id)+'"'+(m||PICK[p.id]?' checked':'')+(m?' disabled':'')+'><span class="t"><span class="d">'+esc(H.mi(p))+'</span><b>'+H.icon(p.kind)+' '+esc(p.name)+'</b><small>'+esc(p.address)+'</small>'
-        +'<span class="bar"><i style="width:'+Math.min(100,Math.round(p.votes*100/G))+'%"></i></span><small>'+(m?'<span class="ok2">✓ You asked</span> · ':'')+p.votes+' of '+G+' asking'+(p.qualified?' · <b>qualifies to become a Hub</b>':p.status==='talking'?' · we are talking with them':'')+(p.sponsored?' · sponsored':'')+'</small></span></label>'; }).join('')
-      :'<p class="empty">No places here yet. Suggest one below.</p>'; count(); }
-  function count(){ var n=Object.keys(PICK).filter(function(k){ return PICK[k]&&!H.isMine(k); }).length; $('askGo').disabled=!n; $('askGo').textContent='🙋 I would like '+(n===1?'this place':n?'these '+n+' places':'these places')+' as MannaFish Hubs'; }
+  function asks(){ var seen={}, L=H.byNear(H.proposed().concat(H.hubs().filter(function(x){ return x.id!=='anywhere'; }))).filter(function(p){ if(seen[p.id]||!(KIND==='all'||p.kind===KIND)) return false; seen[p.id]=1; return true; });
+    $('askList').innerHTML=L.length?L.map(function(p){ return '<div class="hrow"><span class="d">'+esc(H.mi(p))+'</span><b>'+H.icon(p.kind)+' '+esc(p.name)+'</b><small>'+esc(p.address||'')+'</small></div>'; }).join('')
+      :'<p class="empty">No places here yet. Nominate one below.</p>'; }
   function places(){ var L=H.proposed().concat(H.hubs().filter(function(s){ return s.id!=='anywhere'; }));
     $('spPlaces').innerHTML=L.map(function(p){ return '<label><input type="checkbox" value="'+esc(p.id)+'"> '+H.icon(p.kind)+' '+esc(p.name)+'</label>'; }).join('')||'<p class="meta">Write the place below.</p>';
     $('spWhat').innerHTML=Object.keys(MERCH).map(function(k){ return '<label><input type="checkbox" value="'+k+'"'+(k==='decal'?' checked':'')+'> '+MERCH[k]+'</label>'; }).join(''); }
@@ -133,27 +133,20 @@ document.addEventListener('DOMContentLoaded',function(){
   $('list').addEventListener('click',function(e){ var b=e.target.closest('[data-s]'); if(!b) return; var was=b.classList.contains('on'); try{ localStorage.setItem('mf-station',JSON.stringify(b.dataset.s)); }catch(x){}
     hubs(); if(window.MFbasket&&MFbasket.count()) MFbasket.open(); else if(was) location.href='/'; });
   $('kinds').addEventListener('click',function(e){ var b=e.target.closest('[data-k]'); if(!b) return; KIND=b.dataset.k; kinds(); asks(); });
-  $('askList').addEventListener('change',function(e){ if(e.target.type==='checkbox'){ PICK[e.target.value]=e.target.checked; count(); } });
   $('nearBtn').addEventListener('click',function(){ var b=this; b.textContent='Finding you…'; H.locate().then(function(){ b.textContent='✓ Nearest first'; b.setAttribute('aria-pressed','true'); all(); },function(){ b.textContent='Location is off'; }); });
   if(H.near()){ $('nearBtn').textContent='✓ Nearest first'; $('nearBtn').setAttribute('aria-pressed','true'); }
   if(/[?&]near=1/.test(location.search)&&!H.near()) setTimeout(function(){ $('nearBtn').click(); },300);   // Ken, 3 Nov: Free MannaFish -> the Hubs nearest you
-  $('askGo').addEventListener('click',function(){ var ids=Object.keys(PICK).filter(function(k){ return PICK[k]&&!H.isMine(k); }); if(!ids.length) return;
-    var go=function(){ $('askGo').disabled=true; $('askMsg').textContent='Asking…';
-      H.vote(ids,true).then(function(){ PICK={}; asks(); $('askMsg').textContent='Thank you! You asked for '+ids.length+(ids.length===1?' place':' places')+'. We will let you know when one becomes a Hub.'; })
-        .catch(function(err){ count(); if(err&&err.message==='signin'){ $('askMsg').textContent=''; H.signin($('si'),go); return; } $('askMsg').textContent='It could not be sent just now. '+(err&&err.message||''); }); };
-    go(); });
-  $('sgF').addEventListener('submit',function(e){ e.preventDefault(); var b={name:$('sgName').value.trim(),kind:$('sgKind').value,address:$('sgAddr').value.trim(),why:$('sgWhy').value.trim()}; if(!b.name){ $('sgName').focus(); return; }
-    var go=function(){ $('sgMsg').textContent='Sending…'; H.token().then(function(t){ if(!t) throw new Error('signin'); return fetch('/api/hubs/suggest',{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+t},body:JSON.stringify(b)}); })
-      .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||r.status); }); }).then(function(){ $('sgF').reset(); $('sgMsg').textContent='Thank you! We will look into it.'; })
-      .catch(function(err){ if(err&&err.message==='signin'){ $('sgMsg').textContent=''; H.signin($('sgSi'),go,'Sign in to MannaFish to suggest a place (free, no password: we email you a code).'); return; } $('sgMsg').textContent='It could not be sent just now. '+(err&&err.message||''); }); };
-    go(); });
+  $('sgF').addEventListener('submit',function(e){ e.preventDefault(); var m=$('sgMsg'), b={name:$('sgContact').value.trim(),email:$('sgEmail').value.trim(),place:$('sgName').value.trim(),kind:$('sgKind').value,address:$('sgAddr').value.trim(),phone:$('sgPhone').value.trim(),note:$('sgWhy').value.trim(),hp:$('sgHp').value};
+    if(!b.name){ $('sgContact').focus(); m.textContent='Please add your name.'; return; } if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email)){ $('sgEmail').focus(); m.textContent='Please check your email address.'; return; } if(!b.place){ $('sgName').focus(); m.textContent='Which place or business?'; return; }
+    m.textContent='Sending…'; fetch('/api/hubs/nominate',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||r.status); }); })
+      .then(function(){ $('sgF').reset(); m.textContent='Thank you! We emailed you, and we will look into it.'; }).catch(function(err){ m.textContent='It could not be sent just now. '+(err&&err.message||''); }); });
   $('spF').addEventListener('submit',function(e){ e.preventDefault(); var m=$('spMsg'), ids=[].map.call($('spPlaces').querySelectorAll('input:checked'),function(i){ return i.value; }), what=[].map.call($('spWhat').querySelectorAll('input:checked'),function(i){ return i.value; });
     var b={name:$('spName').value.trim(),org:$('spOrg').value.trim(),email:$('spEmail').value.trim(),phone:$('spPhone').value.trim(),ids:ids,place:$('spPlace').value.trim(),what:what,note:$('spNote').value.trim(),anonymous:$('spAnon').checked,hp:$('spHp').value};
     if(!b.name){ $('spName').focus(); m.textContent='Please add your name.'; return; } if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email)){ $('spEmail').focus(); m.textContent='Please check your email address.'; return; }
     if(!ids.length&&!b.place){ $('spPlace').focus(); m.textContent='Which place would you like to sponsor?'; return; }
     m.textContent='Sending…'; fetch('/api/hubs/sponsor',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||r.status); }); })
       .then(function(){ $('spF').reset(); places(); m.textContent='Thank you! We emailed you, and we will be in touch about setting it up.'; }).catch(function(err){ m.textContent='It could not be sent just now. '+(err&&err.message||''); }); });
-  H.load().then(function(){ all(); places(); return H.mine(); }).then(asks).catch(function(){ $('list').innerHTML='<p class="empty">Couldn’t find the Hubs just now. Please try again in a moment.</p>'; });
+  H.load().then(function(){ all(); places(); }).catch(function(){ $('list').innerHTML='<p class="empty">Couldn’t find the Hubs just now. Please try again in a moment.</p>'; });
 });
 </script>
 </body>

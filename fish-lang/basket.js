@@ -60,6 +60,7 @@
       +'.mfbk .stn{display:grid;gap:6px;margin:6px 0 4px}.mfbk .stn label{display:flex;gap:10px;align-items:flex-start;border:1px solid rgba(128,128,128,.3);border-radius:12px;padding:9px 10px;cursor:pointer}.mfbk .stn label:has(input:checked){border-color:#2a5fb0;background:rgba(42,95,176,.12)}.mfbk .stn input{margin-top:4px}.mfbk .stn small{display:block;opacity:.7;font-size:.8rem}'
       +'.mfbk .stn .d{float:right;opacity:.7;font-size:.8rem;font-weight:700}.mfbk .near{border:1px solid rgba(128,128,128,.4);background:none;color:inherit;border-radius:999px;padding:4px 10px;font:700 .78rem Archivo,sans-serif;cursor:pointer;margin-left:8px;letter-spacing:0;text-transform:none}'
       +'.mfbk details.ask{border:1px solid rgba(245,215,110,.45);border-radius:14px;padding:4px 12px 12px;margin:16px 0 0}.mfbk details.ask summary{cursor:pointer;font-weight:800;padding:8px 0;list-style:none}.mfbk details.ask summary::-webkit-details-marker{display:none}'
+      +'.mfbk .stn .hubrow{display:block;border:1px solid rgba(128,128,128,.3);border-radius:12px;padding:9px 10px}.mfbk .stn .hubrow .d{float:right;font-size:.78rem;opacity:.8}.mfbk form[hidden]{display:none}'
       +'.mfbk .stn label.mine{border-color:rgba(127,211,160,.6)}.mfbk .ok2{color:#7fd3a0;font-weight:800;font-size:.8rem}.mfbk .si{display:flex;gap:6px;margin-top:8px}.mfbk .si input{flex:1;min-width:0}.mfbk .si button{border:0;border-radius:999px;background:#2a5fb0;color:#fff;font:800 .9rem Archivo,sans-serif;padding:8px 14px;cursor:pointer}'
       +'.mfbk .go.y{background:#f5d76e;color:#111}'
       +'.mfbk .was{border-top:1px solid rgba(128,128,128,.25);margin-top:16px;padding-top:4px}.mfbk .was .row{grid-template-columns:72px 1fr}.mfbk .was .th{width:72px}';
@@ -80,7 +81,7 @@
   // ── the button ──
   var FAB=null;
   function fab(){ if(!document.body) return; css(); if(!FAB){ FAB=document.createElement('button'); FAB.type='button'; FAB.className='mfbkfab'; FAB.addEventListener('click',open); document.body.appendChild(FAB); }
-    var n=items().length; FAB.hidden=!n; FAB.textContent='🧺 '+n; FAB.setAttribute('aria-label','Fish you love: '+n); }
+    var n=items().length; FAB.hidden=!n; FAB.textContent='🧺 '+n; FAB.setAttribute('aria-label','My favorite fish: '+n); }
   function bump(){ if(!FAB) return; FAB.classList.remove('bump'); void FAB.offsetWidth; FAB.classList.add('bump'); }
   var TOAST=null;
   function toast(t){ if(!TOAST){ TOAST=document.createElement('div'); TOAST.setAttribute('role','status'); TOAST.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:calc(150px + env(safe-area-inset-bottom));z-index:130;background:#16171b;color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:9px 16px;font:700 .9rem Archivo,sans-serif;max-width:calc(100% - 32px);text-align:center;display:none'; document.body.appendChild(TOAST); }
@@ -144,35 +145,49 @@
     if(got&&got.status==='in') return '<span class="pr">✅ Here now at '+esc(S.name)+': come and get yours</span>';
     if(got) return '<span class="pr">🚚 On the way to '+esc(S.name)+'</span>';
     return '<span class="pr">🧺 '+n+' love this fish · '+t+' of '+th+' at '+esc(S.name)+'</span><span class="bar"><i style="width:'+Math.min(100,Math.round(t*100/th))+'%"></i></span>'; }
-  function open(){ css(); if(!BOX){ BOX=document.createElement('div'); BOX.className='mfbk'; BOX.setAttribute('role','dialog'); BOX.setAttribute('aria-modal','true'); BOX.setAttribute('aria-label','Fish you love'); BOX.innerHTML='<div class="in"></div>'; document.body.appendChild(BOX);
-      BOX.addEventListener('click',click); BOX.addEventListener('change',change); BOX.addEventListener('submit',function(e){ e.preventDefault(); send(); }); document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&ZM){ unzoom(); return; } if(e.key==='Escape'&&!BOX.hidden) close(); if(e.key==='Enter'&&e.target.dataset&&e.target.dataset.a==='zoom') e.target.click(); }); }
+  function open(){ css(); if(!BOX){ BOX=document.createElement('div'); BOX.className='mfbk'; BOX.setAttribute('role','dialog'); BOX.setAttribute('aria-modal','true'); BOX.setAttribute('aria-label','My favorite fish'); BOX.innerHTML='<div class="in"></div>'; document.body.appendChild(BOX);
+      BOX.addEventListener('click',click); BOX.addEventListener('change',change); BOX.addEventListener('submit',function(e){ e.preventDefault(); if(e.target.id==='bkNomF'){ nominate(); return; } send(); }); document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&ZM){ unzoom(); return; } if(e.key==='Escape'&&!BOX.hidden) close(); if(e.key==='Enter'&&e.target.dataset&&e.target.dataset.a==='zoom') e.target.click(); }); }
     DONE=null; draw(); BOX.hidden=false; document.documentElement.style.overflow='hidden';
     stations().then(function(){ if(!BOX.hidden&&!DONE) draw(); }); if(window.MFacct&&MFacct.me&&MFacct.me()||hasSession()) mine().then(function(){ if(!BOX.hidden&&!DONE) draw(); }); }
   function hasSession(){ try{ return !!localStorage.getItem('sb-oblttpxqjvaglwfdszdg-auth-token'); }catch(e){ return false; } }
   function close(){ if(BOX) BOX.hidden=true; document.documentElement.style.overflow=''; }
   function val(id){ var e=BOX.querySelector('#'+id); return e?e.value.trim():''; }
   function prayed(){ var a=get(PRAY,[]); return Array.isArray(a)?a:[]; }
-  // the places people are asking for, nearest first: tick any, then one tap asks for all of them
-  function askHTML(open){ if(!PR.length) return '';
-    var L=byNear(PR), n=0; L.forEach(function(p){ if(PICK[p.id]) n++; });
-    return '<details class="ask"'+(open?' open':'')+'><summary>🙋 Ask for a MannaFish Hub near you</summary>'
-      +'<p class="pr" style="margin:0 0 8px">Places that may host MannaFish, so people can pick up free fish there. Choose as many as you like. When enough people ask, we talk with them; a Hub can also draw new people through their door.</p>'
-      +'<div class="stn">'+L.slice(0,12).map(function(p){ var m=!!MINE[p.id];
-        return '<label class="'+(m?'mine':'')+'"><input type="checkbox" name="bkAsk" value="'+esc(p.id)+'"'+(m||PICK[p.id]?' checked':'')+(m?' disabled':'')+'><span style="flex:1"><span class="d">'+esc(mi(p))+'</span><b>'+ICON[p.kind||'other']+' '+esc(p.name)+'</b>'
-          +'<small>'+esc(p.address||p.city||'')+'</small><small>'+(m?'<span class="ok2">✓ You asked</span> · ':'')+p.votes+' of '+GOAL+' asking'+(p.qualified?' · <b>ready to become a Hub</b>':p.status==='talking'?' · we are talking with them':'')+(p.sponsored?' · sponsored':'')+'</small>'
-          +'<span class="bar"><i style="width:'+Math.min(100,Math.round(p.votes*100/GOAL))+'%"></i></span></span></label>'; }).join('')+'</div>'
-      +(L.length>12?'<p class="pr"><a href="/hubs/#ask">See all '+L.length+' places</a></p>':'')
-      +'<button type="button" class="go y" data-a="ask"'+(n?'':' disabled')+'>🙋 I would like '+(n===1?'this place':n?'these '+n+' places':'these places')+' as MannaFish Hubs</button><div id="bkSi"></div><p class="msg" id="bkAskMsg" aria-live="polite">'+esc(ASKMSG)+'</p>'
+  // Ken, 12 Nov: "They're already hubs ... that list is to let people know where they can pick up free MannaFish merchandise. The button should be: I would like to nominate a new location to be a MannaFish Hub"
+  function askHTML(open){ var seen={}, L=byNear((PR||[]).concat((ST||[]).filter(function(x){ return x.id!=='anywhere'; }))).filter(function(p){ if(seen[p.id]) return false; seen[p.id]=1; return true; });
+    var me=window.MFacct&&MFacct.me&&MFacct.me(), S=get(SHIP,{});
+    return '<details class="ask" open><summary>📍 MannaFish Hubs: where to pick up free MannaFish</summary>'
+      +'<p class="pr" style="margin:0 0 8px">Places where you can pick up free MannaFish merchandise.</p>'
+      +(L.length?'<div class="stn">'+L.slice(0,12).map(function(p){ return '<div class="hubrow"><span class="d">'+esc(mi(p))+'</span><b>'+ICON[p.kind||'other']+' '+esc(p.name)+'</b><small>'+esc(p.address||p.city||'')+'</small></div>'; }).join('')+'</div>'
+        +(L.length>12?'<p class="pr"><a href="/hubs/">See all '+L.length+' places</a></p>':''):'<p class="pr">Finding the places…</p>')
+      +'<button type="button" class="go y" data-a="nom">🙋 I would like to nominate a new location to be a MannaFish Hub</button>'
+      +'<form id="bkNomF" novalidate hidden><p class="pr" style="margin:8px 0 4px">A shop, a church, a coffee house, a business or a person you know. Tell us who, and we will reach out. <b>Or become a Hub yourself:</b> put your own details in.</p><div class="f">'
+      +'<label>Your name<input id="nmName" autocomplete="name" value="'+esc(S.name||'')+'"></label><label>Your email<input id="nmEmail" type="email" autocomplete="email" value="'+esc(S.email||(me&&me.email)||'')+'"></label>'
+      +'<label>Place or business name<input id="nmPlace"></label><label>Address<input id="nmAddr" autocomplete="street-address" placeholder="Street, city"></label>'
+      +'<label>Phone (optional)<input id="nmPhone" type="tel" autocomplete="tel"></label>'
+      +'<label>Anything else (optional)<textarea id="nmNote" rows="2" maxlength="600"></textarea></label></div>'
+      +'<input type="text" id="nmHp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">'
+      +'<button type="submit" class="go y" id="nmGo">Send the nomination</button></form><p class="msg" id="bkAskMsg" aria-live="polite">'+esc(ASKMSG)+'</p>'
       +'<p class="pr" style="margin-top:10px">A church or business can also <a href="/hubs/#sponsor">sponsor a Hub</a>: you give the fish for a place, and we set it up with them.</p></details>'; }
+  function nominate(){ var m=BOX.querySelector('#bkAskMsg'), g=BOX.querySelector('#nmGo'), e=function(id){ return (BOX.querySelector('#'+id)||{}).value||''; };
+    var body={name:e('nmName').trim(),email:e('nmEmail').trim(),place:e('nmPlace').trim(),address:e('nmAddr').trim(),phone:e('nmPhone').trim(),note:e('nmNote').trim(),hp:e('nmHp')};
+    if(!body.name){ BOX.querySelector('#nmName').focus(); m.textContent='Please add your name.'; return; }
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(body.email)){ BOX.querySelector('#nmEmail').focus(); m.textContent='Please check your email address.'; return; }
+    if(!body.place){ BOX.querySelector('#nmPlace').focus(); m.textContent='Which place or business?'; return; }
+    g.disabled=true; m.textContent='Sending…'; var S=get(SHIP,{}); S.name=S.name||body.name; S.email=S.email||body.email; put(SHIP,S);
+    fetch('/api/hubs/nominate',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)})
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(!r.ok||!j.ok) throw new Error(j.error||('HTTP '+r.status)); }); })
+      .then(function(){ BOX.querySelector('#bkNomF').hidden=true; m.textContent='Thank you! We emailed you, and we will look into it.'; ASKMSG=m.textContent; })
+      .catch(function(err){ g.disabled=false; m.textContent='It could not be sent just now. Please try again in a moment.'+(err&&err.message?' ('+err.message+')':''); }); }
   function draw(){ var a=items(), S=get(SHIP,{}), me=window.MFacct&&MFacct.me&&MFacct.me(), sid=pick(), P=prayed(), H=ST?byNear(ST):null, real=(H||[]).filter(function(x){ return x.id!=='anywhere'; }).length, h;
     if(DONE){ var D=stn(DONE.station)||{name:DONE.name};
       BOX.firstChild.innerHTML='<div class="ok"><div class="big">🍞</div><h3>Your bread is cast upon the waters</h3><p>You loved '+DONE.n+' fish '+(DONE.station==='anywhere'?'to go wherever they are needed most':'for <b>'+esc(D.name)+'</b>')+'.</p>'
         +'<p>The most-loved fish are printed and sent'+(DONE.station==='anywhere'?'':' there')+'. We will email you when your fish is in'+(DONE.station==='anywhere'?'.':', so you can take the Take 2 Challenge: keep one, give one away.')+'</p>'
         +'<p style="font:italic .95rem Spectral,Georgia,serif;opacity:.8">Cast thy bread upon the waters: for thou shalt find it after many days (Ecclesiastes 11:1).</p>'
         +askHTML(!real)+'<p><a href="/hubs/">See every MannaFish Hub</a></p><button type="button" class="go" data-a="close">Keep fishing</button></div>'; return; }
-    h='<div class="hd"><h3>🧺 Fish you love</h3><button type="button" class="x" data-a="close" aria-label="Close">&#10005;</button></div>'
-      +'<p class="sub">Cast thy bread upon the waters (Ecclesiastes 11:1). Every fish you love is your vote for it at a MannaFish Hub near you. The most-loved fish are printed and sent there, and you pick yours up, free.</p>';
-    var was=P.length?'<div class="was"><h4>Fish you love</h4>'+P.slice(0,24).map(function(x,i){ return '<div class="row" data-p="'+i+'"><span class="th" data-a="zoom" role="button" tabindex="0" aria-label="See '+esc(x.word)+' bigger"></span><span class="nm"><b>'+esc(x.word)+'</b><small>'+esc(x.sname||'')+'</small></span><span class="ct">'+(ST?how(x,x.station):'')+'</span></div>'; }).join('')+'</div>':'';
+    h='<div class="hd"><h3>🧺 MY FAVORITE FISH</h3><button type="button" class="x" data-a="close" aria-label="Close">&#10005;</button></div>'
+      +'<p class="sub">Adding your favorite fish to a basket lets us know which fish people will want at the MannaFish Hubs. The most-loved fish are printed and sent there, and you pick yours up, free. Cast thy bread upon the waters (Ecclesiastes 11:1).</p>';
+    var was=P.length?'<div class="was"><h4>MY FAVORITE FISH</h4>'+P.slice(0,24).map(function(x,i){ return '<div class="row" data-p="'+i+'"><span class="th" data-a="zoom" role="button" tabindex="0" aria-label="See '+esc(x.word)+' bigger"></span><span class="nm"><b>'+esc(x.word)+'</b><small>'+esc(x.sname||'')+'</small></span><span class="ct">'+(ST?how(x,x.station):'')+'</span></div>'; }).join('')+'</div>':'';
     if(!a.length){ BOX.firstChild.innerHTML=h+'<p class="empty">Nothing here yet. Tap 🧺 Love on any fish you love.</p>'+askHTML(false)+was+'<p style="text-align:center"><a href="/hubs/">See every MannaFish Hub</a></p><button type="button" class="keep" data-a="close">Keep looking</button>'; thumbs(P); return; }
     h+=a.map(function(x,i){ return '<div class="row" data-i="'+i+'"><span class="th" data-a="zoom" role="button" tabindex="0" aria-label="See '+esc(x.word)+' bigger"></span><span class="nm"><b>'+esc(x.word)+'</b><small>'+esc(x.ref||'')+'</small></span>'
       +'<span class="ct">'+(x.main?'<select data-f="l" aria-label="Language">'+LANGS.map(function(L){ return '<option value="'+L[0]+'"'+(L[0]===x.l?' selected':'')+'>'+L[1]+'</option>'; }).join('')+'</select>':'')
@@ -206,13 +221,9 @@
     if(act==='zoom'&&r){ var x=r.dataset.i!=null?a[+r.dataset.i]:prayed()[+r.dataset.p]; if(x) zoom(x); return; }
     if(act==='rm'&&r&&r.dataset.i!=null){ keepForm(); a.splice(+r.dataset.i,1); save(a); draw(); return; }
     if(act==='near'){ b.disabled=true; b.textContent='📍 Finding you…'; locate().then(redraw,function(){ b.textContent='📍 Location is off'; }); return; }
-    if(act==='ask'){ var ids=Object.keys(PICK).filter(function(k){ return PICK[k]&&!MINE[k]; }); if(!ids.length) return;
-      var go=function(){ b.disabled=true; ASKMSG='Asking…'; BOX.querySelector('#bkAskMsg').textContent=ASKMSG;
-        vote(ids,true).then(function(){ PICK={}; ASKMSG='Thank you! You asked for '+ids.length+(ids.length===1?' place':' places')+'. We will let you know when one becomes a Hub.'; redraw(); })
-          .catch(function(err){ b.disabled=false; if(err&&err.message==='signin'){ ASKMSG=''; BOX.querySelector('#bkAskMsg').textContent=''; signin(BOX.querySelector('#bkSi'),go); return; } ASKMSG='It could not be sent just now. '+(err&&err.message||''); BOX.querySelector('#bkAskMsg').textContent=ASKMSG; }); };
-      go(); return; } }
+    if(act==='nom'){ var f=BOX.querySelector('#bkNomF'); if(f){ f.hidden=!f.hidden; if(!f.hidden){ var n1=BOX.querySelector('#nmPlace'); if(n1) n1.focus(); } } return; } }
   function change(e){ if(e.target.name==='bkStn'){ put(STN,e.target.value); keepForm(); return; }
-    if(e.target.name==='bkAsk'){ PICK[e.target.value]=e.target.checked; var n=Object.keys(PICK).filter(function(k){ return PICK[k]&&!MINE[k]; }).length, g=BOX.querySelector('[data-a=ask]');
+    if(false){ PICK[e.target.value]=e.target.checked; var n=Object.keys(PICK).filter(function(k){ return PICK[k]&&!MINE[k]; }).length, g=BOX.querySelector('[data-a=ask]');
       if(g){ g.disabled=!n; g.textContent='🙋 I would like '+(n===1?'this place':n?'these '+n+' places':'these places')+' as MannaFish Hubs'; } return; }
     var r=e.target.closest('.row'); if(r&&e.target.dataset.f==='l'){ var a=items(), x=a[+r.dataset.i]; x.l=e.target.value; save(a); thumb(r.querySelector('.th'),x); } }   // the picture follows the language
   // what was typed stays when the list is drawn again
