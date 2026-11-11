@@ -3,14 +3,15 @@
 // parts of the email -- the blue headings and the buttons -- are pictures made here.
 // Run with playwright installed:  node tools/email-img/make.mjs  (writes w/img/email/*.png and lib/email-img.json;
 // set CHROME to a Chromium path if playwright has no browser of its own)
-import { chromium } from 'playwright';
+import { createRequire } from 'node:module';
+const { chromium } = createRequire(import.meta.url)('playwright');
 import fs from 'node:fs';
 const OUT = new URL('../../w/img/email/', import.meta.url).pathname;
 fs.mkdirSync(OUT, { recursive: true });
-const H = 'font:900 15px Liberation Sans,Arial,sans-serif;padding-left:.14em;letter-spacing:.14em;text-transform:uppercase;color:#2a5fb0';
-const H2 = 'font:900 19px Liberation Sans,Arial,sans-serif;padding-left:.12em;letter-spacing:.12em;text-transform:uppercase;color:#2a5fb0';
+const H = 'font:900 15px Liberation Sans,Arial,sans-serif;padding-left:.14em;letter-spacing:.14em;text-transform:uppercase;color:#8fb3e8';
+const H2 = 'font:900 19px Liberation Sans,Arial,sans-serif;padding-left:.12em;letter-spacing:.12em;text-transform:uppercase;color:#8fb3e8';
 const B = 'display:inline-block;color:#fff;font:bold 16px Liberation Sans,Arial,sans-serif;padding:13px 26px;border-radius:999px;white-space:nowrap';
-const BF = B + ';background:#2a5fb0', BO = B + ';background:#000;box-shadow:inset 0 0 0 1px #2a5fb0';
+const BF = B + ';background:#2a5fb0', BO = B + ';background:#000;box-shadow:inset 0 0 0 1px #8fb3e8';
 const ITEMS = {
   en: { welcome: [H, 'Welcome! Your first MannaFish:'], word: [H, 'Today’s word'], today: [H, 'Today’s verse'], fish: [H, 'The verse on the fish'],
     dbl: [H2, 'Your double portion'], sab: [H, 'For the Sabbath'], listen: [BF, 'See today’s MannaFish'], read: [BO, 'Read the chapter'], sabread: [BO, 'Read it'] },
