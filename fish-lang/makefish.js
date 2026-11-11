@@ -37,13 +37,25 @@
   function png(svg){ return new Promise(function(res,rej){ var img=new Image(), u=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
     img.onload=function(){ var c=document.createElement('canvas'); c.width=2000; c.height=1000; var g=c.getContext('2d'); g.fillStyle='#000'; g.fillRect(0,0,2000,1000); g.drawImage(img,0,0,2000,1000); URL.revokeObjectURL(u); c.toBlob(function(b){ b?res(b):rej(0); },'image/png'); };
     img.onerror=function(){ URL.revokeObjectURL(u); rej(0); }; img.src=u; }); }
+  /* Ken, 12 Nov: a fish can only carry the words of its own verse. The two curves must be pieces of the verse, in order ("..." marks a cut), and the middle word must be in it. */
+  function nrm(t){ return String(t||'').toLowerCase().replace(/[“”"‘’]/g,'').replace(/[^\p{L}\p{N}' ]+/gu,' ').replace(/\s+/g,' ').trim(); }
+  function fromVerse(f){ var v=nrm(f.verse); if(!v) return true; var from=0, ok=true;
+    [f.top,f.bot].forEach(function(x){ x=nrm(String(x||'').replace(/\.{2,}|…/g,' ')); if(!x||!ok) return; var i=v.indexOf(x,from); if(i<0){ ok=false; return; } from=i+x.length; });
+    var w=nrm(f.word); if(ok&&w&&(' '+v+' ').indexOf(' '+w+' ')<0&&!new RegExp('(^| )'+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(s|es|ed|ing|eth|est)?( |$)','u').test(v)) ok=false;
+    return ok; }
+  var WHY='A MannaFish can only carry the words of its verse. Please use the verse’s own words.';
+  /* every fish someone keeps or shares is reported to Ken with its picture (/api/fish-made); once per fish */
+  function report(f){ try{ var id=idOf(f), done=get('mf-myfish-reported',[]); if(done.indexOf(id)>=0) return; done.push(id); put('mf-myfish-reported',done.slice(-300));
+      (f._svg?Promise.resolve(f._svg):render(f)).then(function(svg){ return new Promise(function(res){ var img=new Image(), u=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
+        img.onload=function(){ var c=document.createElement('canvas'); c.width=1000; c.height=500; var g=c.getContext('2d'); g.fillStyle='#000'; g.fillRect(0,0,1000,500); g.drawImage(img,0,0,1000,500); URL.revokeObjectURL(u); res(c.toDataURL('image/png')); }; img.onerror=function(){ URL.revokeObjectURL(u); res(''); }; img.src=u; }); })
+      .then(function(png){ var me=window.MFacct&&MFacct.me&&MFacct.me(); return fetch('/api/fish-made',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({word:f.word,top:f.top,bot:f.bot,ref:f.ref,tag:f.tag,verse:f.verse,png:png,email:(me&&me.email)||''})}); }).catch(function(){}); }catch(e){} }
   function mine(){ var a=get(MINE,[]); return Array.isArray(a)?a:[]; }
   function shared(){ var a=get(SHARED,[]); return Array.isArray(a)?a:[]; }
   function idOf(f){ return f.id||('U:'+(f.word+'|'+f.ref).toLowerCase()); }
   function keep(f){ var a=mine(), id=idOf(f); if(a.some(function(x){ return x.id===id; })) return false;
-    a.unshift({id:id,word:f.word,top:f.top,bot:f.bot,ref:f.ref,refShort:f.refShort||'',tag:f.tag==null?' (KJV)':f.tag,verse:f.verse||'',href:f.href||'',at:Date.now()}); put(MINE,a.slice(0,500)); return true; }
+    a.unshift({id:id,word:f.word,top:f.top,bot:f.bot,ref:f.ref,refShort:f.refShort||'',tag:f.tag==null?' (KJV)':f.tag,verse:f.verse||'',href:f.href||'',at:Date.now()}); put(MINE,a.slice(0,500)); report(f); return true; }
   function drop(id){ put(MINE,mine().filter(function(x){ return x.id!==id; })); }
-  function noteShare(f,how){ var a=shared(); a.unshift({id:idOf(f),word:f.word,ref:f.ref||'',how:how,at:Date.now()}); put(SHARED,a.slice(0,1000)); }
+  function noteShare(f,how){ report(f); var a=shared(); a.unshift({id:idOf(f),word:f.word,ref:f.ref||'',how:how,at:Date.now()}); put(SHARED,a.slice(0,1000)); }
   // share a fish: f.svg (its picture) or drawn from f; the words go with it, and a link to read the verse
   function share(f,svg){ var go=svg?Promise.resolve(svg):f.src?fetch(f.src).then(function(r){ if(!r.ok) throw 0; return r.text(); }):render(f);
     var link=f.href?(/^https?:/.test(f.href)?f.href:location.origin+f.href):location.origin+'/', text=(f.verse?'“'+f.verse+'” ':'')+(f.ref?f.ref+' ':'')+'· a MannaFish for you · '+link;
@@ -75,6 +87,7 @@
     EL.addEventListener('click',function(e){ var t=e.target;
       if(t.closest('[data-x]')||t===EL){ close(); return; }
       var w=t.closest('[data-w]'); if(w){ CUR.word=title(w.dataset.w); draw(); return; }
+      if((t.closest('[data-keep]')||t.closest('[data-share]'))&&!fromVerse(CUR)){ msg(WHY); return; }
       if(t.closest('[data-keep]')){ msg(keep(CUR)?'Kept in My MannaFish':'Already in My MannaFish'); return; }
       if(t.closest('[data-share]')){ msg('…'); share(CUR,CUR._svg).then(function(r){ msg(r==='shared'?'Shared · listed in My MannaFish':r==='saved'?'The picture is saved · the words are copied to paste with it':''); }).catch(function(){ msg('Couldn’t make the picture just now'); }); } });
     EL.addEventListener('input',function(e){ if(e.target.matches('[data-top]')) CUR.top=e.target.value; else if(e.target.matches('[data-bot]')) CUR.bot=e.target.value; else return; clearTimeout(EL._t); EL._t=setTimeout(draw,200); });
@@ -91,5 +104,5 @@
     EL.querySelector('[data-ref]').textContent=(o.ref||'')+' · tap another word to change it'; EL.querySelector('[data-top]').value=L.top; EL.querySelector('[data-bot]').value=L.bot; msg('');
     EL.hidden=false; document.documentElement.style.overflow='hidden'; draw(); }
   function close(){ if(!EL) return; EL.hidden=true; document.documentElement.style.overflow=''; }
-  window.MFmake={open:open,close:close,render:render,share:share,mine:mine,shared:shared,keep:keep,drop:drop,latin:latin,lines:lines,png:png};
+  window.MFmake={fromVerse:fromVerse,open:open,close:close,render:render,share:share,mine:mine,shared:shared,keep:keep,drop:drop,latin:latin,lines:lines,png:png};
 })();

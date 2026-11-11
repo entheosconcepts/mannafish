@@ -731,7 +731,7 @@ html.card{overflow:hidden}html.card body{overflow:hidden}
 .dnav{position:absolute;right:20px;bottom:18px;z-index:6;display:flex;align-items:center;gap:8px;font:600 .72rem 'Archivo',sans-serif;color:var(--foam-dim,#9fb2b6)}
 .dnav[hidden]{display:none}
 .dturn{position:absolute;left:20px;bottom:18px;z-index:6;height:30px;border-radius:999px;border:1px solid rgba(196,210,214,.3);background:#000;color:#eaf0f0;font:700 .9rem 'Archivo',sans-serif;padding:0 10px;cursor:pointer;opacity:.8}
-.dturn:hover{opacity:1}
+.dturn:hover{opacity:1}.dturn{font-size:1.05rem;line-height:1;min-width:34px}
 .ftmid{display:inline-flex;gap:8px;pointer-events:none}
 .fishtog .stb{pointer-events:auto;width:30px;height:30px;padding:0;font-size:.85rem}
 .stb{pointer-events:auto;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(0,0,0,.6);color:#eaf0f0;font:700 .95rem 'Archivo',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;opacity:.7;transition:opacity .2s}
@@ -1778,6 +1778,8 @@ select option{background:#0b1620;color:#eaf0f0}
 .gfsheet .gfn{margin:-6px 0 12px;font:italic .9rem/1.45 'Spectral',Georgia,serif;opacity:.85}.gfsheet .gfn b{font:800 .95rem 'Archivo',sans-serif;font-style:normal}.gfsheet h4 small{display:block;letter-spacing:0;text-transform:none;font-weight:600;opacity:.8;margin-top:2px}
 .gfcards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:4px 0 10px}.gfc{perspective:700px;border:0;background:none;padding:0;cursor:pointer;aspect-ratio:2/1}.gfci{position:relative;display:block;width:100%;height:100%;transition:transform .7s;transform-style:preserve-3d}.gfc.up .gfci{transform:rotateY(180deg)}
 .gfb,.gff{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:12px;backface-visibility:hidden;-webkit-backface-visibility:hidden}.gfb{background:#000;border:1px solid rgba(51,112,255,.45);overflow:hidden}.gfb img{position:absolute;inset:3%;width:94%;height:94%;object-fit:contain;pointer-events:none}.gff{background:#000;border:1px solid #448ff1;transform:rotateY(180deg)}.gff img{width:92%;aspect-ratio:2/1;object-fit:contain}
+.gfsr{margin:10px 0 4px}.gfsr input{width:100%;box-sizing:border-box;padding:11px 14px;border-radius:999px;border:1px solid rgba(128,128,128,.4);background:rgba(0,0,0,.35);color:inherit;font:1rem Archivo,sans-serif}
+.gfvl{display:grid;gap:6px;margin:6px 0}.gfvl button{text-align:left;border:1px solid rgba(128,128,128,.3);background:#05080b;color:#eaf0f0;border-radius:12px;padding:9px 11px;cursor:pointer;font:400 .92rem/1.4 Spectral,Georgia,serif}.gfvl b{display:block;font:800 .82rem Archivo,sans-serif;color:#8fb6ff}.gfvl mark{background:#f5d76e;color:#14181c;border-radius:3px;padding:0 2px}.gfmore{border:0;background:none;color:#8fb6ff;font:700 .85rem Archivo,sans-serif;text-decoration:underline;cursor:pointer}
 .gfchoose{margin:10px 0 0}.gfchoose summary{cursor:pointer;font:800 .85rem Archivo,sans-serif;color:#8fb6ff;padding:8px 0}
 .gfcatch{margin:12px 0 0;border:1px solid #448ff1;border-radius:18px;padding:12px;text-align:center}.gfcatch[hidden]{display:none}.gfcatch .gfbig{background:#000;border-radius:12px;padding:6px}.gfcatch .gfbig img{width:100%;aspect-ratio:2/1;object-fit:contain;display:block}
 .gfcatch h3{margin:10px 0 4px;font:400 1.7rem 'MFHobo',cursive}.gfcatch .gfv{margin:0 0 10px;font:1rem/1.5 'Spectral',Georgia,serif}.gfcatch .gfv b{font:700 .85rem 'Archivo',sans-serif;opacity:.8}
@@ -2591,7 +2593,7 @@ window.MF=(function(){
     var g=document.createElement('div'); g.className='refs r9'; [].slice.call(src.querySelectorAll('.refs .ref'),0,9).forEach(function(r){ g.appendChild(noIds(r.cloneNode(true))); }); c1.appendChild(g);
     ['tight','tighter','tightest','nosnip'].forEach(function(t){ if(over(c1)) c1.classList.add(t); });
     // Ken, 16 Oct: on card 3 or 4 there was no sign of the way back -- a small button, bottom left, turns the fish over
-    var tb=document.createElement('button'); tb.type='button'; tb.className='dturn'; tb.setAttribute('aria-label','Turn the fish over'); tb.title='Turn the fish over'; tb.innerHTML='↺ <span>🐟</span>'; deck.appendChild(tb);
+    var tb=document.createElement('button'); tb.type='button'; tb.className='dturn'; tb.setAttribute('aria-label','Turn the fish over'); tb.title='Turn the fish over'; tb.innerHTML='&#8592;'; /* Ken, 12 Nov: just a back arrow, no fish icon */ deck.appendChild(tb);
     var nav=document.createElement('div'); nav.className='dnav'; nav.innerHTML='<button type="button" class="dprev" aria-label="Previous card">‹</button><span class="dpos"></span><button type="button" class="dnext" aria-label="Next card">›</button>';
     deck.appendChild(nav); deckShow(deck, Math.min(keep, cards.length-1)); }
   function deckShow(deck,k){ var cs=deck.querySelectorAll('.dcard'), N=cs.length; k=Math.max(0,Math.min(N-1,k)); deck.dataset.at=k;
@@ -5379,7 +5381,7 @@ window.MF=(function(){
   var GFT={en:{cast:'Cast your line',sub:'A fish at random',or:'Or choose your fish',got:'You caught {w}!',game:'Play MannaFish Memory',x:'Close',
       net:'153 fish in the net',jn:'“…full of great fishes, an hundred and fifty and three: and for all there were so many, yet was not the net broken.” John 21:11',
       mine:'Your devotional fish · 24',mineSub:'Tap one to make it your fish',more:'More fish in the net · 129',moreSub:'Tap one to catch it',newd:'New designs',newdSub:'Stop and Go, Repent, Rebuild …',
-      bible:'Read it in the Bible',basket:'Love',share:'Share',again:'Cast again',back:'Back to the net',"pickT":"Pick a card","pickS":"Pray, then tap a card. You won’t see the word until it turns: trust God with it.","pray":"Pray about it","prayed":"Added to your prayers. Trust God with it.","choose":"Or choose a fish yourself"},
+      bible:'Read it in the Bible',basket:'Love',share:'Share',again:'Cast again',back:'Back to the net',srch:'Search for a word',nofish:'No MannaFish with “{q}” yet.',fromv:'Pick a verse to make one:',makev:'Make a new fish from a verse with “{q}”',finding:'Finding verses…',nov:'No verse found with that word.',"pickT":"Pick a card","pickS":"Pray, then tap a card. You won’t see the word until it turns: trust God with it.","pray":"Pray about it","prayed":"Added to your prayers. Trust God with it.","choose":"Or choose a fish yourself"},
     es:{mine1:'Que sea mi pez de hoy',cast:'Echa la red',sub:'Un pez al azar',or:'O elige tu pez',got:'¡Pescaste {w}!',game:'Jugar MannaFish Memory',x:'Cerrar',
       net:'153 peces en la red',jn:'“…llena de grandes peces, ciento cincuenta y tres: y siendo tantos, la red no se rompió.” Juan 21:11',
       mine:'Tus peces del devocional · 24',mineSub:'Toca uno para que sea tu pez',more:'Más peces en la red · 129',moreSub:'Toca uno para pescarlo',newd:'Diseños nuevos',newdSub:'Detente y Ve, Arrepiéntete, Reconstruye …',
@@ -5397,6 +5399,22 @@ window.MF=(function(){
       var keep=function(x){ return !U||U[String(x.id).slice(2)]; }; NET=a[0].filter(keep); DES=a[1].filter(keep); return NET; },function(){ return []; }); }
   function netAll(){ return (NET||[]).concat(DES); }
   /* Ken, 11 Nov: Go Fish shows cards face down (you do not see what you will catch), and what you catch can be shared, prayed about, loved or made your fish */
+  /* Ken, 12 Nov: search Go Fish for a word; if no fish has it, list verses with it and make a MannaFish from the one picked */
+  function gfFind(d,q){ var r=d.querySelector('#gfRes'), T=GFT[MF.lang]||GFT.en, P=function(k){ return T[k]||GFT.en[k]; }; q=String(q||'').trim().toLowerCase(); d._vs=null; d._m=null;
+    if(q.length<2){ r.innerHTML=''; return; }
+    var pool=ORDER.filter(function(k){ return DATA[k]; }).map(function(k){ return {k:k,t:titleIn(MF.lang,k)}; }).concat(netAll().map(function(x){ return Object.assign({t:x.word},x); }));
+    var hit=pool.filter(function(x){ return String(x.t||'').toLowerCase().indexOf(q)>=0; }).sort(function(a,b){ return (String(a.t).toLowerCase().indexOf(q)===0?0:1)-(String(b.t).toLowerCase().indexOf(q)===0?0:1); }).slice(0,12);
+    if(!hit.length){ r.innerHTML='<p class="gfn" style="margin:8px 0">'+esc(P('nofish').replace('{q}',q))+' '+esc(P('fromv'))+'</p>'; gfVerses(d,q); return; }
+    d._m=hit; r.innerHTML='<div class="gfgrid">'+hit.map(function(x,i){ var o=gfObj(x); return '<button type="button" data-gm="'+i+'"><img loading="lazy" src="'+esc(o.img)+'" alt=""><span>'+esc(o.word)+'</span></button>'; }).join('')+'</div>'
+      +'<p style="text-align:center;margin:8px 0 2px"><button type="button" class="gfmore" data-gfv="1">'+esc(P('makev').replace('{q}',q))+'</button></p>'; }
+  function gfVerses(d,q){ var r=d.querySelector('#gfRes'), T=GFT[MF.lang]||GFT.en, P=function(k){ return T[k]||GFT.en[k]; }; q=String(q||'').trim(); if(q.length<2) return;
+    var keep=r.querySelector('p.gfn'); r.insertAdjacentHTML('beforeend','<p class="gfn" id="gfVw">'+esc(P('finding'))+'</p>');
+    fetch('/api/verse-search?q='+encodeURIComponent(q)).then(function(x){ if(!x.ok) throw 0; return x.json(); }).then(function(j){ var w=d.querySelector('#gfVw'); if(!w||(d.querySelector('#gfQ')||{}).value.trim()!==q) return; d._vs=j.results||[];
+      var re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\w*)','ig');
+      w.outerHTML=d._vs.length?'<div class="gfvl">'+d._vs.map(function(v,i){ return '<button type="button" data-gv="'+i+'"><b>'+esc(v.ref)+'</b><span>'+esc(v.text).replace(re,'<mark>$1</mark>')+'</span></button>'; }).join('')+'</div>':'<p class="gfn">'+esc(P('nov'))+'</p>'; })
+      .catch(function(){ var w=d.querySelector('#gfVw'); if(w) w.textContent='…'; }); }
+  function gfMake(q,v){ var go=function(){ MFmake.open({word:q,verse:v.text,ref:v.ref,refShort:'',tag:' (KJV)',href:'/bible/?r='+encodeURIComponent(v.ref)}); };
+    if(window.MFmake){ go(); return; } var sc=document.createElement('script'); sc.src='/fish-lang/makefish.js'; sc.onload=go; document.head.appendChild(sc); }
   function gfObj(it){ var l=MF.lang, fl=/^(en|es|tl|zh|hi|el|de|ko|he|ar|ru)$/.test(l)?l:'en';
     if(it.id) return {id:it.id,dev:'',img:'/fish/'+it.id.slice(2)+'.svg',word:it.word,ref:it.ref,verse:it.verse,ver:it.ver};
     var r0=((DATA[it.k]||{}).refs||[])[0]||['','']; return {id:'',dev:it.k,img:'/fish/'+fl+'/'+it.k+'.svg',word:titleIn(l,it.k),ref:r0[0],verse:r0[1],ver:''}; }
@@ -5411,6 +5429,7 @@ window.MF=(function(){
     if(!d){ d=document.createElement('div'); d.id='gfSheet'; d.className='gfsheet'; d.setAttribute('role','dialog'); d.setAttribute('aria-modal','true'); document.body.appendChild(d);
       /* Ken, 11 Nov (phone): inside the Bible page this is a small frame, so Go Fish was cut off and the Memory game opened inside it. While the sheet is open the frame asks the page for the whole screen, and its links open the whole page. */
       new MutationObserver(function(){ document.documentElement.style.overflow=d.hidden?'':'hidden'; }).observe(d,{attributes:true,attributeFilter:['hidden']});
+      d.addEventListener('input',function(e){ if(e.target.id!=='gfQ') return; clearTimeout(d._sq); d._sq=setTimeout(function(){ gfFind(d,e.target.value); },220); });
       d.addEventListener('click',function(e){ var ln=e.target.closest('a[href]'); if(ln&&window.top!==window.self){ e.preventDefault(); try{ window.top.location.href=ln.href; }catch(er){ window.open(ln.href,'_top'); } return; }
         if(e.target===d||e.target.closest('[data-gf=x]')){ d.hidden=true; return; }
         var c=d.querySelector('.gfcatch'), extra=netAll().filter(function(x){ return x.id===c.dataset.id; })[0], dev=c.dataset.k||'';
@@ -5427,6 +5446,9 @@ window.MF=(function(){
           toast((GFT[MF.lang]||GFT.en).prayed||GFT.en.prayed); return; }
         if(e.target.closest('[data-gf=sh]')&&d._x){ var X=d._x, N0=(window.shn&&shn())||{}; shareRender({title:(shn().shareThis),msg:(MF.lang==='es'?'Un MannaFish para ti: {w} ({ref}). “{v}”':'A MannaFish for you: {w} ({ref}). “{v}”'),w:X.word,ref:X.ref,v:X.verse,url:location.origin+(X.dev?'/?w='+X.dev.toLowerCase():'/?fish='+X.id.slice(2))}); return; }
         var x=e.target.closest('[data-gx]'); if(x){ var f=netAll().filter(function(y){ return y.id===x.dataset.gx; })[0]; if(f) gfCatch(d,gfObj(f)); return; }
+        var gm=e.target.closest('[data-gm]'); if(gm){ var it1=(d._m||[])[+gm.dataset.gm]; if(it1) gfCatch(d,gfObj(it1)); return; }
+        if(e.target.closest('[data-gfv]')){ gfVerses(d,(d.querySelector('#gfQ')||{}).value||''); return; }
+        var gvb=e.target.closest('[data-gv]'); if(gvb){ var vv=(d._vs||[])[+gvb.dataset.gv], q0=(d.querySelector('#gfQ')||{}).value||''; if(vv) gfMake(q0,vv); return; }
         var gc=e.target.closest('[data-gc]'); if(gc){ if(gc.classList.contains('up')) return; gc.classList.add('up'); var it0=(d._deal||[])[+gc.dataset.gc]; if(it0){ var fc=gc.querySelector('.gff'); if(fc&&!fc.firstChild) fc.innerHTML='<img src="'+esc(gfObj(it0).img)+'" alt="">'; d._st=d.querySelector('.in').scrollTop; setTimeout(function(){ gfCatch(d,gfObj(it0)); },800); } return; }
         var b=e.target.closest('[data-gk]'), r=e.target.closest('[data-gf=cast]'); if(!b&&!r) return; var nk;
         if(r){ var all=ORDER.filter(function(k){ return DATA[k]&&k!==cur; }).map(function(k){ return {k:k}; }).concat(netAll()), got=all[Math.floor(Math.random()*all.length)];
@@ -5437,6 +5459,7 @@ window.MF=(function(){
         $('stage').scrollIntoView({block:'center',behavior:'smooth'}); }); }
     d.innerHTML='<div class="in"><button type="button" class="gfx" data-gf="x" aria-label="'+esc(T.x)+'">&#10005;</button><h3>🎣 '+esc((GFL[l]||GFL.en)[1])+'</h3><p class="gfn"><b>'+esc(T.net)+'</b><br>'+esc(T.jn)+'</p>'+(gfReview()?'<p class="gfn"><a href="/fish/review/" style="color:#8fb6ff;font-weight:800">🛠 Review all fish: mark Edit or Remove</a></p>':'')
       +'<button type="button" class="gfcast" data-gf="cast"><b>🎣 '+esc(T.cast)+'</b><small>'+esc(T.sub)+'</small></button>'
+      +'<div class="gfsr"><input id="gfQ" type="search" enterkeyhint="search" autocomplete="off" placeholder="'+esc(T.srch||GFT.en.srch)+'"></div><div id="gfRes"></div>'
       +'<div class="gfcatch" hidden></div>'
       +'<h4>'+esc(T.pickT||GFT.en.pickT)+' <small>'+esc(T.pickS||GFT.en.pickS)+'</small></h4><div class="gfcards" id="gfCards"></div>'
       +'<details class="gfchoose" open><summary>'+esc(T.choose||GFT.en.choose)+'</summary>'   /* Ken, 11 Nov: all the fish stay in view */
