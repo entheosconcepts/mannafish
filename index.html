@@ -1766,7 +1766,7 @@ select option{background:#0b1620;color:#eaf0f0}
 @keyframes okpop{from{transform:scale(.85);opacity:0}to{transform:none;opacity:1}}
 .hearsel{position:fixed;z-index:125;display:flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:var(--brass);color:#fff;font:600 .85rem 'Archivo',sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.45);cursor:pointer}
 .hearsel[hidden],.hearbox[hidden]{display:none}
-.gfsheet{position:fixed;inset:0;z-index:130;background:rgba(0,0,0,.65);display:flex;align-items:flex-end;justify-content:center}.gfsheet[hidden]{display:none}
+.gfsheet{position:fixed;inset:0;z-index:130;background:rgba(0,0,0,.65);display:flex;align-items:flex-end;justify-content:center}.gfsheet[hidden]{display:none}html.card .gfsheet{background:#000}   /* inside the Bible page's card the sheet is solid: no Bible verses behind it */
 .gfsheet .in{position:relative;width:100%;max-width:560px;max-height:calc(100dvh - 12px);overflow:auto;background:#0e1116;color:#eaf0f0;border:1px solid rgba(255,255,255,.14);border-radius:22px 22px 0 0;padding:16px 16px max(18px,env(safe-area-inset-bottom));font:16px/1.4 'Archivo',sans-serif}
 @media(min-width:640px){.gfsheet{align-items:center}.gfsheet .in{border-radius:22px}}:root[data-mode=light] .gfsheet .in{background:#fbfaf6;color:#1c2228}
 .gfsheet h3{margin:2px 44px 12px 0;font:400 1.8rem 'MFHobo',cursive}.gfsheet h4{margin:16px 0 8px;font:800 .72rem 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.7}
@@ -1896,6 +1896,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <button class="modebtn mdark smore" type="button" id="siteMore" aria-label="More" aria-haspopup="true" aria-expanded="false">&bull;&bull;&bull;<span class="smdot" id="smDot" hidden></span></button>
   <div class="sitemenu" id="siteMenu" role="menu" hidden translate="no">
     <button type="button" class="hbtn smi" id="smResume" role="menuitem" hidden><span class="hbi" aria-hidden="true">&#8634;&#xFE0E;</span><span class="hbt"><b id="smResLab">Pick up where you left off</b><small id="smResSub"></small></span></button>
+    <button type="button" class="hbtn smi" id="smDash" role="menuitem"><span class="hbi" aria-hidden="true">&#127968;&#xFE0E;</span><span class="hbt"><b>My dashboard</b><small>Your own icons, priority list and calendar</small></span></button>
     <button type="button" class="hbtn smi" id="smBible" role="menuitem"><span class="hbi" aria-hidden="true">&#10013;&#xFE0E;</span><span class="hbt"><b id="smBiLab">Bible</b><small id="smBiSub">Every book and chapter</small></span></button>
     <button type="button" class="hbtn smi" id="smPray" role="menuitem"><span class="hbi" aria-hidden="true">&#128330;&#xFE0E;</span><span class="hbt"><b id="smPrLab">Time with God</b><small id="smPrSub">A few quiet minutes of prayer</small></span></button>
     <button type="button" class="hbtn smi" id="vsBtn" role="menuitem"><span class="hbi" aria-hidden="true">&#9654;&#xFE0E;</span><span class="hbt"><b id="vsLab">The vision</b><small id="vsSub">Listen · 3 min</small></span></button>
@@ -4340,6 +4341,7 @@ window.MF=(function(){
   window.addEventListener('mf-admin',admUI); setTimeout(admUI,1500);
   setTimeout(cdInit,0);
   window.MFadminFish=function(){ return cur?{word:titleIn('en',cur),key:cur}:null; };
+  $('smDash').addEventListener('click',function(){ location.href='/dash/'; });
   $('smStories').addEventListener('click',function(){ if(window.MFsecOpen) MFsecOpen('stories'); $('stories').scrollIntoView({behavior:'smooth',block:'start'}); });
   $('ptStage').addEventListener('click',function(e){ if(e.target.closest('[data-fs]')) fsOpen(); });
   MF.onChange(fsUI); fsUI();
@@ -5893,6 +5895,6 @@ body.mfediting{padding-top:54px!important}
 </script>
 <script>
 /* ?do=tour|vision|stories|admin: the Bible page's three-dots menu opens these here (Ken, 8 Nov) */
-(function(){ var m=/[?&]do=([a-z]+)/.exec(location.search); if(!m) return; var map={tour:'tourBtn',vision:'vsBtn',stories:'smStories',admin:'smAdmin'}, id=map[m[1]]; if(!id) return;
+(function(){ var m=/[?&]do=([a-z]+)/.exec(location.search); if(!m) return; var map={tour:'tourBtn',vision:'vsBtn',stories:'smStories',admin:'smAdmin',gofish:'ftTwo'}, id=map[m[1]]; if(m[1]==='favs'){ setTimeout(function(){ if(window.MFbasket) MFbasket.open(); },1400); return; } if(!id) return;
   setTimeout(function(){ var b=document.getElementById(id); if(b) b.click(); },1400); })();
 </script>

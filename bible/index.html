@@ -320,7 +320,8 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 @media(prefers-reduced-motion:reduce){.tfc{transition:none}}
 @media(max-width:999px){.tfish{margin-left:-8px;margin-right:-8px}}
 .tfcard{display:block;width:100%;height:440px;border:0;background:#000;border-radius:12px;color-scheme:dark}
-.tfcard.full{position:fixed;inset:0;width:100%;height:100%;z-index:300;border-radius:0}
+body.tffull .tfish,body.tffull .rail{z-index:400}
+.tfcard.full{position:fixed;inset:0;width:100%!important;height:100%!important;z-index:300;border-radius:0;background:#000}   /* Ken, 13 Nov: a sheet in the card (Go Fish, full screen) covers the whole window, not just the top part of it */
 .tfb{padding:0 2px 6px}
 .dnav h5{margin:12px 6px 4px;font:800 .72rem 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
 .dnav .dbb{display:block;width:100%;text-align:left;border:0;background:none;color:inherit;font:600 1rem 'Fraunces',Georgia,serif;padding:6px 10px;border-radius:10px;cursor:pointer}
@@ -392,7 +393,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
 </head>
 <body>
 <div class="bar"><div class="in r1">
-  <span class="lt"><button type="button" class="ib back sm" id="back" aria-label="Back to the devotional">&lsaquo;<span class="bl">&nbsp;Devotional</span></button>
+  <span class="lt"><a class="ib sm" id="xBible" href="/dash/" aria-label="Close the Bible: my dashboard" title="Close the Bible" style="text-decoration:none">&#10005;</a><button type="button" class="ib back sm" id="back" aria-label="Back to the devotional">&lsaquo;<span class="bl">&nbsp;Devotional</span></button>
     <button type="button" class="ib sm" id="mode" aria-label="Light or dark">&#9728;&#xFE0E;</button><button type="button" class="ib sm" id="toolsRound" aria-expanded="false" aria-controls="htP" aria-label="Tools" title="Tools">&#129520;&#xFE0E;</button><button type="button" class="ib sm" id="searchBtn" aria-label="Search the Bible" title="Search the Bible">&#128269;&#xFE0E;</button></span>
   <a class="brand" href="/">Manna<b>Fish</b></a>
   <span class="rt"><button type="button" class="ib sm" id="penB" aria-pressed="false" aria-label="Highlighter pen" title="Highlighter: slide across the words">&#128397;&#xFE0E;</button><button type="button" class="ib sm" id="studyB" aria-pressed="false" aria-label="Word study: Hebrew and Greek" title="Word study"><span class="og2" id="studyI">&alpha;</span></button>
@@ -509,7 +510,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
     function set(open){ $('tfT').setAttribute('aria-expanded',String(open)); $('tfB').hidden=!open; ls('mf-bible-fish',open?'open':'closed'); }
     $('tfT').addEventListener('click',function(){ set($('tfT').getAttribute('aria-expanded')!=='true'); });
     window.addEventListener('message',function(e){ if(e.origin!==location.origin||!e.data||!e.data.mfcard||e.source!==f.contentWindow) return;
-      if(e.data.full){ f.classList.add('full'); document.documentElement.style.overflow='hidden'; } else { f.classList.remove('full'); document.documentElement.style.overflow=''; if(e.data.h>60) f.style.height=e.data.h+'px'; } });
+      if(e.data.full){ f.classList.add('full'); document.body.classList.add('tffull'); document.documentElement.style.overflow='hidden'; } else { f.classList.remove('full'); document.body.classList.remove('tffull'); document.documentElement.style.overflow=''; if(e.data.h>60) f.style.height=e.data.h+'px'; } });
     var tz=''; try{ tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''; }catch(e){}
     fetch('/api/today-fish?id='+encodeURIComponent(fq||'today')+'&tz='+encodeURIComponent(tz)+'&lang='+lang).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(j) $('tfW').textContent=j.title; }).catch(function(){});
     set(ls('mf-bible-fish')!=='closed'); })();
@@ -1393,14 +1394,14 @@ body.lay-l .rail .dnav{flex:1 1 auto}
       +(window.MFfeedback?'<button type="button" class="mi" data-m="fb"><span class="ic">&#128172;&#xFE0E;</span><span class="tx">Tell us what you think<small>What you like, what confused you</small></span></button>':''); }
   /* Ken, 8 Nov: the three dots list the same things they did on the home page (Bible, Time with God, The vision, Bible in a Year, Fish stories, Take a tour ...); the Bible's own tools, notes and recent chapters are the last item */
   function siteMenuUI(){ var it=function(k,ic,t,sm){ return '<button type="button" class="mi" role="menuitem" data-site="'+k+'"><span class="ic">'+ic+'</span><span class="tx">'+t+'<small>'+sm+'</small></span></button>'; };
-    $('menu').innerHTML=it('bible','&#10013;&#xFE0E;','Bible','Every book and chapter')+it('pray','&#128330;&#xFE0E;','Time with God','A few quiet minutes of prayer')+it('vision','&#9654;&#xFE0E;','The vision','Listen &middot; 3 min')
+    $('menu').innerHTML=it('dash','&#127968;&#xFE0E;','My dashboard','Your own icons, priority list and calendar')+it('bible','&#10013;&#xFE0E;','Bible','Every book and chapter')+it('pray','&#128330;&#xFE0E;','Time with God','A few quiet minutes of prayer')+it('vision','&#9654;&#xFE0E;','The vision','Listen &middot; 3 min')
       +it('plan','&#128214;&#xFE0E;','Bible in a Year','Day and night readings, 2 Fish a day')+it('stories','&#128031;&#xFE0E;','Fish stories','Share your catch')+it('catch','&#127907;&#xFE0E;','Catch a fish and share it','Random, or pick one')+it('tour','&#10024;&#xFE0E;','Take a tour','How it works')
       +it('match','&#127924;&#xFE0E;','MannaFish Memory','Match a pair, then go fish')+it('translate','&#128172;&#xFE0E;','Translator','Talk with anyone')
       +'<hr>'+it('prof','&#128100;&#xFE0E;','My stuff','Prayers, notes, highlights, orders, history')+it('set','&#9881;&#xFE0E;','Settings','Plan, language, light or dark, listening')+it('acct','&#128273;&#xFE0E;','Sign in','Keep your notes on every device')
       +it('fb','&#128172;&#xFE0E;','Tell us what you think','What you like, what confused you')+it('admin','&#128736;&#xFE0E;','Admin view','For testing: edit tools and admin pages')
       +'<hr>'+it('chapter','&#129520;&#xFE0E;','This chapter','Notes, recent chapters and Bible tools'); }
   function siteAct(k){ closeMenu(); var go2=function(u){ location.href=u; };
-    if(k==='bible'){ var tb=$('titleB'); if(tb) tb.click(); } else if(k==='pray') go2('/pray/'); else if(k==='vision') go2('/?today=1&do=vision'); else if(k==='plan') go2('/plan/'); else if(k==='stories') go2('/?today=1&do=stories'); else if(k==='catch') go2('/?today=1&do=catch'); else if(k==='tour') go2('/?today=1&do=tour');
+    if(k==='dash') go2('/dash/'); else if(k==='bible'){ var tb=$('titleB'); if(tb) tb.click(); } else if(k==='pray') go2('/pray/'); else if(k==='vision') go2('/?today=1&do=vision'); else if(k==='plan') go2('/plan/'); else if(k==='stories') go2('/?today=1&do=stories'); else if(k==='catch') go2('/?today=1&do=catch'); else if(k==='tour') go2('/?today=1&do=tour');
     else if(k==='match') go2('/go/'); else if(k==='translate') go2('/translate/'); else if(k==='prof'||k==='acct') go2('/you/'); else if(k==='set') go2('/you/#st'); else if(k==='admin') go2('/?today=1&do=admin');
     else if(k==='fb'){ if(window.MFfeedback) MFfeedback.open(); } else if(k==='chapter'){ closeAct(); closeWc(); menuUI(); $('menu').hidden=false; $('menu').scrollTop=0; $('dots').setAttribute('aria-expanded','true'); } }
   $('dots').addEventListener('click',function(e){ e.stopPropagation(); if(menuOpen()){ closeMenu(); return; } closeAct(); closeWc(); siteMenuUI(); $('menu').hidden=false; $('menu').scrollTop=0; $('dots').setAttribute('aria-expanded','true'); });
