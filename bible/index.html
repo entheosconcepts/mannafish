@@ -1531,17 +1531,27 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   function li(a){ return '<ul>'+(a||[]).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('')+'</ul>'; }
   function exDraw(){ var ref=B[EX.b][0]+' '+EX.c+':'+EX.v1+(EX.v2>EX.v1?'–'+EX.v2:''); $('exRef').innerHTML='<b>'+esc(ref)+'</b>'+(EX.head?'<small>'+esc(EX.head)+'</small>':'');
     $('exTabs').innerHTML=EXT.map(function(t){ return '<button type="button" role="tab" data-xt="'+t[0]+'" aria-selected="'+(EX.tab===t[0])+'">'+t[1]+'</button>'; }).join('');
-    var body=$('exBody'), d=EX.data, h='';
+    var body=$('exBody'), d=EX.data, h=''; if(EX.tab!=='explain'||!d||d.error) exHearStop();
     if(EX.tab==='voices'){ exVoices(); return; }
     if(!d){ body.innerHTML='<p>Reading the passage…</p>'; return; }
     if(d.error){ body.innerHTML='<p>'+esc(d.error)+'</p><button type="button" class="exgo" data-retry="1">Try again</button>'; return; }
     if(EX.tab==='explain'){
-      h+='<h4>What it says</h4><p>'+esc(d.summary)+'</p><h4>Background</h4><p>'+esc(d.context)+'</p><h4>Understanding it</h4>'+li(d.understand);
+      h+='<div style="text-align:center;margin:0 0 6px"><button type="button" class="exgo" id="exHear" aria-label="Listen to this explanation">'+(EX.hear?'&#9632;&#xFE0E; Stop':'&#128266;&#xFE0E; Listen')+'</button></div><h4>What it says</h4><p>'+esc(d.summary)+'</p><h4>Background</h4><p>'+esc(d.context)+'</p><h4>Understanding it</h4>'+li(d.understand);
       if(d.keywords&&d.keywords.length) h+='<h4>Words worth knowing</h4>'+d.keywords.map(function(k){ return '<div class="kw"><b>'+esc(k.word)+'</b> · '+esc(k.meaning)+'</div>'; }).join('');
       if(d.pray_about&&d.pray_about.length) h+='<h4>Things to pray about</h4>'+li(d.pray_about); }
     else { h+='<h4>Living it out today</h4>'+li(d.apply)+'<h4>Think about it</h4>'+li(d.questions)
         +'<h4>What is on your mind?</h4><p>Tell me what you are facing, in your own words, and I will connect this passage to it. Nothing is saved unless you tap Save under the answer.</p><textarea id="exSit" maxlength="500" placeholder="For example: I am worried about money, or I am angry at someone I love."></textarea><button type="button" class="exgo" id="exAsk">Help me apply this</button><div id="exMe">'+exMe()+'</div>'; }
     body.innerHTML=h; }
+  /* Ken, 11 Nov: "I want the section that says explain to have the speaker so the user can listen to the explanation" */
+  function exHearBtn(){ var b=$('exHear'); if(b) b.innerHTML=EX.hear?'&#9632;&#xFE0E; Stop':'&#128266;&#xFE0E; Listen'; }
+  function exHearStop(){ if(!EX.hear) return; EX.hear=0; halt(); exHearBtn(); }
+  function exHearToggle(){ if(EX.hear){ exHearStop(); return; } var d=EX.data; if(!d||d.error) return; stopSay(); ogStop();
+    var l=exLang(), en=l==='en', L=[], H=function(t){ if(en) L.push(t+'.'); };
+    L.push($('exRef').innerText.replace(/\n/g,'. ')+'.'); H('What it says'); L.push(d.summary); H('Background'); L.push(d.context); H('Understanding it'); (d.understand||[]).forEach(function(x){ L.push(x); });
+    if(d.keywords&&d.keywords.length){ H('Words worth knowing'); d.keywords.forEach(function(k){ L.push(k.word+': '+k.meaning); }); }
+    if(d.pray_about&&d.pray_about.length){ H('Things to pray about'); (d.pray_about||[]).forEach(function(x){ L.push(x); }); }
+    L=L.filter(function(x){ return x&&String(x).trim(); }); EX.hear=1; exHearBtn(); var me=OGP;
+    (function nx(i){ if(!EX.hear||me!==OGP) return; if(i>=L.length){ EX.hear=0; exHearBtn(); return; } sayP(L[i],l).then(function(){ nx(i+1); }); })(0); }
   function exMe(){ var p=EX.personal; if(!p) return ''; if(p.error) return '<p>'+esc(p.error)+'</p>'; return '<div class="me"><p>'+esc(p.message)+'</p>'+li(p.steps)+'<h4>Things to pray about</h4>'+li(p.pray_about)+'<div class="row" style="margin-top:10px"><button type="button" class="exgo" id="exKeep">'+(p.kept?'&#10003; Saved in My stuff':'&#128278; Save this in My stuff')+'</button><button type="button" class="exgo" id="exKeepP">'+(p.keptP?'&#10003; In your prayers':'&#128330;&#xFE0E; Save to My prayers')+'</button></div><small class="tip" style="display:block">Saved on this phone, and in your account if you are signed in. Only you can see it.</small></div>'; }
   /* Ken, 9 Nov: keep what the person shared, the answer and the prayer, as "How it applies to me" in My stuff (a note under APPLY:<reference>, so it also goes to the account and Export) */
   function dlabel(t){ try{ return new Date(t).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}); }catch(e){ return ''; } }
@@ -1563,10 +1573,10 @@ body.lay-l .rail .dnav{flex:1 1 auto}
       var h='', last=0; rows.slice(0,EX.showN).forEach(function(x){ var e=x[1], au=(EX.authors||[])[e[0]]||{n:'',y:''}; if(x[0]!==last){ h+='<div class="vh">Verse '+x[0]+'</div>'; last=x[0]; }
         h+='<div class="cv"><b class="a">'+esc(au.n)+'</b> <small>'+esc(au.y)+' · '+esc(e[1])+(e[4]?' · verses '+x[0]+'–'+e[4]:'')+'</small><p class="q">'+esc(e[2])+'</p>'+(e[3]?'<a href="'+esc(e[3])+'" target="_blank" rel="noopener">Read the full text ›</a>':'')+'</div>'; });
       if(rows.length>EX.showN) h+='<button type="button" class="exgo" data-vmore="1">Show more ('+(rows.length-EX.showN)+' left)</button>'; body.innerHTML=h; }); }
-  $('exX').addEventListener('click',function(){ $('exSheet').hidden=true; });
+  $('exX').addEventListener('click',function(){ exHearStop(); $('exSheet').hidden=true; });
   $('exPrev').addEventListener('click',function(){ exStep(-1); }); $('exNext').addEventListener('click',function(){ exStep(1); });
   $('exTabs').addEventListener('click',function(e){ var b=e.target.closest('[data-xt]'); if(!b) return; EX.tab=b.dataset.xt; if(EX.tab==='voices') exDraw(); else { exDraw(); if(!EX.data) exFetch(); } });
-  $('exBody').addEventListener('click',function(e){ if(e.target.closest('#exAsk')) exAsk(); else if(e.target.closest('#exKeepP')) exKeepP(); else if(e.target.closest('#exKeep')) exKeep(); else if(e.target.closest('[data-retry]')) exFetch(); else if(e.target.closest('[data-vmore]')){ EX.showN+=12; exVoices(); } });
+  $('exBody').addEventListener('click',function(e){ if(e.target.closest('#exAsk')) exAsk(); else if(e.target.closest('#exHear')) exHearToggle(); else if(e.target.closest('#exKeepP')) exKeepP(); else if(e.target.closest('#exKeep')) exKeep(); else if(e.target.closest('[data-retry]')) exFetch(); else if(e.target.closest('[data-vmore]')){ EX.showN+=12; exVoices(); } });
   $('aExplain').addEventListener('click',function(){ var v=SEL[0]; closeAct(); exOpen(v); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('exSheet').hidden) $('exSheet').hidden=true; });
   // ── Search the Bible (Ken, 7 Nov: "do them all"): a word, a "phrase" or a Strong's number, in any Bible stored on the site (the KJV and the
