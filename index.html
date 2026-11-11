@@ -5439,7 +5439,8 @@ window.MF=(function(){
       +'<button type="button" class="gfcast" data-gf="cast"><b>🎣 '+esc(T.cast)+'</b><small>'+esc(T.sub)+'</small></button>'
       +'<div class="gfcatch" hidden></div>'
       +'<h4>'+esc(T.pickT||GFT.en.pickT)+' <small>'+esc(T.pickS||GFT.en.pickS)+'</small></h4><div class="gfcards" id="gfCards"></div>'
-      +'<details class="gfchoose"><summary>'+esc(T.choose||GFT.en.choose)+'</summary>'
+      +'<details class="gfchoose" open><summary>'+esc(T.choose||GFT.en.choose)+'</summary>'   /* Ken, 11 Nov: all the fish stay in view */
+      
       +'<h4>'+esc(T.mine)+' <small>'+esc(T.mineSub)+'</small></h4><div class="gfgrid">'
       +ORDER.filter(function(k){ return DATA[k]; }).map(function(k){ return '<button type="button" data-gk="'+k+'" aria-pressed="'+(k===cur)+'"><img loading="lazy" src="/fish/'+fl+'/'+k+'.svg" alt=""><span>'+esc(titleIn(l,k))+'</span></button>'; }).join('')
       +'</div><h4>'+esc(T.more)+' <small>'+esc(T.moreSub)+'</small></h4><div class="gfgrid" id="gfMore"></div><div id="gfNewW" hidden><h4>'+esc(T.newd||GFT.en.newd)+' <small>'+esc(T.newdSub||GFT.en.newdSub)+'</small></h4><div class="gfgrid" id="gfNew"></div></div></details><a class="gfgame" href="/go/">🃏 '+esc(T.game)+' &rsaquo;</a></div>';
