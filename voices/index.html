@@ -9,7 +9,7 @@
 <link rel="icon" href="/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Spectral:wght@400;600&display=swap" rel="stylesheet">
-<!-- Ken, 6 Nov: the voice taste test. The same words in every voice (your ElevenLabs voices first, then MannaFish's built-in ones),
+<!-- Ken, 6 Nov: the voice taste test. The same words in every voice (MannaFish's 20 chosen voices),
      so you can pick. Play, ⭐ the ones you like, "Use this voice" to try it everywhere on this device, and "Copy my favorites"
      to paste to Claude. The list comes from /api/say?list=1; each clip is made once, then kept. -->
 <style>
@@ -79,8 +79,7 @@ h2{font-size:1.05rem;margin:20px 0 8px;display:flex;align-items:center;gap:8px}
       +'<button type="button" class="b play" data-a="play" aria-pressed="false">▶ Play</button>'
       +'<button type="button" class="b fav" data-a="fav" aria-pressed="'+(f.indexOf(v.id)>=0)+'" aria-label="Favorite '+esc(v.name)+'">⭐</button>'
       +'<button type="button" class="b use" data-a="use" aria-pressed="'+(v.id===mine)+'">'+(v.id===mine?'✓ In use':'Use this voice')+'</button></div>'; }).join(''); }
-  function draw(){ var el=VS.filter(function(v){ return v.provider==='elevenlabs'; }), bi=VS.filter(function(v){ return v.provider!=='elevenlabs'; });
-    listEl.innerHTML=(el.length?'<h2>ElevenLabs voices</h2>'+rows(el):'')+'<h2>MannaFish built-in voices</h2>'+rows(bi); }
+  function draw(){ var bi=VS.slice(); listEl.innerHTML='<h2>MannaFish voices</h2>'+rows(bi); }
   listEl.addEventListener('click',function(e){ var b=e.target.closest('.b'); if(!b) return; var r=b.closest('.row'), id=r.dataset.id, name=r.dataset.name, a=b.dataset.a;
     if(a==='fav'){ var f=favs(), i=f.indexOf(id); if(i>=0) f.splice(i,1); else f.push(id); ls('mf-voice-fav',JSON.stringify(f)); b.setAttribute('aria-pressed',String(i<0)); return; }
     if(a==='use'){ ls('mf-voice',id); ls('mf-voice-name',name); try{ if(window.MFacct&&MFacct.touch) MFacct.touch('set'); }catch(er){}
@@ -97,8 +96,7 @@ h2{font-size:1.05rem;margin:20px 0 8px;display:flex;align-items:center;gap:8px}
     var done=function(){ $('copied').textContent=f.length?'Copied. Paste it to Claude.':'Pick some ⭐ first.'; };
     try{ navigator.clipboard.writeText(out).then(done,function(){ prompt('Copy this:',out); }); }catch(e){ prompt('Copy this:',out); } });
   fetch('/api/say?list=1').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ VS=j.voices||[]; draw();
-    var el=VS.filter(function(v){ return v.provider==='elevenlabs'; }).length;
-    $('elnote').innerHTML=j.elevenlabs?(el?'<b>ElevenLabs is connected</b> ('+el+' voices). Each new line you play uses ElevenLabs credits once; playing it again is free.':'ElevenLabs is connected, but no voices came back. Open Voices in your ElevenLabs account and add some to “My Voices”.'):'ElevenLabs is not connected yet (the key is not set on this site).'; })
+    $('elnote').textContent='Twenty voices, each clearly different from the others.'; })
   .catch(function(){ listEl.innerHTML='<p class="sub">The voice list could not load. Please reload.</p>'; });
 })();
 </script>

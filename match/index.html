@@ -293,7 +293,7 @@ html,body{overflow-x:hidden}
   var NAME={en:'English',es:'Español',tl:'Tagalog',zh:'中文',hi:'हिन्दी',el:'Ελληνικά',de:'Deutsch',ko:'한국어',he:'עברית',ar:'العربية',ru:"Русский"};
   var LCODE={en:'en-US',es:'es-US',tl:'fil-PH',zh:'zh-CN',hi:'hi-IN',el:'el-GR',de:'de-DE',ko:'ko-KR',he:'he-IL',ar:'ar-SA',ru:"ru-RU"};
   var LPRE={en:['en'],es:['es'],tl:['fil','tl'],zh:['zh','cmn'],hi:['hi'],el:['el'],de:['de'],ko:['ko'],he:['he','iw'],ar:['ar'],ru:["ru"]};
-  var VOICES=['sunrise','sparkle','rally','jubilee','tale','awe','thunder','titan','abyss','bedrock','canyon','hush','murmur','lullaby','midnight','narrator','highland','onyx','ash','fable','grace','magnolia','heather','elder','pastor','scholar','campfire','herald','prophet','cowboy','bard','dove','rose','deborah','lily','hannah','erin','sage','coral','ballad','alloy','echo','nova','shimmer','verse'];
+  var VOICES=['thunder','titan','elder','narrator','pastor','herald','prophet','rally','jubilee','tale','awe','cowboy','grace','canyon','deborah','magnolia','sunrise','sparkle','shimmer','alloy'];
   var PAIRS=12, TRIES=3, MAXP=4, PC=['#3370FF','#f5d76e','#7fd18b','#e8735c'];
   var T={
     en:{lvl:'Level',lvE:'Easy',lvEs:'One language',lvM:'Medium',lvMs:'Two languages · you choose',lvH:'Hard',lvHs:'Many languages · you choose',lang:'Language',surprise:'🎲 Surprise me',pickhH:'Tap the languages you want to play in',home:'Home',sub:'MannaFish Memory',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',pickl:'Choose languages…',pickls:'Choose…',pickh:'Tap the languages to play with:',none:'None (one language only)',nones:'None (one language)',
@@ -771,7 +771,7 @@ html,body{overflow-x:hidden}
 
   // ── hearing a word: the site's natural voice (/api/tts), else this device's own voice ──
   var CLIP={}, apiOff=false, sp={id:0,audio:null,card:null,next:null,busy:false};
-  function aiVoice(){ var v=store('mf-voice')||''; return /^el:[A-Za-z0-9]{10,40}$/.test(v)||VOICES.indexOf(v)>=0?v:'thunder'; }
+  function aiVoice(){ var v=store('mf-voice')||''; return VOICES.indexOf(v)>=0?v:'thunder'; }
   function clip(l,k,part){ part=part||'word';
     var v=aiVoice(); if(apiOff) return Promise.reject(new Error('off'));
     var key=l+'|'+k+'|'+v+'|'+part; if(CLIP[key]) return CLIP[key];

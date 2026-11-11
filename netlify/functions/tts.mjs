@@ -8,7 +8,6 @@ import { createHash } from 'node:crypto';
 import SPEAK from './lib/speak.json';
 import TONGUE from './lib/tongue.json';
 import { ALL, speaker, wavAt } from './lib/voices.mjs';
-import { isEl, elevenOn, elevenBudget, elevenSpeak } from './lib/eleven.mjs';
 const VOICE = process.env.MF_TTS_VOICE || 'thunder';
 // the listener may pick another natural voice (Ken, 9 Oct)
 const VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse'];
@@ -31,7 +30,7 @@ export default async (req) => {
   const part = u.searchParams.get('part') === 'word' ? 'word' : 'verse';
   // Every Tongue (8 Oct): a ready-made phrase or one of its four verses, by id (?p=pray_for&lang=ko)
   const pid = String(u.searchParams.get('p') || ''), v0 = String(u.searchParams.get('v') || '');
-  let voice = ALL.includes(v0) ? v0 : (isEl(v0) && elevenOn() ? v0 : VOICE);
+  let voice = ALL.includes(v0) ? v0 : VOICE;
   const row = pid && [...TONGUE.phrases, ...TONGUE.verses].find((x) => x.id === pid);
   const text = pid ? (row && row.t[lang]) : ((SPEAK[lang] || {})[key] || {})[part];
   if (!text) return new Response('Unknown word', { status: 404 });
@@ -43,11 +42,8 @@ export default async (req) => {
   const fp = createHash('sha256').update(text + (word ? '|one2' : '')).digest('hex').slice(0, 8);
   const store = getStore('mannafish-tts'), idOf = (v) => { v = v.replace(':', '-'); return pid ? `${lang}/tongue-${pid}-${v}-${fp}.mp3` : `${lang}/${key}-${part}-${v}-${fp}.${word ? 'wav' : 'mp3'}`; };
   let id = idOf(voice), audio = await store.get(id, { type: 'arrayBuffer' });
-  // ElevenLabs is metered: used-up allowance, or no answer from it, means the built-in voice reads it instead
-  if (!audio && isEl(voice) && !(await elevenBudget(text.length))) { voice = VOICE; id = idOf(voice); audio = await store.get(id, { type: 'arrayBuffer' }); }
   if (!audio) {
     let r = null;
-    if (isEl(voice)) { r = await elevenSpeak(voice, word ? text + '.' : text, word ? 'pcm_24000' : 'mp3_44100_128').catch(() => null); if (!r || !r.ok) { r = null; voice = VOICE; id = idOf(voice); } }
     if (!r) r = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST',
       headers: { 'authorization': 'Bearer ' + apiKey, 'content-type': 'application/json' },
       body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice: speaker(voice, lang).voice, input: word ? text + '.' : text, response_format: word || speaker(voice, lang).pitch ? 'pcm' : 'mp3',

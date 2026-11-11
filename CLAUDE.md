@@ -25,7 +25,7 @@ MannaFish gives Scripture away: one word of Scripture in the middle of a fish, w
 
 ## Rules from Ken
 - **Secrets live only in Netlify environment variables.** Never ask Ken for a key, never paste one, and tell users never to paste tokens, EINs or passwords into chat.
-  Names in use: `BREVO_API_KEY`, `OPENAI_API_KEY`, `SUPABASE_SECRET_KEY`, `MF_ADMIN_KEY`, `PROOF_KEY`, `ESV_API_KEY` (later `ELEVENLABS_API_KEY`).
+  Names in use: `BREVO_API_KEY`, `OPENAI_API_KEY`, `SUPABASE_SECRET_KEY`, `MF_ADMIN_KEY`, `PROOF_KEY`, `ESV_API_KEY`. (ElevenLabs was dropped on 12 Nov: Ken closed that account.)
 - The fish are **never sold, never resold**. Sponsors pay so they can be given away.
 - **No dollar amounts on the site** until Ken decides pricing.
 - No earn-style rewards. No celebrity voice imitation.
