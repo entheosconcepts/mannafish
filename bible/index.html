@@ -282,6 +282,7 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 .phd{display:grid;grid-template-columns:repeat(var(--pc,2),minmax(0,1fr));gap:14px;align-items:center;position:sticky;top:var(--barh,100px);z-index:5;background:var(--bg);padding:6px 0;border-bottom:1px solid var(--line);font:800 .8rem 'Archivo',sans-serif}
 .phd .phc{display:flex;flex-direction:column;gap:5px;min-width:0}.phd .pbtn{flex:1;min-width:0;border:1px solid var(--line);background:var(--card);color:inherit;border-radius:999px;padding:7px 12px;font:700 .95rem 'Archivo',sans-serif;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}.phd .pbtn .ar{color:var(--dim);font-size:.8em}.phd .p2{display:flex;gap:6px;align-items:center}.phd select{flex:1;min-width:0;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 8px;font-weight:700;font-size:.8rem}
 .par .txt{font-size:calc(var(--fs,1.18rem) * .86);line-height:1.65}
+.pcols{display:grid;grid-template-columns:repeat(var(--pc,2),minmax(0,1fr));gap:0 14px;align-items:start}.pcol{height:calc(100dvh - var(--barh,110px) - 100px);min-height:320px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:0 2px 40px;border-top:1px solid var(--line)}.pcol .c1,.pcol .v2{padding:6px 0;border-bottom:1px solid var(--line)}.par3 .pcols{gap:0 8px}.par4 .pcols{gap:0 5px}
 .par .txt .pr{display:grid;grid-template-columns:repeat(var(--pc,2),minmax(0,1fr));gap:0 14px;padding:6px 0;border-bottom:1px solid var(--line)}
 .par3 .txt{font-size:calc(var(--fs,1.18rem) * .8)}
 .par4 .txt{font-size:calc(var(--fs,1.18rem) * .7)}
@@ -700,13 +701,19 @@ body.lay-l .rail .dnav{flex:1 1 auto}
     var head='<div class="phd"><span class="phc"><span class="p2"><select data-mver="1" aria-label="The first column\u2019s version">'+$('ver').innerHTML+'</select><button type="button" class="ogall" data-hear="m" aria-pressed="false" title="Hear the whole chapter in '+esc(V1.s)+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button></span><span class="p2 pbc">'+bkBtn(AT.b,AT.c,'m')+'</span></span>'+PK.map(function(x,i){ var at=x.P.at||{b:AT.b,c:AT.c}; return '<span class="phc"><span class="p2"><select data-pi="'+i+'" aria-label="'+(i?'The third column':'The version beside it')+'">'+parOpts(i,1)+'</select>'
         +(!x.none?'<button type="button" class="ogall" data-hear="'+i+'" aria-pressed="false" title="Hear the whole chapter in '+esc(x.P.s)+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button>':'')
         +'<button type="button" class="ib sm" data-px="'+i+'" aria-label="'+(n===1?'Close side by side':'Take this column away')+'">&#10005;</button></span><span class="p2 pbc">'+bkBtn(at.b,at.c,i)+'</span></span>'; }).join('')+(n<3?'<button type="button" class="padd" data-padd="1" aria-label="Add a '+(n<2?'third':'fourth')+' column">&#65291; Add '+(n<2?'a 3rd':'a 4th')+' column</button>':'')+'</div>';
-    $('txt').innerHTML=head+all.map(function(v){ return '<div class="pr"><div class="c1" lang="'+vlang(V1)+'" dir="'+(V1.rtl?'rtl':'ltr')+'">'+(VT[v]?verseH(v):'')+'</div>'
-      +PK.map(function(x,i){ var P=x.P, d=P.rtl?'rtl':'ltr';
+    var colCell=function(x,i,v){ var P=x.P, d=P.rtl?'rtl':'ltr';
         if(P.og){ var o=x.J&&x.J.v[String(v)];
           return '<div class="v2 ogc" data-v="'+v+'" data-pi="'+i+'" lang="'+P.l+'" dir="'+d+'">'+(o?'<span class="vn">'+v+'</span><button type="button" class="ogs" data-ogs="'+v+'" aria-label="Hear verse '+v+' in '+P.s+'">🔊</button>'
             +o.w.map(function(w,j){ return '<span class="ow" data-oi="'+j+'">'+esc(w[0])+'</span>'; }).join(' ')
             +'<span class="otr">'+esc(o.w.map(function(w){ return w[1]; }).join(' '))+'</span>':(x.none&&v===all[0]?'<small>'+P.s+' could not be opened.</small>':''))+'</div>'; }
-        return '<div class="v2" data-v="'+v+'" data-pi="'+i+'" lang="'+vlang(P)+'" dir="'+d+'">'+(x.T[v]?'<span class="vn">'+v+'</span><span class="vt2">'+colHtml(colInfoOf(x,i),v)+'</span>':'')+'</div>'; }).join('')+'</div>'; }).join(''); var mv=$('txt').querySelector('[data-mver]'); if(mv) mv.value=ver().k; xrMark(); colPaint(); }
+        return '<div class="v2" data-v="'+v+'" data-pi="'+i+'" lang="'+vlang(P)+'" dir="'+d+'">'+(x.T[v]?'<span class="vn">'+v+'</span><span class="vt2">'+colHtml(colInfoOf(x,i),v)+'</span>':'')+'</div>'; };
+    /* Ken, 13 Nov: when a column shows a different chapter from the first (Revelation 1 beside Revelation 20) each column scrolls on its own */
+    var indep=PK.some(function(x){ var at=x.P.at; return at&&(at.b!==AT.b||at.c!==AT.c); });
+    if(indep){ var vs1=ns.slice().sort(num), cols='<div class="pcol">'+vs1.filter(function(v){ return VT[v]; }).map(function(v){ return '<div class="c1" lang="'+vlang(V1)+'" dir="'+(V1.rtl?'rtl':'ltr')+'">'+verseH(v)+'</div>'; }).join('')+'</div>';
+      PK.forEach(function(x,i){ var keys=Object.keys(x.P.og?((x.J&&x.J.v)||{}):x.T).map(Number).sort(num); cols+='<div class="pcol">'+(keys.length?keys.map(function(v){ return colCell(x,i,v); }).join(''):colCell(x,i,all[0]||1))+'</div>'; });
+      $('txt').innerHTML=head+'<div class="pcols">'+cols+'</div>'; var mv0=$('txt').querySelector('[data-mver]'); if(mv0) mv0.value=ver().k; xrMark(); colPaint(); return; }
+    $('txt').innerHTML=head+all.map(function(v){ return '<div class="pr"><div class="c1" lang="'+vlang(V1)+'" dir="'+(V1.rtl?'rtl':'ltr')+'">'+(VT[v]?verseH(v):'')+'</div>'
+      +PK.map(function(x,i){ return colCell(x,i,v); }).join('')+'</div>'; }).join(''); var mv=$('txt').querySelector('[data-mver]'); if(mv) mv.value=ver().k; xrMark(); colPaint(); }
   $('txt').addEventListener('change',function(e){ var d=e.target.dataset||{};
     if(e.target.dataset&&e.target.dataset.mver){ $('ver').value=e.target.value; $('ver').dispatchEvent(new Event('change')); return; } var p=e.target.dataset&&e.target.dataset.pi; if(p!=null&&e.target.tagName==='SELECT'){ putPar(+p,e.target.value); go(AT.b,AT.c,0,true); htUI(); } });
   // hearing the Hebrew or Greek: tap a word for it alone (and how to say it, and what it means), 🔊 for the verse, ▶ Hear for the chapter
