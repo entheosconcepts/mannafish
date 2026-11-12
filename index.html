@@ -717,7 +717,7 @@ html.card{overflow:hidden}html.card body{overflow:hidden}
 .deck .refs.r9{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:8px 10px !important;margin-top:8px !important}.dall .ref .r{font-size:clamp(.72rem,2.3cqw,.95rem) !important}.dall .ref .s{font-size:clamp(.66rem,1.9cqw,.85rem) !important}
 .dall .hr{margin:8px 0 !important}.dall.nosnip .ref .s{display:none}.dall.nosnip .refs.r9{gap:6px 10px !important}
 /* one card (Ken, 31 Oct): the turn-over button goes to the top left, beside the title, so the verses keep the bottom */
-.dcard.dall{padding:12px clamp(10px,3cqw,30px) 10px}.deck:has(.dall) .dturn{top:10px;bottom:auto;left:10px;height:34px;font-size:1.4rem;padding:0 10px}
+.dcard.dall{padding:12px clamp(10px,3cqw,30px) 10px}.deck:has(.dall) .dturn{top:10px;bottom:auto;left:10px;height:32px;font-size:.85rem;padding:0 11px 0 9px}
 /* a phone: Greek and Hebrew in short (the word, how to say it, the meaning in two lines; tap either one for the concordance), then the nine verses */
 .dall.tighter{padding-top:8px}.dall.tighter .wtitle{font-size:clamp(1.15rem,5cqw,1.8rem) !important;line-height:1.1 !important}.dall.tighter .wsub{display:none}
 .dall.tighter .hr{margin:4px 0 !important}.dall.tighter .langs{gap:0 8px !important}.dall.tighter .lang{cursor:pointer}
@@ -731,7 +731,7 @@ html.card{overflow:hidden}html.card body{overflow:hidden}
 .dnav{position:absolute;right:20px;bottom:18px;z-index:6;display:flex;align-items:center;gap:8px;font:600 .72rem 'Archivo',sans-serif;color:var(--foam-dim,#9fb2b6)}
 .dnav[hidden]{display:none}
 .dturn{position:absolute;left:20px;bottom:18px;z-index:6;height:30px;border-radius:999px;border:1px solid rgba(196,210,214,.3);background:#000;color:#eaf0f0;font:700 .9rem 'Archivo',sans-serif;padding:0 10px;cursor:pointer;opacity:.8}
-.dturn:hover{opacity:1}.dturn{font-size:1.5rem;font-weight:900;line-height:1;min-width:44px;height:36px;color:#fff;opacity:1;border-color:rgba(255,255,255,.55);-webkit-text-stroke:1.2px #fff}   /* Ken, 12 Nov: a tad bigger and bold so it can be seen on a phone */
+.dturn:hover{opacity:1}.dturn{display:inline-flex;align-items:center;gap:7px;font:900 .95rem/1 Archivo,sans-serif;letter-spacing:.08em;min-width:44px;height:36px;padding:0 13px 0 11px;color:#fff;opacity:1;border:1.5px solid rgba(255,255,255,.6)}.dturn span{pointer-events:none}   /* Ken, 12 Nov: a tad bigger and bold so it can be seen on a phone */
 .ftmid{display:inline-flex;gap:8px;pointer-events:none}
 .fishtog .stb{pointer-events:auto;width:30px;height:30px;padding:0;font-size:.85rem}
 .stb{pointer-events:auto;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(0,0,0,.6);color:#eaf0f0;font:700 .95rem 'Archivo',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;opacity:.7;transition:opacity .2s}
@@ -2594,7 +2594,7 @@ window.MF=(function(){
     var g=document.createElement('div'); g.className='refs r9'; [].slice.call(src.querySelectorAll('.refs .ref'),0,9).forEach(function(r){ g.appendChild(noIds(r.cloneNode(true))); }); c1.appendChild(g);
     ['tight','tighter','tightest','nosnip'].forEach(function(t){ if(over(c1)) c1.classList.add(t); });
     // Ken, 16 Oct: on card 3 or 4 there was no sign of the way back -- a small button, bottom left, turns the fish over
-    var tb=document.createElement('button'); tb.type='button'; tb.className='dturn'; tb.setAttribute('aria-label','Turn the fish over'); tb.title='Turn the fish over'; tb.innerHTML='&#8592;'; /* Ken, 12 Nov: just a back arrow, no fish icon */ deck.appendChild(tb);
+    var tb=document.createElement('button'); tb.type='button'; tb.className='dturn'; tb.setAttribute('aria-label','Turn the fish over'); tb.title='Turn the fish over'; tb.innerHTML='<svg viewBox="0 0 24 20" width="20" height="17" aria-hidden="true"><path d="M10 1 1 10l9 9v-5.5h13v-7H10z" fill="currentColor"/></svg><span>FLIP</span>'; /* Ken, 12 Nov: "maybe even FLIP, with a short fat arrow" */ deck.appendChild(tb);
     var nav=document.createElement('div'); nav.className='dnav'; nav.innerHTML='<button type="button" class="dprev" aria-label="Previous card">‹</button><span class="dpos"></span><button type="button" class="dnext" aria-label="Next card">›</button>';
     deck.appendChild(nav); deckShow(deck, Math.min(keep, cards.length-1)); }
   function deckShow(deck,k){ var cs=deck.querySelectorAll('.dcard'), N=cs.length; k=Math.max(0,Math.min(N-1,k)); deck.dataset.at=k;

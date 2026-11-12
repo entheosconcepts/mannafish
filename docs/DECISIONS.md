@@ -606,6 +606,7 @@ docs/LAUNCH.md. Ken's full words are in the transcript at `/root/.claude/project
 - 12 Nov (4-letter rule; Give too small) · Ken asked "What is the rule for 4 letter words?" then, with a screenshot of the Give fish (Joshua 15:19, D445): "Too small". Answer: base 583 x step 4 = 1.14 (was 1.2). Changed the step to 1.22 and redrew everything (see NOW). Measured before: 4-letter words fill 44% to 63% of the eye width, Give 48%.
 - 12 Nov (4-letter = 5-letter size) · Ken: "I think 4 letter words need to be same size as 5 letter words". The letter size for 4 letters was already larger than for 5 (711 against 653), but 4-letter words are narrower, so they looked smaller. Added `word.minW` (`fishfmt.js` x2, `fishgeo.json`): a 4-letter word gets at least 62% of the eye width (tall-letter reduction and the edge-room rule still apply), so its width matches a 5-letter word's. All fish redrawn.
 - 12 Nov (bigger back arrow) · Ken: the back arrow on the fish needs to be a tad bigger and bold so people can see it on a phone. `.dturn` in `index.html`: arrow 1.5rem, heavy stroke, white, button 44 x 36 (smaller card layouts 1.4rem).
+- 12 Nov (FLIP button) · Ken: "Maybe even FLIP? With a short fat arrow?" The back control on the fish (`.dturn`, `index.html`) is now a short fat arrow drawn as an SVG plus the word FLIP, bold, white outline.
 ---
 
 ## E. GOTCHAS AND FIXES
