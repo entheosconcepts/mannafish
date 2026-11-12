@@ -43,3 +43,10 @@ Back button on the Books screen · Go Fish: Make it my fish today · no fish two
 heading · Build follows the standard size and centring · Admin view / User view · co-labor back with nine Scriptures · Make the
 back yours with a cart (at least 100) · the devotional read on the card (Listen) and turned over (Read) · Free MannaFish → find
 or nominate a Hub · every fish from the email opens on the Today page.
+
+## Maybe later (ideas Ken parked, not decided)
+- [ ] **Dismissible message card on Today** (idea from the YouVersion app's "Discover More / Dismiss" card, 12 Nov): sponsor thank-yous, the 2 Fish Challenge, a Hub opening. Parked: "not yet, maybe later".
+- [ ] **Public "why it's free" page**: the vision story, sponsors thanked by name, a running count of fish given away, one Sponsor a fish button; later a simple journal by year and category (YouVersion blog as the model). Parked.
+- [ ] **A quiet "days in the Word" count** (a streak with no points or badges) and a **Community tab** with a red dot (fish stories, Hubs, nominations). Parked; the streak needs Ken's OK because of the no earn-style rewards rule.
+- [ ] **Reminders that work when the app is closed** (per-person times through the push system); the dashboard calendar only buzzes while MannaFish is open.
+- [ ] **Approve / ban page for made fish** and blocking a user (the made-fish emails exist; this is the next step if they start arriving flagged).
