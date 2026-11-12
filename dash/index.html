@@ -30,7 +30,7 @@ h1{font:600 1.9rem/1.15 'Fraunces',Georgia,serif;text-align:center;margin:18px 0
 .tile:hover{background:var(--card2);border-color:var(--blue2)}.tile .ic{font-size:2rem;line-height:1}
 .tile .x,.tile .mv{display:none;position:absolute;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--text);font-size:.8rem;cursor:pointer;align-items:center;justify-content:center;padding:0}
 .edit .tile .x{display:flex;top:-8px;right:-8px}.edit .tile .mv.l{display:flex;bottom:-8px;left:-8px}.edit .tile .mv.r{display:flex;bottom:-8px;right:-8px}
-.edit .tile{border-style:dashed}.tile.add{border-style:dashed;color:var(--blue2)}
+.edit .tile{border-style:dashed;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}.edit .panel h2{touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}.hd{color:var(--dim)}.panel.over,.tile.over{outline:2px solid var(--blue2);outline-offset:2px}.ghost{position:fixed;z-index:90;pointer-events:none;opacity:.88;box-shadow:0 14px 34px -8px rgba(0,0,0,.7);transform:scale(1.04)}.tile.lift,.panel.lift{opacity:.35}.tile.add{border-style:dashed;color:var(--blue2)}
 .bar2{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 6px}
 .panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin:6px 0 30px}
 .panel{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:14px 14px 16px}.panel h2{margin:0 0 8px;font:600 1.15rem 'Fraunces',Georgia,serif}
@@ -50,7 +50,7 @@ body.mftabbed{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
 <body>
 <div class="wrap">
   <div class="top"><a class="brand" href="/">Manna<b>Fish</b></a><span><button type="button" class="ib" id="modeB" aria-label="Light or dark">&#9728;&#xFE0E;</button></span></div>
-  <h1 id="hi">Hello</h1><p class="sub">Your MannaFish, the way you want it.</p>
+  <h1 id="hi">Hello</h1><p class="sub">Your MannaFish, the way you want it. <span id="hint" style="display:none">Press and drag an icon or a section’s title to move it.</span></p>
   <div class="bar2"><button type="button" class="ib" id="editB">&#9998;&#xFE0E; Edit my dashboard</button></div>
   <div class="grid" id="grid"></div>
   <div class="panels" id="panels"></div>
@@ -75,9 +75,9 @@ body.mftabbed{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
   var EDIT=false;
   function mine(){ var a=get('mf-dash',null); a=Array.isArray(a)?a.filter(function(id){ return ALL.some(function(t){ return t[0]===id; }); }):null; return a&&a.length?a:DEF.slice(); }
   function tile(id){ return ALL.filter(function(t){ return t[0]===id; })[0]; }
-  function draw(){ var M=mine(); document.body.classList.toggle('edit',EDIT); $('editB').textContent=EDIT?'✓ Done':'✎ Edit my dashboard';
+  function draw(){ var M=mine(); document.body.classList.toggle('edit',EDIT); $('editB').textContent=EDIT?'✓ Done':'✎ Edit my dashboard'; $('hint').style.display=EDIT?'inline':'none';
     $('grid').innerHTML=M.map(function(id,i){ var t=tile(id); var inner='<span class="ic">'+t[1]+'</span><span>'+esc(t[2])+'</span>'+(EDIT?'<button type="button" class="x" data-x="'+id+'" aria-label="Take off">✕</button>'+(i>0?'<button type="button" class="mv l" data-m="'+i+'" data-d="-1" aria-label="Move left">◀</button>':'')+(i<M.length-1?'<button type="button" class="mv r" data-m="'+i+'" data-d="1" aria-label="Move right">▶</button>':''):'');
-      return /^#/.test(t[3])?'<div class="tile" role="button" tabindex="0" data-go="'+t[3]+'">'+inner+'</div>':'<a class="tile" href="'+t[3]+'">'+inner+'</a>'; }).join('')+(EDIT?'<div class="tile add" role="button" tabindex="0" data-add="1"><span class="ic">＋</span><span>Add</span></div>':'');
+      return /^#/.test(t[3])?'<div class="tile" data-id="'+id+'" role="button" tabindex="0" data-go="'+t[3]+'">'+inner+'</div>':'<a class="tile" data-id="'+id+'" href="'+t[3]+'" draggable="false">'+inner+'</a>'; }).join('')+(EDIT?'<div class="tile add" role="button" tabindex="0" data-add="1"><span class="ic">＋</span><span>Add</span></div>':'');
     panels(M); }
   $('grid').addEventListener('click',function(e){ var x=e.target.closest('[data-x]'), m=e.target.closest('[data-m]'), a=e.target.closest('[data-add]'), g=e.target.closest('[data-go]');
     if(x){ e.preventDefault(); put('mf-dash',mine().filter(function(id){ return id!==x.dataset.x; })); draw(); return; }
@@ -87,13 +87,32 @@ body.mftabbed{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
     if(g&&!EDIT){ var el=$(g.dataset.go.slice(1)+'P'); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); } });
   $('pick').addEventListener('click',function(e){ var p=e.target.closest('[data-pick]'); if(e.target===$('pick')||(p&&p.dataset.pick==='')){ $('pick').hidden=true; return; } if(p){ var M=mine(); M.push(p.dataset.pick); put('mf-dash',M); $('pick').hidden=true; draw(); } });
   $('editB').addEventListener('click',function(){ EDIT=!EDIT; draw(); });
+  /* Ken, 13 Nov: "make it easy for users to shift icons or move sections around": in edit mode press a tile (or a section's heading) and drag it; it is placed where you let go */
+  (function(){ var D=null;
+    function itemAt(x,y,kind){ var els=document.elementsFromPoint(x,y); for(var i=0;i<els.length;i++){ var e=els[i].closest&&els[i].closest(kind); if(e&&e.dataset.id&&!e.classList.contains('ghost')) return e; } return null; }
+    document.addEventListener('pointerdown',function(e){ if(!EDIT||e.button>0) return; if(e.target.closest('button,input,a.x')) return;
+      var kind=null, el=e.target.closest('.tile[data-id]'); if(el) kind='.tile'; else { var h=e.target.closest('.panel h2'); if(h){ el=h.closest('.panel'); kind='.panel'; } }
+      if(!el) return; D={el:el,kind:kind,x:e.clientX,y:e.clientY,on:false,id:el.dataset.id,over:null}; });
+    document.addEventListener('pointermove',function(e){ if(!D) return;
+      if(!D.on){ if(Math.abs(e.clientX-D.x)+Math.abs(e.clientY-D.y)<8) return; D.on=true; var r=D.el.getBoundingClientRect(); D.g=D.el.cloneNode(true); D.g.className=D.el.className+' ghost'; D.g.style.width=r.width+'px'; D.g.style.height=r.height+'px'; D.dx=e.clientX-r.left; D.dy=e.clientY-r.top; document.body.appendChild(D.g); D.el.classList.add('lift'); }
+      e.preventDefault(); D.g.style.left=(e.clientX-D.dx)+'px'; D.g.style.top=(e.clientY-D.dy)+'px';
+      var t=itemAt(e.clientX,e.clientY,D.kind); if(D.over&&D.over!==t) D.over.classList.remove('over'); D.over=t&&t!==D.el?t:null; if(D.over) D.over.classList.add('over');
+      D.cy=e.clientY; if(!D.sc) D.sc=setInterval(function(){ if(!D) return; if(D.cy>innerHeight-80) scrollBy(0,16); else if(D.cy<80) scrollBy(0,-16); },16); },{passive:false});
+    function end(){ if(!D) return; var d=D; D=null; clearInterval(d.sc); if(d.g) d.g.remove(); d.el.classList.remove('lift'); if(d.over) d.over.classList.remove('over'); if(!d.on||!d.over) return;
+      var M=mine(), ids=[].map.call(document.querySelectorAll(d.kind==='.tile'?'#grid .tile[data-id]':'#panels .panel[data-id]'),function(x){ return x.dataset.id; });
+      var from=ids.indexOf(d.id), to=ids.indexOf(d.over.dataset.id); if(from<0||to<0) return; ids.splice(to,0,ids.splice(from,1)[0]);
+      if(d.kind==='.tile') M=ids; else { var slots=[]; M.forEach(function(id,i){ if(ids.indexOf(id)>=0) slots.push(i); }); slots.forEach(function(si,k){ M[si]=ids[k]; }); }
+      put('mf-dash',M); draw(); }
+    document.addEventListener('pointerup',end); document.addEventListener('pointercancel',end);
+    document.addEventListener('click',function(e){ if(EDIT&&e.target.closest('.tile[data-id]')&&!e.target.closest('button')) e.preventDefault(); },true); })();
   // ── the priority list and the calendar share one list (mf-prio): {id, t, done, date: 'YYYY-MM-DD', time: 'HH:MM'}
   function items(){ var a=get('mf-prio',[]); return Array.isArray(a)?a:[]; }
   function today(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
   var CM=new Date(), SEL=today();
-  function panels(M){ var h='';
-    if(M.indexOf('prio')>=0) h+='<div class="panel" id="prioP"><h2>✅ Priority list</h2><form class="add" id="pF"><input type="text" id="pT" maxlength="120" placeholder="What matters most today?"><input type="date" id="pD" aria-label="Date (optional)"><input type="time" id="pH" aria-label="Time (optional)"><button type="submit">Add</button></form><div id="pL"></div></div>';
-    if(M.indexOf('cal')>=0) h+='<div class="panel" id="calP"><h2>📅 Calendar</h2><div class="cn"><button type="button" class="ib" id="cPrev">‹</button><b id="cTitle"></b><button type="button" class="ib" id="cNext">›</button></div><div class="cal" id="cG"></div><form class="add" id="cF" style="margin-top:10px"><input type="text" id="cT" maxlength="120" placeholder="Add a reminder for the selected day"><input type="time" id="cH" aria-label="Time"><button type="submit">Add</button></form><div id="cL"></div><p class="empty" style="padding:6px 0 0;font-size:.8rem">Reminders show here and buzz while MannaFish is open. Reminders when the app is closed need a notification service, which is not on yet.</p></div>';
+  function panels(M){ var P={};
+    if(M.indexOf('prio')>=0) P.prio='<div class="panel" data-id="prio" id="prioP"><h2>'+(EDIT?'<span class="hd">⠿</span> ':'')+'✅ Priority list</h2><form class="add" id="pF"><input type="text" id="pT" maxlength="120" placeholder="What matters most today?"><input type="date" id="pD" aria-label="Date (optional)"><input type="time" id="pH" aria-label="Time (optional)"><button type="submit">Add</button></form><div id="pL"></div></div>';
+    if(M.indexOf('cal')>=0) P.cal='<div class="panel" data-id="cal" id="calP"><h2>'+(EDIT?'<span class="hd">⠿</span> ':'')+'📅 Calendar</h2><div class="cn"><button type="button" class="ib" id="cPrev">‹</button><b id="cTitle"></b><button type="button" class="ib" id="cNext">›</button></div><div class="cal" id="cG"></div><form class="add" id="cF" style="margin-top:10px"><input type="text" id="cT" maxlength="120" placeholder="Add a reminder for the selected day"><input type="time" id="cH" aria-label="Time"><button type="submit">Add</button></form><div id="cL"></div><p class="empty" style="padding:6px 0 0;font-size:.8rem">Reminders show here and buzz while MannaFish is open. Reminders when the app is closed need a notification service, which is not on yet.</p></div>';
+    var h=M.filter(function(id){ return P[id]; }).map(function(id){ return P[id]; }).join('');
     $('panels').innerHTML=h; if(M.indexOf('prio')>=0) prio(); if(M.indexOf('cal')>=0) cal(); }
   function row(x,why){ return '<div class="it'+(x.done?' done':'')+'" data-id="'+x.id+'"><input type="checkbox" data-t="1"'+(x.done?' checked':'')+' aria-label="Done"><span>'+esc(x.t)+'</span><small>'+esc((x.date&&why!=='day'?x.date.slice(5)+' ':'')+(x.time||''))+'</small>'+(why==='prio'?'<button type="button" data-up="1" aria-label="Move up">▲</button>':'')+'<button type="button" data-del="1" aria-label="Delete">✕</button></div>'; }
   function prio(){ var a=items(); $('pL').innerHTML=a.length?a.map(function(x){ return row(x,'prio'); }).join(''):'<p class="empty">Nothing yet. Put the most important thing first, and use ▲ to move something to the top.</p>'; }
