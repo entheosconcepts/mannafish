@@ -22,8 +22,8 @@
   // the entire space inside the fish ... a rule for the four and five letter words and three so that it's not so much bigger than
   // all the other words"): a short word's letters may be at most this much taller than a 7-letter word's (base: the size the
   // builder gives the middle 7-letter word); longer words are mostly set by the eye's width, never above 1.03 of it
-  // (Ken, 2 Nov: "make all 4 letter words a little smaller": 4 letters 1.2 to 1.14, about 5% smaller, still a touch above 5 letters)
-  var RULE={word:{size:880,fill:0.80,min:560,sx:1,cx:1677,cy:975,stroke:27.8,room:40,tall:0.15,base:583,steps:{3:1.25,4:1.14,5:1.12,6:1.06,7:1.03}},
+  // (Ken, 2 Nov: "make all 4 letter words a little smaller": 4 letters 1.2 to 1.14; Ken, 12 Nov: "Too small" (Give): 1.14 to 1.22, about 7% bigger)
+  var RULE={word:{size:880,fill:0.80,min:560,sx:1,cx:1677,cy:975,stroke:27.8,room:40,tall:0.15,base:583,steps:{3:1.25,4:1.22,5:1.12,6:1.06,7:1.03}},
     verse:{size:222,cond:0.95,start:0.027,end:0.978,mid:0.5,stroke:3,up:200,down:42},
     ref:{size:192,avail:980,stroke:7,cond:1,up:200,down:66}};
   var HOBOCAP=832.3333333333333/1000;   // Hobo's capital H, per unit of size: every script's letters are matched to this height
