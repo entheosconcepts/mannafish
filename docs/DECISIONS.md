@@ -608,6 +608,7 @@ docs/LAUNCH.md. Ken's full words are in the transcript at `/root/.claude/project
 - 12 Nov (bigger back arrow) · Ken: the back arrow on the fish needs to be a tad bigger and bold so people can see it on a phone. `.dturn` in `index.html`: arrow 1.5rem, heavy stroke, white, button 44 x 36 (smaller card layouts 1.4rem).
 - 12 Nov (FLIP button) · Ken: "Maybe even FLIP? With a short fat arrow?" The back control on the fish (`.dturn`, `index.html`) is now a short fat arrow drawn as an SVG plus the word FLIP, bold, white outline.
 - 12 Nov (what the devotional ends with; twice a week) · Ken asked for Option A again, what the audio ends with, tap-a-verse and Go Fish instructions added, and a Wednesday full line / Friday short reminder, then "send it to me here and I'll listen before I decide". Done in `index.html` (`DVT.en/es` `end`, `endW`, `endF`; `dvPromoDay`; `shareRender` `promo`; `?sim=` and `?tail=1` for trying it). Ken's earlier rule check: sponsors can be anyone, fish never sold or resold; print "Always free · Not for resale" on the card back and a checkbox on the sponsor form (not yet done).
+- 13 Nov (tools on the WEB column) · Ken (screenshot, KJV and WEB side by side): "if I tap on the words highlighted on the web version it does not open to tools, it just underlines the verse". Cause: another column only showed the colour bar. `bible/index.html`: `colTool`/`colCtx`, `#colTools`, `#colNoteBox`; the bar shows the verse name and version, and rows of Copy, Define, Note, Save, Pray, Explain, Share.
 ---
 
 ## E. GOTCHAS AND FIXES
