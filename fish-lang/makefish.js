@@ -17,8 +17,8 @@
   function script(u,ok){ return ok()?Promise.resolve():new Promise(function(res,rej){ var s=document.createElement('script'); s.src=u; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); }
   var DEP=null;
   function load(){ return DEP||(DEP=Promise.all([script('/fish-lang/opentype.min.js',function(){ return !!window.opentype; }).then(function(){ return script('/fish-lang/fishfmt.js',function(){ return !!window.MFfmt; }); }),
-      fetch('/fish-lang/fishgeo.json').then(function(r){ return r.json(); }),fetch('/fish-lang/hobo.otf').then(function(r){ return r.arrayBuffer(); })])
-    .then(function(x){ MFfmt.setGeo(x[1]); return {E:MFfmt.otEngine(opentype.parse(x[2])),R:x[1].rule}; }).catch(function(e){ DEP=null; throw e; })); }
+      fetch('/fish-lang/fishgeo.json').then(function(r){ return r.json(); }),fetch('/fish-lang/hobo.otf').then(function(r){ return r.arrayBuffer(); }),fetch('/api/fish-rule',{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).catch(function(){ return null; })])
+    .then(function(x){ MFfmt.setGeo(x[1]); var R=x[1].rule, o=x[3]&&x[3].rule; if(o&&R&&R.word) ['minW','steps'].forEach(function(k){ if(o[k]&&Object.keys(o[k]).length) R.word[k]=Object.assign({},R.word[k]||{},o[k]); }); return {E:MFfmt.otEngine(opentype.parse(x[2])),R:R}; })   /* the rule tool's saved settings (/api/fish-rule) apply at once */.catch(function(e){ DEP=null; throw e; })); }
   // Hobo has Latin letters only (English, Spanish, Tagalog, German ...)
   function latin(t){ return /^[\p{Script=Latin}\p{N}\p{P}\p{Zs}\p{S}]*$/u.test(String(t||'')); }
   // the verse along the two curves: the part with the word in it when the verse is long (… where it is cut), split near the middle

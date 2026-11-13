@@ -7,6 +7,7 @@
 # Needs OPENTYPE, HOBO, HARFBUZZ (see tools/fish-format/README.md).
 set -e
 cd "$(dirname "$0")/../.."
+node tools/fish/pull-rule.mjs || true   # the rule tool's saved settings (/edit/rule/)
 ( cd tools/fish-format && node build.js && node build.js daily-lines.json && node build.js extra-lines.json && node build-lang.js )
 python3 tools/fish/sync.py
 python3 tools/fish/net.py

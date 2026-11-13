@@ -86,3 +86,5 @@ Not needed for launch: texting (carrier registration), app stores, sponsor prici
 **Also done (13 Nov):** basket button wording, green Hubs / Nominate buttons, 2 new places. Waiting on Ken: confirm Vigilant Hope and Mailbox Express Market St addresses.
 
 **Also done (13 Nov):** sponsor decal order form + QR choice, /vision/ page (generic). Waiting on Ken: how to take payment; his words for /vision/.
+
+**Also done (13 Nov):** rule tool /edit/rule/, English 24 editable on the edit sheet, Go smaller. Waiting on Ken: look at /edit/rule/ and set the sizes; say whether to switch the site to the rebuilt 24; whether to build the nightly auto-redraw.

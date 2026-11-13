@@ -123,6 +123,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 </header>
 <p class="cloud" id="cloud"></p>
 <details class="rules" id="rulesBox"><summary>The rules · copy · undo</summary>
+  <p class="hint" style="text-align:left"><a href="/edit/rule/" style="color:#7fb1ff;font-weight:700">⚙️ Open the fish rule tool</a>: sliders for how big a word is by its number of letters, with live sample fish. Save keeps it for good.</p>
   <ul>
     <li>The reference on the tail and the MannaFish™ logo are always the same size on every fish (168). A long reference is shortened, never made smaller.</li>
     <li>New fish: each verse line runs the length of its curve like your original 24 (size 170 to 230), and the word fills the eye, unless a rule or your own setting says otherwise.</li>
@@ -257,10 +258,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   // ═════ the fish ═════
   var HOLD={}, D=null, N=null, DY=null, BASE='', FJ={}, set=ls('mf-edit-set')||'24', lang=ls('mf-edit-show')||'B', q='', show='all', F={}, LIST=[];
   // the English 24 are Ken's own drawings; the other languages are the builder's fish as live text (edit/lang/, made with them)
-  function fishJson(code){ if(!FJ[code]) FJ[code]=fetch(code==='en'?'/match/fish-en.json':'/edit/lang/'+code+'.json').then(function(r){ return r.json(); }); return FJ[code]; }
+  function fishJson(code){ if(!FJ[code]) FJ[code]=fetch('/edit/lang/'+code+'.json').then(function(r){ return r.json(); }); return FJ[code]; }
   function langOf(l){ return D.langs.filter(function(x){ return x.l===l; })[0]; }
   function make24(n){ var num=parseInt(n,10), L=langOf(n.slice(-1)), w=D.words[num-1];
-    return {id:n,set:'24',code:L.code,langName:L.name,key:w.key,title:D.f[n].word,sub:w.en+' · '+L.name,base:D.f[n],drawn:L.code==='en',num:num}; }
+    return {id:n,set:'24',code:L.code,langName:L.name,key:w.key,title:D.f[n].word,sub:w.en+' · '+L.name,base:D.f[n],drawn:false,num:num}; }
   function makeNew(f){ return {id:f.k,set:'new',code:'en',langName:'English',title:f.word,sub:'Week '+f.w+' · '+f.ref+' · '+f.series+(f.first?' · first pick':''),base:f,nf:f}; }
   function makeDaily(f){ return {id:f.k,set:'new',daily:true,code:'en',langName:'English',title:f.word,sub:(f.inplan?'Week '+f.w+' · Day '+f.day+' · '+(f.half==='am'?'☀ day reading':'🌙 night reading')+' · '+f.read:'Spare: another fish shares its reading · Week '+f.w)+' · '+f.ref+(f.src==='weekly'||f.src==='alt'?' · from the year fish':''),base:f,nf:f}; }
   function val(X,f){ var o=S.d[X.id]; return o&&o[f]!=null?o[f]:(X.base[f]==null?'':X.base[f]); }

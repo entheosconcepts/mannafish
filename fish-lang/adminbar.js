@@ -31,7 +31,7 @@
     if(f&&f.word){ var k=String(f.key||''), set=/^D\d/.test(k)?'daily':/^[WX]\d/.test(k)?'new':'';
       ed='<a href="/edit/?find='+encodeURIComponent(f.word)+(set?'&set='+set:'&code=en')+'">✏️ Edit this fish: '+esc(f.word)+'<small>Word size, place, lines, on the edit sheet</small></a><hr>'; }
     p.innerHTML=ed
-      +'<a href="/edit/">✏️ Edit sheet<small>Every fish; templates for word size and place</small></a>'
+      +'<a href="/edit/">✏️ Edit sheet<small>Every fish; templates for word size and place</small></a><a href="/edit/rule/">⚙️ Fish rule tool<small>Word size by letters, live samples, save</small></a>'
       +'<a href="/fish/review/">✅ Review all fish<small>Tick Edit or Remove on every fish</small></a>'
       +'<a href="/fish/">🐟 The 153<small>Print, edit or ask for a change</small></a><a href="/fish/?year=1">📅 The 365</a>'
       +'<a href="/voices/">🎙 Voices<small>Hear the 20 voices, pick favorites</small></a>'

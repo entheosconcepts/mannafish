@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Fish rule tool · MannaFish</title>
+<link rel="icon" href="/icon-192.png">
+<!-- Ken, 13 Nov: "get this rule tool more accessible and working so we can put it on auto pilot". Move the sliders, watch the fish, tap Save: the new rule is kept on the server (/api/fish-rule).
+     New fish people make, and every redraw (tools/fish/redraw-all.sh pulls it first), follow it. -->
+<style>
+:root{--bg:#0b0e12;--card:#141a21;--line:#2b3641;--text:#eef2f4;--dim:#9fb0c2;--gold:#f5d76e;--blue:#2a5fb0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 Archivo,system-ui,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:14px 16px 90px}h1{font:700 1.6rem/1.2 system-ui,sans-serif;margin:8px 0}h2{font-size:1rem;margin:0 0 6px}
+p.sub{color:var(--dim);margin:0 0 14px}.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin:0 0 14px}
+.row{display:grid;grid-template-columns:110px 1fr 64px;gap:10px;align-items:center;margin:6px 0}.row b{font-weight:700}.row input[type=range]{width:100%}.row output{text-align:right;font-variant-numeric:tabular-nums;color:var(--gold);font-weight:700}
+.hint{color:var(--dim);font-size:.85rem;margin:2px 0 8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}.grid figure{margin:0;background:#000;border-radius:10px;overflow:hidden;position:relative}.grid figcaption{position:absolute;left:8px;top:4px;font-size:.72rem;color:#9fb0c2}.grid svg{display:block;width:100%;height:auto}
+.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(11,14,18,.96);border-top:1px solid var(--line);padding:10px 16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center}
+button{font:700 .95rem system-ui,sans-serif;border-radius:999px;border:1px solid var(--line);background:none;color:var(--text);padding:10px 16px;cursor:pointer}button.go{background:var(--blue);border-color:var(--blue)}button[disabled]{opacity:.5}
+input.k{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 10px;font:inherit;width:210px}
+#msg{min-height:1.4em;color:var(--gold);width:100%;text-align:center}
+a{color:#7fb1ff}
+</style>
+</head>
+<body>
+<main>
+  <h1>Fish rule tool</h1>
+  <p class="sub">How big the word is in the middle of the fish, by how many letters it has. Move a slider and every sample fish below changes. <b>Save</b> keeps it for good: fish people make follow it at once, and every redraw of the site’s fish (<code>tools/fish/redraw-all.sh</code>) pulls it first. <a href="/edit/">Back to the edit sheet</a></p>
+
+  <div class="box"><h2>Width: how much of the fish’s eye the word fills</h2>
+    <p class="hint">A 5-letter word fills about 62%. Short words are set as wide as this, so their letters come out taller; a lower number keeps very short words smaller. “Go” (2 letters) was too big at 62%.</p>
+    <div id="wid"></div></div>
+
+  <div class="box"><h2>Height: the tallest a word’s letters may be</h2>
+    <p class="hint">Compared with a 7-letter word (1.00). 3 letters at 1.25 means a quarter taller at most.</p>
+    <div id="stp"></div></div>
+
+  <div class="box"><h2>Sample fish</h2><div class="grid" id="grid"><p class="hint">Loading the fish…</p></div></div>
+</main>
+<div class="bar">
+  <input class="k" id="key" type="password" placeholder="Admin password (to save)" autocomplete="current-password">
+  <button type="button" id="save" class="go">Save the rule</button><button type="button" id="undo">Undo my changes</button><button type="button" id="base">Back to the built-in rule</button>
+  <div id="msg" role="status" aria-live="polite"></div>
+</div>
+<script src="/fish-lang/opentype.min.js"></script>
+<script src="/fish-lang/fishfmt.js"></script>
+<script>
+(function(){
+  var $=function(i){ return document.getElementById(i); }, WORDS=['Go','Be','Joy','Ask','Run','Rest','Hope','Peace','Love','Listen','Remember'], ENG=null, GEO=null, BASE=null, SAVED=null, CUR=null, tm=null;
+  function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k)||''; localStorage.setItem(k,v); }catch(e){ return ''; } }
+  $('key').value=ls('mf-admin-key');
+  var WID=[[2,'2 letters',0.46],[3,'3 letters',0.58],[4,'4 letters',0.62]], STP=[[3,'3 letters'],[4,'4 letters'],[5,'5 letters'],[6,'6 letters'],[7,'7 letters']];
+  function copy(o){ return JSON.parse(JSON.stringify(o)); }
+  function row(id,n,lab,min,max,step,val){ return '<div class="row"><b>'+lab+'</b><input type="range" id="'+id+n+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+val+'" aria-label="'+lab+'"><output id="'+id+n+'o">'+Number(val).toFixed(2)+'</output></div>'; }
+  function build(){ $('wid').innerHTML=WID.map(function(w){ return row('w',w[0],w[1],0.30,0.75,0.01,CUR.minW[w[0]]); }).join(''); $('stp').innerHTML=STP.map(function(w){ return row('s',w[0],w[1],0.9,1.6,0.01,CUR.steps[w[0]]); }).join('');
+    [].forEach.call(document.querySelectorAll('input[type=range]'),function(r){ r.addEventListener('input',function(){ var n=+r.id.slice(1), v=+r.value; (r.id[0]==='w'?CUR.minW:CUR.steps)[n]=v; $(r.id+'o').textContent=v.toFixed(2); clearTimeout(tm); tm=setTimeout(draw,60); }); }); }
+  function rule(){ var R=copy(GEO.rule); R.word.minW=Object.assign({},BASE.minW,CUR.minW); R.word.steps=Object.assign({},BASE.steps,CUR.steps); return R; }
+  function draw(){ var R=rule(), h=''; WORDS.forEach(function(w){ var f={word:w,top:'Be still, and know that I am God',bot:'I will be exalted among the nations...',ref:'Psalm 46:10',refShort:'Ps. 46:10',tag:' (KJV)'}; try{ var svg=MFfmt.svg(ENG,f,R); h+='<figure><figcaption>'+w.length+' letters</figcaption>'+svg+'</figure>'; }catch(e){ h+='<figure><figcaption>'+w+'</figcaption></figure>'; } }); $('grid').innerHTML=h; }
+  function msg(t){ $('msg').textContent=t||''; }
+  Promise.all([fetch('/fish-lang/fishgeo.json').then(function(r){ return r.json(); }),fetch('/fish-lang/hobo.otf').then(function(r){ return r.arrayBuffer(); }),fetch('/api/fish-rule',{cache:'no-store'}).then(function(r){ return r.ok?r.json():{rule:{}}; }).catch(function(){ return {rule:{}}; })]).then(function(x){
+    GEO=x[0]; MFfmt.setGeo(GEO); ENG=MFfmt.otEngine(opentype.parse(x[1]));
+    // the built-in rule (what the files carry) and what is saved on the server on top of it
+    BASE={minW:copy(GEO.rule.word.minW||{}),steps:copy(GEO.rule.word.steps||{})}; SAVED={minW:Object.assign({},BASE.minW,(x[2].rule||{}).minW||{}),steps:Object.assign({},BASE.steps,(x[2].rule||{}).steps||{})}; CUR=copy(SAVED); build(); draw();
+    msg(x[2].at?'Showing the rule saved '+new Date(x[2].at).toLocaleString():'Showing the built-in rule (nothing saved yet)');
+  }).catch(function(e){ $('grid').innerHTML='<p class="hint">The fish could not load: '+e.message+'</p>'; });
+  $('undo').addEventListener('click',function(){ CUR=copy(SAVED); build(); draw(); msg('Back to the last saved rule'); });
+  $('base').addEventListener('click',function(){ CUR=copy(BASE); build(); draw(); msg('Showing the built-in rule: tap Save to keep it'); });
+  $('save').addEventListener('click',function(){ var k=$('key').value.trim(); if(!k){ $('key').focus(); msg('Add the admin password to save.'); return; } $('save').disabled=true; msg('Saving…');
+    fetch('/api/fish-rule',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({k:k,rule:CUR})}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||r.status); return j; }); })
+      .then(function(j){ ls('mf-admin-key',k); SAVED=copy(CUR); msg('Saved. New fish follow it now; the site’s ready-made fish follow it at the next redraw (redraw-all.sh).'); }).catch(function(e){ msg('Not saved: '+e.message); }).then(function(){ $('save').disabled=false; }); });
+})();
+</script>
+</body>
+</html>
