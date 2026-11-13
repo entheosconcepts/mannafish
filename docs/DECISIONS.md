@@ -763,3 +763,4 @@ Names only. Never write the values. All are Netlify environment variables. A key
 - 2026-11-13: Ken: FLIP button too big at top left of the card back; made it smaller (24px).
 - 2026-11-13: Ken: QR option to let MannaFish decide who to sponsor; vision page needs a video demo spot. Done: 4th QR choice; /vision/ Watch section reads /vision/video.json {url} (YouTube/Vimeo/mp4).
 - 2026-11-13: Ken asked if the vision page is reachable from the three dots. Added 'About MannaFish' (/vision/) and 'MannaFish Hubs' to the three-dots menu on Bible and Today pages, and 'About MannaFish' to the dashboard.
+- 2026-11-13: Ken: 'Ask for a FishNet' is now 'Request a MannaFish Basket' (basket with a header card with a QR code to scan). Wording only; the form name stays fish-net so Netlify form emails keep working. Header card print file still to make (TODO.md).
