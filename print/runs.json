@@ -24,7 +24,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-10-30T16:39:09.607Z"
+   "made": "2026-11-13T23:06:29.916Z"
   },
   {
    "id": "R0002",
@@ -48,7 +48,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-10-30T16:39:16.520Z"
+   "made": "2026-11-13T23:06:35.042Z"
   },
   {
    "id": "R0003",
@@ -73,7 +73,7 @@
     "QR \"Today's free MannaFish devotional\" opens https://manna-fish.com/?devo=1: the devotional (?devo=1) only opens there once the new site is live on manna-fish.com.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-03T12:48:19.869Z"
+   "made": "2026-11-13T23:06:39.939Z"
   },
   {
    "id": "R0004",
@@ -95,7 +95,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-10-31T00:03:53.394Z"
+   "made": "2026-11-13T23:06:45.082Z"
   },
   {
    "id": "R0005",
@@ -118,7 +118,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-10-31T00:03:28.868Z"
+   "made": "2026-11-13T23:06:50.194Z"
   },
   {
    "id": "R0006",
@@ -141,7 +141,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-06T23:42:06.462Z"
+   "made": "2026-11-13T23:06:55.326Z"
   },
   {
    "id": "R0007",
@@ -166,7 +166,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-07T19:25:23.470Z"
+   "made": "2026-11-13T23:07:00.932Z"
   },
   {
    "id": "R0008",
@@ -191,7 +191,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-09T16:26:15.201Z"
+   "made": "2026-11-13T23:07:06.359Z"
   },
   {
    "id": "R0009",
@@ -216,7 +216,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-10T19:17:46.344Z"
+   "made": "2026-11-13T23:07:12.045Z"
   },
   {
    "id": "R0010",
@@ -265,7 +265,7 @@
     "The sponsor logo is a stand-in (assets/ktech-round-logo-DRAFT.svg). Upload the original logo before printing.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-09T18:26:11.474Z"
+   "made": "2026-11-13T23:07:16.869Z"
   },
   {
    "id": "R0012",
@@ -289,7 +289,7 @@
    "warn": [
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-09T18:26:16.457Z"
+   "made": "2026-11-13T23:07:22.404Z"
   },
   {
    "id": "R0013",
@@ -313,7 +313,7 @@
    "warn": [
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-10T19:17:51.160Z"
+   "made": "2026-11-13T23:07:27.751Z"
   },
   {
    "id": "R0014",
@@ -337,7 +337,7 @@
     "The sponsor logo is a stand-in (assets/shattered-into-beautiful-DRAFT.png). Upload the original logo before printing.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-09T18:26:26.359Z"
+   "made": "2026-11-13T23:07:32.901Z"
   }
  ]
 }
