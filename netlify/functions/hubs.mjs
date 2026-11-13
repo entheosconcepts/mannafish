@@ -164,9 +164,10 @@ export default async (req, context) => {
       what: (Array.isArray(b.what) ? b.what : []).filter((x) => MERCH.includes(x)), note: clean(b.note, 1000), anonymous: !!b.anonymous, status: 'new', at: new Date().toISOString() };
     // a decal order: designs in 100s; where the QR code on the left goes (the sponsor's own page, someone they sponsor, or the anonymous vision page)
     r.lines = (Array.isArray(b.lines) ? b.lines : []).slice(0, 40).map((x) => ({ word: clean(x && x.word, 30), qty: Math.max(100, Math.min(100000, Math.round((Number(x && x.qty) || 0) / 100) * 100)) })).filter((x) => x.word);
-    r.qr = ['self', 'other', 'vision'].includes(b.qr) ? b.qr : 'self'; r.qrName = clean(b.qrName, 120); r.qrUrl = /^https?:\/\//i.test(String(b.qrUrl || '').trim()) ? clean(b.qrUrl, 300) : '';
+    r.qr = ['self', 'other', 'vision', 'decide'].includes(b.qr) ? b.qr : 'self'; r.qrName = clean(b.qrName, 120); r.qrUrl = /^https?:\/\//i.test(String(b.qrUrl || '').trim()) ? clean(b.qrUrl, 300) : '';
     if (r.qr === 'vision') { r.qrName = ''; r.qrUrl = SITE + '/vision/'; }
-    const total = r.lines.reduce((n, x) => n + x.qty, 0), orderTxt = r.lines.map((x) => `${esc(x.word)} × ${x.qty}`).join(', '), qrTxt = r.qr === 'vision' ? 'the anonymous MannaFish vision page' : (r.qr === 'other' ? 'someone they sponsor: ' : 'their own page: ') + esc(r.qrName) + ' ' + esc(r.qrUrl);
+    if (r.qr === 'decide') { r.qrName = ''; r.qrUrl = ''; }
+    const total = r.lines.reduce((n, x) => n + x.qty, 0), orderTxt = r.lines.map((x) => `${esc(x.word)} × ${x.qty}`).join(', '), qrTxt = r.qr === 'vision' ? 'the anonymous MannaFish vision page' : r.qr === 'decide' ? 'MannaFish to decide who it sponsors (until then the vision page)' : (r.qr === 'other' ? 'someone they sponsor: ' : 'their own page: ') + esc(r.qrName) + ' ' + esc(r.qrUrl);
     if (!r.ids.length && !r.place) return bad('Which place?', 400, { field: 'place' });
     await s.setJSON('sp/' + r.id, r);
     await mail(TO(), `Hub sponsor: ${r.org || r.name}`, [`<b>${esc(r.name)}</b>${r.org ? ' (' + esc(r.org) + ')' : ''} would like to sponsor a MannaFish Hub${r.anonymous ? ', <b>anonymously</b>' : ''}.`,

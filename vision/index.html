@@ -39,6 +39,11 @@ footer{text-align:center;color:var(--dim);font-size:.85rem;padding:20px 18px 40p
 </div>
 
 <section>
+  <h2>Watch</h2>
+  <div class="card" id="vidBox" style="padding:0;overflow:hidden"><div id="vid" style="aspect-ratio:16/9;display:grid;place-items:center;text-align:center;padding:20px;color:var(--dim)"><div><span class="soon">Video coming soon</span><p>A short video showing what MannaFish is and how to use it.</p></div></div></div>
+</section>
+
+<section>
   <h2>The vision</h2>
   <p>Scripture was never meant to be kept. MannaFish puts a single word of it where you will see it, on a decal, a card, a phone, and lets you give it on. A word can start a conversation, a prayer, a gathering.</p>
   <p>Our hope is a gift that moves: each fish is passed from one hand to the next, and each one carries the verse it came from.</p>
@@ -96,5 +101,11 @@ footer{text-align:center;color:var(--dim);font-size:.85rem;padding:20px 18px 40p
 </main>
 <footer>Entheos Concepts · Wilmington, NC · Always free, not for resale.</footer>
 <script>try{var m=localStorage.getItem('mf-mode');if(m==='light')document.documentElement.dataset.mode='light'}catch(e){}</script>
+<script>
+/* Ken, 13 Nov: the demo video is set in /vision/video.json {"url": "..."} (a YouTube or Vimeo link, or an .mp4), so it can be changed without touching this page */
+fetch('/vision/video.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){var u=(j.url||'').trim();if(!/^https:\/\//.test(u))return;var e,m;
+ if(m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{6,})/))e='https://www.youtube-nocookie.com/embed/'+m[1];else if(m=u.match(/vimeo\.com\/(\d+)/))e='https://player.vimeo.com/video/'+m[1];
+ var v=document.getElementById('vid');if(e)v.innerHTML='<iframe src="'+e+'" title="MannaFish video" allowfullscreen style="width:100%;height:100%;border:0"></iframe>';else if(/\.mp4(\?|$)/i.test(u))v.innerHTML='<video src="'+u+'" controls playsinline style="width:100%;height:100%;background:#000"></video>';}).catch(function(){});
+</script>
 </body>
 </html>
