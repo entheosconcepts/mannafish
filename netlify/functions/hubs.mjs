@@ -66,9 +66,17 @@ const SEED = [
   ['myrtle-grove-pres', 'Myrtle Grove Presbyterian Church', 'church', '800 Piner Rd, Wilmington, NC 28409', 34.1496, -77.8847],
 ].map(([id, name, kind, address, lat, lng]) => ({ id, name, kind, address, city: W, lat, lng, approx: true, status: 'proposed', where: '', note: '', owner: '', url: '', threshold: 100, stock: [], seed: true }));
 
+// added 13 Nov (Ken): Vigilant Hope Roasting, and Mailbox Express at the north side (Market St). Addresses from public listings, to confirm with each place.
+const SEED2 = [
+  ['vigilant-hope', 'Vigilant Hope Roasting', 'coffee', '24 S 16th St, Wilmington, NC 28401', 34.2297, -77.9265],
+  ['mailbox-market', 'Mailbox Express (Market St)', 'store', '8254 Market St #109, Wilmington, NC 28411', 34.2965, -77.8000],
+].map(([id, name, kind, address, lat, lng]) => ({ id, name, kind, address, city: W, lat, lng, approx: true, status: 'proposed', where: '', note: '', owner: '', url: '', threshold: 100, stock: [], seed: true }));
 async function cfg(s) {
   const c = (await s.get('cfg', { type: 'json' })) || {};
   if (!c.seeded) { for (const x of SEED) if (!(await s.get('s/' + x.id))) await s.setJSON('s/' + x.id, { ...x, created: new Date().toISOString() }); c.seeded = 1; c.voteGoal = c.voteGoal || 50; await s.setJSON('cfg', c); }
+  if (!c.seeded2) { for (const x of SEED2) if (!(await s.get('s/' + x.id))) await s.setJSON('s/' + x.id, { ...x, created: new Date().toISOString() });
+    const mb = await s.get('s/mailbox-express', { type: 'json' }); if (mb && mb.name === 'Mailbox Express') await s.setJSON('s/mailbox-express', { ...mb, name: 'Mailbox Express (Monkey Junction)' });
+    c.seeded2 = 1; await s.setJSON('cfg', c); }
   return { voteGoal: c.voteGoal || 50, ...c };
 }
 async function limited(ip, what, max) {

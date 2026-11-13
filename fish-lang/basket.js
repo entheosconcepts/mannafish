@@ -60,7 +60,7 @@
       +'.mfbk .stn{display:grid;gap:6px;margin:6px 0 4px}.mfbk .stn label{display:flex;gap:10px;align-items:flex-start;border:1px solid rgba(128,128,128,.3);border-radius:12px;padding:9px 10px;cursor:pointer}.mfbk .stn label:has(input:checked){border-color:#2a5fb0;background:rgba(42,95,176,.12)}.mfbk .stn input{margin-top:4px}.mfbk .stn small{display:block;opacity:.7;font-size:.8rem}'
       +'.mfbk .stn .d{float:right;opacity:.7;font-size:.8rem;font-weight:700}.mfbk .near{border:1px solid rgba(128,128,128,.4);background:none;color:inherit;border-radius:999px;padding:4px 10px;font:700 .78rem Archivo,sans-serif;cursor:pointer;margin-left:8px;letter-spacing:0;text-transform:none}'
       +'.mfbk details.ask{border:1px solid rgba(245,215,110,.45);border-radius:14px;padding:4px 12px 12px;margin:16px 0 0}.mfbk details.ask summary{cursor:pointer;font-weight:800;padding:8px 0;list-style:none}.mfbk details.ask summary::-webkit-details-marker{display:none}'
-      +'.mfbk .stn .hubrow{display:block;border:1px solid rgba(128,128,128,.3);border-radius:12px;padding:9px 10px}.mfbk .stn .hubrow .d{float:right;font-size:.78rem;opacity:.8}.mfbk form[hidden]{display:none}'
+      +'.mfbk .stn .hubrow{display:block;border:1px solid rgba(128,128,128,.3);border-radius:12px;padding:9px 10px}.mfbk .stn .hubrow .d{float:right;font-size:.78rem;opacity:.8}.mfbk form[hidden]{display:none}.mfbk .stn .hubrow.on{border-color:#3fae5a;background:rgba(63,174,90,.16)}.mfbk .stn .hubrow .ok{display:block;color:#6fdc8c;font-weight:800;font-size:.8rem;margin-top:3px}:root[data-mode=light] .mfbk .stn .hubrow .ok{color:#1f7a35}.mfbk .stn .hubrow .nm2{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:6px}.mfbk .stn .hubrow .vt{border:1px solid rgba(128,128,128,.5);background:none;color:inherit;border-radius:999px;padding:6px 12px;font:800 .82rem Archivo,sans-serif;cursor:pointer}.mfbk .stn .hubrow .vt.on{background:#2a5fb0;border-color:#2a5fb0;color:#fff}.mfbk .stn .hubrow .vc{font-size:.78rem;opacity:.75}'
       +'.mfbk .stn label.mine{border-color:rgba(127,211,160,.6)}.mfbk .ok2{color:#7fd3a0;font-weight:800;font-size:.8rem}.mfbk .si{display:flex;gap:6px;margin-top:8px}.mfbk .si input{flex:1;min-width:0}.mfbk .si button{border:0;border-radius:999px;background:#2a5fb0;color:#fff;font:800 .9rem Archivo,sans-serif;padding:8px 14px;cursor:pointer}'
       +'.mfbk .go.y{background:#f5d76e;color:#111}'
       +'.mfbk .was{border-top:1px solid rgba(128,128,128,.25);margin-top:16px;padding-top:4px}.mfbk .was .row{grid-template-columns:72px 1fr}.mfbk .was .th{width:72px}';
@@ -158,12 +158,16 @@
   function val(id){ var e=BOX.querySelector('#'+id); return e?e.value.trim():''; }
   function prayed(){ var a=get(PRAY,[]); return Array.isArray(a)?a:[]; }
   // Ken, 12 Nov: "They're already hubs ... that list is to let people know where they can pick up free MannaFish merchandise. The button should be: I would like to nominate a new location to be a MannaFish Hub"
-  function askHTML(open){ var seen={}, L=byNear((PR||[]).concat((ST||[]).filter(function(x){ return x.id!=='anywhere'; }))).filter(function(p){ if(seen[p.id]) return false; seen[p.id]=1; return true; });
+  function askHTML(open){ var PRI=['vigilant-hope','social-coffee','mailbox-express','mailbox-market'], seen={}, L=byNear((ST||[]).filter(function(x){ return x.id!=='anywhere'; }).concat(PR||[])).sort(function(a,b){ var x=PRI.indexOf(a.id), y=PRI.indexOf(b.id); x=x<0?99:x; y=y<0?99:y; return near()?0:(x-y); }).filter(function(p){ if(seen[p.id]) return false; seen[p.id]=1; return true; });
     var me=window.MFacct&&MFacct.me&&MFacct.me(), S=get(SHIP,{});
     return '<details class="ask" open><summary>📍 MannaFish Hubs: where to pick up free MannaFish</summary>'
       +'<p class="pr" style="margin:0 0 8px">Places where you can pick up free MannaFish merchandise.</p>'
-      +(L.length?'<div class="stn">'+L.slice(0,12).map(function(p){ return '<div class="hubrow"><span class="d">'+esc(mi(p))+'</span><b>'+ICON[p.kind||'other']+' '+esc(p.name)+'</b><small>'+esc(p.address||p.city||'')+'</small></div>'; }).join('')+'</div>'
-        +(L.length>12?'<p class="pr"><a href="/hubs/">See all '+L.length+' places</a></p>':''):'<p class="pr">Finding the places…</p>')
+      +(L.length?'<div class="stn">'+L.slice(0,40).map(function(p){ var open=(p.status==='active')||(ST||[]).some(function(x){ return x.id===p.id; }), inv=(p.stock||[]).some(function(x){ return x.status==='in'&&(x.qty||0)>0; });
+        return '<div class="hubrow'+(open?' on':'')+'" data-hid="'+esc(p.id)+'"><span class="d">'+esc(mi(p))+'</span><b>'+ICON[p.kind||'other']+' '+esc(p.name)+'</b><small>'+esc(p.address||p.city||'')+'</small>'
+          +(open?'<span class="ok">✓ A MannaFish Hub: pick up free MannaFish here'+(inv?' (in stock now)':'')+'</span>'
+            :'<div class="nm2"><span class="vc">'+(p.votes||0)+' of '+GOAL+' nominations</span><button type="button" class="vt'+(MINE[p.id]?' on':'')+'" data-a="vt" data-id="'+esc(p.id)+'" title="Ask for a MannaFish Hub here. Sign in required; one nomination per person per place.">'+(MINE[p.id]?'✓ Nominated':'🙋 Nominate this place')+'</button></div><div class="vsi"></div>')+'</div>'; }).join('')+'</div>'
+        :'<p class="pr">Finding the places…</p>')
+      +'<p class="pr" style="margin:8px 0">Green places are Hubs now. For the others, sign in and tap <b>Nominate</b> (one nomination per person for each place). Please nominate the places you really visit. Anyone can also become a Hub themselves: the fish are always free to give away, never for resale.</p>'
       +'<button type="button" class="go y" data-a="nom">🙋 I would like to nominate a new location to be a MannaFish Hub</button>'
       +'<form id="bkNomF" novalidate hidden><p class="pr" style="margin:8px 0 4px">A shop, a church, a coffee house, a business or a person you know. Tell us who, and we will reach out. <b>Or become a Hub yourself:</b> put your own details in.</p><div class="f">'
       +'<label>Your name<input id="nmName" autocomplete="name" value="'+esc(S.name||'')+'"></label><label>Your email<input id="nmEmail" type="email" autocomplete="email" value="'+esc(S.email||(me&&me.email)||'')+'"></label>'
@@ -203,7 +207,7 @@
       +'<form novalidate><div class="f">'
       +'<label>Your name<input id="bkName" autocomplete="name" value="'+esc(S.name||'')+'"></label><label>Your email<input id="bkEmail" type="email" autocomplete="email" value="'+esc(S.email||(me&&me.email)||'')+'" required></label>'
       +'</div><p class="pr" style="margin:6px 0 0">Only to tell you when your fish is in. One vote per fish per person.</p><input type="text" id="bkHp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">'
-      +'<button type="submit" class="go" id="bkGo">🍞 Cast your bread: love '+(a.length===1?'this fish':'these '+a.length+' fish')+'</button><p class="msg" id="bkMsg" aria-live="polite"></p></form>'
+      +'<button type="submit" class="go" id="bkGo" title="Tap to tell us which fish you love. The most-loved fish are printed and sent to a MannaFish Hub, and we email you when yours is in. Cast thy bread upon the waters (Ecclesiastes 11:1).">🍞 Cast your bread on the waters</button><p class="msg" id="bkMsg" aria-live="polite"></p></form>'
       +askHTML(!real)+was+'<button type="button" class="keep" data-a="close">Keep looking</button>';
     BOX.firstChild.innerHTML=h; [].forEach.call(BOX.querySelectorAll('.row[data-i]'),function(r){ thumb(r.querySelector('.th'),a[+r.dataset.i]); }); thumbs(P); }
   function thumbs(P){ [].forEach.call(BOX.querySelectorAll('.row[data-p]'),function(r){ thumb(r.querySelector('.th'),P[+r.dataset.p]); }); }
@@ -222,6 +226,8 @@
     if(t===BOX){ close(); return; } if(!b) return;
     var a=items(), r=b.closest('.row'), act=b.dataset.a;
     if(act==='close'){ close(); return; }
+    if(act==='vt'){ var id=b.dataset.id, row=b.closest('.hubrow'), box=row&&row.querySelector('.vsi'), go=function(){ vote([id],!MINE[id]).then(function(){ draw(); }).catch(function(){ if(box) box.innerHTML='<p class="pr">That could not be saved just now. Please try again.</p>'; }); };
+      signedIn().then(function(ok){ if(ok) go(); else if(box) signin(box,go,'Sign in to nominate this place (free, no password: we email you a code).'); }); return; }
     if(act==='zoom'&&r){ var x=r.dataset.i!=null?a[+r.dataset.i]:prayed()[+r.dataset.p]; if(x) zoom(x); return; }
     if(act==='rm'&&r&&r.dataset.i!=null){ keepForm(); a.splice(+r.dataset.i,1); save(a); draw(); return; }
     if(act==='near'){ b.disabled=true; b.textContent='📍 Finding you…'; locate().then(redraw,function(){ b.textContent='📍 Location is off'; }); return; }
