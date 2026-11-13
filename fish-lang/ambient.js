@@ -20,8 +20,25 @@
     {k:'ocean',n:'Deep Ocean',d:'Slow waves and low tones',ch:[[36,43,48,52],[34,41,46,50],[31,38,43,47]],len:9,w:'sine',cut:380,noise:{lvl:0.2,cut:900,sw:0.09}},
     {k:'harp',n:'Harp Garden',d:'Soft plucked notes',ch:[[43,50,55,59],[45,52,57,60],[41,48,53,57],[43,50,55,62]],len:6,w:'sine',cut:600,arp:{n:[67,69,71,74,76,79],t:1.7,dec:3.2}},
     {k:'bells',n:'Bells at Rest',d:'Sparse, gentle chimes',ch:[[41,48,53,57],[43,50,55,59]],len:8,w:'sine',cut:480,arp:{n:[72,74,76,79,81],t:3.4,dec:5,bell:1}},
-    {k:'strings',n:'Sunday Strings',d:'Slow, smooth strings',ch:[[43,50,55,59,62],[40,47,52,55,59],[45,52,57,60,64],[41,48,53,57,60]],len:5.5,w:'triangle',cut:520,h:0.25}
+    {k:'strings',n:'Sunday Strings',d:'Slow, smooth strings',ch:[[43,50,55,59,62],[40,47,52,55,59],[45,52,57,60,64],[41,48,53,57,60]],len:5.5,w:'triangle',cut:520,h:0.25},
+    /* hymns: four-part hymn tunes (public domain: J. S. Bach's settings, Beethoven), played slowly on a soft organ; the notes are in /fish-lang/hymns.json */
+    {k:'h-passion',n:'O Sacred Head, Now Wounded',d:'Hymn · slow and tender',hymn:1,beat:1.2},
+    {k:'h-wachet',n:'Sleepers, Wake',d:'Hymn · calm and rising',hymn:1,beat:1.0},
+    {k:'h-fortress',n:'A Mighty Fortress',d:'Hymn · strong and steady',hymn:1,beat:1.05},
+    {k:'h-christ',n:'Christ Lay in Death’s Bonds',d:'Hymn · the Easter hymn',hymn:1,beat:1.1},
+    {k:'h-joy',n:'Joyful, Joyful (Ode to Joy)',d:'Hymn · Beethoven’s tune',hymn:1,beat:0.95}
   ];
+  var HY=null, HYP=null;
+  function load(){ if(HY) return Promise.resolve(HY); return HYP||(HYP=fetch('/fish-lang/hymns.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(a){ HY={}; a.forEach(function(x){ HY[x.k]=x; }); return HY; }).catch(function(){ HYP=null; HY={}; return HY; })); }
+  function buildHymn(c,dest,sec,t0,st){ var D=HY&&HY[st.k], nodes=[]; if(!D) return {stop:function(){}};
+    var out=c.createGain(); out.gain.value=1; var lp=c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=1500; lp.Q.value=0.2;
+    var rev=c.createConvolver(); rev.buffer=impulse(c,3); var wet=c.createGain(); wet.gain.value=0.5; var dry=c.createGain(); dry.gain.value=0.65; out.connect(lp); lp.connect(dry); lp.connect(rev); rev.connect(wet); dry.connect(dest); wet.connect(dest);
+    var B=st.beat||1.1, len=D.beats*B+4, vg=[0.15,0.11,0.11,0.17];
+    for(var t=t0+0.5;t<t0+sec;t+=len){ D.v.forEach(function(voice,vi){ voice.forEach(function(n){ var s=t+n[1]*B, d=Math.max(0.2,n[2]*B*0.97), e=s+d; if(s>t0+sec) return;
+        [1,2].forEach(function(h,j){ var o=c.createOscillator(), g=c.createGain(); o.type='sine'; o.frequency.value=hz(n[0])*h; var a=vg[vi]*(j?0.3:1);
+          g.gain.setValueAtTime(0.0001,s); g.gain.linearRampToValueAtTime(a,s+0.12); g.gain.setValueAtTime(a,Math.max(s+0.13,e-0.1)); g.gain.linearRampToValueAtTime(0.0001,e+0.5); o.connect(g); g.connect(out); o.start(s); o.stop(e+0.6); nodes.push(o); }); }); }); }
+    return { stop:function(tt){ nodes.forEach(function(o){ try{ o.stop(tt); }catch(e){} }); } };
+  }
   function find(k){ for(var i=0;i<S.length;i++) if(S[i].k===k) return S[i]; return S[0]; }
   function raw(){ try{ return localStorage.getItem(KEY); }catch(e){ return null; } }
   function on(){ var r=raw(); return r!=='0'&&r!=='off'; }
@@ -36,7 +53,7 @@
   function noiseBuf(c,sec){ var n=Math.floor(c.sampleRate*sec), b=c.createBuffer(2,n,c.sampleRate); for(var ch=0;ch<2;ch++){ var d=b.getChannelData(ch), l=0; for(var i=0;i<n;i++){ var x=Math.random()*2-1; l=(l+0.04*x)/1.04; d[i]=l*8; } } return b; }
   /* the sound for `sec` seconds into dest, starting at time t0 (the same code renders the samples offline) */
   function build(c,dest,sec,t0,st){
-    st=st||style(); t0=t0||0; var CL=st.len, nodes=[], out=c.createGain(); out.gain.value=1;
+    st=st||style(); t0=t0||0; if(st.hymn) return buildHymn(c,dest,sec,t0,st); var CL=st.len, nodes=[], out=c.createGain(); out.gain.value=1;
     var lp=c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=st.cut; lp.Q.value=0.2;
     var rev=c.createConvolver(); rev.buffer=impulse(c,3); var wet=c.createGain(); wet.gain.value=0.5; var dry=c.createGain(); dry.gain.value=0.65;
     out.connect(lp); lp.connect(dry); lp.connect(rev); rev.connect(wet); dry.connect(dest); wet.connect(dest);
@@ -59,20 +76,20 @@
   function unlock(){ var c=ensure(); if(c&&c.state==='suspended') c.resume(); }
   ['pointerdown','touchend','click','keydown'].forEach(function(ev){ document.addEventListener(ev,unlock,{passive:true}); });
   function ensure(){ if(ctx) return ctx; var AC=window.AudioContext||window.webkitAudioContext; if(!AC) return null; try{ ctx=new AC(); }catch(e){ return null; } return ctx; }
-  function start(){ if(!on()||run) return; var c=ensure(); if(!c) return; clearTimeout(stopT); if(c.state==='suspended') c.resume();
+  function start(){ if(!on()||run) return; if(style().hymn&&!HY){ load().then(function(){ if(nar||prevT) start(); }); return; } var c=ensure(); if(!c) return; clearTimeout(stopT); if(c.state==='suspended') c.resume();
     master=c.createGain(); master.gain.setValueAtTime(0.0001,c.currentTime); master.gain.linearRampToValueAtTime(Math.max(gainOf(vol()),0.0001),c.currentTime+4); master.connect(c.destination);
     run={r:build(c,master,1800,c.currentTime,style()),m:master,c:c}; }
   function stop(){ if(!run) return; var R=run; run=null; try{ R.m.gain.cancelScheduledValues(R.c.currentTime); R.m.gain.setValueAtTime(Math.max(R.m.gain.value,0.0001),R.c.currentTime); R.m.gain.linearRampToValueAtTime(0.0001,R.c.currentTime+2.2); }catch(e){}
     setTimeout(function(){ try{ R.r.stop(R.c.currentTime); R.m.disconnect(); }catch(e){} },2500); }
   /* follow the narrator: any long audio that starts playing starts the music; when none is playing for 2 seconds it fades out */
-  var live=[]; function chk(el,ev){ var i=live.indexOf(el);
+  var live=[]; function chk(el,ev){ if(window.MFambientNoAuto) return; var i=live.indexOf(el);
     if(ev==='playing'){ if(el.duration>8&&!el.loop){ if(i<0) live.push(el); clearTimeout(stopT); clearTimeout(prevT); prevT=0; start(); } }
     else if(i>=0) live.splice(i,1);
     if(!live.length&&!nar&&run&&!prevT){ clearTimeout(stopT); stopT=setTimeout(function(){ if(!live.length&&!nar) stop(); },2000); } }
   /* Ken, 13 Nov: "the music's not playing behind the narrator still": the page now tells the music directly when it starts and stops reading a devotional
      or chapter (MFambient.narr(true/false)), instead of guessing from the audio. It runs inside the tap on Listen, so phones allow the sound. */
   var nar=false;
-  function narr(on2){ nar=!!on2; if(nar){ clearTimeout(stopT); clearTimeout(prevT); prevT=0; unlock(); start(); } else if(!live.length&&run&&!prevT){ clearTimeout(stopT); stopT=setTimeout(function(){ if(!nar&&!live.length) stop(); },2000); } }
+  function narr(on2){ if(window.MFambientNoAuto) return; nar=!!on2; if(nar){ clearTimeout(stopT); clearTimeout(prevT); prevT=0; unlock(); start(); } else if(!live.length&&run&&!prevT){ clearTimeout(stopT); stopT=setTimeout(function(){ if(!nar&&!live.length) stop(); },2000); } }
   function watch(){ var P=window.HTMLMediaElement&&HTMLMediaElement.prototype; if(!P||P.__mfAmb) return; P.__mfAmb=1;
     var play=P.play; P.play=function(){ var el=this; if(!el.__mfAmbW){ el.__mfAmbW=1; ['playing','pause','ended','emptied'].forEach(function(ev){ el.addEventListener(ev,function(){ chk(el,ev); }); }); } return play.apply(this,arguments); }; }
   function css(){ if(document.getElementById('mfambcss')) return; var s=document.createElement('style'); s.id='mfambcss';
@@ -82,7 +99,7 @@
      +':root[data-mode=light] .mfamb{background:#fbfaf6;color:#1c2228;border-color:rgba(0,0,0,.15)}'; document.head.appendChild(s); }
   function draw(){ if(!menu) return; var cur=on()?style().k:'off';
     menu.innerHTML='<h4>Background music</h4><div style="display:flex;align-items:center;gap:10px;padding:4px 10px 10px"><span aria-hidden="true">🔈</span><input type="range" min="0" max="100" step="1" value="'+vol()+'" id="mfambV" aria-label="Music volume" style="flex:1"><span aria-hidden="true">🔊</span></div>'+'<button type="button" role="menuitemradio" aria-checked="'+(cur==='off')+'" data-k="off"><span class="tk">'+(cur==='off'?'✓':'')+'</span><span><b>Off</b><small>Just the voice</small></span></button>'
-      +S.map(function(x){ return '<button type="button" role="menuitemradio" aria-checked="'+(cur===x.k)+'" data-k="'+x.k+'"><span class="tk">'+(cur===x.k?'✓':'')+'</span><span><b>'+x.n+'</b><small>'+x.d+'</small></span></button>'; }).join(''); }
+      +S.map(function(x,i){ return (x.hymn&&!S[i-1].hymn?'<h4>Hymns</h4>':'')+'<button type="button" role="menuitemradio" aria-checked="'+(cur===x.k)+'" data-k="'+x.k+'"><span class="tk">'+(cur===x.k?'✓':'')+'</span><span><b>'+x.n+'</b><small>'+x.d+'</small></span></button>'; }).join(''); }
   function openMenu(b){ css(); if(!menu){ menu=document.createElement('div'); menu.className='mfamb'; menu.setAttribute('role','menu'); menu.hidden=true; document.body.appendChild(menu);
       menu.addEventListener('input',function(e){ if(e.target.id==='mfambV'){ setVol(+e.target.value); if(!run&&on()){ start(); clearTimeout(prevT); prevT=setTimeout(function(){ prevT=0; if(!live.length) stop(); },9000); } } });
       menu.addEventListener('click',function(e){ e.stopPropagation(); var x=e.target.closest('[data-k]'); if(!x) return; pick(x.dataset.k); });
@@ -94,7 +111,7 @@
     draw(); ui(); }
   function ui(){ btns.forEach(function(b){ var o=on(); b.setAttribute('aria-expanded',menu&&!menu.hidden?'true':'false'); b.title=o?'Background music: '+style().n+' (tap to change or turn off)':'Background music is off (tap to choose one)'; b.style.opacity=o?'1':'.55'; }); }
   function bind(b){ if(!b||btns.indexOf(b)>=0) return; btns.push(b); b.setAttribute('aria-haspopup','menu'); b.addEventListener('click',function(e){ e.stopPropagation(); if(menu&&!menu.hidden){ menu.hidden=true; ui(); return; } openMenu(b); ui(); }); ui(); }
-  window.MFambient={ on:on, style:function(){ return style().k; }, set:function(v){ if(v){ if(!on()) put(DEF); } else { put('0'); stop(); } ui(); }, pick:pick, volume:function(v){ if(v!=null) setVol(v); return vol(); }, list:S, start:start, stop:stop, narr:narr, build:build, bind:bind, level:LEVEL };
+  window.MFambient={ load:load, on:on, style:function(){ return style().k; }, set:function(v){ if(v){ if(!on()) put(DEF); } else { put('0'); stop(); } ui(); }, pick:pick, volume:function(v){ if(v!=null) setVol(v); return vol(); }, list:S, start:start, stop:stop, narr:narr, build:build, bind:bind, level:LEVEL };
   watch();
   function auto(){ bind(document.getElementById('dgMusic')); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',auto); else auto();

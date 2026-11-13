@@ -9,6 +9,8 @@
 <link rel="icon" href="/icon-192.png">
 <link rel="apple-touch-icon" href="/icon-180.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Spectral:ital,wght@0,500;1,400&family=Archivo:wght@400;600;700;800&display=swap">
+<script>window.MFambientNoAuto=1;/* this page plays its own background sound; the shared sounds are offered in its list */</script>
+<script src="/fish-lang/ambient.js"></script>
 <script src="/fish-lang/account.js" defer></script>
 <script src="/fish-lang/prhl.js" defer></script>
 <script src="/fish-lang/feedback.js" defer></script>
@@ -342,6 +344,7 @@ textarea.field{min-height:92px;resize:vertical}
     function reverb(){ var len=A.sampleRate*3, b=A.createBuffer(2,len,A.sampleRate); for(var c=0;c<2;c++){ var d=b.getChannelData(c); for(var i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.4); } var r=A.createConvolver(); r.buffer=b; return r; }
     function stop(){ timers.forEach(clearInterval); timers=[]; nodes.forEach(function(n){ try{ n.stop&&n.stop(); }catch(e){} try{ n.disconnect(); }catch(e){} }); nodes=[]; }
     function start(kind){ if(!ctx()) return; stop(); if(kind==='off') return; if(kind==='random') kind=['ocean','rain','pad','piano'][DAY%4];
+      if(window.MFambient&&MFambient.list.some(function(x){ return x.k===kind; })){ var st0=MFambient.list.filter(function(x){ return x.k===kind; })[0], go=function(){ if(SND.kind!==kind&&SND.kind!=='random') return; var h=MFambient.build(A,out,3600,A.currentTime,st0); nodes.push({stop:function(){ h.stop(A.currentTime); },disconnect:function(){}}); level(); }; if(st0.hymn) MFambient.load().then(go); else go(); return; }
       var g=A.createGain(); g.connect(out); nodes.push(g);
       if(kind==='ocean'){ var s=noise('brown'), f=A.createBiquadFilter(); f.type='lowpass'; f.frequency.value=500; var sw=A.createGain(); sw.gain.value=.35; var l=A.createOscillator(), lg=A.createGain(); l.frequency.value=0.09; lg.gain.value=.3; l.connect(lg); lg.connect(sw.gain); s.connect(f); f.connect(sw); sw.connect(g); s.start(); l.start(); nodes.push(s,l,f,sw,lg); g.gain.value=1.4; }
       if(kind==='rain'){ var s2=noise('white'), hp=A.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=900; var lp=A.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=6000; s2.connect(hp); hp.connect(lp); lp.connect(g); g.gain.value=.16; s2.start(); nodes.push(s2,hp,lp); }
@@ -355,7 +358,7 @@ textarea.field{min-height:92px;resize:vertical}
     function level(d){ if(!A) return; out.gain.setTargetAtTime(SND.kind==='off'?0:(SND.vol/100)*(d?.35:1),A.currentTime,.4); }
     return {ctx:ctx,start:start,level:level}; })();
   function duck(on){ snd.level(on); }
-  var KINDS=[['off','Off'],['ocean','Ocean'],['rain','Rain'],['pad','Warm pad'],['piano','Soft piano'],['random','Random']];
+  var KINDS=[['off','Off'],['ocean','Ocean'],['rain','Rain'],['pad','Warm pad'],['piano','Soft piano'],['random','Random']].concat((window.MFambient?MFambient.list:[]).map(function(x){ return [x.k,x.hymn?'🎼 '+x.n:x.n]; }));   /* Ken, 13 Nov: the ambient sounds and hymns from the devotional are here too */
   $('sndChips').innerHTML=KINDS.map(function(k){ return '<button type="button" data-snd="'+k[0]+'">'+k[1]+'</button>'; }).join('');
   function sndUI(){ [].forEach.call($('sndChips').children,function(b){ b.setAttribute('aria-pressed',String(b.dataset.snd===SND.kind)); }); $('vol').value=SND.vol; }
   $('sndChips').addEventListener('click',function(e){ var b=e.target.closest('[data-snd]'); if(!b) return; SND.kind=b.dataset.snd; put('mf-twg-snd',SND.kind); snd.start(SND.kind); sndUI(); });
