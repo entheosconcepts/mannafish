@@ -7,6 +7,7 @@
 <script>try{if(localStorage.getItem("mf-mode")==="light")document.documentElement.setAttribute("data-mode","light");}catch(e){}</script>
 <script src="/fish-lang/spell/spell.js" defer onload="MFspell.watch('#notesText,#psT,#psB,#ptCNote,#fsText')"></script>
 <script src="/fish-lang/tabbar.js" defer></script>
+<script src="/fish-lang/ambient.js"></script>
 <script src="/fish-lang/voicepick.js" defer onload="window.MFvpHook&&MFvpHook()"></script>
 <script src="/fish-lang/deep.js" defer></script>
 <script src="/fish-lang/basket.js" defer></script>
@@ -1958,7 +1959,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
 
   <div class="fishspk" id="spkMain"><button class="spk" type="button" data-part="word"><span aria-hidden="true">&#128266;</span> <span class="spkw">Word</span></button><span class="spklang" id="spkLang"></span><button class="spk" type="button" data-part="verse"><span aria-hidden="true">&#128266;</span> <span class="spkv">Verse</span></button></div>
   <!-- Ken, 12 Oct: "the main impression is that this is a devotional": under the fish, listen or read it; the free offers move down -->
-  <div class="devogo" translate="no"><span class="devogok" id="dgK">Today’s devotional</span><div class="devogor"><button type="button" class="dgbtn" id="dgListen"></button><button type="button" class="dgbtn" id="dgRead"></button></div><button type="button" class="dvpraylink" id="dvPrayLink">&#128591;&#xFE0E; Add a prayer for others to hear</button></div>
+  <div class="devogo" translate="no"><span class="devogok" id="dgK">Today’s devotional</span><div class="devogor"><button type="button" class="dgbtn" id="dgListen"></button><button type="button" class="dgbtn" id="dgRead"></button><button type="button" class="dgbtn" id="dgMusic" aria-label="Background music" style="min-width:44px;padding:0 10px">&#127925;&#xFE0E;</button></div><button type="button" class="dvpraylink" id="dvPrayLink">&#128591;&#xFE0E; Add a prayer for others to hear</button></div>
   <div class="saybox" id="sayMain" hidden></div>
   <div class="sharerow"><span class="rnote" id="shareMsg"></span></div>
   <!-- Ken, 7 Oct: hear the verse, and keep notes (typed or spoken). Notes stay on this device until accounts come. -->
