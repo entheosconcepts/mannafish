@@ -762,3 +762,4 @@ Names only. Never write the values. All are Netlify environment variables. A key
 - 2026-11-13: Ken: vision page to get three windows (need prayer / know more about Jesus / share Jesus) and sections (events, church services, volunteer ministries, Fish Stories podcast, video testimonials, introducing Jesus). Done as generic layout with Coming soon cards on /vision/; content is Ken's to supply.
 - 2026-11-13: Ken: FLIP button too big at top left of the card back; made it smaller (24px).
 - 2026-11-13: Ken: QR option to let MannaFish decide who to sponsor; vision page needs a video demo spot. Done: 4th QR choice; /vision/ Watch section reads /vision/video.json {url} (YouTube/Vimeo/mp4).
+- 2026-11-13: Ken asked if the vision page is reachable from the three dots. Added 'About MannaFish' (/vision/) and 'MannaFish Hubs' to the three-dots menu on Bible and Today pages, and 'About MannaFish' to the dashboard.
