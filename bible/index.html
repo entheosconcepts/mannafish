@@ -110,7 +110,7 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 .wheel{flex:none;width:40px;height:40px;border-radius:50%;cursor:pointer;background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);border:2px solid var(--line);position:relative;overflow:hidden}.wheel input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:0;padding:0}
 .penbar .wheel{width:30px;height:30px}
 .tile{flex:1;min-width:0;height:58px;border:0;border-radius:14px;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-weight:700;font-size:.76rem;cursor:pointer;color:var(--text)}
-@media (min-width:640px){.pill{flex:1 1 auto;height:70px}.tile{flex:none;width:76px;height:70px;flex-direction:column;gap:5px;font-size:.82rem}.act .top{flex-wrap:nowrap}}
+@media (min-width:640px){.pill{flex:1 1 auto;height:70px}.tile{flex:none;width:76px;height:70px;flex-direction:column;gap:5px;font-size:.82rem}.act .top{flex-wrap:wrap}.pill{flex:1 1 100%;height:58px}.tile{flex:1 1 0;width:auto;min-width:64px}}
 .tile svg{width:22px;height:22px}.tile[aria-pressed=true]{color:var(--blue2)}
 .moreh{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--dim);font-weight:600;font-size:.88rem;border:0;background:none;width:100%;padding:12px 0 2px;cursor:pointer}
 .act .more{display:none;padding-top:6px}.act.big .more{display:block}.act.big .moreh{display:none}
@@ -449,7 +449,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   <div class="arow" id="aRmRow" hidden><button type="button" class="chip" id="aRm">&#10005; Remove highlight</button><button type="button" class="chip" id="aRmAll">Remove all in this chapter</button></div>
   <div class="arow wl" id="aWl" hidden><span class="wlw"><b id="aWlW"></b><button type="button" class="wls" id="aWlSay0" aria-label="Hear it">🔊</button></span><button type="button" class="chip" id="aWlMk" hidden>&#128031; Make it a MannaFish</button><button type="button" class="chip" id="aWlHl" hidden>&#128397;&#xFE0E; Highlight just this word</button><button type="button" class="chip" id="aWlDict" hidden>&#128214;&#xFE0E; Dictionary</button><select id="aWlL" aria-label="See and hear it in another language"></select><span class="wlr" id="aWlR" aria-live="polite"></span><button type="button" class="wls" id="aWlSay" aria-label="Hear it in that language" hidden>🔊</button></div>
   <p class="tip" id="aTip" hidden>Tip: hold a word, then slide your finger to pick just those words</p>
-  <button type="button" class="moreh" id="aMore">&#8963; Swipe up for more</button>
+  <button type="button" class="moreh" id="aMoreH">&#8963; Swipe up for more</button>
   <div class="more">
     <div class="row"><button type="button" class="chip" id="aShare">Share</button><button type="button" class="chip" id="aPic">&#128444;&#xFE0E; Picture</button><button type="button" class="chip" id="aSay">&#9654;&#xFE0E; Listen from here</button><button type="button" class="chip" id="aX">Done</button></div>
     <div class="nbox" id="aNoteBox" hidden><textarea id="aNoteT" placeholder="What is God showing you here?"></textarea><div class="row"><button type="button" class="chip" id="aNoteDel" hidden>Delete note</button><button type="button" class="chip" id="aNoteSave" style="background:var(--blue);border-color:var(--blue);color:#fff">Save note</button></div></div>
@@ -562,12 +562,12 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   function colour(){ var c=ls('mf-hl-color')||'gold'; return HLC[c]?c:'gold'; }
   // Ken, 1 Nov: "expand the color options and let users select a color wheel to choose their own color". The five stay first; 🎨 opens
   // eight more and a colour wheel. A colour of one's own is kept as "c-rrggbb" (the same key on every page and in the account).
-  var HLX=['#c9a7f5','#7fd8d2','#f59a9a','#c8e67a','#9fe3f7','#f9c9a5','#dcc6f7','#c4cbd1'].map(function(x){ return 'c-'+x.slice(1); });
+  var HLX=['#ff5c5c','#ff9a1f','#ffe600','#3ddc5f','#3d8bff','#b06cff','#c9a7f5','#7fd8d2','#f59a9a','#c8e67a','#9fe3f7','#f9c9a5','#dcc6f7','#c4cbd1'].map(function(x){ return 'c-'+x.slice(1); });
   function addC(c){ if(/^c-[0-9a-f]{6}$/.test(c||'')&&!HLC[c]) HLC[c]='#'+c.slice(2); return c; }
   function customs(){ try{ return (JSON.parse(ls('mf-hl-custom')||'[]')||[]).filter(function(c){ return /^c-[0-9a-f]{6}$/.test(c); }); }catch(e){ return []; } }
   function keepCustom(c){ if(HLX.indexOf(c)>=0) return; var L=customs().filter(function(x){ return x!==c; }); L.unshift(c); ls('mf-hl-custom',JSON.stringify(L.slice(0,8))); }
   HLX.forEach(addC); customs().forEach(addC); addC(ls('mf-hl-color')); (function(){ var h=hls(); Object.keys(h).forEach(function(k){ addC(h[k]&&h[k].c); }); })();
-  var BASE=['gold','green','blue','pink','orange'], MORE=false;
+  var BASE=['gold','green','blue','pink','orange'], MORE=true;
   // dark colours of one's own get white letters, so the words stay easy to read
   function ink(c){ var x=HLC[c]||''; if(!/^#[0-9a-f]{6}$/i.test(x)) return ''; var n=parseInt(x.slice(1),16), L=(0.299*(n>>16)+0.587*(n>>8&255)+0.114*(n&255))/255; return L<0.55?'#fff':''; }
   function swatches(L,on){ return L.map(function(c){ return '<button type="button" data-c="'+c+'" aria-label="Highlight '+(HLC[c]||c)+'" aria-pressed="'+(on===c)+'" style="background:'+HLC[c]+'"></button>'; }).join(''); }
@@ -821,13 +821,13 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   function selText(){ if(PHS) return PHS.map(function(x){ return (VT[x.v]||'').slice(x.s,x.e); }).join(' … '); return SEL.map(function(v){ return VT[v]||''; }).join(' '); }
   function selUI(){ [].forEach.call($('txt').querySelectorAll('.v'),function(x){ x.classList.toggle('sel',!PHS&&SEL.indexOf(+x.dataset.v)>=0); });
     if(!SEL.length){ closeAct(); return; } var w=PHS?selText():''; $('selbar').textContent='Selected: '+(PHS?'“'+(w.length>40?w.slice(0,38)+'…':w)+'” ':'')+selLabel()+' '+ver().s; $('selbar').classList.add('on');
-    if(!$('act').classList.contains('open')){ $('act').classList.remove('big'); $('aNoteBox').hidden=true; $('aLinkBox').hidden=true; $('aOrig').hidden=true; } ogTile(); $('aTip').hidden=!(TOUCH&&!PHS); $('act').classList.add('open'); dots(); rmUI(); wlUI(); $('aSave').setAttribute('aria-pressed',String(!!savedAt()));
+    if(!$('act').classList.contains('open')){ $('act').classList.remove('big'); $('aNoteBox').hidden=true; $('aLinkBox').hidden=true; $('aOrig').hidden=true; if(window.matchMedia&&matchMedia('(min-width:700px) and (hover:hover)').matches) $('act').classList.add('big'); } ogTile(); $('aTip').hidden=!(TOUCH&&!PHS); $('act').classList.add('open'); dots(); rmUI(); wlUI(); $('aSave').setAttribute('aria-pressed',String(!!savedAt()));
     if($('act').classList.contains('big')) mineRefs(); }
   function closeAct(){ SEL=[]; PHS=null; OGSEL=null; fdShow(null); if(typeof COLV!=='undefined'&&COLV){ COLV=null; COLSEL=null; var cb=$('colbar'); if(cb) cb.hidden=true; [].forEach.call(document.querySelectorAll('.v2.sel'),function(x){ x.classList.remove('sel'); }); } $('act').classList.remove('open','big'); $('selbar').classList.remove('on'); $('aNoteBox').hidden=true; $('aLinkBox').hidden=true; if($('aOrig')) $('aOrig').hidden=true;
     [].forEach.call(document.querySelectorAll('.v.sel'),function(x){ x.classList.remove('sel'); }); try{ var sl=window.getSelection(); if(sl&&!sl.isCollapsed&&$('txt').contains(sl.anchorNode)) sl.removeAllRanges(); }catch(e){} }
   $('aX').addEventListener('click',closeAct); $('aClose').addEventListener('click',closeAct); $('wcClose').addEventListener('click',function(){ closeWc(); });
   function more(on){ $('act').classList.toggle('big',on); if(on&&SEL.length) mineRefs(); }
-  $('aMore').addEventListener('click',function(){ more(true); }); $('aGrab').addEventListener('click',function(){ more(!$('act').classList.contains('big')); });
+  $('aMoreH').addEventListener('click',function(){ more(true); }); $('aGrab').addEventListener('click',function(){ more(!$('act').classList.contains('big')); });
   (function(){ var y0=null; $('act').addEventListener('touchstart',function(e){ y0=e.touches[0].clientY; },{passive:true});
     $('act').addEventListener('touchend',function(e){ if(y0==null||e.target.closest('textarea,input')) return; var dy=e.changedTouches[0].clientY-y0; y0=null; var big=$('act').classList.contains('big');
       if(dy<-40&&!big) more(true); else if(dy>50&&(big?$('act').scrollTop<=0:true)){ if(big) more(false); else closeAct(); } },{passive:true}); })();
