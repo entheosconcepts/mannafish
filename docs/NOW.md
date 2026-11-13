@@ -84,3 +84,5 @@ Not needed for launch: texting (carrier registration), app stores, sponsor prici
 **Also done (13 Nov):** other-column tools sheet, basket top-left/in Bible row, gold narrator button, made-fish thumbnail.
 
 **Also done (13 Nov):** basket button wording, green Hubs / Nominate buttons, 2 new places. Waiting on Ken: confirm Vigilant Hope and Mailbox Express Market St addresses.
+
+**Also done (13 Nov):** sponsor decal order form + QR choice, /vision/ page (generic). Waiting on Ken: how to take payment; his words for /vision/.

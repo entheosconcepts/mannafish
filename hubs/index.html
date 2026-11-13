@@ -84,7 +84,7 @@ main>h1,main>h2,.lead,.verse,main>p.meta,.how div,.st,.host,.empty,.bar0,#kinds,
 <input type="text" id="sgHp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
 <div class="w"><button type="submit" class="go">Send the nomination</button><p class="msg" id="sgMsg" aria-live="polite"></p></div></form></details>
 
-<h2 id="sponsor">Sponsor a Hub</h2>
+<h2 id="sponsor">Sponsor a Hub, or sponsor yourself to be a gift giver</h2>
 <p class="meta" style="margin:0 0 10px">A church, a business or anyone can give the fish for a place, on this list or not. A sponsored place doesn’t wait for requests: we reach out to the host, set it up with them, and write back to you. Every fish is free to the person who receives it: never sold, never resold.</p>
 <form class="f" id="spF" novalidate>
 <label>Your name<input id="spName" autocomplete="name" required></label><label>Church or business (optional)<input id="spOrg" autocomplete="organization"></label>
@@ -92,6 +92,14 @@ main>h1,main>h2,.lead,.verse,main>p.meta,.how div,.st,.host,.empty,.bar0,#kinds,
 <div class="w"><span style="font-size:.82rem;font-weight:700">Which place?</span><div class="places" id="spPlaces"></div></div>
 <label class="w">Another place (name and address)<input id="spPlace"></label>
 <div class="w"><span style="font-size:.82rem;font-weight:700">What would you like to give?</span><div class="ticks" id="spWhat"></div></div>
+<fieldset class="w ord" style="border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin:0"><legend style="font-size:.82rem;font-weight:700;padding:0 6px">Order decals to give away (optional)</legend>
+<p class="meta" style="margin:0 0 8px">Choose the words. Each design comes in 100s (100, 200, 300 and so on): all 1,000 can be one design, or ten designs of 100. We email you to confirm the order and send the way to pay; nothing is charged on this page.</p>
+<div id="spLines"></div><button type="button" class="chip" id="spAdd" style="margin:6px 0">+ Add a design</button> <b id="spTot" style="margin-left:8px"></b>
+<div style="margin-top:10px"><span style="font-size:.82rem;font-weight:700">Where does the QR code on the left of each decal go?</span>
+<label style="flex-direction:row;align-items:flex-start;gap:8px;font-weight:600"><input type="radio" name="spQr" value="self" style="width:auto;margin-top:4px" checked> <span>To my own page. The store or church that sponsors gets the QR code.</span></label>
+<label style="flex-direction:row;align-items:flex-start;gap:8px;font-weight:600"><input type="radio" name="spQr" value="other" style="width:auto;margin-top:4px"> <span>To someone I am sponsoring (another store, church or person).</span></label>
+<label style="flex-direction:row;align-items:flex-start;gap:8px;font-weight:600"><input type="radio" name="spQr" value="vision" style="width:auto;margin-top:4px"> <span>To nobody: the anonymous page about the vision of MannaFish (<a href="/vision/">see it</a>).</span></label>
+<div id="spQrBox"><label>Name of the page or person<input id="spQrName"></label><label>Web address the QR code opens<input id="spQrUrl" inputmode="url" placeholder="https://"></label></div></div></fieldset>
 <label class="w">Anything else (optional)<textarea id="spNote" rows="3" maxlength="1000"></textarea></label>
 <label class="w" style="flex-direction:row;align-items:center;gap:8px;font-weight:600"><input type="checkbox" id="spAnon" style="width:auto"> Give anonymously (your name is never shown)</label>
 <input type="text" id="spHp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
@@ -140,12 +148,20 @@ document.addEventListener('DOMContentLoaded',function(){
     if(!b.name){ $('sgContact').focus(); m.textContent='Please add your name.'; return; } if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email)){ $('sgEmail').focus(); m.textContent='Please check your email address.'; return; } if(!b.place){ $('sgName').focus(); m.textContent='Which place or business?'; return; }
     m.textContent='Sending…'; fetch('/api/hubs/nominate',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||r.status); }); })
       .then(function(){ $('sgF').reset(); m.textContent='Thank you! We emailed you, and we will look into it.'; }).catch(function(err){ m.textContent='It could not be sent just now. '+(err&&err.message||''); }); });
+  /* Ken, 13 Nov: decals ordered in 100s per design; where the QR goes: the sponsor, someone they sponsor, or the anonymous vision page */
+  function spLine(w,q){ var d=document.createElement('div'); d.className='spl'; d.style.cssText='display:flex;gap:6px;margin:4px 0;align-items:center'; d.innerHTML='<input class="spw" placeholder="Word (Hope, Love...)" maxlength="30" style="flex:1;min-width:0"><select class="spq" style="width:96px">'+[1,2,3,4,5,6,7,8,9,10].map(function(n){ return '<option value="'+n*100+'">'+n*100+'</option>'; }).join('')+'</select><button type="button" class="chip spx" aria-label="Remove">&#10005;</button>'; if(w) d.querySelector('.spw').value=w; if(q) d.querySelector('.spq').value=q; $('spLines').appendChild(d); spTotal(); }
+  function spTotal(){ var n=0; [].forEach.call($('spLines').querySelectorAll('.spl'),function(l){ if(l.querySelector('.spw').value.trim()) n+=+l.querySelector('.spq').value; }); $('spTot').textContent=n?n.toLocaleString()+' decals':''; }
+  function spQrShow(){ var v=(document.querySelector('input[name=spQr]:checked')||{}).value; $('spQrBox').hidden=v==='vision'; }
+  $('spAdd').addEventListener('click',function(){ spLine(); }); $('spLines').addEventListener('click',function(e){ if(e.target.closest('.spx')){ e.target.closest('.spl').remove(); spTotal(); } }); $('spLines').addEventListener('input',spTotal); $('spLines').addEventListener('change',spTotal);
+  [].forEach.call(document.querySelectorAll('input[name=spQr]'),function(r){ r.addEventListener('change',spQrShow); }); spLine(); spQrShow();
   $('spF').addEventListener('submit',function(e){ e.preventDefault(); var m=$('spMsg'), ids=[].map.call($('spPlaces').querySelectorAll('input:checked'),function(i){ return i.value; }), what=[].map.call($('spWhat').querySelectorAll('input:checked'),function(i){ return i.value; });
-    var b={name:$('spName').value.trim(),org:$('spOrg').value.trim(),email:$('spEmail').value.trim(),phone:$('spPhone').value.trim(),ids:ids,place:$('spPlace').value.trim(),what:what,note:$('spNote').value.trim(),anonymous:$('spAnon').checked,hp:$('spHp').value};
+    var b={name:$('spName').value.trim(),org:$('spOrg').value.trim(),email:$('spEmail').value.trim(),phone:$('spPhone').value.trim(),ids:ids,place:$('spPlace').value.trim(),what:what,note:$('spNote').value.trim(),anonymous:$('spAnon').checked,hp:$('spHp').value,
+      lines:[].map.call($('spLines').querySelectorAll('.spl'),function(l){ return {word:l.querySelector('.spw').value.trim(),qty:+l.querySelector('.spq').value}; }).filter(function(x){ return x.word; }),qr:(document.querySelector('input[name=spQr]:checked')||{}).value||'self',qrName:$('spQrName').value.trim(),qrUrl:$('spQrUrl').value.trim()};
+    if(b.qr!=='vision'&&b.lines.length&&!b.qrUrl){ $('spQrUrl').focus(); m.textContent='Where should the QR code go? Add the web address, or choose the vision page.'; return; }
     if(!b.name){ $('spName').focus(); m.textContent='Please add your name.'; return; } if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email)){ $('spEmail').focus(); m.textContent='Please check your email address.'; return; }
     if(!ids.length&&!b.place){ $('spPlace').focus(); m.textContent='Which place would you like to sponsor?'; return; }
     m.textContent='Sending…'; fetch('/api/hubs/sponsor',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||r.status); }); })
-      .then(function(){ $('spF').reset(); places(); m.textContent='Thank you! We emailed you, and we will be in touch about setting it up.'; }).catch(function(err){ m.textContent='It could not be sent just now. '+(err&&err.message||''); }); });
+      .then(function(){ $('spF').reset(); $('spLines').innerHTML=''; spLine(); spQrShow(); places(); m.textContent='Thank you! We emailed you, and we will be in touch about setting it up.'; }).catch(function(err){ m.textContent='It could not be sent just now. '+(err&&err.message||''); }); });
   H.load().then(function(){ all(); places(); }).catch(function(){ $('list').innerHTML='<p class="empty">Couldn’t find the Hubs just now. Please try again in a moment.</p>'; });
 });
 </script>

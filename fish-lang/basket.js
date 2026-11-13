@@ -176,7 +176,7 @@
       +'<label>Anything else (optional)<textarea id="nmNote" rows="2" maxlength="600"></textarea></label></div>'
       +'<input type="text" id="nmHp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">'
       +'<button type="submit" class="go y" id="nmGo">Send the nomination</button></form><p class="msg" id="bkAskMsg" aria-live="polite">'+esc(ASKMSG)+'</p>'
-      +'<p class="pr" style="margin-top:10px">A church or business can also <a href="/hubs/#sponsor">sponsor a Hub</a>: you give the fish for a place, and we set it up with them.</p></details>'; }
+      +'<p class="pr" style="margin-top:10px"><a href="/hubs/#sponsor">Sponsor a Hub, or sponsor yourself to be a gift giver</a>: a church, a business or a person gives the fish for a place, and we set it up with them.</p></details>'; }
   function nominate(){ var m=BOX.querySelector('#bkAskMsg'), g=BOX.querySelector('#nmGo'), e=function(id){ return (BOX.querySelector('#'+id)||{}).value||''; };
     var body={name:e('nmName').trim(),email:e('nmEmail').trim(),place:e('nmPlace').trim(),address:e('nmAddr').trim(),phone:e('nmPhone').trim(),note:e('nmNote').trim(),hp:e('nmHp')};
     if(!body.name){ BOX.querySelector('#nmName').focus(); m.textContent='Please add your name.'; return; }

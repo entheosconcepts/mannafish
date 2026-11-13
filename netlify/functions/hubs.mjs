@@ -162,13 +162,18 @@ export default async (req, context) => {
     for (const id of ids) { const st = await station(s, id); if (st) names.push(st.name); }
     const r = { id: rid(), ids, places: names, place: clean(b.place, 200), name: clean(b.name, 80), org: clean(b.org, 120), email, phone: clean(b.phone, 40),
       what: (Array.isArray(b.what) ? b.what : []).filter((x) => MERCH.includes(x)), note: clean(b.note, 1000), anonymous: !!b.anonymous, status: 'new', at: new Date().toISOString() };
+    // a decal order: designs in 100s; where the QR code on the left goes (the sponsor's own page, someone they sponsor, or the anonymous vision page)
+    r.lines = (Array.isArray(b.lines) ? b.lines : []).slice(0, 40).map((x) => ({ word: clean(x && x.word, 30), qty: Math.max(100, Math.min(100000, Math.round((Number(x && x.qty) || 0) / 100) * 100)) })).filter((x) => x.word);
+    r.qr = ['self', 'other', 'vision'].includes(b.qr) ? b.qr : 'self'; r.qrName = clean(b.qrName, 120); r.qrUrl = /^https?:\/\//i.test(String(b.qrUrl || '').trim()) ? clean(b.qrUrl, 300) : '';
+    if (r.qr === 'vision') { r.qrName = ''; r.qrUrl = SITE + '/vision/'; }
+    const total = r.lines.reduce((n, x) => n + x.qty, 0), orderTxt = r.lines.map((x) => `${esc(x.word)} × ${x.qty}`).join(', '), qrTxt = r.qr === 'vision' ? 'the anonymous MannaFish vision page' : (r.qr === 'other' ? 'someone they sponsor: ' : 'their own page: ') + esc(r.qrName) + ' ' + esc(r.qrUrl);
     if (!r.ids.length && !r.place) return bad('Which place?', 400, { field: 'place' });
     await s.setJSON('sp/' + r.id, r);
     await mail(TO(), `Hub sponsor: ${r.org || r.name}`, [`<b>${esc(r.name)}</b>${r.org ? ' (' + esc(r.org) + ')' : ''} would like to sponsor a MannaFish Hub${r.anonymous ? ', <b>anonymously</b>' : ''}.`,
-      'For: ' + esc([...names, r.place].filter(Boolean).join(' · ')), r.what.length ? 'What: ' + esc(r.what.join(', ')) : '',
+      'For: ' + esc([...names, r.place].filter(Boolean).join(' · ')), r.what.length ? 'What: ' + esc(r.what.join(', ')) : '', r.lines.length ? `<b>Decal order, ${total} in all:</b> ${orderTxt}<br>QR code goes to: ${qrTxt}` : '',
       `Email: ${esc(email)}${r.phone ? ' · Phone: ' + esc(r.phone) : ''}`, r.note ? '“' + esc(r.note) + '”' : '', `<a href="${SITE}/hubs/admin/">Open the Hubs page</a>`]);
     await mail(email, 'Thank you for sponsoring a MannaFish Hub', [`Thank you${r.name ? ', ' + esc(r.name) : ''}. We received your request to sponsor ${esc([...names, r.place].filter(Boolean).join(', '))}.`,
-      'We will reach out to the host, set up the relationship, and write back to you. Every fish is free to the person who receives it: never sold, never resold.', '<i>Freely ye have received, freely give</i> (Matthew 10:8).'], r.name);
+      ...(r.lines.length ? [`Your decal order: ${orderTxt} (${total} in all). We will confirm it and send the way to pay; nothing has been charged. The QR code will go to ${qrTxt}.`] : []), 'We will reach out to the host, set up the relationship, and write back to you. Every fish is free to the person who receives it: never sold, never resold.', '<i>Freely ye have received, freely give</i> (Matthew 10:8).'], r.name);
     return Response.json({ ok: true }, { headers: NS });
   }
   // ── Ken, 12 Nov: "I would like to nominate a new location to be a MannaFish Hub": a person or business gives their details and email, no sign-in.

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The vision · MannaFish</title>
+<meta name="description" content="One word of Scripture in the middle of a fish, with its verse around it. Given away free, never sold.">
+<link rel="icon" href="/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Spectral:ital,wght@0,400;0,600;1,400&family=Archivo:wght@500;600;700&display=swap" rel="stylesheet">
+<!-- Ken, 13 Nov: the page a decal's QR code opens when the sponsor gives it to no one in particular (the anonymous side). A generic first layout: the words are his to change. -->
+<style>
+:root{--bg:#0b0e12;--card:#141a21;--line:#27313c;--text:#eef2f4;--dim:#9fb0c2;--gold:#f5d76e;--blue:#2a5fb0}
+:root[data-mode=light]{--bg:#fbfaf6;--card:#fff;--line:#d8d4c8;--text:#1c2228;--dim:#5b6570}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:17px/1.6 Archivo,system-ui,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;max-width:860px;margin:0 auto;padding:14px 18px}
+.brand{font:600 1.5rem Fraunces,Georgia,serif;color:var(--text);text-decoration:none}.brand b{color:#5aa2ff}
+header a.go{font-weight:700;color:var(--text);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:.9rem}
+main{max-width:860px;margin:0 auto;padding:0 18px 60px}
+.hero{text-align:center;padding:30px 0 10px}.hero img{width:min(420px,88%);height:auto;border-radius:14px}
+h1{font:600 clamp(1.8rem,5vw,2.6rem)/1.15 Fraunces,Georgia,serif;margin:18px 0 8px}
+.lead{font:italic 1.2rem/1.5 Spectral,Georgia,serif;color:var(--dim);max-width:620px;margin:0 auto}
+section{margin:34px 0}h2{font:600 1.5rem Fraunces,Georgia,serif;margin:0 0 8px}
+p{margin:0 0 12px}.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}.card h3{margin:0 0 6px;font:600 1.1rem Fraunces,Georgia,serif}
+.verse{font:italic 1.15rem/1.55 Spectral,Georgia,serif;text-align:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 8px;color:var(--dim)}
+.btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}
+.btn{display:inline-block;border-radius:999px;padding:13px 20px;font-weight:800;text-decoration:none;background:var(--blue);color:#fff}.btn.y{background:var(--gold);color:#111}.btn.o{background:none;border:1px solid var(--line);color:var(--text)}
+footer{text-align:center;color:var(--dim);font-size:.85rem;padding:20px 18px 40px}
+</style>
+</head>
+<body>
+<header><a class="brand" href="/">Manna<b>Fish</b></a><a class="go" href="/">Today’s fish</a></header>
+<main>
+<div class="hero">
+  <img src="/fish/en/HOPE.svg" alt="A MannaFish with the word Hope in the middle and its verse around it">
+  <h1>One word of Scripture, given away.</h1>
+  <p class="lead">You are holding a MannaFish: one word in the middle of a fish, with the verse it comes from written around it. Someone gave it to you, free.</p>
+</div>
+
+<section>
+  <h2>The vision</h2>
+  <p>Scripture was never meant to be kept. MannaFish puts a single word of it where you will see it, on a decal, a card, a phone, and lets you give it on. A word can start a conversation, a prayer, a gathering.</p>
+  <p>Our hope is a gift that moves: each fish is passed from one hand to the next, and each one carries the verse it came from.</p>
+</section>
+
+<div class="verse">“Freely ye have received, freely give.”<br>Matthew 10:8</div>
+
+<section>
+  <h2>How it works</h2>
+  <div class="cols">
+    <div class="card"><h3>1. Receive</h3><p>A sponsor, a church, a shop or a friend gave you this fish. It cost you nothing.</p></div>
+    <div class="card"><h3>2. Read</h3><p>Open the Bible to the verse around your word, in many translations, and listen to it read aloud.</p></div>
+    <div class="card"><h3>3. Give</h3><p>Keep one, give one away. Pass on a fish with its verse, and say what the word meant to you.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Always free</h2>
+  <p>The fish are never sold and never resold. Sponsors pay so that they can be given away; the person who receives one pays nothing.</p>
+</section>
+
+<section>
+  <h2>Gatherings</h2>
+  <p>This is a place for the gatherings that grow around the fish: coffee tables, church lobbies, small groups. We will share where they meet and how to start one here.</p>
+</section>
+
+<div class="btns">
+  <a class="btn" href="/">Today’s MannaFish</a>
+  <a class="btn y" href="/bible/">Read the Bible</a>
+  <a class="btn o" href="/hubs/">Find a MannaFish Hub</a>
+  <a class="btn o" href="/hubs/#sponsor">Become a gift giver</a>
+</div>
+</main>
+<footer>Entheos Concepts · Wilmington, NC · Always free, not for resale.</footer>
+<script>try{var m=localStorage.getItem('mf-mode');if(m==='light')document.documentElement.dataset.mode='light'}catch(e){}</script>
+</body>
+</html>
