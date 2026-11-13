@@ -23,12 +23,12 @@
   // ── look ── (Ken, 24 Oct: "The x at top right on mobile view cannot be reached without scrolling down": the sheet fits the screen a phone
   // really shows (dvh), and its title and ✕ stay at the top while the rest scrolls)
   function css(){ if(document.getElementById('mfBkCss')) return; var s=document.createElement('style'); s.id='mfBkCss';
-    s.textContent='.mfbkfab{position:fixed;right:14px;bottom:max(16px,env(safe-area-inset-bottom));z-index:80;border:0;border-radius:999px;background:#f5d76e;color:#111;font:800 1rem Archivo,system-ui,sans-serif;padding:10px 16px;cursor:pointer;box-shadow:0 10px 30px -8px #000}'
-      +'.mfbkfab[hidden]{display:none}body.mftabbed .mfbkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;padding:8px 14px}'
+    s.textContent='.mfbkfab{position:fixed;left:10px;top:max(8px,env(safe-area-inset-top));z-index:80;border:0;border-radius:999px;background:#f5d76e;color:#111;font:800 1rem Archivo,system-ui,sans-serif;padding:10px 16px;cursor:pointer;box-shadow:0 10px 30px -8px #000}'
+      +'.mfbkfab[hidden]{display:none}'
       // Ken, 2 Nov: "move the basket down a little so it is not blocking features" -- while a window is open at the bottom (the Bible's
       // verse window, word study, lists), the basket drops to the bottom corner, beside "Swipe up for more", out of the buttons' way
-      +'body:has(.act.open,.xrsheet.open,.sheet.open) .mfbkfab{bottom:calc(8px + env(safe-area-inset-bottom));right:8px;padding:5px 11px;font-size:.88rem;opacity:.92}'
-      +'.mfbkfab.bump{animation:mfbump .5s ease}@keyframes mfbump{40%{transform:scale(1.18)}}'
+      +''
+      +'.mfbkfab.slot{position:static;flex:none;height:40px;width:50px;padding:0;display:inline-flex;align-items:center;justify-content:center;gap:3px;box-shadow:none;font-size:.95rem}.mfbkfab.bump{animation:mfbump .5s ease}@keyframes mfbump{40%{transform:scale(1.18)}}'
       +'.mfbk{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.66);display:flex;align-items:flex-end;justify-content:center}.mfbk[hidden]{display:none}'
       +'.mfbk .in{background:#0e1116;color:#eaf0f0;border:1px solid rgba(255,255,255,.14);border-radius:22px 22px 0 0;width:100%;max-width:560px;max-height:92vh;max-height:calc(100dvh - 12px);overflow:auto;overscroll-behavior:contain;padding:0 16px max(18px,env(safe-area-inset-bottom));font:16px/1.45 Archivo,system-ui,sans-serif;text-align:left}'
       +'@media(min-width:640px){.mfbk{align-items:center}.mfbk .in{border-radius:22px}}'
@@ -76,11 +76,15 @@
   // two fish on one page must not share the names inside them (the curve each verse line runs along)
   function uniq(t){ var p='bk'+(++UQ)+'_'; return t.replace(/\bid="([^"]+)"/g,'id="'+p+'$1"').replace(/href="#([^"]+)"/g,'href="#'+p+'$1"').replace(/url\(#([^)]+)\)/g,'url(#'+p+'$1)'); }
   function outline(w){ return '<svg viewBox="0 0 200 100" aria-hidden="true"><path d="M8 50 C48 6 120 6 152 50 C120 94 48 94 8 50 Z M152 50 L192 18 M152 50 L192 82" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><text x="80" y="60" text-anchor="middle" font-family="MFHobo,Arial Black,sans-serif" font-size="'+(w.length>7?20:26)+'" fill="#fff">'+esc(w)+'</text></svg>'; }
-  function thumb(el,x){ el.innerHTML=outline(x.word); var u=src(x); if(!u) return; (SV[u]||(SV[u]=fetch(u).then(function(r){ if(!r.ok) throw 0; return r.text(); }))).then(function(t){ el.innerHTML=uniq(t); var s=el.querySelector('svg'); if(s){ s.removeAttribute('style'); s.setAttribute('aria-hidden','true'); } }).catch(function(){}); }
+  /* Ken, 13 Nov: a fish made from a verse (id U:...) showed only a plain outline; it is drawn like the decal from its own words */
+  function madeThumb(el,x){ function go(){ var M=window.MFmake; if(!M) return; var f=null; try{ f=(M.mine()||[]).filter(function(q){ return (q.id||('U:'+(q.word+'|'+q.ref).toLowerCase()))===x.id; })[0]; }catch(e){} f=f||x; if(!f.top&&!f.bot&&!f.verse) return; var top=f.top, bot=f.bot; if(!top&&!bot&&f.verse){ var w=String(f.verse).split(/\s+/), m=Math.ceil(w.length/2); top=w.slice(0,m).join(' '); bot=w.slice(m).join(' '); } M.render({word:f.word,top:top,bot:bot,ref:f.ref,refShort:f.refShort||f.ref,tag:f.tag}).then(function(t){ el.innerHTML=uniq(t); var sv=el.querySelector('svg'); if(sv){ sv.removeAttribute('style'); sv.setAttribute('aria-hidden','true'); } }).catch(function(){}); }
+    if(window.MFmake) return go(); var sc=document.createElement('script'); sc.src='/fish-lang/makefish.js'; sc.onload=go; document.head.appendChild(sc); }
+  function thumb(el,x){ el.innerHTML=outline(x.word); var u=src(x); if(!u){ if(/^U:/.test(String(x.id||''))) madeThumb(el,x); return; } (SV[u]||(SV[u]=fetch(u).then(function(r){ if(!r.ok) throw 0; return r.text(); }))).then(function(t){ el.innerHTML=uniq(t); var s=el.querySelector('svg'); if(s){ s.removeAttribute('style'); s.setAttribute('aria-hidden','true'); } }).catch(function(){}); }
 
   // ── the button ──
   var FAB=null;
   function fab(){ if(!document.body) return; css(); if(!FAB){ FAB=document.createElement('button'); FAB.type='button'; FAB.className='mfbkfab'; FAB.addEventListener('click',open); document.body.appendChild(FAB); }
+    var sl=document.getElementById('mfbkSlot'); if(sl&&FAB.parentNode!==sl){ sl.appendChild(FAB); FAB.classList.add('slot'); }
     var n=items().length; FAB.hidden=!n; FAB.textContent='🧺 '+n; FAB.setAttribute('aria-label','My favorite fish: '+n); }
   function bump(){ if(!FAB) return; FAB.classList.remove('bump'); void FAB.offsetWidth; FAB.classList.add('bump'); }
   var TOAST=null;
