@@ -2968,7 +2968,7 @@ window.MF=(function(){
   function ttsFollow(a,t,cb){ var h=function(){ if(a.duration) cb(ttsAt(t,a)); }; a.ontimeupdate=h;
     (function tick(){ if(a.ontimeupdate!==h) return; if(a.duration&&!a.paused) h(); requestAnimationFrame(tick); })(); }
   function readAloud(ctx,from,to,btn){ if(sp.on && sp.btn===btn){ stopSpeak(); rMarkIn(ctx,0); return; } var D=ctx.data; if(!D) return;
-    stopSpeak(); var id=sp.id, L=D.l; sp.on=true; sp.btn=btn; btn.setAttribute('aria-pressed','true');
+    stopSpeak(); var id=sp.id, L=D.l; sp.on=true; sp.btn=btn; btn.setAttribute('aria-pressed','true'); if(window.MFambient) MFambient.narr(true);
     var done=function(){ if(id===sp.id){ stopSpeak(); rMarkIn(ctx,0); if(ctx.onDone) ctx.onDone(); } };
     function say(t,base,el,next,LL){ if(id!==sp.id) return; LL=LL||L; var said=spoken(t,LL);
       var v=aiVoice(); (v?sayUrl(said,LL,v):Promise.reject()).then(function(url){
@@ -4569,7 +4569,7 @@ window.MF=(function(){
   function stopSpeak(){ sp.id++; clearInterval(sp.timer); if(sp.audio){ var a0=sp.audio; a0.onended=a0.onpause=a0.onplaying=a0.ontimeupdate=null; a0.pause(); sp.audio=null; } 
     if(sp.btn) sp.btn.setAttribute('aria-pressed','false');
     if(sp.fh){ sp.fh.reset(); sp.fh=null; }
-    sp.on=false; sp.btn=null; if(window.MFlistenUI) MFlistenUI(); if(window.MFplUI) MFplUI(); }
+    if(window.MFambient) MFambient.narr(false); sp.on=false; sp.btn=null; if(window.MFlistenUI) MFlistenUI(); if(window.MFplUI) MFplUI(); }
   function renderSay(box,text,l,ref){ var h='', i=0, parts=l==='zh'?text.split(''):text.split(/(\s+)/);
     parts.forEach(function(t){ if(/^\s+$/.test(t)||t===''){ h+=t; } else { h+='<span class="w" data-s="'+i+'" data-e="'+(i+t.length)+'">'+esc(t)+'</span>'; } i+=t.length; });
     box.innerHTML=h+(ref?'<span class="sref">'+esc(ref)+'</span>':''); box.hidden=false;

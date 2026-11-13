@@ -68,7 +68,11 @@
   var live=[]; function chk(el,ev){ var i=live.indexOf(el);
     if(ev==='playing'){ if(el.duration>8&&!el.loop){ if(i<0) live.push(el); clearTimeout(stopT); clearTimeout(prevT); prevT=0; start(); } }
     else if(i>=0) live.splice(i,1);
-    if(!live.length&&run&&!prevT){ clearTimeout(stopT); stopT=setTimeout(function(){ if(!live.length) stop(); },2000); } }
+    if(!live.length&&!nar&&run&&!prevT){ clearTimeout(stopT); stopT=setTimeout(function(){ if(!live.length&&!nar) stop(); },2000); } }
+  /* Ken, 13 Nov: "the music's not playing behind the narrator still": the page now tells the music directly when it starts and stops reading a devotional
+     or chapter (MFambient.narr(true/false)), instead of guessing from the audio. It runs inside the tap on Listen, so phones allow the sound. */
+  var nar=false;
+  function narr(on2){ nar=!!on2; if(nar){ clearTimeout(stopT); clearTimeout(prevT); prevT=0; unlock(); start(); } else if(!live.length&&run&&!prevT){ clearTimeout(stopT); stopT=setTimeout(function(){ if(!nar&&!live.length) stop(); },2000); } }
   function watch(){ var P=window.HTMLMediaElement&&HTMLMediaElement.prototype; if(!P||P.__mfAmb) return; P.__mfAmb=1;
     var play=P.play; P.play=function(){ var el=this; if(!el.__mfAmbW){ el.__mfAmbW=1; ['playing','pause','ended','emptied'].forEach(function(ev){ el.addEventListener(ev,function(){ chk(el,ev); }); }); } return play.apply(this,arguments); }; }
   function css(){ if(document.getElementById('mfambcss')) return; var s=document.createElement('style'); s.id='mfambcss';
@@ -90,7 +94,7 @@
     draw(); ui(); }
   function ui(){ btns.forEach(function(b){ var o=on(); b.setAttribute('aria-expanded',menu&&!menu.hidden?'true':'false'); b.title=o?'Background music: '+style().n+' (tap to change or turn off)':'Background music is off (tap to choose one)'; b.style.opacity=o?'1':'.55'; }); }
   function bind(b){ if(!b||btns.indexOf(b)>=0) return; btns.push(b); b.setAttribute('aria-haspopup','menu'); b.addEventListener('click',function(e){ e.stopPropagation(); if(menu&&!menu.hidden){ menu.hidden=true; ui(); return; } openMenu(b); ui(); }); ui(); }
-  window.MFambient={ on:on, style:function(){ return style().k; }, set:function(v){ if(v){ if(!on()) put(DEF); } else { put('0'); stop(); } ui(); }, pick:pick, volume:function(v){ if(v!=null) setVol(v); return vol(); }, list:S, start:start, stop:stop, build:build, bind:bind, level:LEVEL };
+  window.MFambient={ on:on, style:function(){ return style().k; }, set:function(v){ if(v){ if(!on()) put(DEF); } else { put('0'); stop(); } ui(); }, pick:pick, volume:function(v){ if(v!=null) setVol(v); return vol(); }, list:S, start:start, stop:stop, narr:narr, build:build, bind:bind, level:LEVEL };
   watch();
   function auto(){ bind(document.getElementById('dgMusic')); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',auto); else auto();
