@@ -5,7 +5,7 @@
    voice stops. Short clips (one word, one verse) never start it. The 🎵 button opens the list: Off, or one of 12 sounds (tap one to hear a few seconds).
    Kept in localStorage mf-ambient ('0' = off, otherwise the sound's key). window.MFambient = { on(), style(), set(bool), pick(key), list, start(), stop(), build(), bind(btn) } */
 (function(){
-  var KEY='mf-ambient', DEF='dawn', LEVEL=0.05, ctx=null, master=null, run=null, stopT=null, prevT=null, btns=[], menu=null;
+  var KEY='mf-ambient', VKEY='mf-ambient-vol', DEF='dawn', LEVEL=0.05, ctx=null, master=null, run=null, stopT=null, prevT=null, btns=[], menu=null;
   /* each sound: ch = chords (MIDI notes, low and round: nothing above the middle of the piano), len = seconds before the chord changes, w = wave,
      cut = low-pass (lower is rounder), h = second harmonic amount (organ-like), arp = notes of a soft bell/harp line (every arp.t seconds), noise = soft rain/ocean */
   var S=[
@@ -27,6 +27,10 @@
   function on(){ var r=raw(); return r!=='0'&&r!=='off'; }
   function style(){ var r=raw(); return find(r&&r!=='0'&&r!=='1'?r:DEF); }
   function put(v){ try{ localStorage.setItem(KEY,v); }catch(e){} }
+  /* the volume slider 0..100 (default 55): gain = 0.30 x (v/100)^2, so 55 is about 0.09 and 100 is 0.30 (still under the voice) */
+  function vol(){ try{ var v=parseFloat(localStorage.getItem(VKEY)); return isFinite(v)?Math.max(0,Math.min(100,v)):55; }catch(e){ return 55; } }
+  function gainOf(v){ return 0.3*Math.pow(v/100,2); }
+  function setVol(v){ try{ localStorage.setItem(VKEY,String(v)); }catch(e){} if(run&&run.m&&run.c){ run.m.gain.cancelScheduledValues(run.c.currentTime); run.m.gain.setTargetAtTime(Math.max(gainOf(v),0.0001),run.c.currentTime,0.08); } }
   function hz(m){ return 440*Math.pow(2,(m-69)/12); }
   function impulse(c,sec){ var n=Math.floor(c.sampleRate*sec), b=c.createBuffer(2,n,c.sampleRate); for(var ch=0;ch<2;ch++){ var d=b.getChannelData(ch); for(var i=0;i<n;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2.6); } return b; }
   function noiseBuf(c,sec){ var n=Math.floor(c.sampleRate*sec), b=c.createBuffer(2,n,c.sampleRate); for(var ch=0;ch<2;ch++){ var d=b.getChannelData(ch), l=0; for(var i=0;i<n;i++){ var x=Math.random()*2-1; l=(l+0.04*x)/1.04; d[i]=l*8; } } return b; }
@@ -51,9 +55,12 @@
       if(st.noise.sw){ var sl=c.createOscillator(), sg=c.createGain(); sl.frequency.value=st.noise.sw; sg.gain.value=st.noise.lvl*0.35; sl.connect(sg); sg.connect(ng.gain); sl.start(t0); nodes.push(sl); } }
     return { stop:function(t){ nodes.forEach(function(o){ try{ o.stop(t); }catch(e){} }); } };
   }
+  /* phones only let sound start from a tap: the first tap anywhere wakes the audio so the music can start later by itself */
+  function unlock(){ var c=ensure(); if(c&&c.state==='suspended') c.resume(); }
+  ['pointerdown','touchend','click','keydown'].forEach(function(ev){ document.addEventListener(ev,unlock,{passive:true}); });
   function ensure(){ if(ctx) return ctx; var AC=window.AudioContext||window.webkitAudioContext; if(!AC) return null; try{ ctx=new AC(); }catch(e){ return null; } return ctx; }
   function start(){ if(!on()||run) return; var c=ensure(); if(!c) return; clearTimeout(stopT); if(c.state==='suspended') c.resume();
-    master=c.createGain(); master.gain.setValueAtTime(0.0001,c.currentTime); master.gain.linearRampToValueAtTime(LEVEL,c.currentTime+4); master.connect(c.destination);
+    master=c.createGain(); master.gain.setValueAtTime(0.0001,c.currentTime); master.gain.linearRampToValueAtTime(Math.max(gainOf(vol()),0.0001),c.currentTime+4); master.connect(c.destination);
     run={r:build(c,master,1800,c.currentTime,style()),m:master,c:c}; }
   function stop(){ if(!run) return; var R=run; run=null; try{ R.m.gain.cancelScheduledValues(R.c.currentTime); R.m.gain.setValueAtTime(Math.max(R.m.gain.value,0.0001),R.c.currentTime); R.m.gain.linearRampToValueAtTime(0.0001,R.c.currentTime+2.2); }catch(e){}
     setTimeout(function(){ try{ R.r.stop(R.c.currentTime); R.m.disconnect(); }catch(e){} },2500); }
@@ -70,9 +77,10 @@
      +'.mfamb button:hover{background:rgba(255,255,255,.08)}.mfamb button b{display:block;font-weight:700}.mfamb button small{display:block;opacity:.65;font-size:.78rem}.mfamb button[aria-checked=true]{background:rgba(245,215,110,.16)}.mfamb .tk{width:18px;flex:none;color:#f5d76e;font-weight:800}'
      +':root[data-mode=light] .mfamb{background:#fbfaf6;color:#1c2228;border-color:rgba(0,0,0,.15)}'; document.head.appendChild(s); }
   function draw(){ if(!menu) return; var cur=on()?style().k:'off';
-    menu.innerHTML='<h4>Background music</h4><button type="button" role="menuitemradio" aria-checked="'+(cur==='off')+'" data-k="off"><span class="tk">'+(cur==='off'?'✓':'')+'</span><span><b>Off</b><small>Just the voice</small></span></button>'
+    menu.innerHTML='<h4>Background music</h4><div style="display:flex;align-items:center;gap:10px;padding:4px 10px 10px"><span aria-hidden="true">🔈</span><input type="range" min="0" max="100" step="1" value="'+vol()+'" id="mfambV" aria-label="Music volume" style="flex:1"><span aria-hidden="true">🔊</span></div>'+'<button type="button" role="menuitemradio" aria-checked="'+(cur==='off')+'" data-k="off"><span class="tk">'+(cur==='off'?'✓':'')+'</span><span><b>Off</b><small>Just the voice</small></span></button>'
       +S.map(function(x){ return '<button type="button" role="menuitemradio" aria-checked="'+(cur===x.k)+'" data-k="'+x.k+'"><span class="tk">'+(cur===x.k?'✓':'')+'</span><span><b>'+x.n+'</b><small>'+x.d+'</small></span></button>'; }).join(''); }
   function openMenu(b){ css(); if(!menu){ menu=document.createElement('div'); menu.className='mfamb'; menu.setAttribute('role','menu'); menu.hidden=true; document.body.appendChild(menu);
+      menu.addEventListener('input',function(e){ if(e.target.id==='mfambV'){ setVol(+e.target.value); if(!run&&on()){ start(); clearTimeout(prevT); prevT=setTimeout(function(){ prevT=0; if(!live.length) stop(); },9000); } } });
       menu.addEventListener('click',function(e){ e.stopPropagation(); var x=e.target.closest('[data-k]'); if(!x) return; pick(x.dataset.k); });
       document.addEventListener('click',function(e){ if(!menu.hidden&&!menu.contains(e.target)&&!btns.some(function(q){ return q.contains(e.target); })){ menu.hidden=true; ui(); } }); }
     draw(); var r=b.getBoundingClientRect(); menu.hidden=false; menu.style.left=Math.max(10,Math.min(r.left,window.innerWidth-menu.offsetWidth-10))+'px'; var top=r.bottom+8; if(top+menu.offsetHeight>window.innerHeight-10) top=Math.max(10,r.top-menu.offsetHeight-8); menu.style.top=top+'px'; }
@@ -82,7 +90,7 @@
     draw(); ui(); }
   function ui(){ btns.forEach(function(b){ var o=on(); b.setAttribute('aria-expanded',menu&&!menu.hidden?'true':'false'); b.title=o?'Background music: '+style().n+' (tap to change or turn off)':'Background music is off (tap to choose one)'; b.style.opacity=o?'1':'.55'; }); }
   function bind(b){ if(!b||btns.indexOf(b)>=0) return; btns.push(b); b.setAttribute('aria-haspopup','menu'); b.addEventListener('click',function(e){ e.stopPropagation(); if(menu&&!menu.hidden){ menu.hidden=true; ui(); return; } openMenu(b); ui(); }); ui(); }
-  window.MFambient={ on:on, style:function(){ return style().k; }, set:function(v){ if(v){ if(!on()) put(DEF); } else { put('0'); stop(); } ui(); }, pick:pick, list:S, start:start, stop:stop, build:build, bind:bind, level:LEVEL };
+  window.MFambient={ on:on, style:function(){ return style().k; }, set:function(v){ if(v){ if(!on()) put(DEF); } else { put('0'); stop(); } ui(); }, pick:pick, volume:function(v){ if(v!=null) setVol(v); return vol(); }, list:S, start:start, stop:stop, build:build, bind:bind, level:LEVEL };
   watch();
   function auto(){ bind(document.getElementById('dgMusic')); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',auto); else auto();
