@@ -2,7 +2,7 @@
 """Cross references for the MannaFish Bible (OpenBible.info, CC BY): python3 build.py cross_references.txt
 Download: https://www.openbible.info/labs/cross-references/ (cross_references.txt: From Verse, To Verse, Votes).
 
-Writes fish-lang/bible/xref/<Book>.json   {"c:v": [[book,ch,v(,end ch or 0,end v)], ...up to 8, strongest first],
+Writes fish-lang/bible/xref/<Book>.json   {"c:v": [[book,ch,v(,end ch or 0,end v)], ...up to 60, strongest first (votes 1 or more)],
                                            "_k": {"c:v": n, ...}}
 n = how many of a verse's references are strong (KEY votes or more, the first n of its list). Ken, 27 Oct: a reference
 icon in the text, like a printed Bible's cross references, on the verses that have strong ones (about one verse in five),
@@ -21,7 +21,7 @@ D = collections.defaultdict(list); bad = 0
 for line in open(sys.argv[1], encoding='utf-8'):
     if line.startswith('From') or not line.strip(): continue
     f, t, votes = line.rstrip('\n').split('\t'); votes = int(votes)
-    if votes < 3: continue
+    if votes < 1: continue
     try:
         a = p(f); parts = t.split('-'); s = p(parts[0]); e = p(parts[1]) if len(parts) > 1 else None
     except Exception:
@@ -34,7 +34,7 @@ for bi, name in enumerate(NAMES):
     B, K = {}, {}
     for (b, c, v), L in sorted(D.items()):
         if b != bi: continue
-        L.sort(key=lambda x: -x[3]); top = L[:8]; B['%d:%d' % (c, v)] = [x[:3] + x[4:] for x in top]
+        L.sort(key=lambda x: -x[3]); top = L[:60]; B['%d:%d' % (c, v)] = [x[:3] + x[4:] for x in top]
         n = sum(1 for x in top if x[3] >= KEY)
         if n: K['%d:%d' % (c, v)] = n; keyed += 1
     B['_k'] = K

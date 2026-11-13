@@ -1025,14 +1025,14 @@ body.lay-l .rail .dnav{flex:1 1 auto}
       L.forEach(function(x,n){ kjv(x[0],x[1]).then(function(o){ var to=x[3]?x[2]:(x[4]||x[2]), w=[]; for(var i=x[2];i<=Math.min(to,x[2]+2);i++) if(o.t[i-1]) w.push(o.t[i-1]);
         var sp=box.querySelector('span[data-n="'+n+'"]'); if(sp) sp.textContent=w.join(' ')+(to>x[2]+2||x[3]?' …':''); }).catch(function(){}); }); }); }
   // Ken, 27 Oct: a reference icon in the text, like a printed Bible's cross references, on the verses whose references are strong
-  // (_k in the xref file: about one verse in five), in every version; tap it for the references, each one a link
+  // (_k in the xref file: now every verse that has any), in every version; tap it for the references, each one a link
   var XRI='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="11" height="15" rx="2"/><path d="M14 8h5a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2v-2"/><path d="M6 9h5M6 13h5"/></svg>';
   function xrMark(){ var at=AT.b+':'+AT.c; if(!SET('xref',true)) return; xbook(AT.b).then(function(J){ if(AT.b+':'+AT.c!==at) return; var K=J._k||{};
-    [].forEach.call($('txt').querySelectorAll('.xrs'),function(s){ var n=K[AT.c+':'+s.dataset.xv]; s.innerHTML=n?'<button type="button" class="xri" data-xr="'+s.dataset.xv+'" aria-label="Cross references for verse '+s.dataset.xv+'">'+XRI+'</button>':''; }); }); }
+    [].forEach.call($('txt').querySelectorAll('.xrs'),function(s){ var n=J[AT.c+':'+s.dataset.xv]; s.innerHTML=n&&n.length?'<button type="button" class="xri" data-xr="'+s.dataset.xv+'" aria-label="Cross references for verse '+s.dataset.xv+'">'+XRI+'</button>':''; }); }); }
   function xrOpen(v,all){ var at=AT.b+':'+AT.c+':'+v, box=$('xrsIn'); closeAct(); $('xrs').classList.add('open');
     box.innerHTML='<div class="xh"><b>'+esc(plain(AT.b,AT.c,v))+'</b><button type="button" class="ib sm" data-xx="1" aria-label="Close">&#10005;</button></div><p class="xv">'+esc(VT[v]||'')+'</p><div class="xl">…</div>';
-    xbook(AT.b).then(function(J){ if($('xrs').dataset.at!==at&&$('xrs').dataset.at) return; var L=J[AT.c+':'+v]||[], n=(J._k||{})[AT.c+':'+v]||L.length, list=all?L:L.slice(0,n);
-      box.querySelector('.xl').innerHTML=list.map(function(x,q){ var ec=x[3]||x[1], ev=x[4]; return '<button type="button" class="xr" data-x="'+x[0]+','+x[1]+','+x[2]+'"><span class="xa">'+String.fromCharCode(97+q)+'</span><span><b>'+esc(label(x[0],x[1],x[2])+(ev?(x[3]?'–'+ec+':'+ev:'–'+ev):''))+'</b><span class="xt" data-n="'+q+'">…</span></span></button>'; }).join('')
+    xbook(AT.b).then(function(J){ if($('xrs').dataset.at!==at&&$('xrs').dataset.at) return; var L=J[AT.c+':'+v]||[], n=Math.min(12,Math.max((J._k||{})[AT.c+":"+v]||0,Math.min(L.length,6))), list=all?L:L.slice(0,n);
+      box.querySelector('.xl').innerHTML=list.map(function(x,q){ var ec=x[3]||x[1], ev=x[4]; return '<button type="button" class="xr" data-x="'+x[0]+','+x[1]+','+x[2]+'"><span class="xa">'+(q<26?String.fromCharCode(97+q):q+1)+'</span><span><b>'+esc(label(x[0],x[1],x[2])+(ev?(x[3]?'–'+ec+':'+ev:'–'+ev):''))+'</b><span class="xt" data-n="'+q+'">…</span></span></button>'; }).join('')
         +(!all&&L.length>n?'<button type="button" class="chip" data-xall="'+v+'">More references ('+(L.length-n)+')</button>':'');
       list.forEach(function(x,q){ chapter(x[0],x[1],ver()).catch(function(){ return kjv(x[0],x[1]); }).then(function(o){ var to=x[3]?x[2]:(x[4]||x[2]), w=[]; for(var i=x[2];i<=Math.min(to,x[2]+1);i++) if(o.t[i-1]) w.push(o.t[i-1]);
         var sp=box.querySelector('.xt[data-n="'+q+'"]'); if(sp) sp.textContent=w.join(' ')+(to>x[2]+1||x[3]?' …':''); }).catch(function(){}); }); });

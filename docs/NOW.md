@@ -78,3 +78,5 @@ Not needed for launch: texting (carrier registration), app stores, sponsor prici
 
 ## Open lists
 - Ken's to-do list: `docs/UPDATES.md`. Launch plan: `docs/LAUNCH.md`. Every open question with its options: `docs/DECISIONS.md` section B.
+
+**Just finished ({d}):** massive cross references (every verse with any, up to 60, all versions). Try Genesis 1, tap the small icon on a verse.
