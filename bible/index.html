@@ -316,7 +316,7 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 .tfh{width:100%;display:flex;align-items:center;gap:10px;background:none;border:0;color:inherit;padding:11px 14px;cursor:pointer;font:inherit;text-align:left;min-height:46px}
 .tfk{font:800 .72rem 'Archivo',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}.tfh b{flex:1;font:700 1.1rem 'Fraunces',Georgia,serif;text-align:right}
 .tfc{transition:transform .2s;color:var(--dim)}.tfh[aria-expanded=false] .tfc{transform:rotate(-90deg)}
-.tfb{padding:0 12px 12px;text-align:center}.tfb[hidden]{display:none}
+.tfh.nudge .tfc{animation:tfnudge 1s ease-in-out 3;display:inline-block}@keyframes tfnudge{0%,100%{transform:translateY(0)}50%{transform:translateY(5px) scale(1.35)}}.tfb{padding:0 12px 12px;text-align:center}.tfb[hidden]{display:none}
 .tfimg{display:block;background:#000;border-radius:12px;padding:6px}.tfimg img{display:block;width:100%;height:auto;max-height:210px;object-fit:contain}
 .tfr{margin:8px 0 2px;color:var(--dim);font-size:.9rem}.tfgo{font-weight:700;color:var(--blue2);text-decoration:none;font-size:.9rem}
 @media(prefers-reduced-motion:reduce){.tfc{transition:none}}
@@ -516,7 +516,20 @@ body.lay-l .rail .dnav{flex:1 1 auto}
       if(e.data.full){ f.classList.add('full'); document.body.classList.add('tffull'); document.documentElement.style.overflow='hidden'; } else { f.classList.remove('full'); document.body.classList.remove('tffull'); document.documentElement.style.overflow=''; if(e.data.h>60) f.style.height=e.data.h+'px'; } });
     var tz=''; try{ tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''; }catch(e){}
     fetch('/api/today-fish?id='+encodeURIComponent(fq||'today')+'&tz='+encodeURIComponent(tz)+'&lang='+lang).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(j) $('tfW').textContent=j.title; }).catch(function(){});
-    set(ls('mf-bible-fish')!=='closed'); })();
+    set(ls('mf-bible-fish')!=='closed');
+    /* Ken, 14 Nov: opening the Bible app shows the fish for about 2 seconds, then it slowly folds away so the reader is not kept waiting behind it, and the ▾ pulses
+       so people can see where to open it again. Not on the devotional (that is the home page), and not when the card is open on purpose (a fish link, from a verse on a fish);
+       a tap on the card or its title in the first 2 seconds keeps it open. The saved open or closed choice is not changed by this. */
+    if(!EMBED&&!document.body.classList.contains('fromfish')&&!fq&&ls('mf-bible-fish')!=='closed'){ var auto=null;
+      var cancel=function(){ clearTimeout(auto); auto=-1; };
+      var fold=function(){ if(auto===-1||$('tfT').getAttribute('aria-expanded')!=='true'||f.classList.contains('full')) return; var b=$('tfB'), h=b.offsetHeight; if(!h) return;
+        b.style.overflow='hidden'; b.style.height=h+'px'; b.style.transition='height 1.6s ease, opacity 1.6s ease'; void b.offsetHeight; b.style.height='0px'; b.style.opacity='0'; $('tfT').classList.add('nudge');
+        setTimeout(function(){ if(auto===-1){ b.style.cssText=''; return; } b.hidden=true; b.style.cssText=''; $('tfT').setAttribute('aria-expanded','false'); },1700); };
+      var arm=function(){ if(auto==null) auto=setTimeout(fold,2000); };
+      f.addEventListener('load',arm); setTimeout(arm,5000);
+      window.addEventListener('blur',function(){ if(document.activeElement===f) cancel(); }); $('tfT').addEventListener('click',cancel);
+      window.addEventListener('message',function(e){ if(e.source===f.contentWindow&&e.data&&e.data.mfcard&&e.data.full) cancel(); }); }
+  })();
   mode(ls('mf-mode')==='light'); $('mode').addEventListener('click',function(){ var l=root.getAttribute('data-mode')!=='light'; ls('mf-mode',l?'light':'dark'); mode(l); });
 
   var B=[["Genesis",50],["Exodus",40],["Leviticus",27],["Numbers",36],["Deuteronomy",34],["Joshua",24],["Judges",21],["Ruth",4],["1 Samuel",31],["2 Samuel",24],["1 Kings",22],["2 Kings",25],["1 Chronicles",29],["2 Chronicles",36],["Ezra",10],["Nehemiah",13],["Esther",10],["Job",42],["Psalm",150],["Proverbs",31],["Ecclesiastes",12],["Song of Solomon",8],["Isaiah",66],["Jeremiah",52],["Lamentations",5],["Ezekiel",48],["Daniel",12],["Hosea",14],["Joel",3],["Amos",9],["Obadiah",1],["Jonah",4],["Micah",7],["Nahum",3],["Habakkuk",3],["Zephaniah",3],["Haggai",2],["Zechariah",14],["Malachi",4],["Matthew",28],["Mark",16],["Luke",24],["John",21],["Acts",28],["Romans",16],["1 Corinthians",16],["2 Corinthians",13],["Galatians",6],["Ephesians",6],["Philippians",4],["Colossians",4],["1 Thessalonians",5],["2 Thessalonians",3],["1 Timothy",6],["2 Timothy",4],["Titus",3],["Philemon",1],["Hebrews",13],["James",5],["1 Peter",5],["2 Peter",3],["1 John",5],["2 John",1],["3 John",1],["Jude",1],["Revelation",22]];
