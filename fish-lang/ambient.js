@@ -30,14 +30,14 @@
   ];
   var HY=null, HYP=null;
   function load(){ if(HY) return Promise.resolve(HY); return HYP||(HYP=fetch('/fish-lang/hymns.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(a){ HY={}; a.forEach(function(x){ HY[x.k]=x; }); return HY; }).catch(function(){ HYP=null; HY={}; return HY; })); }
-  function buildHymn(c,dest,sec,t0,st){ var D=HY&&HY[st.k], nodes=[]; if(!D) return {stop:function(){}};
+  function buildHymn(c,dest,sec,t0,st){ var D=HY&&HY[st.k], nodes=[]; if(!D) return {end:t0+sec,stop:function(){}};
     var out=c.createGain(); out.gain.value=1; var lp=c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=1500; lp.Q.value=0.2;
     var rev=c.createConvolver(); rev.buffer=impulse(c,3); var wet=c.createGain(); wet.gain.value=0.5; var dry=c.createGain(); dry.gain.value=0.65; out.connect(lp); lp.connect(dry); lp.connect(rev); rev.connect(wet); dry.connect(dest); wet.connect(dest);
-    var B=st.beat||1.1, len=D.beats*B+4, vg=[0.15,0.11,0.11,0.17];
+    var B=st.beat||1.1, len=D.beats*B+4, vg=[0.15,0.11,0.11,0.17]; sec=Math.max(len,Math.ceil(sec/len)*len);
     for(var t=t0+0.5;t<t0+sec;t+=len){ D.v.forEach(function(voice,vi){ voice.forEach(function(n){ var s=t+n[1]*B, d=Math.max(0.2,n[2]*B*0.97), e=s+d; if(s>t0+sec) return;
         [1,2].forEach(function(h,j){ var o=c.createOscillator(), g=c.createGain(); o.type='sine'; o.frequency.value=hz(n[0])*h; var a=vg[vi]*(j?0.3:1);
           g.gain.setValueAtTime(0.0001,s); g.gain.linearRampToValueAtTime(a,s+0.12); g.gain.setValueAtTime(a,Math.max(s+0.13,e-0.1)); g.gain.linearRampToValueAtTime(0.0001,e+0.5); o.connect(g); g.connect(out); o.start(s); o.stop(e+0.6); nodes.push(o); }); }); }); }
-    return { stop:function(tt){ nodes.forEach(function(o){ try{ o.stop(tt); }catch(e){} }); } };
+    return { end:t0+sec, stop:function(tt){ nodes.forEach(function(o){ try{ o.stop(tt); }catch(e){} }); } };
   }
   function find(k){ for(var i=0;i<S.length;i++) if(S[i].k===k) return S[i]; return S[0]; }
   function raw(){ try{ return localStorage.getItem(KEY); }catch(e){ return null; } }
@@ -53,12 +53,12 @@
   function noiseBuf(c,sec){ var n=Math.floor(c.sampleRate*sec), b=c.createBuffer(2,n,c.sampleRate); for(var ch=0;ch<2;ch++){ var d=b.getChannelData(ch), l=0; for(var i=0;i<n;i++){ var x=Math.random()*2-1; l=(l+0.04*x)/1.04; d[i]=l*8; } } return b; }
   /* the sound for `sec` seconds into dest, starting at time t0 (the same code renders the samples offline) */
   function build(c,dest,sec,t0,st){
-    st=st||style(); t0=t0||0; if(st.hymn) return buildHymn(c,dest,sec,t0,st); var CL=st.len, nodes=[], out=c.createGain(); out.gain.value=1;
+    st=st||style(); t0=t0||0; if(st.hymn) return buildHymn(c,dest,sec,t0,st); var CL=st.len, nodes=[], out=c.createGain(); out.gain.value=1; var cyc=CL*st.ch.length; sec=Math.max(cyc,Math.ceil(sec/cyc)*cyc); var END=t0+sec;
     var lp=c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=st.cut; lp.Q.value=0.2;
     var rev=c.createConvolver(); rev.buffer=impulse(c,3); var wet=c.createGain(); wet.gain.value=0.5; var dry=c.createGain(); dry.gain.value=0.65;
     out.connect(lp); lp.connect(dry); lp.connect(rev); rev.connect(wet); dry.connect(dest); wet.connect(dest);
-    var lfo=c.createOscillator(), lg=c.createGain(); lfo.frequency.value=0.08; lg.gain.value=st.cut*0.25; lfo.connect(lg); lg.connect(lp.frequency); lfo.start(t0); nodes.push(lfo);
-    var n=Math.ceil(sec/CL)+1;
+    var lfo=c.createOscillator(), lg=c.createGain(); lfo.frequency.value=0.08; lg.gain.value=st.cut*0.25; lfo.connect(lg); lg.connect(lp.frequency); lfo.start(t0); lfo.stop(END+3); nodes.push(lfo);
+    var n=Math.ceil(sec/CL);
     for(var k=0;k<n;k++){ var ch=st.ch[k%st.ch.length], s=t0+k*CL, e=s+CL+2.2, att=Math.min(2.2,CL*0.45);
       ch.forEach(function(m,j){ [-3,3].forEach(function(det){ var o=c.createOscillator(), g=c.createGain(); o.type=st.w; o.frequency.value=hz(m); o.detune.value=det+(Math.random()*3-1.5);
         var v=(j<1?0.26:0.12)/2; g.gain.setValueAtTime(0.0001,s); g.gain.linearRampToValueAtTime(v,s+att); g.gain.setValueAtTime(v,s+CL-0.2); g.gain.linearRampToValueAtTime(0.0001,e);
@@ -68,9 +68,10 @@
         g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(a.bell?0.2:0.28,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+a.dec); o.connect(g); g.connect(lp); o.start(t); o.stop(t+a.dec+0.1); nodes.push(o);
         if(a.bell){ var o3=c.createOscillator(), g3=c.createGain(); o3.type='sine'; o3.frequency.value=hz(m)*2.76; g3.gain.setValueAtTime(0.0001,t); g3.gain.linearRampToValueAtTime(0.05,t+0.01); g3.gain.exponentialRampToValueAtTime(0.0001,t+a.dec*0.5); o3.connect(g3); g3.connect(lp); o3.start(t); o3.stop(t+a.dec); nodes.push(o3); } } }
     if(st.noise){ var nb=c.createBufferSource(); nb.buffer=noiseBuf(c,10); nb.loop=true; var nf=c.createBiquadFilter(); nf.type='lowpass'; nf.frequency.value=st.noise.cut; var ng=c.createGain(); ng.gain.value=st.noise.lvl*0.5;
-      nb.connect(nf); nf.connect(ng); ng.connect(dest); nb.start(t0); nodes.push(nb);
-      if(st.noise.sw){ var sl=c.createOscillator(), sg=c.createGain(); sl.frequency.value=st.noise.sw; sg.gain.value=st.noise.lvl*0.35; sl.connect(sg); sg.connect(ng.gain); sl.start(t0); nodes.push(sl); } }
-    return { stop:function(t){ nodes.forEach(function(o){ try{ o.stop(t); }catch(e){} }); } };
+      var nl=st.noise.lvl*0.5; ng.gain.setValueAtTime(0.0001,t0); ng.gain.linearRampToValueAtTime(nl,t0+2); ng.gain.setValueAtTime(nl,END); ng.gain.linearRampToValueAtTime(0.0001,END+2);
+      nb.connect(nf); nf.connect(ng); ng.connect(dest); nb.start(t0); nb.stop(END+2.2); nodes.push(nb);
+      if(st.noise.sw){ var sl=c.createOscillator(), sg=c.createGain(); sl.frequency.value=st.noise.sw; sg.gain.value=st.noise.lvl*0.35; sl.connect(sg); sg.connect(ng.gain); sl.start(t0); sl.stop(END+2.2); nodes.push(sl); } }
+    return { end:END, stop:function(t){ nodes.forEach(function(o){ try{ o.stop(t); }catch(e){} }); } };
   }
   /* phones only let sound start from a tap: the first tap anywhere wakes the audio so the music can start later by itself */
   function unlock(){ var c=ensure(); if(c&&c.state==='suspended') c.resume(); }
@@ -78,9 +79,11 @@
   function ensure(){ if(ctx) return ctx; var AC=window.AudioContext||window.webkitAudioContext; if(!AC) return null; try{ ctx=new AC(); }catch(e){ return null; } return ctx; }
   function start(){ if(!on()||run) return; if(style().hymn&&!HY){ load().then(function(){ if(nar||prevT) start(); }); return; } var c=ensure(); if(!c) return; clearTimeout(stopT); if(c.state==='suspended') c.resume();
     master=c.createGain(); master.gain.setValueAtTime(0.0001,c.currentTime); master.gain.linearRampToValueAtTime(Math.max(gainOf(vol()),0.0001),c.currentTime+4); master.connect(c.destination);
-    run={r:build(c,master,1800,c.currentTime,style()),m:master,c:c}; }
-  function stop(){ if(!run) return; var R=run; run=null; try{ R.m.gain.cancelScheduledValues(R.c.currentTime); R.m.gain.setValueAtTime(Math.max(R.m.gain.value,0.0001),R.c.currentTime); R.m.gain.linearRampToValueAtTime(0.0001,R.c.currentTime+2.2); }catch(e){}
-    setTimeout(function(){ try{ R.r.stop(R.c.currentTime); R.m.disconnect(); }catch(e){} },2500); }
+    /* the sound is scheduled a minute at a time and the next minute is added before this one ends (thousands of notes at once made phones glitch) */
+    var R={c:c,m:master,st:style(),hs:[],next:c.currentTime+0.05}; run=R; sched(R); R.timer=setInterval(function(){ if(R!==run){ clearInterval(R.timer); return; } if(R.next-c.currentTime<30) sched(R); },4000); }
+  function sched(R){ var h=build(R.c,R.m,60,R.next,R.st); R.hs.push(h); R.next=h.end; }
+  function stop(fast){ if(!run) return; var R=run; run=null; clearInterval(R.timer); var f=fast===true?0.25:2.2; try{ R.m.gain.cancelScheduledValues(R.c.currentTime); R.m.gain.setValueAtTime(Math.max(R.m.gain.value,0.0001),R.c.currentTime); R.m.gain.linearRampToValueAtTime(0.0001,R.c.currentTime+f); }catch(e){}
+    setTimeout(function(){ try{ R.hs.forEach(function(h){ h.stop(R.c.currentTime); }); R.m.disconnect(); }catch(e){} },f*1000+300); }
   /* follow the narrator: any long audio that starts playing starts the music; when none is playing for 2 seconds it fades out */
   var live=[]; function chk(el,ev){ if(window.MFambientNoAuto) return; var i=live.indexOf(el);
     if(ev==='playing'){ if(el.duration>8&&!el.loop){ if(i<0) live.push(el); clearTimeout(stopT); clearTimeout(prevT); prevT=0; start(); } }
@@ -106,12 +109,18 @@
       document.addEventListener('click',function(e){ if(!menu.hidden&&!menu.contains(e.target)&&!btns.some(function(q){ return q.contains(e.target); })){ menu.hidden=true; ui(); } }); }
     draw(); var r=b.getBoundingClientRect(); menu.hidden=false; menu.style.left=Math.max(10,Math.min(r.left,window.innerWidth-menu.offsetWidth-10))+'px'; var top=r.bottom+8; if(top+menu.offsetHeight>window.innerHeight-10) top=Math.max(10,r.top-menu.offsetHeight-8); menu.style.top=top+'px'; }
   /* choose: Off, or a sound (a few seconds of it play so you can hear it, unless the voice is already playing) */
-  function pick(k){ if(k==='off'){ put('0'); stop(); clearTimeout(prevT); prevT=0; } else { put(k); var had=!!run; if(had) stop();
-      setTimeout(function(){ start(); if(!live.length){ clearTimeout(prevT); prevT=setTimeout(function(){ prevT=0; if(!live.length) stop(); },9000); } },had?400:0); }
+  var GEN=0;
+  function pick(k){ var g=++GEN; clearTimeout(prevT); prevT=0;
+    if(k==='off'){ put('0'); stop(); }
+    else { put(k); var had=!!run; if(had) stop(true);   /* the old sound is cut off quickly so only one plays */
+      setTimeout(function(){ if(g!==GEN) return; start(); if(!live.length&&!nar){ prevT=setTimeout(function(){ prevT=0; if(g===GEN&&!live.length&&!nar) stop(); },9000); } },had?420:0); }
     draw(); ui(); }
   function ui(){ btns.forEach(function(b){ var o=on(); b.setAttribute('aria-expanded',menu&&!menu.hidden?'true':'false'); b.title=o?'Background music: '+style().n+' (tap to change or turn off)':'Background music is off (tap to choose one)'; b.style.opacity=o?'1':'.55'; }); }
   function bind(b){ if(!b||btns.indexOf(b)>=0) return; btns.push(b); b.setAttribute('aria-haspopup','menu'); b.addEventListener('click',function(e){ e.stopPropagation(); if(menu&&!menu.hidden){ menu.hidden=true; ui(); return; } openMenu(b); ui(); }); ui(); }
-  window.MFambient={ load:load, on:on, style:function(){ return style().k; }, set:function(v){ if(v){ if(!on()) put(DEF); } else { put('0'); stop(); } ui(); }, pick:pick, volume:function(v){ if(v!=null) setVol(v); return vol(); }, list:S, start:start, stop:stop, narr:narr, build:build, bind:bind, level:LEVEL };
+  /* for other pages (Time with God): play a sound into any node, a minute at a time; returns {stop()} */
+  function loop(c,dest,st){ var R={c:c,m:dest,st:st,hs:[],next:c.currentTime+0.05,dead:false}; sched(R); R.timer=setInterval(function(){ if(R.dead){ clearInterval(R.timer); return; } if(R.next-c.currentTime<30) sched(R); },4000);
+    return { stop:function(){ R.dead=true; clearInterval(R.timer); R.hs.forEach(function(h){ try{ h.stop(c.currentTime); }catch(e){} }); } }; }
+  window.MFambient={ loop:loop, load:load, on:on, style:function(){ return style().k; }, set:function(v){ if(v){ if(!on()) put(DEF); } else { put('0'); stop(); } ui(); }, pick:pick, volume:function(v){ if(v!=null) setVol(v); return vol(); }, list:S, start:start, stop:stop, narr:narr, build:build, bind:bind, level:LEVEL };
   watch();
   function auto(){ bind(document.getElementById('dgMusic')); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',auto); else auto();
