@@ -5899,7 +5899,7 @@ body.mfediting{padding-top:54px!important}
 <script>
 /* the fish card inside the Bible page: tell the page how tall it is, and when something needs the whole screen (the devotional, full screen, a sheet) */
 (function(){ if(!document.documentElement.classList.contains('card')||window.top===window.self) return; var last='';
-  function send(){ var t=document.getElementById('today'), st=document.getElementById('stage'), full=document.documentElement.style.overflow==='hidden'||document.body.style.overflow==='hidden'||(st&&st.classList.contains('fs'));
+  function send(){ var t=document.getElementById('today'), st=document.getElementById('stage'), full=document.documentElement.style.overflow==='hidden'||document.body.style.overflow==='hidden'||(st&&st.classList.contains('fs'))||(function(){ var pl=document.getElementById('mfPlayer'); return !!(pl&&!pl.hidden); })();   /* Ken, 14 Nov: the read-aloud player sits at the bottom of the screen: it needs the whole screen, or it is far below the card and the speaker seems dead */
     var h=t?Math.ceil(t.getBoundingClientRect().height):0; h=Math.max(h,document.body.scrollHeight||0); var k=h+'|'+full; if(k===last) return; last=k; try{ parent.postMessage({mfcard:1,h:h,full:full},location.origin); }catch(e){} }
   if(window.ResizeObserver){ var ro=new ResizeObserver(send); var t=document.getElementById('today'); if(t) ro.observe(t); }
   new MutationObserver(send).observe(document.documentElement,{attributes:true,subtree:true,attributeFilter:['hidden','class','style']});
