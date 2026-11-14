@@ -28,7 +28,7 @@
       // Ken, 2 Nov: "move the basket down a little so it is not blocking features" -- while a window is open at the bottom (the Bible's
       // verse window, word study, lists), the basket drops to the bottom corner, beside "Swipe up for more", out of the buttons' way
       +''
-      +'.mfbkfab.slot{position:static;flex:none;height:40px;width:50px;padding:0;display:inline-flex;align-items:center;justify-content:center;gap:3px;box-shadow:none;font-size:.95rem}.mfbkfab.bump{animation:mfbump .5s ease}@keyframes mfbump{40%{transform:scale(1.18)}}'
+      +'.mfbkfab.slot{position:static;flex:none;height:40px;width:44px;padding:0;display:inline-flex;align-items:center;justify-content:center;gap:3px;box-shadow:none;font-size:.95rem}.mfbkfab.bump{animation:mfbump .5s ease}@keyframes mfbump{40%{transform:scale(1.18)}}'
       +'.mfbk{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.66);display:flex;align-items:flex-end;justify-content:center}.mfbk[hidden]{display:none}'
       +'.mfbk .in{background:#0e1116;color:#eaf0f0;border:1px solid rgba(255,255,255,.14);border-radius:22px 22px 0 0;width:100%;max-width:560px;max-height:92vh;max-height:calc(100dvh - 12px);overflow:auto;overscroll-behavior:contain;padding:0 16px max(18px,env(safe-area-inset-bottom));font:16px/1.45 Archivo,system-ui,sans-serif;text-align:left}'
       +'@media(min-width:640px){.mfbk{align-items:center}.mfbk .in{border-radius:22px}}'
