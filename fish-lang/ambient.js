@@ -100,24 +100,29 @@
   function unlock(){ var c=ensure(); if(c&&c.state==='suspended') c.resume(); }
   ['pointerdown','touchend','click','keydown'].forEach(function(ev){ document.addEventListener(ev,unlock,{passive:true}); });
   function ensure(){ if(ctx) return ctx; var AC=window.AudioContext||window.webkitAudioContext; if(!AC) return null; try{ ctx=new AC(); }catch(e){ return null; } return ctx; }
-  function start(){ if(!on()||run) return; var c=ensure(); if(!c) return; clearTimeout(stopT); if(c.state==='suspended') c.resume();
+  function start(){ if(!on()||run||held) return; var c=ensure(); if(!c) return; clearTimeout(stopT); if(c.state==='suspended') c.resume();
     master=c.createGain(); master.gain.setValueAtTime(0.0001,c.currentTime); master.gain.linearRampToValueAtTime(Math.max(gainOf(vol()),0.0001),c.currentTime+4); master.connect(c.destination);
     /* the sound is scheduled a minute at a time and the next minute is added before this one ends (thousands of notes at once made phones glitch) */
     var R={c:c,m:master,st:style(),hs:[],next:c.currentTime+0.05}; run=R; sched(R); R.timer=setInterval(function(){ if(R!==run){ clearInterval(R.timer); return; } if(R.next-c.currentTime<(R.st.win||60)/2) sched(R); },3000); }
   function sched(R){ var h=build(R.c,R.m,R.st.win||60,R.next,R.st); R.hs.push(h); R.next=h.end; }
-  function stop(fast){ if(!run) return; var R=run; run=null; clearInterval(R.timer); var f=fast===true?0.25:2.2; try{ R.m.gain.cancelScheduledValues(R.c.currentTime); R.m.gain.setValueAtTime(Math.max(R.m.gain.value,0.0001),R.c.currentTime); R.m.gain.linearRampToValueAtTime(0.0001,R.c.currentTime+f); }catch(e){}
+  function stop(fast){ if(!run) return; var R=run; run=null; clearInterval(R.timer); var f=fast===true?0.25:(typeof fast==='number'?fast:2.2); try{ R.m.gain.cancelScheduledValues(R.c.currentTime); R.m.gain.setValueAtTime(Math.max(R.m.gain.value,0.0001),R.c.currentTime); R.m.gain.linearRampToValueAtTime(0.0001,R.c.currentTime+f); }catch(e){}
     setTimeout(function(){ try{ R.hs.forEach(function(h){ h.stop(R.c.currentTime); }); R.m.disconnect(); }catch(e){} },f*1000+300); }
   /* follow the narrator: any long audio that starts playing starts the music; when none is playing for 2 seconds it fades out */
   var live=[]; function chk(el,ev){ if(window.MFambientNoAuto) return; var i=live.indexOf(el);
     if(ev==='playing'){ if(el.duration>8&&!el.loop){ if(i<0) live.push(el); clearTimeout(stopT); clearTimeout(prevT); prevT=0; start(); } }
     else if(i>=0) live.splice(i,1);
-    if(!live.length&&!nar&&run&&!prevT){ clearTimeout(stopT); stopT=setTimeout(function(){ if(!live.length&&!nar) stop(); },2000); } }
+    if(!live.length&&!nar&&run&&!prevT){ clearTimeout(stopT); stopT=setTimeout(function(){ if(!live.length&&!nar) stop(0.7); },350); } }
   /* Ken, 13 Nov: "the music's not playing behind the narrator still": the page now tells the music directly when it starts and stops reading a devotional
      or chapter (MFambient.narr(true/false)), instead of guessing from the audio. It runs inside the tap on Listen, so phones allow the sound. */
   var nar=false;
-  function narr(on2){ if(window.MFambientNoAuto) return; nar=!!on2; if(nar){ clearTimeout(stopT); clearTimeout(prevT); prevT=0; unlock(); start(); } else if(!live.length&&run&&!prevT){ clearTimeout(stopT); stopT=setTimeout(function(){ if(!nar&&!live.length) stop(); },2000); } }
+  function narr(on2){ if(window.MFambientNoAuto) return; nar=!!on2; if(nar){ held=false; clearTimeout(stopT); clearTimeout(prevT); prevT=0; unlock(); start(); } else if(!live.length&&run&&!prevT){ clearTimeout(stopT); stopT=setTimeout(function(){ if(!nar&&!live.length) stop(0.7); },350); } }
+  /* Ken, 14 Nov: "if a user pauses the narration the music keeps playing for a second": pausing the voice (any pause button) fades the music out at once; resuming brings it back */
+  var held=false, holdT=null;
+  function hold(h){ held=!!h; if(held){ if(run) stop(0.5); } else if(nar||live.length){ clearTimeout(stopT); start(); } }
   function watch(){ var P=window.HTMLMediaElement&&HTMLMediaElement.prototype; if(!P||P.__mfAmb) return; P.__mfAmb=1;
-    var play=P.play; P.play=function(){ var el=this; if(!el.__mfAmbW){ el.__mfAmbW=1; ['playing','pause','ended','emptied'].forEach(function(ev){ el.addEventListener(ev,function(){ chk(el,ev); }); }); } return play.apply(this,arguments); }; }
+    var play=P.play; P.play=function(){ var el=this; if(!el.__mfAmbW){ el.__mfAmbW=1; ['playing','pause','ended','emptied'].forEach(function(ev){ el.addEventListener(ev,function(){ chk(el,ev); if(window.MFambientNoAuto) return;
+          if(ev==='pause'&&!el.ended&&(nar||live.length)){ clearTimeout(holdT); holdT=setTimeout(function(){ if(el.paused&&!el.ended) hold(true); },120); }
+          else if(ev==='playing'){ clearTimeout(holdT); if(held) hold(false); } }); }); } return play.apply(this,arguments); }; }
   function css(){ if(document.getElementById('mfambcss')) return; var s=document.createElement('style'); s.id='mfambcss';
     s.textContent='.mfamb{position:fixed;z-index:200;width:min(300px,calc(100vw - 20px));max-height:70vh;overflow:auto;background:#0e1116;color:#eaf0f0;border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:8px;box-shadow:0 18px 40px -10px #000;font:15px/1.3 Archivo,system-ui,sans-serif}.mfamb[hidden]{display:none}'
      +'.mfambp{position:static!important;width:auto!important;max-height:none!important;border:0!important;box-shadow:none!important;background:none!important;padding:0!important;overflow:visible!important;color:inherit!important}.mfamb h4{margin:6px 8px 6px;font:800 .72rem Archivo,sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.7}.mfamb button{display:flex;width:100%;align-items:center;gap:10px;text-align:left;border:0;background:none;color:inherit;border-radius:10px;padding:9px 10px;font:inherit;cursor:pointer}'
@@ -150,7 +155,7 @@
   /* for other pages (Time with God): play a sound into any node, a minute at a time; returns {stop()} */
   function loop(c,dest,st){ var R={c:c,m:dest,st:st,hs:[],next:c.currentTime+0.05,dead:false}; sched(R); R.timer=setInterval(function(){ if(R.dead){ clearInterval(R.timer); return; } if(R.next-c.currentTime<(st.win||60)/2) sched(R); },3000);
     return { stop:function(){ R.dead=true; clearInterval(R.timer); R.hs.forEach(function(h){ try{ h.stop(c.currentTime); }catch(e){} }); } }; }
-  window.MFambient={ loop:loop, on:on, style:function(){ return style().k; }, set:function(v){ if(v){ if(!on()) put(DEF); } else { put('0'); stop(); } ui(); }, pick:pick, volume:function(v){ if(v!=null) setVol(v); return vol(); }, list:S, start:start, stop:stop, narr:narr, build:build, bind:bind, panel:bindPanel, level:LEVEL };
+  window.MFambient={ loop:loop, on:on, style:function(){ return style().k; }, set:function(v){ if(v){ if(!on()) put(DEF); } else { put('0'); stop(); } ui(); }, pick:pick, volume:function(v){ if(v!=null) setVol(v); return vol(); }, list:S, start:start, stop:stop, narr:narr, hold:hold, running:function(){ return !!run; }, build:build, bind:bind, panel:bindPanel, level:LEVEL };
   watch();
   function auto(){ bind(document.getElementById('dgMusic')); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',auto); else auto();
