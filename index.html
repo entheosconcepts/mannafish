@@ -5423,10 +5423,10 @@ window.MF=(function(){
       +'<p style="text-align:center;margin:8px 0 2px"><button type="button" class="gfmore" data-gfv="1">'+esc(P('makev').replace('{q}',q))+'</button></p>'; }
   function gfVerses(d,q){ var r=d.querySelector('#gfRes'), T=GFT[MF.lang]||GFT.en, P=function(k){ return T[k]||GFT.en[k]; }; q=String(q||'').trim(); if(q.length<2) return;
     var keep=r.querySelector('p.gfn'); r.insertAdjacentHTML('beforeend','<p class="gfn" id="gfVw">'+esc(P('finding'))+'</p>');
-    fetch('/api/verse-search?q='+encodeURIComponent(q)).then(function(x){ if(!x.ok) throw 0; return x.json(); }).then(function(j){ var w=d.querySelector('#gfVw'); if(!w||(d.querySelector('#gfQ')||{}).value.trim()!==q) return; d._vs=j.results||[];
+    fetch('/api/verse-search?q='+encodeURIComponent(q)).then(function(x){ if(!x.ok) throw 0; return x.json(); }).then(function(j){ var w=d.querySelector('#gfVw'); if(!w||(d.querySelector('#gfQ')||{}).value.trim().toLowerCase()!==q.toLowerCase()) return; d._vs=j.results||[];
       var re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\w*)','ig');
       w.outerHTML=d._vs.length?'<div class="gfvl">'+d._vs.map(function(v,i){ return '<button type="button" data-gv="'+i+'"><b>'+esc(v.ref)+'</b><span>'+esc(v.text).replace(re,'<mark>$1</mark>')+'</span></button>'; }).join('')+'</div>':'<p class="gfn">'+esc(P('nov'))+'</p>'; })
-      .catch(function(){ var w=d.querySelector('#gfVw'); if(w) w.textContent='…'; }); }
+      .catch(function(){ var w=d.querySelector('#gfVw'); if(w) w.textContent=P('nov'); }); }
   function gfMake(q,v){ var go=function(){ MFmake.open({word:q,verse:v.text,ref:v.ref,refShort:'',tag:' (KJV)',href:'/bible/?r='+encodeURIComponent(v.ref)}); };
     if(window.MFmake){ go(); return; } var sc=document.createElement('script'); sc.src='/fish-lang/makefish.js'; sc.onload=go; document.head.appendChild(sc); }
   function gfObj(it){ var l=MF.lang, fl=/^(en|es|tl|zh|hi|el|de|ko|he|ar|ru)$/.test(l)?l:'en';
