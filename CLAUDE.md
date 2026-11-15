@@ -17,6 +17,11 @@ MannaFish gives Scripture away: one word of Scripture in the middle of a fish, w
 - Keep replies short: Ken pays for extra usage. Don't re-read big files you don't need; search them instead.
 - Never put a secret, a token, a password, an EIN, Ken's home address or a model name in any file.
 
+## Batch the pushes (Ken, 15 Nov: "start asking and combine changes to save me money on deploys")
+- Every push to `test-site` is a Netlify deploy, and deploys cost Ken money. **Do not push after every small change.** Make the change, test it, commit it locally, then tell Ken it is ready and **ask what else goes in this batch**. Push once, when Ken says to push or says that is all for now (one push, one deploy).
+- Exception: if Ken says "push it" for something specific, push it. A push that carries docs only should wait for the next code push.
+- Before the end of a session or a long wait, ask Ken if he wants the waiting commits pushed (the container can be reclaimed, and unpushed commits would be lost).
+
 ## Where to work
 - Branch **`test-site`**. It deploys to https://yadamannafishtest.netlify.app.
 - **Never push to `main`, and never touch manna-fish.com, unless Ken says "push it live".**
