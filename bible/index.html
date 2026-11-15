@@ -52,10 +52,20 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 .tbtn .ar{display:inline-block;transition:transform .2s}.tbtn[aria-expanded=true] .ar{transform:rotate(180deg)}
 /* Ken, 7 Nov: "I want the books to show up same size as Galatians directly beneath that book when clicking the arrow": the books list drops down right under the heading, each book in the heading's own size; a book opens its chapters right under it */
 .bkdrop{margin:6px 0 10px;border:1px solid var(--line);background:var(--card);border-radius:16px;max-height:min(68vh,640px);overflow:auto;padding:4px 6px 10px;-webkit-overflow-scrolling:touch}
-.bkdrop h5{margin:12px 8px 2px;font:800 .72rem 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
-.bkdrop .bkb{display:block;width:100%;border:0;background:none;color:inherit;text-align:center;font:600 1.7rem 'Fraunces',Georgia,serif;padding:7px 8px;border-radius:12px;cursor:pointer}
-.bkdrop .bkb.on{color:var(--blue2)}.bkdrop .bkb[aria-expanded=true]{background:rgba(68,143,255,.12)}
-.bkdrop .bkch{margin:2px 4px 8px}.bkdrop .bkmore{display:block;margin:6px auto 2px;border:1px solid var(--line);background:none;color:var(--dim);border-radius:999px;padding:6px 14px;font:700 .8rem 'Archivo',sans-serif;cursor:pointer}
+/* Ken, 16 Nov: the book list is OT and NT and two columns, coloured by group; a tapped book opens its chapter squares under its row */
+.bkdrop{--law:#f1f4f6;--hist:#f5d76e;--poet:#7fd8d2;--proph:#f59a6a;--gosp:#f1f4f6;--paul:#f59a6a;--gen:#8ddca4;--rev:#f5d76e}
+:root[data-mode=light] .bkdrop{--law:#1c2228;--hist:#8a6a00;--poet:#0c7a74;--proph:#b4531b;--gosp:#1c2228;--paul:#b4531b;--gen:#1f7a35;--rev:#8a6a00}
+.bkdrop .bkhd{display:flex;align-items:center;justify-content:center;gap:10px;position:sticky;top:-4px;z-index:2;background:var(--card);padding:8px 4px 8px}
+.bkdrop .bkseg{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px}
+.bkdrop .bkseg button{border:0;background:none;color:var(--dim);border-radius:999px;padding:8px 22px;font:800 .88rem 'Archivo',sans-serif;cursor:pointer}.bkdrop .bkseg button[aria-selected=true]{background:var(--blue);color:#fff}
+.bkdrop .bksr{position:absolute;right:6px;border:1px solid var(--line);background:none;color:inherit;border-radius:999px;width:38px;height:38px;font-size:1rem;cursor:pointer}
+.bkdrop .bklist{display:grid;grid-template-columns:1fr 1fr;padding:2px 4px}
+.bkdrop .bkb{display:block;min-width:0;border:0;background:none;color:var(--c,inherit);text-align:left;font:500 1.15rem 'Fraunces',Georgia,serif;padding:11px 6px;border-radius:10px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bkdrop .bkb.on{background:rgba(68,143,255,.16);font-weight:700}.bkdrop .bkb[aria-expanded=true]{background:rgba(68,143,255,.12);outline:1px solid var(--blue2)}
+.bkdrop .bkch{grid-column:1/-1;background:rgba(68,143,255,.1);border:1px solid var(--blue2);border-radius:12px;padding:10px;margin:4px 0 8px}
+.bkdrop .bkch p{margin:0 0 8px;font:600 .92rem 'Fraunces',Georgia,serif}
+.bkdrop .bkch .nums{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}
+.bkdrop .bkch .nums button{border:1px solid var(--line);background:var(--card);color:inherit;border-radius:9px;height:38px;font:700 .85rem 'Archivo',sans-serif;cursor:pointer}.bkdrop .bkch .nums button.on{background:var(--blue);border-color:var(--blue);color:#fff}
 .chv{flex:none;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;background:none;color:var(--text);font-size:1.7rem;line-height:1;padding:0 0 4px;cursor:pointer}.chv:disabled{opacity:.25;cursor:default}
 #main>.sub{text-align:center}
 .ht{text-align:center;margin:0 0 10px}.htb{border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:6px 14px;font-weight:700;font-size:.85rem;cursor:pointer}
@@ -1539,23 +1549,29 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   // the books list right under the heading (Ken, 7 Nov): tap the heading or its ▾; a book opens its chapters right under it
   var BKO=false;
   function bkClose(){ if(!BKO) return; BKO=false; $('bkDrop').hidden=true; $('titleB').setAttribute('aria-expanded','false'); }
-  function bkOpen(){ BKO=true; var h='<button type="button" class="bkmore" data-bkmore="1">Version, search and recent &rsaquo;</button><h5>Old Testament</h5>', row=function(n){ return '<div class="bkr" data-bkr="'+n+'"><button type="button" class="bkb'+(n===AT.b?' on':'')+'" data-bkn="'+n+'" aria-expanded="false">'+esc(B[n][0])+'</button></div>'; };
-    for(var n=0;n<39;n++) h+=row(n); h+='<h5>New Testament</h5>'; for(n=39;n<66;n++) h+=row(n);
-    $('bkDrop').innerHTML=h; $('bkDrop').hidden=false; $('titleB').setAttribute('aria-expanded','true');
+  var BKT='ot', BKOP=null;
+  function bkGroup(n){ return n<5?'law':n<17?'hist':n<22?'poet':n<39?'proph':n<43?'gosp':n===43?'hist':n<57?'paul':n<65?'gen':'rev'; }
+  function bkDraw(keep){ var y=keep?$('bkDrop').scrollTop:0, lo=BKT==='nt'?39:0, hi=BKT==='nt'?66:39, cells=[], n, i;
+    for(n=lo;n<hi;n++){ i=n-lo; cells.push('<button type="button" class="bkb'+(n===AT.b?' on':'')+'" data-bkn="'+n+'" aria-expanded="'+(BKOP===n)+'" style="--c:var(--'+bkGroup(n)+')">'+esc(B[n][0])+'</button>');}
+    /* the chapter box goes after the end of its row: after the next book too when the tapped one is on the left */
+    var out=[]; for(n=lo;n<hi;n++){ out.push(cells[n-lo]); if(BKOP===n){ var rowEnd=((n-lo)%2===0&&n+1<hi); if(rowEnd){ out.push(cells[n+1-lo]); n++; }
+        var g='<div class="bkch"><p>'+esc(B[BKOP][0])+' · pick a chapter</p><div class="nums">'; for(var c=1;c<=B[BKOP][1];c++) g+='<button type="button" data-bkn="'+BKOP+'" data-bkc="'+c+'" class="'+(BKOP===AT.b&&c===AT.c?'on':'')+'">'+c+'</button>'; out.push(g+'</div></div>'); } }
+    $('bkDrop').innerHTML='<div class="bkhd"><div class="bkseg" role="tablist" aria-label="Testament"><button type="button" role="tab" data-bkt="ot" aria-selected="'+(BKT==='ot')+'">OT</button><button type="button" role="tab" data-bkt="nt" aria-selected="'+(BKT==='nt')+'">NT</button></div><button type="button" class="bksr" data-bkmore="1" aria-label="Search, version and recent" title="Search, version and recent">&#128269;&#xFE0E;</button></div><div class="bklist">'+out.join('')+'</div>';
+    $('bkDrop').scrollTop=y; }
+  function bkOpen(){ BKO=true; BKT=AT.b>=39?'nt':'ot'; BKOP=null; bkDraw(); $('bkDrop').hidden=false; $('titleB').setAttribute('aria-expanded','true');
     var cur=$('bkDrop').querySelector('.bkb.on'); if(cur) $('bkDrop').scrollTop=Math.max(0,cur.offsetTop-$('bkDrop').clientHeight/2+20); }
   // Tools: the version line, Bible tools and the word study bar sit behind the round toolbox button (Ken, 7 Nov: "clutter")
   function toolsSet(on){ document.body.classList.toggle('tools-open',on); $('toolsRound').setAttribute('aria-expanded',String(on)); ls('mf-bible-ht',on?'1':'0'); try{ htUI(); studyUI(); }catch(e){} }
   $('toolsRound').addEventListener('click',function(){ toolsSet(!document.body.classList.contains('tools-open')); });
   $('add2').addEventListener('click',function(){ putSet('par',ver().k==='kjv'?'web':'kjv'); go(AT.b,AT.c,0,true); htUI(); });
   $('titleB').addEventListener('click',function(e){ e.stopPropagation(); if(BKO) bkClose(); else bkOpen(); });
-  $('bkDrop').addEventListener('click',function(e){
+  $('bkDrop').addEventListener('click',function(e){ e.stopPropagation();   /* the list is redrawn, so the tapped button is gone before the page's own click handler looks at it */
     if(e.target.closest('[data-bkmore]')){ bkClose(); openPick(); return; }
+    var t=e.target.closest('[data-bkt]'); if(t){ BKT=t.dataset.bkt; BKOP=null; bkDraw(); return; }
     var c=e.target.closest('[data-bkc]'); if(c){ var bn=+c.dataset.bkn; bkClose(); unlockSay(); go(bn,+c.dataset.bkc); return; }
-    var b=e.target.closest('[data-bkn]'); if(!b) return; var n=+b.dataset.bkn, open=b.getAttribute('aria-expanded')==='true';
-    [].forEach.call($('bkDrop').querySelectorAll('.bkch'),function(x){ x.remove(); }); [].forEach.call($('bkDrop').querySelectorAll('.bkb[aria-expanded=true]'),function(x){ x.setAttribute('aria-expanded','false'); });
-    if(open) return; if(B[n][1]===1){ bkClose(); unlockSay(); go(n,1); return; }
-    var g='<div class="chs bkch">'; for(var k=1;k<=B[n][1];k++) g+='<button type="button" data-bkn="'+n+'" data-bkc="'+k+'" class="'+(n===AT.b&&k===AT.c?'on':'')+'">'+k+'</button>'; g+='</div>';
-    b.setAttribute('aria-expanded','true'); b.parentNode.insertAdjacentHTML('beforeend',g); b.scrollIntoView({block:'nearest'}); });
+    var b=e.target.closest('[data-bkn]'); if(!b) return; var n=+b.dataset.bkn;
+    if(B[n][1]===1){ bkClose(); unlockSay(); go(n,1); return; }
+    BKOP=BKOP===n?null:n; bkDraw(true); var bx=$('bkDrop').querySelector('.bkch'); if(bx) bx.scrollIntoView({block:'nearest'}); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&BKO) bkClose(); });
   document.addEventListener('click',function(e){ if(BKO&&!e.target.closest('#bkDrop,#titleB')) bkClose(); });
   // ── Explain and apply (Ken, 7 Nov: "commentaries, or explanations of passages and how to understand or apply it to the user's life") ──
