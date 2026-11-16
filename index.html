@@ -4073,6 +4073,7 @@ window.MF=(function(){
         mail=MOBILE?'<a class="dgbtn" href="mailto:?subject='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(T.mail)+'</a>':'<button type="button" class="dgbtn" data-a="email">'+esc(T.mail)+'</button>';
     e.innerHTML='<div class="in"><b>'+esc(o.title||T.share)+'</b><div class="dvsb">'+txt+mail
       +'<button type="button" class="dgbtn" data-a="copy">'+esc(T.copy)+'</button>'+(navigator.share?'<button type="button" class="dgbtn" data-a="share">'+esc(T.more)+'</button>':'')+'</div>'
+      +'<div class="dvsb" style="margin-top:8px"><button type="button" class="dgbtn" data-a="other" style="background:none">🐟 '+(MF.lang==='es'?'Elegir otro pez':'Choose a different fish')+'</button><button type="button" class="dgbtn" data-a="mkfish" style="background:none">✏️ '+(MF.lang==='es'?'Crear un pez nuevo':'Make a new fish')+'</button></div>'
       +(MOBILE?'':'<div class="dvsb" id="dvMailRow" hidden><a class="dgbtn" target="_blank" rel="noopener" href="https://mail.google.com/mail/?view=cm&fs=1&su='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(N.gmail)+'</a>'
       +'<a class="dgbtn" target="_blank" rel="noopener" href="https://outlook.live.com/mail/0/deeplink/compose?subject='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(N.outlook)+'</a>'
       +'<a class="dgbtn" href="mailto:?subject='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(N.mailapp)+'</a></div>')
@@ -4083,6 +4084,7 @@ window.MF=(function(){
     if(a==='x') e.hidden=true; else if(a==='email'){ var mr=$('dvMailRow'); if(mr) mr.hidden=!mr.hidden; }
     else if(a==='text'){ $('dvShareMsg').textContent=e._n.textHelp; try{ navigator.clipboard.writeText(e._b).catch(function(){ window.prompt('',e._b); }); }catch(er){ window.prompt('',e._b); } }
     else if(a==='copy'){ try{ navigator.clipboard.writeText(e._u).then(function(){ $('dvShareMsg').textContent=e._t.copied; }); }catch(er){ window.prompt('',e._u); } }
+    else if(a==='other'||a==='mkfish'){ e.hidden=true; try{ goFish(); }catch(er){} setTimeout(function(){ var gd=document.getElementById('gfSheet'); if(!gd) return; if(a==='other') gfAll(gd); else { var q=gd.querySelector('#gfQ'); if(q){ q.focus(); } } },350); }
     else if(a==='share'){ try{ navigator.share({title:e._t.subj,text:e._b.replace(' '+e._u,''),url:e._u}).catch(function(){}); }catch(er){} } });
 
 /* Ken, 10 Nov: share up front, skip to share, and "Catch a fish and share it" (random, or pick one) in the three dots */
@@ -5437,7 +5439,7 @@ window.MF=(function(){
     if(it.id) return {id:it.id,dev:'',img:'/fish/'+it.id.slice(2)+'.svg',word:it.word,ref:it.ref,verse:it.verse,ver:it.ver};
     var r0=((DATA[it.k]||{}).refs||[])[0]||['','']; return {id:'',dev:it.k,img:'/fish/'+fl+'/'+it.k+'.svg',word:titleIn(l,it.k),ref:r0[0],verse:r0[1],ver:''}; }
   /* Ken, 17 Nov: on a caught fish the person can change the language or the Bible version, then send it: the picture changes where the fish has art in that language (the original 24), the verse words change for every fish, and Share / Pray send what is shown */
-  var GFLN={en:'English',es:'Español',tl:'Tagalog',zh:'中文',hi:'हिन्दी',el:'Ελληνικά',de:'Deutsch',ko:'한국어',he:'עברית',ar:'العربية',ru:'Русский'}, GFVE=[['kjv','KJV'],['web','WEB'],['asv','ASV'],['ylt','YLT'],['darby','Darby'],['bbe','BBE'],['dra','Douay-Rheims'],['net','NET']];
+  var GFLN={en:'English',es:'Spanish · Español',tl:'Tagalog',zh:'Chinese · 中文',hi:'Hindi · हिन्दी',el:'Greek · Ελληνικά',de:'German · Deutsch',ko:'Korean · 한국어',he:'Hebrew · עברית',ar:'Arabic · العربية',ru:'Russian · Русский'}, GFVE=[['kjv','KJV'],['web','WEB'],['asv','ASV'],['ylt','YLT'],['darby','Darby'],['bbe','BBE'],['dra','Douay-Rheims'],['net','NET']];
   function gfParse(ref){ var m=/^\s*(.+?)\s+(\d+):(\d+)(?:\s*[-–]\s*(\d+))?/.exec(String(ref||'')); return m?{book:m[1],ch:+m[2],v1:+m[3],v2:+(m[4]||m[3])}:null; }
   function gfText(ref,lang,vk){ var p=gfParse(ref); if(!p) return Promise.reject(new Error('ref')); var join=function(t){ var o=[]; for(var v=p.v1;v<=Math.min(p.v2,p.v1+8);v++) if(t[v-1]) o.push(String(t[v-1]).trim()); return o.join(' '); }, fn=p.book.replace(/ /g,'_')+'-'+p.ch+'.json';
     if(lang!=='en') return fetch('/fish-lang/bible/'+lang+'/'+fn).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ return join(j.t); });
@@ -5453,6 +5455,11 @@ window.MF=(function(){
     if(lang==='en'&&vk==='kjv'&&(!k||SAY.en[k])){ show({word:k?titleIn('en',k):base.word,verse:k?SAY.en[k][1]:base.verse,ref:enRef,img:k?'/fish/en/'+k+'.svg':base.img,tag:k?'':base.ver}); return; }
     gfText(enRef,lang,vk).then(function(t){ if(!t) throw 0; show({word:lang==='en'&&k?titleIn('en',k):(x.word),verse:t,ref:enRef,img:lang==='en'&&k?'/fish/en/'+k+'.svg':(lang!=='en'?null:null),tag:lang==='en'?String(vk).toUpperCase():''}); })
       .catch(function(){ if(msg) msg.textContent=MF.lang==='es'?'No se pudo cargar esa versión ahora.':'That version could not load just now.'; }); }
+  /* Ken, 17 Nov: "choosing any fish": every fish in one list, A to Z, to tap */
+  function gfAll(d){ var r=d.querySelector('#gfRes'), q=d.querySelector('#gfQ'); if(!r) return; if(q) q.value=''; d._vs=null;
+    var pool=ORDER.filter(function(k){ return DATA[k]; }).map(function(k){ return {k:k,t:titleIn(MF.lang,k)}; }).concat(netAll().map(function(x){ return Object.assign({t:x.word},x); }));
+    pool.sort(function(a,b){ return String(a.t).localeCompare(String(b.t),MF.lang); }); d._m=pool;
+    r.innerHTML='<div class="gfgrid">'+pool.map(function(x,i){ var o=gfObj(x); return '<button type="button" data-gm="'+i+'"><img loading="lazy" src="'+esc(o.img)+'" alt=""><span>'+esc(o.word)+'</span></button>'; }).join('')+'</div>'; r.scrollIntoView({block:'start',behavior:'smooth'}); }
   function gfCatch(d,x){ var T=GFT[MF.lang]||GFT.en, c=d.querySelector('.gfcatch'), P=function(k){ return T[k]||GFT.en[k]; };
     c.innerHTML='<div class="gfbig"><img src="'+esc(x.img)+'" alt=""></div><h3>'+esc(x.word)+'</h3><p class="gfv">“'+esc(x.verse)+'” <b>'+esc(x.ref+(x.ver?' ('+x.ver+')':''))+'</b></p>'
       +'<div class="gfrow"><button type="button" class="gfmine" data-gf="mine">⭐ '+esc(P('mine1')||'Make it my fish today')+'</button></div>'
@@ -5485,6 +5492,7 @@ window.MF=(function(){
         if(e.target.closest('[data-gf=sh]')&&d._x){ var X=d._x, N0=(window.shn&&shn())||{}; shareRender({title:(shn().shareThis),msg:(MF.lang==='es'?'Un MannaFish para ti: {w} ({ref}). “{v}”':'A MannaFish for you: {w} ({ref}). “{v}”'),w:X.word,ref:X.ref,v:X.verse,url:location.origin+(X.dev?'/?w='+X.dev.toLowerCase():'/?fish='+X.id.slice(2))}); return; }
         var x=e.target.closest('[data-gx]'); if(x){ var f=netAll().filter(function(y){ return y.id===x.dataset.gx; })[0]; if(f) gfCatch(d,gfObj(f)); return; }
         var gm=e.target.closest('[data-gm]'); if(gm){ var it1=(d._m||[])[+gm.dataset.gm]; if(it1) gfCatch(d,gfObj(it1)); return; }
+        if(e.target.closest('[data-gf=all]')){ gfAll(d); return; }
         if(e.target.closest('[data-gfv]')){ gfVerses(d,(d.querySelector('#gfQ')||{}).value||''); return; }
         var gvb=e.target.closest('[data-gv]'); if(gvb){ var vv=(d._vs||[])[+gvb.dataset.gv], q0=(d.querySelector('#gfQ')||{}).value||''; if(vv) gfMake(q0,vv); return; }
         var gc=e.target.closest('[data-gc]'); if(gc){ if(gc.classList.contains('up')) return; gc.classList.add('up'); var it0=(d._deal||[])[+gc.dataset.gc]; if(it0){ var fc=gc.querySelector('.gff'); if(fc&&!fc.firstChild) fc.innerHTML='<img src="'+esc(gfObj(it0).img)+'" alt="">'; d._st=d.querySelector('.in').scrollTop; setTimeout(function(){ gfCatch(d,gfObj(it0)); },800); } return; }
@@ -5497,7 +5505,7 @@ window.MF=(function(){
         $('stage').scrollIntoView({block:'center',behavior:'smooth'}); }); }
     d.innerHTML='<div class="in"><button type="button" class="gfx" data-gf="x" aria-label="'+esc(T.x)+'">&#10005;</button><h3>🎣 '+esc((GFL[l]||GFL.en)[1])+'</h3><p class="gfn"><b>'+esc(T.net)+'</b><br>'+esc(T.jn)+'</p>'+(gfReview()?'<p class="gfn"><a href="/fish/review/" style="color:#8fb6ff;font-weight:800">🛠 Review all fish: mark Edit or Remove</a></p>':'')
       +'<button type="button" class="gfcast" data-gf="cast"><b>🎣 '+esc(T.cast)+'</b><small>'+esc(T.sub)+'</small></button>'
-      +'<div class="gfsr"><input id="gfQ" type="search" enterkeyhint="search" autocomplete="off" placeholder="'+esc(T.srch||GFT.en.srch)+'"></div><div id="gfRes"></div>'
+      +'<div class="gfsr"><input id="gfQ" type="search" enterkeyhint="search" autocomplete="off" placeholder="'+esc(T.srch||GFT.en.srch)+'"></div><p style="text-align:center;margin:6px 0 0"><button type="button" class="gfmore" data-gf="all">📚 '+(MF.lang==='es'?'Elegir entre todos los peces':'Choose from all fish')+'</button></p><div id="gfRes"></div>'
       +'<div class="gfcatch" hidden></div>'
       +'<h4>'+esc(T.pickT||GFT.en.pickT)+' <small>'+esc(T.pickS||GFT.en.pickS)+'</small></h4><div class="gfcards" id="gfCards"></div>'
       +'<details class="gfchoose" open><summary>'+esc(T.choose||GFT.en.choose)+'</summary>'   /* Ken, 11 Nov: all the fish stay in view */
