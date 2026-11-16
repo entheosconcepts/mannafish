@@ -2851,7 +2851,14 @@ window.MF=(function(){
     showPanel();
   }
   document.addEventListener('click',function(e){ var b=e.target.closest&&e.target.closest('#rAll'); if(!b) return; var c=$('rChapter'); c.classList.add('all'); b.remove(); setTimeout(function(){ readerFit(); },30); });
-  function openReader(k,i,l){ l=l||MF.lang; unbig(); reader.classList.remove('lexmode'); RO=false;
+  /* Ken, 17 Nov: the Bible below the fish follows the fish: flipping to the back opens the first verse listed there, tapping a verse on the back opens that verse, and turning back to the front opens the fish's own verse */
+  (function(){ if(!document.documentElement.classList.contains('card')||window.top===window.self) return;
+    function frontRef(){ try{ if(SAY.en[cur]) return SAY.en[cur][2]; return DATA[cur].refs[0][0]; }catch(e){ return ''; } }
+    function backRef(){ try{ return DATA[cur].refs[0][0]; }catch(e){ return ''; } }
+    window.MFgoRef=function(ref){ if(!ref) return; try{ parent.postMessage({mfcard:1,goRef:ref},location.origin); }catch(e){} };
+    var st=document.getElementById('stage'); if(!st) return; var last=st.classList.contains('on');
+    new MutationObserver(function(){ var on=st.classList.contains('on'); if(on===last) return; last=on; window.MFgoRef(on?backRef():frontRef()); }).observe(st,{attributes:true,attributeFilter:['class']}); })();
+  function openReader(k,i,l){ l=l||MF.lang; try{ var rr0=DATA[k]&&DATA[k].refs&&DATA[k].refs[i]; if(rr0&&window.MFgoRef) MFgoRef(rr0[0]); }catch(er){} unbig(); reader.classList.remove('lexmode'); RO=false;
     window.MFreader={kind:'ref',k:k,i:i,l:l}; if(window.MFsave) setTimeout(MFsave,0);
     ['rKicker','rRef','rQuote','rChapter'].forEach(function(id){ $(id).setAttribute('lang',l); });
     RD=null; rsayUI(l);

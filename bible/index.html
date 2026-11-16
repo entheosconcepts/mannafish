@@ -520,12 +520,14 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   // Ken, 8 Nov: today's MannaFish on top is the home page's own flip card (an iframe of /?card=1), so it flips and has Word, Verse, Go Fish, Listen and Read exactly as there
   (function(){ var box=$('tfish'); if(!box) return; var qq=new URLSearchParams(location.search), fq=qq.get('fish')||qq.get('w')||'', lang=(ls('mf-lang')==='es')?'es':'en', f=$('tfF');
     f.src='/?card=1'+(fq&&fq!=='today'?(/^[a-z]+$/.test(fq)?'&w=':'&fish=')+encodeURIComponent(fq):'')+(qq.get('lang')?'&lang='+encodeURIComponent(qq.get('lang')):'');
+    var touched=false; ['pointerdown','keydown','touchstart'].forEach(function(ev){ document.addEventListener(ev,function(){ touched=true; },true); });
     function set(open){ $('tfT').setAttribute('aria-expanded',String(open)); $('tfB').hidden=!open; ls('mf-bible-fish',open?'open':'closed'); }
     $('tfT').addEventListener('click',function(){ set($('tfT').getAttribute('aria-expanded')!=='true'); });
     window.addEventListener('message',function(e){ if(e.origin!==location.origin||!e.data||!e.data.mfcard||e.source!==f.contentWindow) return;
+      if(e.data.goRef){ if(window.MFbible) MFbible.go(e.data.goRef); return; }
       if(e.data.full){ f.classList.add('full'); document.body.classList.add('tffull'); document.documentElement.style.overflow='hidden'; } else { f.classList.remove('full'); document.body.classList.remove('tffull'); document.documentElement.style.overflow=''; if(e.data.h>60) f.style.height=e.data.h+'px'; } });
     var tz=''; try{ tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''; }catch(e){}
-    fetch('/api/today-fish?id='+encodeURIComponent(fq||'today')+'&tz='+encodeURIComponent(tz)+'&lang='+lang).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(j) $('tfW').textContent=j.title; }).catch(function(){});
+    fetch('/api/today-fish?id='+encodeURIComponent(fq||'today')+'&tz='+encodeURIComponent(tz)+'&lang='+lang).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(!j) return; $('tfW').textContent=j.title; /* Ken, 17 Nov: the Bible opens to the passage of the fish on the front, unless a verse was asked for or the person has already moved */ if(!qq.get('r')&&!touched&&j.ref&&window.MFbible) MFbible.go(j.ref); }).catch(function(){});
     set(ls('mf-bible-fish')!=='closed');
     /* Ken, 14 Nov: opening the Bible app shows the fish for about 2 seconds, then it slowly folds away so the reader is not kept waiting behind it, and the ▾ pulses
        so people can see where to open it again. Not on the devotional (that is the home page), and not when the card is open on purpose (a fish link, from a verse on a fish);
