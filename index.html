@@ -2366,7 +2366,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <button type="button" class="mpword" id="mpWord" hidden></button>
   <div class="mpbar"><span id="mpAt">1</span><input type="range" id="mpRange" min="1" max="1" value="1" aria-label="Verse"><span id="mpOf">1</span></div>
   <div class="mpmore"><button type="button" class="mpchip" id="mpLoop" aria-pressed="false"></button><button type="button" class="mpchip" id="mpLearn" aria-pressed="false"></button><select class="mpsel" id="mpLearnL" aria-label="Second language" hidden></select></div>
-  <div class="mpspd" id="mpSpd" role="group" aria-label="Speed"><button type="button" data-r="0.75" aria-pressed="false">0.75×</button><button type="button" data-r="1" aria-pressed="false">1×</button><button type="button" data-r="1.25" aria-pressed="false">1.25×</button><button type="button" data-r="1.5" aria-pressed="false">1.5×</button><button type="button" data-r="1.75" aria-pressed="false">1.75×</button></div>
+  <div class="mpspd" id="mpSpd" role="group" aria-label="Speed"><button type="button" data-r="0.8" aria-pressed="false">0.8×</button><button type="button" data-r="1" aria-pressed="false">1×</button><button type="button" data-r="1.3" aria-pressed="false">1.3×</button><button type="button" data-r="1.5" aria-pressed="false">1.5×</button><button type="button" data-r="1.8" aria-pressed="false">1.8×</button><button type="button" data-r="2" aria-pressed="false">2×</button></div>
   <div class="mpfoot"><button type="button" class="mprate" id="mpRate" hidden>1x</button><select class="voicesel mpver" id="mpVer" aria-label="Bible version" hidden></select><select class="voicesel" id="mpVoice" aria-label="Voice"></select><button type="button" class="mpx" id="mpX" aria-label="Close">&times;</button></div>
   <div class="mpmini"><button type="button" class="mprate" id="mpRate2" aria-label="Speed">1x</button><button type="button" class="mpb" id="mpPlay2" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true" id="mpIco2"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg></button></div>
 </div>
@@ -3021,9 +3021,9 @@ window.MF=(function(){
   $('rFull').addEventListener('click',function(){ var f=reader.classList.toggle('full'); this.innerHTML=f?'&#9662;':'&#9652;'; this.setAttribute('aria-pressed',f?'true':'false'); });
   MF.onChange(function(){ listenUI(); }); window.MFlistenUI=function(){ listenUI(); };
   // ── The player (Ken, 11 Oct: "mimic" the Bible App) -- one at the bottom of the screen for whichever card's 🔊 was tapped
-  var RATES=[1,1.25,1.5,1.75,0.75], PB=$('mpPlay'), PL={ctx:null,n:1,N:1,intro:'',title:'',src:null};
+  var RATES=[0.8,1,1.3,1.5,1.8,2], PB=$('mpPlay'), PL={ctx:null,n:1,N:1,intro:'',title:'',src:null};
   // Ken, 11 Oct: 1.25x is the speed every speaker starts at
-  function RATE(){ var r=1.25; try{ r=+localStorage.getItem('mf-speed')||1.25; }catch(e){} return RATES.indexOf(r)>=0?r:1.25; }
+  function RATE(){ var r=1.3; try{ r=+localStorage.getItem('mf-speed')||1.3; }catch(e){} var b=RATES[0]; RATES.forEach(function(x){ if(Math.abs(x-r)<Math.abs(b-r)) b=x; }); return b; }   /* Ken, 16 Nov: 0.8 1 1.3 1.5 1.8 2, as in Apple Podcasts; an older saved speed moves to the nearest */
   var PLAYI='<path d="M7 4.5v15l13-7.5z" fill="currentColor"/>', PAUSEI='<path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z" fill="currentColor"/>';
   function plMine(){ return sp.on && sp.btn===PB; }
   function plPaused(){ return plMine() && !!(sp.audio&&sp.audio.paused); }

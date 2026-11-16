@@ -30,8 +30,10 @@
   function uiLang(){ var l=(window.MF&&window.MF.lang)||ls('mf-lang')||(document.documentElement.lang||'en').slice(0,2); return TX[l]?l:'en'; }
   function T(i){ return (TX[uiLang()]||TX.en)[i]; }
   // the listening speed, kept as mf-speed (the same setting as the Today player, the Translator and You → Settings)
-  var SPL=[0.75,1,1.25,1.5,1.75], SPW={en:'Speed',es:'Velocidad',tl:'Bilis',zh:'语速',hi:'गति',el:'Ταχύτητα',de:'Tempo',ko:'속도',he:'מהירות',ar:'السرعة',ru:'Скорость'};
-  function speed(def){ var r=+ls('mf-speed'); return SPL.indexOf(r)>=0?r:(def||1.25); }
+  /* Ken, 16 Nov: the same listening speeds as Apple Podcasts */
+  var SPL=[0.8,1,1.3,1.5,1.8,2], SPW={en:'Speed',es:'Velocidad',tl:'Bilis',zh:'语速',hi:'गति',el:'Ταχύτητα',de:'Tempo',ko:'속도',he:'מהירות',ar:'السرعة',ru:'Скорость'};
+  function nearest(r){ var b=SPL[0]; SPL.forEach(function(x){ if(Math.abs(x-r)<Math.abs(b-r)) b=x; }); return b; }   /* a speed saved before (0.75, 1.25, 1.75) moves to the nearest one now offered */
+  function speed(def){ var r=+ls('mf-speed'); return r>0?nearest(r):nearest(def||1.3); }
   function setSpeed(r){ ls('mf-speed',String(r)); if(window.MFacct&&MFacct.touch) MFacct.touch('set'); try{ window.dispatchEvent(new CustomEvent('mfspeed',{detail:{r:r}})); }catch(e){} }
   function get(){ var v=ls('mf-voice')||''; return NAT.some(function(o){ return o[0]===v; })?v:'thunder'; }   /* Ken, 11 Nov: Thunder is the default narrator for the Bible app and the devotional */
   function setNat(v){ ls('mf-voice',v); if(window.MFacct&&MFacct.touch) MFacct.touch('set');
