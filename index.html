@@ -1506,7 +1506,8 @@ body.mftabbed .bkfab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;
 .recl .ok{color:#6fd39a}
 .devogo{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;max-width:720px;margin:18px auto 0}
 .devogok{font:800 .7rem 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--foam-dim,#9fb2b6)}
-.devogor{display:flex;gap:12px;width:100%;justify-content:center}
+.devogor{display:flex;flex-wrap:wrap;gap:8px 10px;width:100%;justify-content:center;align-items:center}   /* Ken, 16 Nov: on a small iPhone Listen and Read were cut off ("Li…", "R…"): the buttons keep their words and the row wraps instead; the music button is a small round icon */
+#dgListen,#dgRead{min-width:max-content;padding-left:18px;padding-right:18px}#dgMusic{flex:none;width:44px;height:44px;min-width:44px;padding:0;background:none;border:1.5px solid rgba(255,226,140,.55);color:#f4e6b0;font-size:1.2rem;line-height:1;display:inline-flex;align-items:center;justify-content:center;text-overflow:clip}
 .dgbtn{flex:1 1 0;min-width:0;max-width:330px;border:1.5px solid #2a5fb0;background:#2a5fb0;color:#fff;border-radius:999px;padding:11px 14px;font:700 clamp(.9rem,3.8vw,1.05rem) 'Archivo',sans-serif;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dgbtn:hover{background:#2253a0}
 .dgbtn .dgs{font-weight:600;opacity:.9}
