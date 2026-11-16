@@ -2036,7 +2036,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
       <input type="hidden" name="form-name" value="devotional"><input type="hidden" name="language" class="langfield" value="en"><input type="hidden" name="time-zone" class="tzfield">
       <p style="display:none"><label>Leave this empty <input name="bot-field"></label></p>
       <div class="wide chkrow">
-        <span class="freq inline"><label><input type="radio" name="send-by" value="Email" checked> Email</label><label><input type="radio" name="send-by" value="Text"> Text message</label></span>
+        <span class="freq inline"><label><input type="radio" name="send-by" value="Email" checked> Email</label><label style="opacity:.55" title="Text delivery is coming later"><input type="radio" name="send-by" value="Text" disabled> Text message <small>(coming later)</small></label></span>
         <span class="freq inline"><label><input type="radio" name="how-often" value="Daily" checked> Daily</label><label><input type="radio" name="how-often" value="Weekly"> Weekly</label><label><input type="radio" name="how-often" value="Monthly"> Monthly</label></span>
       </div>
       <p class="wide freqnote">Daily: a different fish every morning, Sunday to Friday (two on Friday). Weekly: one on Sunday, and the devotional picks up where you left off. By email or by text.</p>
@@ -2046,7 +2046,8 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
       <p class="wide consent">Free. By signing up for texts, you agree to receive the MannaFish devotional by text (daily, weekly or monthly, as you choose). Msg &amp; data rates may apply. Reply HELP for help, STOP to cancel. <a href="/privacy/">Privacy &amp; Terms</a></p>
       <!-- Ken, 8 Nov: the free-merch offer lives inside the devotional sign-up, with the address to send it to -->
       <h3 class="wide merchh">Free MannaFish Merch!</h3>
-      <label class="wide merchck"><input type="checkbox" name="merch" value="yes" id="merchYes"> <span>I would also like free MannaFish merchandise. <small>Free merchandise once a month: we draw one sign-up at random to receive the 2 Fish and 5 Loaves gift basket of MannaFish merchandise and gifts. One basket per household per year.</small></span></label>
+      <p class="wide rnote" style="margin:0">Free MannaFish decals, apparel and tools to share with others are under development, and coming soon. Sign up now, and we will tell you when they are ready.</p>
+      <label class="wide merchck" hidden><input type="checkbox" name="merch" value="yes" id="merchYes"></label>
       <div class="wide merchfields" id="merchFields" hidden>
         <label>Street address<input name="address" autocomplete="street-address"></label>
         <label>City<input name="city" autocomplete="address-level2"></label>

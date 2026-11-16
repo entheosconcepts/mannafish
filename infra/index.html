@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Infrastructure · MannaFish</title>
+<link rel="icon" href="/icon-192.png">
+<!-- Ken, 17 Nov: "the infrastructure": real sign-up counts, a cost calculator with realistic scenarios (100, 1,000, 10,000 people; how many text), suggested caps per person, and how many sponsors of how many MannaFish keep the app free. Admin only: the numbers come from /api/infra after the admin key, so no dollar amounts sit in this public file. -->
+<style>
+:root{--bg:#0b0e12;--card:#141a21;--line:#27313c;--text:#eef2f4;--dim:#9fb0c2;--blue:#2a5fb0;--gold:#f5d76e;--good:#7fd18b;--bad:#f59a9a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 'Archivo',system-ui,sans-serif}
+main{max-width:980px;margin:0 auto;padding:14px 16px 80px}h1{font:700 1.7rem/1.2 system-ui,sans-serif;margin:8px 0}h2{font-size:1.15rem;margin:0 0 8px}h3{font-size:.95rem;margin:14px 0 6px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
+p.sub{color:var(--dim);margin:0 0 14px}.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:0 0 16px}
+.keyrow{display:flex;gap:8px;flex-wrap:wrap}.keyrow input{flex:1;min-width:200px}
+input,select{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 10px;font:inherit}input[type=range]{padding:0;width:100%}
+button{font:700 .92rem system-ui,sans-serif;border-radius:999px;border:1px solid var(--line);background:none;color:var(--text);padding:9px 14px;cursor:pointer}button.go{background:var(--blue);border-color:var(--blue)}button.on{background:var(--gold);color:#111;border-color:var(--gold)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}.stat{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}.stat b{display:block;font-size:1.5rem}.stat span{color:var(--dim);font-size:.8rem}
+.row{display:grid;grid-template-columns:1fr 130px;gap:10px;align-items:center;margin:8px 0}.row label{font-weight:600}.row small{display:block;color:var(--dim);font-weight:400}.row input[type=number]{width:100%}
+.pre{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}td,th{padding:7px 6px;border-bottom:1px solid var(--line);text-align:right}td:first-child,th:first-child{text-align:left}th{color:var(--dim);font-size:.8rem;font-weight:700}tr.tot td{font-weight:800;border-top:2px solid var(--line)}
+.big{font-size:1.6rem;font-weight:800}.good{color:var(--good)}.bad{color:var(--bad)}.note{background:#16202c;border:1px solid var(--line);border-radius:12px;padding:10px 14px;color:var(--dim);font-size:.9rem;margin:10px 0}
+.tag{display:inline-block;background:#3a2f0a;color:#f5d76e;border-radius:999px;padding:2px 10px;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+details summary{cursor:pointer;font-weight:700;color:var(--gold)}
+#msg{color:var(--gold);min-height:1.4em}
+</style>
+</head>
+<body>
+<main>
+<h1>Infrastructure</h1>
+<p class="sub">What it takes to keep the MannaFish app and devotional free, and who pays for it. Change any number; everything updates. <a href="/dash/" style="color:#7fb1ff">Back</a></p>
+
+<div class="box"><h2>Admin key</h2><div class="keyrow"><input id="key" type="password" placeholder="Admin password" autocomplete="current-password"><button class="go" id="load">Show my numbers</button></div><p id="msg" role="status"></p></div>
+
+<div id="app" hidden>
+<div class="box"><h2>Where you stand now</h2><div class="stats" id="stats"></div><p class="note" id="statsNote"></p><button id="useReal">Use my real numbers below</button></div>
+
+<div class="box"><h2>What it costs to run</h2>
+<p class="sub">Pick a picture of what might happen, then change anything.</p>
+<div class="pre" id="pre"></div>
+<div class="row"><label for="n">People signed up<small>for the daily devotional</small></label><input id="n" type="number" min="0" step="10"></div>
+<div class="row"><label for="tp">Share who get it by text (%)<small>0 while texting is off</small></label><input id="tp" type="number" min="0" max="100" step="1"></div>
+<div class="row"><label for="em">Emails per person per month<small>Sunday to Friday, two on Friday</small></label><input id="em" type="number" min="0" step="1"></div>
+<div class="row"><label for="tx">Texts per texter per month</label><input id="tx" type="number" min="0" step="1"></div>
+<div class="row"><label for="lm">Listening minutes per person per month<small>the narrator reading aloud</small></label><input id="lm" type="number" min="0" step="1"></div>
+<div class="row"><label for="nw">Share of that listening that is new audio<small>the rest was already made once and is reused</small></label><input id="nw" type="number" min="0" max="100" step="1"></div>
+<details><summary>Prices I assumed (change them, and check each company's price list)</summary><div id="prices"></div></details>
+<h3>Monthly cost</h3><table id="cost"></table>
+<div id="caps"></div>
+</div>
+
+<div class="box"><h2>Who pays: sponsors</h2><p class="sub">A sponsor pays so MannaFish can be given away. Part of it makes and ships the fish; what is left pays for the app. <span class="tag">Example numbers: put in yours</span></p>
+<div class="row"><label for="sp">What a sponsor pays per MannaFish<small>your own price, once you set it</small></label><input id="sp" type="number" min="0" step="0.05"></div>
+<div class="row"><label for="sc">Making, shipping and giving it away, per MannaFish</label><input id="sc" type="number" min="0" step="0.05"></div>
+<div class="row"><label for="sf">MannaFish per sponsor, each time</label><input id="sf" type="number" min="0" step="100"></div>
+<div class="row"><label for="so">Times a year each sponsor gives</label><input id="so" type="number" min="0" step="1"></div>
+<div class="row"><label for="ns">Number of sponsors: <b id="nsv"></b></label><input id="ns" type="range" min="0" max="20" step="1"></div>
+<div id="spOut"></div><h3>Sponsors needed, at the people count above</h3><table id="spTable"></table>
+</div>
+
+<div class="box"><h2>Notes</h2><div id="notes"></div></div>
+</div>
+</main>
+<script>
+(function(){
+  var $=function(i){ return document.getElementById(i); }, D=null, REAL=null, PRICE={}, FIXED={};
+  function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k)||''; localStorage.setItem(k,v); }catch(e){ return ''; } }
+  function money(x){ if(!isFinite(x)) return '—'; var a=Math.abs(x); return (x<0?'−':'')+'$'+(a>=100?Math.round(a).toLocaleString():a<0.1&&a>0?a.toFixed(4):a.toFixed(2)); }
+  function num(i){ var v=parseFloat($(i).value); return isFinite(v)?v:0; }
+  $('key').value=ls('mf-admin-key');
+  function load(){ var k=$('key').value.trim(); if(!k){ $('msg').textContent='Add the admin password.'; return; } $('msg').textContent='Loading…';
+    fetch('/api/infra?k='+encodeURIComponent(k),{cache:'no-store'}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||r.status); return j; }); })
+      .then(function(j){ ls('mf-admin-key',k); D=j.defaults; REAL=j.counts; $('msg').textContent=''; $('app').hidden=false; init(); }).catch(function(e){ $('msg').textContent='Could not open: '+e.message; }); }
+  $('load').addEventListener('click',load);
+  function init(){
+    var c=REAL, st=[['Signed up',c.total],['By email',c.email],['By text',c.text],['Text confirmed (YES)',c.smsOk],['Left (unsubscribed)',c.unsub],['New in 7 days',c.week],['New in 30 days',c.month]];
+    $('stats').innerHTML=st.map(function(x){ return '<div class="stat"><b>'+(x[1]||0).toLocaleString()+'</b><span>'+x[0]+'</span></div>'; }).join('');
+    $('statsNote').textContent='By how often: '+(Object.keys(c.freq).map(function(k){ return k+' '+c.freq[k]; }).join(' · ')||'none yet')+'. Messages sent each month are not counted yet; the cost below is worked out from the people and the schedule.'+(c.capped?' (Counting stopped at 6,000 records.)':'');
+    var P=D.perUnit, U=D.usage; PRICE={emailFree:P.emailFreePerMonth,email1000:P.emailPer1000,text:P.textPerMessage,textNum:P.textNumberPerMonth,voiceChar:P.voicePerCharacter,cpm:P.charsPerListenMinute};
+    FIXED=JSON.parse(JSON.stringify(D.fixedPerMonth));
+    $('em').value=U.emailsPerSubscriberPerMonth; $('tx').value=U.textsPerTexterPerMonth; $('lm').value=U.listenMinutesPerSubscriberPerMonth; $('nw').value=Math.round(U.shareOfListeningThatIsNewAudio*100);
+    $('n').value=100; $('tp').value=0; $('sp').value=D.sponsor.payPerFish; $('sc').value=D.sponsor.costPerFish; $('sf').value=D.sponsor.fishPerSponsor; $('so').value=D.sponsor.ordersPerYear; $('ns').value=1;
+    var pr=[['100 people, email only',100,0],['100 people, 10 by text',100,10],['500 people, email only',500,0],['1,000 people, email only',1000,0],['1,000 people, 10% by text',1000,10],['5,000 people, email only',5000,0],['10,000 people, viral, 10% by text',10000,10],['10,000 people, a quarter by text',10000,25]];
+    $('pre').innerHTML=pr.map(function(x,i){ return '<button type="button" data-p="'+i+'">'+x[0]+'</button>'; }).join(''); $('pre')._p=pr;
+    drawPrices(); calc(); }
+  $('pre').addEventListener('click',function(e){ var b=e.target.closest('[data-p]'); if(!b) return; var p=$('pre')._p[+b.dataset.p]; $('n').value=p[1]; $('tp').value=p[2]; [].forEach.call($('pre').children,function(x){ x.classList.toggle('on',x===b); }); calc(); });
+  $('useReal').addEventListener('click',function(){ $('n').value=REAL.total; $('tp').value=REAL.total?Math.round(100*REAL.text/REAL.total):0; calc(); });
+  function drawPrices(){ var rows=[['emailFree','Emails a month included free',PRICE.emailFree,1],['email1000','Email cost per 1,000 above that ($)',PRICE.email1000,0.1],['text','Cost per text message ($)',PRICE.text,0.001],['textNum','Phone number per month ($)',PRICE.textNum,0.05],['voiceChar','Voice cost per character of new audio ($)',PRICE.voiceChar,0.000001],['cpm','Characters in a minute of listening',PRICE.cpm,10]];
+    var h=rows.map(function(r){ return '<div class="row"><label for="pz_'+r[0]+'">'+r[1]+'</label><input id="pz_'+r[0]+'" data-pz="'+r[0]+'" type="number" min="0" step="'+r[3]+'" value="'+r[2]+'"></div>'; }).join('')+'<h3>Fixed each month ($)</h3>';
+    h+=Object.keys(FIXED).map(function(k,i){ return '<div class="row"><label for="fx_'+i+'">'+k+'</label><input id="fx_'+i+'" data-fx="'+k+'" type="number" min="0" step="1" value="'+FIXED[k]+'"></div>'; }).join(''); $('prices').innerHTML=h; }
+  document.addEventListener('input',function(e){ if(e.target.dataset&&e.target.dataset.pz){ PRICE[e.target.dataset.pz]=parseFloat(e.target.value)||0; } if(e.target.dataset&&e.target.dataset.fx){ FIXED[e.target.dataset.fx]=parseFloat(e.target.value)||0; } if(!$('app').hidden) calc(); });
+  function calc(){
+    var n=num('n'), tp=Math.min(100,num('tp'))/100, em=num('em'), tx=num('tx'), lm=num('lm'), nw=Math.min(100,num('nw'))/100, texters=Math.round(n*tp), emailers=n-texters;
+    var emails=emailers*em, emailCost=Math.max(0,emails-PRICE.emailFree)/1000*PRICE.email1000, texts=texters*tx, textCost=texts*PRICE.text+(texters?PRICE.textNum:0);
+    var voiceCost=n*lm*PRICE.cpm*nw*PRICE.voiceChar, fixed=Object.keys(FIXED).reduce(function(s,k){ return s+(FIXED[k]||0); },0), total=emailCost+textCost+voiceCost+fixed, noText=total-textCost;
+    var rows=[['Email ('+Math.round(emails).toLocaleString()+' a month)',emailCost],['Text ('+Math.round(texts).toLocaleString()+' a month to '+texters.toLocaleString()+' people)',textCost],['Voice (new audio only)',voiceCost],['Fixed monthly costs',fixed]];
+    $('cost').innerHTML='<tr><th>Line</th><th>Per month</th></tr>'+rows.map(function(r){ return '<tr><td>'+r[0]+'</td><td>'+money(r[1])+'</td></tr>'; }).join('')+'<tr class="tot"><td>Total per month</td><td>'+money(total)+'</td></tr><tr><td>Per person per month</td><td>'+(n?money(total/n):'—')+'</td></tr><tr><td>Per year</td><td>'+money(total*12)+'</td></tr>';
+    var cap=Math.round(tx), perTexter=tx*PRICE.text, listenCap=nw>0?Math.max(0,Math.round(0.5/(PRICE.cpm*nw*PRICE.voiceChar))):0, vcpm=PRICE.cpm*nw*PRICE.voiceChar;
+    $('caps').innerHTML='<h3>Suggested limits for each person</h3><div class="note">'
+      +'<p><b>Texts:</b> keep each person to the daily schedule, about '+cap+' texts a month. That costs about <b>'+money(perTexter)+' a month per texter</b>, so 1,000 texters is about '+money(1000*perTexter)+' a month. This is the one cost that grows with every person. Text delivery stays off for now.</p>'
+      +'<p><b>Email:</b> about '+em+' a month each. The cost is near nothing for each person until the free amount runs out ('+Math.round(PRICE.emailFree/Math.max(1,em)).toLocaleString()+' people at this schedule).</p>'
+      +'<p><b>Listening:</b> new audio costs about '+money(vcpm)+' a minute. A limit of about <b>'+listenCap+' minutes of new audio a month per person</b> keeps voice cost under 50 cents each. The site already limits each visitor to 400 voice requests an hour.</p></div>';
+    var sp=num('sp'), sc=num('sc'), sf=num('sf'), so=num('so'), ns=num('ns'); $('nsv').textContent=ns;
+    var left=sp-sc, perSponsorYear=left*sf*so, perSponsorMonth=perSponsorYear/12, yr=perSponsorYear*ns, mo=yr/12, cover=total>0?mo/total:0, needed=perSponsorMonth>0?Math.ceil(total/perSponsorMonth):Infinity;
+    $('spOut').innerHTML='<p>Each MannaFish leaves <b class="'+(left>=0?'good':'bad')+'">'+money(left)+'</b> after it is made, shipped and given away.</p>'
+      +'<p>'+ns+' sponsor'+(ns===1?'':'s')+' giving '+sf.toLocaleString()+' MannaFish '+so+' time'+(so===1?'':'s')+' a year leaves <b>'+money(yr)+' a year</b>, which is <b>'+money(mo)+' a month</b> toward the app.</p>'
+      +'<p>The app costs <b>'+money(total)+' a month</b> in this picture. That covers <span class="big '+(cover>=1?'good':'bad')+'">'+Math.round(cover*100)+'%</span> of it'+(isFinite(needed)?'. You need <b>'+needed+' sponsor'+(needed===1?'':'s')+'</b> to cover all of it.':'. Nothing is left over at these numbers.')+'</p>';
+    var t='<tr><th>Sponsors</th><th>MannaFish a year</th><th>Left each month</th><th>Covers</th></tr>'; for(var i=1;i<=10;i++){ var m=perSponsorMonth*i, cv=total>0?m/total:0; t+='<tr><td>'+i+'</td><td>'+(i*sf*so).toLocaleString()+'</td><td>'+money(m)+'</td><td class="'+(cv>=1?'good':'')+'">'+Math.round(cv*100)+'%</td></tr>'; } $('spTable').innerHTML=t;
+    $('notes').innerHTML='<p>• Without texting, '+n.toLocaleString()+' people cost about <b>'+money(noText)+' a month</b> to run. Texting is what can make the bill jump.</p>'
+      +'<p>• A viral week is the risk: set a spending limit on each service (Twilio prepaid, OpenAI monthly limit, Netlify credits without auto-recharge, a fixed email plan) so it stops, never surprises you.</p>'
+      +'<p>• Sponsorship pays for the fish first. Only what is left after making, shipping and giving them away goes toward the app, so the lower the cost per fish, the fewer sponsors it takes.</p>'; }
+  document.addEventListener('input',function(e){ if(!$('app').hidden&&e.target.closest&&e.target.closest('#app')) calc(); });
+  if($('key').value) load();
+})();
+</script>
+</body>
+</html>
