@@ -4062,7 +4062,9 @@ window.MF=(function(){
   function shn(){ return SHN[MF.lang]||SHN.en; }
   var MOBILE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform));
   function dvShareOpen(){ var T=dvT(); if(!T) return; var k=DV.k||cur, sy=(SAY[MF.lang]&&SAY[MF.lang][k])||SAY.en[k]; if(!sy) return;
-    shareRender({w:titleIn(MF.lang,k),ref:sy[2],v:sy[1],url:dvShareLink(k),promo:!!DV.promo}); }
+    /* Ken, 16 Nov: sharing today's MannaFish sends the short /today link (it opens each person's own day's fish and devotional) and says it is a free word study devotional; a fish opened from a pinned link (?w= or ?fish=) is still shared as that fish */
+    var pinned=/[?&](w|fish)=/.test(location.search), tail=MF.lang==='es'?' Un devocional gratuito de estudio de palabras:':(MF.lang==='en'?' A free word study devotional:':'');
+    shareRender({w:titleIn(MF.lang,k),ref:sy[2],v:sy[1],url:pinned?dvShareLink(k):location.origin+'/today',msg:pinned?null:(T.msg+tail),promo:!!DV.promo}); }
   function shareRender(o){ var T=dvT()||DVT.en, N=shn(), body=(o.msg||T.msg).replace('{w}',o.w).replace('{ref}',o.ref).replace('{v}',o.v)+' '+o.url, e=$('dvShare');
     if(!e){ e=document.createElement('div'); e.id='dvShare'; e.className='dvshare'; e.setAttribute('role','dialog'); e.setAttribute('aria-modal','false'); document.body.appendChild(e); }
     var txt=MOBILE?'<a class="dgbtn" href="sms:'+(/iPhone|iPad/.test(navigator.userAgent)?'&':'?')+'body='+encodeURIComponent(body)+'">'+esc(T.text)+'</a>':'<button type="button" class="dgbtn" data-a="text">'+esc(T.text)+'</button>',
