@@ -128,11 +128,11 @@ export function emailFor(m, lang, unsub, opts = {}) {
   const gw = (t) => `<div class="gmail-screen"><div class="gmail-diff">${t}</div></div>`;
   const pic = (k, alt, css) => { const [w, h] = IMG[L + '-' + k] || [200, 18];
     return `<img src="${P}${L}-${k}.png" width="${w}" height="${h}" alt="${esc(alt)}" style="border:0;${css}">`; };
-  const head = (k, alt) => pic(k, alt, 'display:block;margin:0 auto;color:#2a5fb0;font:900 15px Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase');
+  const head = (k, alt) => pic(k, alt, 'display:block;margin:0 auto;color:#8fb3e8;font:900 15px Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase');
   const button = (href, k, alt) => `<a href="${href}" style="display:inline-block;margin:5px;text-decoration:none">${pic(k, alt, 'display:inline-block;vertical-align:middle;color:#ffffff;font:bold 16px Arial,sans-serif')}</a>`;
   const rule = td('padding:0 22px;font-size:0;line-height:0', `<img src="${P}rule.png" width="516" height="1" alt="" style="display:block;width:100%;height:1px;border:0">`);
   if (two) { const r2 = fishRef(two.key, two.url), img2 = fishPic(two.key), see2 = seeOf(two);
-    catch2 = td('padding:20px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;color:#2a5fb0;font:900 19px Arial,sans-serif')) + '\n'
+    catch2 = td('padding:20px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;color:#8fb3e8;font:900 19px Arial,sans-serif')) + '\n'
       + td('padding:6px 30px 4px;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(T.dblNote))) + '\n'
       + td('padding:12px 18px', `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #3a4148;border-radius:14px;border-collapse:separate"><tr><td bgcolor="#000000" style="${BG}padding:14px;border-radius:14px"><a href="${r2.url}" style="text-decoration:none"><img src="${img2}" width="496" alt="${esc(word2)}" style="width:100%;max-width:496px;height:auto;display:block;border:0;margin:0 auto"></a></td></tr></table>`) + '\n'
       + td('padding:8px 26px 0;font:19px/1.55 Georgia,serif;color:#eaf0f0', gw(`<a href="${r2.url}" style="color:#ffffff;text-decoration:none"><b style="color:#ffffff">${esc(r2.ref)}</b></a><br><span style="color:#eaf0f0">${esc(r2.snip.replace(/^ — /, ''))}</span>`)) + '\n'
@@ -146,7 +146,7 @@ ${td('padding:22px 20px 16px', `<a href="${SITE()}${es ? '/?lang=es' : '/'}" sty
 ${rule}
 ${opts.welcome ? td('padding:24px 22px 4px', head('welcome', T.hello)) : ''}
 ${td('padding:16px 18px', `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #3a4148;border-radius:14px;border-collapse:separate"><tr><td bgcolor="#000000" style="${BG}padding:14px;border-radius:14px"><a href="${read}" style="text-decoration:none"><img src="${img}" width="496" alt="${esc(word)}" style="width:100%;max-width:496px;height:auto;display:block;border:0;margin:0 auto"></a></td></tr></table>`)}
-${dbl && !m.catch ? td('padding:6px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;color:#2a5fb0;font:900 19px Arial,sans-serif')) + '\n'
+${dbl && !m.catch ? td('padding:6px 22px 0', pic('dbl', T.dbl, 'display:block;margin:0 auto;color:#8fb3e8;font:900 19px Arial,sans-serif')) + '\n'
   + td('padding:6px 30px 14px;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(T.dblNote))) : ''}
 ${dayLine ? td('padding:4px 26px 0;font:bold 13px/1.5 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#8fb3e8', gw(esc(dayLine))) : ''}
 ${weekNote ? td('padding:4px 26px 0;font:italic 15px/1.55 Georgia,serif;color:#c6d2d4', gw(esc(weekNote))) : ''}

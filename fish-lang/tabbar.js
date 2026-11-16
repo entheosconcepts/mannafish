@@ -10,7 +10,7 @@
     hi:['आज','बाइबल','योजनाएँ','प्रार्थना','आप'],el:['Σήμερα','Βίβλος','Πλάνα','Προσευχή','Εσύ'],de:['Heute','Bibel','Pläne','Beten','Du'],ko:['오늘','성경','계획','기도','나'],
     he:['היום','תנ״ך','תוכניות','תפילה','אני'],ar:['اليوم','الكتاب','الخطط','الصلاة','أنت'],ru:["Сегодня","Библия","Планы","Молитва","Профиль"]}[L]||null;
   T=T||['Today','Bible','Plans','Pray','You'];
-  var P=location.pathname, at=/^\/bible/.test(P)?1:/^\/plan/.test(P)?2:/^\/pray/.test(P)?3:/^\/you/.test(P)?4:/^\/(go|match)/.test(P)?-1:0;
+  var P=location.pathname, at=/^\/dash/.test(P)?-1:/^\/bible/.test(P)?1:/^\/plan/.test(P)?2:/^\/pray/.test(P)?3:/^\/you/.test(P)?4:/^\/(go|match)/.test(P)?-1:0;
   var I=[
     '<path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/>',
     '<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/><path d="M12 7v5M9.5 9.5h5"/>',

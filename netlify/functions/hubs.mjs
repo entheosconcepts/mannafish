@@ -16,6 +16,7 @@
 //   POST /api/hubs/pray {station, items:[{fish, word, l}], email, name} -> {ok, total, threshold, items:[{fish,l,n,already?}]}
 //   POST /api/hubs/sponsor {ids, place, name, org, email, phone, what, note} -> {ok}
 //   POST /api/hubs/suggest {name, address, why} (signed in) -> {ok}
+//   POST /api/hubs/nominate {name, place, address, kind, email, phone, note} -> {ok}   (no sign-in)
 //   GET  /api/hubs/admin?k=  ·  POST /api/hubs/admin {k, action, ...} (k = MF_ADMIN_KEY, or PROOF_KEY)
 //        create {name,kind,address,city,where,note,owner,url,threshold,status} · edit {id,...} · status {id,status} · remove {id}
 //        stock {id, fish, word, l, kind, qty, status:'coming'|'in'} · unstock {id, i} · cfg {voteGoal}
@@ -65,9 +66,17 @@ const SEED = [
   ['myrtle-grove-pres', 'Myrtle Grove Presbyterian Church', 'church', '800 Piner Rd, Wilmington, NC 28409', 34.1496, -77.8847],
 ].map(([id, name, kind, address, lat, lng]) => ({ id, name, kind, address, city: W, lat, lng, approx: true, status: 'proposed', where: '', note: '', owner: '', url: '', threshold: 100, stock: [], seed: true }));
 
+// added 13 Nov (Ken): Vigilant Hope Roasting, and Mailbox Express at the north side (Market St). Addresses from public listings, to confirm with each place.
+const SEED2 = [
+  ['vigilant-hope', 'Vigilant Hope Roasting', 'coffee', '24 S 16th St, Wilmington, NC 28401', 34.2297, -77.9265],
+  ['mailbox-market', 'Mailbox Express (Market St)', 'store', '8254 Market St #109, Wilmington, NC 28411', 34.2965, -77.8000],
+].map(([id, name, kind, address, lat, lng]) => ({ id, name, kind, address, city: W, lat, lng, approx: true, status: 'proposed', where: '', note: '', owner: '', url: '', threshold: 100, stock: [], seed: true }));
 async function cfg(s) {
   const c = (await s.get('cfg', { type: 'json' })) || {};
   if (!c.seeded) { for (const x of SEED) if (!(await s.get('s/' + x.id))) await s.setJSON('s/' + x.id, { ...x, created: new Date().toISOString() }); c.seeded = 1; c.voteGoal = c.voteGoal || 50; await s.setJSON('cfg', c); }
+  if (!c.seeded2) { for (const x of SEED2) if (!(await s.get('s/' + x.id))) await s.setJSON('s/' + x.id, { ...x, created: new Date().toISOString() });
+    const mb = await s.get('s/mailbox-express', { type: 'json' }); if (mb && mb.name === 'Mailbox Express') await s.setJSON('s/mailbox-express', { ...mb, name: 'Mailbox Express (Monkey Junction)' });
+    c.seeded2 = 1; await s.setJSON('cfg', c); }
   return { voteGoal: c.voteGoal || 50, ...c };
 }
 async function limited(ip, what, max) {
@@ -153,13 +162,36 @@ export default async (req, context) => {
     for (const id of ids) { const st = await station(s, id); if (st) names.push(st.name); }
     const r = { id: rid(), ids, places: names, place: clean(b.place, 200), name: clean(b.name, 80), org: clean(b.org, 120), email, phone: clean(b.phone, 40),
       what: (Array.isArray(b.what) ? b.what : []).filter((x) => MERCH.includes(x)), note: clean(b.note, 1000), anonymous: !!b.anonymous, status: 'new', at: new Date().toISOString() };
+    // a decal order: designs in 100s; where the QR code on the left goes (the sponsor's own page, someone they sponsor, or the anonymous vision page)
+    r.lines = (Array.isArray(b.lines) ? b.lines : []).slice(0, 40).map((x) => ({ word: clean(x && x.word, 30), qty: Math.max(100, Math.min(100000, Math.round((Number(x && x.qty) || 0) / 100) * 100)) })).filter((x) => x.word);
+    r.qr = ['self', 'other', 'vision', 'decide'].includes(b.qr) ? b.qr : 'self'; r.qrName = clean(b.qrName, 120); r.qrUrl = /^https?:\/\//i.test(String(b.qrUrl || '').trim()) ? clean(b.qrUrl, 300) : '';
+    if (r.qr === 'vision') { r.qrName = ''; r.qrUrl = SITE + '/vision/'; }
+    if (r.qr === 'decide') { r.qrName = ''; r.qrUrl = ''; }
+    const total = r.lines.reduce((n, x) => n + x.qty, 0), orderTxt = r.lines.map((x) => `${esc(x.word)} × ${x.qty}`).join(', '), qrTxt = r.qr === 'vision' ? 'the anonymous MannaFish vision page' : r.qr === 'decide' ? 'MannaFish to decide who it sponsors (until then the vision page)' : (r.qr === 'other' ? 'someone they sponsor: ' : 'their own page: ') + esc(r.qrName) + ' ' + esc(r.qrUrl);
     if (!r.ids.length && !r.place) return bad('Which place?', 400, { field: 'place' });
     await s.setJSON('sp/' + r.id, r);
     await mail(TO(), `Hub sponsor: ${r.org || r.name}`, [`<b>${esc(r.name)}</b>${r.org ? ' (' + esc(r.org) + ')' : ''} would like to sponsor a MannaFish Hub${r.anonymous ? ', <b>anonymously</b>' : ''}.`,
-      'For: ' + esc([...names, r.place].filter(Boolean).join(' · ')), r.what.length ? 'What: ' + esc(r.what.join(', ')) : '',
+      'For: ' + esc([...names, r.place].filter(Boolean).join(' · ')), r.what.length ? 'What: ' + esc(r.what.join(', ')) : '', r.lines.length ? `<b>Decal order, ${total} in all:</b> ${orderTxt}<br>QR code goes to: ${qrTxt}` : '',
       `Email: ${esc(email)}${r.phone ? ' · Phone: ' + esc(r.phone) : ''}`, r.note ? '“' + esc(r.note) + '”' : '', `<a href="${SITE}/hubs/admin/">Open the Hubs page</a>`]);
     await mail(email, 'Thank you for sponsoring a MannaFish Hub', [`Thank you${r.name ? ', ' + esc(r.name) : ''}. We received your request to sponsor ${esc([...names, r.place].filter(Boolean).join(', '))}.`,
-      'We will reach out to the host, set up the relationship, and write back to you. Every fish is free to the person who receives it: never sold, never resold.', '<i>Freely ye have received, freely give</i> (Matthew 10:8).'], r.name);
+      ...(r.lines.length ? [`Your decal order: ${orderTxt} (${total} in all). We will confirm it and send the way to pay; nothing has been charged. The QR code will go to ${qrTxt}.`] : []), 'We will reach out to the host, set up the relationship, and write back to you. Every fish is free to the person who receives it: never sold, never resold.', '<i>Freely ye have received, freely give</i> (Matthew 10:8).'], r.name);
+    return Response.json({ ok: true }, { headers: NS });
+  }
+  // ── Ken, 12 Nov: "I would like to nominate a new location to be a MannaFish Hub": a person or business gives their details and email, no sign-in.
+  //    Kept with the other suggestions (sg/) so it shows in the Hubs admin, and Ken is emailed.
+  if (sub === 'nominate' && req.method === 'POST') {
+    const b = await body(req); if (b.hp) return Response.json({ ok: true });
+    const email = clean(b.email, 120).toLowerCase(); if (!EMAIL.test(email)) return bad('Email', 400, { field: 'email' });
+    if (!clean(b.name, 80)) return bad('Name', 400, { field: 'name' });
+    if (!clean(b.place, 120)) return bad('Place', 400, { field: 'place' });
+    if (await limited(ip, 'hubnominate', 8)) return bad('Please wait a little', 429);
+    const r = { id: rid(), name: clean(b.place, 120), kind: PLACES.includes(b.kind) ? b.kind : 'other', address: clean(b.address, 160), why: clean(b.note, 600), by: email,
+      contact: clean(b.name, 80), phone: clean(b.phone, 40), nominated: true, status: 'new', at: new Date().toISOString() };
+    await s.setJSON('sg/' + r.id, r);
+    await mail(TO(), `Nominated as a MannaFish Hub: ${r.name}`, [`<b>${esc(r.contact)}</b> (${esc(email)}${r.phone ? ' · ' + esc(r.phone) : ''}) nominates <b>${esc(r.name)}</b>${r.address ? ', ' + esc(r.address) : ''} to become a MannaFish Hub.`,
+      r.why ? '“' + esc(r.why) + '”' : '', `<a href="${SITE}/hubs/admin/">Open the Hubs page</a>`]);
+    await mail(email, 'Thank you for nominating a MannaFish Hub', [`Thank you${r.contact ? ', ' + esc(r.contact) : ''}. We received your nomination of ${esc(r.name)}.`,
+      'We will look into it and write back. A MannaFish Hub gives MannaFish away free to the people who come in: never sold, never resold.', '<i>Freely ye have received, freely give</i> (Matthew 10:8).'], r.contact);
     return Response.json({ ok: true }, { headers: NS });
   }
   // ── a place someone would like on the list

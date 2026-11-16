@@ -55,13 +55,13 @@ export function speaker(id, lang, fallback = 'sage') {
 // what each voice is called and sounds like, for the voice lists (the site's pickers, and /api/say?list=1 for Ken's other sites)
 export const LABELS = {
   thunder: ['Thunder', 'very deep, grand'], narrator: ['Narrator', 'classic Bible reader'], highland: ['Highlander', 'Scottish gentleman'],
-  onyx: ['Onyx', 'deep'], ash: ['Ash', 'gentle'], fable: ['Fable', 'storyteller'], grace: ['Grace', 'deep, mature'], magnolia: ['Magnolia', 'Southern, sweet'],
+  onyx: ['Onyx', 'deep'], ash: ['Ash', 'gentle'], fable: ['Fable', 'storyteller'], grace: ['Grace', 'deep, mature woman'], magnolia: ['Magnolia', 'sweet Southern woman'],
   heather: ['Heather', 'Scottish lady'], sage: ['Sage', 'calm'], coral: ['Coral', 'warm'], ballad: ['Ballad', 'expressive'],
-  elder: ['Elder', 'wise old grandfather'],
-  pastor: ['Pastor', 'warm, kind pastor'],
+  elder: ['Elder', 'wise grandfather, a little gravelly'],
+  pastor: ['Pastor', 'warm, kind, middle-aged'],
   scholar: ['Scholar', 'refined British professor'],
   campfire: ['Campfire', 'close, hushed storyteller'],
-  herald: ['Herald', 'bold, joyful herald'],
+  herald: ['Herald', 'bold, ringing, joyful'],
   prophet: ['Prophet', 'fervent, passionate'],
   cowboy: ['Cowboy', 'easygoing Texan'],
   bard: ['Bard', 'lyrical Irish poet'],
@@ -76,16 +76,16 @@ export const LABELS = {
   rally: ['Rally', 'energetic, encouraging man'],
   jubilee: ['Jubilee', 'joyful, bold, full of praise'],
   tale: ['Tale', 'expressive storyteller'],
-  awe: ['Awe', 'full of wonder, very expressive'],
-  titan: ['Titan', 'colossal deep bass'],
+  awe: ['Awe', 'full of wonder, lively'],
+  titan: ['Titan', 'colossal, the deepest bass'],
   abyss: ['Abyss', 'cavernous, far deeper'],
   bedrock: ['Bedrock', 'the deepest of all'],
-  canyon: ['Canyon', 'very deep woman'],
+  canyon: ['Canyon', 'the lowest, velvety woman'],
   hush: ['Hush', 'a true whisper, soft woman'],
   murmur: ['Murmur', 'quiet, gentle whisper'],
   lullaby: ['Lullaby', 'sleepy, tender whisper'],
   midnight: ['Midnight', 'deep, hushed whisper'],
-  alloy: ['Alloy', 'even, clear'], echo: ['Echo', 'bright'], nova: ['Nova', 'lively'], shimmer: ['Shimmer', 'soft'], verse: ['Verse', 'friendly'],
+  alloy: ['Alloy', 'clear, neutral'], echo: ['Echo', 'bright'], nova: ['Nova', 'lively'], shimmer: ['Shimmer', 'soft, clear woman'], verse: ['Verse', 'friendly'],
 };
 
 // raw 16-bit mono sound (what the voice service gives as 'pcm' at 24 kHz) as a WAV file declared at a lower rate: it plays lower and slower,
@@ -97,3 +97,6 @@ export function wavAt(pcm, rate) {
   h.write('data', 36); h.writeUInt32LE(data.length, 40);
   return Buffer.concat([h, data]);
 }
+
+// Ken, 12 Nov: "too many options, many sound too similar ... narrow them down to about 20 with a very clear distinction". These 20 are what the pickers and /api/say?list=1 offer; any other voice name saved earlier still plays.
+export const FEATURED = ['thunder', 'titan', 'elder', 'narrator', 'pastor', 'herald', 'prophet', 'rally', 'jubilee', 'tale', 'awe', 'cowboy', 'grace', 'canyon', 'deborah', 'magnolia', 'sunrise', 'sparkle', 'shimmer', 'alloy'];
