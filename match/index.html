@@ -119,6 +119,13 @@ html,body{touch-action:manipulation}   /* tapping a fish twice reads its verse: 
 @keyframes mfPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-60%) scale(1)}}
 @media (prefers-reduced-motion:reduce){.matchpop.go{animation:none}}
 /* ── all found ── */
+.optbar{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding-top:6px}.optbar button{border:1px solid var(--line);background:var(--bg2);color:var(--text);border-radius:999px;padding:9px 14px;font:700 .88rem 'Archivo',system-ui,sans-serif;cursor:pointer}.optbar button.go{background:var(--blue,#2a5fb0);border-color:var(--blue,#2a5fb0);color:#fff}
+body:not(.optsopen) .opts,body:not(.optsopen) .pickl,body:not(.optsopen) .sayrow,body:not(.optsopen) .tip{display:none!important}
+.demo{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.985);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:16px;overflow:auto}.demo[hidden]{display:none}
+.demo .dgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:min(440px,100%);position:relative}
+.demo .dcap{min-height:4.4em;max-width:440px;text-align:center;font:600 1.15rem/1.4 'Fraunces',Georgia,serif;color:#fff;margin:0}
+.demo .dpt{position:absolute;font-size:2.2rem;pointer-events:none;transition:left .7s ease,top .7s ease,transform .2s;transform:translate(-30%,-10%);filter:drop-shadow(0 3px 6px #000);z-index:5}.demo .dpt.tap{transform:translate(-30%,-10%) scale(.8)}
+.demo .dbtns{display:flex;gap:8px}.demo .dbtns button{border:1px solid rgba(255,255,255,.3);background:none;color:#fff;border-radius:999px;padding:10px 18px;font:700 .95rem 'Archivo',system-ui,sans-serif;cursor:pointer}.demo .dbtns button.go{background:#2a5fb0;border-color:#2a5fb0}
 .howwrap{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.6)}.howwrap[hidden]{display:none}
 .how{background:var(--bg2);border:1px solid var(--glow);border-radius:16px;padding:16px 20px;max-width:560px;width:100%;max-height:90vh;overflow:auto}
 html,body{overflow-x:hidden}
@@ -200,6 +207,7 @@ html,body{overflow-x:hidden}
     <span class="mmenu" id="mMenu" hidden><button type="button" id="howBtn">❓ <span data-t="how">How to play</span></button><button type="button" id="playersBtn">👥 <span data-t="mPlayers">Players on this device</span></button><button type="button" id="onlineBtn">🌐 <span data-t="mOnline">Play online</span></button><button type="button" id="fbBtn" onclick="document.getElementById('mMenu').hidden=true;window.MFfeedback&&MFfeedback.open()">💬 <span data-t="mFb">Tell us what you think</span></button></span></span>
 </header>
 <div class="wrapw levels" id="levels" role="radiogroup"></div>
+<div class="wrapw optbar"><button type="button" class="go" id="demoBtn">▶ <span data-t="demo">Hear a demo</span></button><button type="button" id="optBtn" aria-expanded="false">⚙ <span data-t="opts">Options</span> <span id="optSum"></span> ▾</button></div>
 <div class="wrapw opts">
   <label class="pick"><span data-t="first">First language</span><select id="l1"></select></label>
   <label class="pick"><span data-t="second">Second language</span><select id="l2"></select></label>
@@ -243,6 +251,7 @@ html,body{overflow-x:hidden}
 <div class="toast" id="invite" hidden role="alertdialog" aria-live="assertive"></div>
 <div class="bubble" id="bubble" hidden aria-live="polite"></div>
 <div class="turnpop" id="turnPop" hidden aria-hidden="true"></div>
+<div class="demo" id="demo" hidden role="dialog" aria-modal="true" aria-label="Demo"><div class="dgrid" id="dGrid"></div><p class="dcap" id="dCap" aria-live="polite"></p><div class="dbtns"><button type="button" id="dReplay">↻ Again</button><button type="button" class="go" id="dClose">Close</button></div></div>
 <div class="howwrap" id="how" hidden><div class="how" role="dialog" aria-modal="true" aria-labelledby="howH">
   <h2 id="howH" data-t="how">How to play</h2>
   <ol>
@@ -297,7 +306,7 @@ html,body{overflow-x:hidden}
   /* Ken, 16 Nov: the level also sets how many fish: Easy 6 pairs (12 fish), Medium 12 pairs (24), Hard 18 pairs (36) */
   var PAIRS=12, PBY={easy:6,medium:12,hard:18}, TRIES=3, MAXP=4, PC=['#3370FF','#f5d76e','#7fd18b','#e8735c'];
   var T={
-    en:{lvl:'Level',lvE:'Easy',lvEs:'One language · 12 fish',lvM:'Medium',lvMs:'Two languages · 24 fish',lvH:'Hard',lvHs:'Many languages · 36 fish',lang:'Language',surprise:'🎲 Surprise me',pickhH:'Tap the languages you want to play in',home:'Home',sub:'MannaFish Memory',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',pickl:'Choose languages…',pickls:'Choose…',pickh:'Tap the languages to play with:',none:'None (one language only)',nones:'None (one language)',
+    en:{demo:'Hear a demo',opts:'Options',lvl:'Level',lvE:'Easy',lvEs:'One language · 12 fish',lvM:'Medium',lvMs:'Two languages · 24 fish',lvH:'Hard',lvHs:'Many languages · 36 fish',lang:'Language',surprise:'🎲 Surprise me',pickhH:'Tap the languages you want to play in',home:'Home',sub:'MannaFish Memory',new:'New game',first:'First language',second:'Second language',mix:'Mix (a different language each pair)',mixs:'Mix',pickl:'Choose languages…',pickls:'Choose…',pickh:'Tap the languages to play with:',none:'None (one language only)',nones:'None (one language)',
       say:'Say words when flipped',spkOn:'Sound on: tap to turn it off',spkOff:'Sound off: tap to hear the game',spkOnS:'Sound on',spkOffS:'Sound off',moves:'Moves',pairs:'pairs',winsub:'Tap any card to hear its verse.',
       again:'Play again',look:'See the cards',how:'How to play',mFb:'Tell us what you think',howok:'Let’s play',peekGo:'▶ Start the game',peekHint:'Look where each fish is. When you start, they all turn face down.',peekSee:'See them all in {l}',peekOther:'the other language',
       gfh:'Go fish!',hidden:'Hidden fish {i}',gfmult:'Catch multiplied!',gfnob:'No bonus',gfnob2:'Your catch stays ×{m}',gfnob3:'{p}’s catch stays ×{m}',gfmults:'Now ×{m} · +{b} points',matches:'Matches',caught:'Caught',gfsub:'Catch <b>{w}</b>. Every fish is hidden until you catch it: pick one!',gfskip:'Skip',gfok:'{p} caught {w}! Catch ×{m}',gfokme:'You caught {w}! Catch ×{m}',gfno:'That was {w}. {n} left',gfaway:'It got away. Catch stays ×{m}',score:'Score',catch:'Catch',fish:'fish',
@@ -319,7 +328,7 @@ html,body{overflow-x:hidden}
       h6:'Every pair lets you go fish for the same word. The fish are hidden: tap one to reel it in and see its word. You have 3 tries. Each catch raises your catch multiplier (×2, ×3 …), and every pair scores 10 × your multiplier.',
       h7:'More players? ⋯ → Players on this device (take turns), or Play online with a friend. A match lets you go again.',
       down:'Card {i}, face down',matched:'matched',match:'Match',verse:'Hear the verse',nomatch:'Not a match',cards:'Cards',loading:'Loading…',oops:'The words could not be loaded. Please try again.'},
-    es:{lvl:'Nivel',lvE:'Fácil',lvEs:'Un idioma · 12 peces',lvM:'Medio',lvMs:'Dos idiomas · 24 peces',lvH:'Difícil',lvHs:'Varios idiomas · 36 peces',lang:'Idioma',surprise:'🎲 Sorpréndeme',pickhH:'Toca los idiomas con los que quieres jugar',home:'Inicio',sub:'MannaFish Memory',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',pickl:'Elegir idiomas…',pickls:'Elegir…',pickh:'Toca los idiomas para jugar:',none:'Ninguno (un solo idioma)',nones:'Ninguno (un idioma)',
+    es:{demo:'Oír una demostración',opts:'Opciones',lvl:'Nivel',lvE:'Fácil',lvEs:'Un idioma · 12 peces',lvM:'Medio',lvMs:'Dos idiomas · 24 peces',lvH:'Difícil',lvHs:'Varios idiomas · 36 peces',lang:'Idioma',surprise:'🎲 Sorpréndeme',pickhH:'Toca los idiomas con los que quieres jugar',home:'Inicio',sub:'MannaFish Memory',new:'Nuevo juego',first:'Primer idioma',second:'Segundo idioma',mix:'Mezcla (un idioma distinto en cada par)',mixs:'Mezcla',pickl:'Elegir idiomas…',pickls:'Elegir…',pickh:'Toca los idiomas para jugar:',none:'Ninguno (un solo idioma)',nones:'Ninguno (un idioma)',
       say:'Decirlas al voltear',spkOn:'Sonido activado: toca para apagarlo',spkOff:'Sonido apagado: toca para oír el juego',spkOnS:'Sonido',spkOffS:'Sin sonido',moves:'Jugadas',pairs:'pares',winsub:'Toca cualquier carta para oír su versículo.',
       again:'Jugar otra vez',look:'Ver las cartas',how:'Cómo se juega',mFb:'Cuéntanos qué piensas',peekGo:'▶ Empezar el juego',peekHint:'Mira dónde está cada pez. Al empezar, todos se voltean.',peekSee:'Verlos todos en {l}',peekOther:'el otro idioma',howok:'¡A jugar!',
       gfh:'¡A pescar!',hidden:'Pez escondido {i}',gfmult:'¡Pesca multiplicada!',gfnob:'Sin bono',gfnob2:'Tu pesca sigue ×{m}',gfnob3:'La pesca de {p} sigue ×{m}',gfmults:'Ahora ×{m} · +{b} puntos',matches:'Parejas',caught:'Atrapados',gfsub:'Atrapa <b>{w}</b>. Cada pez está escondido hasta que lo atrapes: ¡elige uno!',gfskip:'Saltar',gfok:'¡{p} atrapó {w}! Pesca ×{m}',gfokme:'¡Atrapaste {w}! Pesca ×{m}',gfno:'Era {w}. Quedan {n}',gfaway:'Se escapó. La pesca sigue ×{m}',score:'Puntos',catch:'Pesca',fish:'peces',
@@ -638,6 +647,42 @@ html,body{overflow-x:hidden}
   function sheet(id,on){ $(id).hidden=!on; }
   function menu(on){ $('mMenu').hidden=!on; $('moreBtn').setAttribute('aria-expanded',String(on)); }
   $('moreBtn').addEventListener('click',function(e){ e.stopPropagation(); menu($('mMenu').hidden); });
+
+  /* Ken, 16 Nov: the setup screen is shorter (the languages, sound and tips are behind Options) and a narrated demo plays a little game on the screen while a voice explains each step */
+  (function(){
+    function optSum(){ var s=$('optSum'); if(s) s.textContent=''; }
+    $('optBtn').addEventListener('click',function(){ var o=!document.body.classList.contains('optsopen'); document.body.classList.toggle('optsopen',o); this.setAttribute('aria-expanded',String(o)); });
+    var SC={en:['Welcome to MannaFish Memory. Here is how it works.','At the start you can see where every fish is. Look closely.','Now they turn face down.','Tap one fish to turn it over.','Now tap a second fish.','They are not the same fish, so they turn back over. Try to remember where each one is.','Now try again. Tap a fish.','And tap the fish you think is its partner.','A match! The pair stays up, and you score points. You go again.','Keep going until you find all the pairs.','Tap a turned fish again to hear its verse. Tap its tail to see its word in your second language.','Choose easy, medium or hard. Easy has twelve fish, medium twenty four, and hard thirty six. Now it is your turn. Have fun!'],
+      es:['Bienvenido a MannaFish Memory. Así se juega.','Al principio ves dónde está cada pez. Míralos bien.','Ahora se voltean boca abajo.','Toca un pez para voltearlo.','Ahora toca un segundo pez.','No son el mismo pez, así que se voltean otra vez. Intenta recordar dónde está cada uno.','Ahora inténtalo de nuevo. Toca un pez.','Y toca el pez que crees que es su pareja.','¡Pareja! El par se queda arriba y ganas puntos. Juegas otra vez.','Sigue hasta encontrar todas las parejas.','Toca de nuevo un pez volteado para oír su versículo. Toca su cola para ver su palabra en tu segundo idioma.','Elige fácil, medio o difícil. Fácil tiene doce peces, medio veinticuatro y difícil treinta y seis. Ahora te toca a ti. ¡Diviértete!']};
+    var DG=null, DR=0, daud=null;
+    function wait(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+    function say(text){ return new Promise(function(done){ var me=DR, fin=false, lang=ui==='es'?'es':'en', fall=Math.max(1800,text.split(' ').length*420); try{ if(daud) daud.pause(); }catch(e){}
+      var end=function(){ if(fin) return; fin=true; done(); }; $('dCap').textContent=text; setTimeout(end,fall+9000);
+      if(muted){ setTimeout(end,fall); return; }
+      fetch('/api/say?t='+encodeURIComponent(text)+'&l='+lang+'&v='+encodeURIComponent(aiVoice())).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){ if(me!==DR){ end(); return; } var a=new Audio(URL.createObjectURL(b)); daud=a; a.onended=end; a.onerror=function(){ setTimeout(end,fall); }; var pr=a.play(); if(pr&&pr.catch) pr.catch(function(){ setTimeout(end,fall); }); })
+        .catch(function(){ setTimeout(end,fall); }); }); }
+    function point(i,tap){ var el=DG.cards[i].el, g=$('dGrid'), gr=g.getBoundingClientRect(), r=el.getBoundingClientRect(); var pt=$('dPt'); pt.style.left=(r.left-gr.left+r.width*(tap==='tail'?0.82:0.5))+'px'; pt.style.top=(r.top-gr.top+r.height*0.35)+'px'; }
+    function flip(i,up){ DG.cards[i].el.classList.toggle('up',up); }
+    function tapAt(i,up,tail){ point(i,tail); return wait(800).then(function(){ var pt=$('dPt'); pt.classList.add('tap'); return wait(180); }).then(function(){ $('dPt').classList.remove('tap'); if(up!==undefined) flip(i,up); return wait(500); }); }
+    async function run(){ var me=++DR, L=SC[ui==='es'?'es':'en'];
+      try{ var keys=Object.keys(FISH.en||{}).filter(function(k){ return FISH[l1]&&FISH[l1][k]; }), pick=['HOPE','LOVE','PRAY'].filter(function(k){ return keys.indexOf(k)>=0; }); while(pick.length<3) pick.push(keys.filter(function(k){ return pick.indexOf(k)<0; })[0]);
+        var order=[pick[0],pick[1],pick[2],pick[1],pick[0],pick[2]], f=FISH[l1]||FISH.en, g=$('dGrid'); g.innerHTML='<div class="dpt" id="dPt" aria-hidden="true">👆</div>'; var cards=[];
+        order.forEach(function(k,i){ var el=document.createElement('div'); el.className='cell up'; el.innerHTML='<button type="button" class="card" tabindex="-1"><span class="inner"><span class="face back">'+BACK+'</span><span class="face front" aria-hidden="true">'+own(f[k]||'',100+i)+'</span></span></button>'; g.appendChild(el); cards.push({el:el,k:k}); });
+        DG={cards:cards}; $('dPt').style.left='50%'; $('dPt').style.top='110%';
+        if(me!==DR) return; await say(L[0]); if(me!==DR) return; await say(L[1]); await wait(600); if(me!==DR) return; await say(L[2]); cards.forEach(function(c){ c.el.classList.remove('up'); }); await wait(900); if(me!==DR) return;
+        say(L[3]); await tapAt(0,true); await wait(1500); if(me!==DR) return;
+        await say(L[4]); await tapAt(2,true); await wait(500); if(me!==DR) return; await say(L[5]); flip(0,false); flip(2,false); await wait(900); if(me!==DR) return;
+        await say(L[6]); await tapAt(1,true); await say(L[7]); await tapAt(3,true); if(me!==DR) return; await say(L[8]); await wait(300); if(me!==DR) return;
+        say(L[9]); await tapAt(0,true); await tapAt(4,true); await tapAt(2,true); await tapAt(5,true); await wait(1200); if(me!==DR) return;
+        say(L[10]); point(4,'tail'); await wait(2500); if(me!==DR) return;
+        await say(L[11]); $('dCap').textContent=L[11];
+      }catch(e){ $('dCap').textContent=''; } }
+    function open(){ $('demo').hidden=false; document.documentElement.style.overflow='hidden'; run(); }
+    function close(){ DR++; try{ if(daud) daud.pause(); }catch(e){} $('demo').hidden=true; document.documentElement.style.overflow=''; }
+    $('demoBtn').addEventListener('click',function(){ stopSpeak(); open(); });
+    $('dClose').addEventListener('click',close); $('dReplay').addEventListener('click',function(){ try{ if(daud) daud.pause(); }catch(e){} run(); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!$('demo').hidden) close(); });
+  })();
   $('howBtn').addEventListener('click',function(){ menu(false); sheet('how',true); $('howOk').focus(); });
   $('howOk').addEventListener('click',function(){ sheet('how',false); });
   ['how','setup','online'].forEach(function(id){ $(id).addEventListener('click',function(e){ if(e.target===this){ sheet(id,false); if(id==='online') lobbyVisible(); } }); });
