@@ -57,3 +57,10 @@ somewhere new by changing the run, and nobody scans anything at the door: one QR
 **/print/admin/** lists every run with its proof, its files, what still needs doing, and (with the admin password)
 how many times each QR code has been scanned. The same two lists (`print/runs.json`, `print/links.json`) are what the
 Majestic Awards CRM's Engagement Center would read to show runs and scans next to each sponsor.
+
+
+## Sponsor page, and the files made from an order (17 Nov)
+- `/sponsor/` (sponsor/index.html): a sponsor picks a word, pastes the link for the left QR code, chooses how the sponsor line reads (their logo, their name, or their own words, and the line above it), picks how many, and sends a request to `/api/card-order`. The preview is the real card back. The right QR code is always the free devotional (`manna-fish.com/q/devo`).
+- The word study fills in from `print/kit/words.json` (`node tools/print/build-words.mjs`): hand-written studies first (BUILD, CAST, REPAIR, TRUST, SEEK), then the site's own studies of the original 24, then ones made from the Strong's lexicon and concordance in `fish-lang/bible/` (141 words are complete; the rest are not offered yet).
+- `/print/orders/` (admin): each card in an order has "Download print files (.zip)": decal (white ink), backing front, cut lines (SVG), back, notes, all at 1200 dpi, made in the browser by `print/kit/kit.js`. By default the left QR code is `manna-fish.com/q/<order>-<card number>` (scans counted by `/api/qr`, which looks the link up in the order); the tick box makes it go straight to the link.
+- The templates (`print/kit/back.css`, `back-logo.tpl.html`, `back-text.tpl.html`, `fit.js`, `default-adj.json`, `browser.js`) are written by `node tools/print/make.mjs --kit` from the same code that makes R00xx runs, so a change to the card layout (and Ken's saved settings in `print/adjust/R0015.json`) reaches the sponsor page after one command. `fish/print/<id>.svg` overrides the fish picture for printing.

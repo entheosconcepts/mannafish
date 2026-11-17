@@ -22,6 +22,9 @@ export default async (req, context) => {
   const code = String((context.params && context.params.code) || url.pathname.split('/').pop() || '').replace(/[^A-Za-z0-9-]/g, '').slice(0, 40);
   let to = '';
   try { const r = await fetch(new URL('/print/links.json', url.origin)); if (r.ok) { const L = await r.json(); to = (L[code] && L[code].to) || ''; } } catch (e) { /* send them home */ }
+  // a card ordered on /sponsor/: the code is <order>-<number> and goes to that card's link (so no new code has to be added to links.json)
+  const mo = !to && /^(C[0-9A-Z]+)-(\d{1,2})$/.exec(code);
+  if (mo) { try { const o = await getStore({ name: 'mannafish-orders', consistency: 'strong' }).get('o/' + mo[1], { type: 'json' }); const it = o && o.items && o.items[Number(mo[2]) - 1]; if (it && it.url) to = it.url; } catch (e) { /* send them home */ } }
   if (!/^https?:\/\//.test(to)) to = HOME;
   // the sponsor's own site sees these visits as coming from the cards (most visitor stats read utm_ tags)
   else if (!/(^|\.)manna-fish\.com$/.test(new URL(to).hostname)) { const u = new URL(to);
