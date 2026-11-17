@@ -97,7 +97,7 @@ footer{max-width:1180px;margin:0 auto;color:var(--dim);font-size:.85rem;padding:
 (function(){
 var $=function(i){ return document.getElementById(i); }, cart=[], cur={word:'',fishId:'',by:'logo',logo:'',view:'back'};
 var VERSE=null, BOOKS='Genesis,Exodus,Leviticus,Numbers,Deuteronomy,Joshua,Judges,Ruth,1 Samuel,2 Samuel,1 Kings,2 Kings,1 Chronicles,2 Chronicles,Ezra,Nehemiah,Esther,Job,Psalm,Proverbs,Ecclesiastes,Song of Solomon,Isaiah,Jeremiah,Lamentations,Ezekiel,Daniel,Hosea,Joel,Amos,Obadiah,Jonah,Micah,Nahum,Habakkuk,Zephaniah,Haggai,Zechariah,Malachi,Matthew,Mark,Luke,John,Acts,Romans,1 Corinthians,2 Corinthians,Galatians,Ephesians,Philippians,Colossians,1 Thessalonians,2 Thessalonians,1 Timothy,2 Timothy,Titus,Philemon,Hebrews,James,1 Peter,2 Peter,1 John,2 John,3 John,Jude,Revelation'.split(',');
-var QCH=['Free quote','Book now','Visit us','Learn more','Call us today','Join us Sunday','Order online','See our menu'], CCH=['Sponsored by','A gift from','In loving memory of','Prayed over by','In honor of'];
+var QCH=['Free quote','Book now','Visit us','Learn more','Call us today','Join us Sunday','Order online','See our menu'], CCH=['Sponsored by','A gift from','Prayed over by','In honor of'];
 function esc(t){ return String(t).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 function fullUrl(u){ u=(u||'').trim(); if(u&&!/^https?:\/\//i.test(u)) u='https://'+u; return u; }
 function cfg(){ var d={word:cur.word,fishId:cur.fishId,by:cur.by,logo:cur.logo,name:$('name').value.trim(),text:$('text').value.trim(),credit:$('credit').value.trim()||'Sponsored by',
