@@ -130,6 +130,14 @@ function qrUrl(run, code) {
 const landscape = (run) => (run.back || {}).orientation === 'landscape';
 // ── the back (portrait), filled from the run: "invite" (Ken's invitation card), "study" (the word study, like the old
 // word-study card), or "image" (Ken's own finished artwork). Both templates end with the same strip: two QR codes and who gave it.
+// the card back editor's saved layout (print/back-edit/<run>.html -> /api/print-adjust): the site's copy if it can be reached, else print/adjust/<run>.json
+async function loadAdjust(id) {
+  const file = path.join(PRINT, 'adjust', id + '.json'); let adj = {};
+  try { adj = JSON.parse(fs.readFileSync(file, 'utf8')).adj || {}; } catch (e) { /* none yet */ }
+  try { const base = process.env.MF_SITE || 'https://yadamannafishtest.netlify.app', r = await fetch(`${base}/api/print-adjust?run=${encodeURIComponent(id)}`, { signal: AbortSignal.timeout(4000) });
+    if (r.ok) { const j = await r.json(); if (j.adj && Object.keys(j.adj).length) { adj = j.adj; fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, JSON.stringify({ run: id, adj, at: j.at }, null, 1) + '\n'); } } } catch (e) { /* the site could not be reached: use the file */ }
+  return adj;
+}
 async function backHtml(run, codes, warn) {
   const B = run.back || {}, S = run.sponsor || {}, F = run.for || null, w = CARD.h, h = CARD.w;
   const qr = async (code, inv) => (await QR.toString(qrUrl(run, code), { type: 'svg', errorCorrectionLevel: 'M', margin: 2, color: inv ? { dark: '#ffffff', light: '#000000' } : { dark: '#000000', light: '#ffffff' } }))
@@ -166,16 +174,17 @@ async function backHtml(run, codes, warn) {
       const big = refs.length <= 4;   /* the larger all-caps back (Ken, 17 Nov): bigger title, labels in capitals */
       const st = { ...strongsOf(run.fish.word), ...strongsOf(run.fish.study || run.fish.word) };
       // Ken, 6 Nov: the strip on black, no white box; the QR codes inverted (white on black), away from the edges, each with its words under it in white
-      const sideV = async (code, X) => X ? `<div class="col qv"><div class="sq">${await qr(code, true)}</div><div class="lab fit"><span>${esc(X.label || '').replace(/\n/g, '<br>')}</span></div></div>` : '<div class="col"></div>';
-      const l4b = (k, wd, lg, snd, m, sn) => `<div class="l4 l4b"><div class="ow4 sx" lang="${lg}"><span>${esc(wd)}</span></div><div class="r2 fit"><span><b class="k">${k}</b> (${esc(snd)})</span></div><div class="mn4 fit"><span>${esc(m)}</span></div>${sn ? `<div class="st4">${esc((B.words && B.words.strongs) || 'STRONG’S')} ${esc(sn)}</div>` : ''}</div>`;
+      const sideV = async (code, X, sd) => X ? `<div class="col qv"><div class="sq" data-b="qr${sd}">${await qr(code, true)}</div><div class="lab fit" data-b="lab${sd}"><span>${esc(X.label || '').replace(/\n/g, '<br>')}</span></div></div>` : '<div class="col"></div>';
+      const l4b = (k, wd, lg, snd, m, sn) => { const q = lg === 'he' ? 'h' : 'g'; return `<div class="l4 l4b"><div class="ow4 sx" data-b="${q}word" lang="${lg}"><span>${esc(wd)}</span></div><div class="r2 fit" data-b="${q}label"><span><b class="k">${k}</b> (${esc(snd)})</span></div><div class="mn4 fit" data-b="${q}def"><span>${esc(m)}</span></div>${sn ? `<div class="st4" data-b="${q}strong">${esc((B.words && B.words.strongs) || 'STRONG’S')} ${esc(sn)}</div>` : ''}</div>`; };
       const l4 = (k, wd, lg, snd, m, sn) => `<div class="l4"><div class="r1 fit"><span class="rr"><span class="k">${k}</span><span class="ow" lang="${lg}">${esc(wd)}</span><span class="tr">(${esc(snd)})</span></span></div><div class="mn4 fit"><span>${esc(m)}</span></div>${sn ? `<div class="st4">${esc((B.words && B.words.strongs) || 'STRONG’S')} ${esc(sn)}</div>` : ''}</div>`;
-      return `<div class="pg" style="width:${f2(W + 2 * BLEED)}mm;height:${f2(H + 2 * BLEED)}mm"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${W}mm;height:${H}mm">
-  <div class="wt4 fit${big ? ' wbig' : ''}" style="top:${big ? 1.5 : 0.9}mm;height:${big ? 8 : 6.6}mm"><span>${esc(B.heading || d.title)}</span></div>
+      const adj = await loadAdjust(run.id || '');
+      return `<script>window.MF_ADJ=${JSON.stringify(adj)}</script><div class="pg" style="width:${f2(W + 2 * BLEED)}mm;height:${f2(H + 2 * BLEED)}mm"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${W}mm;height:${H}mm">
+  <div class="wt4 fit${big ? ' wbig' : ''}" data-b="title" style="top:${big ? 1.5 : 0.9}mm;height:${big ? 8 : 6.6}mm"><span>${esc(B.heading || d.title)}</span></div>
   <div class="gh4" style="top:${big ? 9.3 : 8.1}mm;height:${big ? 18.1 : 13.9}mm">${(big ? l4b : l4)((B.words && B.words.greek) || 'GREEK', d.gkw, 'el', d.gks, d.gkm, d.gst || st.g)}<div class="dv"></div>${(big ? l4b : l4)((B.words && B.words.hebrew) || 'HEBREW', d.hbw, 'he', d.hbs, d.hbm, d.hst || st.h)}</div>
-  <div class="rf rf3 rf4${big ? ' rfbig' : ''}" style="top:${big ? 27.4 : 22.6}mm;height:${big ? 18.4 : 21.4}mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
-  <div class="strip inv${big ? ' up' : ''}" style="top:${big ? 46.2 : 46.0}mm;height:${big ? 21.8 : 22.4}mm">${await sideV(codes.left, L)}
-    <div class="col mid"><div class="sb">${esc(credit)}</div>${ml ? `<div class="sl"><img src="${ml}"></div>` : `<div class="sn fit${verse ? ' sv' : ''}"><span>${esc(mn)}</span></div>`}</div>
-    ${await sideV(codes.right, Rt)}</div></div></div>`;
+  <div class="rf rf3 rf4${big ? ' rfbig' : ''}" style="top:${big ? 27.4 : 22.6}mm;height:${big ? 18.4 : 21.4}mm">${refs.map((r, i) => `<div><b data-b="r${i + 1}n">${esc(r[0])}</b><i data-b="r${i + 1}q">“${esc(r[1])}”</i></div>`).join('')}</div>
+  <div class="strip inv${big ? ' up' : ''}" style="top:${big ? 46.2 : 46.0}mm;height:${big ? 21.8 : 22.4}mm">${await sideV(codes.left, L, 'L')}
+    <div class="col mid"><div class="sb" data-b="sponsor">${esc(credit)}</div>${ml ? `<div class="sl" data-b="logo"><img src="${ml}"></div>` : `<div class="sn fit${verse ? ' sv' : ''}"><span>${esc(mn)}</span></div>`}</div>
+    ${await sideV(codes.right, Rt, 'R')}</div></div></div>`;
     }
     return `<div class="pg" style="width:${f2(W + 2 * BLEED)}mm;height:${f2(H + 2 * BLEED)}mm"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${W}mm;height:${H}mm">
   <div class="gh3" style="top:2.6mm;height:15.6mm">${lang('GREEK', d.gkw, 'el', d.gks, d.gkm)}<div class="wt3 fit"><span>${esc(B.heading || d.title)}</span></div>${lang('HEBREW', d.hbw, 'he', d.hbs, d.hbm)}</div>
@@ -264,8 +273,10 @@ const BACKCSS = () => `@font-face{font-family:'Lilita One';src:url(${font('lilit
 .rf.rfbig{grid-template-columns:1fr 1fr;gap:.5mm 3mm;align-content:space-between}.rfbig div{padding-top:.3mm}.rf.rfbig b{font-size:2.6mm}.rf.rfbig i{font:700 2.5mm/1.1 'Archivo Narrow',sans-serif;font-style:normal;text-transform:uppercase;letter-spacing:.08mm;margin-top:.3mm}
 .rf i{display:block;font:italic 400 2mm/1.15 'Spectral',serif;color:#e6ecef;margin-top:.3mm}`;
 // words that don't fit get smaller until they do
-const FIT = `document.querySelectorAll('.sx').forEach(function(e){ var t=e.firstElementChild; t.style.transform=''; var cw=e.clientWidth*0.97, sw=t.scrollWidth; if(sw>cw) t.style.transform='scaleX('+(cw/sw)+')'; }); document.querySelectorAll('.fit').forEach(function(e){ var s=parseFloat(getComputedStyle(e).fontSize), t=e.firstElementChild||e;
+const APPLY = `(function(){ var A=window.MF_ADJ||{}; document.querySelectorAll('[data-b]').forEach(function(e){ var a=A[e.getAttribute('data-b')]; if(!a){ e.style.transform=''; return; } var s=(a.s||100)/100, x=s*(a.sx||100)/100, y=s*(a.sy||100)/100; e.style.transformOrigin='center center'; e.style.transform='translate('+(a.dx||0)+'mm,'+(a.dy||0)+'mm) scale('+x+','+y+')'; }); })();`;
+const FIT0 = `document.querySelectorAll('.sx').forEach(function(e){ var t=e.firstElementChild; t.style.transform=''; var cw=e.clientWidth*0.97, sw=t.scrollWidth; if(sw>cw) t.style.transform='scaleX('+(cw/sw)+')'; }); document.querySelectorAll('.fit').forEach(function(e){ var s=parseFloat(getComputedStyle(e).fontSize), t=e.firstElementChild||e;
   for(var i=0;i<60&&(t.scrollWidth>e.clientWidth+.5||t.scrollHeight>e.clientHeight+.5||e.scrollHeight>e.clientHeight+.5);i++){ s*=.95; e.style.fontSize=s+'px'; } });`;
+const FIT = FIT0 + APPLY;
 
 // the cut lines as a small PDF written by hand, so each line can be a named spot colour (Chromium can't make those)
 function cutPdf(file, kiss) {
@@ -329,6 +340,8 @@ async function make(id, browser) {
   // 4 the back of the backing paper (portrait)
   const codes = { main: id, left: id + 's', right: id + 'm' };
   const LAND = landscape(run), back = await backHtml(run, codes, warn), bw = (LAND ? CARD.w : CARD.h) + 2 * BLEED, bh = (LAND ? CARD.h : CARD.w) + 2 * BLEED;
+  if (back.includes('data-b=')) { fs.mkdirSync(path.join(PRINT, 'back-edit'), { recursive: true });   // the editor page for this back: the same back, with handles
+    fs.writeFileSync(path.join(PRINT, 'back-edit', id + '.html'), `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Card back editor ${id}</title><style>${BACKCSS()}</style></head><body><script>window.MF_RUN=${JSON.stringify(id)}</script><div id="stage">${back}</div><script>${FIT}</script><script src="../back-edit.js"></script></body></html>`); }
   await pdf(back, bw, bh, name('4-back.pdf'), BACKCSS() + `.pg{width:${f2(bw)}mm!important;height:${f2(bh)}mm!important}`);
   await shot(back, bw, bh, name('4-back.png'), { css: BACKCSS() + `.pg{width:${f2(bw)}mm!important;height:${f2(bh)}mm!important}`, scale: true, dpi: 600 });
 
@@ -393,7 +406,7 @@ Quantity: ${run.qty || '?'}. Please send a proof showing all four before taking 
   const { execFileSync } = await import('node:child_process');
   execFileSync('zip', ['-j', '-q', zip].concat(['1-decal-white-ink.png', '1-decal-white-ink.pdf', '2-backing-front.pdf', '2-backing-front.png', '4-back.pdf', '4-back.png', 'printer-notes.md', 'proof.pdf'].concat(run.send_cut_file ? ['3-cut-lines.pdf', '3-cut-lines.svg'] : []).map(name)));
   await page.close();
-  return { id, title: run.title || id, status: run.status || 'draft', qty: run.qty || 0, fish: run.fish, sponsor: S.name || '', anonymous: !!S.anonymous, codes, links, warn, made: new Date().toISOString() };
+  return { id, title: run.title || id, status: run.status || 'draft', qty: run.qty || 0, fish: run.fish, sponsor: S.name || '', anonymous: !!S.anonymous, codes, links, warn, editor: back.includes('data-b='), made: new Date().toISOString() };
 }
 
 const arg = process.argv.slice(2), all = fs.readdirSync(path.join(PRINT, 'runs')).filter((f) => /^R\d+\.json$/.test(f)).map((f) => f.replace('.json', '')).sort();

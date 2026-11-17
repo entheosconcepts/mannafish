@@ -362,7 +362,8 @@
     "The sponsor logo is a stand-in (assets/ktech-round-logo-DRAFT.svg). Upload the original logo before printing.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-17T19:35:12.685Z"
+   "editor": true,
+   "made": "2026-11-17T19:46:34.469Z"
   },
   {
    "id": "R0016",
@@ -386,7 +387,8 @@
    "warn": [
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-17T19:37:06.812Z"
+   "editor": true,
+   "made": "2026-11-17T19:46:39.225Z"
   },
   {
    "id": "R0017",
@@ -410,7 +412,8 @@
    "warn": [
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-17T19:37:11.542Z"
+   "editor": true,
+   "made": "2026-11-17T19:46:44.046Z"
   },
   {
    "id": "R0018",
@@ -434,7 +437,8 @@
     "The sponsor logo is a stand-in (assets/shattered-into-beautiful-DRAFT.png). Upload the original logo before printing.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-17T19:37:16.005Z"
+   "editor": true,
+   "made": "2026-11-17T19:46:48.582Z"
   }
  ]
 }
