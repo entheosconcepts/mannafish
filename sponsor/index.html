@@ -35,7 +35,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,select:focus-vis
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media (max-width:520px){.two{grid-template-columns:1fr}}
 .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:4px 0 8px}
 .seg button{font:700 .92rem Archivo,sans-serif;border:1px solid var(--line);background:none;color:var(--text);border-radius:12px;padding:10px 6px;cursor:pointer}.seg button[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
-.drop{display:flex;gap:12px;align-items:center;border:1.5px dashed var(--line);border-radius:14px;padding:12px;cursor:pointer}.drop img{width:64px;height:64px;object-fit:contain;background:#fff;border-radius:8px}.drop span{color:var(--dim);font-size:.92rem}
+.drop{display:flex;width:100%;gap:12px;align-items:center;border:1.5px dashed var(--line);border-radius:14px;padding:12px;cursor:pointer;background:none;color:var(--text);font:inherit;text-align:left}.drop:hover{border-color:var(--gold)}.drop img{width:64px;height:64px;object-fit:contain;background:#fff;border-radius:8px}.drop span{color:var(--dim);font-size:.92rem}
 .hint{color:var(--dim);font-size:.85rem;margin:6px 0 0}
 .pv{position:sticky;top:12px}
 .pvtabs{display:flex;gap:6px;margin-bottom:8px}.pvtabs button{flex:1;font:700 .92rem Archivo,sans-serif;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:12px;padding:10px;cursor:pointer}.pvtabs button[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
@@ -82,7 +82,7 @@ footer{max-width:1180px;margin:0 auto;color:var(--dim);font-size:.85rem;padding:
     <div class="chips" id="qchips"></div></section>
   <section class="step"><h2><i>3</i> Sponsored by</h2><p class="h">This goes in the middle of the card, under the top line you choose.</p>
     <div class="seg" id="by"><button type="button" data-by="logo" aria-pressed="true">Upload my logo</button><button type="button" data-by="name" aria-pressed="false">Type my name</button><button type="button" data-by="text" aria-pressed="false">Write my own words</button></div>
-    <div id="by-logo"><label class="drop" for="logo"><img id="logoprev" alt="" hidden><span id="logoname">Upload your logo here (PNG, JPG or SVG). We size it for you.</span></label><input type="file" id="logo" accept="image/png,image/jpeg,image/svg+xml,image/webp" hidden></div>
+    <div id="by-logo"><button type="button" class="drop" id="logopick"><img id="logoprev" alt="" hidden><span id="logoname">Choose your logo file here (PNG, JPG or SVG). We size it for you.</span></button><input type="file" id="logo" accept="image/png,image/jpeg,image/svg+xml,image/webp" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" tabindex="-1" aria-hidden="true"></div>
     <div id="by-name" hidden><label for="name">Your name or business</label><input type="text" id="name" maxlength="60" placeholder="K-Tech Construction"></div>
     <div id="by-text" hidden><label for="text">Your words</label><textarea id="text" maxlength="120" placeholder="Jesus&#10;or a short prayer"></textarea></div>
     <label for="credit">The line above it</label><input type="text" id="credit" maxlength="30" value="Sponsored by">
@@ -126,7 +126,7 @@ function pull(){ var c=cur(); c.url=$('url').value; c.q1=$('q1').value; c.q2=$('
 function push(){ var c=cur(); $('url').value=c.url; $('q1').value=c.q1; $('q2').value=c.q2; $('name').value=c.name; $('text').value=c.text; $('credit').value=c.credit; $('vref').value=c.vref||''; $('qty').value=c.qty;
   $('cname').value=S.contact.name; $('cemail').value=S.contact.email; $('cphone').value=S.contact.phone; $('cnote').value=S.contact.note;
   document.querySelectorAll('#by button').forEach(function(x){ x.setAttribute('aria-pressed',String(x.getAttribute('data-by')===c.by)); }); ['logo','name','text'].forEach(function(k){ $('by-'+k).hidden=k!==c.by; });
-  var u=logoOf(c); $('logoprev').hidden=!u; if(u) $('logoprev').src=u; $('logoname').textContent=u?(c.logoName||'Your logo')+' (ready)':'Upload your logo here (PNG, JPG or SVG). We size it for you.';
+  var u=logoOf(c); $('logoprev').hidden=!u; if(u) $('logoprev').src=u; $('logoname').textContent=u?(c.logoName||'Your logo')+' (ready)':'Choose your logo file here (PNG, JPG or SVG). We size it for you.';
   showWords(); noteWord(); vnote(c.verse?(c.verse.ref+' (KJV): '+c.verse.top+' '+c.verse.bot):'The fish comes with its own verse. To use a different one, type its address. The big word has to be in the verse.',c.verse?'ok':''); }
 function noteWord(){ var c=cur(), d=c.word?MFkit.study({word:c.word}):null; $('wnote').textContent=d?(d.gkw+' · '+d.hbw+' · '+(d.refs||[]).map(function(r){ return r[0]; }).join(', ')):''; }
 function renderCards(){ var tot=0; $('cardlist').innerHTML=S.cards.map(function(c,i){ tot+=c.qty; var pr=problem(c);
@@ -187,7 +187,8 @@ $('vgo').addEventListener('click',useVerse); $('vref').addEventListener('keydown
 function chips(el,list,set){ el.innerHTML=list.map(function(x){ return '<button type="button">'+esc(x)+'</button>'; }).join(''); el.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; set(b.textContent); soon(); }); }
 chips($('qchips'),QCH,function(v){ var p=v.split(' '), n=Math.ceil(p.length/2); $('q1').value=p.slice(0,n).join(' '); $('q2').value=p.slice(n).join(' '); });
 chips($('cchips'),CCH,function(v){ $('credit').value=v; });
-$('by').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; cur().by=b.getAttribute('data-by'); document.querySelectorAll('#by button').forEach(function(x){ x.setAttribute('aria-pressed',String(x===b)); });
+$('logopick').addEventListener('click',function(){ $('logo').click(); });
+$('by').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; cur().by=b.getAttribute('data-by'); if(cur().by==='logo'&&!logoOf(cur())) setTimeout(function(){ $('logo').click(); },0); document.querySelectorAll('#by button').forEach(function(x){ x.setAttribute('aria-pressed',String(x===b)); });
   ['logo','name','text'].forEach(function(k){ $('by-'+k).hidden=k!==cur().by; }); soon(); });
 ['url','q1','q2','name','text','credit','qty','cname','cemail','cphone','cnote'].forEach(function(i){ $(i).addEventListener('input',soon); });
 /* a logo: any picture, sized down and kept with its see-through parts; the card fits it into the space. The same logo on several cards is kept once. */

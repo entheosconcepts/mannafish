@@ -2167,29 +2167,18 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
     </div>
     <!-- Ken, 12 Oct: the back the same size as the front, laid out across. Ken, 2 Nov: show the word-study back the printer gets
          (tools/print/make.mjs, landscape study back): Greek | word | Hebrew, six verses, then QR codes and the sponsor. Card 4.5 x 2.75 in -->
+    <!-- Ken, 17 Nov: the old "Make the back yours" form is gone; sponsors build their card, with a live preview, on /sponsor/ -->
     <div class="cards42">
-      <figure><figcaption>Front</figcaption><div class="card42 c42front" id="invFront" aria-hidden="true"></div></figure>
-      <figure><figcaption>Back</figcaption><div class="card42 sback" id="invBack" aria-hidden="true"></div><template id="invQr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" shape-rendering="crispEdges" aria-hidden="true"><path class="qrline" stroke="#000" d="M0 0.5h7m4 0h2m1 0h1m3 0h7m-25 1h1m5 0h1m1 0h2m1 0h1m4 0h1m1 0h1m5 0h1m-25 1h1m1 0h3m1 0h1m1 0h3m1 0h1m5 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m1 0h7m3 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m3 0h1m1 0h2m2 0h1m1 0h1m1 0h3m1 0h1m-25 1h1m5 0h1m2 0h3m1 0h2m1 0h1m1 0h1m5 0h1m-25 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-17 1h1m2 0h2m-13 1h1m5 0h1m1 0h1m1 0h1m2 0h2m2 0h2m2 0h3m-24 1h5m4 0h1m4 0h2m3 0h5m-24 1h1m2 0h1m1 0h3m4 0h2m1 0h1m2 0h2m1 0h1m1 0h2m-25 1h1m1 0h1m2 0h1m4 0h3m1 0h8m2 0h1m-22 1h4m2 0h2m1 0h1m2 0h2m1 0h2m4 0h1m-25 1h3m10 0h1m1 0h2m2 0h1m3 0h1m-24 1h1m2 0h1m2 0h1m2 0h1m1 0h7m1 0h3m1 0h2m-25 1h1m1 0h4m1 0h1m1 0h3m7 0h1m1 0h2m1 0h1m-25 1h1m2 0h6m2 0h1m1 0h2m1 0h5m1 0h1m-15 1h3m1 0h2m2 0h1m3 0h1m-21 1h7m3 0h2m1 0h1m2 0h1m1 0h1m1 0h1m3 0h1m-25 1h1m5 0h1m3 0h1m1 0h1m1 0h1m1 0h1m3 0h1m-21 1h1m1 0h3m1 0h1m2 0h1m2 0h1m2 0h6m1 0h3m-25 1h1m1 0h3m1 0h1m7 0h5m4 0h2m-25 1h1m1 0h3m1 0h1m2 0h1m1 0h2m2 0h1m5 0h2m1 0h1m-25 1h1m5 0h1m4 0h1m4 0h2m1 0h2m3 0h1m-25 1h7m1 0h2m2 0h3m1 0h2m3 0h1m2 0h1"/></svg></template></figure>
+      <figure><figcaption>Front</figcaption><div class="card42 sback"><img src="/sponsor/example-front.jpg" alt="A MannaFish decal on its card: Build, with Jude 1:20 around the word" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover"></div></figure>
+      <figure><figcaption>Back</figcaption><div class="card42 sback"><img src="/sponsor/example-back.jpg" alt="The back of the card: the Greek and Hebrew word study, four verses, the sponsor's logo and two QR codes" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover"></div></figure>
     </div>
     <p class="cardsize">Printed cards: 4.5 &times; 2.75 inches, front and back.</p>
-    <!-- Ken, 3 Nov: "allow user to customize the back of the card and add to cart, and make sure the minimum is 100 decals". No price
-         here (Ken decides pricing later): the cart sends a request, and MannaFish replies with the details and a proof to approve. -->
-    <div class="cdz" id="cdz">
-      <h4>Make the back yours</h4>
-      <div class="cdg">
-        <label>The fish<select id="cdFish"></select></label>
-        <label>Your name<input id="cdName" maxlength="60" placeholder="Church, business, ministry or podcast"></label>
-        <label>Your link<input id="cdUrl" type="url" maxlength="200" placeholder="https://your-website.com"></label>
-        <label>Words beside that QR code<input id="cdLab" maxlength="50" placeholder="Your website, podcast or ministry"></label>
-        <label>Your logo<input id="cdLogo" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml"></label>
-        <label>How many decals<input id="cdQty" type="number" min="100" step="100" value="100" inputmode="numeric"><small>At least 100, in hundreds.</small></label>
-      </div>
-      <p class="cdnote">The preview above changes as you type. The QR codes are made for your link when the cards are printed.</p>
-      <button type="button" class="cdadd" id="cdAdd">&#128722;&#xFE0E; Add to cart</button>
-      <div class="cdcart" id="cdCart" hidden></div>
+    <div class="cdz" id="cdz" style="text-align:center">
+      <h4>Design your card</h4>
+      <p class="cdnote" style="max-width:34em;margin:0 auto 14px">Choose your word, add your link and your logo (or your own words), and see your card as you build it. We save your work as you go, and you can add more than one design. Nothing is charged: we send you a proof to approve before anything is printed.</p>
+      <a class="cdadd" id="cdStart" href="/sponsor/" style="display:inline-block;text-decoration:none">Start your card &rarr;</a>
     </div>
-  </div>
-</div></section>
+  </div></section>
 
 <!-- Ken, 12 Oct: "a section to let people donate into our ministry ... sometimes the pond is just not going to be stocked."
      No money is taken on the site yet: this asks who would like to help, and MannaFish writes back with how to give. -->
@@ -2655,45 +2644,9 @@ window.MF=(function(){
   }
   // the main fish and its back, in the reading language (the other languages load their fish and study on first use)
   // the back of the printed card (Ken, 2 Nov): the same layout the printer gets from tools/print/make.mjs, with this fish's study
-  function invBack(k){ k=CD.k||k; var el=$('invBack'), d=DATA[k], t=$('invQr'); if(!el||!d) return; var q=t?t.innerHTML:'';
-    function lg(n,w,lang,snd,mn){ return '<div class="sb-lg"><div class="sb-k">'+n+'</div><div class="sb-ow" lang="'+lang+'">'+esc(w)+'</div><div class="sb-tr">('+esc(snd)+')</div><div class="sb-mn">'+esc(mn)+'</div></div>'; }
-    el.innerHTML='<div class="sb-top">'+lg('GREEK',d.gkw,'el',d.gks,d.gkm)+'<div class="sb-w">'+esc(d.title)+'</div>'+lg('HEBREW',d.hbw,'he',d.hbs,d.hbm)+'</div>'
-      +'<div class="sb-hq">Still hungry? Do this word study &amp; look up the following Scriptures</div>'
-      +'<div class="sb-rf">'+(d.refs||[]).slice(0,9).map(function(r){ return '<div><b>'+esc(r[0])+'</b><i>&ldquo;'+esc(r[1])+'&rdquo;</i></div>'; }).join('')+'</div>'
-      +'<div class="sb-strip"><div class="sb-side"><div class="sb-qr">'+q+'</div><span>'+esc(CD.lab||((CD.name||CD.logo)?'Your website, podcast or ministry':'Got Eternal Life?'))+'</span></div>'
-      +'<div class="sb-mid">Sponsored by'+(CD.logo?'<div class="sb-logo sb-img"><img src="'+CD.logo+'" alt=""></div>':CD.name?'<div class="sb-logo sb-nm">'+esc(CD.name)+'</div>':'<div class="sb-logo">Your<br>logo</div>')+'</div>'
-      +'<div class="sb-side r"><span>Free MannaFish</span><div class="sb-qr">'+q+'</div></div></div>'; }
-  // ── Make the back yours, and the cart (Ken, 3 Nov) ──
-  var CD={k:'',name:'',url:'',lab:'',logo:''};
-  function cdCart(){ try{ return JSON.parse(localStorage.getItem('mf-card-cart')||'[]')||[]; }catch(e){ return []; } }
-  function cdPut(a){ try{ localStorage.setItem('mf-card-cart',JSON.stringify(a)); }catch(e){ toastSay('Your logo is too big to keep here; try a smaller picture'); } }
-  function toastSay(t){ var tb=$('mfToast'); if(tb){ tb.textContent=t; tb.hidden=false; clearTimeout(tb._t); tb._t=setTimeout(function(){ tb.hidden=true; },2600); } }
-  function cdShow(){ var k=CD.k||cur; if($('invFront')) $('invFront').innerHTML=fishFor(MF.lang,k)||FISH[k]||''; invBack(k); }
-  function cdInit(){ var sel=$('cdFish'); if(!sel) return; sel.innerHTML='<option value="">Today’s fish</option>'+ORDER.filter(function(k){ return DATA[k]; }).map(function(k){ return '<option value="'+k+'">'+esc(titleIn(MF.lang,k))+'</option>'; }).join('');
-    sel.addEventListener('change',function(){ CD.k=this.value; cdShow(); });
-    ['Name','Url','Lab'].forEach(function(n){ $('cd'+n).addEventListener('input',function(){ CD[n.toLowerCase()]=this.value.trim(); cdShow(); }); });
-    $('cdLogo').addEventListener('change',function(){ var f=this.files&&this.files[0]; if(!f) return;
-      // kept small (at most 600 px) so the cart can hold it
-      var rd=new FileReader(); rd.onload=function(){ if(/svg/.test(f.type)){ CD.logo=rd.result; cdShow(); return; } var im=new Image(); im.onload=function(){ var m=600, s2=Math.min(1,m/Math.max(im.width,im.height)), c=document.createElement('canvas'); c.width=Math.round(im.width*s2); c.height=Math.round(im.height*s2); c.getContext('2d').drawImage(im,0,0,c.width,c.height); CD.logo=c.toDataURL('image/png'); cdShow(); }; im.src=rd.result; }; rd.readAsDataURL(f); });
-    $('cdQty').addEventListener('change',function(){ var n=Math.max(100,Math.round((+this.value||100)/100)*100); this.value=n; });
-    $('cdAdd').addEventListener('click',function(){ var n=Math.max(100,Math.round((+$('cdQty').value||100)/100)*100), k=CD.k||cur;
-      if(CD.url&&!/^https?:\/\/[^\s.]+\.[^\s]+/i.test(CD.url)){ toastSay('Check your link: it starts with https://'); $('cdUrl').focus(); return; }
-      var a=cdCart(); a.push({fish:k,title:titleIn('en',k),name:CD.name,url:CD.url,label:CD.lab,logo:CD.logo,qty:n,at:Date.now()}); cdPut(a); cdCartUI(); toastSay('🛒 Added: '+n+' '+titleIn(MF.lang,k)+' decals'); });
-    cdCartUI(); }
-  function cdCartUI(){ var a=cdCart(), el=$('cdCart'); if(!el) return; el.hidden=!a.length; if(!a.length) return; var tot=a.reduce(function(s2,x){ return s2+x.qty; },0);
-    el.innerHTML='<h5>Your cart · '+tot+' decals</h5>'+a.map(function(x,i){ return '<div class="cdi">'+(x.logo?'<img src="'+x.logo+'" alt="">':'')+'<span><b>'+esc(String(x.qty))+' × '+esc(x.title)+'</b><small>'+esc([x.name,x.url].filter(Boolean).join(' · ')||'MannaFish back')+'</small></span><button type="button" data-cdx="'+i+'" aria-label="Remove">✕</button></div>'; }).join('')
-      +'<div class="cdf"><input id="cdCN" placeholder="Your name" autocomplete="name"><input id="cdCE" type="email" placeholder="Email" autocomplete="email"><input id="cdCP" type="tel" placeholder="Phone (optional)" autocomplete="tel"><textarea id="cdCT" rows="2" placeholder="Anything we should know? (where they go, a date)"></textarea></div>'
-      +'<button type="button" class="cdsend" id="cdSend">Send my order request</button><p class="cdnote">Nothing is charged here. We reply with the details and a proof of your card to approve before anything is printed.</p><p class="cdmsg" id="cdMsg" role="status"></p>'; }
-  document.addEventListener('click',function(e){ var x=e.target.closest('[data-cdx]'); if(x){ var a=cdCart(); a.splice(+x.dataset.cdx,1); cdPut(a); cdCartUI(); return; }
-    if(!e.target.closest('#cdSend')) return; var a2=cdCart(), nm=$('cdCN').value.trim(), em=$('cdCE').value.trim(), msg=$('cdMsg');
-    if(!nm||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ msg.textContent='Please add your name and email.'; return; }
-    msg.textContent='Sending…'; fetch('/api/card-order',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({items:a2,contact:{name:nm,email:em,phone:$('cdCP').value.trim(),note:$('cdCT').value.trim()}})})
-      .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw j; return j; }); })
-      .then(function(j){ cdPut([]); var el=$('cdCart'); el.innerHTML='<p class="cdok">Thank you! Your request is in (number '+esc(j.id||'')+'). We’ll email you the details and a proof.</p>'; })
-      .catch(function(er){ msg.textContent=(er&&er.error)||'That didn’t send. Please try again in a minute.'; }); });
   function fillMain(k){ var l=MF.lang, d=DATA[k], L=studyLabels(l), m=meansIn(l,k);
     if(l!=='en'&&(l==='es'?!LSTUDY.es:!LFISH[l])) loadLang(l).then(function(){ if(cur===k&&MF.lang===l){ fillMain(k); sizeStage(); } }).catch(function(){});
-    $('fishbox').innerHTML=fishFor(l,k)||FISH[k]||''; if($('invFront')) $('invFront').innerHTML=$('fishbox').innerHTML; invBack(k);  // the front of the printed card, and its word-study back
+    $('fishbox').innerHTML=fishFor(l,k)||FISH[k]||''; // the front of the printed card, and its word-study back
     $('wTitle').textContent=wordTitle(k); $('wTitle').style.fontFamily=CMPFONT[l]?"'"+CMPFONT[l]+"',sans-serif":'';
     $('gkLab').textContent=L.gk; $('hbLab').textContent=L.hb; $('traceLab').textContent=L.trace; $('stage').querySelector('.face.back').setAttribute('lang',l);
     $('gkW').textContent=d.gkw; $('gkS').textContent='('+d.gks+')'; $('gkM').textContent=m[0];
@@ -4367,7 +4320,6 @@ window.MF=(function(){
   function admUI(){ var a=window.MFadmin&&MFadmin.on(); $('smAdmLab').textContent=a?'Switch to user view':'Admin view'; $('smAdmSub').textContent=a?'See it exactly as visitors do':'For testing: edit tools and admin pages'; }
   $('smAdmin').addEventListener('click',function(){ var m=$('siteMenu'); if(m) m.hidden=true; if(window.MFadmin) MFadmin.toggle().then(admUI); });
   window.addEventListener('mf-admin',admUI); setTimeout(admUI,1500);
-  setTimeout(cdInit,0);
   window.MFadminFish=function(){ return cur?{word:titleIn('en',cur),key:cur}:null; };
   $('smDash').addEventListener('click',function(){ location.href='/dash/'; });
   $('smStories').addEventListener('click',function(){ if(window.MFsecOpen) MFsecOpen('stories'); $('stories').scrollIntoView({behavior:'smooth',block:'start'}); });
