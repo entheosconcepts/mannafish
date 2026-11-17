@@ -1,0 +1,34 @@
+{
+ "id": "R0015",
+ "title": "K-Tech Build: 4 verses, all caps (QR direct)",
+ "status": "draft",
+ "qty": 100,
+ "fish": {
+  "id": "X004",
+  "word": "BUILD",
+  "lang": "en",
+  "study": "BUILD-KT"
+ },
+ "sponsor": {
+  "name": "K-Tech Construction",
+  "logo": "assets/ktech-round-logo-DRAFT.svg",
+  "show": true
+ },
+ "ship_to": "",
+ "qr_direct": true,
+ "back": {
+  "template": "study",
+  "refs": 4,
+  "left": {
+   "label": "Free porch\nenclosure quote",
+   "to": "https://k-tech-porch-enclosures.netlify.app/"
+  },
+  "right": {
+   "label": "Free MannaFish",
+   "to": "https://yadamannafishtest.netlify.app/devotional"
+  },
+  "orientation": "landscape",
+  "layout": "stack"
+ },
+ "notes": "K-Tech card with the larger all-caps back: 4 verses with enough of each verse to carry the meaning. QR codes go straight to their addresses."
+}

@@ -338,6 +338,30 @@
     "Status is \"draft\": approve the proof before ordering."
    ],
    "made": "2026-11-17T12:52:28.304Z"
+  },
+  {
+   "id": "R0015",
+   "title": "K-Tech Build: 4 verses, all caps (QR direct)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "X004",
+    "word": "BUILD",
+    "lang": "en",
+    "study": "BUILD-KT"
+   },
+   "sponsor": "K-Tech Construction",
+   "anonymous": false,
+   "codes": {
+    "main": "R0015",
+    "left": "R0015s",
+    "right": "R0015m"
+   },
+   "warn": [
+    "The sponsor logo is a stand-in (assets/ktech-round-logo-DRAFT.svg). Upload the original logo before printing.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "made": "2026-11-17T17:18:40.535Z"
   }
  ]
 }

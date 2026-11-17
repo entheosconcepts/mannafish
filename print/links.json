@@ -168,5 +168,15 @@
   "to": "https://yadamannafishtest.netlify.app/devotional",
   "run": "R0014",
   "what": "Free MannaFish devotional"
+ },
+ "R0015s": {
+  "to": "https://k-tech-porch-enclosures.netlify.app/",
+  "run": "R0015",
+  "what": "Free porch\nenclosure quote"
+ },
+ "R0015m": {
+  "to": "https://yadamannafishtest.netlify.app/devotional",
+  "run": "R0015",
+  "what": "Free MannaFish"
  }
 }
