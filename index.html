@@ -2143,7 +2143,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   </div>
 </div></section>
 
-<section class="section reach" id="reach2"><div class="wrap">
+<section class="section reach" id="reach2" hidden><div class="wrap">
   <div class="section-head reach-sub">
     <span class="eyebrow">Sponsor a Gift Giver</span>
     <h2>Point your sponsorship at someone real.</h2>
@@ -2164,7 +2164,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
 
 <!-- Ken, 12 Oct: "a section to let people donate into our ministry ... sometimes the pond is just not going to be stocked."
      No money is taken on the site yet: this asks who would like to help, and MannaFish writes back with how to give. -->
-<section class="section give" id="give"><div class="wrap">
+<section class="section give" id="give" hidden><div class="wrap">
   <div class="section-head"><span class="eyebrow">Stock the pond</span><h2>Help keep MannaFish free.</h2>
     <p>Some days the pond runs low. Your gift stocks it again, so the next person who asks receives two MannaFish, one to keep and one to give away, free, with nothing to pay and no postage.</p></div>
   <form class="netform mf-form" name="stock-the-pond" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="stockForm">
@@ -2197,7 +2197,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
 
 <!-- Ken, 12 Oct: "Manna…Fish Stories -- a section where people can share their catch. Video, audio or written fish stories."
      Every story is looked at by MannaFish before it shows here. -->
-<section class="section fstories" id="stories" translate="no"><div class="wrap">
+<section class="section fstories" id="stories" translate="no" hidden><div class="wrap">
   <div class="section-head"><span class="eyebrow" id="fsEy">Share your catch</span><h2 id="fsH">Manna… Fish Stories</h2><p id="fsP"></p></div>
   <div class="cta-row"><button type="button" class="btn btn-primary" id="fsShare"></button></div>
   <div class="fslist" id="fsList"></div><div class="cta-row"><button type="button" class="btn" id="fsMore" hidden></button></div>
@@ -2207,7 +2207,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
 
 <!-- Ken, 31 Oct: the shop section ("Everything we make is also available to buy") is removed: the fish are not for sale -->
 
-<section class="section ministry" id="ministry"><div class="wrap">
+<section class="section ministry" id="ministry" hidden><div class="wrap">
   <div class="section-head">
     <span class="eyebrow">For churches &amp; Christian-owned businesses</span>
     <h2>Make the mission part of your work.</h2>
@@ -2250,7 +2250,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <p class="rnote" id="signupMsg" style="margin-top:14px;color:var(--foam-dim)"></p>
 </div></section>
 
-<section class="section fishnet" id="fishnet"><div class="wrap">
+<section class="section fishnet" id="fishnet" hidden><div class="wrap">
   <!-- Ken, 3 Oct: "if anyone wants to give them away they can ask for a Fish Net? That's the
        display that holds a MannaFish product." -->
   <div class="section-head">
@@ -2272,7 +2272,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <p class="rnote" id="fishnetMsg" style="margin-top:14px;color:var(--foam-dim)"></p>
 </div></section>
 
-<section class="section brandmeaning" id="meaning"><div class="wrap">
+<section class="section brandmeaning" id="meaning" hidden><div class="wrap">
   <div class="section-head"><span class="eyebrow">What the name means</span></div>
   <div class="pair">
     <div class="col">
@@ -2315,10 +2315,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <div class="fl">
     <a href="#today">The Devotional</a>
     <a href="#story">The 2 Fish Story</a>
-    <a href="#shop">Shop</a>
-    <a href="#ministry">Churches &amp; Business</a>
     <a href="#sponsor">Sponsor decals</a>
-    <a href="#give">Stock the pond</a>
     <a href="/privacy/">Privacy &amp; Terms</a>
   </div>
 </div>
@@ -4305,7 +4302,7 @@ window.MF=(function(){
   window.addEventListener('mf-admin',admUI); setTimeout(admUI,1500);
   window.MFadminFish=function(){ return cur?{word:titleIn('en',cur),key:cur}:null; };
   $('smDash').addEventListener('click',function(){ location.href='/dash/'; });
-  $('smStories').addEventListener('click',function(){ if(window.MFsecOpen) MFsecOpen('stories'); $('stories').scrollIntoView({behavior:'smooth',block:'start'}); });
+  $('smStories').addEventListener('click',function(){ $('stories').hidden=false; if(window.MFsecOpen) MFsecOpen('stories'); $('stories').scrollIntoView({behavior:'smooth',block:'start'}); });
   $('ptStage').addEventListener('click',function(e){ if(e.target.closest('[data-fs]')) fsOpen(); });
   MF.onChange(fsUI); fsUI();
   if('IntersectionObserver' in window){ var fio=new IntersectionObserver(function(es){ if(es.some(function(x){ return x.isIntersecting; })){ fio.disconnect(); fsLoad(); } },{rootMargin:'600px'}); fio.observe($('stories')); } else fsLoad();
@@ -5896,13 +5893,12 @@ body.mfediting{padding-top:54px!important}
 .acc-h i{font-style:normal;font-size:1.7rem;line-height:1;color:var(--brass,#2a5fb0);transition:transform .2s}.acc-h[aria-expanded=true] i{transform:rotate(45deg)}
 .acc-open>.wrap{padding-top:6px}
 .sponsorend{border-top:1px solid rgba(255,255,255,.12)}
+#reach2[hidden],#ministry[hidden],#give[hidden],#stories[hidden],#fishnet[hidden],#meaning[hidden]{display:none!important}
 </style>
 <script>
 /* ---- the parts under the devotional: a header each, closed until tapped (Ken, 17 Nov) ---- */
 (function(){
-  var LIST=[['reach','What is MannaFish?','Why it is free, and why we give'],['story','What is “2 Fish”?','Keep one, give one'],['reach2','Who can give MannaFish away?','Your church, a business, a podcast, someone you know'],
-    ['ministry','For churches and Christian businesses','Co-labor decals and discipleship kits'],['give','Help stock the pond','Gifts that keep MannaFish free for the next person'],['stories','Fish Stories','What God has done in your life'],
-    ['signup-section','A free word study by email','As often as you like'],['fishnet','Request a MannaFish Basket','A free display for your church, shop or office'],['meaning','What the name means','Manna and fish']];
+  var LIST=[['reach','What is MannaFish?','Why it is free, and why we give'],['story','What is “2 Fish”?','Keep one, give one'],['signup-section','Get the free word study by email','Daily or weekly, no cost']];
   function open(sec){ if(!sec||!sec.classList.contains('acc-closed')) return; sec.classList.remove('acc-closed'); sec.classList.add('acc-open'); var b=sec.querySelector(':scope>.acc-h'); if(b) b.setAttribute('aria-expanded','true'); }
   function shut(sec){ sec.classList.add('acc-closed'); sec.classList.remove('acc-open'); var b=sec.querySelector(':scope>.acc-h'); if(b) b.setAttribute('aria-expanded','false'); }
   LIST.forEach(function(r){ var sec=document.getElementById(r[0]); if(!sec) return; var b=document.createElement('button'); b.type='button'; b.className='acc-h'; b.setAttribute('aria-expanded','false'); b.setAttribute('aria-controls',r[0]);
