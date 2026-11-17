@@ -15,8 +15,8 @@
   var base={};
   function measure(){ names.forEach(function(n){ var e=el(n), cs=getComputedStyle(e); base[n]={fs:parseFloat(cs.fontSize), w:e.offsetWidth, h:e.offsetHeight, text:!/^(qr|logo)/.test(n)}; }); }
   function val(n,key){ var a=A[n]; return a&&a[key]!=null?a[key]:DEF[key]; }
-  function apply(n){ var e=el(n), a=A[n]; if(!a||!Object.keys(a).length){ e.style.transform=''; return; }
-    var s=val(n,'s')/100, x=s*val(n,'sx')/100, y=s*val(n,'sy')/100; e.style.transformOrigin='center center';
+  function apply(n){ var e=el(n), a=A[n]; var on=a&&Object.keys(a).length; if(/def$/.test(n)) e.style.width=(on?100/(val(n,'s')/100*val(n,'sx')/100):100)+'%'; if(!on){ e.style.transform=''; return; }
+    var s=val(n,'s')/100, x=s*val(n,'sx')/100, y=s*val(n,'sy')/100; e.style.transformOrigin=/def$/.test(n)?'center top':'center center';
     e.style.transform='translate('+val(n,'dx')+'mm,'+val(n,'dy')+'mm) scale('+x+','+y+')'; }
   function setv(n,key,v){ v=+v; if(!isFinite(v)) return; A[n]=A[n]||{}; if(Math.abs(v-DEF[key])<1e-9) delete A[n][key]; else A[n][key]=+v.toFixed(2); if(!Object.keys(A[n]).length) delete A[n]; apply(n); refresh(); }
   function mmOf(px){ return px/MM; }

@@ -177,7 +177,7 @@
  "R0015m": {
   "to": "https://yadamannafishtest.netlify.app/devotional",
   "run": "R0015",
-  "what": "Free MannaFish\nDevo"
+  "what": "Free MannaFish\nDevotional"
  },
  "R0016s": {
   "to": "https://www.marketsttiresandauto.com/",
@@ -208,5 +208,25 @@
   "to": "https://yadamannafishtest.netlify.app/devotional",
   "run": "R0018",
   "what": "Free MannaFish devo\nand merch"
+ },
+ "R0019s": {
+  "to": "https://k-tech-porch-enclosures.netlify.app/",
+  "run": "R0019",
+  "what": "Porch\nenclosures"
+ },
+ "R0019m": {
+  "to": "https://yadamannafishtest.netlify.app/devotional",
+  "run": "R0019",
+  "what": "Free MannaFish\nDevotional"
+ },
+ "R0020s": {
+  "to": "https://k-tech-porch-enclosures.netlify.app/",
+  "run": "R0020",
+  "what": "Porch\nenclosures"
+ },
+ "R0020m": {
+  "to": "https://yadamannafishtest.netlify.app/devotional",
+  "run": "R0020",
+  "what": "Free MannaFish\nDevotional"
  }
 }

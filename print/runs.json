@@ -360,10 +360,12 @@
    },
    "warn": [
     "The sponsor logo is a stand-in (assets/ktech-round-logo-DRAFT.svg). Upload the original logo before printing.",
+    "Verse Proverbs 24:3 is 74 letters: the words are shrunk to fit two lines. Keep a quoted verse to 72 letters or fewer so it stays at full size.",
+    "Verse Luke 14:28 is 73 letters: the words are shrunk to fit two lines. Keep a quoted verse to 72 letters or fewer so it stays at full size.",
     "Status is \"draft\": approve the proof before ordering."
    ],
    "editor": true,
-   "made": "2026-11-17T20:48:13.625Z"
+   "made": "2026-11-17T21:11:13.998Z"
   },
   {
    "id": "R0016",
@@ -388,7 +390,7 @@
     "Status is \"draft\": approve the proof before ordering."
    ],
    "editor": true,
-   "made": "2026-11-17T20:48:18.787Z"
+   "made": "2026-11-17T21:11:39.971Z"
   },
   {
    "id": "R0017",
@@ -410,10 +412,11 @@
     "right": "R0017m"
    },
    "warn": [
+    "Verse Isaías 58:12 is 74 letters: the words are shrunk to fit two lines. Keep a quoted verse to 72 letters or fewer so it stays at full size.",
     "Status is \"draft\": approve the proof before ordering."
    ],
    "editor": true,
-   "made": "2026-11-17T20:48:23.923Z"
+   "made": "2026-11-17T21:11:44.915Z"
   },
   {
    "id": "R0018",
@@ -438,7 +441,57 @@
     "Status is \"draft\": approve the proof before ordering."
    ],
    "editor": true,
-   "made": "2026-11-17T20:48:28.806Z"
+   "made": "2026-11-17T21:11:49.737Z"
+  },
+  {
+   "id": "R0019",
+   "title": "FORMAT EXAMPLE · Trust (longer definitions wrap to a second line)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "TRUST",
+    "word": "TRUST",
+    "lang": "en",
+    "study": "TRUST-FMT"
+   },
+   "sponsor": "K-Tech Construction",
+   "anonymous": false,
+   "codes": {
+    "main": "R0019",
+    "left": "R0019s",
+    "right": "R0019m"
+   },
+   "warn": [
+    "The sponsor logo is a stand-in (assets/ktech-round-logo-DRAFT.svg). Upload the original logo before printing.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "editor": true,
+   "made": "2026-11-17T21:11:18.904Z"
+  },
+  {
+   "id": "R0020",
+   "title": "FORMAT EXAMPLE · Seek (longer definitions wrap to a second line)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "SEEK",
+    "word": "SEEK",
+    "lang": "en",
+    "study": "SEEK-FMT"
+   },
+   "sponsor": "K-Tech Construction",
+   "anonymous": false,
+   "codes": {
+    "main": "R0020",
+    "left": "R0020s",
+    "right": "R0020m"
+   },
+   "warn": [
+    "The sponsor logo is a stand-in (assets/ktech-round-logo-DRAFT.svg). Upload the original logo before printing.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "editor": true,
+   "made": "2026-11-17T21:11:24.039Z"
   }
  ]
 }
