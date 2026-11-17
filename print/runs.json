@@ -363,6 +363,78 @@
     "Status is \"draft\": approve the proof before ordering."
    ],
    "made": "2026-11-17T19:35:12.685Z"
+  },
+  {
+   "id": "R0016",
+   "title": "Repair · Market Street Tires, English (4 verses, all caps)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "REPAIR",
+    "word": "REPAIR",
+    "lang": "en",
+    "svg": "assets/repair-fish-C-DRAFT.svg",
+    "study": "REPAIR-KT4"
+   },
+   "sponsor": "Market Street Tires",
+   "anonymous": false,
+   "codes": {
+    "main": "R0016",
+    "left": "R0016s",
+    "right": "R0016m"
+   },
+   "warn": [
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "made": "2026-11-17T19:37:06.812Z"
+  },
+  {
+   "id": "R0017",
+   "title": "Reparar · Market Street Tires, Spanish (4 verses, all caps)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "REPARAR",
+    "word": "REPAREN",
+    "lang": "es",
+    "svg": "assets/repair-fish-ES-DRAFT.svg",
+    "study": "REPAIR-ES-4"
+   },
+   "sponsor": "Market Street Tires",
+   "anonymous": false,
+   "codes": {
+    "main": "R0017",
+    "left": "R0017s",
+    "right": "R0017m"
+   },
+   "warn": [
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "made": "2026-11-17T19:37:11.542Z"
+  },
+  {
+   "id": "R0018",
+   "title": "Cast · Shattered into Beautiful Podcast (4 verses, all caps)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "X008",
+    "word": "CAST",
+    "lang": "en",
+    "study": "CAST"
+   },
+   "sponsor": "Shattered into Beautiful Podcast",
+   "anonymous": false,
+   "codes": {
+    "main": "R0018",
+    "left": "R0018s",
+    "right": "R0018m"
+   },
+   "warn": [
+    "The sponsor logo is a stand-in (assets/shattered-into-beautiful-DRAFT.png). Upload the original logo before printing.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "made": "2026-11-17T19:37:16.005Z"
   }
  ]
 }

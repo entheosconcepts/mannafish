@@ -91,3 +91,5 @@ Not needed for launch: texting (carrier registration), app stores, sponsor prici
 
 - 17 Nov, Ken: Twilio business profile APPROVED. Next (Ken, in Twilio): register the brand and the text campaign (A2P 10DLC) or a toll-free verification, then buy or pick a number, make a Messaging Service, and put the five TWILIO_* names in Netlify (names in DECISIONS F). Then Claude checks texting end to end. Not done yet.
 - 17 Nov: K-Tech print pack R0015 (4 verses, all caps back, kiss cut shown) built and sent as a one-page PDF; Ken is checking a printed sample. Tweaks pending his next look. Logo is still a stand-in.
+
+- 17 Nov, Ken: print packs in the same format as K-Tech: R0016 Market Street Tires (English), R0017 (Spanish), R0018 Shattered into Beautiful with the new Cast fish (2 Cor. 10:5); word study `print/study/CAST.json`. Sent to Ken. K-Tech Build word made bigger for print only (`print/assets/ktech-build-bigger.svg`); waiting on Ken: Build size for the website (options 653 standard, 700, 740 max) and whether to build tracked-QR versions (needs 'push it live'). Logos are still stand-ins.

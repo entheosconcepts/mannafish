@@ -1,0 +1,35 @@
+{
+ "id": "R0016",
+ "title": "Repair · Market Street Tires, English (4 verses, all caps)",
+ "status": "draft",
+ "qty": 100,
+ "fish": {
+  "id": "REPAIR",
+  "word": "REPAIR",
+  "lang": "en",
+  "svg": "assets/repair-fish-C-DRAFT.svg",
+  "study": "REPAIR-KT4"
+ },
+ "sponsor": {
+  "name": "Market Street Tires",
+  "logo": "assets/marketstreet-logo-bilingual.png",
+  "show": true
+ },
+ "ship_to": "",
+ "qr_direct": true,
+ "back": {
+  "template": "study",
+  "refs": 4,
+  "left": {
+   "label": "Free tire\ncheck",
+   "to": "https://www.marketsttiresandauto.com/"
+  },
+  "right": {
+   "label": "Free MannaFish devo\nand merch",
+   "to": "https://yadamannafishtest.netlify.app/devotional"
+  },
+  "orientation": "landscape",
+  "layout": "stack"
+ },
+ "notes": "K-Tech style pack: decal, backing front, back, 4 verses in capitals. QR codes go straight to their addresses (no scan counting)."
+}
