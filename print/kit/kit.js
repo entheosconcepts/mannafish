@@ -52,6 +52,11 @@
   function svgPage(inner) { return '<svg xmlns="http://www.w3.org/2000/svg" width="' + f2(PW) + 'mm" height="' + f2(PH) + 'mm" viewBox="0 0 ' + f2(PW) + ' ' + f2(PH) + '">' + inner + '</svg>'; }
   function fishSource(cfg) { var id = cfg.fishId || cfg.word; var tries = ['/fish/print/' + id + '.svg', '/fish/en/' + id + '.svg', '/fish/' + id + '.svg', '/fish/en/' + String(cfg.word).toUpperCase() + '.svg'];
     var t = function (i) { return i >= tries.length ? Promise.reject(new Error('No fish picture for ' + id)) : fetch(tries[i]).then(function (r) { return r.ok ? r.text() : t(i + 1); }).catch(function () { return t(i + 1); }); }; return t(0); }
+  /* the front as it will look finished: the printed card with the fish in the same place and size as in the print files, cut to the card (no bleed, square corners) */
+  function frontSvg(cfg) { return ready().then(function () { return fishSource(cfg); }).then(function (src) { return MFbox(src).then(function (box) {
+    var maxW = CARD.w - 2 * (SAFE + KISS), maxH = CARD.h - 2 * (SAFE + KISS), s = Math.min(maxW / box.w, maxH / box.h),
+      place = { x: BLEED + (CARD.w - box.w * s) / 2 - box.x * s, y: BLEED + (CARD.h - box.h * s) / 2 - box.y * s, w: 4000 * s };
+    return '<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="' + f2(BLEED) + ' ' + f2(BLEED) + ' ' + f2(CARD.w) + ' ' + f2(CARD.h) + '" preserveAspectRatio="xMidYMid slice" style="display:block"><rect x="0" y="0" width="' + f2(PW) + '" height="' + f2(PH) + '" fill="#000"/>' + fishSvg(src, place.x, place.y, place.w) + '</svg>'; }); }); }
   function backPng(cfg, dpi) { var host = document.createElement('div'); host.style.cssText = 'position:fixed;left:-20000px;top:0'; document.body.appendChild(host);
     return mount(host, cfg).then(function (pg) { var w = pg.offsetWidth, h = pg.offsetHeight, xhtml = new XMLSerializer().serializeToString(pg);
       var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml"><style>' + K.css + '</style>' + xhtml + '</div></foreignObject></svg>';
@@ -109,5 +114,5 @@
     var cs = 0; central.forEach(function (p) { parts.push(p); cs += p.length; });
     parts.push(new Uint8Array([].concat([0x50, 0x4b, 5, 6], u16(0), u16(0), u16(fs.length), u16(fs.length), u32(cs), u32(off), u16(0))));
     return new Blob(parts, { type: 'application/zip' }); }); }
-  window.MFkit = { sheetPdf: sheetPdf, fishSource: fishSource, ready: ready, mount: mount, backHtml: backHtml, files: files, zip: zip, study: study, defLines: defLines, get words() { return K.words; }, get css() { return K.css; } };
+  window.MFkit = { frontSvg: frontSvg, sheetPdf: sheetPdf, fishSource: fishSource, ready: ready, mount: mount, backHtml: backHtml, files: files, zip: zip, study: study, defLines: defLines, get words() { return K.words; }, get css() { return K.css; } };
 })();

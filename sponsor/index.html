@@ -39,8 +39,8 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,select:focus-vis
 .hint{color:var(--dim);font-size:.85rem;margin:6px 0 0}
 .pv{position:sticky;top:12px}
 .pvtabs{display:flex;gap:6px;margin-bottom:8px}.pvtabs button{flex:1;font:700 .92rem Archivo,sans-serif;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:12px;padding:10px;cursor:pointer}.pvtabs button[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
-.stage{background:#000;border:1px solid var(--line);border-radius:3.4%/5.5%;overflow:hidden;position:relative;aspect-ratio:4.5/2.75}
-.stage .front{display:none;height:100%;background:#000}.stage .front img{width:100%;height:100%;object-fit:contain;display:block}
+.stage{background:#000;border:1px solid var(--line);border-radius:0;overflow:hidden;position:relative;aspect-ratio:4.5/2.75}
+.stage .front{display:none;height:100%;background:#000}.stage .front svg{width:100%;height:100%}.stage .front img{width:100%;height:100%;object-fit:contain;display:block}
 .stage .back{transform-origin:top left;position:absolute;left:0;top:0}
 .note{color:var(--dim);font-size:.85rem;margin:8px 2px 0}
 .cart{margin:0;padding:0;list-style:none}.cart li{display:flex;gap:10px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding:9px 0}.cart li:first-child{border-top:0}
@@ -85,7 +85,7 @@ footer{max-width:1180px;margin:0 auto;color:var(--dim);font-size:.85rem;padding:
 </div>
 <aside class="pv"><div class="pvtabs"><button type="button" data-v="back" aria-pressed="true">Back of the card</button><button type="button" data-v="front" aria-pressed="false">Front (the fish)</button></div>
   <div class="stage" id="stage"><div class="front" id="front"></div><div class="back" id="back"></div></div>
-  <p class="note">This is your card at its cut size, 4.5 × 2.75 inches. The front has the fish decal; the back has the word study, your QR code and your sponsor line. The words and verses are filled in for you.</p></aside>
+  <p class="note">This is your card at its cut size, 4.5 × 2.75 inches. The front is the fish decal over its printed card; the back has the word study, your QR code and your sponsor line. The words and verses are filled in for you.</p></aside>
 </div>
 </main>
 <footer>MannaFish · Entheos Concepts · 4563 Technology Dr, Unit 6, Wilmington NC 28405</footer>
@@ -106,7 +106,7 @@ function scaleBack(){ var pg=document.querySelector('#back .pg'), card=document.
   $('back').style.transform='scale('+k+') translate('+(-bx)+'px,'+(-by)+'px)'; }
 function draw(){ if(!cur.word) return; var c=cfg(), id=++pending;
   MFkit.mount($('back'),Object.assign({},c,{by:(c.by==='logo'&&!c.logo)?'text':c.by,text:(c.by==='logo'&&!c.logo)?'Your logo here':c.text,name:c.name||'Your name here'})).then(function(){ if(id===pending) scaleBack(); }).catch(function(e){ $('wnote').textContent=String(e.message||e); });
-  MFkit.fishSource(c).then(function(src){ $('front').innerHTML='<img alt="'+esc(cur.word)+' fish" src="data:image/svg+xml;charset=utf-8,'+encodeURIComponent(src)+'">'; }).catch(function(){}); }
+  MFkit.frontSvg(c).then(function(svg){ $('front').innerHTML=svg; }).catch(function(){}); }
 var t=null; function soon(){ clearTimeout(t); t=setTimeout(draw,250); }
 function view(v){ cur.view=v; document.querySelectorAll('.pvtabs button').forEach(function(b){ b.setAttribute('aria-pressed',String(b.getAttribute('data-v')===v)); });
   $('back').style.display=v==='back'?'':'none'; $('front').style.display=v==='front'?'block':'none'; scaleBack(); }
