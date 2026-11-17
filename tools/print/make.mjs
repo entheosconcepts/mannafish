@@ -163,15 +163,16 @@ async function backHtml(run, codes, warn) {
     // Ken, 6 Nov: "one option like this ... remove 'Trace it through Scripture' and move everything up so we can add the QR codes on the bottom right
     // and bottom left with 'Sponsored by' in the middle": the word big across the top, Greek | Hebrew under it, nine verses, then the strip
     if (B.layout === 'stack') {
+      const big = refs.length <= 4;   /* the larger all-caps back (Ken, 17 Nov): bigger title, labels in capitals */
       const st = { ...strongsOf(run.fish.word), ...strongsOf(run.fish.study || run.fish.word) };
       // Ken, 6 Nov: the strip on black, no white box; the QR codes inverted (white on black), away from the edges, each with its words under it in white
       const sideV = async (code, X) => X ? `<div class="col qv"><div class="sq">${await qr(code, true)}</div><div class="lab fit"><span>${esc(X.label || '').replace(/\n/g, '<br>')}</span></div></div>` : '<div class="col"></div>';
       const l4 = (k, wd, lg, snd, m, sn) => `<div class="l4"><div class="r1 fit"><span class="rr"><span class="k">${k}</span><span class="ow" lang="${lg}">${esc(wd)}</span><span class="tr">(${esc(snd)})</span></span></div><div class="mn4 fit"><span>${esc(m)}</span></div>${sn ? `<div class="st4">${esc((B.words && B.words.strongs) || 'STRONG’S')} ${esc(sn)}</div>` : ''}</div>`;
       return `<div class="pg" style="width:${f2(W + 2 * BLEED)}mm;height:${f2(H + 2 * BLEED)}mm"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${W}mm;height:${H}mm">
-  <div class="wt4 fit" style="top:0.9mm;height:6.6mm"><span>${esc(B.heading || d.title)}</span></div>
-  <div class="gh4" style="top:8.1mm;height:13.9mm">${l4((B.words && B.words.greek) || 'GREEK', d.gkw, 'el', d.gks, d.gkm, d.gst || st.g)}<div class="dv"></div>${l4((B.words && B.words.hebrew) || 'HEBREW', d.hbw, 'he', d.hbs, d.hbm, d.hst || st.h)}</div>
-  <div class="rf rf3 rf4${refs.length <= 4 ? ' rfbig' : ''}" style="top:22.6mm;height:21.4mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
-  <div class="strip inv" style="top:46.0mm;height:22.4mm">${await sideV(codes.left, L)}
+  <div class="wt4 fit${big ? ' wbig' : ''}" style="top:${big ? 0.3 : 0.9}mm;height:${big ? 8.6 : 6.6}mm"><span>${esc(B.heading || d.title)}</span></div>
+  <div class="gh4" style="top:${big ? 9.2 : 8.1}mm;height:13.9mm">${l4((B.words && B.words.greek) || 'GREEK', d.gkw, 'el', d.gks, d.gkm, d.gst || st.g)}<div class="dv"></div>${l4((B.words && B.words.hebrew) || 'HEBREW', d.hbw, 'he', d.hbs, d.hbm, d.hst || st.h)}</div>
+  <div class="rf rf3 rf4${big ? ' rfbig' : ''}" style="top:${big ? 23.6 : 22.6}mm;height:${big ? 19.4 : 21.4}mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
+  <div class="strip inv${big ? ' up' : ''}" style="top:${big ? 44.8 : 46.0}mm;height:${big ? 23.6 : 22.4}mm">${await sideV(codes.left, L)}
     <div class="col mid"><div class="sb">${esc(credit)}</div>${ml ? `<div class="sl"><img src="${ml}"></div>` : `<div class="sn fit${verse ? ' sv' : ''}"><span>${esc(mn)}</span></div>`}</div>
     ${await sideV(codes.right, Rt)}</div></div></div>`;
     }
@@ -258,6 +259,7 @@ const BACKCSS = () => `@font-face{font-family:'Lilita One';src:url(${font('lilit
 .strip.inv .qv .lab{height:5.8mm;width:100%;color:#fff;font-size:2.6mm;line-height:1.05;white-space:normal;align-items:flex-start;text-align:center}
 .strip.inv .mid{justify-content:space-between;padding:0}.strip.inv .sb{color:#fff;font-size:2.8mm;margin:0;line-height:1}.strip.inv .sl{flex:none;height:17.4mm}
 .rf4{left:3.2mm!important;right:3.2mm!important;grid-auto-rows:auto;align-content:space-around;row-gap:1mm}.rf4 div{padding-top:.4mm;overflow:visible}.rf4 i{font-size:1.8mm;line-height:1.05;margin-top:0}.rf4 b{font-size:2.3mm;line-height:1.05}
+.wt4.wbig{font-size:11.4mm}.strip.inv.up .lab{text-transform:uppercase;height:7.6mm;font-size:2.5mm}.strip.inv.up{grid-template-columns:27mm 1fr 27mm}
 .rf.rfbig{grid-template-columns:1fr 1fr;gap:1.2mm 3mm;align-content:space-between}.rfbig div{padding-top:.6mm}.rf.rfbig b{font-size:2.6mm}.rf.rfbig i{font:700 2.5mm/1.1 'Archivo Narrow',sans-serif;font-style:normal;text-transform:uppercase;letter-spacing:.08mm;margin-top:.3mm}
 .rf i{display:block;font:italic 400 2mm/1.15 'Spectral',serif;color:#e6ecef;margin-top:.3mm}`;
 // words that don't fit get smaller until they do
