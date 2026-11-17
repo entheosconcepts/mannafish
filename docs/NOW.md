@@ -88,3 +88,6 @@ Not needed for launch: texting (carrier registration), app stores, sponsor prici
 **Also done (13 Nov):** sponsor decal order form + QR choice, /vision/ page (generic). Waiting on Ken: how to take payment; his words for /vision/.
 
 **Also done (13 Nov):** rule tool /edit/rule/, English 24 editable on the edit sheet, Go smaller. Waiting on Ken: look at /edit/rule/ and set the sizes; say whether to switch the site to the rebuilt 24; whether to build the nightly auto-redraw.
+
+- 17 Nov, Ken: Twilio business profile APPROVED. Next (Ken, in Twilio): register the brand and the text campaign (A2P 10DLC) or a toll-free verification, then buy or pick a number, make a Messaging Service, and put the five TWILIO_* names in Netlify (names in DECISIONS F). Then Claude checks texting end to end. Not done yet.
+- 17 Nov: K-Tech print pack R0015 (4 verses, all caps back, kiss cut shown) built and sent as a one-page PDF; Ken is checking a printed sample. Tweaks pending his next look. Logo is still a stand-in.
