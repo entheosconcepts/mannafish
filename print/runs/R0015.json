@@ -31,8 +31,9 @@
   "orientation": "landscape",
   "layout": "stack",
   "kicker": {
-   "left": "MannaFish\nword study",
-   "right": "Free\ndevotional"
+   "logo": "brand/mannafish-wordmark-fish.png",
+   "note": "Not for resale",
+   "right": "Word Study\nDevotional"
   }
  },
  "notes": "K-Tech card with the larger all-caps back: 4 verses with enough of each verse to carry the meaning. QR codes go straight to their addresses. Build word 700 tall (the standard 5-letter size is 653; the old Build was 594 after the tall-letter reduction). Print only: the website fish is not changed."
