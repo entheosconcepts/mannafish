@@ -6,7 +6,7 @@
   var MM=96/25.4, RUN=window.MF_RUN||'', A=JSON.parse(JSON.stringify(window.MF_ADJ||{})), sel='', k=1, zoomMode='fit';
   var NAMES={title:'Title',gword:'Greek word',glabel:'GREEK + sound',gdef:'Greek definition',gstrong:'Greek Strong’s',hword:'Hebrew word',hlabel:'HEBREW + sound',hdef:'Hebrew definition',hstrong:'Hebrew Strong’s',
     r1n:'Verse 1 reference',r1q:'Verse 1 words',r2n:'Verse 2 reference',r2q:'Verse 2 words',r3n:'Verse 3 reference',r3q:'Verse 3 words',r4n:'Verse 4 reference',r4q:'Verse 4 words',
-    r5n:'Verse 5 reference',r5q:'Verse 5 words',r6n:'Verse 6 reference',r6q:'Verse 6 words',sponsor:'SPONSORED BY',logo:'Sponsor logo',qrL:'Left QR code',labL:'Left QR words',qrR:'Right QR code',labR:'Right QR words'};
+    r5n:'Verse 5 reference',r5q:'Verse 5 words',r6n:'Verse 6 reference',r6q:'Verse 6 words',kickL:'Word study note (left)',kickR:'Word study note (right)',sponsor:'SPONSORED BY',logo:'Sponsor logo',qrL:'Left QR code',labL:'Left QR words',qrR:'Right QR code',labR:'Right QR words'};
   var DEF={s:100,sx:100,sy:100,dx:0,dy:0};
   function $(id){ return document.getElementById(id); }
   function el(n){ return document.querySelector('[data-b="'+n+'"]'); }
