@@ -24,7 +24,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-13T23:42:12.152Z"
+   "made": "2026-11-17T12:51:22.717Z"
   },
   {
    "id": "R0002",
@@ -48,7 +48,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-13T23:42:17.173Z"
+   "made": "2026-11-17T12:51:28.856Z"
   },
   {
    "id": "R0003",
@@ -73,7 +73,7 @@
     "QR \"Today's free MannaFish devotional\" opens https://manna-fish.com/?devo=1: the devotional (?devo=1) only opens there once the new site is live on manna-fish.com.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-13T23:42:22.195Z"
+   "made": "2026-11-17T12:51:34.004Z"
   },
   {
    "id": "R0004",
@@ -95,7 +95,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-13T23:42:27.241Z"
+   "made": "2026-11-17T12:51:39.652Z"
   },
   {
    "id": "R0005",
@@ -118,7 +118,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-13T23:42:32.324Z"
+   "made": "2026-11-17T12:51:44.960Z"
   },
   {
    "id": "R0006",
@@ -141,7 +141,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-13T23:42:37.277Z"
+   "made": "2026-11-17T12:51:50.388Z"
   },
   {
    "id": "R0007",
@@ -166,7 +166,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-13T23:42:42.344Z"
+   "made": "2026-11-17T12:51:55.718Z"
   },
   {
    "id": "R0008",
@@ -191,7 +191,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-13T23:42:47.896Z"
+   "made": "2026-11-17T12:52:01.511Z"
   },
   {
    "id": "R0009",
@@ -216,7 +216,7 @@
     "Every QR opens https://manna-fish.com/q/<code> (counts the scan, then goes on). That page has to be live on manna-fish.com before cards are printed.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-13T23:42:53.392Z"
+   "made": "2026-11-17T12:52:06.937Z"
   },
   {
    "id": "R0010",
@@ -265,7 +265,7 @@
     "The sponsor logo is a stand-in (assets/ktech-round-logo-DRAFT.svg). Upload the original logo before printing.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-13T23:42:58.352Z"
+   "made": "2026-11-17T12:52:12.204Z"
   },
   {
    "id": "R0012",
@@ -289,7 +289,7 @@
    "warn": [
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-13T23:43:03.776Z"
+   "made": "2026-11-17T12:52:17.404Z"
   },
   {
    "id": "R0013",
@@ -313,7 +313,7 @@
    "warn": [
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-13T23:43:09.238Z"
+   "made": "2026-11-17T12:52:23.105Z"
   },
   {
    "id": "R0014",
@@ -337,7 +337,161 @@
     "The sponsor logo is a stand-in (assets/shattered-into-beautiful-DRAFT.png). Upload the original logo before printing.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-13T23:43:14.279Z"
+   "made": "2026-11-17T12:52:28.304Z"
+  },
+  {
+   "id": "R0015",
+   "title": "K-Tech Build: 4 verses, all caps (QR direct)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "X004",
+    "word": "BUILD",
+    "lang": "en",
+    "study": "BUILD-KT",
+    "svg": "assets/ktech-build-bigger.svg"
+   },
+   "sponsor": "K-Tech Construction",
+   "anonymous": false,
+   "codes": {
+    "main": "R0015",
+    "left": "R0015s",
+    "right": "R0015m"
+   },
+   "warn": [
+    "The sponsor logo is a stand-in (assets/ktech-round-logo-DRAFT.svg). Upload the original logo before printing.",
+    "Verse Proverbs 24:3 is 74 letters: the words are shrunk to fit two lines. Keep a quoted verse to 72 letters or fewer so it stays at full size.",
+    "Verse Luke 14:28 is 73 letters: the words are shrunk to fit two lines. Keep a quoted verse to 72 letters or fewer so it stays at full size.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "editor": true,
+   "made": "2026-11-17T21:50:37.869Z"
+  },
+  {
+   "id": "R0016",
+   "title": "Repair · Market Street Tires, English (4 verses, all caps)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "REPAIR",
+    "word": "REPAIR",
+    "lang": "en",
+    "svg": "assets/repair-fish-C-DRAFT.svg",
+    "study": "REPAIR-KT4"
+   },
+   "sponsor": "Market Street Tires",
+   "anonymous": false,
+   "codes": {
+    "main": "R0016",
+    "left": "R0016s",
+    "right": "R0016m"
+   },
+   "warn": [
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "editor": true,
+   "made": "2026-11-17T21:11:39.971Z"
+  },
+  {
+   "id": "R0017",
+   "title": "Reparar · Market Street Tires, Spanish (4 verses, all caps)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "REPARAR",
+    "word": "REPAREN",
+    "lang": "es",
+    "svg": "assets/repair-fish-ES-DRAFT.svg",
+    "study": "REPAIR-ES-4"
+   },
+   "sponsor": "Market Street Tires",
+   "anonymous": false,
+   "codes": {
+    "main": "R0017",
+    "left": "R0017s",
+    "right": "R0017m"
+   },
+   "warn": [
+    "Verse Isaías 58:12 is 74 letters: the words are shrunk to fit two lines. Keep a quoted verse to 72 letters or fewer so it stays at full size.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "editor": true,
+   "made": "2026-11-17T21:11:44.915Z"
+  },
+  {
+   "id": "R0018",
+   "title": "Cast · Shattered into Beautiful Podcast (4 verses, all caps)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "X008",
+    "word": "CAST",
+    "lang": "en",
+    "study": "CAST"
+   },
+   "sponsor": "Shattered into Beautiful Podcast",
+   "anonymous": false,
+   "codes": {
+    "main": "R0018",
+    "left": "R0018s",
+    "right": "R0018m"
+   },
+   "warn": [
+    "The sponsor logo is a stand-in (assets/shattered-into-beautiful-DRAFT.png). Upload the original logo before printing.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "editor": true,
+   "made": "2026-11-17T21:11:49.737Z"
+  },
+  {
+   "id": "R0019",
+   "title": "FORMAT EXAMPLE · Trust (longer definitions wrap to a second line)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "TRUST",
+    "word": "TRUST",
+    "lang": "en",
+    "study": "TRUST-FMT"
+   },
+   "sponsor": "K-Tech Construction",
+   "anonymous": false,
+   "codes": {
+    "main": "R0019",
+    "left": "R0019s",
+    "right": "R0019m"
+   },
+   "warn": [
+    "The sponsor logo is a stand-in (assets/ktech-round-logo-DRAFT.svg). Upload the original logo before printing.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "editor": true,
+   "made": "2026-11-17T21:11:18.904Z"
+  },
+  {
+   "id": "R0020",
+   "title": "FORMAT EXAMPLE · Seek (longer definitions wrap to a second line)",
+   "status": "draft",
+   "qty": 100,
+   "fish": {
+    "id": "SEEK",
+    "word": "SEEK",
+    "lang": "en",
+    "study": "SEEK-FMT"
+   },
+   "sponsor": "K-Tech Construction",
+   "anonymous": false,
+   "codes": {
+    "main": "R0020",
+    "left": "R0020s",
+    "right": "R0020m"
+   },
+   "warn": [
+    "The sponsor logo is a stand-in (assets/ktech-round-logo-DRAFT.svg). Upload the original logo before printing.",
+    "Status is \"draft\": approve the proof before ordering."
+   ],
+   "editor": true,
+   "made": "2026-11-17T21:27:47.675Z"
   }
  ]
 }

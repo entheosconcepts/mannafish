@@ -25,7 +25,7 @@ const QR = require('qrcode');
 const HERE = path.dirname(fileURLToPath(import.meta.url)), ROOT = path.resolve(HERE, '../..'), PRINT = path.join(ROOT, 'print');
 const MM = 25.4, DPI = 1200;
 // the card, in millimetres: 4.5 x 2.75 in. The fish side is landscape; the back reads portrait (turn the card).
-const CARD = { w: 4.5 * MM, h: 2.75 * MM }, BLEED = MM / 8, KISS = MM / 8, SAFE = 3;
+const CARD = { w: 4.5 * MM, h: 2.75 * MM }, BLEED = MM / 8, KISS = MM / 8, CUTGAP = MM / 16, SAFE = 3;   // CUTGAP: the kiss cut is 1/16 in outside the fish (Ken, 17 Nov: 'less than 1/8 in'); KISS only keeps the fish size and the card margin as they were
 const PW = CARD.w + 2 * BLEED, PH = CARD.h + 2 * BLEED;   // a page with bleed, fish side
 const px = (mm, dpi = DPI) => Math.round(mm / MM * dpi);
 const f2 = (n) => Math.round(n * 1000) / 1000;
@@ -49,60 +49,11 @@ function fishSvg(src, x, y, w) {
 }
 
 // ── in the browser: where the ink is, and the kiss cut around it ──
-const BROWSER = String.raw`
-window.MFload = (src) => new Promise((ok, no) => { const im = new Image(); im.onload = () => ok(im); im.onerror = no;
-  im.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(src.replace(/<svg\b/, '<svg width="4000" height="2000"')))); });
-// the box the ink fills, in the art's own units (4000 x 2000)
-window.MFbox = async (src) => { const im = await MFload(src), w = 2000, h = 1000, c = new OffscreenCanvas(w, h), x = c.getContext('2d');
-  x.drawImage(im, 0, 0, w, h); const a = x.getImageData(0, 0, w, h).data; let x0 = w, y0 = h, x1 = 0, y1 = 0;
-  for (let y = 0; y < h; y++) for (let i = 0; i < w; i++) if (a[(y * w + i) * 4 + 3] > 16) { if (i < x0) x0 = i; if (i > x1) x1 = i; if (y < y0) y0 = y; if (y > y1) y1 = y; }
-  return { x: x0 * 2, y: y0 * 2, w: (x1 - x0 + 1) * 2, h: (y1 - y0 + 1) * 2 }; };
-// the kiss cut: the fish's outline filled in (no holes), grown by r mm, traced, smoothed; points in mm on the page
-window.MFcut = async (src, place, page, r, ppm) => {
-  const im = await MFload(src), W = Math.ceil(page.w * ppm), H = Math.ceil(page.h * ppm), c = new OffscreenCanvas(W, H), x = c.getContext('2d');
-  x.drawImage(im, place.x * ppm, place.y * ppm, place.w * ppm, place.w / 2 * ppm);
-  const a = x.getImageData(0, 0, W, H).data, N = W * H, out = new Uint8Array(N), st = [];
-  const push = (i) => { if (out[i] || a[i * 4 + 3] > 16) return; out[i] = 1; st.push(i); };
-  for (let i = 0; i < W; i++) { push(i); push((H - 1) * W + i); } for (let j = 0; j < H; j++) { push(j * W); push(j * W + W - 1); }
-  while (st.length) { const k = st.pop(), xx = k % W, yy = (k - xx) / W; if (xx > 0) push(k - 1); if (xx < W - 1) push(k + 1); if (yy > 0) push(k - W); if (yy < H - 1) push(k + W); }
-  // squared distance to the nearest inside pixel (Felzenszwalb & Huttenlocher), then everything within r
-  const INF = 1e20, f = new Float64Array(Math.max(W, H)), d = new Float64Array(Math.max(W, H)), v = new Int32Array(Math.max(W, H)), z = new Float64Array(Math.max(W, H) + 1), D = new Float64Array(N);
-  for (let k = 0; k < N; k++) D[k] = out[k] ? INF : 0;
-  const dt = (n) => { let kk = 0; v[0] = 0; z[0] = -INF; z[1] = INF;
-    for (let q = 1; q < n; q++) { let s; do { const p = v[kk]; s = ((f[q] + q * q) - (f[p] + p * p)) / (2 * q - 2 * p); if (s <= z[kk]) kk--; else break; } while (kk >= 0);
-      kk++; v[kk] = q; z[kk] = s; z[kk + 1] = INF; }
-    kk = 0; for (let q = 0; q < n; q++) { while (z[kk + 1] < q) kk++; const p = v[kk]; d[q] = (q - p) * (q - p) + f[p]; } };
-  for (let xx = 0; xx < W; xx++) { for (let yy = 0; yy < H; yy++) f[yy] = D[yy * W + xx]; dt(H); for (let yy = 0; yy < H; yy++) D[yy * W + xx] = d[yy]; }
-  for (let yy = 0; yy < H; yy++) { for (let xx = 0; xx < W; xx++) f[xx] = D[yy * W + xx]; dt(W); for (let xx = 0; xx < W; xx++) D[yy * W + xx] = d[xx]; }
-  const R2 = (r * ppm) * (r * ppm), g = new Uint8Array(N); for (let k = 0; k < N; k++) g[k] = D[k] <= R2 ? 1 : 0;
-  // the outline: marching squares round the outside
-  const val = (i, j) => (i >= 0 && j >= 0 && i < W && j < H && g[j * W + i]) ? 1 : 0;
-  let sx = -1, sy = -1; outer: for (let j = -1; j < H; j++) for (let i = -1; i < W; i++) { const s = val(i, j) | val(i + 1, j) << 1 | val(i, j + 1) << 2 | val(i + 1, j + 1) << 3; if (s > 0 && s < 15) { sx = i; sy = j; break outer; } }
-  const pts = []; let cx = sx, cy = sy, prev = 0, guard = 0; // 1 up 2 right 3 down 4 left
-  do { const s = val(cx, cy) | val(cx + 1, cy) << 1 | val(cx, cy + 1) << 2 | val(cx + 1, cy + 1) << 3; let nx;
-    switch (s) { case 1: nx = 1; break; case 2: nx = 2; break; case 3: nx = 2; break; case 4: nx = 4; break; case 5: nx = 1; break; case 6: nx = prev === 1 ? 4 : 2; break;
-      case 7: nx = 2; break; case 8: nx = 3; break; case 9: nx = prev === 2 ? 1 : 3; break; case 10: nx = 3; break; case 11: nx = 3; break; case 12: nx = 4; break; case 13: nx = 1; break; case 14: nx = 4; break; default: nx = 2; }
-    pts.push([cx + 1, cy + 1]); if (nx === 1) cy--; else if (nx === 2) cx++; else if (nx === 3) cy++; else cx--; prev = nx;
-  } while ((cx !== sx || cy !== sy) && ++guard < 4e6);
-  // smooth the pixel steps away, then keep only the points that matter
-  let P = pts; for (let it = 0; it < 3; it++) { const Q = []; for (let i = 0; i < P.length; i++) { const p = P[i], q = P[(i + 1) % P.length]; Q.push([p[0] * .75 + q[0] * .25, p[1] * .75 + q[1] * .25], [p[0] * .25 + q[0] * .75, p[1] * .25 + q[1] * .75]); } P = Q; }
-  const rdp = (L, eps) => { if (L.length < 3) return L; const A = L[0], B = L[L.length - 1]; let dm = 0, im2 = 0;
-    for (let i = 1; i < L.length - 1; i++) { const p = L[i], dx = B[0] - A[0], dy = B[1] - A[1], dd = Math.hypot(dx, dy) || 1, dist = Math.abs(dy * p[0] - dx * p[1] + B[0] * A[1] - B[1] * A[0]) / dd; if (dist > dm) { dm = dist; im2 = i; } }
-    return dm > eps ? rdp(L.slice(0, im2 + 1), eps).slice(0, -1).concat(rdp(L.slice(im2), eps)) : [A, B]; };
-  // a closed loop: split it at the point farthest from the start, simplify each half
-  let far = 0, fd = 0; P.forEach((p, i) => { const dd = Math.hypot(p[0] - P[0][0], p[1] - P[0][1]); if (dd > fd) { fd = dd; far = i; } });
-  P = rdp(P.slice(0, far + 1), 0.03 * ppm).slice(0, -1).concat(rdp(P.slice(far).concat([P[0]]), 0.03 * ppm).slice(0, -1));
-  return P.map((p) => [p[0] / ppm, p[1] / ppm]); };
-// the decal: white ink where the fish is white, nothing where it is black (the letters) or empty
-window.MFink = async (src, place, page, dpi) => { const im = await MFload(src), k = dpi / 25.4, W = Math.round(page.w * k), H = Math.round(page.h * k), c = new OffscreenCanvas(W, H), x = c.getContext('2d');
-  x.drawImage(im, place.x * k, place.y * k, place.w * k, place.w / 2 * k); const d = x.getImageData(0, 0, W, H), a = d.data;
-  for (let i = 0; i < a.length; i += 4) { const l = (a[i] + a[i + 1] + a[i + 2]) / 765; a[i + 3] = Math.round(a[i + 3] * l); a[i] = a[i + 1] = a[i + 2] = 255; }
-  x.putImageData(d, 0, 0); const b = await c.convertToBlob({ type: 'image/png' }); const r = new FileReader();
-  return await new Promise((ok) => { r.onload = () => ok(r.result); r.readAsDataURL(b); }); };
-`;
+const BROWSER = fs.readFileSync(path.join(PRINT, 'kit', 'browser.js'), 'utf8');
 
 // the word study of each of the 24 fish, the same as on the site: Greek, Hebrew, meanings, and the verses to look up
 let WORDS = null;
+let KIT = false;   // --kit: write the sponsor page's templates (print/kit/), with markers where a sponsor's own words go
 function wordData(id) {
   if (!WORDS) { const s = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8'), i = s.indexOf('var DATA={') + 9; let d = 0, q = null, j = i;
     for (; j < s.length; j++) { const c = s[j]; if (q) { if (c === '\\') { j++; continue; } if (c === q) q = null; continue; }
@@ -130,11 +81,19 @@ function qrUrl(run, code) {
 const landscape = (run) => (run.back || {}).orientation === 'landscape';
 // ── the back (portrait), filled from the run: "invite" (Ken's invitation card), "study" (the word study, like the old
 // word-study card), or "image" (Ken's own finished artwork). Both templates end with the same strip: two QR codes and who gave it.
+// the card back editor's saved layout (print/back-edit/<run>.html -> /api/print-adjust): the site's copy if it can be reached, else print/adjust/<run>.json
+async function loadAdjust(id) {
+  const file = path.join(PRINT, 'adjust', id + '.json'); let adj = {};
+  try { adj = JSON.parse(fs.readFileSync(file, 'utf8')).adj || {}; } catch (e) { /* none yet */ }
+  try { const base = process.env.MF_SITE || 'https://yadamannafishtest.netlify.app', r = await fetch(`${base}/api/print-adjust?run=${encodeURIComponent(id)}`, { signal: AbortSignal.timeout(4000) });
+    if (r.ok) { const j = await r.json(); if (j.adj && Object.keys(j.adj).length) { adj = j.adj; fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, JSON.stringify({ run: id, adj, at: j.at }, null, 1) + '\n'); } } } catch (e) { /* the site could not be reached: use the file */ }
+  return adj;
+}
 async function backHtml(run, codes, warn) {
   const B = run.back || {}, S = run.sponsor || {}, F = run.for || null, w = CARD.h, h = CARD.w;
-  const qr = async (code, inv) => (await QR.toString(qrUrl(run, code), { type: 'svg', errorCorrectionLevel: 'M', margin: 2, color: inv ? { dark: '#ffffff', light: '#000000' } : { dark: '#000000', light: '#ffffff' } }))
+  const qr = async (code, inv) => KIT ? `§QR:${code}§` : (await QR.toString(qrUrl(run, code), { type: 'svg', errorCorrectionLevel: 'M', margin: 2, color: inv ? { dark: '#ffffff', light: '#000000' } : { dark: '#000000', light: '#ffffff' } }))
     .replace('<svg ', '<svg preserveAspectRatio="xMidYMid meet" width="100%" height="100%" ');
-  const logo = (p, what) => { if (!p) return ''; const f = path.join(PRINT, p); if (!fs.existsSync(f)) { warn.push(`${what}: ${p} is missing`); return ''; }
+  const logo = (p, what) => { if (KIT && p) return p; if (!p) return ''; const f = path.join(PRINT, p); if (!fs.existsSync(f)) { warn.push(`${what}: ${p} is missing`); return ''; }
     if (/DRAFT/.test(p)) warn.push(`${what} is a stand-in (${p}). Upload the original logo before printing.`); return dataUrl(f); };
   if (B.template === 'image') {
     const f = path.join(PRINT, B.image || ''); if (!B.image || !fs.existsSync(f)) throw new Error('back.image is missing');
@@ -163,17 +122,29 @@ async function backHtml(run, codes, warn) {
     // Ken, 6 Nov: "one option like this ... remove 'Trace it through Scripture' and move everything up so we can add the QR codes on the bottom right
     // and bottom left with 'Sponsored by' in the middle": the word big across the top, Greek | Hebrew under it, nine verses, then the strip
     if (B.layout === 'stack') {
+      const big = refs.length <= 4;
+      if (big) { refs.forEach((r) => { if (String(r[1]).length > 72) warn.push(`Verse ${r[0]} is ${String(r[1]).length} letters: the words are shrunk to fit two lines. Keep a quoted verse to 72 letters or fewer so it stays at full size.`); });
+        [d.gkm, d.hbm].forEach((t) => { if (String(t || '').length > 92) warn.push(`A definition is ${String(t).length} letters: it needs more than two lines. Keep a definition to 92 letters or fewer.`); }); }   /* the larger all-caps back (Ken, 17 Nov): bigger title, labels in capitals */
       const st = { ...strongsOf(run.fish.word), ...strongsOf(run.fish.study || run.fish.word) };
       // Ken, 6 Nov: the strip on black, no white box; the QR codes inverted (white on black), away from the edges, each with its words under it in white
-      const sideV = async (code, X) => X ? `<div class="col qv"><div class="sq">${await qr(code, true)}</div><div class="lab fit"><span>${esc(X.label || '').replace(/\n/g, '<br>')}</span></div></div>` : '<div class="col"></div>';
+      const sideV = async (code, X, sd) => X ? `<div class="col qv"><div class="sq" data-b="qr${sd}">${await qr(code, true)}</div><div class="lab fit" data-b="lab${sd}"><span>${esc(X.label || '').replace(/\n/g, '<br>')}</span></div></div>` : '<div class="col"></div>';
+      // a definition longer than one line (Ken, 17 Nov: "I left space under the Greek and Hebrew for a 2nd line in case there is more for the definition"):
+      // a line break in the word study ("\n") is kept; a long one (over 46 letters) is split in two near the middle, at a comma or a space
+      const defLines = (m) => { const t = String(m || ''); if (t.includes('\n')) return t.split('\n'); if (t.length <= 46) return [t];
+        let best = -1, bd = 1e9; for (let i = 1; i < t.length - 1; i++) if (t[i] === ' ') { const d = Math.abs(i - t.length / 2) - (/[,;.]/.test(t[i - 1]) ? 6 : 0); if (d < bd) { bd = d; best = i; } }
+        return best < 0 ? [t] : [t.slice(0, best).trim(), t.slice(best + 1).trim()]; };
+      const two = false;   // (the layout is the same for one or two lines: a second line drops into the free space under the first)   // a two-line definition on either side: both sides keep room for it
+      const l4b = (k, wd, lg, snd, m, sn) => { const q = lg === 'he' ? 'h' : 'g'; return `<div class="l4 l4b${two ? ' two' : ''}">${sn ? `<div class="st4" data-b="${q}strong">${esc((B.words && B.words.strongs) || 'STRONG’S')} ${esc(sn)}</div>` : ''}<div class="ow4 sx" data-b="${q}word" lang="${lg}"><span>${esc(wd)}</span></div><div class="r2 fit" data-b="${q}label"><span><b class="k">${k}</b> (${esc(snd)})</span></div><div class="mn4 fitw" data-b="${q}def"><span>${defLines(m).map(esc).join('<br>')}</span></div></div>`; };
       const l4 = (k, wd, lg, snd, m, sn) => `<div class="l4"><div class="r1 fit"><span class="rr"><span class="k">${k}</span><span class="ow" lang="${lg}">${esc(wd)}</span><span class="tr">(${esc(snd)})</span></span></div><div class="mn4 fit"><span>${esc(m)}</span></div>${sn ? `<div class="st4">${esc((B.words && B.words.strongs) || 'STRONG’S')} ${esc(sn)}</div>` : ''}</div>`;
-      return `<div class="pg" style="width:${f2(W + 2 * BLEED)}mm;height:${f2(H + 2 * BLEED)}mm"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${W}mm;height:${H}mm">
-  <div class="wt4 fit" style="top:0.9mm;height:6.6mm"><span>${esc(B.heading || d.title)}</span></div>
-  <div class="gh4" style="top:8.1mm;height:13.9mm">${l4((B.words && B.words.greek) || 'GREEK', d.gkw, 'el', d.gks, d.gkm, d.gst || st.g)}<div class="dv"></div>${l4((B.words && B.words.hebrew) || 'HEBREW', d.hbw, 'he', d.hbs, d.hbm, d.hst || st.h)}</div>
-  <div class="rf rf3 rf4" style="top:22.6mm;height:21.4mm">${refs.map((r) => `<div><b>${esc(r[0])}</b><i>“${esc(r[1])}”</i></div>`).join('')}</div>
-  <div class="strip inv" style="top:46.0mm;height:22.4mm">${await sideV(codes.left, L)}
-    <div class="col mid"><div class="sb">${esc(credit)}</div>${ml ? `<div class="sl"><img src="${ml}"></div>` : `<div class="sn fit${verse ? ' sv' : ''}"><span>${esc(mn)}</span></div>`}</div>
-    ${await sideV(codes.right, Rt)}</div></div></div>`;
+      const adj = await loadAdjust(run.id || '');
+      return `<script>window.MF_ADJ=${JSON.stringify(adj)}</script><div class="pg" style="width:${f2(W + 2 * BLEED)}mm;height:${f2(H + 2 * BLEED)}mm"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${W}mm;height:${H}mm">
+  <div class="wt4 fit${big ? ' wbig' : ''}" data-b="title" style="top:${big ? 1.5 : 0.9}mm;height:${big ? 8 : 6.6}mm"><span>${esc(B.heading || d.title)}</span></div>
+  ${big && B.kicker ? `${B.kicker.logo ? `<div class="kick kl" data-b="kickL"><img src="${dataUrl(path.join(ROOT, B.kicker.logo))}"></div>` : ''}${B.kicker.note ? `<div class="kick kn" data-b="kickN">${esc(B.kicker.note)}</div>` : ''}<div class="kick kr" data-b="kickR">${esc(B.kicker.right || '').replace(/\n/g, '<br>')}</div>` : ''}
+  <div class="gh4" style="top:${big ? 9.3 : 8.1}mm;height:${big ? 18.1 : 13.9}mm">${(big ? l4b : l4)((B.words && B.words.greek) || 'GREEK', d.gkw, 'el', d.gks, d.gkm, d.gst || st.g)}<div class="dv"></div>${(big ? l4b : l4)((B.words && B.words.hebrew) || 'HEBREW', d.hbw, 'he', d.hbs, d.hbm, d.hst || st.h)}</div>
+  <div class="rf rf3 rf4${big ? ' rfbig' : ''}" style="top:${big ? 27.4 : 22.6}mm;height:${big ? 18.4 : 21.4}mm">${refs.map((r, i) => `<div><b data-b="r${i + 1}n">${esc(r[0])}</b><i class="${big ? 'fit ' : ''}" data-b="r${i + 1}q">“${esc(r[1])}”</i></div>`).join('')}</div>
+  <div class="strip inv${big ? ' up' : ''}" style="top:${big ? 46.2 : 46.0}mm;height:${big ? 21.8 : 22.4}mm">${await sideV(codes.left, L, 'L')}
+    <div class="col mid"><div class="sb" data-b="sponsor">${esc(credit)}</div>${ml ? `<div class="sl" data-b="logo"><img src="${ml}"></div>` : `<div class="sn fit${verse ? ' sv' : ''}"><span>${esc(mn)}</span></div>`}</div>
+    ${await sideV(codes.right, Rt, 'R')}</div></div></div>`;
     }
     return `<div class="pg" style="width:${f2(W + 2 * BLEED)}mm;height:${f2(H + 2 * BLEED)}mm"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${W}mm;height:${H}mm">
   <div class="gh3" style="top:2.6mm;height:15.6mm">${lang('GREEK', d.gkw, 'el', d.gks, d.gkm)}<div class="wt3 fit"><span>${esc(B.heading || d.title)}</span></div>${lang('HEBREW', d.hbw, 'he', d.hbs, d.hbm)}</div>
@@ -207,6 +178,7 @@ async function backHtml(run, codes, warn) {
 }
 const BACKCSS = () => `@font-face{font-family:'Lilita One';src:url(${font('lilita-one/files/lilita-one-latin-400-normal.woff2')}) format('woff2')}
 @font-face{font-family:'Archivo Narrow';font-weight:700;src:url(${font('archivo-narrow/files/archivo-narrow-latin-700-normal.woff2')}) format('woff2')}
+@font-face{font-family:'Spectral';font-style:normal;src:url(${font('spectral/files/spectral-latin-400-normal.woff2')}) format('woff2')}
 @font-face{font-family:'Spectral';font-style:italic;src:url(${font('spectral/files/spectral-latin-400-italic.woff2')}) format('woff2')}
 @font-face{font-family:'MFHobo';src:url(${dataUrl(path.join(ROOT, 'fish-lang/hobo.woff2')).replace('image/woff2', 'font/woff2')}) format('woff2')}
 @font-face{font-family:'MFGkHb';src:url(${GKHB()}) format('truetype')}
@@ -258,10 +230,14 @@ const BACKCSS = () => `@font-face{font-family:'Lilita One';src:url(${font('lilit
 .strip.inv .qv .lab{height:5.8mm;width:100%;color:#fff;font-size:2.6mm;line-height:1.05;white-space:normal;align-items:flex-start;text-align:center}
 .strip.inv .mid{justify-content:space-between;padding:0}.strip.inv .sb{color:#fff;font-size:2.8mm;margin:0;line-height:1}.strip.inv .sl{flex:none;height:17.4mm}
 .rf4{left:3.2mm!important;right:3.2mm!important;grid-auto-rows:auto;align-content:space-around;row-gap:1mm}.rf4 div{padding-top:.4mm;overflow:visible}.rf4 i{font-size:1.8mm;line-height:1.05;margin-top:0}.rf4 b{font-size:2.3mm;line-height:1.05}
+.kick{position:absolute;top:2.6mm;width:32mm;font:700 2.7mm/1.15 'Archivo Narrow',sans-serif;letter-spacing:.25mm;color:#8fb8ff;text-transform:uppercase}.kick.kl{left:3.2mm;right:auto;top:2.6mm;width:28mm}.kick.kl img{width:100%;display:block}.kick.kn{left:3.2mm;top:7mm;width:28mm;font-size:2.2mm;letter-spacing:.42mm;white-space:nowrap;text-align:center}.l4b.two{gap:.15mm}.l4b.two .ow4{height:5.2mm}.l4b.two .r2{height:3.8mm}.l4b.two .mn4{height:5.3mm}.kick.kr{right:3.2mm;left:auto;text-align:right}.wt4.wbig{font-size:8mm}.l4b{gap:.3mm;padding-bottom:.4mm;justify-content:flex-start;padding-top:.3mm}.l4b .ow4{font:400 5.2mm/1 'MFGkHb',serif;height:6mm;width:100%;display:flex;align-items:center;justify-content:center;white-space:nowrap}.l4b .ow4{position:relative;top:-.65mm}.l4b .ow4[lang=he]{top:-.9mm}.l4b .ow4 span{display:inline-block;flex:none;transform-origin:center}.l4b .r2{width:100%;font:400 3.9mm/1.1 'Spectral',serif;color:#cfd8dc;white-space:nowrap;text-align:center;height:4.2mm}.l4b .r2 .k{font:700 1em/1 'Archivo Narrow',sans-serif;font-style:normal;letter-spacing:.1em;color:#8fb8ff}.l4b .mn4{align-items:flex-start;text-align:center;overflow:visible;height:3.4mm;font:italic 600 2.3mm/1.1 'Archivo Narrow',sans-serif;text-transform:uppercase;letter-spacing:.05mm}.strip.inv.up .sb{text-transform:uppercase;font-size:2.7mm}.strip.inv.up .sl{height:18mm}.rf.rfbig b{text-transform:uppercase}.strip.inv.up .lab{text-transform:uppercase;height:7.6mm;font-size:2.5mm}.strip.inv.up{grid-template-columns:27mm 1fr 27mm}
+.rf.rfbig{grid-template-columns:1fr 1fr;gap:.5mm 3mm;align-content:space-between}.rfbig div{padding-top:.3mm}.rf.rfbig b{font-size:2.6mm}.rf.rfbig i{height:5.5mm;overflow:hidden;font:700 2.5mm/1.1 'Archivo Narrow',sans-serif;font-style:normal;text-transform:uppercase;letter-spacing:.08mm;margin-top:.3mm}
 .rf i{display:block;font:italic 400 2mm/1.15 'Spectral',serif;color:#e6ecef;margin-top:.3mm}`;
 // words that don't fit get smaller until they do
-const FIT = `document.querySelectorAll('.fit').forEach(function(e){ var s=parseFloat(getComputedStyle(e).fontSize), t=e.firstElementChild||e;
+const APPLY = `(function(){ ['label','def'].forEach(function(k){ var a=document.querySelector('[data-b=g'+k+']'), b=document.querySelector('[data-b=h'+k+']'); if(a&&b){ var m=Math.min(parseFloat(getComputedStyle(a).fontSize),parseFloat(getComputedStyle(b).fontSize)); a.style.fontSize=b.style.fontSize=m+'px'; } });  var A=window.MF_ADJ||{}; document.querySelectorAll('[data-b]').forEach(function(e){ var a=A[e.getAttribute('data-b')]; if(/def$/.test(e.getAttribute('data-b'))) e.style.width=(a?100/(((a.s||100)/100)*((a.sx||100)/100)):100)+'%'; if(!a){ e.style.transform=''; return; } var s=(a.s||100)/100, x=s*(a.sx||100)/100, y=s*(a.sy||100)/100; e.style.transformOrigin=/def$/.test(e.getAttribute('data-b'))?'center top':'center center'; e.style.transform='translate('+(a.dx||0)+'mm,'+(a.dy||0)+'mm) scale('+x+','+y+')'; }); })();`;
+const FIT0 = `document.querySelectorAll('.fitw').forEach(function(e){ var a=(window.MF_ADJ||{})[e.getAttribute('data-b')]||{}; e.style.width=(100/(((a.s||100)/100)*((a.sx||100)/100)))+'%'; var s=parseFloat(getComputedStyle(e).fontSize), t=e.firstElementChild||e; for(var i=0;i<60&&t.scrollWidth>e.clientWidth+.5;i++){ s*=.95; e.style.fontSize=s+'px'; } }); document.querySelectorAll('.sx').forEach(function(e){ var t=e.firstElementChild; t.style.transform=''; var cw=e.clientWidth*0.97, sw=t.scrollWidth; if(sw>cw) t.style.transform='scaleX('+(cw/sw)+')'; }); document.querySelectorAll('.fit').forEach(function(e){ var s=parseFloat(getComputedStyle(e).fontSize), t=e.firstElementChild||e;
   for(var i=0;i<60&&(t.scrollWidth>e.clientWidth+.5||t.scrollHeight>e.clientHeight+.5||e.scrollHeight>e.clientHeight+.5);i++){ s*=.95; e.style.fontSize=s+'px'; } });`;
+const FIT = FIT0 + APPLY;
 
 // the cut lines as a small PDF written by hand, so each line can be a named spot colour (Chromium can't make those)
 function cutPdf(file, kiss) {
@@ -294,7 +270,7 @@ async function make(id, browser) {
   let s = Math.min(maxW / box.w, maxH / box.h); if (run.fish.width_mm) s = Math.min(s, run.fish.width_mm / box.w);
   const fw = 4000 * s, place = { x: BLEED + (CARD.w - box.w * s) / 2 - box.x * s, y: BLEED + (CARD.h - box.h * s) / 2 - box.y * s, w: fw };
   const fishMM = { w: box.w * s, h: box.h * s };
-  const cut = await page.evaluate(([s2, p, pg, r]) => MFcut(s2, p, pg, r, 24), [src, place, { w: PW, h: PH }, KISS]);
+  const cut = await page.evaluate(([s2, p, pg, r]) => MFcut(s2, p, pg, r, 24), [src, place, { w: PW, h: PH }, CUTGAP]);
   const cutD = 'M' + cut.map((p) => f2(p[0]) + ' ' + f2(p[1])).join(' L') + ' Z';
 
   const svgPage = (inner, w = PW, h = PH) => `<svg xmlns="http://www.w3.org/2000/svg" width="${f2(w)}mm" height="${f2(h)}mm" viewBox="0 0 ${f2(w)} ${f2(h)}">${inner}</svg>`;
@@ -302,10 +278,10 @@ async function make(id, browser) {
     const p2 = await browser.newPage({ viewport: { width: px(w, opts.dpi || DPI), height: px(h, opts.dpi || DPI) }, deviceScaleFactor: 1 });
     await p2.setContent(`<html><head><style>html,body{margin:0;background:${opts.clear ? 'transparent' : '#fff'}}body>svg,.pg{display:block;width:100vw;height:100vh}${opts.css || ''}</style></head><body>${html}<script>${FIT}</script></body></html>`, { waitUntil: 'load' });
     if (opts.scale) await p2.evaluate((k) => { const e = document.querySelector('.pg'); e.style.zoom = k; }, px(w, opts.dpi || DPI) / (w / MM * 96));
-    await p2.evaluate(FIT); await p2.screenshot({ path: file2, omitBackground: !!opts.clear }); await p2.close(); };
+    await p2.evaluate(async () => { await document.fonts.ready; document.querySelectorAll('.fit,.fitw').forEach((e) => { e.style.fontSize = ''; }); }); await p2.evaluate(FIT); await p2.screenshot({ path: file2, omitBackground: !!opts.clear }); await p2.close(); };
   const pdf = async (html, w, h, file2, css = '') => { const p2 = await browser.newPage();
     await p2.setContent(`<html><head><style>@page{size:${f2(w)}mm ${f2(h)}mm;margin:0}html,body{margin:0}svg{display:block}${css}</style></head><body>${html}<script>${FIT}</script></body></html>`, { waitUntil: 'load' });
-    await p2.evaluate(FIT); await p2.pdf({ path: file2, width: `${f2(w)}mm`, height: `${f2(h)}mm`, printBackground: true, pageRanges: '1' }); await p2.close(); };
+    await p2.evaluate(async () => { await document.fonts.ready; document.querySelectorAll('.fit,.fitw').forEach((e) => { e.style.fontSize = ''; }); }); await p2.evaluate(FIT); await p2.pdf({ path: file2, width: `${f2(w)}mm`, height: `${f2(h)}mm`, printBackground: true, pageRanges: '1' }); await p2.close(); };
 
   // 1 the decal, white ink only (letters clear)
   const ink = await page.evaluate(([s2, p, pg, d]) => MFink(s2, p, pg, d), [src, place, { w: PW, h: PH }, DPI]);
@@ -325,6 +301,10 @@ async function make(id, browser) {
   // 4 the back of the backing paper (portrait)
   const codes = { main: id, left: id + 's', right: id + 'm' };
   const LAND = landscape(run), back = await backHtml(run, codes, warn), bw = (LAND ? CARD.w : CARD.h) + 2 * BLEED, bh = (LAND ? CARD.h : CARD.w) + 2 * BLEED;
+  if (back.includes('data-b=')) { fs.mkdirSync(path.join(PRINT, 'back-edit'), { recursive: true });   // the editor page for this back: the same back, with handles
+    fs.writeFileSync(path.join(PRINT, 'back-edit', id + '.html'), `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Card back editor ${id}</title><style>${BACKCSS()}</style></head><body><script>window.MF_RUN=${JSON.stringify(id)}</script><div id="stage">${back}</div><script>window.MF_FIT=function(){ document.querySelectorAll('.fit,.fitw').forEach(function(e){ e.style.fontSize=''; }); ${FIT.replace(/<\/script/g, '<\\/script')} }; MF_FIT(); if (document.fonts) document.fonts.ready.then(function(){ MF_FIT(); window.dispatchEvent(new Event('mf-fit')); });</script><script src="../back-edit.js"></script></body></html>`);
+    // the same editor as a page for the Claude panel (a published Artifact): its own file, Save goes to the page's database
+    fs.writeFileSync(path.join(PRINT, 'back-edit', id + '.artifact.html'), `<title>${esc((run.sponsor && run.sponsor.name) || id)} Back Editor</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n<style>${BACKCSS()}</style>\n<script>window.MF_RUN=${JSON.stringify(id)};window.MF_ARTIFACT=true</script>\n<div id="stage">${back}</div>\n<script>window.MF_FIT=function(){ document.querySelectorAll('.fit,.fitw').forEach(function(e){ e.style.fontSize=''; }); ${FIT.replace(/<\/script/g, '<\\/script')} }; MF_FIT(); if (document.fonts) document.fonts.ready.then(function(){ MF_FIT(); window.dispatchEvent(new Event('mf-fit')); });</script>\n<script>${fs.readFileSync(path.join(PRINT, 'back-edit.js'), 'utf8').replace(/<\/script/g, '<\\/script')}</script>`); }
   await pdf(back, bw, bh, name('4-back.pdf'), BACKCSS() + `.pg{width:${f2(bw)}mm!important;height:${f2(bh)}mm!important}`);
   await shot(back, bw, bh, name('4-back.png'), { css: BACKCSS() + `.pg{width:${f2(bw)}mm!important;height:${f2(bh)}mm!important}`, scale: true, dpi: 600 });
 
@@ -377,7 +357,7 @@ Card: 4.5 x 2.75 in (114.3 x 69.85 mm), custom size (not 2.8 in). Every file inc
 
 1. **${id}-1-decal-white-ink** : clear vinyl, white ink only. White where the fish is white; the letters and everything else are clear (no ink).
 2. **${id}-2-backing-front** : printed on the FRONT of the backing paper, under the decal (not the back of the paper). Black over the whole card, the same fish in white, lined up exactly under the decal.
-${run.send_cut_file ? `3. **${id}-3-cut-lines** : two spot colours. **CutContour** (magenta) is the kiss cut, through the vinyl only, 1/8 in outside the fish. **ThroughCut** (cyan) is the card edge, cut through everything. The SVG has the same two layers.` : `3. **Cut lines** : please draw the kiss cut yourselves, about 1/8 in (3 mm) outside the fish, through the vinyl only, and cut the card edge at 4.5 x 2.75 in. You know the right distance for your machines; we have our own cut line file ready if you would rather use it.`}
+${run.send_cut_file ? `3. **${id}-3-cut-lines** : two spot colours. **CutContour** (magenta) is the kiss cut, through the vinyl only, 1/16 in outside the fish. **ThroughCut** (cyan) is the card edge, cut through everything. The SVG has the same two layers.` : `3. **Cut lines (R0015-3-cut-lines)** : THE FRONT DECAL IS KISS CUT. Cut through the clear vinyl only, in the shape of the fish, about 1/8 in (3 mm) or less outside the fish (magenta CutContour). Do not cut the backing paper there, so the card stays whole when the decal is peeled off. Then cut the card edge all the way through at 4.5 x 2.75 in (blue ThroughCut). You know the right distance for your machines; our cut line file is ready if you would rather use it.`}
 4. **${id}-4-back** : printed on the BACK of the backing paper. ${LAND ? 'It reads upright held the same way as the fish side (landscape).' : 'It reads upright when the card is turned on its side (portrait).'}
 
 The decal's white ink is the PNG (1200 dpi, transparent where there is no ink); the PDF holds the same picture. Colours are RGB: please convert to your press colours, and use a rich black for the black areas if that is what you recommend.
@@ -389,10 +369,28 @@ Quantity: ${run.qty || '?'}. Please send a proof showing all four before taking 
   const { execFileSync } = await import('node:child_process');
   execFileSync('zip', ['-j', '-q', zip].concat(['1-decal-white-ink.png', '1-decal-white-ink.pdf', '2-backing-front.pdf', '2-backing-front.png', '4-back.pdf', '4-back.png', 'printer-notes.md', 'proof.pdf'].concat(run.send_cut_file ? ['3-cut-lines.pdf', '3-cut-lines.svg'] : []).map(name)));
   await page.close();
-  return { id, title: run.title || id, status: run.status || 'draft', qty: run.qty || 0, fish: run.fish, sponsor: S.name || '', anonymous: !!S.anonymous, codes, links, warn, made: new Date().toISOString() };
+  return { id, title: run.title || id, status: run.status || 'draft', qty: run.qty || 0, fish: run.fish, sponsor: S.name || '', anonymous: !!S.anonymous, codes, links, warn, editor: back.includes('data-b='), made: new Date().toISOString() };
 }
 
 const arg = process.argv.slice(2), all = fs.readdirSync(path.join(PRINT, 'runs')).filter((f) => /^R\d+\.json$/.test(f)).map((f) => f.replace('.json', '')).sort();
+async function buildKit() {
+  KIT = true; process.env.MF_SITE = 'http://127.0.0.1:9'; wordData('BUILD');
+  const t = (k) => `§${k}§`;
+  WORDS['§TPL§'] = { title: t('T'), gkw: t('GKW'), gks: t('GKS'), gkm: t('GKM'), gst: t('GST'), hbw: t('HBW'), hbs: t('HBS'), hbm: t('HBM'), hst: t('HST'), refs: [1, 2, 3, 4].map((n) => [t(`R${n}N`), t(`R${n}Q`)]) };
+  const mk = (logo) => ({ id: 'KIT', fish: { id: 'X', word: 'X', study: '§TPL§' }, sponsor: { name: t('NAME'), logo: logo ? t('LOGO') : undefined, show: true }, qr_direct: true,
+    back: { template: 'study', refs: 4, orientation: 'landscape', layout: 'stack', credit: t('CREDIT'), left: { label: t('LABL'), to: 'x' }, right: { label: t('LABR'), to: 'x' },
+      kicker: { logo: 'brand/mannafish-wordmark-fish-wide.png', note: 'Not for resale', right: 'A Word Study\nDevotional' } } });
+  const out = path.join(PRINT, 'kit'); fs.mkdirSync(out, { recursive: true });
+  for (const [nm, logo] of [['logo', true], ['text', false]]) {
+    const h = await backHtml(mk(logo), { main: 'KIT', left: 'L', right: 'R' }, []);
+    fs.writeFileSync(path.join(out, `back-${nm}.tpl.html`), h.replace(/^<script>window\.MF_ADJ=[^<]*<\/script>/, ''));
+  }
+  fs.writeFileSync(path.join(out, 'back.css'), BACKCSS());
+  fs.writeFileSync(path.join(out, 'fit.js'), `/* the same fit step the printer files use: window.MFfit(adj) after the back is on the page and the fonts are loaded */\nwindow.MFfit = function (adj) { window.MF_ADJ = adj || {}; document.querySelectorAll('.fit,.fitw').forEach(function (e) { e.style.fontSize = ''; }); ${FIT} };\n`);
+  const a = path.join(PRINT, 'adjust', 'R0015.json'); if (fs.existsSync(a)) fs.writeFileSync(path.join(out, 'default-adj.json'), JSON.stringify(JSON.parse(fs.readFileSync(a, 'utf8')).adj, null, 1) + '\n');
+  console.log('kit written to print/kit/');
+}
+if (arg.includes('--kit')) { await buildKit(); process.exit(0); }
 const ids = arg.includes('--all') || !arg.length ? all : arg;
 const browser = await chromium.launch();
 const done = [];

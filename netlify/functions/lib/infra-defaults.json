@@ -1,0 +1,15 @@
+{
+ "note": "Starting guesses for the Infrastructure page (admin only). Ken changes them on the page; check each company's current price list. Dollar figures stay on the admin side and are never put on the public site.",
+ "perUnit": {
+  "emailFreePerMonth": 9000,
+  "emailPer1000": 1.5,
+  "textPerMessage": 0.012,
+  "textNumberPerMonth": 2.15,
+  "voicePerCharacter": 0.000015,
+  "charsPerListenMinute": 850,
+  "devotionalChars": 1400
+ },
+ "fixedPerMonth": { "Hosting (Netlify)": 20, "Accounts and data (Supabase)": 0, "Domain and email address": 3, "Twilio number (only if texting)": 0 },
+ "usage": { "emailsPerSubscriberPerMonth": 26, "textsPerTexterPerMonth": 26, "listenMinutesPerSubscriberPerMonth": 20, "shareOfListeningThatIsNewAudio": 0.15 },
+ "sponsor": { "payPerFish": 2.0, "costPerFish": 1.25, "fishPerSponsor": 1000, "ordersPerYear": 1 }
+}

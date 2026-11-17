@@ -1,0 +1,39 @@
+{
+ "id": "R0020",
+ "title": "FORMAT EXAMPLE \u00b7 Seek (longer definitions wrap to a second line)",
+ "status": "draft",
+ "qty": 100,
+ "fish": {
+  "id": "SEEK",
+  "word": "SEEK",
+  "lang": "en",
+  "study": "SEEK-FMT"
+ },
+ "sponsor": {
+  "name": "K-Tech Construction",
+  "logo": "assets/ktech-round-logo-DRAFT.svg",
+  "show": true
+ },
+ "ship_to": "",
+ "qr_direct": true,
+ "back": {
+  "template": "study",
+  "refs": 4,
+  "left": {
+   "label": "Porch\nenclosures",
+   "to": "https://k-tech-porch-enclosures.netlify.app/"
+  },
+  "right": {
+   "label": "Free MannaFish\nDevotional",
+   "to": "https://yadamannafishtest.netlify.app/devotional"
+  },
+  "orientation": "landscape",
+  "layout": "stack",
+  "kicker": {
+   "logo": "brand/mannafish-wordmark-fish-wide.png",
+   "note": "Not for resale",
+   "right": "A Word Study\nDevotional"
+  }
+ },
+ "notes": "Format example for Ken: the same card and the same saved layout as R0015 with a different word, to show how a longer Greek or Hebrew definition wraps to a second line."
+}

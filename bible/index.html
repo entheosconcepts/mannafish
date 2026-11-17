@@ -520,12 +520,14 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   // Ken, 8 Nov: today's MannaFish on top is the home page's own flip card (an iframe of /?card=1), so it flips and has Word, Verse, Go Fish, Listen and Read exactly as there
   (function(){ var box=$('tfish'); if(!box) return; var qq=new URLSearchParams(location.search), fq=qq.get('fish')||qq.get('w')||'', lang=(ls('mf-lang')==='es')?'es':'en', f=$('tfF');
     f.src='/?card=1'+(fq&&fq!=='today'?(/^[a-z]+$/.test(fq)?'&w=':'&fish=')+encodeURIComponent(fq):'')+(qq.get('lang')?'&lang='+encodeURIComponent(qq.get('lang')):'');
+    var touched=false; ['pointerdown','keydown','touchstart'].forEach(function(ev){ document.addEventListener(ev,function(){ touched=true; },true); });
     function set(open){ $('tfT').setAttribute('aria-expanded',String(open)); $('tfB').hidden=!open; ls('mf-bible-fish',open?'open':'closed'); }
     $('tfT').addEventListener('click',function(){ set($('tfT').getAttribute('aria-expanded')!=='true'); });
     window.addEventListener('message',function(e){ if(e.origin!==location.origin||!e.data||!e.data.mfcard||e.source!==f.contentWindow) return;
+      if(e.data.goRef){ if(window.MFbible) MFbible.go(e.data.goRef,true); return; }   /* Ken, 17 Nov: the fish card opens the passage below without scrolling the page to it */
       if(e.data.full){ f.classList.add('full'); document.body.classList.add('tffull'); document.documentElement.style.overflow='hidden'; } else { f.classList.remove('full'); document.body.classList.remove('tffull'); document.documentElement.style.overflow=''; if(e.data.h>60) f.style.height=e.data.h+'px'; } });
     var tz=''; try{ tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''; }catch(e){}
-    fetch('/api/today-fish?id='+encodeURIComponent(fq||'today')+'&tz='+encodeURIComponent(tz)+'&lang='+lang).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(j) $('tfW').textContent=j.title; }).catch(function(){});
+    fetch('/api/today-fish?id='+encodeURIComponent(fq||'today')+'&tz='+encodeURIComponent(tz)+'&lang='+lang).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(!j) return; $('tfW').textContent=j.title; /* Ken, 17 Nov: the Bible opens to the passage of the fish on the front, unless a verse was asked for or the person has already moved */ if(!qq.get('r')&&!touched&&j.ref&&window.MFbible) MFbible.go(j.ref,true); }).catch(function(){});
     set(ls('mf-bible-fish')!=='closed');
     /* Ken, 14 Nov: opening the Bible app shows the fish for about 2 seconds, then it slowly folds away so the reader is not kept waiting behind it, and the ▾ pulses
        so people can see where to open it again. Not on the devotional (that is the home page), and not when the card is open on purpose (a fish link, from a verse on a fish);
@@ -672,7 +674,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
       if(on){ if(!ch.dataset.n){ ch.dataset.n='1'; var h2=''; for(var c=1;c<=B[i][1];c++) h2+='<button type="button" data-bk="'+i+'" data-c="'+c+'">'+c+'</button>'; ch.innerHTML=h2; } ch.hidden=false; [].forEach.call(ch.children,function(b2){ b2.classList.toggle('on',+b2.dataset.c===AT.c); }); } else ch.hidden=true; });
     var cu=el.querySelector('.dbk.on'); if(cu) el.scrollTop=Math.max(0,cu.offsetTop-el.offsetTop-el.clientHeight/4); }
   window.addEventListener('resize',function(){ dnavSync(); });
-  function go(b,c,v,keep){ bkClose(); var say=AUTOSAY; AUTOSAY=0; stopSay(); closeAct(); closeWc(); if(HLM) hlmEnd(); AT={b:b,c:c,sel:v||0}; try{ dnavSync(); }catch(er){} OGJ=null; TK={}; ls('mf-bible-last',JSON.stringify({b:b,c:c})); remember(b,c);
+  function go(b,c,v,keep,quiet){ bkClose(); var say=AUTOSAY; AUTOSAY=0; stopSay(); closeAct(); closeWc(); if(HLM) hlmEnd(); AT={b:b,c:c,sel:v||0}; try{ dnavSync(); }catch(er){} OGJ=null; TK={}; ls('mf-bible-last',JSON.stringify({b:b,c:c})); remember(b,c);
     whereUI(); htUI(); $('title').textContent=B[b][0]+' '+c; $('sub').textContent=ver().n; document.title=B[b][0]+' '+c+' · MannaFish Bible';
     try{ history.replaceState(null,'','?r='+encodeURIComponent(B[b][0]+' '+c+(v?':'+v:''))+(EMBED?'&embed=1':'')); }catch(e){}
     var pb=c>1?[b,c-1]:b>0?[b-1,B[b-1][1]]:null, nb=c<B[b][1]?[b,c+1]:b<B.length-1?[b+1,1]:null;
@@ -685,7 +687,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
       VT={}; TK={}; o.t.forEach(function(t,i){ if(t) VT[i+1]=t; });
       PX=PS.map(function(P,i){ var oi=R[i+1], m={}; if(oi) oi.t.forEach(function(t,j){ if(t) m[j+1]=t; }); return {P:P,T:m,J:oi&&oi.J,none:!oi}; });
       draw(PX); marksUI(); paceUI(); $('note').innerHTML=esc(o.note)+PX.filter(function(x){ return !x.P.og&&!x.none; }).map(function(x){ return ' · '+esc(R[PX.indexOf(x)+1].note); }).join('')+' · Cross references: <a href="https://www.openbible.info/labs/cross-references/" target="_blank" rel="noopener">OpenBible.info</a> (CC BY) · Greek and Hebrew: <a href="https://www.stepbible.org/" target="_blank" rel="noopener">STEPBible.org</a> (CC BY)'; paint(); studyLoad();
-      if(v){ var s=$('txt').querySelector('.v[data-v="'+v+'"]'); if(s){ s.classList.add('flash'); setTimeout(function(){ s.scrollIntoView({block:'center',behavior:keep?'auto':'smooth'}); },60); } }
+      if(v){ var s=$('txt').querySelector('.v[data-v="'+v+'"]'); if(s){ s.classList.add('flash'); if(!quiet) setTimeout(function(){ s.scrollIntoView({block:'center',behavior:keep?'auto':'smooth'}); },60); } }
       if(say) startSay(v||1);
       // the next chapter is ready before it is asked for
       if(nb) chapter(nb[0],nb[1]).catch(function(){}); })
@@ -1760,7 +1762,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   window.addEventListener('storage',function(e){ if(!e.key||/^mf-(set|hl|notes2|bible-links|bible-hist)$/.test(e.key)) refresh(); });
   (function hook(n){ if(!window.MFacct){ if(n<50) setTimeout(function(){ hook(n+1); },200); return; } MFacct.on(function(u,what){ refresh(); }); })(0);
   window.MFstopAudio=function(){ try{ stopSay(); }catch(e){} };
-  window.MFbible={go:function(ref){ var x=parseRef(ref); if(x) go(x.b,x.c,x.v); }};
+  window.MFbible={go:function(ref,quiet){ var x=parseRef(ref); if(x) go(x.b,x.c,x.v,!!quiet,!!quiet); }};
 })();
 </script>
 </body>

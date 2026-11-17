@@ -47,7 +47,7 @@
  "R0005s": {
   "to": "",
   "run": "R0005",
-  "what": "Fling Ball · how to play"
+  "what": "Fling Ball \u00b7 how to play"
  },
  "R0005m": {
   "to": "https://manna-fish.com/?devo=1",
@@ -87,7 +87,7 @@
  "R0009s": {
   "to": "https://www.marketsttiresandauto.com/",
   "run": "R0009",
-  "what": "Revisión de\nllantas gratis"
+  "what": "Revisi\u00f3n de\nllantas gratis"
  },
  "R0009m": {
   "to": "https://manna-fish.com/devotional",
@@ -127,7 +127,7 @@
  "R0013s": {
   "to": "https://www.marketsttiresandauto.com/",
   "run": "R0013",
-  "what": "Revisión de\nllantas gratis"
+  "what": "Revisi\u00f3n de\nllantas gratis"
  },
  "R0013m": {
   "to": "https://yadamannafishtest.netlify.app/devotional",
@@ -168,5 +168,69 @@
   "to": "https://yadamannafishtest.netlify.app/devotional",
   "run": "R0014",
   "what": "Free MannaFish devotional"
+ },
+ "R0015s": {
+  "to": "https://k-tech-porch-enclosures.netlify.app/",
+  "run": "R0015",
+  "what": "Porch\nenclosures"
+ },
+ "R0015m": {
+  "to": "https://yadamannafishtest.netlify.app/devotional",
+  "run": "R0015",
+  "what": "Free MannaFish\nDevotional"
+ },
+ "R0016s": {
+  "to": "https://www.marketsttiresandauto.com/",
+  "run": "R0016",
+  "what": "Free tire\ncheck"
+ },
+ "R0016m": {
+  "to": "https://yadamannafishtest.netlify.app/devotional",
+  "run": "R0016",
+  "what": "Free MannaFish devo\nand merch"
+ },
+ "R0017s": {
+  "to": "https://www.marketsttiresandauto.com/",
+  "run": "R0017",
+  "what": "Revisi\u00f3n de\nllantas gratis"
+ },
+ "R0017m": {
+  "to": "https://yadamannafishtest.netlify.app/devotional",
+  "run": "R0017",
+  "what": "MannaFish gratis\ndevo y mercanc\u00eda"
+ },
+ "R0018s": {
+  "to": "https://yadamannafishtest.netlify.app/",
+  "run": "R0018",
+  "what": "Listen to the\npodcast"
+ },
+ "R0018m": {
+  "to": "https://yadamannafishtest.netlify.app/devotional",
+  "run": "R0018",
+  "what": "Free MannaFish devo\nand merch"
+ },
+ "R0019s": {
+  "to": "https://k-tech-porch-enclosures.netlify.app/",
+  "run": "R0019",
+  "what": "Porch\nenclosures"
+ },
+ "R0019m": {
+  "to": "https://yadamannafishtest.netlify.app/devotional",
+  "run": "R0019",
+  "what": "Free MannaFish\nDevotional"
+ },
+ "R0020s": {
+  "to": "https://k-tech-porch-enclosures.netlify.app/",
+  "run": "R0020",
+  "what": "Porch\nenclosures"
+ },
+ "R0020m": {
+  "to": "https://yadamannafishtest.netlify.app/devotional",
+  "run": "R0020",
+  "what": "Free MannaFish\nDevotional"
+ },
+ "devo": {
+  "to": "https://manna-fish.com/devotional",
+  "what": "The free MannaFish devotional (the right QR code on every sponsor-page card)"
  }
 }

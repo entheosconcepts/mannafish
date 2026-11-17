@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sponsor MannaFish decals</title>
+<meta name="description" content="Choose a word, add your link and logo, and see your MannaFish card. Sponsors pay so the decals can be given away free.">
+<link rel="icon" href="/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Spectral:ital,wght@0,400;0,600;1,400&family=Archivo:wght@500;600;700&display=swap" rel="stylesheet">
+<!-- Ken, 17 Nov: "all they have to do is choose a word, paste their URL for the QR code ... the word study populates automatically ... upload their logo where it says
+     sponsored by ... or type it ... easy for sponsors who want to order in bulk". The preview is the real card back (print/kit/, the same code that makes the printer's files). No prices here. -->
+<style>
+:root{--bg:#0b0e12;--card:#141a21;--line:#27313c;--text:#eef2f4;--dim:#9fb0c2;--gold:#f5d76e;--blue:#2a5fb0;--ok:#8ddca4;--bad:#ff8a7a;color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-mode=dark]){--bg:#fbfaf6;--card:#fff;--line:#d8d4c8;--text:#1c2228;--dim:#5b6570;--gold:#8a6a00;--ok:#1f7a35;--bad:#b3261e;color-scheme:light}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.55 Archivo,system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{display:flex;justify-content:space-between;align-items:center;max-width:1180px;margin:0 auto;padding:14px 0}
+.brand{font:600 1.5rem Fraunces,Georgia,serif;color:var(--text);text-decoration:none}.brand b{color:#5aa2ff}
+main{max-width:1180px;margin:0 auto;padding:0 0 70px}
+h1{font:600 clamp(1.9rem,5vw,2.7rem)/1.12 Fraunces,Georgia,serif;margin:10px 0 8px}
+.lead{font:italic 1.2rem/1.5 Spectral,Georgia,serif;color:var(--dim);max-width:46em;margin:0 0 22px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,520px);gap:26px;align-items:start}
+@media (max-width:920px){.grid{grid-template-columns:1fr}.pv{order:-1;position:static!important}}
+.step{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px}
+.step h2{font:600 1.3rem Fraunces,Georgia,serif;margin:0 0 4px;display:flex;gap:10px;align-items:baseline}.step h2 i{font:600 .9rem Archivo,sans-serif;color:var(--gold);font-style:normal}
+.step p.h{margin:0 0 12px;color:var(--dim);font-size:.95rem}
+label{display:block;font-weight:600;font-size:.92rem;margin:12px 0 4px}
+input[type=text],input[type=url],input[type=email],input[type=tel],input[type=number],textarea,select{width:100%;font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
+textarea{min-height:90px;resize:vertical}
+input:focus-visible,textarea:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.words{display:flex;flex-wrap:wrap;gap:6px;max-height:210px;overflow:auto;margin-top:10px;padding:2px}
+.words button,.chips button{font:600 .9rem Archivo,sans-serif;border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:7px 12px;cursor:pointer}
+.words button[aria-pressed=true],.chips button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media (max-width:520px){.two{grid-template-columns:1fr}}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:4px 0 8px}
+.seg button{font:700 .92rem Archivo,sans-serif;border:1px solid var(--line);background:none;color:var(--text);border-radius:12px;padding:10px 6px;cursor:pointer}.seg button[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+.drop{display:flex;gap:12px;align-items:center;border:1.5px dashed var(--line);border-radius:14px;padding:12px;cursor:pointer}.drop img{width:64px;height:64px;object-fit:contain;background:#fff;border-radius:8px}.drop span{color:var(--dim);font-size:.92rem}
+.hint{color:var(--dim);font-size:.85rem;margin:6px 0 0}
+.pv{position:sticky;top:12px}
+.pvtabs{display:flex;gap:6px;margin-bottom:8px}.pvtabs button{flex:1;font:700 .92rem Archivo,sans-serif;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:12px;padding:10px;cursor:pointer}.pvtabs button[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+.stage{background:#000;border:1px solid var(--line);border-radius:3.4%/5.5%;overflow:hidden;position:relative;aspect-ratio:4.5/2.75}
+.stage .front{display:none;height:100%;background:#000}.stage .front img{width:100%;height:100%;object-fit:contain;display:block}
+.stage .back{transform-origin:top left;position:absolute;left:0;top:0}
+.note{color:var(--dim);font-size:.85rem;margin:8px 2px 0}
+.cart{margin:0;padding:0;list-style:none}.cart li{display:flex;gap:10px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding:9px 0}.cart li:first-child{border-top:0}
+.cart b{font-weight:700}.cart small{color:var(--dim)}.cart button{font:600 .85rem Archivo,sans-serif;border:1px solid var(--line);background:none;color:var(--text);border-radius:999px;padding:6px 11px;cursor:pointer}
+.btn{display:inline-block;border:0;border-radius:999px;padding:13px 22px;font:800 1rem Archivo,sans-serif;cursor:pointer;background:var(--blue);color:#fff}.btn.y{background:var(--gold);color:#111}.btn.o{background:none;border:1px solid var(--line);color:var(--text)}.btn[disabled]{opacity:.5;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+.msg{min-height:1.4em;font-weight:700;margin-top:10px}.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}
+footer{max-width:1180px;margin:0 auto;color:var(--dim);font-size:.85rem;padding:10px 0 40px}
+</style>
+</head>
+<body>
+<header><a class="brand" href="/">Manna<b>Fish</b></a></header>
+<main>
+<h1>Sponsor MannaFish decals</h1>
+<p class="lead">Choose a word. Add your link and your logo. See your card as you build it. MannaFish decals are always given away, never sold: sponsors pay so people can have them free.</p>
+<div class="grid">
+<div>
+  <section class="step"><h2><i>1</i> Choose your word</h2><p class="h">This is the big word in the middle of the fish. Its word study (the Greek and Hebrew, and four verses) fills in by itself on the back.</p>
+    <input type="text" id="wsearch" placeholder="Search words: Build, Trust, Seek…" autocomplete="off" aria-label="Search words">
+    <div class="words" id="words" role="group" aria-label="Words"></div>
+    <p class="hint" id="wnote"></p></section>
+  <section class="step"><h2><i>2</i> Your QR code</h2><p class="h">The left QR code opens your link. The right one always opens the free MannaFish devotional.</p>
+    <label for="url">Your web address</label><input type="url" id="url" placeholder="https://yourwebsite.com" inputmode="url" autocomplete="url">
+    <label>The words under your QR code (two short lines)</label>
+    <div class="two"><input type="text" id="q1" maxlength="22" value="Visit us" aria-label="Line 1"><input type="text" id="q2" maxlength="22" value="to learn more" aria-label="Line 2"></div>
+    <div class="chips" id="qchips"></div></section>
+  <section class="step"><h2><i>3</i> Sponsored by</h2><p class="h">This goes in the middle of the card, under the top line you choose.</p>
+    <div class="seg" id="by"><button type="button" data-by="logo" aria-pressed="true">Upload my logo</button><button type="button" data-by="name" aria-pressed="false">Type my name</button><button type="button" data-by="text" aria-pressed="false">Write my own words</button></div>
+    <div id="by-logo"><label class="drop" for="logo"><img id="logoprev" alt="" hidden><span id="logoname">Upload your logo here (PNG, JPG or SVG). We size it for you.</span></label><input type="file" id="logo" accept="image/png,image/jpeg,image/svg+xml,image/webp" hidden></div>
+    <div id="by-name" hidden><label for="name">Your name or business</label><input type="text" id="name" maxlength="60" placeholder="K-Tech Construction"></div>
+    <div id="by-text" hidden><label for="text">Your words</label><textarea id="text" maxlength="120" placeholder="Jesus&#10;or a short prayer"></textarea></div>
+    <label for="credit">The line above it</label><input type="text" id="credit" maxlength="30" value="Sponsored by">
+    <div class="chips" id="cchips"></div></section>
+  <section class="step"><h2><i>4</i> How many?</h2><p class="h">At least 100, in hundreds. Want more than one design? Add this card, then pick another word.</p>
+    <div class="two"><div><label for="qty">Decals for this card</label><input type="number" id="qty" min="100" step="100" value="100"></div><div style="display:flex;align-items:end"><button type="button" class="btn o" id="add">Add this card to my order</button></div></div>
+    <ul class="cart" id="cart" aria-live="polite"></ul></section>
+  <section class="step"><h2><i>5</i> Who are you?</h2><p class="h">We email you a proof to approve before anything is printed. Nothing is charged here.</p>
+    <div class="two"><div><label for="cname">Your name</label><input type="text" id="cname" autocomplete="name"></div><div><label for="cemail">Email</label><input type="email" id="cemail" autocomplete="email"></div></div>
+    <div class="two"><div><label for="cphone">Phone (optional)</label><input type="tel" id="cphone" autocomplete="tel"></div><div></div></div>
+    <label for="cnote">Anything else we should know?</label><textarea id="cnote" maxlength="800"></textarea>
+    <div class="row"><button type="button" class="btn y" id="send">Send my order request</button></div><div class="msg" id="msg" role="status"></div></section>
+</div>
+<aside class="pv"><div class="pvtabs"><button type="button" data-v="back" aria-pressed="true">Back of the card</button><button type="button" data-v="front" aria-pressed="false">Front (the fish)</button></div>
+  <div class="stage" id="stage"><div class="front" id="front"></div><div class="back" id="back"></div></div>
+  <p class="note">This is your card at its cut size, 4.5 × 2.75 inches. The front has the fish decal; the back has the word study, your QR code and your sponsor line. The words and verses are filled in for you.</p></aside>
+</div>
+</main>
+<footer>MannaFish · Entheos Concepts · 4563 Technology Dr, Unit 6, Wilmington NC 28405</footer>
+<script src="/print/kit/kit.js"></script>
+<script>
+(function(){
+var $=function(i){ return document.getElementById(i); }, cart=[], cur={word:'',fishId:'',by:'logo',logo:'',view:'back'};
+var QCH=['Free quote','Book now','Visit us','Learn more','Call us today','Join us Sunday','Order online','See our menu'], CCH=['Sponsored by','A gift from','In loving memory of','Prayed over by','In honor of'];
+function esc(t){ return String(t).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function fullUrl(u){ u=(u||'').trim(); if(u&&!/^https?:\/\//i.test(u)) u='https://'+u; return u; }
+function cfg(){ var d={word:cur.word,fishId:cur.fishId,by:cur.by,logo:cur.logo,name:$('name').value.trim(),text:$('text').value.trim(),credit:$('credit').value.trim()||'Sponsored by',
+  qrWords:[$('q1').value.trim(),$('q2').value.trim()].filter(Boolean).join('\n')||'Visit us',url:fullUrl($('url').value)||'https://manna-fish.com/'};
+  if(d.by==='name'&&!d.name) d.by='text'; return d; }
+/* ---- the preview ---- */
+var pending=0;
+/* the card as it is cut, 4.5 x 2.75 in: the printer's extra 1/8 in around it (the bleed) is not shown to the customer */
+function scaleBack(){ var pg=document.querySelector('#back .pg'), card=document.querySelector('#back .card'); if(!pg||!card) return; var bx=card.offsetLeft, by=card.offsetTop, k=$('stage').clientWidth/card.offsetWidth;
+  $('back').style.transform='scale('+k+') translate('+(-bx)+'px,'+(-by)+'px)'; }
+function draw(){ if(!cur.word) return; var c=cfg(), id=++pending;
+  MFkit.mount($('back'),Object.assign({},c,{by:(c.by==='logo'&&!c.logo)?'text':c.by,text:(c.by==='logo'&&!c.logo)?'Your logo here':c.text,name:c.name||'Your name here'})).then(function(){ if(id===pending) scaleBack(); }).catch(function(e){ $('wnote').textContent=String(e.message||e); });
+  MFkit.fishSource(c).then(function(src){ $('front').innerHTML='<img alt="'+esc(cur.word)+' fish" src="data:image/svg+xml;charset=utf-8,'+encodeURIComponent(src)+'">'; }).catch(function(){}); }
+var t=null; function soon(){ clearTimeout(t); t=setTimeout(draw,250); }
+function view(v){ cur.view=v; document.querySelectorAll('.pvtabs button').forEach(function(b){ b.setAttribute('aria-pressed',String(b.getAttribute('data-v')===v)); });
+  $('back').style.display=v==='back'?'':'none'; $('front').style.display=v==='front'?'block':'none'; scaleBack(); }
+document.querySelector('.pvtabs').addEventListener('click',function(e){ var b=e.target.closest('button'); if(b) view(b.getAttribute('data-v')); });
+window.addEventListener('resize',scaleBack);
+/* ---- words ---- */
+function showWords(){ var q=$('wsearch').value.trim().toLowerCase(), list=MFkit.words.list.filter(function(x){ return x.ok&&(!q||x.w.toLowerCase().indexOf(q)===0||x.w.toLowerCase().indexOf(q)>0); });
+  $('words').innerHTML=list.map(function(x){ return '<button type="button" data-k="'+esc(x.k)+'" data-w="'+esc(x.w)+'" aria-pressed="'+(cur.word&&cur.word.toUpperCase()===x.w.toUpperCase())+'">'+esc(x.w)+'</button>'; }).join('')||'<span class="hint">No word starts like that yet. Try another.</span>'; }
+$('wsearch').addEventListener('input',showWords);
+$('words').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; cur.word=b.getAttribute('data-w'); cur.fishId=b.getAttribute('data-k'); showWords();
+  var d=MFkit.study({word:cur.word}); $('wnote').textContent=d?(d.gkw+' · '+d.hbw+' · '+(d.refs||[]).map(function(r){ return r[0]; }).join(', ')):''; draw(); });
+/* ---- chips and the sponsor choice ---- */
+function chips(el,list,input,sep){ el.innerHTML=list.map(function(x){ return '<button type="button">'+esc(x)+'</button>'; }).join(''); el.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; sep(b.textContent); soon(); }); }
+chips($('qchips'),QCH,null,function(v){ var p=v.split(' '), n=Math.ceil(p.length/2); $('q1').value=p.slice(0,n).join(' '); $('q2').value=p.slice(n).join(' '); });
+chips($('cchips'),CCH,null,function(v){ $('credit').value=v; });
+$('by').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; cur.by=b.getAttribute('data-by'); document.querySelectorAll('#by button').forEach(function(x){ x.setAttribute('aria-pressed',String(x===b)); });
+  ['logo','name','text'].forEach(function(k){ $('by-'+k).hidden=k!==cur.by; }); soon(); });
+['url','q1','q2','name','text','credit'].forEach(function(i){ $(i).addEventListener('input',soon); });
+/* a logo: any picture, sized down and kept with its see-through parts; the card fits it into the space */
+$('logo').addEventListener('change',function(){ var f=this.files&&this.files[0]; if(!f) return; if(f.size>8e6){ say('That picture is very large. Please use one under 8 MB.','bad'); return; }
+  var rd=new FileReader(); rd.onload=function(){ var src=rd.result;
+    if(/svg/.test(f.type)){ if(src.length>600000){ say('That SVG is large. Please send a PNG instead.','bad'); return; } setLogo(src,f.name); return; }
+    var im=new Image(); im.onload=function(){ var m=1000, s=Math.min(1,m/Math.max(im.width,im.height)), c=document.createElement('canvas'); c.width=Math.round(im.width*s); c.height=Math.round(im.height*s); c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+      var out=c.toDataURL('image/png'); if(out.length>1300000){ s*=.6; c.width=Math.round(im.width*s); c.height=Math.round(im.height*s); c.getContext('2d').drawImage(im,0,0,c.width,c.height); out=c.toDataURL('image/png'); } setLogo(out,f.name); };
+    im.onerror=function(){ say('We could not read that picture.','bad'); }; im.src=src; }; rd.readAsDataURL(f); });
+function setLogo(u,n){ cur.logo=u; $('logoprev').src=u; $('logoprev').hidden=false; $('logoname').textContent=n+' (ready)'; soon(); }
+function say(t,k){ $('msg').textContent=t; $('msg').className='msg '+(k||''); }
+/* ---- the order ---- */
+function renderCart(){ $('cart').innerHTML=cart.map(function(x,i){ return '<li><span><b>'+esc(x.qty)+' × '+esc(x.title)+'</b><br><small>'+esc(x.sponsor||'')+(x.url?' · '+esc(x.url):'')+'</small></span><button type="button" data-i="'+i+'">Remove</button></li>'; }).join(''); }
+$('cart').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; cart.splice(+b.getAttribute('data-i'),1); renderCart(); });
+function item(){ var c=cfg(); if(!c.word){ say('Choose a word first.','bad'); return null; }
+  if(c.by==='logo'&&!c.logo){ say('Upload your logo, or choose "Type my name" or "Write my own words".','bad'); return null; }
+  if(c.by==='name'&&!c.name){ say('Type your name or business.','bad'); return null; } if(c.by==='text'&&!c.text){ say('Write your words.','bad'); return null; }
+  var q=Math.max(100,Math.round((+$('qty').value||100)/100)*100); $('qty').value=q; say('');
+  return {fish:c.fishId,title:c.word,name:c.by==='name'?c.name:(c.by==='text'?c.text:''),url:c.url,label:c.qrWords.replace(/\n/g,' '),logo:c.by==='logo'?c.logo:'',qty:q,cfg:{by:c.by,credit:c.credit,text:c.text,name:c.name,qrWords:c.qrWords},sponsor:c.by==='text'?c.text:c.name||'logo'}; }
+$('add').addEventListener('click',function(){ var it=item(); if(!it) return; if(cart.length>=12){ say('That is the most one request can hold. Send this one, then start another.','bad'); return; } cart.push(it); renderCart(); say('Added. Choose another word, or send your request below.','ok'); });
+$('send').addEventListener('click',function(){ var it=cart.length?null:item(); if(!cart.length&&!it) return; var items=cart.length?cart.slice():[it]; if(cart.length&&cur.word&&cfgChanged()){ var x=item(); if(x) items.push(x); }
+  var name=$('cname').value.trim(), email=$('cemail').value.trim(); if(!name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ say('Please add your name and email.','bad'); return; }
+  $('send').disabled=true; say('Sending…');
+  fetch('/api/card-order',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({items:items.map(function(x){ var y=Object.assign({},x); delete y.sponsor; return y; }),contact:{name:name,email:email,phone:$('cphone').value,note:$('cnote').value}})})
+   .then(function(r){ return r.json().then(function(j){ return {r:r,j:j}; }); }).then(function(o){ $('send').disabled=false; if(!o.r.ok){ say(o.j.error||'That did not go through. Please try again.','bad'); return; }
+     cart=[]; renderCart(); say('Thank you. We have your request (number '+o.j.id+'). We will email you a proof to approve before anything is printed.','ok'); })
+   .catch(function(){ $('send').disabled=false; say('We could not reach the server. Please try again.','bad'); }); });
+function cfgChanged(){ return false; }
+/* ?example=ktech fills in the first customer (K-Tech Construction), to try the page the way a sponsor would */
+function ktech(){ $('url').value='k-tech-porch-enclosures.netlify.app'; $('q1').value='Porch'; $('q2').value='enclosures'; $('qty').value=100; $('cname').value=$('cname').value||'';
+  cur.by='logo'; document.querySelectorAll('#by button').forEach(function(x){ x.setAttribute('aria-pressed',String(x.getAttribute('data-by')==='logo')); }); $('by-logo').hidden=false; $('by-name').hidden=true; $('by-text').hidden=true; $('name').value='K-Tech Construction';
+  return fetch('/print/assets/ktech-round-logo-DRAFT.svg').then(function(r){ return r.text(); }).then(function(t){ setLogo('data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(t))),'K-Tech logo (stand-in)'); }); }
+/* ---- start ---- */
+MFkit.ready().then(function(){ showWords(); var ex=new URLSearchParams(location.search).get('example'); var q=new URLSearchParams(location.search).get('word')||(ex==='ktech'?'Build':''); if(q){ var b=[].find.call($('words').children,function(x){ return (x.getAttribute('data-w')||'').toLowerCase()===q.toLowerCase(); }); if(b) b.click(); if(ex==='ktech') ktech(); }
+  if(!cur.word){ var first=MFkit.words.list.filter(function(x){ return x.ok&&x.w==='Build'; })[0]||MFkit.words.list.filter(function(x){ return x.ok; })[0]; if(first){ cur.word=first.w; cur.fishId=first.k; showWords(); draw(); } } })
+ .catch(function(){ $('wnote').textContent='The card preview could not load. Please reload the page.'; });
+})();
+</script>
+</body>
+</html>

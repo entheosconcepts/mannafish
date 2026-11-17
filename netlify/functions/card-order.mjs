@@ -1,4 +1,4 @@
-// Card orders (Ken, 3 Nov: "allow user to customize the back of the card and add to cart, and make sure the minimum is 100 decals").
+// Card orders (Ken, 3 Nov; the sponsor page, 17 Nov: "allow user to customize the back of the card and add to cart, and make sure the minimum is 100 decals").
 // From the home page's "Make the back yours": each item is a fish, the sponsor's name, link, the words beside its QR code, a logo
 // (a small picture), and how many (at least 100, in hundreds). No price and no payment here (Ken decides pricing later): the request is
 // kept and emailed to MannaFish, who replies with the details and a proof. The fish are never sold; a sponsor pays for them to be
@@ -47,7 +47,9 @@ export default async (req, context) => {
     const qty = Math.max(MIN, Math.round((Number(x.qty) || MIN) / 100) * 100);
     let link = clean(x.url, 200); if (link && !/^https?:\/\//i.test(link)) link = 'https://' + link;
     const logo = typeof x.logo === 'string' && /^data:image\/(png|jpeg|webp|svg\+xml);base64,/.test(x.logo) && x.logo.length < 1500000 ? x.logo : '';
-    return { fish: clean(x.fish, 40), title: clean(x.title, 40), name: clean(x.name, 60), url: link, label: clean(x.label, 50), logo, qty };
+    // the sponsor page (/sponsor/) also sends how the card is built, so the printer's files can be made from the order (print/kit/)
+    const c = x.cfg && typeof x.cfg === 'object' ? x.cfg : null, cfg = c ? { by: ['logo', 'name', 'text'].includes(c.by) ? c.by : 'text', credit: clean(c.credit, 30), text: clean(c.text, 120), name: clean(c.name, 60), qrWords: String(c.qrWords == null ? '' : c.qrWords).replace(/[\u0000-\u0009\u000b-\u001f]/g, ' ').split('\n').slice(0, 2).map((l) => clean(l, 24)).join('\n') } : null;
+    return { fish: clean(x.fish, 40), title: clean(x.title, 40), name: clean(x.name, 60), url: link, label: clean(x.label, 50), logo, qty, ...(cfg ? { cfg } : {}) };
   }).filter((x) => x.fish);
   if (!items.length) return bad('Your cart is empty.', 400);
   if (await limited(context && context.ip)) return bad('Please wait a little before sending another.', 429);

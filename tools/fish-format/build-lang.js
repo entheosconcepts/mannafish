@@ -11,7 +11,7 @@ F.setGeo(JSON.parse(fs.readFileSync(path.join(__dirname,'geo.json'))));
 const PICKS=(process.env.PICKS||'REST,GROW,LOVE,TRUST,LISTEN,LAUGH,BELIEVE,BREATHE,REMEMBER').split(',');
 const R=derive(JSON.parse(fs.readFileSync(path.join(__dirname,'ken24.json'))),PICKS,F.RULE);
 const LINES=JSON.parse(fs.readFileSync(path.join(__dirname,'lang-lines.json')));
-// Ken, 13 Nov: "rebuild the original 24 so they are editable": the English 24 as live text like the other languages (lines24.json), drawn into fish/en-built/ (Ken's own drawings in fish/en/ are never overwritten)
+// Ken, 13 Nov: "rebuild the original 24 so they are editable": the English 24 as live text like the other languages (lines24.json), drawn into fish/en-built/ (17 Nov: Ken: switch the site to the rebuilt 24; his hand-drawn originals are kept in tools/orig24/, which the site never serves)
 if(!LINES.en){ LINES.en={}; const L24=JSON.parse(fs.readFileSync(path.join(__dirname,'lines24.json'))); for(const k of Object.keys(L24)) LINES.en[k]={word:L24[k].word,top:L24[k].top,bot:L24[k].bot,ref:L24[k].ref+' (KJV)'}; }
 // each language's face, and the letters whose height is matched to Hobo's capital H
 // Ken's bold white outline on the word, and the thin black one on the verse, suit Hobo; letters with many close strokes
@@ -32,7 +32,7 @@ function ruleFor(fc){ const r=JSON.parse(JSON.stringify(R)); if(!fc) return r;
     const E=fc?await HB.load(path.join(__dirname,'fonts',fc.f),{rtl:!!fc.rtl,capChars:fc.cap,name:l,tallAll:!!fc.tallAll}):hobo;
     const RL=ruleFor(fc), TX={};
     for(const [key,f0] of Object.entries(LINES[l])){ const f=Object.assign({tag:''},f0); let P=F.layout(E,f,RL); P=f.edit?F.applyRel(E,f,P,f.edit):['en','es','tl','de'].includes(l)?TM.apply(F,E,f,P,RL,TPL):P;   // letter counts mean the same only in Hobo's languages
-      fs.writeFileSync(path.join(ROOT,'fish',l==='en'?'en-built':l,key+'.svg'),F.draw(E,f,P,RL));
+      fs.writeFileSync(path.join(ROOT,'fish',l,key+'.svg'),F.draw(E,f,P,RL));
       TX[key]=F.textSvg(E,f,P,RL,BASE,fc?fc.fam:'MFHobo',fc?fc.w:'',!!(fc&&fc.rtl)); }
     fs.mkdirSync(path.join(ROOT,'edit','lang'),{recursive:true}); fs.writeFileSync(path.join(ROOT,'edit','lang',l+'.json'),JSON.stringify(TX));
     console.log(l,Object.keys(LINES[l]).length,'fish','capH',E.capH.toFixed(3)); }
