@@ -16,6 +16,11 @@ Ken, 25 Oct: launch the free devotional first (digital only), decals "coming soo
 - Stay open while gated: `/q/<code>`, `/print/links.json`, `/api/qr`, unsubscribe, the text-reply webhook.
 - Emails need Brevo (verified sender and domain DNS) and texts need Twilio approval before `MF_SEND_OFF` is removed.
 
+## Private preview for testers (Ken, 17 Nov: "make manna-fish.com the website, but not open to the public yet; people with the link can create an account, use the Bible app and give feedback")
+- Already how the gate works: anyone who opens `https://manna-fish.com/?preview=<MF_PREVIEW_KEY>` gets a 30-day cookie and sees the whole site (accounts, Bible, Today, Pray, feedback). Everyone else sees the pre-launch page or "Coming soon". Send the link only to people you pick; to cut everyone off, change `MF_PREVIEW_KEY` in Netlify (it changes the link for you too).
+- Before sharing: on the **manna-fish.com** Netlify site check `MF_PREVIEW_KEY` is set, `MF_LAUNCHED` is not set, `MF_SEND_OFF` = `1`, and the keys in step 3 above. In Supabase (Authentication, URL configuration) add `https://manna-fish.com` and `https://manna-fish.com/**` to the redirect URLs, or the confirmation email in an account sign-up will send people to the wrong place.
+- Testers can use everything, including `/sponsor/`; admin pages still ask for the admin password.
+
 ## Claude's part, on "push it live"
 
 1. Bring the test-site branch into `main`, so manna-fish.com gets everything.
