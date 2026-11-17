@@ -55,16 +55,24 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,select:focus-vis
 .cardlist button[aria-selected=true]{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue) inset}
 .savebar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-top:12px;font-size:.88rem;color:var(--dim)}.savelink{display:flex;gap:6px;flex:1;min-width:220px}.savelink input{flex:1;min-width:0;font-size:.8rem;padding:8px 10px}.savelink .btn{padding:8px 14px;font-size:.85rem}
 footer{max-width:1180px;margin:0 auto;color:var(--dim);font-size:.85rem;padding:10px 0 40px}
+/* ?embed=1: the builder inside the MannaFish home page (an iframe in #sponsor), in the site's own black and blue */
+html.embed:root{--bg:#000!important;--card:#0d0d0f!important;--line:rgba(255,255,255,.16)!important;--text:#eaf0f0!important;--dim:#9fb2b6!important;--gold:#f5d76e!important;--blue:#2a5fb0!important;--ok:#8ddca4!important;--bad:#ff8a7a!important;color-scheme:dark!important}
+html.embed body{background:#000;color:var(--text);padding-left:0;padding-right:0;font-size:16px}
+html.embed header,html.embed h1,html.embed .lead,html.embed footer{display:none}
+html.embed .pv{position:static}html.embed main{padding-bottom:10px}html.embed .step{background:#0d0d0f}
+html.embed input[type=text],html.embed input[type=url],html.embed input[type=email],html.embed input[type=tel],html.embed input[type=number],html.embed textarea,html.embed select{background:#000}
 </style>
 </head>
 <body>
+<script>if(/(^|[?&])embed=1/.test(location.search)) document.documentElement.classList.add('embed'); else { /* the builder lives in the home page now (Ken, 17 Nov): /sponsor/ goes there, keeping the order's link and example */
+  var q0=new URLSearchParams(location.search), d0=q0.get('d'); if(d0){ q0.delete('d'); q0.set('sd',d0); } location.replace('/'+(q0.toString()?'?'+q0.toString():'')+'#sponsor'); }</script>
 <header><a class="brand" href="/">Manna<b>Fish</b></a></header>
 <main>
 <h1>Sponsor MannaFish decals</h1>
 <p class="lead">Choose a word. Add your link and your logo. See your card as you build it. MannaFish decals are always given away, never sold: sponsors pay so people can have them free.</p>
 <div class="grid">
 <div>
-  <section class="step" id="orderbar"><h2>Your order <small id="tot"></small></h2><p class="h">Each design is its own card. Pick a card to work on it, or add another. Everything is saved as you go.</p>
+  <section class="step" id="orderbar"><h2>Your sponsorship <small id="tot"></small></h2><p class="h">Each design is its own card. Pick a card to work on it, or add another. Everything is saved as you go.</p>
     <div class="cardlist" id="cardlist" role="tablist" aria-label="Your cards"></div>
     <div class="row"><button type="button" class="btn o" id="newcard">+ Add another card</button><button type="button" class="btn o" id="dupcard">Copy this card</button><button type="button" class="btn o" id="delcard">Remove this card</button></div>
     <div class="savebar" id="savebar" hidden><span id="savednote"></span><span class="savelink"><input type="text" id="savelink" readonly aria-label="Your link to come back to this order"><button type="button" class="btn o" id="copylink">Copy link</button></span></div></section>
@@ -87,13 +95,13 @@ footer{max-width:1180px;margin:0 auto;color:var(--dim);font-size:.85rem;padding:
     <div id="by-text" hidden><label for="text">Your words</label><textarea id="text" maxlength="120" placeholder="Jesus&#10;or a short prayer"></textarea></div>
     <label for="credit">The line above it</label><input type="text" id="credit" maxlength="30" value="Sponsored by">
     <div class="chips" id="cchips"></div></section>
-  <section class="step"><h2><i>4</i> How many of this card?</h2><p class="h">At least 100, in hundreds. Each different design is its own card, so another word means another card (add one above).</p>
-    <label for="qty">Decals of this card</label><input type="number" id="qty" min="100" step="100" value="100"></section>
+  <section class="step"><h2><i>4</i> How many decals?</h2><p class="h">At least 100, in hundreds. Each different design is its own card, so another word means another card (add one at the top).</p>
+    <label for="qty">Decals for this card</label><input type="number" id="qty" min="100" step="100" value="100"></section>
   <section class="step"><h2><i>5</i> Who are you?</h2><p class="h">We email you a proof to approve before anything is printed. Nothing is charged here.</p>
     <div class="two"><div><label for="cname">Your name</label><input type="text" id="cname" autocomplete="name"></div><div><label for="cemail">Email</label><input type="email" id="cemail" autocomplete="email"></div></div>
     <div class="two"><div><label for="cphone">Phone (optional)</label><input type="tel" id="cphone" autocomplete="tel"></div><div></div></div>
     <label for="cnote">Anything else we should know?</label><textarea id="cnote" maxlength="800"></textarea>
-    <div class="row"><button type="button" class="btn y" id="send">Send my order request</button></div><p class="hint" id="sendnote"></p><div class="msg" id="msg" role="status"></div></section>
+    <div class="row"><button type="button" class="btn y" id="send">Send my sponsorship request</button></div><p class="hint" id="sendnote"></p><div class="msg" id="msg" role="status"></div></section>
 </div>
 <aside class="pv"><div class="pvtabs"><button type="button" data-v="back" aria-pressed="true">Back of the card</button><button type="button" data-v="front" aria-pressed="false">Front (the fish)</button></div>
   <div class="stage" id="stage"><div class="front" id="front"></div><div class="back" id="back"></div></div>
@@ -104,9 +112,10 @@ footer{max-width:1180px;margin:0 auto;color:var(--dim);font-size:.85rem;padding:
 <script src="/print/kit/kit.js"></script>
 <script>
 (function(){
-var $=function(i){ return document.getElementById(i); }, STORE='mf-sponsor-draft-v1', DID='', S=null, view='back', pending=0;
+var EMB=/(^|[?&])embed=1/.test(location.search), $=function(i){ return document.getElementById(i); }, STORE='mf-sponsor-draft-v1', DID='', S=null, view='back', pending=0;
 var BOOKS='Genesis,Exodus,Leviticus,Numbers,Deuteronomy,Joshua,Judges,Ruth,1 Samuel,2 Samuel,1 Kings,2 Kings,1 Chronicles,2 Chronicles,Ezra,Nehemiah,Esther,Job,Psalm,Proverbs,Ecclesiastes,Song of Solomon,Isaiah,Jeremiah,Lamentations,Ezekiel,Daniel,Hosea,Joel,Amos,Obadiah,Jonah,Micah,Nahum,Habakkuk,Zephaniah,Haggai,Zechariah,Malachi,Matthew,Mark,Luke,John,Acts,Romans,1 Corinthians,2 Corinthians,Galatians,Ephesians,Philippians,Colossians,1 Thessalonians,2 Thessalonians,1 Timothy,2 Timothy,Titus,Philemon,Hebrews,James,1 Peter,2 Peter,1 John,2 John,3 John,Jude,Revelation'.split(',');
 var QCH=['Free quote','Book now','Visit us','Learn more','Call us today','Join us Sunday','Order online','See our menu'], CCH=['Sponsored by','A gift from','Prayed over by','In honor of'], MAXCARDS=12;
+function comeBack(){ return EMB?location.origin+'/?sd='+DID+'#sponsor':location.origin+'/sponsor/?d='+DID; }
 function esc(t){ return String(t).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 function fullUrl(u){ u=(u||'').trim(); if(u&&!/^https?:\/\//i.test(u)) u='https://'+u; return u; }
 function say(t,k){ $('msg').textContent=t; $('msg').className='msg '+(k||''); }
@@ -132,7 +141,7 @@ function noteWord(){ var c=cur(), d=c.word?MFkit.study({word:c.word}):null; $('w
 function renderCards(){ var tot=0; $('cardlist').innerHTML=S.cards.map(function(c,i){ tot+=c.qty; var pr=problem(c);
   return '<button type="button" role="tab" data-i="'+i+'" aria-selected="'+(i===S.active)+'" class="'+(pr?'todo':'')+'"><b>'+(i+1)+'. '+esc(c.word||'New card')+'</b><small>'+c.qty+' decals'+(pr?' · '+esc(pr):' · ready')+'</small></button>'; }).join('');
   $('tot').textContent='· '+tot+' decals in '+S.cards.length+(S.cards.length===1?' design':' designs'); $('delcard').disabled=S.cards.length<2; $('newcard').disabled=$('dupcard').disabled=S.cards.length>=MAXCARDS;
-  var n=S.cards.length; $('send').textContent='Send my order request'+(n>1?' ('+n+' cards)':''); }
+  var n=S.cards.length; $('send').textContent='Send my sponsorship request'+(n>1?' ('+n+' cards)':''); }
 $('cardlist').addEventListener('click',function(e){ var b=e.target.closest('button[data-i]'); if(!b) return; pull(); S.active=+b.getAttribute('data-i'); push(); renderCards(); draw(); persist(); });
 $('newcard').addEventListener('click',function(){ pull(); S.cards.push(blank(cur())); S.cards[S.cards.length-1].qty=100; S.active=S.cards.length-1; var c=cur(); c.word=''; push(); renderCards(); draw(); persist(); $('wsearch').focus(); say('A new card. Your link, logo and words are copied: choose its word.','ok'); });
 $('dupcard').addEventListener('click',function(){ pull(); var c=JSON.parse(JSON.stringify(cur())); S.cards.splice(S.active+1,0,c); S.active++; push(); renderCards(); persist(); say('Copied. Change its word or verse.','ok'); });
@@ -144,8 +153,8 @@ function persist(){ pull(); clearTimeout(tl); tl=setTimeout(function(){ try{ loc
   clearTimeout(ts); ts=setTimeout(toServer,1800); renderCards(); }
 function toServer(){ var body=JSON.stringify({id:DID||undefined,data:Object.assign(slim(),{})}); if(body.length>4400000){ $('savednote').textContent='Saved on this device (the logos are too large to save online: use smaller pictures).'; $('savebar').hidden=false; return; }
   fetch('/api/sponsor-draft',{method:'POST',headers:{'content-type':'application/json'},body:body}).then(function(r){ return r.json().then(function(j){ return {r:r,j:j}; }); }).then(function(o){ if(!o.r.ok||!o.j.id) throw 0; DID=o.j.id;
-    try{ localStorage.setItem(STORE,JSON.stringify({id:DID,S:slim()})); }catch(e){} try{ history.replaceState(null,'',location.pathname+'?d='+DID); }catch(e){}
-    $('savelink').value=location.origin+'/sponsor/?d='+DID; $('savednote').textContent='Saved. Come back to this order any time with this link:'; $('savebar').hidden=false; })
+    try{ localStorage.setItem(STORE,JSON.stringify({id:DID,S:slim()})); }catch(e){} try{ if(EMB) parent.postMessage({mfsb:'draft',id:DID},'*'); else history.replaceState(null,'',location.pathname+'?d='+DID); }catch(e){}
+    $('savelink').value=comeBack(); $('savednote').textContent='Saved. Come back to this order any time with this link:'; $('savebar').hidden=false; })
    .catch(function(){ $('savednote').textContent='Saved on this device. (We could not reach the server just now.)'; $('savebar').hidden=false; }); }
 $('copylink').addEventListener('click',function(){ var i=$('savelink'); i.select(); try{ navigator.clipboard.writeText(i.value); }catch(e){ try{ document.execCommand('copy'); }catch(x){} } this.textContent='Copied'; var b=this; setTimeout(function(){ b.textContent='Copy link'; },1500); });
 function adopt(o){ if(!o||!o.cards||!o.cards.length) return false; S={cards:o.cards.map(function(c){ return Object.assign(blank(),c); }),active:Math.min(o.active||0,o.cards.length-1),logos:o.logos||{},contact:Object.assign({name:'',email:'',phone:'',note:''},o.contact||{})}; return true; }
@@ -210,17 +219,23 @@ $('send').addEventListener('click',function(){ pull(); var bad=-1; S.cards.forEa
   $('send').disabled=true; say('Sending…');
   fetch('/api/card-order',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({items:S.cards.map(item),contact:{name:name,email:email,phone:S.contact.phone,note:S.contact.note}})})
    .then(function(r){ return r.json().then(function(j){ return {r:r,j:j}; }); }).then(function(o){ $('send').disabled=false; if(!o.r.ok){ say(o.j.error||'That did not go through. Please try again.','bad'); return; }
-     try{ localStorage.removeItem(STORE); }catch(e){} try{ history.replaceState(null,'',location.pathname); }catch(e){} DID=''; var n=S.cards.length; S=fresh(); push(); renderCards(); draw(); $('savebar').hidden=true;
-     say('Thank you. We have your request for '+n+(n===1?' card':' cards')+' (number '+o.j.id+'). We will email you a proof to approve before anything is printed.','ok'); })
+     try{ localStorage.removeItem(STORE); }catch(e){} try{ if(EMB) parent.postMessage({mfsb:'draft',id:''},'*'); else history.replaceState(null,'',location.pathname); }catch(e){} DID=''; var n=S.cards.length; S=fresh(); push(); renderCards(); draw(); $('savebar').hidden=true;
+     say('Thank you. We have your sponsorship request for '+n+(n===1?' card':' cards')+' (number '+o.j.id+'). We will email you a proof to approve before anything is printed.','ok'); })
    .catch(function(){ $('send').disabled=false; say('We could not reach the server. Your order is saved here: please try again.','bad'); }); });
 /* ?example=ktech fills in the first customer (K-Tech Construction), to try the page the way a sponsor would */
 function ktech(){ var c=cur(); c.url='k-tech-porch-enclosures.netlify.app'; c.q1='Porch'; c.q2='enclosures'; c.by='logo'; c.name='K-Tech Construction'; c.qty=100; push();
   return fetch('/print/assets/ktech-round-logo-DRAFT.svg').then(function(r){ return r.text(); }).then(function(t){ setLogo('data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(t))),'K-Tech logo (stand-in)'); }); }
+/* the preview follows the reader down the home page (the frame is as tall as the whole builder, so the page tells it where the top of the window is) */
+if(EMB) window.addEventListener('message',function(e){ if(e.source!==parent||!e.data||e.data.mfsb!=='y') return; var pv=document.querySelector('.pv'), gr=document.querySelector('.grid'); if(!pv||!gr) return;
+  if(innerWidth<=920){ pv.style.transform=''; return; } var max=Math.max(0,gr.offsetHeight-pv.offsetHeight); pv.style.transform='translateY('+Math.max(0,Math.min(max,Math.round(e.data.y)-gr.offsetTop))+'px)'; });
+/* ---- inside the home page: keep the frame as tall as the builder ---- */
+if(EMB){ var lastH=0, tell=function(){ var h=Math.ceil(document.documentElement.scrollHeight); if(Math.abs(h-lastH)>2){ lastH=h; try{ parent.postMessage({mfsb:'h',h:h},'*'); }catch(e){} } };
+  try{ new ResizeObserver(tell).observe(document.body); }catch(e){ setInterval(tell,600); } window.addEventListener('load',tell); setInterval(tell,1500); }
 /* ---- start ---- */
 S=fresh();
 MFkit.ready().then(function(){ return restore(); }).then(function(had){ push(); renderCards();
   var p=new URLSearchParams(location.search), ex=p.get('example'), q=p.get('word')||(ex==='ktech'&&!had?'Build':'');
-  if(had&&(S.cards.length>1||cur().word||cur().logoId)){ $('savednote').textContent='Welcome back: we kept your work.'; $('savebar').hidden=false; if(DID) $('savelink').value=location.origin+'/sponsor/?d='+DID; }
+  if(had&&(S.cards.length>1||cur().word||cur().logoId)){ $('savednote').textContent='Welcome back: we kept your work.'; $('savebar').hidden=false; if(DID) $('savelink').value=comeBack(); }
   if(q&&!cur().word){ var b=[].find.call($('words').children,function(x){ return (x.getAttribute('data-w')||'').toLowerCase()===q.toLowerCase(); }); if(b) b.click(); if(ex==='ktech') ktech(); }
   if(!cur().word&&!had){ var first=MFkit.words.list.filter(function(x){ return x.ok&&x.w==='Build'; })[0]; if(first){ var c=cur(); c.word=first.w; c.fishId=first.k; showWords(); noteWord(); } }
   draw(); })

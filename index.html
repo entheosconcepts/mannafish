@@ -2159,25 +2159,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
     <button class="bene feat" data-b="YADAH Collaborative" type="button"><span class="btag">Featured ministry</span><span class="bname">YADAH Collaborative</span><p>&ldquo;To know and be known.&rdquo; Gatherings, worship, prayer, evangelism, workshops, connection, community and more. Free gifts to fuel outreach. Ask about &ldquo;2 Fish&rdquo;&hellip; Get 2, Give 1.</p><span class="pick">Choose</span></button>
   </div>
   <p class="reach-chosen" id="reachChosen"></p>
-  <div class="invite-wrap">
-    <div class="invite-copy">
-      <span class="eyebrow">Optional add-on</span>
-      <h3>A co-labor invitation on the back.</h3>
-      <p>The front stays Scripture. The back is a word study of the same fish: the Greek and Hebrew, and verses to look up. Underneath, the sponsor&rsquo;s logo and two QR codes: one to their website, podcast or ministry, and one to today&rsquo;s free MannaFish devotional.</p>
-    </div>
-    <!-- Ken, 12 Oct: the back the same size as the front, laid out across. Ken, 2 Nov: show the word-study back the printer gets
-         (tools/print/make.mjs, landscape study back): Greek | word | Hebrew, six verses, then QR codes and the sponsor. Card 4.5 x 2.75 in -->
-    <!-- Ken, 17 Nov: the old "Make the back yours" form is gone; sponsors build their card, with a live preview, on /sponsor/ -->
-    <div class="cards42">
-      <figure><figcaption>Front</figcaption><div class="card42 sback"><img src="/sponsor/example-front.jpg" alt="A MannaFish decal on its card: Build, with Jude 1:20 around the word" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover"></div></figure>
-      <figure><figcaption>Back</figcaption><div class="card42 sback"><img src="/sponsor/example-back.jpg" alt="The back of the card: the Greek and Hebrew word study, four verses, the sponsor's logo and two QR codes" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover"></div></figure>
-    </div>
-    <p class="cardsize">Printed cards: 4.5 &times; 2.75 inches, front and back.</p>
-    <div class="cdz" id="cdz" style="text-align:center">
-      <h4>Design your card</h4>
-      <p class="cdnote" style="max-width:34em;margin:0 auto 14px">Choose your word, add your link and your logo (or your own words), and see your card as you build it. We save your work as you go, and you can add more than one design. Nothing is charged: we send you a proof to approve before anything is printed.</p>
-      <a class="cdadd" id="cdStart" href="/sponsor/" style="display:inline-block;text-decoration:none">Start your card &rarr;</a>
-    </div>
+  <div class="cta-row" style="margin-top:26px"><a class="btn btn-primary" href="#sponsor">Design your card</a></div>
   </div></section>
 
 <!-- Ken, 12 Oct: "a section to let people donate into our ministry ... sometimes the pond is just not going to be stocked."
@@ -2221,17 +2203,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <div class="fslist" id="fsList"></div><div class="cta-row"><button type="button" class="btn" id="fsMore" hidden></button></div>
 </div></section>
 
-<section class="section bundles" id="bundles"><div class="wrap">
-  <div class="section-head">
-    <span class="eyebrow">Keep one, give one</span>
-    <h2>Take MannaFish to your church, your shop, your team.</h2>
-    <p>The devotional is always free. Sponsor a bundle and we put MannaFish into people&rsquo;s hands at no cost to them &mdash; keep one, give one.</p>
-  </div>
-  <div class="tiers">
-    <div class="tier"><div class="k">Sponsor a group</div><h3>12 Scripture decals</h3><p class="does">Put a decal in the hands of a small group, class, or family &mdash; free to them, given by you.</p><a class="btn btn-ghost go" href="#give">Sponsor 12</a></div>
-    <div class="tier feat"><span class="badge">Most impact</span><div class="k">Sponsor an outreach</div><h3>100 Scripture decals</h3><p class="does">A hundred decals, given away free at a church, an event, or a community outreach. Keep one, give one.</p><a class="btn btn-primary go" href="#give">Sponsor 100</a></div>
-  </div>
-</div></section>
+
 
 <!-- Ken, 31 Oct: the shop section ("Everything we make is also available to buy") is removed: the fish are not for sale -->
 
@@ -2246,7 +2218,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
     <div class="min"><h3>Discipleship kits</h3><p>A ready-to-run set a leader can put in every hand: give a fish, teach 2 fish. A simple, repeatable way to disciple.</p></div>
   </div>
   <div class="cta-row" style="margin-top:34px">
-    <a class="btn btn-primary" href="#give">Sponsor a Gift Giver</a>
+    <a class="btn btn-primary" href="#sponsor">Sponsor decals</a>
     <a class="btn btn-ghost" href="#today">See the devotional again</a>
   </div>
 </div></section>
@@ -2300,7 +2272,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <p class="rnote" id="fishnetMsg" style="margin-top:14px;color:var(--foam-dim)"></p>
 </div></section>
 
-<section class="section brandmeaning"><div class="wrap">
+<section class="section brandmeaning" id="meaning"><div class="wrap">
   <div class="section-head"><span class="eyebrow">What the name means</span></div>
   <div class="pair">
     <div class="col">
@@ -2325,6 +2297,16 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   </div>
 </div></section>
 
+<!-- Ken, 17 Nov: "Design your card, sponsor your card. It needs to be on the website, not a separate page." The builder (sponsor/index.html?embed=1) sits here, in the page; it saves as the sponsor goes. -->
+<section class="section sponsorend" id="sponsor"><div class="wrap">
+  <div class="section-head" style="max-width:44em;margin-inline:auto;text-align:center">
+    <span class="eyebrow">Sponsor decals</span>
+    <h2>Design your card. Sponsor your card.</h2>
+    <p>Choose a word, add your link and your logo (or your own words), and watch your card come together. MannaFish decals are always given away free, and sponsors make that possible. We send you a proof to approve before anything is printed, and nothing is charged here.</p>
+  </div>
+  <iframe id="sponsorFrame" title="Design your card" loading="lazy" style="width:100%;min-height:880px;border:0;display:block;margin-top:10px;background:#000" allow="clipboard-write"></iframe>
+</div></section>
+
 <footer class="foot"><div class="wrap">
   <div>
     <div class="brand"><span class="wm-m">Manna</span><span class="wm-f">Fish</span></div>
@@ -2335,6 +2317,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
     <a href="#story">The 2 Fish Story</a>
     <a href="#shop">Shop</a>
     <a href="#ministry">Churches &amp; Business</a>
+    <a href="#sponsor">Sponsor decals</a>
     <a href="#give">Stock the pond</a>
     <a href="/privacy/">Privacy &amp; Terms</a>
   </div>
@@ -5903,4 +5886,41 @@ body.mfediting{padding-top:54px!important}
 /* ?do=tour|vision|stories|admin: the Bible page's three-dots menu opens these here (Ken, 8 Nov) */
 (function(){ var m=/[?&]do=([a-z]+)/.exec(location.search); if(!m) return; var map={tour:'tourBtn',vision:'vsBtn',stories:'smStories',admin:'smAdmin',gofish:'ftTwo'}, id=map[m[1]]; if(m[1]==='favs'){ setTimeout(function(){ if(window.MFbasket) MFbasket.open(); },1400); return; } if(!id) return;
   setTimeout(function(){ var b=document.getElementById(id); if(b) b.click(); },1400); })();
+</script>
+<style id="mf-acc-css">
+/* Ken, 17 Nov: everything under the devotional is too much: each part is a header that opens when tapped */
+.acc-closed{padding-block:0!important}.acc-closed>.wrap{display:none}
+.acc-h{display:flex;align-items:center;gap:14px;width:100%;max-width:980px;margin:0 auto;padding:20px 22px;text-align:left;background:none;border:0;border-top:1px solid rgba(255,255,255,.12);color:var(--foam,#eaf0f0);cursor:pointer;font:inherit}
+.acc-h:hover b{color:#fff}.acc-h:focus-visible{outline:2px solid var(--brass,#2a5fb0);outline-offset:-2px}
+.acc-h span{flex:1;min-width:0}.acc-h b{display:block;font:600 1.3rem/1.25 'Fraunces',Georgia,serif}.acc-h small{display:block;margin-top:3px;color:var(--foam-dim,#9fb2b6);font:400 .95rem/1.4 'Archivo',system-ui,sans-serif}
+.acc-h i{font-style:normal;font-size:1.7rem;line-height:1;color:var(--brass,#2a5fb0);transition:transform .2s}.acc-h[aria-expanded=true] i{transform:rotate(45deg)}
+.acc-open>.wrap{padding-top:6px}
+.sponsorend{border-top:1px solid rgba(255,255,255,.12)}
+</style>
+<script>
+/* ---- the parts under the devotional: a header each, closed until tapped (Ken, 17 Nov) ---- */
+(function(){
+  var LIST=[['reach','What is MannaFish?','Why it is free, and why we give'],['story','What is “2 Fish”?','Keep one, give one'],['reach2','Who can give MannaFish away?','Your church, a business, a podcast, someone you know'],
+    ['ministry','For churches and Christian businesses','Co-labor decals and discipleship kits'],['give','Help stock the pond','Gifts that keep MannaFish free for the next person'],['stories','Fish Stories','What God has done in your life'],
+    ['signup-section','A free word study by email','As often as you like'],['fishnet','Request a MannaFish Basket','A free display for your church, shop or office'],['meaning','What the name means','Manna and fish']];
+  function open(sec){ if(!sec||!sec.classList.contains('acc-closed')) return; sec.classList.remove('acc-closed'); sec.classList.add('acc-open'); var b=sec.querySelector(':scope>.acc-h'); if(b) b.setAttribute('aria-expanded','true'); }
+  function shut(sec){ sec.classList.add('acc-closed'); sec.classList.remove('acc-open'); var b=sec.querySelector(':scope>.acc-h'); if(b) b.setAttribute('aria-expanded','false'); }
+  LIST.forEach(function(r){ var sec=document.getElementById(r[0]); if(!sec) return; var b=document.createElement('button'); b.type='button'; b.className='acc-h'; b.setAttribute('aria-expanded','false'); b.setAttribute('aria-controls',r[0]);
+    b.innerHTML='<span><b>'+r[1]+'</b><small>'+r[2]+'</small></span><i aria-hidden="true">+</i>'; sec.insertBefore(b,sec.firstChild); sec.classList.add('acc-closed');
+    b.addEventListener('click',function(){ if(sec.classList.contains('acc-closed')) open(sec); else shut(sec); }); });
+  function openFor(id){ var t=id&&document.getElementById(id); if(!t) return; var sec=t.closest('section.acc-closed'); if(sec){ open(sec); setTimeout(function(){ t.scrollIntoView({behavior:'smooth',block:'start'}); },30); } }
+  document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.closest('a[href^="#"]'); if(!a) return; var id=a.getAttribute('href').slice(1); var t=document.getElementById(id); if(t&&t.closest('section.acc-closed')){ e.preventDefault(); openFor(id); } });
+  window.addEventListener('hashchange',function(){ openFor(location.hash.slice(1)); }); if(location.hash.length>1) setTimeout(function(){ openFor(location.hash.slice(1)); },400);
+})();
+/* ---- the sponsor builder at the bottom: the same builder as /sponsor/, in this page ---- */
+(function(){
+  var f=document.getElementById('sponsorFrame'); if(!f) return; var q=new URLSearchParams(location.search), src='/sponsor/?embed=1', sd=q.get('sd'), ex=q.get('example'), w=q.get('word');
+  if(sd&&/^[a-f0-9]{32}$/.test(sd)) src+='&d='+sd; if(ex) src+='&example='+encodeURIComponent(ex); if(w) src+='&word='+encodeURIComponent(w); f.src=src;
+  window.addEventListener('message',function(e){ if(e.origin!==location.origin||!e.data||!e.data.mfsb) return; var d=e.data;
+    if(d.mfsb==='h'&&d.h>300) f.style.height=Math.min(d.h+10,6000)+'px';
+    if(d.mfsb==='draft'){ try{ var u=new URL(location.href); if(d.id) u.searchParams.set('sd',d.id); else u.searchParams.delete('sd'); u.searchParams.delete('example'); u.searchParams.delete('word'); u.hash='#sponsor'; history.replaceState(null,'',u.pathname+u.search+u.hash); }catch(x){} } });
+  var tk=0; function follow(){ if(tk) return; tk=requestAnimationFrame(function(){ tk=0; var r=f.getBoundingClientRect(); try{ f.contentWindow.postMessage({mfsb:'y',y:Math.max(0,70-r.top)},location.origin); }catch(x){} }); }
+  window.addEventListener('scroll',follow,{passive:true}); window.addEventListener('resize',follow);
+  if(sd||ex||w) setTimeout(function(){ var s=document.getElementById('sponsor'); if(s) s.scrollIntoView({block:'start'}); },900);
+})();
 </script>

@@ -816,3 +816,5 @@ Names only. Never write the values. All are Netlify environment variables. A key
 - 2026-11-17 (push it live) · Ken: 'push it live'. Merged test-site into main (7994e234, same content as test-site) and pushed. The gate stays on (MF_LAUNCHED unset on the live site).
 
 - 2026-11-17 (texting held) · Ken: 'Yes, hold off on texting for now.' Sign-up records the text option as 'later' while Twilio is not set up (devo-subscribe.mjs); no texts are sent.
+
+- 2026-11-17 (the home page and the sponsor builder in the page) · Ken: 'Everything under the devotional is too much... collapsible with just a header... we need the sponsor thing easier to use down at the bottom... not buy now, pay now, order now... Design your card, sponsor your card. It needs to be on the website, not a separate page. Make it work.' Done in index.html (accordion, #sponsor, removed #bundles and the old Make-the-back-yours form), sponsor/index.html (embed mode, redirect), sponsor/builder pieces unchanged. Kept: every section's content, inside the headers; removed: the 12 and 100 decal tiers (the minimum is 100 and the builder asks for the number) and the old form and cart.
