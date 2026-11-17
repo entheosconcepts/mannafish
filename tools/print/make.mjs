@@ -25,7 +25,7 @@ const QR = require('qrcode');
 const HERE = path.dirname(fileURLToPath(import.meta.url)), ROOT = path.resolve(HERE, '../..'), PRINT = path.join(ROOT, 'print');
 const MM = 25.4, DPI = 1200;
 // the card, in millimetres: 4.5 x 2.75 in. The fish side is landscape; the back reads portrait (turn the card).
-const CARD = { w: 4.5 * MM, h: 2.75 * MM }, BLEED = MM / 8, KISS = MM / 8, SAFE = 3;
+const CARD = { w: 4.5 * MM, h: 2.75 * MM }, BLEED = MM / 8, KISS = MM / 8, CUTGAP = MM / 16, SAFE = 3;   // CUTGAP: the kiss cut is 1/16 in outside the fish (Ken, 17 Nov: 'less than 1/8 in'); KISS only keeps the fish size and the card margin as they were
 const PW = CARD.w + 2 * BLEED, PH = CARD.h + 2 * BLEED;   // a page with bleed, fish side
 const px = (mm, dpi = DPI) => Math.round(mm / MM * dpi);
 const f2 = (n) => Math.round(n * 1000) / 1000;
@@ -167,7 +167,7 @@ async function backHtml(run, codes, warn) {
       const st = { ...strongsOf(run.fish.word), ...strongsOf(run.fish.study || run.fish.word) };
       // Ken, 6 Nov: the strip on black, no white box; the QR codes inverted (white on black), away from the edges, each with its words under it in white
       const sideV = async (code, X) => X ? `<div class="col qv"><div class="sq">${await qr(code, true)}</div><div class="lab fit"><span>${esc(X.label || '').replace(/\n/g, '<br>')}</span></div></div>` : '<div class="col"></div>';
-      const l4b = (k, wd, lg, snd, m, sn) => `<div class="l4 l4b"><div class="ow4 sx" lang="${lg}"><span>${esc(wd)}</span></div><div class="r2 fit"><span><b class="k">${k}</b> (${esc(snd)})</span></div><div class="mn4 fit"><span>${esc(m)}</span></div>${sn ? `<div class="st4">${esc((B.words && B.words.strongs) || 'STRONG’S')} ${esc(sn)}</div>` : ''}</div>`;
+      const l4b = (k, wd, lg, snd, m, sn) => `<div class="l4 l4b"><div class="ow4 sx" lang="${lg}"><span>${esc(wd)}</span></div><div class="r2 fit"><span><b class="k">${k}</b> (${esc(snd)})</span></div><div class="mn4"><span>${esc(m)}</span></div>${sn ? `<div class="st4">${esc((B.words && B.words.strongs) || 'STRONG’S')} ${esc(sn)}</div>` : ''}</div>`;
       const l4 = (k, wd, lg, snd, m, sn) => `<div class="l4"><div class="r1 fit"><span class="rr"><span class="k">${k}</span><span class="ow" lang="${lg}">${esc(wd)}</span><span class="tr">(${esc(snd)})</span></span></div><div class="mn4 fit"><span>${esc(m)}</span></div>${sn ? `<div class="st4">${esc((B.words && B.words.strongs) || 'STRONG’S')} ${esc(sn)}</div>` : ''}</div>`;
       return `<div class="pg" style="width:${f2(W + 2 * BLEED)}mm;height:${f2(H + 2 * BLEED)}mm"><div class="card" style="left:${BLEED}mm;top:${BLEED}mm;width:${W}mm;height:${H}mm">
   <div class="wt4 fit${big ? ' wbig' : ''}" style="top:${big ? 0.3 : 0.9}mm;height:${big ? 9 : 6.6}mm"><span>${esc(B.heading || d.title)}</span></div>
@@ -260,7 +260,7 @@ const BACKCSS = () => `@font-face{font-family:'Lilita One';src:url(${font('lilit
 .strip.inv .qv .lab{height:5.8mm;width:100%;color:#fff;font-size:2.6mm;line-height:1.05;white-space:normal;align-items:flex-start;text-align:center}
 .strip.inv .mid{justify-content:space-between;padding:0}.strip.inv .sb{color:#fff;font-size:2.8mm;margin:0;line-height:1}.strip.inv .sl{flex:none;height:17.4mm}
 .rf4{left:3.2mm!important;right:3.2mm!important;grid-auto-rows:auto;align-content:space-around;row-gap:1mm}.rf4 div{padding-top:.4mm;overflow:visible}.rf4 i{font-size:1.8mm;line-height:1.05;margin-top:0}.rf4 b{font-size:2.3mm;line-height:1.05}
-.wt4.wbig{font-size:9mm}.l4b{gap:.3mm;padding-bottom:.4mm}.l4b .ow4{font:400 5.2mm/1 'MFGkHb',serif;height:6mm;width:100%;display:flex;align-items:center;justify-content:center;white-space:nowrap}.l4b .ow4 span{display:inline-block;flex:none;transform-origin:center}.l4b .r2{width:100%;font:italic 400 3.9mm/1.1 'Spectral',serif;color:#cfd8dc;text-transform:uppercase;white-space:nowrap;text-align:center;height:4.2mm}.l4b .r2 .k{font:700 1em/1 'Archivo Narrow',sans-serif;font-style:normal;letter-spacing:.1em;color:#8fb8ff}.l4b .mn4{height:3.4mm;font-size:2.9mm}.strip.inv.up .sb{text-transform:uppercase;font-size:2.7mm}.strip.inv.up .sl{height:18mm}.rf.rfbig b{text-transform:uppercase}.strip.inv.up .lab{text-transform:uppercase;height:7.6mm;font-size:2.5mm}.strip.inv.up{grid-template-columns:27mm 1fr 27mm}
+.wt4.wbig{font-size:9mm}.l4b{gap:.3mm;padding-bottom:.4mm}.l4b .ow4{font:400 5.2mm/1 'MFGkHb',serif;height:6mm;width:100%;display:flex;align-items:center;justify-content:center;white-space:nowrap}.l4b .ow4{position:relative;top:-.75mm}.l4b .ow4[lang=he]{top:-1mm}.l4b .ow4 span{display:inline-block;flex:none;transform-origin:center}.l4b .r2{width:100%;font:italic 400 3.9mm/1.1 'Spectral',serif;color:#cfd8dc;white-space:nowrap;text-align:center;height:4.2mm}.l4b .r2 .k{font:700 1em/1 'Archivo Narrow',sans-serif;font-style:normal;letter-spacing:.1em;color:#8fb8ff}.l4b .mn4{height:3.4mm;font:italic 600 2.3mm/1.1 'Archivo Narrow',sans-serif;text-transform:uppercase;letter-spacing:.05mm}.strip.inv.up .sb{text-transform:uppercase;font-size:2.7mm}.strip.inv.up .sl{height:18mm}.rf.rfbig b{text-transform:uppercase}.strip.inv.up .lab{text-transform:uppercase;height:7.6mm;font-size:2.5mm}.strip.inv.up{grid-template-columns:27mm 1fr 27mm}
 .rf.rfbig{grid-template-columns:1fr 1fr;gap:.5mm 3mm;align-content:space-between}.rfbig div{padding-top:.3mm}.rf.rfbig b{font-size:2.6mm}.rf.rfbig i{font:700 2.5mm/1.1 'Archivo Narrow',sans-serif;font-style:normal;text-transform:uppercase;letter-spacing:.08mm;margin-top:.3mm}
 .rf i{display:block;font:italic 400 2mm/1.15 'Spectral',serif;color:#e6ecef;margin-top:.3mm}`;
 // words that don't fit get smaller until they do
@@ -298,7 +298,7 @@ async function make(id, browser) {
   let s = Math.min(maxW / box.w, maxH / box.h); if (run.fish.width_mm) s = Math.min(s, run.fish.width_mm / box.w);
   const fw = 4000 * s, place = { x: BLEED + (CARD.w - box.w * s) / 2 - box.x * s, y: BLEED + (CARD.h - box.h * s) / 2 - box.y * s, w: fw };
   const fishMM = { w: box.w * s, h: box.h * s };
-  const cut = await page.evaluate(([s2, p, pg, r]) => MFcut(s2, p, pg, r, 24), [src, place, { w: PW, h: PH }, KISS]);
+  const cut = await page.evaluate(([s2, p, pg, r]) => MFcut(s2, p, pg, r, 24), [src, place, { w: PW, h: PH }, CUTGAP]);
   const cutD = 'M' + cut.map((p) => f2(p[0]) + ' ' + f2(p[1])).join(' L') + ' Z';
 
   const svgPage = (inner, w = PW, h = PH) => `<svg xmlns="http://www.w3.org/2000/svg" width="${f2(w)}mm" height="${f2(h)}mm" viewBox="0 0 ${f2(w)} ${f2(h)}">${inner}</svg>`;
@@ -381,7 +381,7 @@ Card: 4.5 x 2.75 in (114.3 x 69.85 mm), custom size (not 2.8 in). Every file inc
 
 1. **${id}-1-decal-white-ink** : clear vinyl, white ink only. White where the fish is white; the letters and everything else are clear (no ink).
 2. **${id}-2-backing-front** : printed on the FRONT of the backing paper, under the decal (not the back of the paper). Black over the whole card, the same fish in white, lined up exactly under the decal.
-${run.send_cut_file ? `3. **${id}-3-cut-lines** : two spot colours. **CutContour** (magenta) is the kiss cut, through the vinyl only, 1/8 in outside the fish. **ThroughCut** (cyan) is the card edge, cut through everything. The SVG has the same two layers.` : `3. **Cut lines (R0015-3-cut-lines)** : THE FRONT DECAL IS KISS CUT. Cut through the clear vinyl only, in the shape of the fish, about 1/8 in (3 mm) or less outside the fish (magenta CutContour). Do not cut the backing paper there, so the card stays whole when the decal is peeled off. Then cut the card edge all the way through at 4.5 x 2.75 in (blue ThroughCut). You know the right distance for your machines; our cut line file is ready if you would rather use it.`}
+${run.send_cut_file ? `3. **${id}-3-cut-lines** : two spot colours. **CutContour** (magenta) is the kiss cut, through the vinyl only, 1/16 in outside the fish. **ThroughCut** (cyan) is the card edge, cut through everything. The SVG has the same two layers.` : `3. **Cut lines (R0015-3-cut-lines)** : THE FRONT DECAL IS KISS CUT. Cut through the clear vinyl only, in the shape of the fish, about 1/8 in (3 mm) or less outside the fish (magenta CutContour). Do not cut the backing paper there, so the card stays whole when the decal is peeled off. Then cut the card edge all the way through at 4.5 x 2.75 in (blue ThroughCut). You know the right distance for your machines; our cut line file is ready if you would rather use it.`}
 4. **${id}-4-back** : printed on the BACK of the backing paper. ${LAND ? 'It reads upright held the same way as the fish side (landscape).' : 'It reads upright when the card is turned on its side (portrait).'}
 
 The decal's white ink is the PNG (1200 dpi, transparent where there is no ink); the PDF holds the same picture. Colours are RGB: please convert to your press colours, and use a rich black for the black areas if that is what you recommend.
