@@ -348,7 +348,8 @@
     "id": "X004",
     "word": "BUILD",
     "lang": "en",
-    "study": "BUILD-KT"
+    "study": "BUILD-KT",
+    "svg": "assets/ktech-build-bigger.svg"
    },
    "sponsor": "K-Tech Construction",
    "anonymous": false,
@@ -361,7 +362,7 @@
     "The sponsor logo is a stand-in (assets/ktech-round-logo-DRAFT.svg). Upload the original logo before printing.",
     "Status is \"draft\": approve the proof before ordering."
    ],
-   "made": "2026-11-17T19:27:07.310Z"
+   "made": "2026-11-17T19:35:12.685Z"
   }
  ]
 }

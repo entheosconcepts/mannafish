@@ -7,7 +7,8 @@
   "id": "X004",
   "word": "BUILD",
   "lang": "en",
-  "study": "BUILD-KT"
+  "study": "BUILD-KT",
+  "svg": "assets/ktech-build-bigger.svg"
  },
  "sponsor": {
   "name": "K-Tech Construction",
@@ -30,5 +31,5 @@
   "orientation": "landscape",
   "layout": "stack"
  },
- "notes": "K-Tech card with the larger all-caps back: 4 verses with enough of each verse to carry the meaning. QR codes go straight to their addresses."
+ "notes": "K-Tech card with the larger all-caps back: 4 verses with enough of each verse to carry the meaning. QR codes go straight to their addresses. Build word 700 tall (the standard 5-letter size is 653; the old Build was 594 after the tall-letter reduction). Print only: the website fish is not changed."
 }
