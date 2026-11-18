@@ -119,3 +119,5 @@ Not needed for launch: texting (carrier registration), app stores, sponsor prici
 - 17 Nov, Ken: cut the home page further. Visible below the devotional now: What is MannaFish?, What is '2 Fish'?, Get the free word study by email (all closed headers), then the sponsor builder. Hidden (kept in the file because their code looks for them, not shown): Who can give MannaFish away, Help stock the pond, Fish Stories (still opens from the menu's Stories item), For churches and Christian businesses, Request a MannaFish Basket, What the name means. Footer links to the cut parts removed. Ken: testimonies belong somewhere else (the Stories item in the menu); stock the pond, baskets and the church/business page are not in place yet.
 
 - 18 Nov, Ken: the words above the sponsor logo can be longer (up to 100 letters, two lines, Enter for a line break); the card shrinks them to fit and makes the logo a little smaller under them; new suggestion 'A free gift made possible by'. Test site only.
+
+- 18 Nov, Ken: 'push it live' again: `main` = test-site (merge, same content). Gate still on.
