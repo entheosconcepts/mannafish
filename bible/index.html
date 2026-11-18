@@ -394,6 +394,7 @@ body.lay-t .par .txt,body.lay-t .par3 .txt,body.lay-t .par4 .txt{font-size:calc(
 .rail .dnav,.dnav{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:4px 6px 10px;min-height:160px;overflow:auto;overscroll-behavior:contain}
 body.lay-l .rail .dnav{flex:1 1 auto}
 }
+body.par .bar #where,body.par .bar #ver,body.par .bar #say{display:none}   /* Ken, 18 Nov: side by side, every column has its own book, version and Hear */
 </style>
 <script src="/fish-lang/tabbar.js" defer></script>
 <script src="/fish-lang/ambient.js"></script>
@@ -422,14 +423,10 @@ body.lay-l .rail .dnav{flex:1 1 auto}
 <main id="main">
   <!-- Ken, 8 Nov: the left rail (desktop) / top (phone): today's MannaFish as the home page's own flip card, and on a desktop the books -->
   <aside class="rail" id="rail">
-    <section class="tfish" id="tfish" aria-label="Today's MannaFish">
-      <button type="button" class="tfh" id="tfT" aria-expanded="true" aria-controls="tfB"><span class="tfk">Today&rsquo;s MannaFish</span><b id="tfW"></b><span class="tfc" aria-hidden="true">&#9662;</span></button>
-      <div class="tfb" id="tfB"><iframe class="tfcard" id="tfF" scrolling="no" title="Today&rsquo;s MannaFish: tap the fish to flip it" allow="autoplay"></iframe></div>
-    </section>
     <nav class="dnav" id="dnav" aria-label="Books and chapters" hidden></nav>
   </aside>
   <!-- Ken, 8 Nov: make it clear that under the fish is the entire Bible -->
-  <section class="bibhd" id="bibhd" aria-label="The MannaFish Bible app">
+  <section class="bibhd" id="bibhd" aria-label="The MannaFish Bible app" hidden>
     <h2>The MannaFish Bible App</h2>
     <p>All 66 books, in any translation. Read it or listen to it, and put two, three or four translations side by side.</p>
   </section>
@@ -1455,14 +1452,14 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   /* Ken, 8 Nov: the three dots list the same things they did on the home page (Bible, Time with God, The vision, Bible in a Year, Fish stories, Take a tour ...); the Bible's own tools, notes and recent chapters are the last item */
   function siteMenuUI(){ var it=function(k,ic,t,sm){ return '<button type="button" class="mi" role="menuitem" data-site="'+k+'"><span class="ic">'+ic+'</span><span class="tx">'+t+'<small>'+sm+'</small></span></button>'; };
     var dk=root.getAttribute('data-mode')!=='light', tl=document.body.classList.contains('tools-open'), sd=$('studyB').getAttribute('aria-pressed')==='true';
-    $('menu').innerHTML=it('mode',dk?'&#9728;&#xFE0E;':'&#9790;&#xFE0E;',dk?'Light mode':'Dark mode','Change the page colours')+it('tools','&#129520;&#xFE0E;',tl?'Hide the tools':'Bible tools','Side by side, versions, columns, compare')+it('study','&alpha;',sd?'Turn off word study':'Word study','Hebrew and Greek behind the words')+'<hr>'+it('dash','&#127968;&#xFE0E;','My dashboard','Your own icons, priority list and calendar')+it('bible','&#10013;&#xFE0E;','Bible','Every book and chapter')+it('pray','&#128330;&#xFE0E;','Time with God','A few quiet minutes of prayer')+it('vision','&#9654;&#xFE0E;','The vision','Listen &middot; 3 min')
+    $('menu').innerHTML=it('bible','&#10013;&#xFE0E;','Bible','Every book and chapter')+it('today','&#128031;&#xFE0E;','Today&rsquo;s MannaFish','Tap the fish to flip it')+'<hr>'+it('mode',dk?'&#9728;&#xFE0E;':'&#9790;&#xFE0E;',dk?'Light mode':'Dark mode','Change the page colours')+it('tools','&#129520;&#xFE0E;',tl?'Hide the tools':'Bible tools','Side by side, versions, columns, compare')+it('study','&alpha;',sd?'Turn off word study':'Word study','Hebrew and Greek behind the words')+'<hr>'+it('dash','&#127968;&#xFE0E;','My dashboard','Your own icons, priority list and calendar')+it('pray','&#128330;&#xFE0E;','Time with God','A few quiet minutes of prayer')+it('vision','&#9654;&#xFE0E;','The vision','Listen &middot; 3 min')
       +it('plan','&#128214;&#xFE0E;','Bible in a Year','Day and night readings, 2 Fish a day')+it('stories','&#128031;&#xFE0E;','Fish stories','Share your catch')+it('catch','&#127907;&#xFE0E;','Catch a fish and share it','Random, or pick one')+it('tour','&#10024;&#xFE0E;','Take a tour','How it works')
-      +it('match','&#127924;&#xFE0E;','MannaFish Memory','Match a pair, then go fish')+it('translate','&#128172;&#xFE0E;','Translator','Talk with anyone')+it('hubs','&#128205;&#xFE0E;','MannaFish Hubs','Pick up free, or sponsor one')+it('about','&#128065;&#xFE0E;','About MannaFish','The vision, a video, where to start')
+      +it('match','&#127924;&#xFE0E;','MannaFish Memory','Match a pair, then go fish')+it('translate','&#128172;&#xFE0E;','Translator','Talk with anyone')+it('hubs','&#128205;&#xFE0E;','MannaFish Hubs','Pick up free, or sponsor one')+it('about','&#128065;&#xFE0E;','About MannaFish','The MannaFish Bible App: all 66 books, in any translation. Read it or listen, and put two, three or four translations side by side. The vision, a video, where to start')
       +'<hr>'+it('prof','&#128100;&#xFE0E;','My stuff','Prayers, notes, highlights, orders, history')+it('set','&#9881;&#xFE0E;','Settings','Plan, language, light or dark, listening')+it('acct','&#128273;&#xFE0E;','Sign in','Keep your notes on every device')
       +it('fb','&#128172;&#xFE0E;','Tell us what you think','What you like, what confused you')+it('admin','&#128736;&#xFE0E;','Admin view','For testing: edit tools and admin pages')
       +'<hr>'+it('chapter','&#129520;&#xFE0E;','This chapter','Notes, recent chapters and Bible tools'); }
   function siteAct(k){ closeMenu(); var go2=function(u){ location.href=u; };
-    if(k==='mode'||k==='tools'||k==='study'){ var tb=$(k==='mode'?'mode':k==='tools'?'toolsRound':'studyB'); if(tb) tb.click(); } else if(k==='dash') go2('/dash/'); else if(k==='bible'){ var tb=$('titleB'); if(tb) tb.click(); } else if(k==='pray') go2('/pray/'); else if(k==='vision') go2('/?today=1&do=vision'); else if(k==='plan') go2('/plan/'); else if(k==='stories') go2('/?today=1&do=stories'); else if(k==='catch') go2('/?today=1&do=catch'); else if(k==='tour') go2('/?today=1&do=tour');
+    if(k==='mode'||k==='tools'||k==='study'){ var tb=$(k==='mode'?'mode':k==='tools'?'toolsRound':'studyB'); if(tb) tb.click(); } else if(k==='dash') go2('/dash/'); else if(k==='today') go2('/?today=1'); else if(k==='bible'){ var tb=$('titleB'); if(tb) tb.click(); } else if(k==='pray') go2('/pray/'); else if(k==='vision') go2('/?today=1&do=vision'); else if(k==='plan') go2('/plan/'); else if(k==='stories') go2('/?today=1&do=stories'); else if(k==='catch') go2('/?today=1&do=catch'); else if(k==='tour') go2('/?today=1&do=tour');
     else if(k==='match') go2('/go/'); else if(k==='translate') go2('/translate/'); else if(k==='hubs') go2('/hubs/'); else if(k==='about') go2('/vision/'); else if(k==='prof'||k==='acct') go2('/you/'); else if(k==='set') go2('/you/#st'); else if(k==='admin') go2('/?today=1&do=admin');
     else if(k==='fb'){ if(window.MFfeedback) MFfeedback.open(); } else if(k==='chapter'){ closeAct(); closeWc(); menuUI(); $('menu').hidden=false; $('menu').scrollTop=0; $('dots').setAttribute('aria-expanded','true'); } }
   $('dots').addEventListener('click',function(e){ e.stopPropagation(); if(menuOpen()){ closeMenu(); return; } closeAct(); closeWc(); siteMenuUI(); $('menu').hidden=false; $('menu').scrollTop=0; $('dots').setAttribute('aria-expanded','true'); });
