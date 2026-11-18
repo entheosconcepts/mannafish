@@ -20,7 +20,7 @@ h1{font-size:1.5rem;margin:6px 0 14px}.o{border:1px solid rgba(255,255,255,.16);
 <body><main>
 <h1>Sponsorship history</h1>
 <p class="empty">Every request from the sponsor page: who ordered, who is sponsoring, who it is for, front and back, and every change. Only you can see this page.</p>
-<div id="tools" hidden><input type="search" id="q" placeholder="Search a name, word, place, order number…" style="width:100%;margin:6px 0"> <select id="flt"><option value="">All requests</option><option value="nom">Nominations to approve</option><option value="wait">Waiting for the place to answer</option><option value="near">Words sponsored nearby</option><option value="new">New / talking</option><option value="proof">Proof</option><option value="printing">Printing</option><option value="done">Done</option></select></div>
+<div id="tools" hidden><input type="search" id="q" placeholder="Search a name, word, place, order number…" style="width:100%;margin:6px 0"> <select id="flt"><option value="">All requests</option><option value="nom">Nominations to approve</option><option value="due">Follow up today (call / mail)</option><option value="wait">Waiting for the place to answer</option><option value="near">Words sponsored nearby</option><option value="new">New / talking</option><option value="proof">Proof</option><option value="printing">Printing</option><option value="done">Done</option></select></div>
 <div id="out"><p class="empty">Opening…</p></div>
 </main>
 <script src="/print/kit/kit.js"></script>
@@ -42,7 +42,7 @@ h1{font-size:1.5rem;margin:6px 0 14px}.o{border:1px solid rgba(255,255,255,.16);
   function nearby(o,x){ var out=[], w=where(o,x); if(!w) return out; ALL.forEach(function(p){ if(p.id===o.id&&0) return; (p.items||[]).forEach(function(y,j){ if(p===o&&y===x) return; if(String(y.title).toLowerCase()!==String(x.title).toLowerCase()) return; var v=where(p,y); if(!v) return;
       if(v===w||(zip3(w)&&zip3(w)===zip3(v))||v.indexOf(w)>=0||w.indexOf(v)>=0) out.push({o:p,y:y}); }); }); return out; }
   function spons(o,x){ return x.name||(x.cfg&&(x.cfg.name||x.cfg.text))||(o.contact&&o.contact.name)||''; }
-  function card(o){ var c=o.contact||{}, flags=0, w=0, wt=0;
+  function card(o){ var c=o.contact||{}, flags=0, w=0, wt=0, due=0;
     var items=(o.items||[]).map(function(x,idx){ var n=idx+1, pl=place(x), nm=x.nom, nb=nearby(o,x), h='';
       if(nb.length) flags++; if(nm&&nm.status==='pending') w++; if(nm&&nm.status==='invited') wt++;
       h+='<div class="it">'+(x.logo?'<a href="'+x.logo+'" download="'+esc(o.id+'-'+(x.name||'logo'))+'"><img src="'+x.logo+'" alt="logo"></a>':'')
@@ -50,14 +50,17 @@ h1{font-size:1.5rem;margin:6px 0 14px}.o{border:1px solid rgba(255,255,255,.16);
         +(nm?'<div class="nm" data-o="'+esc(o.id)+'" data-i="'+idx+'">Nomination of <b>'+esc(pl)+'</b>: <b class="s">'+esc(NM[nm.status]||nm.status)+'</b>'+(nm.sentAt?' · invited '+new Date(nm.sentAt).toLocaleDateString():'')
           +(x.dest.type==='new'&&x.dest.nominee.email||x.dest.contactEmail?'<br>Email: '+esc(x.dest.type==='new'?x.dest.nominee.email:x.dest.contactEmail):'')+(x.dest.nominee&&x.dest.nominee.name?' ('+esc(x.dest.nominee.name)+')':'')
           +(nm.status==='accepted'&&nm.ship?'<br>Ship to: '+esc(nm.contact.name)+' · '+esc(nm.contact.email)+' · '+esc(nm.ship.line1+(nm.ship.line2?', '+nm.ship.line2:'')+', '+nm.ship.city+' '+nm.ship.state+' '+nm.ship.zip):'')
-          +'<br>'+(nm.status==='pending'?'<button class="ok" data-act="send">Approve and send the invitation</button>':nm.status==='invited'?'<button data-act="resend">Send it again</button>':'')
+          +(nm.status==='invited'&&nm.sentAt?(function(){ var d=Math.floor((Date.now()-nm.sentAt)/864e5), t=[]; if(d>=2&&!nm.called){ t.push('<b style="color:#f5d76e">CALL them today</b>'); due++; } if(d>=5&&!nm.mailed){ t.push('<b style="color:#f5d76e">MAIL something</b>'); due++; } var ph=x.dest.type==='new'?x.dest.nominee.phone:x.dest.contactPhone;
+            return '<br>Waiting '+d+' day'+(d===1?'':'s')+(nm.reminded?' · reminder emailed':'')+(ph?' · phone '+esc(ph):' · no phone yet')+(t.length?' · '+t.join(' · '):''); })():'')
+          +(nm.log&&nm.log.length?'<br><small>'+nm.log.map(function(l){ return new Date(l.at).toLocaleDateString()+' '+esc(l.what); }).join(' · ')+'</small>':'')
+          +'<br>'+(nm.status==='invited'?'<button data-act="called">I called them</button><button data-act="mailed">I mailed them something</button><button data-act="setPhone">Set phone</button>':'')+(nm.status==='pending'?'<button class="ok" data-act="send">Approve and send the invitation</button>':nm.status==='invited'?'<button data-act="resend">Send it again</button>':'')
           +(nm.status!=='accepted'&&nm.status!=='declined'?'<button data-act="setEmail">Set the email</button><button data-act="decline">Mark declined</button>':'')+'<span class="st"></span></div>':'')
         +(nb.length?'<div class="near">⚠ “'+esc(x.title)+'” is also sponsored nearby: '+nb.map(function(m){ return esc(spons(m.o,m.y))+' ('+esc(m.o.id)+', '+esc(where(m.o,m.y))+')'; }).join('; ')+'</div>':'')
         +'<div><button type="button" class="allbtn" data-pv="'+esc(o.id)+'" data-n="'+n+'">Show front and back</button></div><div class="pvs" hidden></div></span>'
         +(x.cfg?'<span class="dl" data-code="'+esc(o.id+'-'+n)+'"><button type="button" data-o="'+esc(o.id)+'" data-n="'+n+'">Download print files (.zip)</button><label><input type="checkbox" class="direct"> QR goes straight to the link (scans not counted)</label><span class="st"></span><span class="scans"></span></span>':'')+'</div>'; return h; }).join('');
-    var tags=[]; if(w) tags.push('nom'); if(wt) tags.push('wait'); if(flags) tags.push('near'); if(o.status==='new'||o.status==='talking') tags.push('new'); tags.push(o.status);
+    var tags=[]; if(w) tags.push('nom'); if(wt) tags.push('wait'); if(flags) tags.push('near'); if(due) tags.push('due'); if(o.status==='new'||o.status==='talking') tags.push('new'); tags.push(o.status);
     var rev=(o.rev||[]).length>1?'<div class="rev"><b>Changes:</b> '+o.rev.map(function(r){ return new Date(r.at).toLocaleString()+' · '+esc(r.what); }).join('<br>')+'</div>':'';
-    return '<div class="o" data-tags="'+tags.join(' ')+'" data-txt="'+esc(JSON.stringify([o.id,c,(o.items||[]).map(function(x){ return [x.title,x.name,place(x),x.url,x.cfg&&x.cfg.text]; })]).toLowerCase())+'"><h2>'+esc(o.id)+' · '+o.total+' decals <small>'+new Date(o.at).toLocaleString()+(w?' · '+w+' to approve':'')+(flags?' · ⚠ nearby':'')+'</small>'
+    return '<div class="o" data-tags="'+tags.join(' ')+'" data-txt="'+esc(JSON.stringify([o.id,c,(o.items||[]).map(function(x){ return [x.title,x.name,place(x),x.url,x.cfg&&x.cfg.text]; })]).toLowerCase())+'"><h2>'+esc(o.id)+' · '+o.total+' decals <small>'+new Date(o.at).toLocaleString()+(w?' · '+w+' to approve':'')+(flags?' · ⚠ nearby':'')+(due?' · ☎ follow up':'')+'</small>'
       +'<select data-id="'+esc(o.id)+'">'+['new','talking','proof','printing','done'].map(function(s){ return '<option'+(s===o.status?' selected':'')+'>'+s+'</option>'; }).join('')+'</select></h2>'
       +((o.items||[]).filter(function(x){ return x.cfg; }).length>1?'<div><button type="button" class="allbtn" data-all="'+esc(o.id)+'">Download all '+o.items.length+' cards (one zip each)</button></div>':'')
       +'<div>Ordered by <b>'+esc(c.name)+'</b> · <a href="mailto:'+esc(c.email)+'">'+esc(c.email)+'</a>'+(c.phone?' · '+esc(c.phone):'')+(c.city?' · '+esc(c.city):'')+'</div>'+(c.note?'<p class="note">'+esc(c.note)+'</p>':'')+items+rev+'</div>'; }
@@ -83,6 +86,7 @@ h1{font-size:1.5rem;margin:6px 0 14px}.o{border:1px solid rgba(255,255,255,.16);
   out.addEventListener('change',function(e){ var s=e.target.closest('select[data-id]'); if(!s) return;
     fetch('/api/card-order',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({k:key(),id:s.dataset.id,status:s.value})}); });
   out.addEventListener('click',function(e){ var b=e.target.closest('button[data-act]'); if(!b) return; var bx=b.closest('.nm'), act=b.dataset.act, body={k:key(),id:bx.dataset.o,nom:{i:+bx.dataset.i,action:act}}, st=bx.querySelector('.st');
+    if(act==='setPhone'){ var ph=prompt('Phone number of the place:'); if(!ph) return; body.nom.phone=ph; }
     if(act==='setEmail'||(act==='send'&&!/Email:/.test(bx.textContent))){ var em=prompt('Email address of the place:'); if(!em) return; body.nom.email=em; if(act==='setEmail'){} }
     if(act==='send'&&!confirm('Send the invitation email to '+(body.nom.email||'the place')+' now?')) return; if(act==='resend'&&!confirm('Send the invitation again?')) return; if(act==='decline'&&!confirm('Mark this nomination declined?')) return;
     b.disabled=true; fetch('/api/card-order',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||'failed'); return j; }); }).then(function(){ load(); }).catch(function(er){ b.disabled=false; st.textContent=' '+er.message; }); });

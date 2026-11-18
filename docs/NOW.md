@@ -143,3 +143,4 @@ Not needed for launch: texting (carrier registration), app stores, sponsor prici
 - 18 Nov, Ken: 'push it live': `main` = test-site (merge, same content): the front/back verse swap. Gate still on.
 
 **18 Nov, nominations built (test site):** sponsors can pick who receives the decals (themselves, a Hub, or a new business). Nothing emails a business until Ken presses Approve in /print/orders/ (now the Sponsorship history). Sponsors can edit a request until printing. Waiting on Ken: the Hub vs Embassy word, nominee email wording OK, package costs (docs/HUB-PACKAGE.md), then 'push it live'.
+Nominations that get no answer: reminder email at 2 days, then a daily 'call / mail them' list for Ken (admin page and email).

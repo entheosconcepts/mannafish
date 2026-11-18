@@ -43,7 +43,7 @@ export function cleanItem(x) {
   const d = x.dest && typeof x.dest === 'object' ? x.dest : {};
   let dest = { type: 'self' };
   if (d.type === 'hub') dest = { type: 'hub', hubId: clean(d.hubId, 40), hubName: clean(d.hubName, 80), city: clean(d.city, 60) };
-  if (d.type === 'new') { const n = d.nominee || {}, em = clean(n.email, 120).toLowerCase(); dest = { type: 'new', nominee: { org: clean(n.org, 80), name: clean(n.name, 80), email: EMAIL.test(em) ? em : '', city: clean(n.city, 60) } }; }
+  if (d.type === 'new') { const n = d.nominee || {}, em = clean(n.email, 120).toLowerCase(); dest = { type: 'new', nominee: { org: clean(n.org, 80), name: clean(n.name, 80), email: EMAIL.test(em) ? em : '', phone: clean(n.phone, 40), city: clean(n.city, 60) } }; }
   return { fish: clean(x.fish, 40), title: clean(x.title, 40), name: clean(x.name, 60), url: link, label: clean(x.label, 50), logo, qty, ...(cfg ? { cfg } : {}), dest };
 }
 const destKey = (d) => d.type === 'hub' ? 'hub:' + d.hubId + d.hubName : d.type === 'new' ? 'new:' + (d.nominee.org + '|' + d.nominee.email).toLowerCase() : 'self';
@@ -87,6 +87,8 @@ export default async (req, context) => {
     if (b.nom) {
       const i = Number(b.nom.i), it = o.items[i]; if (!it || !it.nom) return bad('No such nomination', 404); const n = it.nom, act = b.nom.action;
       if (act === 'setEmail') { const em = clean(b.nom.email, 120).toLowerCase(); if (!EMAIL.test(em)) return bad('That email does not look right.', 400); if (it.dest.type === 'new') it.dest.nominee.email = em; else it.dest.contactEmail = em; await store.setJSON('o/' + o.id, o); return Response.json({ ok: true }, { headers: NS }); }
+      if (act === 'called' || act === 'mailed' || act === 'note') { (n.log = n.log || []).push({ at: Date.now(), what: act === 'called' ? 'phone call made' : act === 'mailed' ? 'something mailed' : clean(b.nom.note, 200) }); if (act === 'called') n.called = Date.now(); if (act === 'mailed') n.mailed = Date.now(); await store.setJSON('o/' + o.id, o); return Response.json({ ok: true }, { headers: NS }); }
+      if (act === 'setPhone') { if (it.dest.type === 'new') it.dest.nominee.phone = clean(b.nom.phone, 40); else it.dest.contactPhone = clean(b.nom.phone, 40); await store.setJSON('o/' + o.id, o); return Response.json({ ok: true }, { headers: NS }); }
       if (act === 'decline') { n.status = 'declined'; n.at = Date.now(); await store.setJSON('o/' + o.id, o); return Response.json({ ok: true }, { headers: NS }); }
       if (act === 'send' || act === 'resend') {
         const to = (it.dest.type === 'new' ? it.dest.nominee.email : it.dest.contactEmail) || clean(b.nom.email, 120).toLowerCase(); if (!EMAIL.test(to)) return bad('Add the email address of the place first.', 400);
