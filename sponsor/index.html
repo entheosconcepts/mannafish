@@ -93,8 +93,8 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
     <div id="by-logo"><button type="button" class="drop" id="logopick"><img id="logoprev" alt="" hidden><span id="logoname">Choose your logo file here (PNG, JPG or SVG). We size it for you.</span></button><input type="file" id="logo" accept="image/png,image/jpeg,image/svg+xml,image/webp" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" tabindex="-1" aria-hidden="true"></div>
     <div id="by-name" hidden><label for="name">Your name or business</label><input type="text" id="name" maxlength="60" placeholder="K-Tech Construction"></div>
     <div id="by-text" hidden><label for="text">Your words</label><textarea id="text" maxlength="120" placeholder="Jesus&#10;or a short prayer"></textarea></div>
-    <label for="credit">The words above it</label><textarea id="credit" maxlength="100" rows="2" style="min-height:64px">Sponsored by</textarea>
-    <p class="hint">Up to two lines. Press Enter to start the second line, or just keep typing: the card fits the words in. Try: A free gift made possible by K-Tech Construction.</p>
+    <label for="credit">The words above it</label><input type="text" id="credit" maxlength="100" value="Sponsored by">
+    <p class="hint">One line. A longer line is squeezed in width to fit above your logo, so the logo stays full size. Try: A free gift made possible by K-Tech Construction.</p>
     <div class="chips" id="cchips"></div></section>
   <section class="step"><h2><i>4</i> How many decals?</h2><p class="h">At least 100, in hundreds. Each different design is its own card, so another word means another card (add one at the top).</p>
     <label for="qty">Decals for this card</label><input type="number" id="qty" min="100" step="100" value="100"></section>

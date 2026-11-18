@@ -121,3 +121,5 @@ Not needed for launch: texting (carrier registration), app stores, sponsor prici
 - 18 Nov, Ken: the words above the sponsor logo can be longer (up to 100 letters, two lines, Enter for a line break); the card shrinks them to fit and makes the logo a little smaller under them; new suggestion 'A free gift made possible by'. Test site only.
 
 - 18 Nov, Ken: 'push it live' again: `main` = test-site (merge, same content). Gate still on.
+
+- 18 Nov, Ken: the words above the sponsor logo stay on ONE line and are squeezed in width to fit (then made smaller only if squeezed past 60%); the logo keeps its size (replaces the two-line version). `.sxf` in the fit step (make.mjs, print/kit/fit.js). Test site only; not yet pushed live.
