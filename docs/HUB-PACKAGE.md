@@ -51,10 +51,12 @@ Caution before launching it: a prize drawing can fall under state sweepstakes ru
 Decals: **$1.23 each at 100 = $123 per 100** (Ken, 18 Nov, his real cost; my earlier $30 to $60 guess was far too low).
 One Hub with 100 decals therefore costs about **$150 to $165** (decals $123 + kit $25 to $40).
 
-Suggested sponsor prices (not on the site; Ken to confirm, and 500 / 1,000 need real quotes because the price per decal usually drops with quantity):
-| Quantity | Your cost (decals) | Guess | Suggested price |
-|---|---|---|---|
-| 100 | $123 (real) | + kit $33 = about $156 | **$199** |
-| 500 | about $0.75 each = $375 (guess) | + kit $33 = about $408 | **$549** |
-| 1,000 | about $0.55 each = $550 (guess) | + kit $33 = about $583 | **$799** |
-Each extra location adds its kit cost (about $33) plus its own decals, and the 100 minimum applies to each location.
+## Prices (Ken, 18 Nov: "$249 for 100, at least $1.00 profit per decal. It needs to pay for the Bible app too, and any hired help")
+Rule: profit of **$1.00 or more per decal** after the decals, the kit and card fees (about 2.9% + $0.30). The profit pays for the Bible app and any hired help.
+| Quantity | Decals + kit (cost) | Price | Card fees | Profit | Per decal |
+|---|---|---|---|---|---|
+| 100 | $123 (real) + $33 kit (guess) = $156 | **$269** | $8 | $105 | $1.05 |
+| 500 | about $375 (guess) + $33 = $408 | **$949** | $28 | $513 | $1.03 |
+| 1,000 | about $550 (guess) + $33 = $583 | **$1,649** | $48 | $1,018 | $1.02 |
+At $249 for 100 the profit is about $0.85 per decal after fees, under the $1.00 rule, so $269 is the price that meets it. Ken can still choose $249.
+Extra locations: add the kit cost ($33) and the same $1.00 per decal. 500 and 1,000 depend on real StickerApp quotes and a real kit cost: nothing here is on the site.

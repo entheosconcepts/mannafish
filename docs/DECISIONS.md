@@ -828,3 +828,5 @@ Names only. Never write the values. All are Netlify environment variables. A key
 - 2026-11-18 (answers) · Ken: 'Yes to all, go ahead, but I dont know prices give your best guess.' Done: Hub stays the name, Ambassador for the person (nominee email and /nominate/ page); no answer after 14 days becomes 'noanswer' and the sponsor is emailed (nomination-followup.mjs); header sign sample from the existing tool (print/out/headers/R0020-header-counted); price guesses in docs/HUB-PACKAGE.md (guesses, not on the site).
 
 - 2026-11-18 (cost) · Ken: 'These cost me 1.23 each, for 100.' Decals cost $123 per 100. Price guesses in docs/HUB-PACKAGE.md redone ($199 / $549 / $799 suggested for 100 / 500 / 1,000; 500 and 1,000 costs are guesses). Still not on the site.
+
+- 2026-11-18 (pricing rule) · Ken: '$249 for 100, would like $1.00 profit minimum per decal. It needs to pay for the Bible app too, and any hired help.' Rule recorded in docs/HUB-PACKAGE.md: at least $1.00 profit per decal after decals, kit and card fees; that gives $269 / $949 / $1,649 for 100 / 500 / 1,000 (kit and the 500 / 1,000 decal costs are guesses). $249 would give about $0.85. Not on the site.
