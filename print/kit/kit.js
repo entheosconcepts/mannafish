@@ -42,11 +42,13 @@
     sub('QR:L', qrSvg(cfg.qrLeft || cfg.url || 'https://manna-fish.com/')); sub('QR:R', qrSvg(cfg.qrRight || 'https://manna-fish.com/q/devo'));
     if (!d.gst) h = h.replace(/<div class="st4" data-b="gstrong">[^<]*<\/div>/, ''); if (!d.hst) h = h.replace(/<div class="st4" data-b="hstrong">[^<]*<\/div>/, '');
     return h; }
+  /* a wide logo (wider than about 1.7 times its height, e.g. "Walmart, Monkey Junction, store 5241") may use the whole width of the middle of the card, so it is not scaled down like a round badge */
+  function adjFor(cfg) { var a = JSON.parse(JSON.stringify(K.adj)); if (cfg.logoAspect > 1.7 && cfg.by === 'logo') a.logo = { dy: -0.8, s: 100 }; return a; }
   var styled = false;
   function addStyle() { if (styled) return; styled = true; var s = document.createElement('style'); s.id = 'mfkit-css'; s.textContent = K.css; document.head.appendChild(s); }
   /* puts the back on the page (millimetres, the same size as the printed card) and runs the fit step once the fonts are in */
   function mount(el, cfg) { return ready().then(function () { addStyle(); el.innerHTML = backHtml(cfg);
-    return (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () { window.MFfit(cfg.adj || K.adj); return el.querySelector('.pg'); }); }); }
+    return (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () { window.MFfit(cfg.adj || adjFor(cfg)); return el.querySelector('.pg'); }); }); }
   /* ---- files ---- */
   function blobFromCanvas(c) { return new Promise(function (ok) { c.toBlob(ok, 'image/png'); }); }
   function img(src) { return new Promise(function (ok, no) { var i = new Image(); i.onload = function () { ok(i); }; i.onerror = no; i.src = src; }); }

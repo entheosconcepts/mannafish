@@ -125,13 +125,13 @@ function esc(t){ return String(t).replace(/[&<>"]/g,function(c){ return {'&':'&a
 function fullUrl(u){ u=(u||'').trim(); if(u&&!/^https?:\/\//i.test(u)) u='https://'+u; return u; }
 function say(t,k){ $('msg').textContent=t; $('msg').className='msg '+(k||''); }
 /* ---- the order: a list of cards, one open at a time ---- */
-function blank(from){ var c={word:'',fishId:'',verse:null,vref:'',url:'',qrTo:'link',q1:'Visit us',q2:'to learn more',by:'logo',logoId:'',logoName:'',name:'',text:'',credit:'Sponsored by',qty:100};
-  if(from) ['url','qrTo','q1','q2','by','logoId','logoName','name','text','credit','qty'].forEach(function(k){ c[k]=from[k]; }); return c; }
+function blank(from){ var c={word:'',fishId:'',verse:null,vref:'',url:'',qrTo:'link',logoAspect:0,q1:'Visit us',q2:'to learn more',by:'logo',logoId:'',logoName:'',name:'',text:'',credit:'Sponsored by',qty:100};
+  if(from) ['url','qrTo','q1','q2','by','logoId','logoName','logoAspect','name','text','credit','qty'].forEach(function(k){ c[k]=from[k]; }); return c; }
 function fresh(){ return {cards:[blank()],active:0,logos:{},contact:{name:'',email:'',phone:'',note:''}}; }
 function cur(){ return S.cards[S.active]; }
 function logoOf(c){ return c.logoId&&S.logos[c.logoId]||''; }
 function cfgOf(c){ var by=c.by; if(by==='name'&&!c.name) by='text';
-  return {word:c.word,fishId:c.fishId,verse:c.verse,by:by,logo:logoOf(c),name:c.name,text:c.text,credit:c.credit||'Sponsored by',qrTo:c.qrTo,qrWords:[c.q1,c.q2].map(function(x){ return (x||'').trim(); }).filter(Boolean).join('\n')||'Visit us',url:c.qrTo==='app'?APP:(fullUrl(c.url)||'https://manna-fish.com/')}; }
+  return {word:c.word,fishId:c.fishId,verse:c.verse,by:by,logo:logoOf(c),name:c.name,text:c.text,credit:c.credit||'Sponsored by',qrTo:c.qrTo,logoAspect:c.logoAspect||0,qrWords:[c.q1,c.q2].map(function(x){ return (x||'').trim(); }).filter(Boolean).join('\n')||'Visit us',url:c.qrTo==='app'?APP:(fullUrl(c.url)||'https://manna-fish.com/')}; }
 function problem(c){ if(!c.word) return 'Choose a word'; if(c.by==='logo'&&!logoOf(c)) return 'Add your logo or your words'; if(c.by==='name'&&!c.name.trim()) return 'Type your name'; if(c.by==='text'&&!c.text.trim()) return 'Write your words'; if(c.qrTo!=='app'&&!c.url.trim()) return 'Add your web address'; return ''; }
 /* form -> card */
 function pull(){ var c=cur(); c.url=$('url').value; c.q1=$('q1').value; c.q2=$('q2').value; c.name=$('name').value; c.text=$('text').value; c.credit=$('credit').value; c.vref=$('vref').value;
@@ -204,7 +204,7 @@ function toWhere(){ var c=cur(); document.querySelectorAll('#qto button').forEac
 $('qto').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; var c=cur(); c.qrTo=b.getAttribute('data-to'); if(c.qrTo==='app'&&c.q1==='Visit us'&&c.q2==='to learn more'){ c.q1='Read the Bible'; c.q2='free in the app'; $('q1').value=c.q1; $('q2').value=c.q2; } toWhere(); soon(); });
 /* from MannaFish's monthly donors: the words, the logo (MannaFish or 2 Fish), and the QR code to the app */
 var DONORS='This gift is made possible by our monthly donors for the MannaFish Bible app';
-$('mfpre').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; var k=b.getAttribute('data-mf'), url=k==='twofish'?'/brand/2fish-teach-a-man.png':'/brand/mannafish-wordmark-fish.png';
+$('mfpre').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; var k=b.getAttribute('data-mf'), url=k==='twofish'?'/brand/2fish-badge.png':'/brand/mannafish-wordmark-fish.png';
   fetch(url).then(function(r){ return r.blob(); }).then(function(bl){ var rd=new FileReader(); rd.onload=function(){ var c=cur(); c.by='logo'; c.credit=DONORS; c.qrTo='app'; if(c.q1==='Visit us'&&c.q2==='to learn more'){ c.q1='Read the Bible'; c.q2='free in the app'; }
       document.querySelectorAll('#by button').forEach(function(x){ x.setAttribute('aria-pressed',String(x.getAttribute('data-by')==='logo')); }); ['logo','name','text'].forEach(function(z){ $('by-'+z).hidden=z!=='logo'; });
       $('credit').value=DONORS; $('q1').value=c.q1; $('q2').value=c.q2; toWhere(); setLogo(rd.result,k==='twofish'?'2 Fish logo':'MannaFish logo'); }; rd.readAsDataURL(bl); }).catch(function(){ say('We could not load that logo.','bad'); }); });
@@ -218,7 +218,7 @@ $('by').addEventListener('click',function(e){ var b=e.target.closest('button'); 
 ['url','q1','q2','name','text','credit','cname','cemail','cphone','cnote'].forEach(function(i){ $(i).addEventListener('input',soon); });
 /* a logo: any picture, sized down and kept with its see-through parts; the card fits it into the space. The same logo on several cards is kept once. */
 function hash(u){ var h=0,t=u.slice(0,3000)+u.slice(-3000); for(var i=0;i<t.length;i++) h=(h*31+t.charCodeAt(i))|0; return 'l'+u.length+'x'+(h>>>0).toString(36); }
-function setLogo(u,n){ var id=hash(u); S.logos[id]=u; var c=cur(); c.logoId=id; c.logoName=n; $('logoprev').src=u; $('logoprev').hidden=false; $('logoname').textContent=n+' (ready)';
+function setLogo(u,n){ var id=hash(u); S.logos[id]=u; var c=cur(); c.logoId=id; c.logoName=n; var im0=new Image(); im0.onload=function(){ var asp=im0.naturalWidth&&im0.naturalHeight?im0.naturalWidth/im0.naturalHeight:0; S.cards.forEach(function(x){ if(x.logoId===id) x.logoAspect=asp; }); soon(); }; im0.src=u; $('logoprev').src=u; $('logoprev').hidden=false; $('logoname').textContent=n+' (ready)';
   /* the same logo for the other cards that have none yet */ S.cards.forEach(function(x){ if(x!==c&&x.by==='logo'&&!x.logoId){ x.logoId=id; x.logoName=n; } }); soon(); }
 $('logo').addEventListener('change',function(){ var f=this.files&&this.files[0]; if(!f) return; if(f.size>8e6){ say('That picture is very large. Please use one under 8 MB.','bad'); return; }
   var rd=new FileReader(); rd.onload=function(){ var src=rd.result;
@@ -228,7 +228,7 @@ $('logo').addEventListener('change',function(){ var f=this.files&&this.files[0];
     im.onerror=function(){ say('We could not read that picture.','bad'); }; im.src=src; }; rd.readAsDataURL(f); });
 /* ---- sending ---- */
 function item(c){ var cf=cfgOf(c); return {fish:c.fishId,title:c.word,name:cf.by==='name'?c.name:(cf.by==='text'?c.text:''),url:cf.url,label:cf.qrWords.replace(/\n/g,' '),logo:cf.by==='logo'?cf.logo:'',qty:c.qty,
-  cfg:{by:cf.by,qrTo:c.qrTo,credit:cf.credit,text:c.text,name:c.name,qrWords:cf.qrWords,verse:c.verse||undefined}}; }
+  cfg:{by:cf.by,qrTo:c.qrTo,logoAspect:c.logoAspect||0,credit:cf.credit,text:c.text,name:c.name,qrWords:cf.qrWords,verse:c.verse||undefined}}; }
 $('send').addEventListener('click',function(){ pull(); var bad=-1; S.cards.forEach(function(c,i){ if(bad<0&&problem(c)) bad=i; });
   if(bad>=0){ S.active=bad; push(); renderCards(); draw(); say('Card '+(bad+1)+': '+problem(S.cards[bad])+'.','bad'); return; }
   var name=S.contact.name.trim(), email=S.contact.email.trim(); if(!name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ say('Please add your name and email.','bad'); $('cname').focus(); return; }
