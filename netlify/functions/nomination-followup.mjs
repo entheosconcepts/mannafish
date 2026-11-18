@@ -2,6 +2,7 @@
 // Runs every morning. For each invitation Ken sent that is still open:
 //   after 2 days  -> one friendly reminder email to the place (once)  and a "call them" item for Ken
 //   after 5 days  -> a "mail them something" item for Ken
+//   after 14 days -> marked 'noanswer' and the sponsor is told (they can give the decals out themselves or choose another place)
 // The calls and the mail are Ken's: the admin page (/print/orders/) shows them under "Follow up today" and he marks them done. Nothing else is sent.
 import { getStore } from '@netlify/blobs';
 import { sendMail, FROM } from './lib/mail.mjs';
@@ -12,6 +13,11 @@ export default async () => {
     const o = await s.get(b.key, { type: 'json' }); if (!o) continue; let dirty = false;
     for (const it of o.items) {
       const n = it.nom; if (!n || n.status !== 'invited' || !n.sentAt) continue; const age = Date.now() - n.sentAt, org = it.dest.type === 'hub' ? it.dest.hubName : it.dest.nominee.org, to = it.dest.type === 'new' ? it.dest.nominee.email : it.dest.contactEmail;
+      if (age > 14 * DAY) {   // no answer: stop, and tell the sponsor what they can do
+        n.status = 'noanswer'; n.at = Date.now(); dirty = true;
+        try { await sendMail({ to: o.contact.email, subject: `${org} has not answered yet`, tag: 'nomination', html: `<div style="font:16px/1.55 Georgia,serif;max-width:34rem"><p>Hello ${esc(o.contact.name)},</p><p>We invited <b>${esc(org)}</b> to be a MannaFish Hub and called and wrote, but have not heard back. We will not keep asking. You can give the decals out yourself, or choose another place: just reply to this email and tell us which.</p><p style="color:#5b6570;font-size:13px">MannaFish · Entheos Concepts, 4563 Technology Dr, Unit 6, Wilmington NC 28405</p></div>`, text: `${org} has not answered. Reply to choose another place or give the decals out yourself.` }); } catch (e) { /* skip */ }
+        continue;
+      }
       if (age > 2 * DAY && !n.reminded && to) {
         try { await sendMail({ to, subject: `A quick note about MannaFish, ${org}`, tag: 'nomination',
           html: `<div style="font:16px/1.55 Georgia,serif;max-width:34rem"><p>Hello,</p><p>We wrote a couple of days ago: someone wants <b>${esc(org)}</b> to be a MannaFish Hub, a free basket of Scripture decals for the people who walk in. No cost, nothing sold. If you have a minute, here is the page to say yes (or no): <a href="${esc(origin + '/nominate/?t=' + n.token)}">${esc(origin + '/nominate/?t=' + n.token)}</a>. A person from MannaFish may also give you a call.</p><p style="color:#5b6570;font-size:13px">MannaFish · Entheos Concepts, 4563 Technology Dr, Unit 6, Wilmington NC 28405</p></div>`, text: `A quick note: ${org} was nominated to be a free MannaFish Hub. Answer here: ${origin}/nominate/?t=${n.token}` }); n.reminded = Date.now(); dirty = true; sent++; } catch (e) { /* tries again tomorrow */ }
