@@ -33,7 +33,7 @@ Caution before launching it: a prize drawing can fall under state sweepstakes ru
 3. Reminder at 2 days; call at 2; mail at 5; after 14 days "no answer", the sponsor is told and can give the decals out or choose another place.
 4. Ken mails a handwritten-style note, two sample decals and the vision card.
 5. The sponsor's price covers basket, sign, box and postage; the place pays nothing.
-6. Header sign: the 6 x 4 in card (`node tools/print/header.mjs <run>`; sample `print/out/headers/R0020-header-counted.pdf`).
+6. Header sign ("TAKE 2! One to keep, one to give away."): the 6 x 4 in card (`node tools/print/header.mjs <run>`; sample `print/out/headers/R0020-header-counted.pdf`).
 7. Monthly basket: chosen by Ken, no random drawing.
 8. Price: Ken does not know, so these are my guesses to check against real quotes. Not on the public site.
 
