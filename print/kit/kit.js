@@ -7,13 +7,13 @@
 (function () {
   var BASE = (function () { var s = document.currentScript; return s ? s.src.replace(/[^/]*$/, '') : '/print/kit/'; })();
   var MM = 25.4, CARD = { w: 4.5 * MM, h: 2.75 * MM }, BLEED = MM / 8, SAFE = 3, KISS = MM / 8, CUTGAP = MM / 16, PW = CARD.w + 2 * BLEED, PH = CARD.h + 2 * BLEED;
-  var K = { css: '', tplLogo: '', tplText: '', adj: {}, words: { list: [], words: {} } }, loading = null;
+  var K = { css: '', tplLogo: '', tplText: '', adj: {}, words: { list: [], words: {} }, verses: {} }, loading = null;
   var f2 = function (n) { return Math.round(n * 1000) / 1000; };
   function txt(u) { return fetch(BASE + u).then(function (r) { if (!r.ok) throw new Error(u); return r.text(); }); }
   function script(u) { return new Promise(function (ok, no) { var s = document.createElement('script'); s.src = BASE + u; s.onload = ok; s.onerror = no; document.head.appendChild(s); }); }
   function ready() { if (loading) return loading;
-    loading = Promise.all([txt('back.css'), txt('back-logo.tpl.html'), txt('back-text.tpl.html'), txt('default-adj.json'), txt('words.json'), script('qr.js'), script('browser.js'), script('fit.js')]).then(function (a) {
-      K.css = a[0] + '\n.strip.inv .sn{font-size:5.4mm;line-height:1.15}'; K.tplLogo = a[1]; K.tplText = a[2]; K.adj = JSON.parse(a[3]); K.words = JSON.parse(a[4]); return K; });
+    loading = Promise.all([txt('back.css'), txt('back-logo.tpl.html'), txt('back-text.tpl.html'), txt('default-adj.json'), txt('words.json'), txt('verses.json').catch(function () { return '{}'; }), script('qr.js'), script('browser.js'), script('fit.js')]).then(function (a) {
+      K.css = a[0] + '\n.strip.inv .sn{font-size:5.4mm;line-height:1.15}'; K.tplLogo = a[1]; K.tplText = a[2]; K.adj = JSON.parse(a[3]); K.words = JSON.parse(a[4]); try { K.verses = JSON.parse(a[5]); } catch (e) { K.verses = {}; } return K; });
     return loading; }
   function esc(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   /* the QR codes: white on black, the way the card has them */
@@ -22,6 +22,18 @@
   function defLines(t) { t = String(t || ''); if (t.indexOf('\n') >= 0) return t.split('\n'); if (t.length <= 46) return [t];
     var best = -1, bd = 1e9; for (var i = 1; i < t.length - 1; i++) if (t[i] === ' ') { var d = Math.abs(i - t.length / 2) - (/[,;.]/.test(t[i - 1]) ? 6 : 0); if (d < bd) { bd = d; best = i; } }
     return best < 0 ? [t] : [t.slice(0, best).trim(), t.slice(best + 1).trim()]; }
+  /* a verse already on the front of the fish must not also be one of the verses on the back (Ken, 18 Nov): it is swapped for another verse that uses the word */
+  function parseRef(r) { var m = /^\s*((?:[1-3]\s*)?[A-Za-z][A-Za-z\s\.]*?)\s*(\d+)\s*[:.]\s*(\d+)(?:\s*[-\u2013\u2014]\s*(\d+))?/.exec(String(r || '')); if (!m) return null; var b = m[1].toLowerCase().replace(/\./g, '').replace(/\s+/g, ' ').trim(); if (b === 'psalms') b = 'psalm'; return { b: b, c: +m[2], a: +m[3], z: m[4] ? +m[4] : +m[3] }; }
+  function overlap(x, y) { x = parseRef(x); y = parseRef(y); return !!(x && y && x.b === y.b && x.c === y.c && x.a <= y.z && y.a <= x.z); }
+  function snippet(text, re) { var t = String(text || '').replace(/[\u201c\u201d"]/g, '').replace(/\s+/g, ' ').trim(); if (t.length <= 72) return t.replace(/[,;:.\s]+$/, ''); var parts = t.split(/(?<=[,;:])\s+/), i = -1; for (var k = 0; k < parts.length; k++) if (re.test(parts[k])) { i = k; break; } if (i < 0) return '';
+    var out = parts[i]; for (var a = 1; out.length < 34 && (parts[i + a] || parts[i - a]); a++) { var nx = parts[i + a], pv = parts[i - a]; if (nx && (out + ' ' + nx).length <= 72) out += ' ' + nx; else if (pv && (pv + ' ' + out).length <= 72) out = pv + ' ' + out; else break; }
+    out = out.replace(/[,;:.\s]+$/, ''); return out.length <= 72 ? out : ''; }
+  function swapRefs(d, cfg) { var refs = (d.refs || []).slice(0, 4).map(function (r) { return r.slice(); }), e = K.words.list.filter(function (x) { return x.w.toLowerCase() === String(cfg.word || '').toLowerCase(); })[0] || {},
+      front = cfg.verse && cfg.verse.ref ? cfg.verse.ref : (cfg.fishRef || e.r || ''); if (!front) return refs;
+    var re; try { re = new RegExp(e.f || ('\\b' + String(cfg.word).toLowerCase()), 'i'); } catch (x) { re = /./; }
+    var cands = (d.alt || []).map(function (a) { return a.slice(); }); (K.verses[String(cfg.word || '').toUpperCase()] || []).forEach(function (v) { var s = snippet(v[1], re); if (s) cands.push([v[0], s]); });
+    refs.forEach(function (r, i) { if (!overlap(r[0], front)) return; for (var k = 0; k < cands.length; k++) { var c = cands[k]; if (overlap(c[0], front) || refs.some(function (o) { return overlap(o[0], c[0]); })) continue; refs[i] = [c[0], c[1]]; return; } });
+    return refs; }
   function study(cfg) { return cfg.study || (K.words.words[String(cfg.word || '').toUpperCase()]) || null; }
   /* the back's markup for one sponsor */
   function backHtml(cfg) {
@@ -31,7 +43,7 @@
     sub('T', esc(cfg.title || d.title)); sub('GKW', esc(d.gkw)); sub('GKS', esc(d.gks)); sub('HBW', esc(d.hbw)); sub('HBS', esc(d.hbs));
     sub('GKM', defLines(d.gkm).map(esc).join('<br>')); sub('HBM', defLines(d.hbm).map(esc).join('<br>'));
     sub('GST', esc(d.gst || '')); sub('HST', esc(d.hst || ''));
-    (d.refs || []).slice(0, 4).forEach(function (r, i) { sub('R' + (i + 1) + 'N', esc(r[0])); sub('R' + (i + 1) + 'Q', esc(r[1])); });
+    swapRefs(d, cfg).forEach(function (r, i) { sub('R' + (i + 1) + 'N', esc(r[0])); sub('R' + (i + 1) + 'Q', esc(r[1])); });
     var cr = String(cfg.credit || 'Sponsored by').replace(/\s+/g, ' ').trim();
     if (cr.length > 20) {   /* a longer line stays on one row: it is squeezed in width to fit (then made a little smaller if it must be); the logo keeps its size */
       h = h.replace('<div class="sb" data-b="sponsor">§CREDIT§</div>', '<div class="sb sxf" data-b="sponsor" style="white-space:nowrap;width:100%;min-width:0;display:flex;justify-content:center"><span style="display:inline-block;flex:none;transform-origin:center">§CREDIT§</span></div>'); }
@@ -125,5 +137,5 @@
     var cs = 0; central.forEach(function (p) { parts.push(p); cs += p.length; });
     parts.push(new Uint8Array([].concat([0x50, 0x4b, 5, 6], u16(0), u16(0), u16(fs.length), u16(fs.length), u32(cs), u32(off), u16(0))));
     return new Blob(parts, { type: 'application/zip' }); }); }
-  window.MFkit = { frontSvg: frontSvg, sheetPdf: sheetPdf, fishSource: fishSource, ready: ready, mount: mount, backHtml: backHtml, files: files, zip: zip, study: study, defLines: defLines, get words() { return K.words; }, get css() { return K.css; } };
+  window.MFkit = { swapRefs: swapRefs, frontSvg: frontSvg, sheetPdf: sheetPdf, fishSource: fishSource, ready: ready, mount: mount, backHtml: backHtml, files: files, zip: zip, study: study, defLines: defLines, get words() { return K.words; }, get css() { return K.css; } };
 })();
