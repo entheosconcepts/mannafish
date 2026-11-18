@@ -26,3 +26,26 @@ Caution before launching it: a prize drawing can fall under state sweepstakes ru
 3. If a place never answers: remind once after 14 days, or leave it? (Not built.)
 4. Who pays for the basket, sign, box and postage: included in the sponsor price, or a separate Hub fee?
 5. The monthly basket: random drawing, or given by you to someone you choose?
+
+## Decisions (Ken, 18 Nov: "Yes to all")
+1. Name: **Hub**. The person who runs one is the **Ambassador**.
+2. Ken approves every new business before it is emailed.
+3. Reminder at 2 days; call at 2; mail at 5; after 14 days "no answer", the sponsor is told and can give the decals out or choose another place.
+4. Ken mails a handwritten-style note, two sample decals and the vision card.
+5. The sponsor's price covers basket, sign, box and postage; the place pays nothing.
+6. Header sign: the 6 x 4 in card (`node tools/print/header.mjs <run>`; sample `print/out/headers/R0020-header-counted.pdf`).
+7. Monthly basket: chosen by Ken, no random drawing.
+8. Price: Ken does not know, so these are my guesses to check against real quotes. Not on the public site.
+
+## Price guess per Hub location (to check with real quotes)
+| Item | Guess |
+|---|---|
+| Basket or tray | $6 to $12 |
+| Header sign (printed 6 x 4 card) | $1 to $2 |
+| Packing box | $3 to $5 |
+| Label | $0.25 |
+| Postage (about 2 to 3 lb) | $10 to $16 |
+| Mailed note, two sample decals, vision card | $2 |
+| Total kit, without decals | about $25 to $40 |
+
+Decals: 100 stickers is roughly $30 to $60 depending on size and supplier (check the last StickerApp quote). So one Hub of 100 decals costs about $55 to $100 all in. Suggested sponsor prices (Ken to confirm): 100 at about $99, 500 at about $349, 1,000 at about $599, with the basket and shipping included for the first location; each extra location adds the kit cost.

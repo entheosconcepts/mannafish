@@ -34,7 +34,7 @@ h1{font-size:1.5rem;margin:6px 0 14px}.o{border:1px solid rgba(255,255,255,.16);
   function load(){ var k=key(); if(!k){ ask(); return; }
     fetch('/api/card-order?k='+encodeURIComponent(k),{cache:'no-store'}).then(function(r){ if(r.status===403){ ask(); throw 0; } return r.json(); }).then(function(j){
       ALL=j.orders||[]; if(!ALL.length){ out.innerHTML='<p class="empty">No card orders yet.</p>'; return; } document.getElementById('tools').hidden=false; ALL.forEach(function(o){ ORD[o.id]=o; }); show(); scans(k); }).catch(function(e){ if(e!==0) out.innerHTML='<p class="empty">Couldn’t open the orders just now.</p>'; }); }
-  var ALL=[], NM={wait:'invited',pending:'waiting for your OK',invited:'invitation sent',accepted:'accepted',declined:'declined'};
+  var ALL=[], NM={wait:'invited',pending:'waiting for your OK',invited:'invitation sent',accepted:'accepted',declined:'declined',noanswer:'no answer after 14 days'};
   function place(x){ var d=x.dest||{type:'self'}; return d.type==='hub'?d.hubName:d.type==='new'?d.nominee.org:''; }
   function where(o,x){ var d=x.dest||{}; return String((d.type==='new'?d.nominee.city:d.city)||(o.contact&&o.contact.city)||'').toLowerCase().replace(/\s+/g,' ').trim(); }
   function zip3(w){ var m=/\b(\d{5})\b/.exec(w); return m?m[1].slice(0,3):''; }

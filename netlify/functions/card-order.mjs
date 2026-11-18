@@ -97,6 +97,7 @@ export default async (req, context) => {
         const ok = await mail(to, `${sp} would like ${org} to be a MannaFish Hub`, wrap(
           `<p>Hello${nm ? ' ' + esc(nm) : ''},</p><p><b>${esc(sp)}</b> has nominated <b>${esc(org)}</b> to be a MannaFish Hub: a place that gives free Scripture decals to the people who walk in.</p>`
           + `<p>MannaFish is a free Scripture and word-study project: one word of Scripture in the middle of a fish, with its verse around it. Nothing is sold, and there is no cost to you.</p>`
+          + `<p>You, or someone you choose, would be our <b>MannaFish Ambassador</b> there: the friendly face who sets out the basket.</p>`
           + `<p>If you accept, you will receive a basket of free MannaFish decals, sponsored by ${esc(sp)}, to set on your counter.</p>`
           + btn(origin + '/vision/', 'Read the vision of MannaFish') + btn(origin + '/nominate/?t=' + n.token, 'Accept the nomination')
           + `<p>If you would rather not, just ignore this email, or <a href="${esc(origin + '/nominate/?t=' + n.token + '&decline=1')}">click here to decline</a>. We will not write again.</p>`), nm);

@@ -51,8 +51,9 @@ button.o{background:none;border:1px solid var(--line);color:var(--dim)}
   fetch('/api/nomination?t='+t).then(function(r){return r.json().then(function(j){if(!r.ok)throw 0;return j})}).then(function(j){
     if(j.status==='accepted')return show('Thank you. '+j.org+' is already a MannaFish Hub, and your basket is on its way.');
     if(j.status==='declined')return show('This nomination was declined. Nothing more will be sent.');
+    if(j.status==='noanswer')return show('This invitation has closed. If you would still like to be a MannaFish Hub, please reply to the email we sent.');
     if(j.status!=='invited')return show('This invitation is not ready yet. Please try again later.');
-    $('h').textContent=j.org+', you have been nominated';$('p').textContent=j.sponsor+' would like '+j.org+' to be a MannaFish Hub: a place that gives free Scripture decals to the people who walk in. If you accept, you will receive a basket of free MannaFish decals.';
+    $('h').textContent=j.org+', you have been nominated';$('p').textContent=j.sponsor+' would like '+j.org+' to be a MannaFish Hub: a place that gives free Scripture decals to the people who walk in. If you accept, you (or someone you choose) become our MannaFish Ambassador there, and you receive a basket of free MannaFish decals.';
     $('form').hidden=false;
     if(q.get('decline'))$('no').focus();
   }).catch(function(){$('bad').hidden=false});
