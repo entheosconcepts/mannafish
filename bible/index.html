@@ -59,8 +59,8 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 .bkdrop .bkseg{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px}
 .bkdrop .bkseg button{border:0;background:none;color:var(--dim);border-radius:999px;padding:8px 22px;font:800 .88rem 'Archivo',sans-serif;cursor:pointer}.bkdrop .bkseg button[aria-selected=true]{background:var(--blue);color:#fff}
 .bkdrop .bksr{position:absolute;right:6px;border:1px solid var(--line);background:none;color:inherit;border-radius:999px;width:38px;height:38px;font-size:1rem;cursor:pointer}
-.bkdrop .bklist{display:grid;grid-template-columns:1fr 1fr;padding:2px 4px}
-.bkdrop .bkb{display:block;min-width:0;border:0;background:none;color:var(--c,inherit);text-align:left;font:500 1.15rem 'Fraunces',Georgia,serif;padding:11px 6px;border-radius:10px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bkdrop .bklist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:2px 4px}
+.bkdrop .bkb{display:block;min-width:0;border:0;background:none;color:var(--c,inherit);text-align:left;font:500 clamp(.8rem,3.7vw,1.05rem) 'Fraunces',Georgia,serif;padding:11px 4px;border-radius:10px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bkdrop .bkb.on{background:rgba(68,143,255,.16);font-weight:700}.bkdrop .bkb[aria-expanded=true]{background:rgba(68,143,255,.12);outline:1px solid var(--blue2)}
 .bkdrop .bkch{grid-column:1/-1;background:rgba(68,143,255,.1);border:1px solid var(--blue2);border-radius:12px;padding:10px;margin:4px 0 8px}
 .bkdrop .bkch p{margin:0 0 8px;font:600 .92rem 'Fraunces',Georgia,serif}
@@ -1551,9 +1551,9 @@ body.par .bar #where,body.par .bar #ver,body.par .bar #say{display:none}body.par
   var BKT='ot', BKOP=null;
   function bkGroup(n){ return n<5?'law':n<17?'hist':n<22?'poet':n<39?'proph':n<43?'gosp':n===43?'hist':n<57?'paul':n<65?'gen':'rev'; }
   function bkDraw(keep){ var y=keep?$('bkDrop').scrollTop:0, lo=BKT==='nt'?39:0, hi=BKT==='nt'?66:39, cells=[], n, i;
-    for(n=lo;n<hi;n++){ i=n-lo; cells.push('<button type="button" class="bkb'+(n===AT.b?' on':'')+'" data-bkn="'+n+'" aria-expanded="'+(BKOP===n)+'" style="--c:var(--'+bkGroup(n)+')">'+esc(B[n][0])+'</button>');}
+    for(n=lo;n<hi;n++){ i=n-lo; cells.push('<button type="button" class="bkb'+(n===AT.b?' on':'')+'" data-bkn="'+n+'" aria-expanded="'+(BKOP===n)+'" style="--c:var(--'+bkGroup(n)+')'+(B[n][0].length>=15?';font-size:clamp(.66rem,3.1vw,.88rem)':'')+'">'+esc(B[n][0])+'</button>');}
     /* the chapter box goes after the end of its row: after the next book too when the tapped one is on the left */
-    var out=[]; for(n=lo;n<hi;n++){ out.push(cells[n-lo]); if(BKOP===n){ var rowEnd=((n-lo)%2===0&&n+1<hi); if(rowEnd){ out.push(cells[n+1-lo]); n++; }
+    var out=[]; for(n=lo;n<hi;n++){ out.push(cells[n-lo]); if(BKOP===n){ while((n-lo)%3!==2&&n+1<hi){ out.push(cells[n+1-lo]); n++; }
         var g='<div class="bkch"><p>'+esc(B[BKOP][0])+' · pick a chapter</p><div class="nums">'; for(var c=1;c<=B[BKOP][1];c++) g+='<button type="button" data-bkn="'+BKOP+'" data-bkc="'+c+'" class="'+(BKOP===AT.b&&c===AT.c?'on':'')+'">'+c+'</button>'; out.push(g+'</div></div>'); } }
     $('bkDrop').innerHTML='<div class="bkhd"><div class="bkseg" role="tablist" aria-label="Testament"><button type="button" role="tab" data-bkt="ot" aria-selected="'+(BKT==='ot')+'">OT</button><button type="button" role="tab" data-bkt="nt" aria-selected="'+(BKT==='nt')+'">NT</button></div><button type="button" class="bksr" data-bkmore="1" aria-label="Search, version and recent" title="Search, version and recent">&#128269;&#xFE0E;</button></div><div class="bklist">'+out.join('')+'</div>';
     $('bkDrop').scrollTop=y; }
