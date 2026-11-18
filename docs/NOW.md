@@ -141,3 +141,5 @@ Not needed for launch: texting (carrier registration), app stores, sponsor prici
 - 18 Nov, Ken: a verse used on the front of the fish (the fish's own, or one the sponsor chose) is never also one of the four verses on the back: it is swapped for another verse that uses the word (first the study's other verses, then others with the word; `swapRefs` in print/kit/kit.js; `alt` and `r` in words.json). Seen: K-Tech's Matthew 7:24 became Nehemiah 2:18 on the back. Test site only; not live.
 
 - 18 Nov, Ken: 'push it live': `main` = test-site (merge, same content): the front/back verse swap. Gate still on.
+
+**18 Nov, nominations built (test site):** sponsors can pick who receives the decals (themselves, a Hub, or a new business). Nothing emails a business until Ken presses Approve in /print/orders/ (now the Sponsorship history). Sponsors can edit a request until printing. Waiting on Ken: the Hub vs Embassy word, nominee email wording OK, package costs (docs/HUB-PACKAGE.md), then 'push it live'.
