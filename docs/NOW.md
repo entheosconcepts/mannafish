@@ -123,3 +123,5 @@ Not needed for launch: texting (carrier registration), app stores, sponsor prici
 - 18 Nov, Ken: 'push it live' again: `main` = test-site (merge, same content). Gate still on.
 
 - 18 Nov, Ken: the words above the sponsor logo stay on ONE line and are squeezed in width to fit (then made smaller only if squeezed past 60%); the logo keeps its size (replaces the two-line version). `.sxf` in the fit step (make.mjs, print/kit/fit.js). Test site only; not yet pushed live.
+
+- 18 Nov, Ken: sponsor builder: quantity is a choice of 100, 500 or 1,000; the left QR code can go to the sponsor's link OR to the MannaFish Bible app (`https://manna-fish.com/bible/`, counted like any card); 'Or give it from MannaFish's monthly donors' presets (MannaFish logo or the 2 Fish logo, the words 'This gift is made possible by our monthly donors for the MannaFish Bible app', QR to the app). Pushed live (main). Open question for Ken: should the devotional itself show 'brought to you by <sponsor>' to people who arrive from a card's right QR code (so the devotional points to the sponsor)?
