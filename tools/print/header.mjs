@@ -29,11 +29,11 @@ const html = `<!doctype html><meta charset="utf-8"><style>
 .take{white-space:nowrap;font:400 .46in/1 'Lilita One',sans-serif;letter-spacing:.01em}.free{font:400 .29in/1.15 'Lilita One',sans-serif;margin-top:.05in}
 .ln{font:italic 400 .16in/1.3 'Spectral',serif;margin-top:.14in;color:#d8dde3}
 .strip{position:absolute;left:.3in;right:.3in;bottom:.3in;height:1.15in;border-top:.015in solid #555;display:flex;align-items:center;justify-content:space-between;padding-top:.08in}
-.by{width:3.1in;text-align:center;font:400 .15in/1 'Lilita One',sans-serif}.by .lg{display:block;max-height:.86in;max-width:2.9in;margin:.04in auto 0;object-fit:contain}.nm{font:400 .26in/1.1 'Lilita One',sans-serif;display:block;margin-top:.1in}
+.tf{width:1in;height:1in;flex:none;margin:0 .3in 0 -.2in}.by{width:2.4in;text-align:center;font:400 .15in/1 'Lilita One',sans-serif}.by .lg{display:block;max-height:.86in;max-width:2.3in;margin:.04in auto 0;object-fit:contain}.nm{font:400 .26in/1.1 'Lilita One',sans-serif;display:block;margin-top:.1in}
 .q{display:flex;align-items:center;gap:.14in;text-align:left;font:400 .17in/1.15 'Lilita One',sans-serif;white-space:pre-line}.q svg{width:.95in;height:.95in}
 </style><div class="c"><div class="hole"></div><div class="fish"></div>
 <div class="r"><div class="take">${T.take}</div><div class="free">${T.free}</div><div class="ln">${T.line}</div></div>
-<div class="strip"><div class="by">${T.by}${logo}</div><div class="q">${qr}<span>${T.qr}</span></div></div></div>`;
+<div class="strip"><div class="by">${T.by}${logo}</div><img class="tf" src="data:image/png;base64,${fs.readFileSync(path.join(ROOT, 'brand/2fish-badge.png')).toString('base64')}"><div class="q">${qr}<span>${T.qr}</span></div></div></div>`;
 const out = path.join(PRINT, 'out', 'headers'); fs.mkdirSync(out, { recursive: true });
 const base = path.join(out, `${run}-header-${direct ? 'direct' : 'counted'}`);
 const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: Math.round(W * 96), height: Math.round(H * 96) }, deviceScaleFactor: 6.25 })).newPage();
