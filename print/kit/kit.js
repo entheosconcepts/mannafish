@@ -32,7 +32,11 @@
     sub('GKM', defLines(d.gkm).map(esc).join('<br>')); sub('HBM', defLines(d.hbm).map(esc).join('<br>'));
     sub('GST', esc(d.gst || '')); sub('HST', esc(d.hst || ''));
     (d.refs || []).slice(0, 4).forEach(function (r, i) { sub('R' + (i + 1) + 'N', esc(r[0])); sub('R' + (i + 1) + 'Q', esc(r[1])); });
-    sub('CREDIT', esc(cfg.credit || 'Sponsored by'));
+    var cr = String(cfg.credit || 'Sponsored by').replace(/^\s+|\s+$/g, ''), crl = cr.split('\n').slice(0, 2).map(function (l) { return l.trim(); }).filter(Boolean);
+    if (crl.length > 1 || cr.length > 24) {   /* a longer line: two lines at most, shrunk to fit, with the logo a little smaller under it */
+      h = h.replace('<div class="sb" data-b="sponsor">§CREDIT§</div>', '<div class="sb fit" data-b="sponsor" style="white-space:normal;line-height:1.08;height:6.4mm;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden"><span>§CREDIT§</span></div>')
+        .replace('<div class="sl" data-b="logo">', '<div class="sl" data-b="logo" style="height:14.6mm">'); }
+    sub('CREDIT', crl.map(esc).join('<br>') || 'Sponsored by');
     sub('NAME', esc(cfg.by === 'text' ? cfg.text : cfg.name || ''));
     sub('LOGO', cfg.logo || '');
     sub('LABL', esc(cfg.qrWords || 'Visit us\nto learn more').replace(/\n/g, '<br>')); sub('LABR', 'Free MannaFish<br>Devotional');

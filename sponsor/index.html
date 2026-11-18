@@ -93,7 +93,8 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
     <div id="by-logo"><button type="button" class="drop" id="logopick"><img id="logoprev" alt="" hidden><span id="logoname">Choose your logo file here (PNG, JPG or SVG). We size it for you.</span></button><input type="file" id="logo" accept="image/png,image/jpeg,image/svg+xml,image/webp" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" tabindex="-1" aria-hidden="true"></div>
     <div id="by-name" hidden><label for="name">Your name or business</label><input type="text" id="name" maxlength="60" placeholder="K-Tech Construction"></div>
     <div id="by-text" hidden><label for="text">Your words</label><textarea id="text" maxlength="120" placeholder="Jesus&#10;or a short prayer"></textarea></div>
-    <label for="credit">The line above it</label><input type="text" id="credit" maxlength="30" value="Sponsored by">
+    <label for="credit">The words above it</label><textarea id="credit" maxlength="100" rows="2" style="min-height:64px">Sponsored by</textarea>
+    <p class="hint">Up to two lines. Press Enter to start the second line, or just keep typing: the card fits the words in. Try: A free gift made possible by K-Tech Construction.</p>
     <div class="chips" id="cchips"></div></section>
   <section class="step"><h2><i>4</i> How many decals?</h2><p class="h">At least 100, in hundreds. Each different design is its own card, so another word means another card (add one at the top).</p>
     <label for="qty">Decals for this card</label><input type="number" id="qty" min="100" step="100" value="100"></section>
@@ -114,7 +115,7 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
 (function(){
 var EMB=/(^|[?&])embed=1/.test(location.search), $=function(i){ return document.getElementById(i); }, STORE='mf-sponsor-draft-v1', DID='', S=null, view='back', pending=0;
 var BOOKS='Genesis,Exodus,Leviticus,Numbers,Deuteronomy,Joshua,Judges,Ruth,1 Samuel,2 Samuel,1 Kings,2 Kings,1 Chronicles,2 Chronicles,Ezra,Nehemiah,Esther,Job,Psalm,Proverbs,Ecclesiastes,Song of Solomon,Isaiah,Jeremiah,Lamentations,Ezekiel,Daniel,Hosea,Joel,Amos,Obadiah,Jonah,Micah,Nahum,Habakkuk,Zephaniah,Haggai,Zechariah,Malachi,Matthew,Mark,Luke,John,Acts,Romans,1 Corinthians,2 Corinthians,Galatians,Ephesians,Philippians,Colossians,1 Thessalonians,2 Thessalonians,1 Timothy,2 Timothy,Titus,Philemon,Hebrews,James,1 Peter,2 Peter,1 John,2 John,3 John,Jude,Revelation'.split(',');
-var QCH=['Free quote','Book now','Visit us','Learn more','Call us today','Join us Sunday','Order online','See our menu'], CCH=['Sponsored by','A gift from','Prayed over by','In honor of'], MAXCARDS=12;
+var QCH=['Free quote','Book now','Visit us','Learn more','Call us today','Join us Sunday','Order online','See our menu'], CCH=['Sponsored by','A free gift made possible by','A gift from','Prayed over by','In honor of'], MAXCARDS=12;
 function comeBack(){ return EMB?location.origin+'/?sd='+DID+'#sponsor':location.origin+'/sponsor/?d='+DID; }
 function esc(t){ return String(t).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 function fullUrl(u){ u=(u||'').trim(); if(u&&!/^https?:\/\//i.test(u)) u='https://'+u; return u; }
