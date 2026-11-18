@@ -31,6 +31,7 @@ The decal and the backing print must line up exactly. Please don't print the bac
 7. What is the proof process? Can I see all three layers (decal, backing front, back) before I pay? What's the turnaround time from proof approval to delivery?
 8. What paper do you use for the backing card (thickness, finish)? Can I choose matte or gloss?
 9. Can one order be shipped to more than one address? Some cards may go straight to different places.
+10. I will be sending files for many batches, for different places, often several designs at once. Do you have an API, a business or reseller account, or a bulk upload, so I can send files and orders without going back and forth by email? If so, how do I set it up?
 
 **Please don't print yet.** I'd like to review and approve a final production proof of all three layers before I pay. Please don't print anything without my approval, even if I'm slow to reply.
 
