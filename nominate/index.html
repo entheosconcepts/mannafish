@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Be a MannaFish Hub</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/icon-192.png">
+<style>
+:root{--bg:#0b0e12;--card:#141a21;--line:#27313c;--text:#eef2f4;--dim:#9fb0c2;--blue:#2a5fb0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:17px/1.6 system-ui,sans-serif}
+main{max-width:560px;margin:0 auto;padding:24px 18px 60px}
+h1{font:600 1.8rem/1.2 Georgia,serif;margin:10px 0}.brand{font:600 1.4rem Georgia,serif}.brand b{color:#5aa2ff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin:16px 0}
+label{display:block;font-weight:700;font-size:.9rem;margin:12px 0 4px}input{width:100%;padding:11px;border-radius:10px;border:1px solid var(--line);background:#0b0e12;color:var(--text);font:inherit}
+.row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
+button,.btn{display:inline-block;border:0;border-radius:999px;padding:13px 22px;font:800 1rem system-ui;background:var(--blue);color:#fff;cursor:pointer;text-decoration:none}
+button.o{background:none;border:1px solid var(--line);color:var(--dim)}
+.dim{color:var(--dim);font-size:.9rem}.err{color:#ff8b8b;min-height:1.4em}[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+<div class="brand">Manna<b>Fish</b></div>
+<div id="bad" class="card" hidden>This link is not valid. If you think it should be, reply to the email you received.</div>
+<div id="ok" hidden></div>
+<div id="form" hidden>
+  <h1 id="h"></h1>
+  <p id="p" class="dim"></p>
+  <p><a class="btn" href="/vision/" target="_blank" rel="noopener" style="background:none;border:1px solid var(--line)">Read the vision first</a></p>
+  <div class="card">
+    <b>Where should we send your basket?</b>
+    <label>Your name<input id="nm" autocomplete="name"></label>
+    <label>Email<input id="em" type="email" autocomplete="email"></label>
+    <label>Phone (optional)<input id="ph" type="tel" autocomplete="tel"></label>
+    <label>Street address<input id="l1" autocomplete="address-line1"></label>
+    <label>Suite or unit (optional)<input id="l2" autocomplete="address-line2"></label>
+    <div class="row"><div><label>City<input id="ci" autocomplete="address-level2"></label></div><div><label>State<input id="st" autocomplete="address-level1"></label></div><div><label>ZIP<input id="zp" autocomplete="postal-code"></label></div></div>
+    <p class="err" id="err"></p>
+    <button id="yes">Yes, we will be a Hub</button> <button id="no" class="o">No thank you</button>
+    <p class="dim">Free. Nothing is sold, and you will not be asked to pay.</p>
+  </div>
+</div>
+</main>
+<script>
+(function(){
+  var q=new URLSearchParams(location.search),t=q.get('t')||'',$=function(i){return document.getElementById(i)};
+  function show(msg){$('form').hidden=true;$('ok').hidden=false;$('ok').innerHTML='<div class="card"></div>';$('ok').firstChild.textContent=msg}
+  function post(b){b.t=t;return fetch('/api/nomination',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||'Something went wrong.');return j})})}
+  if(!/^[0-9a-f]{32}$/.test(t)){$('bad').hidden=false;return}
+  fetch('/api/nomination?t='+t).then(function(r){return r.json().then(function(j){if(!r.ok)throw 0;return j})}).then(function(j){
+    if(j.status==='accepted')return show('Thank you. '+j.org+' is already a MannaFish Hub, and your basket is on its way.');
+    if(j.status==='declined')return show('This nomination was declined. Nothing more will be sent.');
+    if(j.status==='noanswer')return show('This invitation has closed. If you would still like to be a MannaFish Hub, please reply to the email we sent.');
+    if(j.status!=='invited')return show('This invitation is not ready yet. Please try again later.');
+    $('h').textContent=j.org+', you have been nominated';$('p').textContent=j.sponsor+' would like '+j.org+' to be a MannaFish Hub: a place that gives free Scripture decals to the people who walk in. If you accept, you (or someone you choose) become our MannaFish Ambassador there, and you receive a basket of free MannaFish decals.';
+    $('form').hidden=false;
+    if(q.get('decline'))$('no').focus();
+  }).catch(function(){$('bad').hidden=false});
+  $('yes').onclick=function(){$('err').textContent='';post({action:'accept',contact:{name:$('nm').value,email:$('em').value,phone:$('ph').value},ship:{line1:$('l1').value,line2:$('l2').value,city:$('ci').value,state:$('st').value,zip:$('zp').value}}).then(function(){show('Thank you. You are now a MannaFish Hub. Your basket is being prepared, and we will email you when it ships.')}).catch(function(e){$('err').textContent=e.message})};
+  $('no').onclick=function(){if(!confirm('Decline this nomination? We will not write again.'))return;post({action:'decline'}).then(function(){show('No problem. We will not write again. Thank you for your time.')}).catch(function(e){$('err').textContent=e.message})};
+})();
+</script>
+</body>
+</html>

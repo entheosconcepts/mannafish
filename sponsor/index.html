@@ -105,10 +105,16 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
     <label>Or give it from MannaFish's monthly donors</label><div class="chips" id="mfpre"><button type="button" data-mf="wordmark">With the MannaFish logo</button><button type="button" data-mf="twofish">With the 2 Fish logo</button></div>
     <p class="hint">This fills in "This gift is made possible by our monthly donors for the MannaFish Bible app", the logo, and sends the QR code to the app.</p></section>
   <section class="step"><h2><i>4</i> How many decals?</h2><p class="h">Choose 100, 500 or 1,000 for this card. Each different design is its own card, so another word means another card (add one at the top).</p>
-    <div class="seg" id="qtyseg" role="group" aria-label="How many decals"><button type="button" data-q="100" aria-pressed="true">100</button><button type="button" data-q="500" aria-pressed="false">500</button><button type="button" data-q="1000" aria-pressed="false">1,000</button></div></section>
+    <div class="seg" id="qtyseg" role="group" aria-label="How many decals"><button type="button" data-q="100" aria-pressed="true">100</button><button type="button" data-q="500" aria-pressed="false">500</button><button type="button" data-q="1000" aria-pressed="false">1,000</button></div>
+    <label for="dest">Who receives these decals?</label>
+    <select id="dest"><option value="self">I will give them out myself (I am a Gift Giver)</option><option value="new">A business or place that is not on the list</option></select>
+    <div id="newnom" hidden><div class="two"><div><label for="norg">Name of the business or place</label><input type="text" id="norg" maxlength="80"></div><div><label for="ncity">City</label><input type="text" id="ncity" maxlength="60"></div></div>
+      <div class="two"><div><label for="nname">Who should we write to? (optional)</label><input type="text" id="nname" maxlength="80"></div><div><label for="nemail">Their email</label><input type="email" id="nemail" maxlength="120"></div></div>
+      <div class="two"><div><label for="nphone">Their phone (optional, a personal call helps)</label><input type="tel" id="nphone" maxlength="40"></div><div></div></div></div>
+    <p class="hint" id="destnote">You get the decals and give them out yourself. To give them through a place instead, choose it from the list: we invite that place to be a MannaFish Hub, and if they accept, we send the decals, with a basket, to them. Giving to two or more places? Use "Copy this card" above, and choose a different place on each (100 or more for each).</p></section>
   <section class="step"><h2><i>5</i> Who are you?</h2><p class="h">We email you a proof to approve before anything is printed. Nothing is charged here.</p>
     <div class="two"><div><label for="cname">Your name</label><input type="text" id="cname" autocomplete="name"></div><div><label for="cemail">Email</label><input type="email" id="cemail" autocomplete="email"></div></div>
-    <div class="two"><div><label for="cphone">Phone (optional)</label><input type="tel" id="cphone" autocomplete="tel"></div><div></div></div>
+    <div class="two"><div><label for="cphone">Phone (optional)</label><input type="tel" id="cphone" autocomplete="tel"></div><div><label for="ccity">Your city or ZIP</label><input type="text" id="ccity" autocomplete="postal-code" maxlength="60"></div></div>
     <label for="cnote">Anything else we should know?</label><textarea id="cnote" maxlength="800"></textarea>
     <div class="row"><button type="button" class="btn y" id="send">Send my sponsorship request</button></div><p class="hint" id="sendnote"></p><div class="msg" id="msg" role="status"></div></section>
 </div>
@@ -121,7 +127,7 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
 <script src="/print/kit/kit.js"></script>
 <script>
 (function(){
-var APP='https://manna-fish.com/bible/', EMB=/(^|[?&])embed=1/.test(location.search), $=function(i){ return document.getElementById(i); }, STORE='mf-sponsor-draft-v1', DID='', S=null, view='back', pending=0;
+var APP='https://manna-fish.com/bible/', EMB=/(^|[?&])embed=1/.test(location.search), $=function(i){ return document.getElementById(i); }, STORE='mf-sponsor-draft-v1', DID='', EDIT=null, S=null, view='back', pending=0;
 var BOOKS='Genesis,Exodus,Leviticus,Numbers,Deuteronomy,Joshua,Judges,Ruth,1 Samuel,2 Samuel,1 Kings,2 Kings,1 Chronicles,2 Chronicles,Ezra,Nehemiah,Esther,Job,Psalm,Proverbs,Ecclesiastes,Song of Solomon,Isaiah,Jeremiah,Lamentations,Ezekiel,Daniel,Hosea,Joel,Amos,Obadiah,Jonah,Micah,Nahum,Habakkuk,Zephaniah,Haggai,Zechariah,Malachi,Matthew,Mark,Luke,John,Acts,Romans,1 Corinthians,2 Corinthians,Galatians,Ephesians,Philippians,Colossians,1 Thessalonians,2 Thessalonians,1 Timothy,2 Timothy,Titus,Philemon,Hebrews,James,1 Peter,2 Peter,1 John,2 John,3 John,Jude,Revelation'.split(',');
 var QCH=['Free quote','Book now','Visit us','Learn more','Call us today','Join us Sunday','Order online','See our menu'], CCH=['Sponsored by','A free gift made possible by','A gift from','Prayed over by','In honor of'], MAXCARDS=12;
 function comeBack(){ return EMB?location.origin+'/?sd='+DID+'#sponsor':location.origin+'/sponsor/?d='+DID; }
@@ -129,28 +135,37 @@ function esc(t){ return String(t).replace(/[&<>"]/g,function(c){ return {'&':'&a
 function fullUrl(u){ u=(u||'').trim(); if(u&&!/^https?:\/\//i.test(u)) u='https://'+u; return u; }
 function say(t,k){ $('msg').textContent=t; $('msg').className='msg '+(k||''); }
 /* ---- the order: a list of cards, one open at a time ---- */
-function blank(from){ var c={word:'',fishId:'',verse:null,vref:'',ver:'kjv',url:'',qrTo:'link',logoAspect:0,q1:'Visit us',q2:'to learn more',by:'logo',logoId:'',logoName:'',name:'',text:'',credit:'Sponsored by',qty:100};
+function blank(from){ var c={word:'',fishId:'',verse:null,vref:'',ver:'kjv',url:'',qrTo:'link',logoAspect:0,q1:'Visit us',q2:'to learn more',by:'logo',logoId:'',logoName:'',name:'',text:'',credit:'Sponsored by',qty:100,dest:'self',hubId:'',hubName:'',nOrg:'',nName:'',nEmail:'',nPhone:'',nCity:''};
   if(from) ['url','qrTo','ver','q1','q2','by','logoId','logoName','logoAspect','name','text','credit','qty'].forEach(function(k){ c[k]=from[k]; }); return c; }
-function fresh(){ return {cards:[blank()],active:0,logos:{},contact:{name:'',email:'',phone:'',note:''}}; }
+function fresh(){ return {cards:[blank()],active:0,logos:{},contact:{name:'',email:'',phone:'',city:'',note:''}}; }
 function cur(){ return S.cards[S.active]; }
 function logoOf(c){ return c.logoId&&S.logos[c.logoId]||''; }
 function cfgOf(c){ var by=c.by; if(by==='name'&&!c.name) by='text';
   return {word:c.word,fishId:c.fishId,verse:c.verse,by:by,logo:logoOf(c),name:c.name,text:c.text,credit:c.credit||'Sponsored by',qrTo:c.qrTo,logoAspect:c.logoAspect||0,qrWords:[c.q1,c.q2].map(function(x){ return (x||'').trim(); }).filter(Boolean).join('\n')||'Visit us',url:c.qrTo==='app'?APP:(fullUrl(c.url)||'https://manna-fish.com/')}; }
-function problem(c){ if(!c.word) return 'Choose a word'; if(c.by==='logo'&&!logoOf(c)) return 'Add your logo or your words'; if(c.by==='name'&&!c.name.trim()) return 'Type your name'; if(c.by==='text'&&!c.text.trim()) return 'Write your words'; if(c.qrTo!=='app'&&!c.url.trim()) return 'Add your web address'; return ''; }
+function problem(c){ if(!c.word) return 'Choose a word'; if(c.by==='logo'&&!logoOf(c)) return 'Add your logo or your words'; if(c.by==='name'&&!c.name.trim()) return 'Type your name'; if(c.by==='text'&&!c.text.trim()) return 'Write your words'; if(c.qrTo!=='app'&&!c.url.trim()) return 'Add your web address'; if(c.dest==='new'&&!c.nOrg.trim()) return 'Name the place you are nominating'; if(c.dest==='new'&&c.nEmail&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c.nEmail.trim())) return 'Check that email address'; return ''; }
 /* form -> card */
 function pull(){ var c=cur(); c.url=$('url').value; c.q1=$('q1').value; c.q2=$('q2').value; c.name=$('name').value; c.text=$('text').value; c.credit=$('credit').value; c.vref=$('vref').value; c.ver=$('vver').value;
-  c.qty=snap(c.qty); S.contact={name:$('cname').value,email:$('cemail').value,phone:$('cphone').value,note:$('cnote').value}; }
+  c.qty=snap(c.qty); S.contact={name:$('cname').value,email:$('cemail').value,phone:$('cphone').value,city:$('ccity').value,note:$('cnote').value};
+  c.nOrg=$('norg').value; c.nName=$('nname').value; c.nEmail=$('nemail').value; c.nPhone=$('nphone').value; c.nCity=$('ncity').value; var dv=$('dest').value; c.dest=dv==='self'||dv==='new'?dv:'hub'; if(c.dest==='hub'){ c.hubId=dv.slice(4); c.hubName=$('dest').selectedOptions[0].getAttribute('data-name')||$('dest').selectedOptions[0].textContent; } }
 /* card -> form */
 function push(){ var c=cur(); $('url').value=c.url; $('q1').value=c.q1; $('q2').value=c.q2; $('name').value=c.name; $('text').value=c.text; $('credit').value=c.credit; $('vref').value=c.vref||''; $('vver').value=c.ver||'kjv'; c.qty=snap(c.qty); document.querySelectorAll('#qtyseg button').forEach(function(x){ x.setAttribute('aria-pressed',String(+x.getAttribute('data-q')===c.qty)); }); toWhere();
-  $('cname').value=S.contact.name; $('cemail').value=S.contact.email; $('cphone').value=S.contact.phone; $('cnote').value=S.contact.note;
+  $('cname').value=S.contact.name; $('cemail').value=S.contact.email; $('cphone').value=S.contact.phone; $('ccity').value=S.contact.city||''; $('cnote').value=S.contact.note;
+  setDest(c);
   document.querySelectorAll('#by button').forEach(function(x){ x.setAttribute('aria-pressed',String(x.getAttribute('data-by')===c.by)); }); ['logo','name','text'].forEach(function(k){ $('by-'+k).hidden=k!==c.by; });
   var u=logoOf(c); $('logoprev').hidden=!u; if(u) $('logoprev').src=u; $('logoname').textContent=u?(c.logoName||'Your logo')+' (ready)':'Choose your logo file here (PNG, JPG or SVG). We size it for you.';
   showWords(); noteWord(); fillVerseSelect(); vnote(c.verse?(c.verse.ref+' (KJV): '+c.verse.top+' '+c.verse.bot):'The fish comes with its own verse. To use a different one, type its address. The big word has to be in the verse.',c.verse?'ok':''); }
 function noteWord(){ var c=cur(), d=c.word?MFkit.study({word:c.word}):null; $('wnote').textContent=d?(d.gkw+' · '+d.hbw+' · '+(d.refs||[]).map(function(r){ return r[0]; }).join(', ')):''; }
+/* who receives the decals: the Hubs we know (from /api/hubs), or a place not on the list */
+function setDest(c){ var v=c.dest==='hub'?'hub:'+c.hubId:c.dest; var sel=$('dest'); if(c.dest==='hub'&&![].some.call(sel.options,function(o){ return o.value===v; })){ var o=document.createElement('option'); o.value=v; o.textContent=c.hubName; sel.appendChild(o); } sel.value=v;
+  $('norg').value=c.nOrg||''; $('nname').value=c.nName||''; $('nemail').value=c.nEmail||''; $('nphone').value=c.nPhone||''; $('ncity').value=c.nCity||''; $('newnom').hidden=c.dest!=='new'; }
+function loadHubs(){ fetch('/api/hubs',{cache:'no-store'}).then(function(r){ return r.json(); }).then(function(j){ var all=[].concat(j.stations||[],j.proposed||[]).filter(function(x){ return x&&x.id&&x.name&&x.id!=='anywhere'&&x.status!=='closed'; }); if(!all.length) return;
+    var g=document.createElement('optgroup'); g.label='Nominate a MannaFish Hub'; all.sort(function(a,b){ return a.name.localeCompare(b.name); }).forEach(function(x){ var o=document.createElement('option'); o.value='hub:'+x.id; o.textContent=x.name+(x.city?' ('+x.city+')':''); o.setAttribute('data-name',x.name); g.appendChild(o); });
+    var keep=cur(); $('dest').insertBefore(g,$('dest').options[1]); setDest(keep); }).catch(function(){}); }
+$('dest').addEventListener('change',function(){ $('newnom').hidden=$('dest').value!=='new'; soon(); });
 function renderCards(){ var tot=0; $('cardlist').innerHTML=S.cards.map(function(c,i){ tot+=c.qty; var pr=problem(c);
-  return '<button type="button" role="tab" data-i="'+i+'" aria-selected="'+(i===S.active)+'" class="'+(pr?'todo':'')+'"><b>'+(i+1)+'. '+esc(c.word||'New card')+'</b><small>'+c.qty+' decals'+(pr?' · '+esc(pr):' · ready')+'</small></button>'; }).join('');
+  return '<button type="button" role="tab" data-i="'+i+'" aria-selected="'+(i===S.active)+'" class="'+(pr?'todo':'')+'"><b>'+(i+1)+'. '+esc(c.word||'New card')+'</b><small>'+c.qty+' decals'+(c.dest==='hub'?' → '+esc(c.hubName):c.dest==='new'&&c.nOrg?' → '+esc(c.nOrg):'')+(pr?' · '+esc(pr):' · ready')+'</small></button>'; }).join('');
   $('tot').textContent='· '+tot+' decals in '+S.cards.length+(S.cards.length===1?' design':' designs'); $('delcard').disabled=S.cards.length<2; $('newcard').disabled=$('dupcard').disabled=S.cards.length>=MAXCARDS;
-  var n=S.cards.length; $('send').textContent='Send my sponsorship request'+(n>1?' ('+n+' cards)':''); }
+  var n=S.cards.length; $('send').textContent=(EDIT?'Save my changes':'Send my sponsorship request')+(n>1?' ('+n+' cards)':''); }
 $('cardlist').addEventListener('click',function(e){ var b=e.target.closest('button[data-i]'); if(!b) return; pull(); S.active=+b.getAttribute('data-i'); push(); renderCards(); draw(); persist(); });
 $('newcard').addEventListener('click',function(){ pull(); S.cards.push(blank(cur())); S.cards[S.cards.length-1].qty=100; S.active=S.cards.length-1; var c=cur(); c.word=''; push(); renderCards(); draw(); persist(); $('wsearch').focus(); say('A new card. Your link, logo and words are copied: choose its word.','ok'); });
 $('dupcard').addEventListener('click',function(){ pull(); var c=JSON.parse(JSON.stringify(cur())); S.cards.splice(S.active+1,0,c); S.active++; push(); renderCards(); persist(); say('Copied. Change its word or verse.','ok'); });
@@ -158,7 +173,7 @@ $('delcard').addEventListener('click',function(){ if(S.cards.length<2) return; S
 /* ---- saving: this browser at once, and the server a moment later (so the order can be picked up from the link on any device) ---- */
 var tl=null, ts=null, saved=0;
 function slim(){ var o=JSON.parse(JSON.stringify(S)); return o; }
-function persist(){ pull(); clearTimeout(tl); tl=setTimeout(function(){ try{ localStorage.setItem(STORE,JSON.stringify({id:DID,S:slim()})); }catch(e){ try{ var o=slim(); o.logos={}; localStorage.setItem(STORE,JSON.stringify({id:DID,S:o})); }catch(x){} } },300);
+function persist(){ pull(); if(EDIT){ renderCards(); return; } clearTimeout(tl); tl=setTimeout(function(){ try{ localStorage.setItem(STORE,JSON.stringify({id:DID,S:slim()})); }catch(e){ try{ var o=slim(); o.logos={}; localStorage.setItem(STORE,JSON.stringify({id:DID,S:o})); }catch(x){} } },300);
   clearTimeout(ts); ts=setTimeout(toServer,1800); renderCards(); }
 function toServer(){ var body=JSON.stringify({id:DID||undefined,data:Object.assign(slim(),{})}); if(body.length>4400000){ $('savednote').textContent='Saved on this device (the logos are too large to save online: use smaller pictures).'; $('savebar').hidden=false; return; }
   fetch('/api/sponsor-draft',{method:'POST',headers:{'content-type':'application/json'},body:body}).then(function(r){ return r.json().then(function(j){ return {r:r,j:j}; }); }).then(function(o){ if(!o.r.ok||!o.j.id) throw 0; DID=o.j.id;
@@ -166,8 +181,18 @@ function toServer(){ var body=JSON.stringify({id:DID||undefined,data:Object.assi
     $('savelink').value=comeBack(); $('savednote').textContent='Saved. Come back to this order any time with this link:'; $('savebar').hidden=false; })
    .catch(function(){ $('savednote').textContent='Saved on this device. (We could not reach the server just now.)'; $('savebar').hidden=false; }); }
 $('copylink').addEventListener('click',function(){ var i=$('savelink'); i.select(); try{ navigator.clipboard.writeText(i.value); }catch(e){ try{ document.execCommand('copy'); }catch(x){} } this.textContent='Copied'; var b=this; setTimeout(function(){ b.textContent='Copy link'; },1500); });
-function adopt(o){ if(!o||!o.cards||!o.cards.length) return false; S={cards:o.cards.map(function(c){ return Object.assign(blank(),c); }),active:Math.min(o.active||0,o.cards.length-1),logos:o.logos||{},contact:Object.assign({name:'',email:'',phone:'',note:''},o.contact||{})}; return true; }
-function restore(){ var p=new URLSearchParams(location.search), id=p.get('d'), loc=null; try{ loc=JSON.parse(localStorage.getItem(STORE)||'null'); }catch(e){}
+function adopt(o){ if(!o||!o.cards||!o.cards.length) return false; S={cards:o.cards.map(function(c){ return Object.assign(blank(),c); }),active:Math.min(o.active||0,o.cards.length-1),logos:o.logos||{},contact:Object.assign({name:'',email:'',phone:'',city:'',note:''},o.contact||{})}; return true; }
+/* change a request already sent: /sponsor/?edit=<id>.<token> (the link in the sponsor's email) */
+function fromOrder(o){ var logos={}; var cards=o.items.map(function(it){ var c=blank(), cf=it.cfg||{}, qw=(cf.qrWords||'').split('\n'), d=it.dest||{type:'self'}, v=cf.verse||null;
+  c.word=it.title; c.fishId=it.fish; c.qty=it.qty; c.qrTo=cf.qrTo==='app'?'app':'link'; c.url=c.qrTo==='app'?'':it.url; c.q1=qw[0]||''; c.q2=qw[1]||''; c.by=cf.by||'text'; c.name=cf.name||''; c.text=cf.text||''; c.credit=cf.credit||'Sponsored by'; c.logoAspect=cf.logoAspect||0;
+  if(it.logo){ var id=hash(it.logo); logos[id]=it.logo; c.logoId=id; c.logoName='Your logo'; } if(v){ c.verse={ref:v.ref,top:v.top,bot:v.bot,ver:v.ver}; c.vref=v.ref; c.ver=v.ver; }
+  if(d.type==='hub'){ c.dest='hub'; c.hubId=d.hubId; c.hubName=d.hubName; } if(d.type==='new'){ c.dest='new'; c.nOrg=d.nominee.org; c.nName=d.nominee.name; c.nEmail=d.nominee.email; c.nPhone=d.nominee.phone||''; c.nCity=d.nominee.city; } return c; });
+  S={cards:cards,active:0,logos:logos,contact:Object.assign({name:'',email:'',phone:'',city:'',note:''},o.contact)}; }
+function restoreEdit(e){ var m=/^(C[0-9A-Z]+)\.([a-f0-9]{32})$/.exec(e||''); if(!m) return Promise.resolve(false);
+  return fetch('/api/card-order?id='+m[1]+'&t='+m[2],{cache:'no-store'}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error); return j; }); }).then(function(j){ fromOrder(j.order); EDIT={id:m[1],t:m[2]};
+    $('savednote').textContent=j.locked?'This request is already being printed, so it can no longer be changed here. Please email us.':'You are changing request '+m[1]+'. Make your changes and press "Save my changes".'; $('savebar').hidden=false; $('savelink').hidden=true; $('copylink').hidden=true; if(j.locked) $('send').disabled=true; return true; })
+   .catch(function(){ $('savednote').textContent='We could not find that request. It may have been mistyped.'; $('savebar').hidden=false; $('savelink').hidden=true; $('copylink').hidden=true; return false; }); }
+function restore(){ var pe=new URLSearchParams(location.search).get('edit'); if(pe) return restoreEdit(pe).then(function(ok){ return ok; }); var p=new URLSearchParams(location.search), id=p.get('d'), loc=null; try{ loc=JSON.parse(localStorage.getItem(STORE)||'null'); }catch(e){}
   var fromLocal=function(){ if(loc&&loc.S&&adopt(loc.S)){ DID=loc.id||''; return true; } return false; };
   if(id&&/^[a-f0-9]{32}$/.test(id)) return fetch('/api/sponsor-draft?id='+id,{cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ if(adopt(j.data)){ DID=id; return true; } return fromLocal(); }).catch(function(){ return fromLocal(); });
   return Promise.resolve(fromLocal()); }
@@ -239,7 +264,7 @@ chips($('cchips'),CCH,function(v){ $('credit').value=v; });
 $('logopick').addEventListener('click',function(){ $('logo').click(); });
 $('by').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; cur().by=b.getAttribute('data-by'); if(cur().by==='logo'&&!logoOf(cur())) setTimeout(function(){ $('logo').click(); },0); document.querySelectorAll('#by button').forEach(function(x){ x.setAttribute('aria-pressed',String(x===b)); });
   ['logo','name','text'].forEach(function(k){ $('by-'+k).hidden=k!==cur().by; }); soon(); });
-['url','q1','q2','name','text','credit','cname','cemail','cphone','cnote'].forEach(function(i){ $(i).addEventListener('input',soon); });
+['url','q1','q2','name','text','credit','cname','cemail','cphone','ccity','cnote','norg','nname','nemail','nphone','ncity'].forEach(function(i){ $(i).addEventListener('input',soon); });
 /* a logo: any picture, sized down and kept with its see-through parts; the card fits it into the space. The same logo on several cards is kept once. */
 function hash(u){ var h=0,t=u.slice(0,3000)+u.slice(-3000); for(var i=0;i<t.length;i++) h=(h*31+t.charCodeAt(i))|0; return 'l'+u.length+'x'+(h>>>0).toString(36); }
 function setLogo(u,n){ var id=hash(u); S.logos[id]=u; var c=cur(); c.logoId=id; c.logoName=n; var im0=new Image(); im0.onload=function(){ var asp=im0.naturalWidth&&im0.naturalHeight?im0.naturalWidth/im0.naturalHeight:0; S.cards.forEach(function(x){ if(x.logoId===id) x.logoAspect=asp; }); soon(); }; im0.src=u; $('logoprev').src=u; $('logoprev').hidden=false; $('logoname').textContent=n+' (ready)';
@@ -252,14 +277,17 @@ $('logo').addEventListener('change',function(){ var f=this.files&&this.files[0];
     im.onerror=function(){ say('We could not read that picture.','bad'); }; im.src=src; }; rd.readAsDataURL(f); });
 /* ---- sending ---- */
 function item(c){ var cf=cfgOf(c); return {fish:c.fishId,title:c.word,name:cf.by==='name'?c.name:(cf.by==='text'?c.text:''),url:cf.url,label:cf.qrWords.replace(/\n/g,' '),logo:cf.by==='logo'?cf.logo:'',qty:c.qty,
-  cfg:{by:cf.by,qrTo:c.qrTo,logoAspect:c.logoAspect||0,credit:cf.credit,text:c.text,name:c.name,qrWords:cf.qrWords,verse:c.verse||undefined}}; }
+  cfg:{by:cf.by,qrTo:c.qrTo,logoAspect:c.logoAspect||0,credit:cf.credit,text:c.text,name:c.name,qrWords:cf.qrWords,verse:c.verse||undefined},
+  dest:c.dest==='hub'?{type:'hub',hubId:c.hubId,hubName:c.hubName}:c.dest==='new'?{type:'new',nominee:{org:c.nOrg,name:c.nName,email:c.nEmail,phone:c.nPhone,city:c.nCity}}:{type:'self'}}; }
 $('send').addEventListener('click',function(){ pull(); var bad=-1; S.cards.forEach(function(c,i){ if(bad<0&&problem(c)) bad=i; });
   if(bad>=0){ S.active=bad; push(); renderCards(); draw(); say('Card '+(bad+1)+': '+problem(S.cards[bad])+'.','bad'); return; }
   var name=S.contact.name.trim(), email=S.contact.email.trim(); if(!name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ say('Please add your name and email.','bad'); $('cname').focus(); return; }
   $('send').disabled=true; say('Sending…');
-  fetch('/api/card-order',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({items:S.cards.map(item),contact:{name:name,email:email,phone:S.contact.phone,note:S.contact.note}})})
+  fetch('/api/card-order',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({edit:EDIT||undefined,items:S.cards.map(item),contact:{name:name,email:email,phone:S.contact.phone,city:S.contact.city,note:S.contact.note}})})
    .then(function(r){ return r.json().then(function(j){ return {r:r,j:j}; }); }).then(function(o){ $('send').disabled=false; if(!o.r.ok){ say(o.j.error||'That did not go through. Please try again.','bad'); return; }
-     try{ localStorage.removeItem(STORE); }catch(e){} try{ if(EMB) parent.postMessage({mfsb:'draft',id:''},'*'); else history.replaceState(null,'',location.pathname); }catch(e){} DID=''; var n=S.cards.length; S=fresh(); push(); renderCards(); draw(); $('savebar').hidden=true;
+     var cl=o.j.editToken?(EMB?location.origin+'/?edit='+o.j.id+'.'+o.j.editToken+'#sponsor':location.origin+'/sponsor/?edit='+o.j.id+'.'+o.j.editToken):'';
+     if(EDIT){ say('Updated. We emailed you the new request (number '+o.j.id+'), and told MannaFish.','ok'); return; }
+     try{ localStorage.removeItem(STORE); }catch(e){} try{ if(EMB) parent.postMessage({mfsb:'draft',id:''},'*'); else history.replaceState(null,'',location.pathname); }catch(e){} DID=''; var n=S.cards.length; S=fresh(); push(); renderCards(); draw(); $('savebar').hidden=true; if(cl){ $('savelink').value=cl; $('savednote').textContent='Change this request any time before printing starts with this link (we also emailed it to you):'; $('savebar').hidden=false; }
      say('Thank you. We have your sponsorship request for '+n+(n===1?' card':' cards')+' (number '+o.j.id+'). We will email you a proof to approve before anything is printed.','ok'); })
    .catch(function(){ $('send').disabled=false; say('We could not reach the server. Your order is saved here: please try again.','bad'); }); });
 /* ?example=ktech fills in the first customer (K-Tech Construction), to try the page the way a sponsor would */
@@ -273,9 +301,10 @@ if(EMB){ var lastH=0, tell=function(){ var h=Math.ceil(document.documentElement.
   try{ new ResizeObserver(tell).observe(document.body); }catch(e){ setInterval(tell,600); } window.addEventListener('load',tell); setInterval(tell,1500); }
 /* ---- start ---- */
 S=fresh();
+loadHubs();
 MFkit.ready().then(function(){ return restore(); }).then(function(had){ push(); renderCards();
   var p=new URLSearchParams(location.search), ex=p.get('example'), q=p.get('word')||(ex==='ktech'&&!had?'Build':'');
-  if(had&&(S.cards.length>1||cur().word||cur().logoId)){ $('savednote').textContent='Welcome back: we kept your work.'; $('savebar').hidden=false; if(DID) $('savelink').value=comeBack(); }
+  if(!EDIT&&had&&(S.cards.length>1||cur().word||cur().logoId)){ $('savednote').textContent='Welcome back: we kept your work.'; $('savebar').hidden=false; if(DID) $('savelink').value=comeBack(); }
   if(q&&!cur().word){ var b=[].find.call($('words').children,function(x){ return (x.getAttribute('data-w')||'').toLowerCase()===q.toLowerCase(); }); if(b) b.click(); if(ex==='ktech') ktech(); }
   if(!cur().word&&!had){ var first=MFkit.words.list.filter(function(x){ return x.ok&&x.w==='Build'; })[0]; if(first){ var c=cur(); c.word=first.w; c.fishId=first.k; showWords(); noteWord(); } }
   draw(); })
