@@ -32,7 +32,8 @@
     var mid=Math.round(v.length*0.46), best=-1, bd=1e9;
     for(var i=8;i<v.length-8;i++){ if(v[i]!==' ') continue; var d=Math.abs(i-mid)-(/[,;:]/.test(v[i-1])?12:0); if(d<bd){ bd=d; best=i; } }
     if(best<0) return {top:v,bot:''}; return {top:v.slice(0,best).trim(),bot:v.slice(best+1).trim()}; }
-  function render(f){ return load().then(function(B){ return MFfmt.svg(B.E,{word:f.word,top:f.top||' ',bot:f.bot||' ',ref:f.ref||'',refShort:f.refShort||'',tag:f.tag==null?' (KJV)':f.tag},B.R); }); }
+  function render(f){ return load().then(function(B){ var R=B.R; if(f.wordSize){ R=JSON.parse(JSON.stringify(B.R)); var W=R.word; W.tall=0; W.min=Math.max(W.min||0,f.wordSize); W.steps=W.steps||{}; [3,4,5,6,7].forEach(function(n){ W.steps[n]=Math.max(W.steps[n]||0,f.wordSize/(W.base||583)); }); }   /* a bigger word (a sponsor card's print size) */
+    return MFfmt.svg(B.E,{word:f.word,top:f.top||' ',bot:f.bot||' ',ref:f.ref||'',refShort:f.refShort||'',tag:f.tag==null?' (KJV)':f.tag},R); }); }
   // a picture of a fish (the outlines need no font): black, 2000 x 1000
   function png(svg){ return new Promise(function(res,rej){ var img=new Image(), u=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
     img.onload=function(){ var c=document.createElement('canvas'); c.width=2000; c.height=1000; var g=c.getContext('2d'); g.fillStyle='#000'; g.fillRect(0,0,2000,1000); g.drawImage(img,0,0,2000,1000); URL.revokeObjectURL(u); c.toBlob(function(b){ b?res(b):rej(0); },'image/png'); };

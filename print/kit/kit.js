@@ -56,9 +56,10 @@
   function fishSvg(src, x, y, w) { return src.replace(/<svg\b[^>]*?viewBox="([^"]+)"[^>]*>/, function (m, vb) { return '<svg x="' + f2(x) + '" y="' + f2(y) + '" width="' + f2(w) + '" height="' + f2(w / 2) + '" viewBox="' + vb + '" xmlns="http://www.w3.org/2000/svg" style="fill-rule:evenodd;clip-rule:evenodd;shape-rendering:geometricPrecision" preserveAspectRatio="xMidYMid meet">'; }); }
   function svgPage(inner) { return '<svg xmlns="http://www.w3.org/2000/svg" width="' + f2(PW) + 'mm" height="' + f2(PH) + 'mm" viewBox="0 0 ' + f2(PW) + ' ' + f2(PH) + '">' + inner + '</svg>'; }
   /* a fish drawn for a verse the sponsor chose (cfg.verse = {ref, top, bot}): the same builder as "Make it a MannaFish" (fish-lang/makefish.js) */
+  var BIGWORD = { BUILD: 700 };   /* K-Tech's Build is drawn a little bigger for print (Ken, 17 Nov: the standard 5-letter size is about 653) */
   function loadMake() { return window.MFmake ? Promise.resolve() : new Promise(function (ok, no) { var s = document.createElement('script'); s.src = '/fish-lang/makefish.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s); }); }
   function fishSource(cfg) { if (cfg.fishSvg) return Promise.resolve(cfg.fishSvg);
-    if (cfg.verse && cfg.verse.top) return loadMake().then(function () { var w = String(cfg.word || ''); return MFmake.render({ word: w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(), top: cfg.verse.top, bot: cfg.verse.bot, ref: cfg.verse.ref, refShort: cfg.verse.ref, tag: ' (KJV)' }); });
+    if (cfg.verse && cfg.verse.top) return loadMake().then(function () { var w = String(cfg.word || ''); return MFmake.render({ word: w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(), top: cfg.verse.top, bot: cfg.verse.bot, ref: cfg.verse.ref, refShort: cfg.verse.ref, tag: ' (KJV)', wordSize: BIGWORD[w.toUpperCase()] }); });
     return fishSourceFile(cfg); }
   function fishSourceFile(cfg) { var id = cfg.fishId || cfg.word; var tries = ['/fish/print/' + id + '.svg', '/fish/en/' + id + '.svg', '/fish/' + id + '.svg', '/fish/en/' + String(cfg.word).toUpperCase() + '.svg'];
     var t = function (i) { return i >= tries.length ? Promise.reject(new Error('No fish picture for ' + id)) : fetch(tries[i]).then(function (r) { return r.ok ? r.text() : t(i + 1); }).catch(function () { return t(i + 1); }); }; return t(0); }

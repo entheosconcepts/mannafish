@@ -13,13 +13,15 @@ const rd = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
 // the fish and their words, read from the same files the site's functions use (lib/catch.json, lib/words.json)
 const CATCH = rd(path.join(ROOT, 'netlify/functions/lib/catch.json')), WORDSJ = rd(path.join(ROOT, 'netlify/functions/lib/words.json'));
 const CATCHORDER = CATCH.order, fishInfo = (k) => WORDSJ.words[k] ? { title: WORDSJ.words[k].title } : (CATCH.fish[k] ? { title: CATCH.fish[k].title } : null);
-const chap = {}; const kjv = (b, c) => chap[b + c] || (chap[b + c] = (() => { try { return rd(path.join(BIBLE, 'kjv', `${CANON[b]}-${c}.json`)).t; } catch (e) { return []; } })());
+const chap = {}; const kjv = (b, c) => chap[b + '-' + c] || (chap[b + '-' + c] = (() => { try { return rd(path.join(BIBLE, 'kjv', `${CANON[b]}-${c}.json`)).t; } catch (e) { return []; } })());
 const name = (b) => CANON[b].replace(/_/g, ' ').replace(/^(\d) /, '$1 ').replace('Song of Solomon', 'Song of Solomon');
 // the lexicon: every Strong's entry with the KJV words that translate it
 const LEX = {}; for (const f of fs.readdirSync(path.join(BIBLE, 'lex'))) Object.assign(LEX, rd(path.join(BIBLE, 'lex', f)));
 const CONC = {}; const conc = (sn) => { const f = sn[0] + Math.floor(parseInt(sn.slice(1), 10) / 100) * 0; return null; };
 const concFor = (sn) => { const m = fs.readdirSync(path.join(BIBLE, 'conc')); return m; };
 const stem = (w) => { let s = w.toLowerCase().replace(/[^a-z]/g, ''); for (const suf of ['ing', 'ed', 'es', 'e', 's']) if (s.endsWith(suf) && s.length - suf.length >= 3) { s = s.slice(0, -suf.length); break; } return s; };
+const IRREG = { build: ['built'], bring: ['brought'], give: ['gave', 'given'], go: ['went', 'gone'], come: ['came'], find: ['found'], hear: ['heard'], teach: ['taught'], seek: ['sought'], know: ['knew', 'known'], make: ['made'], take: ['took', 'taken'], see: ['saw', 'seen'], keep: ['kept'], leave: ['left'], lead: ['led'], hold: ['held'], sing: ['sang', 'sung'], speak: ['spoke', 'spoken'], stand: ['stood'], think: ['thought'], run: ['ran'], rise: ['rose', 'risen'], arise: ['arose', 'arisen'], fight: ['fought'], feed: ['fed'], eat: ['ate', 'eaten'], drink: ['drank', 'drunk'], sit: ['sat'], lay: ['laid'], say: ['said'], tell: ['told'], send: ['sent'], spend: ['spent'], bear: ['bore', 'borne'], bind: ['bound'], break: ['broke', 'broken'], choose: ['chose', 'chosen'], forgive: ['forgave', 'forgiven'], grow: ['grew', 'grown'], write: ['wrote', 'written'], pay: ['paid'], lose: ['lost'], meet: ['met'], hide: ['hid', 'hidden'], fall: ['fell', 'fallen'], flee: ['fled'], draw: ['drew', 'drawn'] };
+const formsOf = (word) => { const w = word.toLowerCase(), st = stem(w), suf = st.length >= 4 ? 'e|s|es|ed|d|ing|eth|est|er|ers' : 'e|s|es|ed|ing|eth|est'; return `\\b(?:${st}(?:${suf})?${(IRREG[w] || []).map((x) => '|' + x).join('')})\\b`; };
 const sn4 = (k) => k[0] + String(parseInt(k.slice(1), 10));
 // the best Greek and Hebrew entry for a word: the one whose KJV renderings that match it add up highest
 function best(word, lang) {
@@ -41,7 +43,7 @@ function snippet(text, st) {
   out = out.replace(/[,;:.\s]+$/, ''); return out.length <= 72 ? out : '';
 }
 function verses(word, hbk, grk) {
-  const st = stem(word), re = new RegExp('\\b' + st, 'i'), DIR = path.join(BIBLE, 'conc');
+  const st = stem(word), re = new RegExp(formsOf(word), 'i'), DIR = path.join(BIBLE, 'conc');
   const concAll = (sn) => { for (const f of fs.readdirSync(DIR)) { if (f[0] !== sn[0]) continue; const c = CONCCACHE[f] || (CONCCACHE[f] = rd(path.join(DIR, f))); const v = c[sn4(sn)]; if (v) return v; } return []; };
   const per = [hbk, grk].map((sn) => { if (!sn) return []; const got = [];
     for (const [b, c, v] of concAll(sn)) { const txt = (kjv(b, c) || [])[v - 1]; if (!txt) continue; const s = snippet(txt, st); if (s && s.length >= 14 && re.test(s)) got.push({ ref: `${name(b)} ${c}:${v}`, s }); }
@@ -76,6 +78,16 @@ for (const [key, ent] of Object.entries(index)) {
   if (!g || !h || d.refs.length < 4) short.push(`${ent.word}(${g ? 'G' : '-'}${h ? 'H' : '-'} ${d.refs.length})`);
   words[key] = d; made++;
 }
-const list = Object.entries(index).map(([key, e]) => ({ w: e.word, k: e.fish[0], ok: !!(words[key] && words[key].gkw && words[key].hbw && words[key].refs.length >= 4) })).sort((a, b) => a.w.localeCompare(b.w));
+// the other verses that use each word (Ken, 17 Nov: "let them choose from a list of scriptures"): print/kit/verses.json, loaded when a sponsor opens the list
+const KV = []; for (let b = 0; b < CANON.length; b++) for (let c = 1; ; c++) { const t = kjv(b, c); if (!t || !t.length) break; t.forEach((txt, i) => KV.push([`${name(b)} ${c}:${i + 1}`, clean(txt)])); }
+const verseList = {}; const formMap = {};
+for (const [key, ent] of Object.entries(index)) { const f = formsOf(ent.word), re = new RegExp(f, 'i'); formMap[key] = f;
+  const hit = KV.filter((v) => v[1].length <= 175 && re.test(v[1])), pick = [], n = Math.min(14, hit.length);
+  for (let i = 0; i < n; i++) pick.push(hit[Math.floor((i + 0.5) * hit.length / n)]);
+  const study = ((words[key] && words[key].refs) || []).map((r) => { const rr = refOf(r[0]), t = rr && (kjv(rr.b, rr.c) || [])[rr.v - 1]; return t ? [r[0], clean(t)] : null; }).filter(Boolean);
+  const seen = new Set(), out = []; for (const v of [...study.map((x) => [...x, 1]), ...pick.map((x) => [...x, 0])]) { if (seen.has(v[0])) continue; seen.add(v[0]); out.push(v); }
+  verseList[key] = out.slice(0, 20); }
+fs.writeFileSync(path.join(ROOT, 'print/kit/verses.json'), JSON.stringify(verseList));
+const list = Object.entries(index).map(([key, e]) => ({ w: e.word, k: e.fish[0], ok: !!(words[key] && words[key].gkw && words[key].hbw && words[key].refs.length >= 4), f: formMap[key] })).sort((a, b) => a.w.localeCompare(b.w));
 fs.writeFileSync(path.join(ROOT, 'print/kit/words.json'), JSON.stringify({ list, words }));
 console.log(`${list.length} words: ${hand} by hand, ${made} from the lexicon; ${list.filter((x) => x.ok).length} complete. Incomplete: ${short.length}`); if (process.argv.includes('--show')) console.log(short.join(', '));
