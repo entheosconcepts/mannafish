@@ -32,7 +32,11 @@
     sub('GKM', defLines(d.gkm).map(esc).join('<br>')); sub('HBM', defLines(d.hbm).map(esc).join('<br>'));
     sub('GST', esc(d.gst || '')); sub('HST', esc(d.hst || ''));
     (d.refs || []).slice(0, 4).forEach(function (r, i) { sub('R' + (i + 1) + 'N', esc(r[0])); sub('R' + (i + 1) + 'Q', esc(r[1])); });
-    sub('CREDIT', esc(cfg.credit || 'Sponsored by'));
+    var cr = String(cfg.credit || 'Sponsored by').replace(/^\s+|\s+$/g, ''), crl = cr.split('\n').slice(0, 2).map(function (l) { return l.trim(); }).filter(Boolean);
+    if (crl.length > 1 || cr.length > 24) {   /* a longer line: two lines at most, shrunk to fit, with the logo a little smaller under it */
+      h = h.replace('<div class="sb" data-b="sponsor">§CREDIT§</div>', '<div class="sb fit" data-b="sponsor" style="white-space:normal;line-height:1.08;height:6.4mm;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden"><span>§CREDIT§</span></div>')
+        .replace('<div class="sl" data-b="logo">', '<div class="sl" data-b="logo" style="height:14.6mm">'); }
+    sub('CREDIT', crl.map(esc).join('<br>') || 'Sponsored by');
     sub('NAME', esc(cfg.by === 'text' ? cfg.text : cfg.name || ''));
     sub('LOGO', cfg.logo || '');
     sub('LABL', esc(cfg.qrWords || 'Visit us\nto learn more').replace(/\n/g, '<br>')); sub('LABR', 'Free MannaFish<br>Devotional');
@@ -50,8 +54,18 @@
   function svgImg(svg) { return img('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg)); }
   function fishSvg(src, x, y, w) { return src.replace(/<svg\b[^>]*?viewBox="([^"]+)"[^>]*>/, function (m, vb) { return '<svg x="' + f2(x) + '" y="' + f2(y) + '" width="' + f2(w) + '" height="' + f2(w / 2) + '" viewBox="' + vb + '" xmlns="http://www.w3.org/2000/svg" style="fill-rule:evenodd;clip-rule:evenodd;shape-rendering:geometricPrecision" preserveAspectRatio="xMidYMid meet">'; }); }
   function svgPage(inner) { return '<svg xmlns="http://www.w3.org/2000/svg" width="' + f2(PW) + 'mm" height="' + f2(PH) + 'mm" viewBox="0 0 ' + f2(PW) + ' ' + f2(PH) + '">' + inner + '</svg>'; }
-  function fishSource(cfg) { var id = cfg.fishId || cfg.word; var tries = ['/fish/print/' + id + '.svg', '/fish/en/' + id + '.svg', '/fish/' + id + '.svg', '/fish/en/' + String(cfg.word).toUpperCase() + '.svg'];
+  /* a fish drawn for a verse the sponsor chose (cfg.verse = {ref, top, bot}): the same builder as "Make it a MannaFish" (fish-lang/makefish.js) */
+  function loadMake() { return window.MFmake ? Promise.resolve() : new Promise(function (ok, no) { var s = document.createElement('script'); s.src = '/fish-lang/makefish.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s); }); }
+  function fishSource(cfg) { if (cfg.fishSvg) return Promise.resolve(cfg.fishSvg);
+    if (cfg.verse && cfg.verse.top) return loadMake().then(function () { var w = String(cfg.word || ''); return MFmake.render({ word: w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(), top: cfg.verse.top, bot: cfg.verse.bot, ref: cfg.verse.ref, refShort: cfg.verse.ref, tag: ' (KJV)' }); });
+    return fishSourceFile(cfg); }
+  function fishSourceFile(cfg) { var id = cfg.fishId || cfg.word; var tries = ['/fish/print/' + id + '.svg', '/fish/en/' + id + '.svg', '/fish/' + id + '.svg', '/fish/en/' + String(cfg.word).toUpperCase() + '.svg'];
     var t = function (i) { return i >= tries.length ? Promise.reject(new Error('No fish picture for ' + id)) : fetch(tries[i]).then(function (r) { return r.ok ? r.text() : t(i + 1); }).catch(function () { return t(i + 1); }); }; return t(0); }
+  /* the front as it will look finished: the printed card with the fish in the same place and size as in the print files, cut to the card (no bleed, square corners) */
+  function frontSvg(cfg) { return ready().then(function () { return fishSource(cfg); }).then(function (src) { return MFbox(src).then(function (box) {
+    var maxW = CARD.w - 2 * (SAFE + KISS), maxH = CARD.h - 2 * (SAFE + KISS), s = Math.min(maxW / box.w, maxH / box.h),
+      place = { x: BLEED + (CARD.w - box.w * s) / 2 - box.x * s, y: BLEED + (CARD.h - box.h * s) / 2 - box.y * s, w: 4000 * s };
+    return '<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="' + f2(BLEED) + ' ' + f2(BLEED) + ' ' + f2(CARD.w) + ' ' + f2(CARD.h) + '" preserveAspectRatio="xMidYMid slice" style="display:block"><rect x="0" y="0" width="' + f2(PW) + '" height="' + f2(PH) + '" fill="#000"/>' + fishSvg(src, place.x, place.y, place.w) + '</svg>'; }); }); }
   function backPng(cfg, dpi) { var host = document.createElement('div'); host.style.cssText = 'position:fixed;left:-20000px;top:0'; document.body.appendChild(host);
     return mount(host, cfg).then(function (pg) { var w = pg.offsetWidth, h = pg.offsetHeight, xhtml = new XMLSerializer().serializeToString(pg);
       var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml"><style>' + K.css + '</style>' + xhtml + '</div></foreignObject></svg>';
@@ -109,5 +123,5 @@
     var cs = 0; central.forEach(function (p) { parts.push(p); cs += p.length; });
     parts.push(new Uint8Array([].concat([0x50, 0x4b, 5, 6], u16(0), u16(0), u16(fs.length), u16(fs.length), u32(cs), u32(off), u16(0))));
     return new Blob(parts, { type: 'application/zip' }); }); }
-  window.MFkit = { sheetPdf: sheetPdf, fishSource: fishSource, ready: ready, mount: mount, backHtml: backHtml, files: files, zip: zip, study: study, defLines: defLines, get words() { return K.words; }, get css() { return K.css; } };
+  window.MFkit = { frontSvg: frontSvg, sheetPdf: sheetPdf, fishSource: fishSource, ready: ready, mount: mount, backHtml: backHtml, files: files, zip: zip, study: study, defLines: defLines, get words() { return K.words; }, get css() { return K.css; } };
 })();

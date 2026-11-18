@@ -2143,7 +2143,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   </div>
 </div></section>
 
-<section class="section reach" id="reach2"><div class="wrap">
+<section class="section reach" id="reach2" hidden><div class="wrap">
   <div class="section-head reach-sub">
     <span class="eyebrow">Sponsor a Gift Giver</span>
     <h2>Point your sponsorship at someone real.</h2>
@@ -2159,41 +2159,12 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
     <button class="bene feat" data-b="YADAH Collaborative" type="button"><span class="btag">Featured ministry</span><span class="bname">YADAH Collaborative</span><p>&ldquo;To know and be known.&rdquo; Gatherings, worship, prayer, evangelism, workshops, connection, community and more. Free gifts to fuel outreach. Ask about &ldquo;2 Fish&rdquo;&hellip; Get 2, Give 1.</p><span class="pick">Choose</span></button>
   </div>
   <p class="reach-chosen" id="reachChosen"></p>
-  <div class="invite-wrap">
-    <div class="invite-copy">
-      <span class="eyebrow">Optional add-on</span>
-      <h3>A co-labor invitation on the back.</h3>
-      <p>The front stays Scripture. The back is a word study of the same fish: the Greek and Hebrew, and verses to look up. Underneath, the sponsor&rsquo;s logo and two QR codes: one to their website, podcast or ministry, and one to today&rsquo;s free MannaFish devotional.</p>
-    </div>
-    <!-- Ken, 12 Oct: the back the same size as the front, laid out across. Ken, 2 Nov: show the word-study back the printer gets
-         (tools/print/make.mjs, landscape study back): Greek | word | Hebrew, six verses, then QR codes and the sponsor. Card 4.5 x 2.75 in -->
-    <div class="cards42">
-      <figure><figcaption>Front</figcaption><div class="card42 c42front" id="invFront" aria-hidden="true"></div></figure>
-      <figure><figcaption>Back</figcaption><div class="card42 sback" id="invBack" aria-hidden="true"></div><template id="invQr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" shape-rendering="crispEdges" aria-hidden="true"><path class="qrline" stroke="#000" d="M0 0.5h7m4 0h2m1 0h1m3 0h7m-25 1h1m5 0h1m1 0h2m1 0h1m4 0h1m1 0h1m5 0h1m-25 1h1m1 0h3m1 0h1m1 0h3m1 0h1m5 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m1 0h7m3 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m3 0h1m1 0h2m2 0h1m1 0h1m1 0h3m1 0h1m-25 1h1m5 0h1m2 0h3m1 0h2m1 0h1m1 0h1m5 0h1m-25 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-17 1h1m2 0h2m-13 1h1m5 0h1m1 0h1m1 0h1m2 0h2m2 0h2m2 0h3m-24 1h5m4 0h1m4 0h2m3 0h5m-24 1h1m2 0h1m1 0h3m4 0h2m1 0h1m2 0h2m1 0h1m1 0h2m-25 1h1m1 0h1m2 0h1m4 0h3m1 0h8m2 0h1m-22 1h4m2 0h2m1 0h1m2 0h2m1 0h2m4 0h1m-25 1h3m10 0h1m1 0h2m2 0h1m3 0h1m-24 1h1m2 0h1m2 0h1m2 0h1m1 0h7m1 0h3m1 0h2m-25 1h1m1 0h4m1 0h1m1 0h3m7 0h1m1 0h2m1 0h1m-25 1h1m2 0h6m2 0h1m1 0h2m1 0h5m1 0h1m-15 1h3m1 0h2m2 0h1m3 0h1m-21 1h7m3 0h2m1 0h1m2 0h1m1 0h1m1 0h1m3 0h1m-25 1h1m5 0h1m3 0h1m1 0h1m1 0h1m1 0h1m3 0h1m-21 1h1m1 0h3m1 0h1m2 0h1m2 0h1m2 0h6m1 0h3m-25 1h1m1 0h3m1 0h1m7 0h5m4 0h2m-25 1h1m1 0h3m1 0h1m2 0h1m1 0h2m2 0h1m5 0h2m1 0h1m-25 1h1m5 0h1m4 0h1m4 0h2m1 0h2m3 0h1m-25 1h7m1 0h2m2 0h3m1 0h2m3 0h1m2 0h1"/></svg></template></figure>
-    </div>
-    <p class="cardsize">Printed cards: 4.5 &times; 2.75 inches, front and back.</p>
-    <!-- Ken, 3 Nov: "allow user to customize the back of the card and add to cart, and make sure the minimum is 100 decals". No price
-         here (Ken decides pricing later): the cart sends a request, and MannaFish replies with the details and a proof to approve. -->
-    <div class="cdz" id="cdz">
-      <h4>Make the back yours</h4>
-      <div class="cdg">
-        <label>The fish<select id="cdFish"></select></label>
-        <label>Your name<input id="cdName" maxlength="60" placeholder="Church, business, ministry or podcast"></label>
-        <label>Your link<input id="cdUrl" type="url" maxlength="200" placeholder="https://your-website.com"></label>
-        <label>Words beside that QR code<input id="cdLab" maxlength="50" placeholder="Your website, podcast or ministry"></label>
-        <label>Your logo<input id="cdLogo" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml"></label>
-        <label>How many decals<input id="cdQty" type="number" min="100" step="100" value="100" inputmode="numeric"><small>At least 100, in hundreds.</small></label>
-      </div>
-      <p class="cdnote">The preview above changes as you type. The QR codes are made for your link when the cards are printed.</p>
-      <button type="button" class="cdadd" id="cdAdd">&#128722;&#xFE0E; Add to cart</button>
-      <div class="cdcart" id="cdCart" hidden></div>
-    </div>
-  </div>
-</div></section>
+  <div class="cta-row" style="margin-top:26px"><a class="btn btn-primary" href="#sponsor">Design your card</a></div>
+  </div></section>
 
 <!-- Ken, 12 Oct: "a section to let people donate into our ministry ... sometimes the pond is just not going to be stocked."
      No money is taken on the site yet: this asks who would like to help, and MannaFish writes back with how to give. -->
-<section class="section give" id="give"><div class="wrap">
+<section class="section give" id="give" hidden><div class="wrap">
   <div class="section-head"><span class="eyebrow">Stock the pond</span><h2>Help keep MannaFish free.</h2>
     <p>Some days the pond runs low. Your gift stocks it again, so the next person who asks receives two MannaFish, one to keep and one to give away, free, with nothing to pay and no postage.</p></div>
   <form class="netform mf-form" name="stock-the-pond" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="stockForm">
@@ -2226,27 +2197,17 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
 
 <!-- Ken, 12 Oct: "Manna…Fish Stories -- a section where people can share their catch. Video, audio or written fish stories."
      Every story is looked at by MannaFish before it shows here. -->
-<section class="section fstories" id="stories" translate="no"><div class="wrap">
+<section class="section fstories" id="stories" translate="no" hidden><div class="wrap">
   <div class="section-head"><span class="eyebrow" id="fsEy">Share your catch</span><h2 id="fsH">Manna… Fish Stories</h2><p id="fsP"></p></div>
   <div class="cta-row"><button type="button" class="btn btn-primary" id="fsShare"></button></div>
   <div class="fslist" id="fsList"></div><div class="cta-row"><button type="button" class="btn" id="fsMore" hidden></button></div>
 </div></section>
 
-<section class="section bundles" id="bundles"><div class="wrap">
-  <div class="section-head">
-    <span class="eyebrow">Keep one, give one</span>
-    <h2>Take MannaFish to your church, your shop, your team.</h2>
-    <p>The devotional is always free. Sponsor a bundle and we put MannaFish into people&rsquo;s hands at no cost to them &mdash; keep one, give one.</p>
-  </div>
-  <div class="tiers">
-    <div class="tier"><div class="k">Sponsor a group</div><h3>12 Scripture decals</h3><p class="does">Put a decal in the hands of a small group, class, or family &mdash; free to them, given by you.</p><a class="btn btn-ghost go" href="#give">Sponsor 12</a></div>
-    <div class="tier feat"><span class="badge">Most impact</span><div class="k">Sponsor an outreach</div><h3>100 Scripture decals</h3><p class="does">A hundred decals, given away free at a church, an event, or a community outreach. Keep one, give one.</p><a class="btn btn-primary go" href="#give">Sponsor 100</a></div>
-  </div>
-</div></section>
+
 
 <!-- Ken, 31 Oct: the shop section ("Everything we make is also available to buy") is removed: the fish are not for sale -->
 
-<section class="section ministry" id="ministry"><div class="wrap">
+<section class="section ministry" id="ministry" hidden><div class="wrap">
   <div class="section-head">
     <span class="eyebrow">For churches &amp; Christian-owned businesses</span>
     <h2>Make the mission part of your work.</h2>
@@ -2257,7 +2218,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
     <div class="min"><h3>Discipleship kits</h3><p>A ready-to-run set a leader can put in every hand: give a fish, teach 2 fish. A simple, repeatable way to disciple.</p></div>
   </div>
   <div class="cta-row" style="margin-top:34px">
-    <a class="btn btn-primary" href="#give">Sponsor a Gift Giver</a>
+    <a class="btn btn-primary" href="#sponsor">Sponsor decals</a>
     <a class="btn btn-ghost" href="#today">See the devotional again</a>
   </div>
 </div></section>
@@ -2289,7 +2250,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <p class="rnote" id="signupMsg" style="margin-top:14px;color:var(--foam-dim)"></p>
 </div></section>
 
-<section class="section fishnet" id="fishnet"><div class="wrap">
+<section class="section fishnet" id="fishnet" hidden><div class="wrap">
   <!-- Ken, 3 Oct: "if anyone wants to give them away they can ask for a Fish Net? That's the
        display that holds a MannaFish product." -->
   <div class="section-head">
@@ -2311,7 +2272,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <p class="rnote" id="fishnetMsg" style="margin-top:14px;color:var(--foam-dim)"></p>
 </div></section>
 
-<section class="section brandmeaning"><div class="wrap">
+<section class="section brandmeaning" id="meaning" hidden><div class="wrap">
   <div class="section-head"><span class="eyebrow">What the name means</span></div>
   <div class="pair">
     <div class="col">
@@ -2336,6 +2297,16 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   </div>
 </div></section>
 
+<!-- Ken, 17 Nov: "Design your card, sponsor your card. It needs to be on the website, not a separate page." The builder (sponsor/index.html?embed=1) sits here, in the page; it saves as the sponsor goes. -->
+<section class="section sponsorend" id="sponsor"><div class="wrap">
+  <div class="section-head" style="max-width:44em;margin-inline:auto;text-align:center">
+    <span class="eyebrow">Sponsor decals</span>
+    <h2>Design your card. Sponsor your card.</h2>
+    <p>Choose a word, add your link and your logo (or your own words), and watch your card come together. MannaFish decals are always given away free, and sponsors make that possible. We send you a proof to approve before anything is printed, and nothing is charged here.</p>
+  </div>
+  <iframe id="sponsorFrame" title="Design your card" loading="lazy" style="width:100%;min-height:880px;border:0;display:block;margin-top:10px;background:#000" allow="clipboard-write"></iframe>
+</div></section>
+
 <footer class="foot"><div class="wrap">
   <div>
     <div class="brand"><span class="wm-m">Manna</span><span class="wm-f">Fish</span></div>
@@ -2344,9 +2315,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
   <div class="fl">
     <a href="#today">The Devotional</a>
     <a href="#story">The 2 Fish Story</a>
-    <a href="#shop">Shop</a>
-    <a href="#ministry">Churches &amp; Business</a>
-    <a href="#give">Stock the pond</a>
+    <a href="#sponsor">Sponsor decals</a>
     <a href="/privacy/">Privacy &amp; Terms</a>
   </div>
 </div>
@@ -2655,45 +2624,9 @@ window.MF=(function(){
   }
   // the main fish and its back, in the reading language (the other languages load their fish and study on first use)
   // the back of the printed card (Ken, 2 Nov): the same layout the printer gets from tools/print/make.mjs, with this fish's study
-  function invBack(k){ k=CD.k||k; var el=$('invBack'), d=DATA[k], t=$('invQr'); if(!el||!d) return; var q=t?t.innerHTML:'';
-    function lg(n,w,lang,snd,mn){ return '<div class="sb-lg"><div class="sb-k">'+n+'</div><div class="sb-ow" lang="'+lang+'">'+esc(w)+'</div><div class="sb-tr">('+esc(snd)+')</div><div class="sb-mn">'+esc(mn)+'</div></div>'; }
-    el.innerHTML='<div class="sb-top">'+lg('GREEK',d.gkw,'el',d.gks,d.gkm)+'<div class="sb-w">'+esc(d.title)+'</div>'+lg('HEBREW',d.hbw,'he',d.hbs,d.hbm)+'</div>'
-      +'<div class="sb-hq">Still hungry? Do this word study &amp; look up the following Scriptures</div>'
-      +'<div class="sb-rf">'+(d.refs||[]).slice(0,9).map(function(r){ return '<div><b>'+esc(r[0])+'</b><i>&ldquo;'+esc(r[1])+'&rdquo;</i></div>'; }).join('')+'</div>'
-      +'<div class="sb-strip"><div class="sb-side"><div class="sb-qr">'+q+'</div><span>'+esc(CD.lab||((CD.name||CD.logo)?'Your website, podcast or ministry':'Got Eternal Life?'))+'</span></div>'
-      +'<div class="sb-mid">Sponsored by'+(CD.logo?'<div class="sb-logo sb-img"><img src="'+CD.logo+'" alt=""></div>':CD.name?'<div class="sb-logo sb-nm">'+esc(CD.name)+'</div>':'<div class="sb-logo">Your<br>logo</div>')+'</div>'
-      +'<div class="sb-side r"><span>Free MannaFish</span><div class="sb-qr">'+q+'</div></div></div>'; }
-  // ── Make the back yours, and the cart (Ken, 3 Nov) ──
-  var CD={k:'',name:'',url:'',lab:'',logo:''};
-  function cdCart(){ try{ return JSON.parse(localStorage.getItem('mf-card-cart')||'[]')||[]; }catch(e){ return []; } }
-  function cdPut(a){ try{ localStorage.setItem('mf-card-cart',JSON.stringify(a)); }catch(e){ toastSay('Your logo is too big to keep here; try a smaller picture'); } }
-  function toastSay(t){ var tb=$('mfToast'); if(tb){ tb.textContent=t; tb.hidden=false; clearTimeout(tb._t); tb._t=setTimeout(function(){ tb.hidden=true; },2600); } }
-  function cdShow(){ var k=CD.k||cur; if($('invFront')) $('invFront').innerHTML=fishFor(MF.lang,k)||FISH[k]||''; invBack(k); }
-  function cdInit(){ var sel=$('cdFish'); if(!sel) return; sel.innerHTML='<option value="">Today’s fish</option>'+ORDER.filter(function(k){ return DATA[k]; }).map(function(k){ return '<option value="'+k+'">'+esc(titleIn(MF.lang,k))+'</option>'; }).join('');
-    sel.addEventListener('change',function(){ CD.k=this.value; cdShow(); });
-    ['Name','Url','Lab'].forEach(function(n){ $('cd'+n).addEventListener('input',function(){ CD[n.toLowerCase()]=this.value.trim(); cdShow(); }); });
-    $('cdLogo').addEventListener('change',function(){ var f=this.files&&this.files[0]; if(!f) return;
-      // kept small (at most 600 px) so the cart can hold it
-      var rd=new FileReader(); rd.onload=function(){ if(/svg/.test(f.type)){ CD.logo=rd.result; cdShow(); return; } var im=new Image(); im.onload=function(){ var m=600, s2=Math.min(1,m/Math.max(im.width,im.height)), c=document.createElement('canvas'); c.width=Math.round(im.width*s2); c.height=Math.round(im.height*s2); c.getContext('2d').drawImage(im,0,0,c.width,c.height); CD.logo=c.toDataURL('image/png'); cdShow(); }; im.src=rd.result; }; rd.readAsDataURL(f); });
-    $('cdQty').addEventListener('change',function(){ var n=Math.max(100,Math.round((+this.value||100)/100)*100); this.value=n; });
-    $('cdAdd').addEventListener('click',function(){ var n=Math.max(100,Math.round((+$('cdQty').value||100)/100)*100), k=CD.k||cur;
-      if(CD.url&&!/^https?:\/\/[^\s.]+\.[^\s]+/i.test(CD.url)){ toastSay('Check your link: it starts with https://'); $('cdUrl').focus(); return; }
-      var a=cdCart(); a.push({fish:k,title:titleIn('en',k),name:CD.name,url:CD.url,label:CD.lab,logo:CD.logo,qty:n,at:Date.now()}); cdPut(a); cdCartUI(); toastSay('🛒 Added: '+n+' '+titleIn(MF.lang,k)+' decals'); });
-    cdCartUI(); }
-  function cdCartUI(){ var a=cdCart(), el=$('cdCart'); if(!el) return; el.hidden=!a.length; if(!a.length) return; var tot=a.reduce(function(s2,x){ return s2+x.qty; },0);
-    el.innerHTML='<h5>Your cart · '+tot+' decals</h5>'+a.map(function(x,i){ return '<div class="cdi">'+(x.logo?'<img src="'+x.logo+'" alt="">':'')+'<span><b>'+esc(String(x.qty))+' × '+esc(x.title)+'</b><small>'+esc([x.name,x.url].filter(Boolean).join(' · ')||'MannaFish back')+'</small></span><button type="button" data-cdx="'+i+'" aria-label="Remove">✕</button></div>'; }).join('')
-      +'<div class="cdf"><input id="cdCN" placeholder="Your name" autocomplete="name"><input id="cdCE" type="email" placeholder="Email" autocomplete="email"><input id="cdCP" type="tel" placeholder="Phone (optional)" autocomplete="tel"><textarea id="cdCT" rows="2" placeholder="Anything we should know? (where they go, a date)"></textarea></div>'
-      +'<button type="button" class="cdsend" id="cdSend">Send my order request</button><p class="cdnote">Nothing is charged here. We reply with the details and a proof of your card to approve before anything is printed.</p><p class="cdmsg" id="cdMsg" role="status"></p>'; }
-  document.addEventListener('click',function(e){ var x=e.target.closest('[data-cdx]'); if(x){ var a=cdCart(); a.splice(+x.dataset.cdx,1); cdPut(a); cdCartUI(); return; }
-    if(!e.target.closest('#cdSend')) return; var a2=cdCart(), nm=$('cdCN').value.trim(), em=$('cdCE').value.trim(), msg=$('cdMsg');
-    if(!nm||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ msg.textContent='Please add your name and email.'; return; }
-    msg.textContent='Sending…'; fetch('/api/card-order',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({items:a2,contact:{name:nm,email:em,phone:$('cdCP').value.trim(),note:$('cdCT').value.trim()}})})
-      .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw j; return j; }); })
-      .then(function(j){ cdPut([]); var el=$('cdCart'); el.innerHTML='<p class="cdok">Thank you! Your request is in (number '+esc(j.id||'')+'). We’ll email you the details and a proof.</p>'; })
-      .catch(function(er){ msg.textContent=(er&&er.error)||'That didn’t send. Please try again in a minute.'; }); });
   function fillMain(k){ var l=MF.lang, d=DATA[k], L=studyLabels(l), m=meansIn(l,k);
     if(l!=='en'&&(l==='es'?!LSTUDY.es:!LFISH[l])) loadLang(l).then(function(){ if(cur===k&&MF.lang===l){ fillMain(k); sizeStage(); } }).catch(function(){});
-    $('fishbox').innerHTML=fishFor(l,k)||FISH[k]||''; if($('invFront')) $('invFront').innerHTML=$('fishbox').innerHTML; invBack(k);  // the front of the printed card, and its word-study back
+    $('fishbox').innerHTML=fishFor(l,k)||FISH[k]||''; // the front of the printed card, and its word-study back
     $('wTitle').textContent=wordTitle(k); $('wTitle').style.fontFamily=CMPFONT[l]?"'"+CMPFONT[l]+"',sans-serif":'';
     $('gkLab').textContent=L.gk; $('hbLab').textContent=L.hb; $('traceLab').textContent=L.trace; $('stage').querySelector('.face.back').setAttribute('lang',l);
     $('gkW').textContent=d.gkw; $('gkS').textContent='('+d.gks+')'; $('gkM').textContent=m[0];
@@ -4367,10 +4300,9 @@ window.MF=(function(){
   function admUI(){ var a=window.MFadmin&&MFadmin.on(); $('smAdmLab').textContent=a?'Switch to user view':'Admin view'; $('smAdmSub').textContent=a?'See it exactly as visitors do':'For testing: edit tools and admin pages'; }
   $('smAdmin').addEventListener('click',function(){ var m=$('siteMenu'); if(m) m.hidden=true; if(window.MFadmin) MFadmin.toggle().then(admUI); });
   window.addEventListener('mf-admin',admUI); setTimeout(admUI,1500);
-  setTimeout(cdInit,0);
   window.MFadminFish=function(){ return cur?{word:titleIn('en',cur),key:cur}:null; };
   $('smDash').addEventListener('click',function(){ location.href='/dash/'; });
-  $('smStories').addEventListener('click',function(){ if(window.MFsecOpen) MFsecOpen('stories'); $('stories').scrollIntoView({behavior:'smooth',block:'start'}); });
+  $('smStories').addEventListener('click',function(){ $('stories').hidden=false; if(window.MFsecOpen) MFsecOpen('stories'); $('stories').scrollIntoView({behavior:'smooth',block:'start'}); });
   $('ptStage').addEventListener('click',function(e){ if(e.target.closest('[data-fs]')) fsOpen(); });
   MF.onChange(fsUI); fsUI();
   if('IntersectionObserver' in window){ var fio=new IntersectionObserver(function(es){ if(es.some(function(x){ return x.isIntersecting; })){ fio.disconnect(); fsLoad(); } },{rootMargin:'600px'}); fio.observe($('stories')); } else fsLoad();
@@ -5951,4 +5883,40 @@ body.mfediting{padding-top:54px!important}
 /* ?do=tour|vision|stories|admin: the Bible page's three-dots menu opens these here (Ken, 8 Nov) */
 (function(){ var m=/[?&]do=([a-z]+)/.exec(location.search); if(!m) return; var map={tour:'tourBtn',vision:'vsBtn',stories:'smStories',admin:'smAdmin',gofish:'ftTwo'}, id=map[m[1]]; if(m[1]==='favs'){ setTimeout(function(){ if(window.MFbasket) MFbasket.open(); },1400); return; } if(!id) return;
   setTimeout(function(){ var b=document.getElementById(id); if(b) b.click(); },1400); })();
+</script>
+<style id="mf-acc-css">
+/* Ken, 17 Nov: everything under the devotional is too much: each part is a header that opens when tapped */
+.acc-closed{padding-block:0!important}.acc-closed>.wrap{display:none}
+.acc-h{display:flex;align-items:center;gap:14px;width:100%;max-width:980px;margin:0 auto;padding:20px 22px;text-align:left;background:none;border:0;border-top:1px solid rgba(255,255,255,.12);color:var(--foam,#eaf0f0);cursor:pointer;font:inherit}
+.acc-h:hover b{color:#fff}.acc-h:focus-visible{outline:2px solid var(--brass,#2a5fb0);outline-offset:-2px}
+.acc-h span{flex:1;min-width:0}.acc-h b{display:block;font:600 1.3rem/1.25 'Fraunces',Georgia,serif}.acc-h small{display:block;margin-top:3px;color:var(--foam-dim,#9fb2b6);font:400 .95rem/1.4 'Archivo',system-ui,sans-serif}
+.acc-h i{font-style:normal;font-size:1.7rem;line-height:1;color:var(--brass,#2a5fb0);transition:transform .2s}.acc-h[aria-expanded=true] i{transform:rotate(45deg)}
+.acc-open>.wrap{padding-top:6px}
+.sponsorend{border-top:1px solid rgba(255,255,255,.12)}
+#reach2[hidden],#ministry[hidden],#give[hidden],#stories[hidden],#fishnet[hidden],#meaning[hidden]{display:none!important}
+</style>
+<script>
+/* ---- the parts under the devotional: a header each, closed until tapped (Ken, 17 Nov) ---- */
+(function(){
+  var LIST=[['reach','What is MannaFish?','Why it is free, and why we give'],['story','What is “2 Fish”?','Keep one, give one'],['signup-section','Get the free word study by email','Daily or weekly, no cost']];
+  function open(sec){ if(!sec||!sec.classList.contains('acc-closed')) return; sec.classList.remove('acc-closed'); sec.classList.add('acc-open'); var b=sec.querySelector(':scope>.acc-h'); if(b) b.setAttribute('aria-expanded','true'); }
+  function shut(sec){ sec.classList.add('acc-closed'); sec.classList.remove('acc-open'); var b=sec.querySelector(':scope>.acc-h'); if(b) b.setAttribute('aria-expanded','false'); }
+  LIST.forEach(function(r){ var sec=document.getElementById(r[0]); if(!sec) return; var b=document.createElement('button'); b.type='button'; b.className='acc-h'; b.setAttribute('aria-expanded','false'); b.setAttribute('aria-controls',r[0]);
+    b.innerHTML='<span><b>'+r[1]+'</b><small>'+r[2]+'</small></span><i aria-hidden="true">+</i>'; sec.insertBefore(b,sec.firstChild); sec.classList.add('acc-closed');
+    b.addEventListener('click',function(){ if(sec.classList.contains('acc-closed')) open(sec); else shut(sec); }); });
+  function openFor(id){ var t=id&&document.getElementById(id); if(!t) return; var sec=t.closest('section.acc-closed'); if(sec){ open(sec); setTimeout(function(){ t.scrollIntoView({behavior:'smooth',block:'start'}); },30); } }
+  document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.closest('a[href^="#"]'); if(!a) return; var id=a.getAttribute('href').slice(1); var t=document.getElementById(id); if(t&&t.closest('section.acc-closed')){ e.preventDefault(); openFor(id); } });
+  window.addEventListener('hashchange',function(){ openFor(location.hash.slice(1)); }); if(location.hash.length>1) setTimeout(function(){ openFor(location.hash.slice(1)); },400);
+})();
+/* ---- the sponsor builder at the bottom: the same builder as /sponsor/, in this page ---- */
+(function(){
+  var f=document.getElementById('sponsorFrame'); if(!f) return; var q=new URLSearchParams(location.search), src='/sponsor/?embed=1', sd=q.get('sd'), ex=q.get('example'), w=q.get('word');
+  if(sd&&/^[a-f0-9]{32}$/.test(sd)) src+='&d='+sd; if(ex) src+='&example='+encodeURIComponent(ex); if(w) src+='&word='+encodeURIComponent(w); f.src=src;
+  window.addEventListener('message',function(e){ if(e.origin!==location.origin||!e.data||!e.data.mfsb) return; var d=e.data;
+    if(d.mfsb==='h'&&d.h>300) f.style.height=Math.min(d.h+10,6000)+'px';
+    if(d.mfsb==='draft'){ try{ var u=new URL(location.href); if(d.id) u.searchParams.set('sd',d.id); else u.searchParams.delete('sd'); u.searchParams.delete('example'); u.searchParams.delete('word'); u.hash='#sponsor'; history.replaceState(null,'',u.pathname+u.search+u.hash); }catch(x){} } });
+  var tk=0; function follow(){ if(tk) return; tk=requestAnimationFrame(function(){ tk=0; var r=f.getBoundingClientRect(); try{ f.contentWindow.postMessage({mfsb:'y',y:Math.max(0,70-r.top)},location.origin); }catch(x){} }); }
+  window.addEventListener('scroll',follow,{passive:true}); window.addEventListener('resize',follow);
+  if(sd||ex||w) setTimeout(function(){ var s=document.getElementById('sponsor'); if(s) s.scrollIntoView({block:'start'}); },900);
+})();
 </script>
