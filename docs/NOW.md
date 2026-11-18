@@ -135,3 +135,5 @@ Not needed for launch: texting (carrier registration), app stores, sponsor prici
 - 18 Nov, Ken: 'push it live': `main` = test-site (merge, same content): verse picker, corrected word-study verses. Gate still on.
 
 - 18 Nov, Ken: 'Verse on the fish' is one dropdown (the fish's own verse, the verses in the word study, others with the word, 'Another verse: type its address'); the separate list button is gone; the type box shows only for 'Another verse'. Test site only; not live.
+
+- 18 Nov, Ken: 'push it live': `main` = test-site (merge, same content): Bible version choice and the verse dropdown. Gate still on. Waiting on Ken: the translation for K-Tech's files (KJV recommended), the prayer wording approval for Time with God, donation link and tax wording, sponsor pricing.
