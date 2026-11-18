@@ -131,3 +131,7 @@ Not needed for launch: texting (carrier registration), app stores, sponsor prici
 - 18 Nov, Ken: 'push it live': `main` = test-site (merge, same content): round 2 Fish badge and wide logos. Gate still on.
 
 - 18 Nov, Ken: the verse on the fish can be picked from a list ('Choose from verses that use this word': the word-study verses first, then others across the Bible, `print/kit/verses.json` from `tools/print/build-words.mjs`) or typed; all forms of the word count (build, built, builded); K-Tech's example now uses Matthew 7:24 with the bigger Build. Also fixed a bug in build-words.mjs (a verse cache keyed by book+chapter added together, so some automatic word-study verses were wrong); the words list was rebuilt: 187 words complete (was 141). Test site only; not live.
+
+- 18 Nov, Ken: 'push it live': `main` = test-site (merge, same content): verse picker, corrected word-study verses. Gate still on.
+
+- 18 Nov, Ken: 'Verse on the fish' is one dropdown (the fish's own verse, the verses in the word study, others with the word, 'Another verse: type its address'); the separate list button is gone; the type box shows only for 'Another verse'. Test site only; not live.

@@ -12,7 +12,7 @@
 <style>
 :root{--bg:#0b0e12;--card:#141a21;--line:#27313c;--text:#eef2f4;--dim:#9fb0c2;--gold:#f5d76e;--blue:#2a5fb0;--ok:#8ddca4;--bad:#ff8a7a;color-scheme:dark}
 @media (prefers-color-scheme:light){:root:not([data-mode=dark]){--bg:#fbfaf6;--card:#fff;--line:#d8d4c8;--text:#1c2228;--dim:#5b6570;--gold:#8a6a00;--ok:#1f7a35;--bad:#b3261e;color-scheme:light}}
-*{box-sizing:border-box}
+*{box-sizing:border-box}[hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--text);font:17px/1.55 Archivo,system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 header{display:flex;justify-content:space-between;align-items:center;max-width:1180px;margin:0 auto;padding:14px 0}
 .brand{font:600 1.5rem Fraunces,Georgia,serif;color:var(--text);text-decoration:none}.brand b{color:#5aa2ff}
@@ -54,7 +54,6 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,select:focus-vis
 .cardlist button small{display:block;font-weight:400;color:var(--dim);font-size:.78rem}.cardlist button.todo small{color:var(--gold)}
 .cardlist button[aria-selected=true]{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue) inset}
 .savebar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-top:12px;font-size:.88rem;color:var(--dim)}.savelink{display:flex;gap:6px;flex:1;min-width:220px}.savelink input{flex:1;min-width:0;font-size:.8rem;padding:8px 10px}.savelink .btn{padding:8px 14px;font-size:.85rem}
-.vpick{max-height:300px;overflow:auto;margin-top:10px;border:1px solid var(--line);border-radius:12px}.vpick button{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);color:var(--text);font:.9rem/1.45 Archivo,sans-serif;padding:10px 12px;cursor:pointer}.vpick button:first-child{border-top:0}.vpick button:hover{background:rgba(127,127,127,.12)}.vpick button[aria-pressed=true]{background:var(--blue);color:#fff}.vpick b{display:block}.vpick small{color:var(--gold);font-weight:600}
 footer{max-width:1180px;margin:0 auto;color:var(--dim);font-size:.85rem;padding:10px 0 40px}
 /* ?embed=1: the builder inside the MannaFish home page (an iframe in #sponsor), in the site's own black and blue */
 html.embed:root{--bg:#000!important;--card:#0d0d0f!important;--line:rgba(255,255,255,.16)!important;--text:#eaf0f0!important;--dim:#9fb2b6!important;--gold:#f5d76e!important;--blue:#2a5fb0!important;--ok:#8ddca4!important;--bad:#ff8a7a!important;color-scheme:dark!important}
@@ -81,10 +80,13 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
     <input type="text" id="wsearch" placeholder="Search words: Build, Trust, Seek…" autocomplete="off" aria-label="Search words">
     <div class="words" id="words" role="group" aria-label="Words"></div>
     <p class="hint" id="wnote"></p>
-    <div id="vbox" style="margin-top:14px"><label for="vref">Verse on the fish</label>
-      <div class="two"><input type="text" id="vref" placeholder="Leave empty for the fish's own verse, or try Proverbs 24:3" autocomplete="off"><button type="button" class="btn o" id="vgo">Use this verse</button></div>
-      <p class="hint" id="vnote">The fish comes with its own verse. To use a different one, type its address. The big word has to be in the verse.</p>
-      <button type="button" class="btn o" id="vlist" style="margin-top:6px">Choose from verses that use this word</button><div class="vpick" id="vpick" hidden></div></div></section>
+    <div id="vbox" style="margin-top:14px"><label for="vsel">Verse on the fish</label>
+      <select id="vsel" aria-label="Verse on the fish"><option value="own">The fish’s own verse</option></select>
+      <div class="two" id="vtype" hidden style="margin-top:8px"><input type="text" id="vref" placeholder="Type a verse address, like Proverbs 24:3" autocomplete="off"><button type="button" class="btn o" id="vgo">Use this verse</button></div>
+      <p class="hint" id="vnote">The fish comes with its own verse. Choose another from the list, or choose "Another verse" to type its address. The big word has to be in the verse.</p>
+      <label for="vver" style="margin-top:10px">Bible version for the verse</label><select id="vver"><option value="kjv">King James Version (KJV)</option><option value="web">World English Bible (WEB)</option><option value="asv">American Standard Version (ASV)</option><option value="ylt">Young’s Literal Translation (YLT)</option><option value="darby">Darby Translation</option><option value="bbe">Bible in Basic English (BBE)</option><option value="dra">Douay-Rheims</option></select>
+      <p class="hint">These versions are all in the public domain. NIV, ESV, NLT and other versions need written permission from their publishers, and we are asking for it.</p>
+      </div></section>
   <section class="step"><h2><i>2</i> Your QR code</h2><p class="h">The left QR code opens your link. The right one always opens the free MannaFish devotional.</p>
     <div class="seg" id="qto" style="grid-template-columns:1fr 1fr"><button type="button" data-to="link" aria-pressed="true">My own link</button><button type="button" data-to="app" aria-pressed="false">The MannaFish Bible app</button></div>
     <div id="linkbox"><label for="url">Your web address</label><input type="url" id="url" placeholder="https://yourwebsite.com" inputmode="url" autocomplete="url"></div>
@@ -127,8 +129,8 @@ function esc(t){ return String(t).replace(/[&<>"]/g,function(c){ return {'&':'&a
 function fullUrl(u){ u=(u||'').trim(); if(u&&!/^https?:\/\//i.test(u)) u='https://'+u; return u; }
 function say(t,k){ $('msg').textContent=t; $('msg').className='msg '+(k||''); }
 /* ---- the order: a list of cards, one open at a time ---- */
-function blank(from){ var c={word:'',fishId:'',verse:null,vref:'',url:'',qrTo:'link',logoAspect:0,q1:'Visit us',q2:'to learn more',by:'logo',logoId:'',logoName:'',name:'',text:'',credit:'Sponsored by',qty:100};
-  if(from) ['url','qrTo','q1','q2','by','logoId','logoName','logoAspect','name','text','credit','qty'].forEach(function(k){ c[k]=from[k]; }); return c; }
+function blank(from){ var c={word:'',fishId:'',verse:null,vref:'',ver:'kjv',url:'',qrTo:'link',logoAspect:0,q1:'Visit us',q2:'to learn more',by:'logo',logoId:'',logoName:'',name:'',text:'',credit:'Sponsored by',qty:100};
+  if(from) ['url','qrTo','ver','q1','q2','by','logoId','logoName','logoAspect','name','text','credit','qty'].forEach(function(k){ c[k]=from[k]; }); return c; }
 function fresh(){ return {cards:[blank()],active:0,logos:{},contact:{name:'',email:'',phone:'',note:''}}; }
 function cur(){ return S.cards[S.active]; }
 function logoOf(c){ return c.logoId&&S.logos[c.logoId]||''; }
@@ -136,14 +138,14 @@ function cfgOf(c){ var by=c.by; if(by==='name'&&!c.name) by='text';
   return {word:c.word,fishId:c.fishId,verse:c.verse,by:by,logo:logoOf(c),name:c.name,text:c.text,credit:c.credit||'Sponsored by',qrTo:c.qrTo,logoAspect:c.logoAspect||0,qrWords:[c.q1,c.q2].map(function(x){ return (x||'').trim(); }).filter(Boolean).join('\n')||'Visit us',url:c.qrTo==='app'?APP:(fullUrl(c.url)||'https://manna-fish.com/')}; }
 function problem(c){ if(!c.word) return 'Choose a word'; if(c.by==='logo'&&!logoOf(c)) return 'Add your logo or your words'; if(c.by==='name'&&!c.name.trim()) return 'Type your name'; if(c.by==='text'&&!c.text.trim()) return 'Write your words'; if(c.qrTo!=='app'&&!c.url.trim()) return 'Add your web address'; return ''; }
 /* form -> card */
-function pull(){ var c=cur(); c.url=$('url').value; c.q1=$('q1').value; c.q2=$('q2').value; c.name=$('name').value; c.text=$('text').value; c.credit=$('credit').value; c.vref=$('vref').value;
+function pull(){ var c=cur(); c.url=$('url').value; c.q1=$('q1').value; c.q2=$('q2').value; c.name=$('name').value; c.text=$('text').value; c.credit=$('credit').value; c.vref=$('vref').value; c.ver=$('vver').value;
   c.qty=snap(c.qty); S.contact={name:$('cname').value,email:$('cemail').value,phone:$('cphone').value,note:$('cnote').value}; }
 /* card -> form */
-function push(){ var c=cur(); $('url').value=c.url; $('q1').value=c.q1; $('q2').value=c.q2; $('name').value=c.name; $('text').value=c.text; $('credit').value=c.credit; $('vref').value=c.vref||''; c.qty=snap(c.qty); document.querySelectorAll('#qtyseg button').forEach(function(x){ x.setAttribute('aria-pressed',String(+x.getAttribute('data-q')===c.qty)); }); toWhere();
+function push(){ var c=cur(); $('url').value=c.url; $('q1').value=c.q1; $('q2').value=c.q2; $('name').value=c.name; $('text').value=c.text; $('credit').value=c.credit; $('vref').value=c.vref||''; $('vver').value=c.ver||'kjv'; c.qty=snap(c.qty); document.querySelectorAll('#qtyseg button').forEach(function(x){ x.setAttribute('aria-pressed',String(+x.getAttribute('data-q')===c.qty)); }); toWhere();
   $('cname').value=S.contact.name; $('cemail').value=S.contact.email; $('cphone').value=S.contact.phone; $('cnote').value=S.contact.note;
   document.querySelectorAll('#by button').forEach(function(x){ x.setAttribute('aria-pressed',String(x.getAttribute('data-by')===c.by)); }); ['logo','name','text'].forEach(function(k){ $('by-'+k).hidden=k!==c.by; });
   var u=logoOf(c); $('logoprev').hidden=!u; if(u) $('logoprev').src=u; $('logoname').textContent=u?(c.logoName||'Your logo')+' (ready)':'Choose your logo file here (PNG, JPG or SVG). We size it for you.';
-  showWords(); noteWord(); vnote(c.verse?(c.verse.ref+' (KJV): '+c.verse.top+' '+c.verse.bot):'The fish comes with its own verse. To use a different one, type its address. The big word has to be in the verse.',c.verse?'ok':''); }
+  showWords(); noteWord(); fillVerseSelect(); vnote(c.verse?(c.verse.ref+' (KJV): '+c.verse.top+' '+c.verse.bot):'The fish comes with its own verse. To use a different one, type its address. The big word has to be in the verse.',c.verse?'ok':''); }
 function noteWord(){ var c=cur(), d=c.word?MFkit.study({word:c.word}):null; $('wnote').textContent=d?(d.gkw+' · '+d.hbw+' · '+(d.refs||[]).map(function(r){ return r[0]; }).join(', ')):''; }
 function renderCards(){ var tot=0; $('cardlist').innerHTML=S.cards.map(function(c,i){ tot+=c.qty; var pr=problem(c);
   return '<button type="button" role="tab" data-i="'+i+'" aria-selected="'+(i===S.active)+'" class="'+(pr?'todo':'')+'"><b>'+(i+1)+'. '+esc(c.word||'New card')+'</b><small>'+c.qty+' decals'+(pr?' · '+esc(pr):' · ready')+'</small></button>'; }).join('');
@@ -184,7 +186,7 @@ function showWords(){ var q=$('wsearch').value.trim().toLowerCase(), c=cur(), li
   $('words').innerHTML=list.map(function(x){ return '<button type="button" data-k="'+esc(x.k)+'" data-w="'+esc(x.w)+'" aria-pressed="'+(!!c.word&&c.word.toUpperCase()===x.w.toUpperCase())+'">'+esc(x.w)+'</button>'; }).join('')||'<span class="hint">No word starts like that yet. Try another.</span>'; }
 $('wsearch').addEventListener('input',showWords);
 $('words').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; var c=cur(); c.word=b.getAttribute('data-w'); c.fishId=b.getAttribute('data-k'); c.verse=null; c.vref=''; $('vref').value=''; showWords(); noteWord();
-  vnote('The fish comes with its own verse. To use a different one, type its address. The big word has to be in the verse.'); $('vpick').hidden=true; draw(); persist(); });
+  vnote('The fish comes with its own verse. Choose another from the list, or choose "Another verse" to type its address. The big word has to be in the verse.'); fillVerseSelect(); draw(); persist(); });
 /* ---- a different verse on the fish: look it up in the KJV, cut it to the two curves with the "Make it a MannaFish" rules ---- */
 function findBook(tok){ tok=tok.toLowerCase().replace(/\./g,'').replace(/\s+/g,''); if(tok==='ps'||tok==='psalms') return 'Psalm'; if(tok==='song'||tok==='songofsongs') return 'Song of Solomon';
   return BOOKS.filter(function(b){ return b.toLowerCase().replace(/\s+/g,'')===tok; })[0]||(tok.length>=3?BOOKS.filter(function(b){ return b.toLowerCase().replace(/\s+/g,'').indexOf(tok)===0; })[0]:'')||''; }
@@ -194,22 +196,30 @@ function loadMake(){ return window.MFmake?Promise.resolve():new Promise(function
 var VERSES=null;
 function formsRe(word){ var e=MFkit.words.list.filter(function(x){ return x.w.toLowerCase()===String(word).toLowerCase(); })[0]; try{ if(e&&e.f) return new RegExp(e.f,'i'); }catch(x){} return new RegExp('\\b'+String(word).toLowerCase().replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(s|es|ed|d|ing|eth|est)?\\b','i'); }
 /* a verse chosen for the fish: the word (in any of its forms: build, built, builded) has to be in it; cut to the two curves the way "Make it a MannaFish" does */
-function applyVerse(ref,text){ var c=cur(), m=formsRe(c.word).exec(text);
-  if(!m){ vnote('“'+c.word+'” is not in '+ref+'. A MannaFish can only use the words of its own verse: pick a verse with the word in it.','bad'); return Promise.resolve(); }
-  return loadMake().then(function(){ var L=MFmake.lines(text,m[0].toLowerCase()); c.verse={ref:ref,top:L.top,bot:L.bot}; c.vref=ref; $('vref').value=ref; vnote(ref+' (KJV): '+text,'ok'); draw(); persist(); if(!$('vpick').hidden) showVerses(); }); }
-function useVerse(){ var c=cur(), raw=$('vref').value.trim(); if(!raw){ c.verse=null; c.vref=''; vnote('The fish comes with its own verse.'); draw(); persist(); if(!$('vpick').hidden) showVerses(); return; }
+function verName(v){ return {kjv:'KJV',web:'WEB',asv:'ASV',ylt:'YLT',darby:'Darby',bbe:'BBE',dra:'Douay-Rheims'}[v]||String(v).toUpperCase(); }
+/* the words of a verse (or two or three) in the chosen version: the King James from this site, the others (public domain) from bible-api.com, as the Bible page does */
+function verseText(r,ver){ if(ver==='kjv') return fetch('/fish-lang/bible/kjv/'+r.book.replace(/ /g,'_')+'-'+r.c+'.json').then(function(x){ if(!x.ok) throw 0; return x.json(); }).then(function(j){ var t=(j.t||[]).slice(r.v1-1,r.v2).join(' ').replace(/\s+/g,' ').trim(); if(!t) throw 0; return t; });
+  return fetch('https://bible-api.com/'+encodeURIComponent(r.book+' '+r.c+':'+r.v1+(r.v2>r.v1?'-'+r.v2:''))+'?translation='+encodeURIComponent(ver)).then(function(x){ if(!x.ok) throw 0; return x.json(); }).then(function(j){ var t=(j.verses||[]).map(function(v){ return String(v.text||'').trim(); }).join(' ').replace(/\s+/g,' ').trim(); if(!t) throw 0; return t; }); }
+function refName(r){ return r.book+' '+r.c+':'+r.v1+(r.v2>r.v1?'-'+r.v2:''); }
+/* a verse chosen for the fish: the word (in any of its forms: build, built, builded) has to be in it; cut to the two curves the way "Make it a MannaFish" does */
+function applyVerse(ref,text,ver){ var c=cur(), m=formsRe(c.word).exec(text);
+  if(!m){ vnote('“'+c.word+'” is not in '+ref+' in the '+verName(ver)+' wording. A MannaFish can only use the words of its own verse: pick another verse or version.','bad'); return Promise.resolve(); }
+  return loadMake().then(function(){ var L=MFmake.lines(text,m[0].toLowerCase()); c.verse={ref:ref,top:L.top,bot:L.bot,ver:ver}; c.vref=ref; $('vref').value=ref; vnote(ref+' ('+verName(ver)+'): '+text,'ok'); draw(); persist(); fillVerseSelect(); }); }
+function useVerse(){ var c=cur(), raw=$('vref').value.trim(), ver=$('vver').value; c.ver=ver; if(!raw){ c.verse=null; c.vref=''; vnote('The fish comes with its own verse.'); draw(); persist(); fillVerseSelect(); return; }
   if(!c.word){ vnote('Choose a word first.','bad'); return; } var r=parseRef(raw); if(!r){ vnote('We could not read that address. Try it like Proverbs 24:3.','bad'); return; } if(r.v2-r.v1>2){ vnote('Please choose one to three verses.','bad'); return; }
-  fetch('/fish-lang/bible/kjv/'+r.book.replace(/ /g,'_')+'-'+r.c+'.json').then(function(x){ if(!x.ok) throw 0; return x.json(); }).then(function(j){
-    var text=(j.t||[]).slice(r.v1-1,r.v2).join(' ').replace(/\s+/g,' ').trim(); if(!text) throw 0; return applyVerse(r.book+' '+r.c+':'+r.v1+(r.v2>r.v1?'-'+r.v2:''),text); })
-   .catch(function(){ vnote('We could not find that verse. Check the address.','bad'); }); }
-/* a list of verses that use the word: the ones in its word study first, then others from across the Bible */
-function showVerses(){ var c=cur(), box=$('vpick'); if(!c.word){ box.hidden=true; return; }
-  var go=function(){ var L=VERSES[c.word.toUpperCase()]||[], h='<button type="button" data-own="1" aria-pressed="'+(!c.verse)+'"><b>The fish\u2019s own verse</b>The one this fish was made with.</button>';
-    L.forEach(function(v,i){ h+='<button type="button" data-i="'+i+'" aria-pressed="'+(!!c.verse&&c.verse.ref===v[0])+'"><b>'+esc(v[0])+(v[2]?' <small>in the word study</small>':'')+'</b>'+esc(v[1].length>150?v[1].slice(0,147)+'…':v[1])+'</button>'; }); box.innerHTML=h; box.hidden=false; };
-  if(VERSES) return go(); fetch('/print/kit/verses.json').then(function(r){ return r.json(); }).then(function(j){ VERSES=j; go(); }).catch(function(){ vnote('We could not load the list. You can still type a verse address.','bad'); }); }
-$('vlist').addEventListener('click',function(){ if(!$('vpick').hidden){ $('vpick').hidden=true; return; } showVerses(); });
-$('vpick').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; if(b.getAttribute('data-own')){ $('vref').value=''; useVerse(); return; }
-  var v=(VERSES[cur().word.toUpperCase()]||[])[+b.getAttribute('data-i')]; if(v) applyVerse(v[0],v[1]); });
+  verseText(r,ver).then(function(text){ return applyVerse(refName(r),text,ver); }).catch(function(){ vnote(ver==='kjv'?'We could not find that verse. Check the address.':'We could not get that verse in the '+verName(ver)+' just now. Check the address, or try the King James Version.','bad'); }); }
+/* the verse on the fish: one list (the fish's own verse, the verses in its word study, others that use the word, or "Another verse" to type one) */
+function fillVerseSelect(){ var c=cur(), sel=$('vsel'); if(!c.word){ sel.innerHTML='<option value="own">Choose a word first</option>'; sel.disabled=true; $('vtype').hidden=true; return; } sel.disabled=false;
+  var go=function(){ var L=VERSES[c.word.toUpperCase()]||[], h='<option value="own">The fish’s own verse</option>', st=L.filter(function(v){ return v[2]; }), ot=L.filter(function(v){ return !v[2]; });
+    var opt=function(v){ return '<option value="'+L.indexOf(v)+'">'+esc(v[0])+' — '+esc(v[1].length>64?v[1].slice(0,61)+'…':v[1])+'</option>'; };
+    if(st.length) h+='<optgroup label="In the word study">'+st.map(opt).join('')+'</optgroup>'; if(ot.length) h+='<optgroup label="Other verses with this word">'+ot.map(opt).join('')+'</optgroup>';
+    h+='<option value="type">Another verse: type its address…</option>'; sel.innerHTML=h;
+    var idx=c.verse?L.map(function(v){ return v[0]; }).indexOf(c.verse.ref):-1, val=!c.verse?'own':(idx>=0?String(idx):'type'); sel.value=val; $('vtype').hidden=val!=='type'; if(val==='type') $('vref').value=c.vref||''; };
+  if(VERSES) return go(); fetch('/print/kit/verses.json').then(function(r){ return r.json(); }).then(function(j){ VERSES=j; go(); }).catch(function(){ sel.innerHTML='<option value="own">The fish’s own verse</option><option value="type">Another verse: type its address…</option>'; }); }
+$('vsel').addEventListener('change',function(){ var v=this.value, c=cur(); if(v==='own'){ $('vtype').hidden=true; $('vref').value=''; useVerse(); return; } if(v==='type'){ $('vtype').hidden=false; $('vref').focus(); return; }
+  $('vtype').hidden=true; var e=(VERSES&&VERSES[c.word.toUpperCase()]||[])[+v]; if(!e) return; var ver=$('vver').value; if(ver==='kjv'){ c.ver='kjv'; applyVerse(e[0],e[1],'kjv'); return; }
+  var r=parseRef(e[0]); if(!r) return; verseText(r,ver).then(function(t){ c.ver=ver; return applyVerse(e[0],t,ver); }).catch(function(){ vnote('We could not get that verse in the '+verName(ver)+' just now.','bad'); }); });
+$('vver').addEventListener('change',function(){ cur().ver=this.value; if(cur().verse&&cur().vref) useVerse(); else persist(); });
 $('vgo').addEventListener('click',useVerse); $('vref').addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); useVerse(); } });
 /* ---- how many (100, 500 or 1,000) and where the left QR code goes ---- */
 function snap(q){ q=+q||100; return q<=100?100:q<=500?500:1000; }
