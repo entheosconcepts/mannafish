@@ -137,3 +137,5 @@ Not needed for launch: texting (carrier registration), app stores, sponsor prici
 - 18 Nov, Ken: 'Verse on the fish' is one dropdown (the fish's own verse, the verses in the word study, others with the word, 'Another verse: type its address'); the separate list button is gone; the type box shows only for 'Another verse'. Test site only; not live.
 
 - 18 Nov, Ken: 'push it live': `main` = test-site (merge, same content): Bible version choice and the verse dropdown. Gate still on. Waiting on Ken: the translation for K-Tech's files (KJV recommended), the prayer wording approval for Time with God, donation link and tax wording, sponsor pricing.
+
+- 18 Nov, Ken: a verse used on the front of the fish (the fish's own, or one the sponsor chose) is never also one of the four verses on the back: it is swapped for another verse that uses the word (first the study's other verses, then others with the word; `swapRefs` in print/kit/kit.js; `alt` and `r` in words.json). Seen: K-Tech's Matthew 7:24 became Nehemiah 2:18 on the back. Test site only; not live.

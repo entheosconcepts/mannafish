@@ -12,6 +12,8 @@ const CANON = 'Genesis Exodus Leviticus Numbers Deuteronomy Joshua Judges Ruth 1
 const rd = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
 // the fish and their words, read from the same files the site's functions use (lib/catch.json, lib/words.json)
 const CATCH = rd(path.join(ROOT, 'netlify/functions/lib/catch.json')), WORDSJ = rd(path.join(ROOT, 'netlify/functions/lib/words.json'));
+const FISHLINES = rd(path.join(ROOT, 'netlify/functions/lib/fishlines.json'));
+const fishRefOf = (k) => (FISHLINES.en[k] && FISHLINES.en[k].ref) || (CATCH.fish[k] && CATCH.fish[k].ref) || '';
 const CATCHORDER = CATCH.order, fishInfo = (k) => WORDSJ.words[k] ? { title: WORDSJ.words[k].title } : (CATCH.fish[k] ? { title: CATCH.fish[k].title } : null);
 const chap = {}; const kjv = (b, c) => chap[b + '-' + c] || (chap[b + '-' + c] = (() => { try { return rd(path.join(BIBLE, 'kjv', `${CANON[b]}-${c}.json`)).t; } catch (e) { return []; } })());
 const name = (b) => CANON[b].replace(/_/g, ' ').replace(/^(\d) /, '$1 ').replace('Song of Solomon', 'Song of Solomon');
@@ -66,6 +68,12 @@ function widen(ref, snip) { const r = refOf(ref), txt = r && (kjv(r.b, r.c) || [
   out = out.replace(/[,;:.\s]+$/, ''); return out.length <= 72 && out.length >= snip.length ? out : snip; }
 const index = {}, words = {};
 for (const k of CATCHORDER) { const f = fishInfo(k, 'en'); if (!f || !f.title) continue; const W = f.title.trim(), key = W.toUpperCase(); (index[key] = index[key] || { word: W, fish: [] }).fish.push(k); }
+// more verses of a study, to swap in for one the fish already carries (Ken, 18 Nov): the rest of a hand-written study's list, or the site's own list of the original 24
+const FULL = { BUILD: 'BUILD', REPAIR: 'REPAIR' };
+function altOf(key, have) { const out = []; const add = (r) => { if (!r || have.has(r[0]) || out.some((o) => o[0] === r[0])) return; out.push([r[0], widen(r[0], r[1])]); };
+  if (SITE[key]) (SITE[key].refs || []).forEach(add);
+  else if (FULL[key]) { try { (rd(path.join(ROOT, 'print/study', FULL[key] + '.json')).refs || []).forEach(add); } catch (e) { /* none */ } }
+  return out.slice(0, 8); }
 let made = 0, hand = 0, short = [];
 for (const [key, ent] of Object.entries(index)) {
   const own = HAND[key] && path.join(ROOT, 'print/study', HAND[key] + '.json');
@@ -88,6 +96,7 @@ for (const [key, ent] of Object.entries(index)) { const f = formsOf(ent.word), r
   const seen = new Set(), out = []; for (const v of [...study.map((x) => [...x, 1]), ...pick.map((x) => [...x, 0])]) { if (seen.has(v[0])) continue; seen.add(v[0]); out.push(v); }
   verseList[key] = out.slice(0, 20); }
 fs.writeFileSync(path.join(ROOT, 'print/kit/verses.json'), JSON.stringify(verseList));
-const list = Object.entries(index).map(([key, e]) => ({ w: e.word, k: e.fish[0], ok: !!(words[key] && words[key].gkw && words[key].hbw && words[key].refs.length >= 4), f: formMap[key] })).sort((a, b) => a.w.localeCompare(b.w));
+for (const [key, w] of Object.entries(words)) w.alt = altOf(key, new Set((w.refs || []).map((r) => r[0])));
+const list = Object.entries(index).map(([key, e]) => ({ w: e.word, k: e.fish[0], ok: !!(words[key] && words[key].gkw && words[key].hbw && words[key].refs.length >= 4), f: formMap[key], r: fishRefOf(e.fish[0]) })).sort((a, b) => a.w.localeCompare(b.w));
 fs.writeFileSync(path.join(ROOT, 'print/kit/words.json'), JSON.stringify({ list, words }));
 console.log(`${list.length} words: ${hand} by hand, ${made} from the lexicon; ${list.filter((x) => x.ok).length} complete. Incomplete: ${short.length}`); if (process.argv.includes('--show')) console.log(short.join(', '));
