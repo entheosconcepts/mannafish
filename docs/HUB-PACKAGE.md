@@ -48,4 +48,13 @@ Caution before launching it: a prize drawing can fall under state sweepstakes ru
 | Mailed note, two sample decals, vision card | $2 |
 | Total kit, without decals | about $25 to $40 |
 
-Decals: 100 stickers is roughly $30 to $60 depending on size and supplier (check the last StickerApp quote). So one Hub of 100 decals costs about $55 to $100 all in. Suggested sponsor prices (Ken to confirm): 100 at about $99, 500 at about $349, 1,000 at about $599, with the basket and shipping included for the first location; each extra location adds the kit cost.
+Decals: **$1.23 each at 100 = $123 per 100** (Ken, 18 Nov, his real cost; my earlier $30 to $60 guess was far too low).
+One Hub with 100 decals therefore costs about **$150 to $165** (decals $123 + kit $25 to $40).
+
+Suggested sponsor prices (not on the site; Ken to confirm, and 500 / 1,000 need real quotes because the price per decal usually drops with quantity):
+| Quantity | Your cost (decals) | Guess | Suggested price |
+|---|---|---|---|
+| 100 | $123 (real) | + kit $33 = about $156 | **$199** |
+| 500 | about $0.75 each = $375 (guess) | + kit $33 = about $408 | **$549** |
+| 1,000 | about $0.55 each = $550 (guess) | + kit $33 = about $583 | **$799** |
+Each extra location adds its kit cost (about $33) plus its own decals, and the 100 minimum applies to each location.
