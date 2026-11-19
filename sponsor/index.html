@@ -115,7 +115,13 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
     <p class="hint" id="appnote" hidden>This code opens the free MannaFish Bible app, so the person who scans it reads Scripture and the devotional there.</p>
     <label>The words under the QR code (two short lines)</label>
     <div class="two"><input type="text" id="q1" maxlength="22" value="Visit us" aria-label="Line 1"><input type="text" id="q2" maxlength="22" value="to learn more" aria-label="Line 2"></div>
-    <div class="chips" id="qchips"></div></section>
+    <div class="chips" id="qchips"></div>
+    <details class="lnb" id="qadj"><summary>Move the QR codes toward the card's edges</summary>
+      <p class="hint" id="qnote">Moving them out gives the line above the logo more room. Closer than 1/8 inch (3 mm) to the edge risks being cut off.</p>
+      <label for="qb">Both QR codes, outward <small id="qbt"></small></label><input type="range" id="qb" min="-5" max="8" step="0.1" value="0">
+      <label for="ql">Left QR code <small id="qlt"></small></label><input type="range" id="ql" min="-8" max="10" step="0.1" value="0">
+      <label for="qr">Right QR code <small id="qrt"></small></label><input type="range" id="qr" min="-8" max="10" step="0.1" value="0">
+      <div class="row"><button type="button" class="btn o" id="qadjr">Back to automatic</button><button type="button" class="btn o" id="qadjdone">Done: fold this away</button></div></details></section>
   <section class="step"><h2><i>3</i> Sponsored by</h2><p class="h">This goes in the middle of the card, under the top line you choose.</p>
     <div class="seg" id="by"><button type="button" data-by="logo" aria-pressed="true">Upload my logo</button><button type="button" data-by="name" aria-pressed="false">Type my name</button><button type="button" data-by="text" aria-pressed="false">Write my own words</button></div>
     <div id="by-logo"><button type="button" class="drop" id="logopick"><img id="logoprev" alt="" hidden><span id="logoname">Choose a logo file here (PNG, JPG or SVG). We size it for you.</span></button><input type="file" id="logo" accept="image/png,image/jpeg,image/svg+xml,image/webp" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" tabindex="-1" aria-hidden="true"></div>
@@ -179,7 +185,7 @@ function pull(){ var c=cur(); c.url=$('url').value; c.q1=$('q1').value; c.q2=$('
   c.qty=snap(c.qty); S.contact={name:$('cname').value,email:$('cemail').value,phone:$('cphone').value,city:$('ccity').value,note:$('cnote').value};
   c.nOrg=$('norg').value; c.nName=$('nname').value; c.nEmail=$('nemail').value; c.nPhone=$('nphone').value; c.nCity=$('ncity').value; var dv=$('dest').value; c.dest=dv==='self'||dv==='new'?dv:'hub'; if(c.dest==='hub'){ c.hubId=dv.slice(4); c.hubName=$('dest').selectedOptions[0].getAttribute('data-name')||$('dest').selectedOptions[0].textContent; } }
 /* card -> form */
-function push(){ syncSame(); var c=cur(); if(typeof sadjRead==='function'&&$('sadjs')) sadjRead(); $('url').value=c.url; $('q1').value=c.q1; $('q2').value=c.q2; $('name').value=c.name; $('text').value=c.text; $('credit').value=c.credit; $('vref').value=c.vref||''; $('vver').value=c.ver||'kjv'; c.qty=snap(c.qty); qtyOpt(c.qty); $('qtysel').value=String(c.qty); toWhere();
+function push(){ syncSame(); var c=cur(); if(typeof sadjRead==='function'&&$('sadjs')) sadjRead(); if(typeof qRead==='function'&&$('qb')) qRead(); $('url').value=c.url; $('q1').value=c.q1; $('q2').value=c.q2; $('name').value=c.name; $('text').value=c.text; $('credit').value=c.credit; $('vref').value=c.vref||''; $('vver').value=c.ver||'kjv'; c.qty=snap(c.qty); qtyOpt(c.qty); $('qtysel').value=String(c.qty); toWhere();
   $('cname').value=S.contact.name; $('cemail').value=S.contact.email; $('cphone').value=S.contact.phone; $('ccity').value=S.contact.city||''; $('cnote').value=S.contact.note;
   setDest(c);
   document.querySelectorAll('#by button').forEach(function(x){ x.setAttribute('aria-pressed',String(x.getAttribute('data-by')===c.by)); }); ['logo','name','text'].forEach(function(k){ $('by-'+k).hidden=k!==c.by; });
@@ -209,7 +215,9 @@ $('delcard').addEventListener('click',function(){ if(S.cards.length<2) return; S
 /* ---- saving: this browser at once, and the server a moment later (so the order can be picked up from the link on any device) ---- */
 var tl=null, ts=null, saved=0;
 function slim(){ var o=JSON.parse(JSON.stringify(S)); return o; }
-function syncSame(){ var f=S.cards[0]; S.cards.forEach(function(c,i){ if(!i) return; if(c.sameQr) ['url','qrTo','q1','q2'].forEach(function(k){ c[k]=f[k]; }); if(c.sameBy) ['by','logoId','logoName','logoAspect','name','text','credit','two','cadj'].forEach(function(k){ c[k]=f[k]; }); }); }
+/* take one part (sponsor or qrOut) of the line and QR tweaks from another card */
+function mixAdj(mine,theirs,part){ var o=Object.assign({},mine||{}); if(theirs&&theirs[part]) o[part]=theirs[part]; else delete o[part]; return Object.keys(o).length?o:null; }
+function syncSame(){ var f=S.cards[0]; S.cards.forEach(function(c,i){ if(!i) return; if(c.sameQr){ ['url','qrTo','q1','q2'].forEach(function(k){ c[k]=f[k]; }); c.cadj=mixAdj(c.cadj,f.cadj,'qrOut'); } if(c.sameBy) ['by','logoId','logoName','logoAspect','name','text','credit','two'].forEach(function(k){ c[k]=f[k]; }); c.cadj=mixAdj(c.cadj,f.cadj,'sponsor'); }); }
 function persist(){ pull(); syncSame(); if(EDIT){ try{ localStorage.setItem('mf-sponsor-edit-'+EDIT.id,JSON.stringify(slim())); }catch(e){} renderCards(); return; } clearTimeout(tl); tl=setTimeout(function(){ try{ localStorage.setItem(STORE,JSON.stringify({id:DID,S:slim()})); }catch(e){ try{ var o=slim(); o.logos={}; localStorage.setItem(STORE,JSON.stringify({id:DID,S:o})); }catch(x){} } },300);
   clearTimeout(ts); ts=setTimeout(toServer,1800); renderCards(); }
 function toServer(){ var body=JSON.stringify({id:DID||undefined,data:Object.assign(slim(),{})}); if(body.length>4400000){ $('savednote').textContent='Saved on this device (the logos are too large to save online: use smaller pictures).'; $('savebar').hidden=false; return; }
@@ -327,10 +335,19 @@ function openStep(i){ var st=document.querySelectorAll('.step')[i]; if(st) st.cl
 /* ---- the sponsor line: size, stretch, place and two lines, by hand ---- */
 function sadjRead(){ var c=cur(), a=(c.cadj&&c.cadj.sponsor)||{}; $('sadjs').value=a.s||100; $('sadjx').value=a.sx||100; $('sadjy').value=a.dy||0; $('sadjd').value=a.dx||0; $('sadj2').checked=!!c.two; $('sadjf').value=a.font||'auto'; sadjText(); }
 function sadjText(){ $('sadjst').textContent='· '+$('sadjs').value+'%'; $('sadjxt').textContent='· '+$('sadjx').value+'%'; $('sadjyt').textContent='· '+$('sadjy').value+' mm'; $('sadjdt').textContent='· '+$('sadjd').value+' mm'; }
-function sadjSet(){ var c=cur(), s=+$('sadjs').value, sx=+$('sadjx').value, dy=+$('sadjy').value, dx=+$('sadjd').value; var fo=$('sadjf').value; c.cadj=(s===100&&sx===100&&!dy&&!dx&&fo==='auto')?null:{sponsor:{s:s,sx:sx,dx:dx,dy:dy,font:fo}}; c.two=$('sadj2').checked; sadjText(); draw(); persist(); }
+function sadjSet(){ var c=cur(), s=+$('sadjs').value, sx=+$('sadjx').value, dy=+$('sadjy').value, dx=+$('sadjd').value; var fo=$('sadjf').value, n={}; if(!(s===100&&sx===100&&!dy&&!dx&&fo==='auto')) n.sponsor={s:s,sx:sx,dx:dx,dy:dy,font:fo}; if(c.cadj&&c.cadj.qrOut) n.qrOut=c.cadj.qrOut; c.cadj=Object.keys(n).length?n:null; c.two=$('sadj2').checked; sadjText(); draw(); persist(); }
 ['sadjs','sadjx','sadjy','sadjd'].forEach(function(id){ $(id).addEventListener('input',sadjSet); }); $('sadj2').addEventListener('change',sadjSet); $('sadjf').addEventListener('change',sadjSet);
-$('sadjr').addEventListener('click',function(){ var c=cur(); c.cadj=null; c.two=false; sadjRead(); draw(); persist(); });
+$('sadjr').addEventListener('click',function(){ var c=cur(); c.cadj=(c.cadj&&c.cadj.qrOut)?{qrOut:c.cadj.qrOut}:null; c.two=false; sadjRead(); draw(); persist(); });
 $('sadjdone').addEventListener('click',function(){ $('sadj').open=false; });
+/* ---- the QR codes: closer to the edges, by hand ---- */
+var QB=0;
+function qRead(){ var c=cur(), q=(c.cadj&&c.cadj.qrOut)||{l:0,r:0}; $('ql').value=q.l||0; $('qr').value=q.r||0; $('qb').value=QB=Math.min(+q.l||0,+q.r||0); qText(); }
+function qText(){ $('qbt').textContent='· '+$('qb').value+' mm'; $('qlt').textContent='· '+$('ql').value+' mm'; $('qrt').textContent='· '+$('qr').value+' mm'; }
+function qSet(){ var c=cur(), l=+$('ql').value, r=+$('qr').value, n=Object.assign({},c.cadj||{}); if(l||r) n.qrOut={l:l,r:r}; else delete n.qrOut; c.cadj=Object.keys(n).length?n:null; qText(); draw(); persist(); }
+$('qb').addEventListener('input',function(){ var b=+this.value, d=b-QB; QB=b; $('ql').value=(+$('ql').value+d).toFixed(1); $('qr').value=(+$('qr').value+d).toFixed(1); qSet(); });
+['ql','qr'].forEach(function(id){ $(id).addEventListener('input',qSet); });
+$('qadjr').addEventListener('click',function(){ var c=cur(), n=Object.assign({},c.cadj||{}); delete n.qrOut; c.cadj=Object.keys(n).length?n:null; qRead(); draw(); persist(); });
+$('qadjdone').addEventListener('click',function(){ $('qadj').open=false; });
 function useVerse(){ var c=cur(), raw=$('vref').value.trim(), ver=$('vver').value; c.ver=ver; if(!raw){ c.verse=null; c.vref=''; vnote('The fish comes with its own verse.'); draw(); persist(); fillVerseSelect(); return; }
   if(!c.word){ vnote('Choose a word first.','bad'); return; } var r=parseRef(raw); if(!r){ vnote('We could not read that address. Try it like Proverbs 24:3.','bad'); return; } if(r.v2-r.v1>2){ vnote('Please choose one to three verses.','bad'); return; }
   verseText(r,ver).then(function(text){ return applyVerse(refName(r),text,ver); }).catch(function(){ vnote(ver==='kjv'?'We could not find that verse. Check the address.':'We could not get that verse in the '+verName(ver)+' just now. Check the address, or try the King James Version.','bad'); }); }

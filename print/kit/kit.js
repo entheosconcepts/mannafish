@@ -60,7 +60,8 @@
     return h; }
   /* a wide logo (wider than about 1.7 times its height, e.g. "Walmart, Monkey Junction, store 5241") may use the whole width of the middle of the card, so it is not scaled down like a round badge */
   function adjFor(cfg) { var a = JSON.parse(JSON.stringify(K.adj)); if (cfg.logoAspect > 1.7 && cfg.by === 'logo') a.logo = { dy: -0.8, s: 100 };
-    if (cfg.cadj && typeof cfg.cadj === 'object') Object.keys(cfg.cadj).forEach(function (k) { a[k] = Object.assign({}, a[k] || {}, cfg.cadj[k]); });   /* the sponsor's (or Ken's) own size, stretch and place for a block, e.g. the sponsor line */
+    if (cfg.cadj && typeof cfg.cadj === 'object') Object.keys(cfg.cadj).forEach(function (k) { if (k === 'qrOut') return; a[k] = Object.assign({}, a[k] || {}, cfg.cadj[k]); });
+    var q = cfg.cadj && cfg.cadj.qrOut; if (q) { var l = +q.l || 0, r = +q.r || 0; ['qrL', 'labL'].forEach(function (b) { a[b] = Object.assign({}, a[b] || {}); a[b].dx = (a[b].dx || 0) - l; }); ['qrR', 'labR'].forEach(function (b) { a[b] = Object.assign({}, a[b] || {}); a[b].dx = (a[b].dx || 0) + r; }); }   /* the QR codes (and their labels) moved toward the card's edges, in mm */   /* the sponsor's (or Ken's) own size, stretch and place for a block, e.g. the sponsor line */
     return a; }
   var styled = false;
   function addStyle() { if (styled) return; styled = true; var s = document.createElement('style'); s.id = 'mfkit-css'; s.textContent = K.css; document.head.appendChild(s); }
