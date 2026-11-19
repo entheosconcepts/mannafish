@@ -52,9 +52,12 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,select:focus-vis
 .msg{min-height:1.4em;font-weight:700;margin-top:10px}.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}
 #orderbar h2 small{font:600 .9rem Archivo,sans-serif;color:var(--dim)}
 .cardlist{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 4px}
-.cardlist button{text-align:left;font:600 .92rem Archivo,sans-serif;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:14px;padding:9px 13px;cursor:pointer;min-width:132px}
-.cardlist button small{display:block;font-weight:400;color:var(--dim);font-size:.78rem}.cardlist button.todo small{color:var(--gold)}
-.cardlist button[aria-selected=true]{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue) inset}
+.ctab{position:relative;border:1px solid var(--line);border-radius:14px;background:var(--bg);min-width:150px;padding:6px 30px 8px 6px}
+.ctab .cmain{display:block;width:100%;text-align:left;font:600 .92rem Archivo,sans-serif;border:0;background:none;color:var(--text);padding:3px 7px;cursor:pointer}
+.ctab .cmain small{display:block;font-weight:400;color:var(--dim);font-size:.78rem}.ctab.todo .cmain small{color:var(--gold)}
+.ctab .cq{display:flex;align-items:center;gap:6px;padding:0 7px;font-size:.82rem;color:var(--dim)}.ctab .cq select{width:auto;padding:3px 6px;font-size:.85rem;border-radius:8px}
+.ctab .cx{position:absolute;top:4px;right:5px;width:22px;height:22px;border:1px solid var(--line);border-radius:50%;background:none;color:var(--dim);font-size:.7rem;line-height:1;cursor:pointer;padding:0}.ctab .cx:hover{color:var(--bad);border-color:var(--bad)}.ctab .cx[disabled]{opacity:.35;cursor:not-allowed}
+.ctab[aria-selected=true]{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue) inset}
 .savebar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-top:12px;font-size:.88rem;color:var(--dim)}.savelink{display:flex;gap:6px;flex:1;min-width:220px}.savelink input{flex:1;min-width:0;font-size:.8rem;padding:8px 10px}.savelink .btn{padding:8px 14px;font-size:.85rem}
 footer{max-width:1180px;margin:0 auto;color:var(--dim);font-size:.85rem;padding:10px 0 40px}
 /* ?embed=1: the builder inside the MannaFish home page (an iframe in #sponsor), in the site's own black and blue */
@@ -74,7 +77,7 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
 <p class="lead">Choose a word. Add a link and a logo. See the card as it is built. MannaFish decals are always given away, never sold: sponsors pay so people can have them free.</p>
 <div class="grid">
 <div>
-  <section class="step" id="orderbar"><h2>Sponsorship <small id="tot"></small></h2><p class="h">Each design is its own card. Pick a card to work on it, or add another. Everything is saved as you go.</p>
+  <section class="step" id="orderbar"><h2>Sponsorship <small id="tot"></small></h2><p class="h">Choose the quantity, then how many different words, and who chooses them. Each word has its own tab with its own quantity. Everything is saved as it goes.</p>
     <label for="ntotal">How many decals in all?</label>
     <select id="ntotal" aria-label="How many decals in all"></select>
     <label for="ncount">How many different words?</label>
@@ -82,7 +85,7 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
     <div class="seg2" role="radiogroup" aria-label="Who chooses the words"><label class="same"><input type="radio" name="pick" value="me" checked> The sponsor chooses the words</label><label class="same"><input type="radio" name="pick" value="we"> MannaFish chooses the words</label></div>
     <p class="hint" id="nnote">At least 100 of each word, so 500 decals can be up to 5 different words. Each word gets its own tab below. The link, the logo and the sponsor line can be the same on every word, or changed on any word.</p>
     <div class="cardlist" id="cardlist" role="tablist" aria-label="Your cards"></div>
-    <div class="row"><button type="button" class="btn o" id="newcard">+ Add another card</button><button type="button" class="btn o" id="dupcard">Copy this card</button><button type="button" class="btn o" id="delcard">Remove this card</button><button type="button" class="btn y" id="savework" hidden>Save my work</button></div>
+    <div class="row"><button type="button" class="btn o" id="newcard">+ Add another word</button><button type="button" class="btn o" id="dupcard">Copy this word</button><button type="button" class="btn o" id="delcard">Remove this word</button><button type="button" class="btn y" id="savework" hidden>Save my work</button></div>
     <div class="savebar" id="savebar" hidden><span id="savednote"></span><span class="savelink"><input type="text" id="savelink" readonly aria-label="Your link to come back to this order"><button type="button" class="btn o" id="copylink">Copy link</button></span></div></section>
   <section class="step"><h2><i>1</i> Choose a word</h2><p class="h">This is the big word in the middle of the fish. Its word study (the Greek and Hebrew, and four verses) fills in by itself on the back.</p>
     <input type="text" id="wsearch" placeholder="Search words: Build, Trust, Seek…" autocomplete="off" aria-label="Search words">
@@ -182,10 +185,15 @@ function loadHubs(){ fetch('/api/hubs',{cache:'no-store'}).then(function(r){ ret
     var keep=cur(); $('dest').insertBefore(g,$('dest').options[1]); setDest(keep); }).catch(function(){}); }
 $('dest').addEventListener('change',function(){ $('newnom').hidden=$('dest').value!=='new'; soon(); });
 function renderCards(){ if(typeof uiSame==='function'&&$('sameQr')) uiSame(); var tot=0; $('cardlist').innerHTML=S.cards.map(function(c,i){ tot+=c.qty; var pr=problem(c);
-  return '<button type="button" role="tab" data-i="'+i+'" aria-selected="'+(i===S.active)+'" class="'+(pr?'todo':'')+'"><b>'+(i+1)+'. '+esc(c.choose?'MannaFish picks':(c.word||'New word'))+'</b><small>'+c.qty+' decals'+(c.dest==='hub'?' → '+esc(c.hubName):c.dest==='new'&&c.nOrg?' → '+esc(c.nOrg):'')+(pr?' · '+esc(pr):' · ready')+'</small></button>'; }).join('');
+  var opts=''; for(var q=100;q<=1000;q+=100) opts+='<option value="'+q+'"'+(q===c.qty?' selected':'')+'>'+q+'</option>'; if(c.qty>1000||c.qty%100) opts+='<option value="'+c.qty+'" selected>'+c.qty+'</option>';
+  return '<div class="ctab'+(pr?' todo':'')+'" role="tab" aria-selected="'+(i===S.active)+'"><button type="button" class="cx" data-x="'+i+'" aria-label="Take away word '+(i+1)+'" title="Take this word away"'+(S.cards.length<2?' disabled':'')+'>&#10005;</button>'
+   +'<button type="button" class="cmain" data-i="'+i+'"><b>'+(i+1)+'. '+esc(c.choose?'MannaFish picks':(c.word||'New word'))+'</b><small>'+(c.dest==='hub'?'→ '+esc(c.hubName)+' · ':c.dest==='new'&&c.nOrg?'→ '+esc(c.nOrg)+' · ':'')+(pr?esc(pr):'ready')+'</small></button>'
+   +'<label class="cq">Quantity <select data-q="'+i+'" aria-label="Quantity for word '+(i+1)+'">'+opts+'</select></label></div>'; }).join('');
   $('tot').textContent='· '+tot+' decals in '+S.cards.length+(S.cards.length===1?' word':' words'); $('delcard').disabled=S.cards.length<2; $('newcard').disabled=$('dupcard').disabled=S.cards.length>=MAXCARDS;
   var n=S.cards.length; $('send').textContent=(EDIT?'Save changes':'Send sponsorship request')+(n>1?' ('+n+' words)':''); }
-$('cardlist').addEventListener('click',function(e){ var b=e.target.closest('button[data-i]'); if(!b) return; pull(); S.active=+b.getAttribute('data-i'); push(); renderCards(); draw(); persist(); });
+$('cardlist').addEventListener('click',function(e){ var x=e.target.closest('button[data-x]'); if(x){ var i=+x.getAttribute('data-x'); if(S.cards.length<2) return; pull(); if(S.cards[i].word&&!confirm('Take away word '+(i+1)+' ('+S.cards[i].word+')?')) return; S.cards.splice(i,1); S.active=Math.max(0,Math.min(S.active>i?S.active-1:S.active,S.cards.length-1)); push(); totalSync(); renderCards(); draw(); persist(); return; }
+  var b=e.target.closest('button[data-i]'); if(!b) return; pull(); S.active=+b.getAttribute('data-i'); push(); renderCards(); draw(); persist(); });
+$('cardlist').addEventListener('change',function(e){ var q=e.target.closest('select[data-q]'); if(!q) return; pull(); S.cards[+q.getAttribute('data-q')].qty=+q.value; if(+q.getAttribute('data-q')===S.active) $('qtysel').value=q.value; totalSync(); renderCards(); persist(); });
 $('newcard').addEventListener('click',function(){ pull(); S.cards.push(blank(S.cards[0])); S.cards[S.cards.length-1].qty=100; S.cards[S.cards.length-1].sameQr=S.cards[S.cards.length-1].sameBy=true; S.active=S.cards.length-1; var c=cur(); c.word=''; push(); renderCards(); draw(); persist(); $('wsearch').focus(); say('A new card. Your link, logo and words are copied: choose its word.','ok'); });
 $('dupcard').addEventListener('click',function(){ pull(); var c=JSON.parse(JSON.stringify(cur())); S.cards.splice(S.active+1,0,c); S.active++; push(); renderCards(); persist(); say('Copied. Change its word or verse.','ok'); });
 $('delcard').addEventListener('click',function(){ if(S.cards.length<2) return; S.cards.splice(S.active,1); S.active=Math.max(0,S.active-1); push(); renderCards(); draw(); persist(); say('Removed.',''); });
