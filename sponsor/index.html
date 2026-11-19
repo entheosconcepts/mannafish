@@ -24,7 +24,7 @@ h1{font:600 clamp(1.9rem,5vw,2.7rem)/1.12 Fraunces,Georgia,serif;margin:10px 0 8
 .step{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px}
 .step h2{font:600 1.3rem Fraunces,Georgia,serif;margin:0 0 4px;display:flex;gap:10px;align-items:baseline}.step h2 i{font:600 .9rem Archivo,sans-serif;color:var(--gold);font-style:normal}
 .step h2{cursor:pointer;user-select:none}.step h2::after{content:'▾';margin-left:auto;color:var(--dim);font-size:.9rem}.step.col h2::after{content:'▸'}.step.col>:not(h2){display:none!important}.step.col h2 small{color:var(--dim)}
-.step.choosing #wsearch,.step.choosing #words,.step.choosing #vbox,.step.choosing #wnote{display:none}.seg2{margin:6px 0}.same{display:flex;gap:8px;align-items:center;margin:2px 0 10px;font-weight:600}.same input{width:auto}.step[data-same="1"] .samebody{display:none}.lnb{margin-top:10px;border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--card);color:var(--text)}.lnb summary{cursor:pointer;font-weight:700;font-size:.95rem;color:var(--text)}.lnb input[type=range]{width:100%;margin:0}.lnb label small{color:var(--dim);font-weight:400}.lnb .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.step.choosing #wsearch,.step.choosing #words,.step.choosing #vbox,.step.choosing #wnote{display:none}.seg2{margin:6px 0}.same{display:flex;gap:8px;align-items:center;margin:2px 0 10px;font-weight:600}.same input{width:auto}.step[data-same="1"] .samebody{display:none}.lnb{margin-top:10px;border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--card);color:var(--text)}.lnb summary{cursor:pointer;font-weight:700;font-size:.95rem;color:var(--text)}.lnb input[type=range]{width:100%;margin:0}.lnb .qh{display:block;margin:10px 0 2px;color:var(--gold);font-size:.85rem}.lnb label small{color:var(--dim);font-weight:400}.lnb .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .step p.h{margin:0 0 12px;color:var(--dim);font-size:.95rem}
 label{display:block;font-weight:600;font-size:.92rem;margin:12px 0 4px}
 input[type=text],input[type=url],input[type=email],input[type=tel],input[type=number],textarea,select{width:100%;font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
@@ -116,11 +116,20 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
     <label>The words under the QR code (two short lines)</label>
     <div class="two"><input type="text" id="q1" maxlength="22" value="Visit us" aria-label="Line 1"><input type="text" id="q2" maxlength="22" value="to learn more" aria-label="Line 2"></div>
     <div class="chips" id="qchips"></div>
-    <details class="lnb" id="qadj"><summary>Move the QR codes toward the card's edges</summary>
-      <p class="hint" id="qnote">Moving them out gives the line above the logo more room. Closer than 1/8 inch (3 mm) to the edge risks being cut off.</p>
-      <label for="qb">Both QR codes, outward <small id="qbt"></small></label><input type="range" id="qb" min="-5" max="8" step="0.1" value="0">
-      <label for="ql">Left QR code <small id="qlt"></small></label><input type="range" id="ql" min="-8" max="10" step="0.1" value="0">
-      <label for="qr">Right QR code <small id="qrt"></small></label><input type="range" id="qr" min="-8" max="10" step="0.1" value="0">
+    <details class="lnb" id="qadj"><summary>Size and place the QR codes</summary>
+      <p class="hint" id="qnote">Move and resize the QR codes any way you like: smaller and lower leaves the whole top for the line of words. Closer than 1/8 inch (3 mm) to an edge risks being cut off.</p>
+      <b class="qh">Both together</b>
+      <label for="qb">Outward <small id="qbt"></small></label><input type="range" id="qb" min="-10" max="12" step="0.1" value="0">
+      <label for="qbd">Down <small id="qbdt"></small></label><input type="range" id="qbd" min="-15" max="15" step="0.1" value="0">
+      <label for="qbs">Size <small id="qbst"></small></label><input type="range" id="qbs" min="40" max="160" step="1" value="100">
+      <b class="qh">Left QR code</b>
+      <label for="ql">Outward <small id="qlt"></small></label><input type="range" id="ql" min="-20" max="30" step="0.1" value="0">
+      <label for="qly">Down <small id="qlyt"></small></label><input type="range" id="qly" min="-30" max="30" step="0.1" value="0">
+      <label for="qls">Size <small id="qlst"></small></label><input type="range" id="qls" min="40" max="200" step="1" value="100">
+      <b class="qh">Right QR code</b>
+      <label for="qr">Outward <small id="qrt"></small></label><input type="range" id="qr" min="-20" max="30" step="0.1" value="0">
+      <label for="qry">Down <small id="qryt"></small></label><input type="range" id="qry" min="-30" max="30" step="0.1" value="0">
+      <label for="qrs">Size <small id="qrst"></small></label><input type="range" id="qrs" min="40" max="200" step="1" value="100">
       <div class="row"><button type="button" class="btn o" id="qadjr">Back to automatic</button><button type="button" class="btn o" id="qadjdone">Done: fold this away</button></div></details></section>
   <section class="step"><h2><i>3</i> Sponsored by</h2><p class="h">This goes in the middle of the card, under the top line you choose.</p>
     <div class="seg" id="by"><button type="button" data-by="logo" aria-pressed="true">Upload my logo</button><button type="button" data-by="name" aria-pressed="false">Type my name</button><button type="button" data-by="text" aria-pressed="false">Write my own words</button></div>
@@ -134,6 +143,7 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
       <p class="hint">Move the sliders and watch the card. Nothing is limited: the line can go over the QR codes if it is stretched far enough.</p>
       <label for="sadjf">Letters</label><select id="sadjf"><option value="auto">Automatic (narrow letters for a long line)</option><option value="narrow">Narrow letters</option><option value="round">Round letters (the MannaFish style)</option></select>
       <label class="same"><input type="checkbox" id="sadj2"> Put the line on two lines</label>
+      <label class="same"><input type="checkbox" id="sadjfull"> Use the whole width of the card (when the QR codes are moved down)</label>
       <label for="sadjs">Size <small id="sadjst"></small></label><input type="range" id="sadjs" min="40" max="260" step="1" value="100">
       <label for="sadjx">Width, stretch it sideways <small id="sadjxt"></small></label><input type="range" id="sadjx" min="40" max="300" step="1" value="100">
       <label for="sadjy">Up and down <small id="sadjyt"></small></label><input type="range" id="sadjy" min="-8" max="8" step="0.1" value="0">
@@ -333,19 +343,20 @@ $('ncount').addEventListener('change',function(){ var v=this.value; if(v==='more
 $('qtyall').addEventListener('click',function(){ var q=cur().qty; S.cards.forEach(function(c){ c.qty=q; }); totalSync(); renderCards(); persist(); say('Every word is now '+q+'.','ok'); });
 function openStep(i){ var st=document.querySelectorAll('.step')[i]; if(st) st.classList.remove('col'); }
 /* ---- the sponsor line: size, stretch, place and two lines, by hand ---- */
-function sadjRead(){ var c=cur(), a=(c.cadj&&c.cadj.sponsor)||{}; $('sadjs').value=a.s||100; $('sadjx').value=a.sx||100; $('sadjy').value=a.dy||0; $('sadjd').value=a.dx||0; $('sadj2').checked=!!c.two; $('sadjf').value=a.font||'auto'; sadjText(); }
+function sadjRead(){ var c=cur(), a=(c.cadj&&c.cadj.sponsor)||{}; $('sadjs').value=a.s||100; $('sadjx').value=a.sx||100; $('sadjy').value=a.dy||0; $('sadjd').value=a.dx||0; $('sadj2').checked=!!c.two; $('sadjfull').checked=!!a.full; $('sadjf').value=a.font||'auto'; sadjText(); }
 function sadjText(){ $('sadjst').textContent='· '+$('sadjs').value+'%'; $('sadjxt').textContent='· '+$('sadjx').value+'%'; $('sadjyt').textContent='· '+$('sadjy').value+' mm'; $('sadjdt').textContent='· '+$('sadjd').value+' mm'; }
-function sadjSet(){ var c=cur(), s=+$('sadjs').value, sx=+$('sadjx').value, dy=+$('sadjy').value, dx=+$('sadjd').value; var fo=$('sadjf').value, n={}; if(!(s===100&&sx===100&&!dy&&!dx&&fo==='auto')) n.sponsor={s:s,sx:sx,dx:dx,dy:dy,font:fo}; if(c.cadj&&c.cadj.qrOut) n.qrOut=c.cadj.qrOut; c.cadj=Object.keys(n).length?n:null; c.two=$('sadj2').checked; sadjText(); draw(); persist(); }
-['sadjs','sadjx','sadjy','sadjd'].forEach(function(id){ $(id).addEventListener('input',sadjSet); }); $('sadj2').addEventListener('change',sadjSet); $('sadjf').addEventListener('change',sadjSet);
+function sadjSet(){ var c=cur(), s=+$('sadjs').value, sx=+$('sadjx').value, dy=+$('sadjy').value, dx=+$('sadjd').value; var fo=$('sadjf').value, fu=$('sadjfull').checked, n={}; if(!(s===100&&sx===100&&!dy&&!dx&&fo==='auto'&&!fu)) n.sponsor={s:s,sx:sx,dx:dx,dy:dy,font:fo,full:fu}; if(c.cadj&&c.cadj.qrOut) n.qrOut=c.cadj.qrOut; c.cadj=Object.keys(n).length?n:null; c.two=$('sadj2').checked; sadjText(); draw(); persist(); }
+['sadjs','sadjx','sadjy','sadjd'].forEach(function(id){ $(id).addEventListener('input',sadjSet); }); $('sadj2').addEventListener('change',sadjSet); $('sadjfull').addEventListener('change',sadjSet); $('sadjf').addEventListener('change',sadjSet);
 $('sadjr').addEventListener('click',function(){ var c=cur(); c.cadj=(c.cadj&&c.cadj.qrOut)?{qrOut:c.cadj.qrOut}:null; c.two=false; sadjRead(); draw(); persist(); });
 $('sadjdone').addEventListener('click',function(){ $('sadj').open=false; });
-/* ---- the QR codes: closer to the edges, by hand ---- */
-var QB=0;
-function qRead(){ var c=cur(), q=(c.cadj&&c.cadj.qrOut)||{l:0,r:0}; $('ql').value=q.l||0; $('qr').value=q.r||0; $('qb').value=QB=Math.min(+q.l||0,+q.r||0); qText(); }
-function qText(){ $('qbt').textContent='· '+$('qb').value+' mm'; $('qlt').textContent='· '+$('ql').value+' mm'; $('qrt').textContent='· '+$('qr').value+' mm'; }
-function qSet(){ var c=cur(), l=+$('ql').value, r=+$('qr').value, n=Object.assign({},c.cadj||{}); if(l||r) n.qrOut={l:l,r:r}; else delete n.qrOut; c.cadj=Object.keys(n).length?n:null; qText(); draw(); persist(); }
-$('qb').addEventListener('input',function(){ var b=+this.value, d=b-QB; QB=b; $('ql').value=(+$('ql').value+d).toFixed(1); $('qr').value=(+$('qr').value+d).toFixed(1); qSet(); });
-['ql','qr'].forEach(function(id){ $(id).addEventListener('input',qSet); });
+/* ---- the QR codes: size and place, by hand (Ken, 19 Nov: free resize and move) ---- */
+var QM={d:0,y:0,s:100};
+var QF=[['ql','l',0],['qr','r',0],['qly','ly',0],['qry','ry',0],['qls','ls',100],['qrs','rs',100]];
+function qRead(){ var c=cur(), q=(c.cadj&&c.cadj.qrOut)||{}; QF.forEach(function(f){ $(f[0]).value=q[f[1]]!=null?q[f[1]]:f[2]; }); $('qb').value=QM.d=Math.min(+$('ql').value,+$('qr').value); $('qbd').value=QM.y=Math.min(+$('qly').value,+$('qry').value); $('qbs').value=QM.s=Math.min(+$('qls').value,+$('qrs').value); qText(); }
+function qText(){ [['qb','qbt',' mm'],['qbd','qbdt',' mm'],['qbs','qbst','%'],['ql','qlt',' mm'],['qly','qlyt',' mm'],['qls','qlst','%'],['qr','qrt',' mm'],['qry','qryt',' mm'],['qrs','qrst','%']].forEach(function(a){ $(a[1]).textContent='· '+$(a[0]).value+a[2]; }); }
+function qSet(){ var c=cur(), q={}, any=false; QF.forEach(function(f){ var v=+$(f[0]).value; q[f[1]]=v; if(v!==f[2]) any=true; }); var n=Object.assign({},c.cadj||{}); if(any) n.qrOut=q; else delete n.qrOut; c.cadj=Object.keys(n).length?n:null; qText(); draw(); persist(); }
+[['qb','ql','qr','d'],['qbd','qly','qry','y'],['qbs','qls','qrs','s']].forEach(function(g){ $(g[0]).addEventListener('input',function(){ var b=+this.value, d=b-QM[g[3]]; QM[g[3]]=b; [g[1],g[2]].forEach(function(id){ $(id).value=(+$(id).value+d).toFixed(1); }); qSet(); }); });
+QF.forEach(function(f){ $(f[0]).addEventListener('input',qSet); });
 $('qadjr').addEventListener('click',function(){ var c=cur(), n=Object.assign({},c.cadj||{}); delete n.qrOut; c.cadj=Object.keys(n).length?n:null; qRead(); draw(); persist(); });
 $('qadjdone').addEventListener('click',function(){ $('qadj').open=false; });
 function useVerse(){ var c=cur(), raw=$('vref').value.trim(), ver=$('vver').value; c.ver=ver; if(!raw){ c.verse=null; c.vref=''; vnote('The fish comes with its own verse.'); draw(); persist(); fillVerseSelect(); return; }

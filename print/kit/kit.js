@@ -61,7 +61,11 @@
   /* a wide logo (wider than about 1.7 times its height, e.g. "Walmart, Monkey Junction, store 5241") may use the whole width of the middle of the card, so it is not scaled down like a round badge */
   function adjFor(cfg) { var a = JSON.parse(JSON.stringify(K.adj)); if (cfg.logoAspect > 1.7 && cfg.by === 'logo') a.logo = { dy: -0.8, s: 100 };
     if (cfg.cadj && typeof cfg.cadj === 'object') Object.keys(cfg.cadj).forEach(function (k) { if (k === 'qrOut') return; a[k] = Object.assign({}, a[k] || {}, cfg.cadj[k]); });
-    var q = cfg.cadj && cfg.cadj.qrOut; if (q) { var l = +q.l || 0, r = +q.r || 0; ['qrL', 'labL'].forEach(function (b) { a[b] = Object.assign({}, a[b] || {}); a[b].dx = (a[b].dx || 0) - l; }); ['qrR', 'labR'].forEach(function (b) { a[b] = Object.assign({}, a[b] || {}); a[b].dx = (a[b].dx || 0) + r; }); }   /* the QR codes (and their labels) moved toward the card's edges, in mm */   /* the sponsor's (or Ken's) own size, stretch and place for a block, e.g. the sponsor line */
+    var q = cfg.cadj && cfg.cadj.qrOut; if (q) {   /* the QR codes (and their labels) moved, resized and put anywhere, in mm and percent */
+      [['qrL', 'labL', -(+q.l || 0), +q.ly || 0, +q.ls || 100], ['qrR', 'labR', +q.r || 0, +q.ry || 0, +q.rs || 100]].forEach(function (x) {
+        var up = (100 - x[4]) / 100 * 7.6;   /* a smaller code shrinks toward its middle, so its label comes up with it */
+        a[x[0]] = Object.assign({}, a[x[0]] || {}); a[x[0]].dx = (a[x[0]].dx || 0) + x[2]; a[x[0]].dy = (a[x[0]].dy || 0) + x[3]; a[x[0]].s = x[4];
+        a[x[1]] = Object.assign({}, a[x[1]] || {}); a[x[1]].dx = (a[x[1]].dx || 0) + x[2]; a[x[1]].dy = (a[x[1]].dy || 0) + x[3] - up; }); }   /*    /* the sponsor's (or Ken's) own size, stretch and place for a block, e.g. the sponsor line */
     return a; }
   var styled = false;
   function addStyle() { if (styled) return; styled = true; var s = document.createElement('style'); s.id = 'mfkit-css'; s.textContent = K.css; document.head.appendChild(s); }

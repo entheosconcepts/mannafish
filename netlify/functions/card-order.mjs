@@ -33,7 +33,7 @@ async function limited(ip, what) {
 }
 // the sponsor line's own size, stretch and place (Ken, 19 Nov): only the sponsor block, only numbers in a sane range
 const num = (v, lo, hi, d) => (isFinite(v) ? Math.max(lo, Math.min(hi, +Number(v).toFixed(2))) : d);
-const cleanAdj = (a) => { const q = a && a.qrOut, out = {}; if (q && typeof q === 'object') out.qrOut = { l: num(q.l, -15, 20, 0), r: num(q.r, -15, 20, 0) }; const x = a && a.sponsor; if (x && typeof x === 'object') out.sponsor = { s: num(x.s, 30, 300, 100), sx: num(x.sx, 30, 400, 100), dx: num(x.dx, -40, 40, 0), dy: num(x.dy, -20, 20, 0), font: ['round', 'narrow'].includes(x.font) ? x.font : 'auto' }; return Object.keys(out).length ? out : undefined; };
+const cleanAdj = (a) => { const q = a && a.qrOut, out = {}; if (q && typeof q === 'object') out.qrOut = { l: num(q.l, -20, 30, 0), r: num(q.r, -20, 30, 0), ly: num(q.ly, -40, 40, 0), ry: num(q.ry, -40, 40, 0), ls: num(q.ls, 30, 200, 100), rs: num(q.rs, 30, 200, 100) }; const x = a && a.sponsor; if (x && typeof x === 'object') out.sponsor = { s: num(x.s, 30, 300, 100), sx: num(x.sx, 30, 400, 100), dx: num(x.dx, -40, 40, 0), dy: num(x.dy, -20, 20, 0), font: ['round', 'narrow'].includes(x.font) ? x.font : 'auto', full: x.full === true }; return Object.keys(out).length ? out : undefined; };
 // one card, cleaned
 export function cleanItem(x) {
   const qty = Math.max(MIN, Math.round((Number(x.qty) || MIN) / 100) * 100);
