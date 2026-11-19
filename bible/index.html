@@ -532,7 +532,7 @@ body.par .bar #where,body.par .bar #ver,body.par .bar #say{display:none}body.par
       if(e.data.full){ f.classList.add('full'); document.body.classList.add('tffull'); document.documentElement.style.overflow='hidden'; } else { f.classList.remove('full'); document.body.classList.remove('tffull'); document.documentElement.style.overflow=''; if(e.data.h>60) f.style.height=e.data.h+'px'; } });
     var tz=''; try{ tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''; }catch(e){}
     fetch('/api/today-fish?id='+encodeURIComponent(fq||'today')+'&tz='+encodeURIComponent(tz)+'&lang='+lang).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(!j) return; $('tfW').textContent=j.title; /* Ken, 17 Nov: the Bible opens to the passage of the fish on the front, unless a verse was asked for or the person has already moved */ if(!qq.get('r')&&!touched&&j.ref&&window.MFbible) MFbible.go(j.ref,true); }).catch(function(){});
-    set(ls('mf-bible-fish')!=='closed');
+    set(true);   /* Ken, 19 Nov: a link for a fish (the email, a text, the menu) always opens the card; an old 'closed' choice from an earlier visit kept the fish hidden */
     /* Ken, 14 Nov: opening the Bible app shows the fish for about 2 seconds, then it slowly folds away so the reader is not kept waiting behind it, and the ▾ pulses
        so people can see where to open it again. Not on the devotional (that is the home page), and not when the card is open on purpose (a fish link, from a verse on a fish);
        a tap on the card or its title in the first 2 seconds keeps it open. The saved open or closed choice is not changed by this. */
