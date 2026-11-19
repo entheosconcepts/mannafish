@@ -1,4 +1,4 @@
-# K-Tech Build: 4 verses, all caps (QR direct) (run R0015)
+# K-Tech Build: Matthew 7:24 on the fish, 4 verses, all caps (QR direct) (run R0015)
 
 Card: 4.5 x 2.75 in (114.3 x 69.85 mm), custom size (not 2.8 in). Every file includes a 1/8 in (3.175 mm) bleed on each side, so the fish-side files are 120.65 x 76.2 mm and the back is 120.65 x 76.2 mm. All files line up with each other at the same size.
 
