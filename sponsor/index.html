@@ -24,7 +24,7 @@ h1{font:600 clamp(1.9rem,5vw,2.7rem)/1.12 Fraunces,Georgia,serif;margin:10px 0 8
 .step{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px}
 .step h2{font:600 1.3rem Fraunces,Georgia,serif;margin:0 0 4px;display:flex;gap:10px;align-items:baseline}.step h2 i{font:600 .9rem Archivo,sans-serif;color:var(--gold);font-style:normal}
 .step h2{cursor:pointer;user-select:none}.step h2::after{content:'▾';margin-left:auto;color:var(--dim);font-size:.9rem}.step.col h2::after{content:'▸'}.step.col>:not(h2){display:none!important}.step.col h2 small{color:var(--dim)}
-.step.choosing #wsearch,.step.choosing #words,.step.choosing #vbox,.step.choosing #wnote{display:none}.seg2{margin:6px 0}.same{display:flex;gap:8px;align-items:center;margin:2px 0 10px;font-weight:600}.same input{width:auto}.step[data-same="1"] .samebody{display:none}.lb{margin-top:10px;border:1px solid var(--line);border-radius:12px;padding:8px 12px}.lb summary{cursor:pointer;font-weight:700;font-size:.92rem}.lb input[type=range]{width:100%;margin:0}.lb label small{color:var(--dim);font-weight:400}.lb .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.step.choosing #wsearch,.step.choosing #words,.step.choosing #vbox,.step.choosing #wnote{display:none}.seg2{margin:6px 0}.same{display:flex;gap:8px;align-items:center;margin:2px 0 10px;font-weight:600}.same input{width:auto}.step[data-same="1"] .samebody{display:none}.lnb{margin-top:10px;border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--card);color:var(--text)}.lnb summary{cursor:pointer;font-weight:700;font-size:.95rem;color:var(--text)}.lnb input[type=range]{width:100%;margin:0}.lnb label small{color:var(--dim);font-weight:400}.lnb .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .step p.h{margin:0 0 12px;color:var(--dim);font-size:.95rem}
 label{display:block;font-weight:600;font-size:.92rem;margin:12px 0 4px}
 input[type=text],input[type=url],input[type=email],input[type=tel],input[type=number],textarea,select{width:100%;font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
@@ -92,7 +92,7 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
       <select id="vsel" aria-label="Verse on the fish"><option value="own">The fish’s own verse</option></select>
       <div class="two" id="vtype" hidden style="margin-top:8px"><input type="text" id="vref" placeholder="Type a verse address, like Proverbs 24:3" autocomplete="off"><button type="button" class="btn o" id="vgo">Use this verse</button></div>
       <p class="hint" id="vnote">The fish comes with its own verse. Choose another from the list, or choose "Another verse" to type its address. The big word has to be in the verse.</p>
-      <details class="lb" id="lb"><summary>Choose which words of the verse go on the fish</summary>
+      <details class="lnb" id="lb"><summary>Choose which words of the verse go on the fish</summary>
         <p class="hint" id="lbhint">Choose a verse first. Then slide to pick where the verse starts, where it breaks between the top and the bottom of the fish, and where it ends. You can also type the lines.</p>
         <div id="lbbox" hidden>
           <label for="lb0">Starts at <small id="lb0t"></small></label><input type="range" id="lb0" min="0" max="0" value="0">
@@ -101,7 +101,7 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
           <label for="lbtop">Top line</label><input type="text" id="lbtop" maxlength="130" autocomplete="off">
           <label for="lbbot">Bottom line</label><input type="text" id="lbbot" maxlength="130" autocomplete="off">
           <p class="hint" id="lbnote"></p>
-          <div class="row"><button type="button" class="btn o" id="lbreset">Back to the automatic lines</button><button type="button" class="btn y" id="lbok" hidden>Approve for every fish with this verse</button></div>
+          <div class="row"><button type="button" class="btn o" id="lbreset">Back to the automatic lines</button><button type="button" class="btn y" id="lbok" hidden>Approve for every fish with this verse</button><button type="button" class="btn o" id="lbdone">Done: fold this away</button></div>
         </div></details>
       <label for="vver" style="margin-top:10px">Bible version for the verse</label><select id="vver"><option value="kjv">King James Version (KJV)</option><option value="web">World English Bible (WEB)</option><option value="asv">American Standard Version (ASV)</option><option value="ylt">Young’s Literal Translation (YLT)</option><option value="darby">Darby Translation</option><option value="bbe">Bible in Basic English (BBE)</option><option value="dra">Douay-Rheims</option></select>
       <p class="hint">These versions are all in the public domain. NIV, ESV, NLT and other versions need written permission from their publishers, and we are asking for it.</p>
@@ -266,6 +266,7 @@ function lbShow(){ var c=cur(), box=$('lbbox'); if(!c.verse||!c.vref){ box.hidde
 function lbApply(top,bot){ var c=cur(); if(!c.verse) return; c.verse.top=top; c.verse.bot=bot; lbCheck(); draw(); persist(); }
 ['lb0','lb1','lb2'].forEach(function(id){ $(id).addEventListener('input',function(){ var a=+$('lb0').value, sp=+$('lb1').value, e=+$('lb2').value; if(sp<a){ sp=a; $('lb1').value=sp; } if(e<=sp){ e=Math.min(LB.words.length-1,sp+1); $('lb2').value=e; } lbText(); var L=lbBuild(a,sp,e); $('lbtop').value=L.top; $('lbbot').value=L.bot; lbApply(L.top,L.bot); }); });
 ['lbtop','lbbot'].forEach(function(id){ $(id).addEventListener('input',function(){ lbApply($('lbtop').value,$('lbbot').value); }); });
+$('lbdone').addEventListener('click',function(){ $('lb').open=false; $('lb').scrollIntoView({block:'nearest'}); });
 $('lbreset').addEventListener('click',function(){ var c=cur(); if(!c.verse||!LB.text) return; var m=formsRe(c.word).exec(LB.text); if(!m) return; loadMake().then(function(){ var L=MFmake.lines(LB.text,m[0].toLowerCase()); lbApply(L.top,L.bot); lbSync(); }); });
 function adminKey(){ try{ return localStorage.getItem('mf-admin-key')||''; }catch(e){ return ''; } }
 $('lbok').addEventListener('click',function(){ var c=cur(), k=lbKey(c); if(!k||!lbCheck()) return; if(!confirm('Approve these two lines for every fish with '+c.verse.ref+' and the word '+c.word+'?')) return;
