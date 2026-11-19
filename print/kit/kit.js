@@ -13,7 +13,7 @@
   function script(u) { return new Promise(function (ok, no) { var s = document.createElement('script'); s.src = BASE + u; s.onload = ok; s.onerror = no; document.head.appendChild(s); }); }
   function ready() { if (loading) return loading;
     loading = Promise.all([txt('back.css'), txt('back-logo.tpl.html'), txt('back-text.tpl.html'), txt('default-adj.json'), txt('words.json'), txt('verses.json').catch(function () { return '{}'; }), script('qr.js'), script('browser.js'), script('fit.js')]).then(function (a) {
-      K.css = a[0] + '\n.strip.inv .sn{font-size:5.4mm;line-height:1.15}\n.strip.inv .sb.nar{font-family:\'Archivo Narrow\',sans-serif;font-weight:700;font-size:3.5mm;letter-spacing:.18mm}'; K.tplLogo = a[1]; K.tplText = a[2]; K.adj = JSON.parse(a[3]); K.words = JSON.parse(a[4]); try { K.verses = JSON.parse(a[5]); } catch (e) { K.verses = {}; } return K; });
+      K.css = a[0] + '\n.strip.inv .mid,.strip.inv .sl{overflow:visible}\n.strip.inv .sn{font-size:5.4mm;line-height:1.15}\n.strip.inv .sb.nar{font-family:\'Archivo Narrow\',sans-serif;font-weight:700;font-size:3.5mm;letter-spacing:.18mm}'; K.tplLogo = a[1]; K.tplText = a[2]; K.adj = JSON.parse(a[3]); K.words = JSON.parse(a[4]); try { K.verses = JSON.parse(a[5]); } catch (e) { K.verses = {}; } return K; });
     return loading; }
   function esc(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   /* the QR codes: white on black, the way the card has them */
@@ -60,7 +60,8 @@
     return h; }
   /* a wide logo (wider than about 1.7 times its height, e.g. "Walmart, Monkey Junction, store 5241") may use the whole width of the middle of the card, so it is not scaled down like a round badge */
   function adjFor(cfg) { var a = JSON.parse(JSON.stringify(K.adj)); if (cfg.logoAspect > 1.7 && cfg.by === 'logo') a.logo = { dy: -0.8, s: 100 };
-    if (cfg.cadj && typeof cfg.cadj === 'object') Object.keys(cfg.cadj).forEach(function (k) { if (k === 'qrOut') return; a[k] = Object.assign({}, a[k] || {}, cfg.cadj[k]); });
+    if (cfg.cadj && typeof cfg.cadj === 'object') var lg = cfg.cadj && cfg.cadj.logo; if (lg) { a.logo = Object.assign({}, a.logo || {}); a.logo.s = (a.logo.s || 100) * ((+lg.s || 100) / 100); a.logo.dx = (a.logo.dx || 0) + (+lg.dx || 0); a.logo.dy = (a.logo.dy || 0) + (+lg.dy || 0); }   /* the sponsor's logo bigger or smaller than the layout's size, moved by hand */
+    if (cfg.cadj && typeof cfg.cadj === 'object') Object.keys(cfg.cadj).forEach(function (k) { if (k === 'qrOut' || k === 'logo') return; a[k] = Object.assign({}, a[k] || {}, cfg.cadj[k]); });
     var q = cfg.cadj && cfg.cadj.qrOut; if (q) {   /* the QR codes (and their labels) moved, resized and put anywhere, in mm and percent */
       [['qrL', 'labL', -(+q.l || 0), +q.ly || 0, +q.ls || 100], ['qrR', 'labR', +q.r || 0, +q.ry || 0, +q.rs || 100]].forEach(function (x) {
         var up = (100 - x[4]) / 100 * 7.6;   /* a smaller code shrinks toward its middle, so its label comes up with it */
@@ -96,35 +97,44 @@
       var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml"><style>' + K.css + '</style>' + xhtml + '</div></foreignObject></svg>';
       return svgImg(svg).then(function (im) { var W = Math.round(PW / MM * dpi), H = Math.round(PH / MM * dpi), c = document.createElement('canvas'); c.width = W; c.height = H; var x = c.getContext('2d'); x.fillStyle = '#000'; x.fillRect(0, 0, W, H); x.drawImage(im, 0, 0, W, H); return blobFromCanvas(c); }); })
       .then(function (b) { host.remove(); return b; }, function (e) { host.remove(); throw e; }); }
+  /* the background as a PDF: the picture as lossless grey (black card, white fish), one page the size of the file (Ken, 19 Nov: it should be a PDF, and called background) */
+  function grayPdf(c) { var W = c.width, H = c.height, d = c.getContext('2d').getImageData(0, 0, W, H).data, g = new Uint8Array(W * H); for (var i = 0, j = 0; j < g.length; i += 4, j++) g[j] = d[i];
+    var cs = new Blob([g]).stream().pipeThrough(new CompressionStream('deflate')); return new Response(cs).arrayBuffer().then(function (ab) { var z = new Uint8Array(ab), enc = new TextEncoder(), parts = [], off = 0, offs = [], pw = f2(PW / 25.4 * 72), ph = f2(PH / 25.4 * 72);
+      var put = function (x) { var u = typeof x === 'string' ? enc.encode(x) : x; parts.push(u); off += u.length; }, obj = function (n, body) { offs[n] = off; put(n + ' 0 obj\n'); put(body); put('\nendobj\n'); };
+      put('%PDF-1.4\n'); obj(1, '<< /Type /Catalog /Pages 2 0 R >>'); obj(2, '<< /Type /Pages /Kids [3 0 R] /Count 1 >>');
+      obj(3, '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + pw + ' ' + ph + '] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>');
+      offs[4] = off; put('4 0 obj\n<< /Type /XObject /Subtype /Image /Width ' + W + ' /Height ' + H + ' /ColorSpace /DeviceGray /BitsPerComponent 8 /Filter /FlateDecode /Length ' + z.length + ' >>\nstream\n'); put(z); put('\nendstream\nendobj\n');
+      var cc = 'q ' + pw + ' 0 0 ' + ph + ' 0 0 cm /Im0 Do Q'; obj(5, '<< /Length ' + cc.length + ' >>\nstream\n' + cc + '\nendstream');
+      var xr = off; put('xref\n0 6\n0000000000 65535 f \n'); for (var n = 1; n <= 5; n++) put(String(offs[n]).padStart(10, '0') + ' 00000 n \n'); put('trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n' + xr + '\n%%EOF');
+      return new Blob(parts, { type: 'application/pdf' }); }); }
   function dataBlob(u) { return fetch(u).then(function (r) { return r.blob(); }); }
-  function notes(cfg, id) { return 'MannaFish card print files' + (id ? ' (order ' + id + ')' : '') + '\n\nCard: 4.5 x 2.75 in (114.3 x 69.85 mm), custom size. Every file includes a 1/8 in (3.175 mm) bleed on each side, so each file is 4.75 x 3.0 in (120.65 x 76.2 mm) and all four line up.\n\n'
-    + '0-one-page-actual-size.pdf : the decal, backing front and back on one letter page at actual size, for a quick check (print at 100%).\n'
+  function notes(cfg, id) { return 'MannaFish card print files' + (id ? ' (order ' + id + ')' : '') + '\n\nCard: 4.5 x 2.75 in (114.3 x 69.85 mm), custom size. Every file includes a 1/8 in (3.175 mm) bleed on each side, so each file is 4.75 x 3.0 in (120.65 x 76.2 mm) and all three line up. The decal is kiss cut by the printer to their own cut line (1/8 in or less outside the fish), through the vinyl only; the card edge is cut through at 4.5 x 2.75 in.\n\n'
+    + '0-one-page-actual-size.pdf : the decal, background and back on one letter page at actual size, for a quick check (print at 100%).\n'
     + '1-decal-white-ink.png : clear vinyl, white ink only. White where the fish is white; the verse words and everything else are clear (no ink). 1200 dpi, transparent where there is no ink.\n'
-    + '2-backing-front.png : printed on the FRONT of the backing paper, under the decal. Black over the whole card with the same fish in white, lined up exactly under the decal. When the decal is peeled off this stays on the card.\n'
-    + '3-cut-lines.svg : the decal is KISS CUT through the vinyl only (CutContour, magenta, about 1/16 in outside the fish; your art department may set its own line, 1/8 in or less); the card edge is cut through (ThroughCut, blue), 4.5 x 2.75 in.\n'
-    + '4-back.png : printed on the BACK of the backing paper. Reads upright, the same way up as the front (landscape).\n\nColours are RGB; please convert to your press colours. Please send a proof of all layers before printing.\n'; }
-  function files(cfg, opt) { opt = opt || {}; var dpi = opt.dpi || 1200, out = [];
+    + '2-background.pdf : the BACKGROUND, printed on the front of the card, under the decal. Black over the whole card with the same fish in white, lined up exactly under the decal. When the decal is peeled off this stays on the card.\n'
+    + '3-back.png : printed on the BACK of the card. Reads upright, the same way up as the front (landscape).\n\nColours are RGB; please convert to your press colours. Please send a proof of all layers before printing.\n'; }
+  function files(cfg, opt) { opt = opt || {}; var dpi = opt.dpi || 1200, out = [], bgPng = null;
     return ready().then(function () { return fishSource(cfg); }).then(function (src) {
       return MFbox(src).then(function (box) {
         var maxW = CARD.w - 2 * (SAFE + KISS), maxH = CARD.h - 2 * (SAFE + KISS), s = Math.min(maxW / box.w, maxH / box.h),
           place = { x: BLEED + (CARD.w - box.w * s) / 2 - box.x * s, y: BLEED + (CARD.h - box.h * s) / 2 - box.y * s, w: 4000 * s };
         return MFink(src, place, { w: PW, h: PH }, dpi).then(function (ink) { return dataBlob(ink); }).then(function (b) { out.push({ name: '1-decal-white-ink.png', blob: b });
           var backing = svgPage('<rect width="' + f2(PW) + '" height="' + f2(PH) + '" fill="#000"/>' + fishSvg(src, place.x, place.y, place.w));
-          return svgImg(backing).then(function (im) { var W = Math.round(PW / MM * dpi), H = Math.round(PH / MM * dpi), c = document.createElement('canvas'); c.width = W; c.height = H; c.getContext('2d').drawImage(im, 0, 0, W, H); return blobFromCanvas(c); }); })
-        .then(function (b) { out.push({ name: '2-backing-front.png', blob: b }); return MFcut(src, place, { w: PW, h: PH }, CUTGAP, 24); })
+          return svgImg(backing).then(function (im) { var W = Math.round(PW / MM * dpi), H = Math.round(PH / MM * dpi), c = document.createElement('canvas'); c.width = W; c.height = H; c.getContext('2d').drawImage(im, 0, 0, W, H); return blobFromCanvas(c).then(function (pb) { bgPng = pb; return grayPdf(c); }); }); })
+        .then(function (b) { out.push({ name: '2-background.pdf', blob: b }); return MFcut(src, place, { w: PW, h: PH }, CUTGAP, 24); })
         .then(function (cut) { var d = 'M' + cut.map(function (p) { return f2(p[0]) + ' ' + f2(p[1]); }).join(' L') + ' Z';
           var svg = '<?xml version="1.0" encoding="UTF-8"?>\n' + svgPage('<g id="CutContour" fill="none" stroke="#ff00ff" stroke-width="0.0882"><path d="' + d + '"/></g><g id="ThroughCut" fill="none" stroke="#00b7ff" stroke-width="0.0882"><rect x="' + f2(BLEED) + '" y="' + f2(BLEED) + '" width="' + f2(CARD.w) + '" height="' + f2(CARD.h) + '"/></g>').replace('<svg ', '<svg version="1.1" ');
-          out.push({ name: '3-cut-lines.svg', blob: new Blob([svg], { type: 'image/svg+xml' }) }); return backPng(cfg, dpi); })
-        .then(function (b) { out.push({ name: '4-back.png', blob: b }); out.push({ name: 'printer-notes.txt', blob: new Blob([notes(cfg, opt.id)], { type: 'text/plain' }) }); return sheetPdf(out, cfg).then(function (pdf) { out.unshift({ name: '0-one-page-actual-size.pdf', blob: pdf }); return out; }); }); }); }); }
-  /* ---- the one-page sheet for a check at actual size: decal on a dark checkerboard (so the white shows), backing front, back; a JPEG on a letter page in a small PDF ---- */
+          return backPng(cfg, dpi); })   /* Ken, 19 Nov: the cut-line file is not sent; the printer cuts to its own line */
+        .then(function (b) { out.push({ name: '3-back.png', blob: b }); out.push({ name: 'printer-notes.txt', blob: new Blob([notes(cfg, opt.id)], { type: 'text/plain' }) }); return sheetPdf(out.concat([{ name: '2-backing-front.png', blob: bgPng }]), cfg).then(function (pdf) { out.unshift({ name: '0-one-page-actual-size.pdf', blob: pdf }); return out; }); }); }); }); }
+  /* ---- the one-page sheet for a check at actual size: decal on a dark checkerboard (so the white shows), background, back; a JPEG on a letter page in a small PDF ---- */
   function sheetPdf(list, cfg) { var by = {}; list.forEach(function (f) { by[f.name] = f.blob; }), dpi = 300, W = 8.5 * dpi, H = 11 * dpi, c = document.createElement('canvas'); c.width = W; c.height = H; var x = c.getContext('2d');
     x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); var iw = 4.75 * dpi, ih = 3 * dpi, X = 0.5 * dpi, tops = [0.55, 3.7, 6.85].map(function (v) { return v * dpi; });
-    return Promise.all(['1-decal-white-ink.png', '2-backing-front.png', '4-back.png'].map(function (n) { return createImageBitmap(by[n]); })).then(function (bm) {
+    return Promise.all(['1-decal-white-ink.png', '2-backing-front.png', '3-back.png'].map(function (n) { return createImageBitmap(by[n]); })).then(function (bm) {
       x.fillStyle = '#000'; x.font = 'bold ' + (0.14 * dpi) + 'px Helvetica, Arial, sans-serif'; x.fillText((cfg.title || cfg.word) + ' card · 4.5 x 2.75 in · actual size (print at 100%)', X, 0.35 * dpi);
       var g = 0.15 * dpi; for (var i = 0; i < 3; i++) { if (i === 0) { for (var yy = 0; yy < ih; yy += g) for (var xx = 0; xx < iw; xx += g) { x.fillStyle = ((xx / g + yy / g) % 2 === 0) ? '#4a4a4a' : '#6a6a6a'; x.fillRect(X + xx, tops[0] + yy, g, g); } } else { x.fillStyle = '#000'; x.fillRect(X, tops[i], iw, ih); }
         x.drawImage(bm[i], X, tops[i], iw, ih); x.strokeStyle = '#f0f'; x.setLineDash([6, 6]); x.lineWidth = 2; x.strokeRect(X + 0.125 * dpi, tops[i] + 0.125 * dpi, 4.5 * dpi, 2.75 * dpi); x.setLineDash([]); }
-      var notes = [['FILE 1 · FRONT DECAL (peels off)', 'Clear vinyl, white ink only. The checkerboard only shows what is clear: it is not printed.', 'White: the fish and the big word. Clear: the verse words, the reference, MannaFish and everything outside the fish.', 'Kiss cut: through the vinyl only, not the backing paper. Set the cut line 1/8 in or less outside the fish.'],
-        ['FILE 2 · FRONT OF THE BACKING CARD', 'The card under the decal: black, with the same fish in white, so when the decal is peeled off the card still shows the fish.'],
+      var notes = [['FILE 1 · FRONT DECAL (peels off)', 'Clear vinyl, white ink only. The checkerboard only shows what is clear: it is not printed.', 'White: the fish and the big word. Clear: the verse words, the reference, MannaFish and everything outside the fish.', 'Kiss cut: through the vinyl only, not the card. Set the cut line 1/8 in or less outside the fish.'],
+        ['FILE 2 · BACKGROUND (under the decal)', 'Printed on the card under the decal: black, with the same fish in white, so when the decal is peeled off the card still shows the fish.'],
         ['FILE 3 · BACK OF THE CARD', 'The word study devotional, printed on the card.', 'Pink dashed line = card edge, 4.5 x 2.75 in. The 1/8 in outside it is bleed (each file is 4.75 x 3.0 in).']];
       notes.forEach(function (n, i) { var y = tops[i] + 0.1 * dpi, w = 2.7 * dpi, xx = X + iw + 0.2 * dpi; x.fillStyle = '#000'; x.font = 'bold ' + (0.125 * dpi) + 'px Helvetica, Arial, sans-serif'; x.fillText(n[0], xx, y + 0.1 * dpi); x.font = (0.105 * dpi) + 'px Helvetica, Arial, sans-serif'; y += 0.34 * dpi;
         n.slice(1).forEach(function (para) { var words = para.split(' '), line = ''; words.forEach(function (wd) { var t = line ? line + ' ' + wd : wd; if (x.measureText(t).width > w && line) { x.fillText(line, xx, y); y += 0.15 * dpi; line = wd; } else line = t; }); x.fillText(line, xx, y); y += 0.22 * dpi; }); });
