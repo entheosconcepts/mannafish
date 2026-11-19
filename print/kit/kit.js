@@ -13,7 +13,7 @@
   function script(u) { return new Promise(function (ok, no) { var s = document.createElement('script'); s.src = BASE + u; s.onload = ok; s.onerror = no; document.head.appendChild(s); }); }
   function ready() { if (loading) return loading;
     loading = Promise.all([txt('back.css'), txt('back-logo.tpl.html'), txt('back-text.tpl.html'), txt('default-adj.json'), txt('words.json'), txt('verses.json').catch(function () { return '{}'; }), script('qr.js'), script('browser.js'), script('fit.js')]).then(function (a) {
-      K.css = a[0] + '\n.strip.inv .sn{font-size:5.4mm;line-height:1.15}'; K.tplLogo = a[1]; K.tplText = a[2]; K.adj = JSON.parse(a[3]); K.words = JSON.parse(a[4]); try { K.verses = JSON.parse(a[5]); } catch (e) { K.verses = {}; } return K; });
+      K.css = a[0] + '\n.strip.inv .sn{font-size:5.4mm;line-height:1.15}\n.strip.inv .sb.nar{font-family:\'Archivo Narrow\',sans-serif;font-weight:700;font-size:3.5mm;letter-spacing:.18mm}'; K.tplLogo = a[1]; K.tplText = a[2]; K.adj = JSON.parse(a[3]); K.words = JSON.parse(a[4]); try { K.verses = JSON.parse(a[5]); } catch (e) { K.verses = {}; } return K; });
     return loading; }
   function esc(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   /* the QR codes: white on black, the way the card has them */
@@ -44,13 +44,13 @@
     sub('GKM', defLines(d.gkm).map(esc).join('<br>')); sub('HBM', defLines(d.hbm).map(esc).join('<br>'));
     sub('GST', esc(d.gst || '')); sub('HST', esc(d.hst || ''));
     swapRefs(d, cfg).forEach(function (r, i) { sub('R' + (i + 1) + 'N', esc(r[0])); sub('R' + (i + 1) + 'Q', esc(r[1])); });
-    var cr = String(cfg.credit || 'Sponsored by').replace(/\s+/g, ' ').trim();
+    var cr = String(cfg.credit || 'Sponsored by').replace(/\s+/g, ' ').trim(), fnt = (cfg.cadj && cfg.cadj.sponsor && cfg.cadj.sponsor.font) || 'auto', nar = fnt === 'narrow' || (fnt === 'auto' && cr.length > 20);   /* a long line reads better in the narrow font (Ken, 19 Nov) */
     if (cfg.two && cr.indexOf(' ') > 0) {   /* two lines, split at the space nearest the middle (a longer line is easier to read this way) */
       var mid = cr.length / 2, best = -1; for (var i = 0; i < cr.length; i++) if (cr[i] === ' ' && (best < 0 || Math.abs(i - mid) < Math.abs(best - mid))) best = i;
-      h = h.replace('<div class="sb" data-b="sponsor">§CREDIT§</div>', '<div class="sb sxf" data-b="sponsor" style="white-space:nowrap;width:100%;min-width:0;display:block;text-align:center;line-height:1.08"><span style="display:inline-block;flex:none;transform-origin:center">' + esc(cr.slice(0, best)) + '<br>' + esc(cr.slice(best + 1)) + '</span></div>').replace('<div class="sl" data-b="logo">', '<div class="sl" data-b="logo" style="height:14.4mm">');
+      h = h.replace('<div class="sb" data-b="sponsor">§CREDIT§</div>', '<div class="sb sxf' + (nar ? ' nar' : '') + '" data-b="sponsor" style="white-space:nowrap;width:100%;min-width:0;display:block;text-align:center;line-height:1.08"><span style="display:inline-block;flex:none;transform-origin:center">' + esc(cr.slice(0, best)) + '<br>' + esc(cr.slice(best + 1)) + '</span></div>').replace('<div class="sl" data-b="logo">', '<div class="sl" data-b="logo" style="height:14.4mm">');
       cr = ' '; }
     else if (cr.length > 20) {   /* a longer line stays on one row: it is squeezed in width to fit (then made a little smaller if it must be); the logo keeps its size */
-      h = h.replace('<div class="sb" data-b="sponsor">§CREDIT§</div>', '<div class="sb sxf" data-b="sponsor" style="white-space:nowrap;width:100%;min-width:0;display:flex;justify-content:center"><span style="display:inline-block;flex:none;transform-origin:center">§CREDIT§</span></div>'); }
+      h = h.replace('<div class="sb" data-b="sponsor">§CREDIT§</div>', '<div class="sb sxf' + (nar ? ' nar' : '') + '" data-b="sponsor" style="white-space:nowrap;width:100%;min-width:0;display:flex;justify-content:center"><span style="display:inline-block;flex:none;transform-origin:center">§CREDIT§</span></div>'); }
     sub('CREDIT', esc(cr.trim()) || 'Sponsored by');
     sub('NAME', esc(cfg.by === 'text' ? cfg.text : cfg.name || ''));
     sub('LOGO', cfg.logo || '');

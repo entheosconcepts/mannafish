@@ -126,6 +126,7 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
     <div class="chips" id="cchips"></div>
     <details class="lnb" id="sadj"><summary>Stretch, size and place the sponsor line</summary>
       <p class="hint">Move the sliders and watch the card. Nothing is limited: the line can go over the QR codes if it is stretched far enough.</p>
+      <label for="sadjf">Letters</label><select id="sadjf"><option value="auto">Automatic (narrow letters for a long line)</option><option value="narrow">Narrow letters</option><option value="round">Round letters (the MannaFish style)</option></select>
       <label class="same"><input type="checkbox" id="sadj2"> Put the line on two lines</label>
       <label for="sadjs">Size <small id="sadjst"></small></label><input type="range" id="sadjs" min="40" max="260" step="1" value="100">
       <label for="sadjx">Width, stretch it sideways <small id="sadjxt"></small></label><input type="range" id="sadjx" min="40" max="300" step="1" value="100">
@@ -324,10 +325,10 @@ $('ncount').addEventListener('change',function(){ var v=this.value; if(v==='more
 $('qtyall').addEventListener('click',function(){ var q=cur().qty; S.cards.forEach(function(c){ c.qty=q; }); totalSync(); renderCards(); persist(); say('Every word is now '+q+'.','ok'); });
 function openStep(i){ var st=document.querySelectorAll('.step')[i]; if(st) st.classList.remove('col'); }
 /* ---- the sponsor line: size, stretch, place and two lines, by hand ---- */
-function sadjRead(){ var c=cur(), a=(c.cadj&&c.cadj.sponsor)||{}; $('sadjs').value=a.s||100; $('sadjx').value=a.sx||100; $('sadjy').value=a.dy||0; $('sadjd').value=a.dx||0; $('sadj2').checked=!!c.two; sadjText(); }
+function sadjRead(){ var c=cur(), a=(c.cadj&&c.cadj.sponsor)||{}; $('sadjs').value=a.s||100; $('sadjx').value=a.sx||100; $('sadjy').value=a.dy||0; $('sadjd').value=a.dx||0; $('sadj2').checked=!!c.two; $('sadjf').value=a.font||'auto'; sadjText(); }
 function sadjText(){ $('sadjst').textContent='· '+$('sadjs').value+'%'; $('sadjxt').textContent='· '+$('sadjx').value+'%'; $('sadjyt').textContent='· '+$('sadjy').value+' mm'; $('sadjdt').textContent='· '+$('sadjd').value+' mm'; }
-function sadjSet(){ var c=cur(), s=+$('sadjs').value, sx=+$('sadjx').value, dy=+$('sadjy').value, dx=+$('sadjd').value; c.cadj=(s===100&&sx===100&&!dy&&!dx)?null:{sponsor:{s:s,sx:sx,dx:dx,dy:dy}}; c.two=$('sadj2').checked; sadjText(); draw(); persist(); }
-['sadjs','sadjx','sadjy','sadjd'].forEach(function(id){ $(id).addEventListener('input',sadjSet); }); $('sadj2').addEventListener('change',sadjSet);
+function sadjSet(){ var c=cur(), s=+$('sadjs').value, sx=+$('sadjx').value, dy=+$('sadjy').value, dx=+$('sadjd').value; var fo=$('sadjf').value; c.cadj=(s===100&&sx===100&&!dy&&!dx&&fo==='auto')?null:{sponsor:{s:s,sx:sx,dx:dx,dy:dy,font:fo}}; c.two=$('sadj2').checked; sadjText(); draw(); persist(); }
+['sadjs','sadjx','sadjy','sadjd'].forEach(function(id){ $(id).addEventListener('input',sadjSet); }); $('sadj2').addEventListener('change',sadjSet); $('sadjf').addEventListener('change',sadjSet);
 $('sadjr').addEventListener('click',function(){ var c=cur(); c.cadj=null; c.two=false; sadjRead(); draw(); persist(); });
 $('sadjdone').addEventListener('click',function(){ $('sadj').open=false; });
 function useVerse(){ var c=cur(), raw=$('vref').value.trim(), ver=$('vver').value; c.ver=ver; if(!raw){ c.verse=null; c.vref=''; vnote('The fish comes with its own verse.'); draw(); persist(); fillVerseSelect(); return; }
