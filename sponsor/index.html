@@ -115,6 +115,7 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
     <p class="hint" id="appnote" hidden>This code opens the free MannaFish Bible app, so the person who scans it reads Scripture and the devotional there.</p>
     <label>The words under the QR code (two short lines)</label>
     <div class="two"><input type="text" id="q1" maxlength="22" value="Visit us" aria-label="Line 1"><input type="text" id="q2" maxlength="22" value="to learn more" aria-label="Line 2"></div>
+    <div class="two"><select id="savedq1" hidden aria-label="Saved wording for line 1"></select><select id="savedq2" hidden aria-label="Saved wording for line 2"></select></div>
     <div class="chips" id="qchips"></div>
     <details class="lnb" id="qadj"><summary>Size and place the QR codes</summary>
       <p class="hint" id="qnote">Move and resize the QR codes any way you like: smaller and lower leaves the whole top for the line of words. Closer than 1/8 inch (3 mm) to an edge risks being cut off.</p>
@@ -134,9 +135,11 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
   <section class="step"><h2><i>3</i> Sponsored by</h2><p class="h">This goes in the middle of the card, under the top line you choose.</p>
     <div class="seg" id="by"><button type="button" data-by="logo" aria-pressed="true">Upload my logo</button><button type="button" data-by="name" aria-pressed="false">Type my name</button><button type="button" data-by="text" aria-pressed="false">Write my own words</button></div>
     <div id="by-logo"><button type="button" class="drop" id="logopick"><img id="logoprev" alt="" hidden><span id="logoname">Choose a logo file here (PNG, JPG or SVG). We size it for you.</span></button><input type="file" id="logo" accept="image/png,image/jpeg,image/svg+xml,image/webp" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" tabindex="-1" aria-hidden="true"></div>
+    <div id="libbox" hidden><label for="savedlogos">Saved logos (kept, so nothing is uploaded twice)</label><select id="savedlogos"></select></div>
     <div id="by-name" hidden><label for="name">Name or business</label><input type="text" id="name" maxlength="60" placeholder="K-Tech Construction"></div>
     <div id="by-text" hidden><label for="text">Words</label><textarea id="text" maxlength="120" placeholder="Jesus&#10;or a short prayer"></textarea></div>
     <label for="credit">The words above it</label><input type="text" id="credit" maxlength="100" value="Sponsored by">
+    <select id="savedcredit" hidden aria-label="Saved wording for the line above the logo" style="margin-top:6px"></select>
     <p class="hint">One line. A longer line is squeezed in width to fit above the logo, so the logo stays full size. Try: A free gift made possible by K-Tech Construction.</p>
     <div class="chips" id="cchips"></div>
     <details class="lnb" id="sadj"><summary>Stretch, size and place the sponsor line</summary>
@@ -190,7 +193,7 @@ function say(t,k){ $('msg').textContent=t; $('msg').className='msg '+(k||''); }
 /* ---- the order: a list of cards, one open at a time ---- */
 function blank(from){ var c={word:'',fishId:'',verse:null,vref:'',ver:'kjv',url:'',qrTo:'link',logoAspect:0,q1:'Visit us',q2:'to learn more',by:'logo',logoId:'',logoName:'',name:'',text:'',credit:'Sponsored by',qty:100,dest:'self',hubId:'',hubName:'',nOrg:'',nName:'',nEmail:'',nPhone:'',nCity:'',sameQr:false,sameBy:false,choose:false,two:false,cadj:null};
   if(from) ['url','qrTo','ver','q1','q2','by','logoId','logoName','logoAspect','name','text','credit','qty'].forEach(function(k){ c[k]=from[k]; }); return c; }
-function fresh(){ return {cards:[blank()],active:0,logos:{},contact:{name:'',email:'',phone:'',city:'',note:''}}; }
+function fresh(){ return {cards:[blank()],active:0,logos:{},bid:'',contact:{name:'',email:'',phone:'',city:'',note:''}}; }
 function cur(){ return S.cards[S.active]; }
 function logoOf(c){ return c.logoId&&S.logos[c.logoId]||''; }
 function cfgOf(c){ var by=c.by; if(by==='name'&&!c.name) by='text';
@@ -242,7 +245,7 @@ function toServer(){ var body=JSON.stringify({id:DID||undefined,data:Object.assi
     $('savelink').value=comeBack(); $('savednote').textContent='Saved. Come back to this order any time with this link:'; $('savebar').hidden=false; })
    .catch(function(){ $('savednote').textContent='Saved on this device. (We could not reach the server just now.)'; $('savebar').hidden=false; }); }
 $('copylink').addEventListener('click',function(){ var i=$('savelink'); i.select(); try{ navigator.clipboard.writeText(i.value); }catch(e){ try{ document.execCommand('copy'); }catch(x){} } this.textContent='Copied'; var b=this; setTimeout(function(){ b.textContent='Copy link'; },1500); });
-function adopt(o){ if(!o||!o.cards||!o.cards.length) return false; S={cards:o.cards.map(function(c){ return Object.assign(blank(),c); }),active:Math.min(o.active||0,o.cards.length-1),logos:o.logos||{},contact:Object.assign({name:'',email:'',phone:'',city:'',note:''},o.contact||{})}; return true; }
+function adopt(o){ if(!o||!o.cards||!o.cards.length) return false; S={cards:o.cards.map(function(c){ return Object.assign(blank(),c); }),active:Math.min(o.active||0,o.cards.length-1),logos:o.logos||{},bid:o.bid||'',contact:Object.assign({name:'',email:'',phone:'',city:'',note:''},o.contact||{})}; return true; }
 /* change a request already sent: /sponsor/?edit=<id>.<token> (the link in the sponsor's email) */
 function fromOrder(o){ var logos={}; var cards=o.items.map(function(it){ var c=blank(), cf=it.cfg||{}, qw=(cf.qrWords||'').split('\n'), d=it.dest||{type:'self'}, v=cf.verse||null;
   c.two=!!cf.two; c.cadj=cf.cadj||null; c.choose=(it.fish==='CHOOSE'); c.word=c.choose?'':it.title; c.fishId=c.choose?'':it.fish; c.qty=it.qty; c.qrTo=cf.qrTo==='app'?'app':'link'; c.url=c.qrTo==='app'?'':it.url; c.q1=qw[0]||''; c.q2=qw[1]||''; c.by=cf.by||'text'; c.name=cf.name||''; c.text=cf.text||''; c.credit=cf.credit||'Sponsored by'; c.logoAspect=cf.logoAspect||0;
@@ -253,7 +256,7 @@ function restoreEdit(e){ var m=/^(C[0-9A-Z]+)\.([a-f0-9]{32}|admin)$/.exec(e||''
   return fetch('/api/card-order?id='+m[1]+(adm?'&k='+encodeURIComponent(adminKey()):'&t='+m[2]),{cache:'no-store'}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error); return j; }); }).then(function(j){ fromOrder(j.order); EDIT=adm?{id:m[1],k:adminKey()}:{id:m[1],t:m[2]}; var restored=false; try{ var sv=JSON.parse(localStorage.getItem('mf-sponsor-edit-'+m[1])||'null'); if(sv&&sv.cards&&sv.cards.length&&adopt(sv)) restored=true; }catch(e){}
     $('savednote').textContent=j.locked?'This request is already being printed, so it can no longer be changed here. Please email us.':'You are changing request '+m[1]+(restored?' (the unsaved changes from earlier are back). ':'. ')+'Make your changes and press "Save changes".'; $('savebar').hidden=false; $('savelink').hidden=true; $('copylink').hidden=true; openStep(0); openStep(5); if(j.locked) $('send').disabled=true; return true; })
    .catch(function(){ $('savednote').textContent='We could not find that request. It may have been mistyped.'; $('savebar').hidden=false; $('savelink').hidden=true; $('copylink').hidden=true; return false; }); }
-function restore(){ var pe=new URLSearchParams(location.search).get('edit'); if(pe) return restoreEdit(pe).then(function(ok){ return ok; }); var p=new URLSearchParams(location.search), id=p.get('d'), loc=null; try{ loc=JSON.parse(localStorage.getItem(STORE)||'null'); }catch(e){}
+function restore(){ var sp=new URLSearchParams(location.search), pb=sp.get('build'); if(pb&&/^[A-Za-z0-9]{6,40}$/.test(pb)&&adminKey()) return restoreBuild(pb); var pe=sp.get('edit'); if(pe) return restoreEdit(pe).then(function(ok){ return ok; }); var p=new URLSearchParams(location.search), id=p.get('d'), loc=null; try{ loc=JSON.parse(localStorage.getItem(STORE)||'null'); }catch(e){}
   var fromLocal=function(){ if(loc&&loc.S&&adopt(loc.S)){ DID=loc.id||''; return true; } return false; };
   if(id&&/^[a-f0-9]{32}$/.test(id)) return fetch('/api/sponsor-draft?id='+id,{cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ if(adopt(j.data)){ DID=id; return true; } return fromLocal(); }).catch(function(){ return fromLocal(); });
   return Promise.resolve(fromLocal()); }
@@ -376,7 +379,7 @@ function dlRun(){ var btns=[].slice.call(document.querySelectorAll('.dlfiles'));
     return MFkit.files(cfg,{id:(id||'DRAFT')+'-'+n,dpi:1200}).then(function(files){ var dir=String(n).padStart(2,'0')+'-'+c.word.replace(/[^\w.\- ]+/g,'_')+'/'; files.forEach(function(f){ all.push({name:dir+f.name,blob:f.blob}); });
       list.push(n+'. '+c.qty+' x '+c.word+(c.dest==='hub'?' for '+c.hubName:c.dest==='new'&&c.nOrg?' for '+c.nOrg:'')+' · QR '+(id?'counted':'straight to the link')); }).then(next); }
   next().then(function(){ all.push({name:'sponsorship-list.txt',blob:new Blob([(S.contact.name||'')+' '+(S.contact.email||'')+'\n'+list.join('\n')+'\n'],{type:'text/plain'})}); say('Putting it all in one zip…'); return MFkit.zip(all); })
-   .then(function(z){ var a=document.createElement('a'), nm=(id||'MannaFish-sponsorship')+'-print-files.zip'; a.href=URL.createObjectURL(z); a.download=nm; document.body.appendChild(a); a.click(); a.remove(); say('Done: '+nm+' ('+todo.length+' word'+(todo.length===1?'':'s')+', a folder for each).'+(id?'':' The QR codes go straight to the link (the order is not sent yet, so scans are not counted).'),'ok'); btns.forEach(function(b){ b.disabled=false; }); })
+   .then(function(z){ var a=document.createElement('a'), nm=(id||'MannaFish-sponsorship')+'-print-files-'+new Date().toISOString().slice(0,10)+'.zip'; a.href=URL.createObjectURL(z); a.download=nm; document.body.appendChild(a); a.click(); a.remove(); say('Downloaded. Keeping a copy in the build history…'); return keepZip(z,nm).then(function(files){ return saveBuild(files,''); }).then(function(){ return z; },function(e){ say('Downloaded, but the copy could not be kept in the history: '+(e&&e.message||e),'bad'); return z; }).then(function(z){ say('Done: '+nm+' ('+todo.length+' word'+(todo.length===1?'':'s')+', a folder for each).'+(id?'':' The QR codes go straight to the link (the order is not sent yet, so scans are not counted).'),'ok'); btns.forEach(function(b){ b.disabled=false; }); }) }) 
    .catch(function(e){ say('Could not make the files ('+(e&&e.message||e)+').','bad'); btns.forEach(function(b){ b.disabled=false; }); }); }
 [].forEach.call(document.querySelectorAll('.dlfiles'),function(b){ b.addEventListener('click',dlRun); if(adminKey()) b.hidden=false; });
 /* ---- the logo: size and place, by hand (Ken, 19 Nov) ---- */
@@ -386,6 +389,31 @@ function lSet(){ var c=cur(), sz=+$('ladjs').value, dy=+$('ladjy').value, dx=+$(
 ['ladjs','ladjy','ladjx'].forEach(function(id){ $(id).addEventListener('input',lSet); });
 $('ladjr').addEventListener('click',function(){ var c=cur(), n=Object.assign({},c.cadj||{}); delete n.logo; c.cadj=Object.keys(n).length?n:null; lRead(); draw(); persist(); });
 $('ladjdone').addEventListener('click',function(){ $('ladj').open=false; });
+/* ---- the library: builds, logos and wording kept on the server for Ken (admin key) ---- */
+var LIB={logos:[],phrases:{credit:[],qr:[]}};
+function libPost(url,b){ b.k=adminKey(); return fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||'failed'); return j; }); }); }
+function libFill(sel,items,ph){ var h='<option value="">'+ph+'</option>'; items.forEach(function(x,i){ h+='<option value="'+i+'">'+esc(x.label)+'</option>'; }); sel.innerHTML=h; sel.hidden=!items.length; }
+function loadLib(){ if(!adminKey()) return; fetch('/api/build-library?k='+encodeURIComponent(adminKey()),{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(!j) return; LIB=j;
+  var lg=(j.logos||[]).map(function(x){ return {id:x.id,name:x.name,label:(x.sponsor?x.sponsor+' · ':'')+x.name+' ('+new Date(x.at).toLocaleDateString()+')'}; }); LIB._lg=lg; libFill($('savedlogos'),lg,'Choose a saved logo…'); $('libbox').hidden=!lg.length;
+  LIB._cr=(j.phrases.credit||[]).slice(0,60).map(function(x){ return {t:x.t,label:x.t+(x.n>1?' ('+x.n+'×)':'')}; }); libFill($('savedcredit'),LIB._cr,'Saved wording…');
+  LIB._qr=(j.phrases.qr||[]).slice(0,60).map(function(x){ return {t:x.t,label:x.t+(x.n>1?' ('+x.n+'×)':'')}; }); libFill($('savedq1'),LIB._qr,'Saved: line 1…'); libFill($('savedq2'),LIB._qr,'Saved: line 2…'); }).catch(function(){}); }
+$('savedlogos').addEventListener('change',function(){ var x=LIB._lg&&LIB._lg[+this.value]; this.value=''; if(!x) return; say('Opening the saved logo…'); fetch('/api/build-library?k='+encodeURIComponent(adminKey())+'&logo='+x.id).then(function(r){ return r.json(); }).then(function(j){ setLogo(j.data,j.name); say('Logo ready: '+j.name+'.','ok'); }).catch(function(){ say('That logo could not be opened.','bad'); }); });
+[['savedcredit','credit','_cr'],['savedq1','q1','_qr'],['savedq2','q2','_qr']].forEach(function(g){ $(g[0]).addEventListener('change',function(){ var x=LIB[g[2]]&&LIB[g[2]][+this.value]; this.value=''; if(!x) return; $(g[1]).value=x.t; soon(); }); });
+/* a build: the settings (to open it again as a copy) and, after a download, the zip itself, kept behind a link */
+function saveBuild(files,note){ pull(); syncSame(); var map={}, ids=Object.keys(S.logos||{});
+  return Promise.all(ids.map(function(i){ var nm='Logo'; S.cards.forEach(function(c){ if(c.logoId===i&&c.logoName) nm=c.logoName; }); return libPost('/api/build-library',{op:'logo',name:nm,sponsor:S.contact.name||'',data:S.logos[i]}).then(function(r){ map[i]=r.id; }).catch(function(){}); }))
+   .then(function(){ var snap=JSON.parse(JSON.stringify(S)); snap.logos={}; snap.cards.forEach(function(c){ if(c.logoId&&map[c.logoId]) c.logoId=map[c.logoId]; });
+     var c0=S.cards[0], who=S.contact.name||c0.name||c0.text||'Build', words=S.cards.map(function(c){ return c.choose?'MannaFish picks':c.word; }).filter(Boolean).join(', ');
+     return libPost('/api/build-library',{op:'build',id:S.bid||undefined,title:who+': '+words,snap:snap,files:files||[],note:note||''}); })
+   .then(function(r){ S.bid=r.id; persist(); loadLib(); return r; }); }
+function keepZip(z,name){ var id=Math.random().toString(36).slice(2,10)+Date.now().toString(36), CH=3000000, n=Math.max(1,Math.ceil(z.size/CH)), i=0;
+  function b64(blob){ return new Promise(function(ok,no){ var r=new FileReader(); r.onload=function(){ ok(String(r.result).split(',')[1]||''); }; r.onerror=no; r.readAsDataURL(blob); }); }
+  function up(){ if(i>=n) return Promise.resolve(); var idx=i++; return b64(z.slice(idx*CH,(idx+1)*CH)).then(function(d){ return libPost('/api/print-batch',{op:'part',id:id,fi:0,i:idx,data:d}); }).then(up); }
+  return up().then(function(){ return libPost('/api/print-batch',{op:'publish',id:id,title:name,files:[{name:name,parts:n,size:z.size}],to:'none'}); }).then(function(r){ return [{name:name,token:r.token,i:0,size:z.size}]; }); }
+/* open a build from the history as a copy: /?build=ID */
+function restoreBuild(id){ return fetch('/api/build-library?k='+encodeURIComponent(adminKey())+'&build='+id,{cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(b){ var snap=b.snap, ids={}; snap.cards.forEach(function(c){ if(c.logoId) ids[c.logoId]=1; });
+    return Promise.all(Object.keys(ids).map(function(l){ return fetch('/api/build-library?k='+encodeURIComponent(adminKey())+'&logo='+l).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(j) snap.logos[l]=j.data; }); })).then(function(){ snap.bid=''; if(!adopt(snap)) throw 0; window.MF_OPENED=true;
+      $('savednote').textContent='Opened a copy of the build from '+new Date(b.at).toLocaleDateString()+'. Saving makes a new record in the history; the original is not changed.'; $('savebar').hidden=false; $('savelink').hidden=true; $('copylink').hidden=true; return true; }); }).catch(function(){ $('savednote').textContent='That build could not be opened.'; $('savebar').hidden=false; return false; }); }
 function useVerse(){ var c=cur(), raw=$('vref').value.trim(), ver=$('vver').value; c.ver=ver; if(!raw){ c.verse=null; c.vref=''; vnote('The fish comes with its own verse.'); draw(); persist(); fillVerseSelect(); return; }
   if(!c.word){ vnote('Choose a word first.','bad'); return; } var r=parseRef(raw); if(!r){ vnote('We could not read that address. Try it like Proverbs 24:3.','bad'); return; } if(r.v2-r.v1>2){ vnote('Please choose one to three verses.','bad'); return; }
   verseText(r,ver).then(function(text){ return applyVerse(refName(r),text,ver); }).catch(function(){ vnote(ver==='kjv'?'We could not find that verse. Check the address.':'We could not get that verse in the '+verName(ver)+' just now. Check the address, or try the King James Version.','bad'); }); }
@@ -423,7 +451,7 @@ $('by').addEventListener('click',function(e){ var b=e.target.closest('button'); 
 ['url','q1','q2','name','text','credit','cname','cemail','cphone','ccity','cnote','norg','nname','nemail','nphone','ncity'].forEach(function(i){ $(i).addEventListener('input',soon); });
 /* a logo: any picture, sized down and kept with its see-through parts; the card fits it into the space. The same logo on several cards is kept once. */
 function hash(u){ var h=0,t=u.slice(0,3000)+u.slice(-3000); for(var i=0;i<t.length;i++) h=(h*31+t.charCodeAt(i))|0; return 'l'+u.length+'x'+(h>>>0).toString(36); }
-function setLogo(u,n){ var id=hash(u); S.logos[id]=u; var c=cur(); c.logoId=id; c.logoName=n; var im0=new Image(); im0.onload=function(){ var asp=im0.naturalWidth&&im0.naturalHeight?im0.naturalWidth/im0.naturalHeight:0; S.cards.forEach(function(x){ if(x.logoId===id) x.logoAspect=asp; }); soon(); }; im0.src=u; $('logoprev').src=u; $('logoprev').hidden=false; $('logoname').textContent=n+' (ready)';
+function setLogo(u,n){ if(adminKey()&&typeof libPost==='function') libPost('/api/build-library',{op:'logo',name:n,sponsor:S.contact.name||'',data:u}).then(function(){ loadLib(); }).catch(function(){}); var id=hash(u); S.logos[id]=u; var c=cur(); c.logoId=id; c.logoName=n; var im0=new Image(); im0.onload=function(){ var asp=im0.naturalWidth&&im0.naturalHeight?im0.naturalWidth/im0.naturalHeight:0; S.cards.forEach(function(x){ if(x.logoId===id) x.logoAspect=asp; }); soon(); }; im0.src=u; $('logoprev').src=u; $('logoprev').hidden=false; $('logoname').textContent=n+' (ready)';
   /* the same logo for the other cards that have none yet */ S.cards.forEach(function(x){ if(x!==c&&x.by==='logo'&&!x.logoId){ x.logoId=id; x.logoName=n; } }); soon(); }
 $('logo').addEventListener('change',function(){ var f=this.files&&this.files[0]; if(!f) return; if(f.size>8e6){ say('That picture is very large. Please use one under 8 MB.','bad'); return; }
   var rd=new FileReader(); rd.onload=function(){ var src=rd.result;
@@ -456,13 +484,14 @@ if(EMB) window.addEventListener('message',function(e){ if(e.source!==parent||!e.
 if(EMB){ var lastH=0, tell=function(){ var h=Math.ceil(document.documentElement.scrollHeight); if(Math.abs(h-lastH)>2){ lastH=h; try{ parent.postMessage({mfsb:'h',h:h},'*'); }catch(e){} } };
   try{ new ResizeObserver(tell).observe(document.body); }catch(e){ setInterval(tell,600); } window.addEventListener('load',tell); setInterval(tell,1500); }
 if(adminKey()){ $('savework').hidden=false; }
-$('savework').addEventListener('click',function(){ pull(); if(EDIT){ persist(); say('Saved on this device. Press "Save my changes" to save it to the order itself.','ok'); } else { persist(); toServer(); say('Saved. The link above brings this order back on any device, until you send it.','ok'); } });
+$('savework').addEventListener('click',function(){ pull(); var ed=!!EDIT; if(ed) persist(); else { persist(); toServer(); }
+  saveBuild([],'').then(function(){ say((ed?'Saved on this device.':'Saved. The link above brings this order back on any device, until it is sent.')+' It is also in the build history.','ok'); }).catch(function(e){ say('Saved here, but not in the build history: '+(e&&e.message||e),'bad'); }); });
 /* ---- start ---- */
 S=fresh();
-loadHubs();
+loadHubs(); loadLib();
 MFkit.ready().then(function(){ return restore(); }).then(function(had){ push(); renderCards();
   var p=new URLSearchParams(location.search), ex=p.get('example'), q=p.get('word')||(ex==='ktech'&&!had?'Build':'');
-  if(!EDIT&&had&&(S.cards.length>1||cur().word||cur().logoId)){ $('savednote').textContent='Welcome back: we kept your work.'; $('savebar').hidden=false; if(DID) $('savelink').value=comeBack(); }
+  if(!EDIT&&!window.MF_OPENED&&had&&(S.cards.length>1||cur().word||cur().logoId)){ $('savednote').textContent='Welcome back: we kept your work.'; $('savebar').hidden=false; if(DID) $('savelink').value=comeBack(); }
   if(q&&!cur().word){ var b=[].find.call($('words').children,function(x){ return (x.getAttribute('data-w')||'').toLowerCase()===q.toLowerCase(); }); if(b) b.click(); if(ex==='ktech') ktech(); }
   if(!cur().word&&!had){ var first=MFkit.words.list.filter(function(x){ return x.ok&&x.w==='Build'; })[0]; if(first){ var c=cur(); c.word=first.w; c.fishId=first.k; showWords(); noteWord(); } }
   draw(); })

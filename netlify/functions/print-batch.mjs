@@ -25,7 +25,7 @@ export default async (req) => {
   const url = new URL(req.url), s = db(), origin = url.origin;
   if (req.method === 'GET' && url.searchParams.get('t')) {   // a download link
     const t = url.searchParams.get('t'); if (!/^[0-9a-f]{32}$/.test(t)) return bad('This link is not valid.', 404);
-    const m = await s.get('b/' + t, { type: 'json' }); if (!m || Date.now() - m.at > 30 * DAY) return bad('This link has expired.', 404);
+    const m = await s.get('b/' + t, { type: 'json' }); if (!m || (!m.keep && Date.now() - m.at > 30 * DAY)) return bad('This link has expired.', 404);
     const f = url.searchParams.get('f');
     if (f != null) {
       const F = m.files[Number(f)]; if (!F) return bad('No such file', 404);
@@ -57,10 +57,11 @@ export default async (req) => {
     if (!files.length) return bad('No files', 400);
     for (const [fi, f] of files.entries()) for (let i = 0; i < f.parts; i++) if ((await s.get(`p/${b.id}/${fi}/${i}`)) == null) return bad('A file did not finish uploading. Please try again.', 409);
     const t = rand(), title = clean(b.title, 120) || 'MannaFish print files', list = clean(b.list, 6000);
-    await s.setJSON('b/' + t, { id: b.id, title, files, list, at: Date.now() });
+    await s.setJSON('b/' + t, { id: b.id, title, files, list, at: Date.now(), keep: b.to === 'none' });
     const link = `${origin}/api/print-batch?t=${t}`, links = files.map((f, i) => `<li><a href="${esc(link + '&f=' + i)}">${esc(f.name)}</a></li>`).join('');
     const box = `<p><b>Print files</b> (the links work for 30 days):</p><ul>${links}</ul><p>Or see them all on one page: <a href="${esc(link)}">${esc(link)}</a></p>${list ? `<pre style="white-space:pre-wrap;font:14px/1.5 system-ui;background:#f4f4f4;padding:10px;border-radius:8px">${esc(list)}</pre>` : ''}`;
     const text = (h) => h.replace(/<br>/g, '\n').replace(/<\/p>/g, '\n\n').replace(/<[^>]+>/g, '');
+    if (b.to === 'none') return Response.json({ ok: true, link, token: t, files: files.map((f, i) => ({ name: f.name, size: f.size, token: t, i })) }, { headers: NS });   // kept for the history, no email
     try {
       if (b.to === 'company') {
         const em = clean(b.company && b.company.email, 120).toLowerCase(); if (!EMAIL.test(em)) return bad('Please add the email address of the print company.', 400);

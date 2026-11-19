@@ -12,6 +12,7 @@
 // The nominee's own page is /nominate/ (netlify/functions/nomination.mjs).
 import { getStore } from '@netlify/blobs';
 import { sendMail, FROM } from './lib/mail.mjs';
+import { fromOrder } from './lib/library.mjs';
 
 const okOrigin = (o) => /^https:\/\/([a-z0-9-]+\.)?manna-fish\.com$|^https:\/\/([a-z0-9-]+--)?yadamannafishtest\.netlify\.app$|^http:\/\/localhost(:\d+)?$/.test(o || '');
 const NS = { 'cache-control': 'no-store' };
@@ -141,6 +142,7 @@ export default async (req, context) => {
   const id = 'C' + Date.now().toString(36).toUpperCase(), token = rand();
   const order = { id, at: Date.now(), status: 'new', contact, items, total, edit: await hash(token), rev: [{ at: Date.now(), what: 'sent' }] };
   await nominate(store, order, origin); await store.setJSON('o/' + id, order);
+  try { await fromOrder(items, contact); } catch (e) { /* the library is a convenience: never blocks a request */ }
   const waiting = items.filter((x) => x.nom);
   await mail(TO(), `MannaFish card order ${id} · ${total} decals · ${name}${waiting.length ? ' · ' + waiting.length + ' nomination' + (waiting.length > 1 ? 's' : '') + ' to approve' : ''}`,
     `<p>A card request (${esc(id)}): ${total} decals.</p><p><b>${esc(name)}</b> · ${esc(email)}${contact.phone ? ' · ' + esc(contact.phone) : ''}${contact.city ? ' · ' + esc(contact.city) : ''}</p><ul>${items.map(sum).join('')}</ul>`
