@@ -59,8 +59,8 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 .bkdrop .bkseg{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px}
 .bkdrop .bkseg button{border:0;background:none;color:var(--dim);border-radius:999px;padding:8px 22px;font:800 .88rem 'Archivo',sans-serif;cursor:pointer}.bkdrop .bkseg button[aria-selected=true]{background:var(--blue);color:#fff}
 .bkdrop .bksr{position:absolute;right:6px;border:1px solid var(--line);background:none;color:inherit;border-radius:999px;width:38px;height:38px;font-size:1rem;cursor:pointer}
-.bkdrop .bklist{display:grid;grid-template-columns:1fr 1fr;padding:2px 4px}
-.bkdrop .bkb{display:block;min-width:0;border:0;background:none;color:var(--c,inherit);text-align:left;font:500 1.15rem 'Fraunces',Georgia,serif;padding:11px 6px;border-radius:10px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bkdrop .bklist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:2px 4px}
+.bkdrop .bkb{display:block;min-width:0;border:0;background:none;color:var(--c,inherit);text-align:left;font:500 clamp(.8rem,3.7vw,1.05rem) 'Fraunces',Georgia,serif;padding:11px 4px;border-radius:10px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bkdrop .bkb.on{background:rgba(68,143,255,.16);font-weight:700}.bkdrop .bkb[aria-expanded=true]{background:rgba(68,143,255,.12);outline:1px solid var(--blue2)}
 .bkdrop .bkch{grid-column:1/-1;background:rgba(68,143,255,.1);border:1px solid var(--blue2);border-radius:12px;padding:10px;margin:4px 0 8px}
 .bkdrop .bkch p{margin:0 0 8px;font:600 .92rem 'Fraunces',Georgia,serif}
@@ -394,6 +394,7 @@ body.lay-t .par .txt,body.lay-t .par3 .txt,body.lay-t .par4 .txt{font-size:calc(
 .rail .dnav,.dnav{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:4px 6px 10px;min-height:160px;overflow:auto;overscroll-behavior:contain}
 body.lay-l .rail .dnav{flex:1 1 auto}
 }
+body.par .bar #where,body.par .bar #ver,body.par .bar #say{display:none}body.par .bar .r2 .vpc{margin-left:auto}   /* Ken, 18 Nov: side by side, every column has its own book, version and Hear */
 </style>
 <script src="/fish-lang/tabbar.js" defer></script>
 <script src="/fish-lang/ambient.js"></script>
@@ -429,7 +430,7 @@ body.lay-l .rail .dnav{flex:1 1 auto}
     <nav class="dnav" id="dnav" aria-label="Books and chapters" hidden></nav>
   </aside>
   <!-- Ken, 8 Nov: make it clear that under the fish is the entire Bible -->
-  <section class="bibhd" id="bibhd" aria-label="The MannaFish Bible app">
+  <section class="bibhd" id="bibhd" aria-label="The MannaFish Bible app" hidden>
     <h2>The MannaFish Bible App</h2>
     <p>All 66 books, in any translation. Read it or listen to it, and put two, three or four translations side by side.</p>
   </section>
@@ -518,7 +519,10 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   var root=document.documentElement;
   function mode(l){ if(l) root.setAttribute('data-mode','light'); else root.removeAttribute('data-mode'); $('mode').innerHTML=l?'&#9790;&#xFE0E;':'&#9728;&#xFE0E;'; }
   // Ken, 8 Nov: today's MannaFish on top is the home page's own flip card (an iframe of /?card=1), so it flips and has Word, Verse, Go Fish, Listen and Read exactly as there
-  (function(){ var box=$('tfish'); if(!box) return; var qq=new URLSearchParams(location.search), fq=qq.get('fish')||qq.get('w')||'', lang=(ls('mf-lang')==='es')?'es':'en', f=$('tfF');
+  (function(){ var box=$('tfish'); if(!box) return; var qq=new URLSearchParams(location.search), fq=qq.get('fish')||qq.get('w')||'';
+    /* Ken, 18 Nov: the fish is not on the Bible page unless the person came for it (a link from the email, a text, a share, or the menu's Today's MannaFish) */
+    if(!fq){ box.hidden=true; return; }
+    var lang=(ls('mf-lang')==='es')?'es':'en', f=$('tfF');
     f.src='/?card=1'+(fq&&fq!=='today'?(/^[a-z]+$/.test(fq)?'&w=':'&fish=')+encodeURIComponent(fq):'')+(qq.get('lang')?'&lang='+encodeURIComponent(qq.get('lang')):'');
     var touched=false; ['pointerdown','keydown','touchstart'].forEach(function(ev){ document.addEventListener(ev,function(){ touched=true; },true); });
     function set(open){ $('tfT').setAttribute('aria-expanded',String(open)); $('tfB').hidden=!open; ls('mf-bible-fish',open?'open':'closed'); }
@@ -1455,14 +1459,14 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   /* Ken, 8 Nov: the three dots list the same things they did on the home page (Bible, Time with God, The vision, Bible in a Year, Fish stories, Take a tour ...); the Bible's own tools, notes and recent chapters are the last item */
   function siteMenuUI(){ var it=function(k,ic,t,sm){ return '<button type="button" class="mi" role="menuitem" data-site="'+k+'"><span class="ic">'+ic+'</span><span class="tx">'+t+'<small>'+sm+'</small></span></button>'; };
     var dk=root.getAttribute('data-mode')!=='light', tl=document.body.classList.contains('tools-open'), sd=$('studyB').getAttribute('aria-pressed')==='true';
-    $('menu').innerHTML=it('mode',dk?'&#9728;&#xFE0E;':'&#9790;&#xFE0E;',dk?'Light mode':'Dark mode','Change the page colours')+it('tools','&#129520;&#xFE0E;',tl?'Hide the tools':'Bible tools','Side by side, versions, columns, compare')+it('study','&alpha;',sd?'Turn off word study':'Word study','Hebrew and Greek behind the words')+'<hr>'+it('dash','&#127968;&#xFE0E;','My dashboard','Your own icons, priority list and calendar')+it('bible','&#10013;&#xFE0E;','Bible','Every book and chapter')+it('pray','&#128330;&#xFE0E;','Time with God','A few quiet minutes of prayer')+it('vision','&#9654;&#xFE0E;','The vision','Listen &middot; 3 min')
+    $('menu').innerHTML=it('bible','&#10013;&#xFE0E;','Bible','Every book and chapter')+it('today','&#128031;&#xFE0E;','Today&rsquo;s MannaFish','Tap the fish to flip it')+'<hr>'+it('mode',dk?'&#9728;&#xFE0E;':'&#9790;&#xFE0E;',dk?'Light mode':'Dark mode','Change the page colours')+it('tools','&#129520;&#xFE0E;',tl?'Hide the tools':'Bible tools','Side by side, versions, columns, compare')+it('study','&alpha;',sd?'Turn off word study':'Word study','Hebrew and Greek behind the words')+'<hr>'+it('dash','&#127968;&#xFE0E;','My dashboard','Your own icons, priority list and calendar')+it('pray','&#128330;&#xFE0E;','Time with God','A few quiet minutes of prayer')+it('vision','&#9654;&#xFE0E;','The vision','Listen &middot; 3 min')
       +it('plan','&#128214;&#xFE0E;','Bible in a Year','Day and night readings, 2 Fish a day')+it('stories','&#128031;&#xFE0E;','Fish stories','Share your catch')+it('catch','&#127907;&#xFE0E;','Catch a fish and share it','Random, or pick one')+it('tour','&#10024;&#xFE0E;','Take a tour','How it works')
-      +it('match','&#127924;&#xFE0E;','MannaFish Memory','Match a pair, then go fish')+it('translate','&#128172;&#xFE0E;','Translator','Talk with anyone')+it('hubs','&#128205;&#xFE0E;','MannaFish Hubs','Pick up free, or sponsor one')+it('about','&#128065;&#xFE0E;','About MannaFish','The vision, a video, where to start')
+      +it('match','&#127924;&#xFE0E;','MannaFish Memory','Match a pair, then go fish')+it('translate','&#128172;&#xFE0E;','Translator','Talk with anyone')+it('hubs','&#128205;&#xFE0E;','MannaFish Hubs','Pick up free, or sponsor one')+it('about','&#128065;&#xFE0E;','About MannaFish','The MannaFish Bible App: all 66 books, in any translation. Read it or listen, and put two, three or four translations side by side. The vision, a video, where to start')
       +'<hr>'+it('prof','&#128100;&#xFE0E;','My stuff','Prayers, notes, highlights, orders, history')+it('set','&#9881;&#xFE0E;','Settings','Plan, language, light or dark, listening')+it('acct','&#128273;&#xFE0E;','Sign in','Keep your notes on every device')
       +it('fb','&#128172;&#xFE0E;','Tell us what you think','What you like, what confused you')+it('admin','&#128736;&#xFE0E;','Admin view','For testing: edit tools and admin pages')
       +'<hr>'+it('chapter','&#129520;&#xFE0E;','This chapter','Notes, recent chapters and Bible tools'); }
   function siteAct(k){ closeMenu(); var go2=function(u){ location.href=u; };
-    if(k==='mode'||k==='tools'||k==='study'){ var tb=$(k==='mode'?'mode':k==='tools'?'toolsRound':'studyB'); if(tb) tb.click(); } else if(k==='dash') go2('/dash/'); else if(k==='bible'){ var tb=$('titleB'); if(tb) tb.click(); } else if(k==='pray') go2('/pray/'); else if(k==='vision') go2('/?today=1&do=vision'); else if(k==='plan') go2('/plan/'); else if(k==='stories') go2('/?today=1&do=stories'); else if(k==='catch') go2('/?today=1&do=catch'); else if(k==='tour') go2('/?today=1&do=tour');
+    if(k==='mode'||k==='tools'||k==='study'){ var tb=$(k==='mode'?'mode':k==='tools'?'toolsRound':'studyB'); if(tb) tb.click(); } else if(k==='dash') go2('/dash/'); else if(k==='today') go2('/bible/?fish=today'); else if(k==='bible'){ var tb=$('titleB'); if(tb) tb.click(); } else if(k==='pray') go2('/pray/'); else if(k==='vision') go2('/?today=1&do=vision'); else if(k==='plan') go2('/plan/'); else if(k==='stories') go2('/?today=1&do=stories'); else if(k==='catch') go2('/?today=1&do=catch'); else if(k==='tour') go2('/?today=1&do=tour');
     else if(k==='match') go2('/go/'); else if(k==='translate') go2('/translate/'); else if(k==='hubs') go2('/hubs/'); else if(k==='about') go2('/vision/'); else if(k==='prof'||k==='acct') go2('/you/'); else if(k==='set') go2('/you/#st'); else if(k==='admin') go2('/?today=1&do=admin');
     else if(k==='fb'){ if(window.MFfeedback) MFfeedback.open(); } else if(k==='chapter'){ closeAct(); closeWc(); menuUI(); $('menu').hidden=false; $('menu').scrollTop=0; $('dots').setAttribute('aria-expanded','true'); } }
   $('dots').addEventListener('click',function(e){ e.stopPropagation(); if(menuOpen()){ closeMenu(); return; } closeAct(); closeWc(); siteMenuUI(); $('menu').hidden=false; $('menu').scrollTop=0; $('dots').setAttribute('aria-expanded','true'); });
@@ -1554,9 +1558,9 @@ body.lay-l .rail .dnav{flex:1 1 auto}
   var BKT='ot', BKOP=null;
   function bkGroup(n){ return n<5?'law':n<17?'hist':n<22?'poet':n<39?'proph':n<43?'gosp':n===43?'hist':n<57?'paul':n<65?'gen':'rev'; }
   function bkDraw(keep){ var y=keep?$('bkDrop').scrollTop:0, lo=BKT==='nt'?39:0, hi=BKT==='nt'?66:39, cells=[], n, i;
-    for(n=lo;n<hi;n++){ i=n-lo; cells.push('<button type="button" class="bkb'+(n===AT.b?' on':'')+'" data-bkn="'+n+'" aria-expanded="'+(BKOP===n)+'" style="--c:var(--'+bkGroup(n)+')">'+esc(B[n][0])+'</button>');}
+    for(n=lo;n<hi;n++){ i=n-lo; cells.push('<button type="button" class="bkb'+(n===AT.b?' on':'')+'" data-bkn="'+n+'" aria-expanded="'+(BKOP===n)+'" style="--c:var(--'+bkGroup(n)+')'+(B[n][0].length>=15?';font-size:clamp(.66rem,3.1vw,.88rem)':'')+'">'+esc(B[n][0])+'</button>');}
     /* the chapter box goes after the end of its row: after the next book too when the tapped one is on the left */
-    var out=[]; for(n=lo;n<hi;n++){ out.push(cells[n-lo]); if(BKOP===n){ var rowEnd=((n-lo)%2===0&&n+1<hi); if(rowEnd){ out.push(cells[n+1-lo]); n++; }
+    var out=[]; for(n=lo;n<hi;n++){ out.push(cells[n-lo]); if(BKOP===n){ while((n-lo)%3!==2&&n+1<hi){ out.push(cells[n+1-lo]); n++; }
         var g='<div class="bkch"><p>'+esc(B[BKOP][0])+' · pick a chapter</p><div class="nums">'; for(var c=1;c<=B[BKOP][1];c++) g+='<button type="button" data-bkn="'+BKOP+'" data-bkc="'+c+'" class="'+(BKOP===AT.b&&c===AT.c?'on':'')+'">'+c+'</button>'; out.push(g+'</div></div>'); } }
     $('bkDrop').innerHTML='<div class="bkhd"><div class="bkseg" role="tablist" aria-label="Testament"><button type="button" role="tab" data-bkt="ot" aria-selected="'+(BKT==='ot')+'">OT</button><button type="button" role="tab" data-bkt="nt" aria-selected="'+(BKT==='nt')+'">NT</button></div><button type="button" class="bksr" data-bkmore="1" aria-label="Search, version and recent" title="Search, version and recent">&#128269;&#xFE0E;</button></div><div class="bklist">'+out.join('')+'</div>';
     $('bkDrop').scrollTop=y; }

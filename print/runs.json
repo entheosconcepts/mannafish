@@ -341,15 +341,15 @@
   },
   {
    "id": "R0015",
-   "title": "K-Tech Build: 4 verses, all caps (QR direct)",
+   "title": "K-Tech Build: Matthew 7:24 on the fish, 4 verses, all caps (QR direct)",
    "status": "draft",
    "qty": 100,
    "fish": {
     "id": "X004",
     "word": "BUILD",
     "lang": "en",
-    "study": "BUILD-KT",
-    "svg": "assets/ktech-build-bigger.svg"
+    "study": "BUILD-KT-MATT",
+    "svg": "assets/ktech-build-matt724.svg"
    },
    "sponsor": "K-Tech Construction",
    "anonymous": false,
@@ -365,7 +365,7 @@
     "Status is \"draft\": approve the proof before ordering."
    ],
    "editor": true,
-   "made": "2026-11-17T21:50:37.869Z"
+   "made": "2026-11-19T02:09:20.054Z"
   },
   {
    "id": "R0016",

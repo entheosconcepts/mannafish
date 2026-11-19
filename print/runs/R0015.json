@@ -1,14 +1,14 @@
 {
  "id": "R0015",
- "title": "K-Tech Build: 4 verses, all caps (QR direct)",
+ "title": "K-Tech Build: Matthew 7:24 on the fish, 4 verses, all caps (QR direct)",
  "status": "draft",
  "qty": 100,
  "fish": {
   "id": "X004",
   "word": "BUILD",
   "lang": "en",
-  "study": "BUILD-KT",
-  "svg": "assets/ktech-build-bigger.svg"
+  "study": "BUILD-KT-MATT",
+  "svg": "assets/ktech-build-matt724.svg"
  },
  "sponsor": {
   "name": "K-Tech Construction",
@@ -36,5 +36,5 @@
    "right": "A Word Study\nDevotional"
   }
  },
- "notes": "K-Tech card with the larger all-caps back: 4 verses with enough of each verse to carry the meaning. QR codes go straight to their addresses. Build word 700 tall (the standard 5-letter size is 653; the old Build was 594 after the tall-letter reduction). Print only: the website fish is not changed."
+ "notes": "K-Tech card (Ken, 19 Nov): the fish carries Matthew 7:24 (KJV), the wise man who built his house upon a rock, drawn by the same code as the website's builder, Build word 700. Matthew 7:24 is not repeated on the back (Nehemiah 2:18 takes its place). QR codes go straight to their addresses."
 }

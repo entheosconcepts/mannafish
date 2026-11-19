@@ -2159,7 +2159,7 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
     <button class="bene feat" data-b="YADAH Collaborative" type="button"><span class="btag">Featured ministry</span><span class="bname">YADAH Collaborative</span><p>&ldquo;To know and be known.&rdquo; Gatherings, worship, prayer, evangelism, workshops, connection, community and more. Free gifts to fuel outreach. Ask about &ldquo;2 Fish&rdquo;&hellip; Get 2, Give 1.</p><span class="pick">Choose</span></button>
   </div>
   <p class="reach-chosen" id="reachChosen"></p>
-  <div class="cta-row" style="margin-top:26px"><a class="btn btn-primary" href="#sponsor">Design your card</a></div>
+  <div class="cta-row" style="margin-top:26px"><a class="btn btn-primary" href="#sponsor">Design a card</a></div>
   </div></section>
 
 <!-- Ken, 12 Oct: "a section to let people donate into our ministry ... sometimes the pond is just not going to be stocked."
@@ -2301,10 +2301,10 @@ section.sec-shut{padding-block:0!important}section.sec-shut .wrap{padding-block:
 <section class="section sponsorend" id="sponsor"><div class="wrap">
   <div class="section-head" style="max-width:44em;margin-inline:auto;text-align:center">
     <span class="eyebrow">Sponsor decals</span>
-    <h2>Design your card. Sponsor your card.</h2>
-    <p>Choose a word, add your link and your logo (or your own words), and watch your card come together. MannaFish decals are always given away free, and sponsors make that possible. We send you a proof to approve before anything is printed, and nothing is charged here.</p>
+    <h2>Design a card. Sponsor a card.</h2>
+    <p>Choose a word, add a link and a logo (or words), and watch the card come together. MannaFish decals are always given away free, and sponsors make that possible. A proof is sent for approval before anything is printed, and nothing is charged here.</p>
   </div>
-  <iframe id="sponsorFrame" title="Design your card" loading="lazy" style="width:100%;min-height:880px;border:0;display:block;margin-top:10px;background:#000" allow="clipboard-write"></iframe>
+  <iframe id="sponsorFrame" title="Design a card" loading="lazy" style="width:100%;min-height:880px;border:0;display:block;margin-top:10px;background:#000" allow="clipboard-write"></iframe>
 </div></section>
 
 <footer class="foot"><div class="wrap">
@@ -5911,7 +5911,7 @@ body.mfediting{padding-top:54px!important}
 /* ---- the sponsor builder at the bottom: the same builder as /sponsor/, in this page ---- */
 (function(){
   var f=document.getElementById('sponsorFrame'); if(!f) return; var q=new URLSearchParams(location.search), src='/sponsor/?embed=1', sd=q.get('sd'), ex=q.get('example'), w=q.get('word');
-  if(sd&&/^[a-f0-9]{32}$/.test(sd)) src+='&d='+sd; var ed=q.get('edit'); if(ed&&/^C[0-9A-Z]+\.[a-f0-9]{32}$/.test(ed)) src+='&edit='+ed; if(ex) src+='&example='+encodeURIComponent(ex); if(w) src+='&word='+encodeURIComponent(w); f.src=src;
+  if(sd&&/^[a-f0-9]{32}$/.test(sd)) src+='&d='+sd; var ed=q.get('edit'); if(ed&&/^C[0-9A-Z]+\.([a-f0-9]{32}|admin)$/.test(ed)) src+='&edit='+ed; if(ex) src+='&example='+encodeURIComponent(ex); if(w) src+='&word='+encodeURIComponent(w); f.src=src;
   window.addEventListener('message',function(e){ if(e.origin!==location.origin||!e.data||!e.data.mfsb) return; var d=e.data;
     if(d.mfsb==='h'&&d.h>300) f.style.height=Math.min(d.h+10,6000)+'px';
     if(d.mfsb==='draft'){ try{ var u=new URL(location.href); if(d.id) u.searchParams.set('sd',d.id); else u.searchParams.delete('sd'); u.searchParams.delete('example'); u.searchParams.delete('word'); u.hash='#sponsor'; history.replaceState(null,'',u.pathname+u.search+u.hash); }catch(x){} } });
