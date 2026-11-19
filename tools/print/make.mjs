@@ -7,9 +7,9 @@
 // A run is one order: print/runs/<id>.json says which fish, how many, who sponsors it, and what goes on the back.
 // Out come, in print/out/<id>/, the files the printer needs for the card (4.5 x 2.75 in, StickerApp rounds it to 2.8):
 //   1  the decal: clear vinyl, white ink only, the letters left clear              -> -1-decal-white-ink.png / .pdf
-//   2  the front of the backing paper, under the decal: black, the same fish white   -> -2-backing-front.pdf / .png
+//   2  the front of the card, under the decal: black, the same fish white   -> -2-background.pdf / .png
 //   3  the cut lines: CutContour, 1/8 in outside the fish (vinyl only), and ThroughCut, the card edge -> -3-cut-lines.pdf / .svg
-//   4  the back of the backing paper: the invitation, from the template or Ken's image -> -4-back.pdf / .png
+//   4  the back of the card: the invitation, from the template or Ken's image -> -4-back.pdf / .png
 // plus a proof sheet to check and send (-proof.png / .pdf) and notes for the printer (-printer-notes.md).
 // It also writes print/runs.json (every run, for /print/admin/) and print/links.json (where each QR code goes: every
 // code on a card opens manna-fish.com/q/<code>, which counts the scan and sends the person on -- netlify/functions/qr.mjs).
@@ -287,10 +287,10 @@ async function make(id, browser) {
   const ink = await page.evaluate(([s2, p, pg, d]) => MFink(s2, p, pg, d), [src, place, { w: PW, h: PH }, DPI]);
   fs.writeFileSync(name('1-decal-white-ink.png'), Buffer.from(ink.split(',')[1], 'base64'));
   await pdf(svgPage(`<image href="${ink}" x="0" y="0" width="${f2(PW)}" height="${f2(PH)}"/>`), PW, PH, name('1-decal-white-ink.pdf'));
-  // 2 the front of the backing paper: black to the bleed, the same fish in white, in the same place
+  // 2 the front of the card: black to the bleed, the same fish in white, in the same place
   const backing = svgPage(`<rect width="${f2(PW)}" height="${f2(PH)}" fill="#000"/>${fishSvg(src, place.x, place.y, place.w)}`);
-  await pdf(backing, PW, PH, name('2-backing-front.pdf'));
-  await shot(backing, PW, PH, name('2-backing-front.png'));
+  await pdf(backing, PW, PH, name('2-background.pdf'));
+  await shot(backing, PW, PH, name('2-background.png'));
   // 3 the cut lines: the kiss cut (vinyl only) and the card edge (through everything)
   // named the way cutting machines expect: CutContour (the kiss cut, magenta) and ThroughCut (the card edge, cyan). In the PDF
   // both are spot colours, so the printer's software finds them by name; the SVG names the layers the same.
@@ -298,7 +298,7 @@ async function make(id, browser) {
     + `<g id="ThroughCut" fill="none" stroke="#00b7ff" stroke-width="0.0882"><rect x="${f2(BLEED)}" y="${f2(BLEED)}" width="${f2(CARD.w)}" height="${f2(CARD.h)}"/></g>`);
   fs.writeFileSync(name('3-cut-lines.svg'), '<?xml version="1.0" encoding="UTF-8"?>\n' + cuts.replace('<svg ', '<svg version="1.1" '));
   cutPdf(name('3-cut-lines.pdf'), cut);
-  // 4 the back of the backing paper (portrait)
+  // 4 the back of the card (portrait)
   const codes = { main: id, left: id + 's', right: id + 'm' };
   const LAND = landscape(run), back = await backHtml(run, codes, warn), bw = (LAND ? CARD.w : CARD.h) + 2 * BLEED, bh = (LAND ? CARD.h : CARD.w) + 2 * BLEED;
   if (back.includes('data-b=')) { fs.mkdirSync(path.join(PRINT, 'back-edit'), { recursive: true });   // the editor page for this back: the same back, with handles
@@ -329,15 +329,15 @@ async function make(id, browser) {
   const proof = `<div class="sheet"><div class="top"><div><h1>${esc(run.title || id)}</h1><p class="m">Run ${esc(id)} · ${esc(run.qty || '?')} cards · card 4.5 × 2.75 in (114.3 × 69.85 mm) · 1/8 in bleed · kiss cut 1/8 in outside the fish · fish ${f2(fishMM.w).toFixed(1)} × ${f2(fishMM.h).toFixed(1)} mm${S.name ? ' · sponsored by ' + esc(S.name) + (S.anonymous ? ' (anonymous on the card)' : '') : ''}</p></div><div class="st">${esc((run.status || 'draft').toUpperCase())}</div></div>
 <div class="g">
 ${panel(1, 'Decal · clear vinyl, white ink only', 'White ink where the fish is white. The letters and everything else stay clear. Pink line: about where the kiss cut goes, vinyl only (the printer draws the real one). Blue: the card edge.', P(PW, PH, chk + `<rect width="${f2(PW)}" height="${f2(PH)}" fill="url(#ck)"/>` + inkImg + cutsG))}
-${panel(2, 'Printed on the front of the backing paper · under the decal', 'Printed on the backing paper itself, not on the decal: black to the edge, the same fish in white, lined up exactly under the decal. It stays on the card when the decal is peeled off.', P(PW, PH, under + `<rect x="${f2(BLEED)}" y="${f2(BLEED)}" width="${f2(CARD.w)}" height="${f2(CARD.h)}" fill="none" stroke="#00b7ff" stroke-width=".35"/>`))}
-${panel(3, 'On the card, before peeling', 'The clear decal sits on top of the printed backing paper (layer 2). The black printed underneath shows through the clear letters, so the fish reads white with black letters.', P(PW, PH, under + inkImg + cutsG))}
-${panel(4, 'After the decal is peeled off: the print on the backing paper', 'This black and white fish is <b>not the decal</b>. It is <b>printed on the front of the backing paper</b> (layer 2), under the clear decal, and is seen once the decal is peeled away. The thin grey line is where the kiss cut was; the clear vinyl left outside it sits on the printed black. (Gold words are a note, not printed.)', P(PW, PH, under + `<path d="${cutD}" fill="none" stroke="#333" stroke-width=".35"/>`
+${panel(2, 'The background · printed on the front of the card, under the decal', 'Printed on the card itself, not on the decal: black to the edge, the same fish in white, lined up exactly under the decal. It stays on the card when the decal is peeled off.', P(PW, PH, under + `<rect x="${f2(BLEED)}" y="${f2(BLEED)}" width="${f2(CARD.w)}" height="${f2(CARD.h)}" fill="none" stroke="#00b7ff" stroke-width=".35"/>`))}
+${panel(3, 'On the card, before peeling', 'The clear decal sits on top of the printed background (layer 2). The black printed underneath shows through the clear letters, so the fish reads white with black letters.', P(PW, PH, under + inkImg + cutsG))}
+${panel(4, 'After the decal is peeled off: the background', 'This black and white fish is <b>not the decal</b>. It is <b>printed on the front of the card</b> (layer 2: the background), under the clear decal, and is seen once the decal is peeled away. The thin grey line is where the kiss cut was; the clear vinyl left outside it sits on the printed black. (Gold words are a note, not printed.)', P(PW, PH, under + `<path d="${cutD}" fill="none" stroke="#333" stroke-width=".35"/>`
   + `<text x="${f2(PW / 2)}" y="${f2(PH - 2.2)}" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="2.5" letter-spacing=".12" fill="#f5d76e">PRINTED ON THE BACKING PAPER · SEEN AFTER THE DECAL IS PEELED OFF</text>`))}
 </div>
-<div class="row2${LAND ? ' land' : ''}"><div class="p bk"><h3><b>5</b>Back of the backing paper</h3><p>${LAND ? 'Reads upright held the same way as the fish (landscape).' : 'Reads upright when the card is turned on its side.'} Blue: the card edge.</p><img src="${backPng}"></div>
+<div class="row2${LAND ? ' land' : ''}"><div class="p bk"><h3><b>5</b>Back of the card</h3><p>${LAND ? 'Reads upright held the same way as the fish (landscape).' : 'Reads upright when the card is turned on its side.'} Blue: the card edge.</p><img src="${backPng}"></div>
 <div class="p nt"><h3>Where the QR codes go</h3><ul>${Object.entries(links).map(([c, v]) => `<li><b>${esc(qrUrl(run, c))}</b><br>${esc(v.what)}${run.qr_direct ? ' (straight to the address, scans not counted)' : ' → ' + esc(v.to || 'not set yet (opens manna-fish.com)')}</li>`).join('')}</ul>
 <h3>Before printing</h3><ul class="w">${warn.map((x) => `<li>${esc(x)}</li>`).join('') || '<li>Nothing left. Ready.</li>'}</ul>
-<h3>Files for the printer</h3><ul class="f"><li>${id}-1-decal-white-ink (.png 1200 dpi, .pdf)</li><li>${id}-2-backing-front (.pdf vector, .png 1200 dpi)</li><li>${id}-3-cut-lines (.pdf with CutContour and ThroughCut, .svg): kept here, sent only if the printer asks${run.send_cut_file ? ' (this run sends it)' : ''}</li><li>${id}-4-back (.pdf, .png 600 dpi)</li><li>All of them together: ${id}-print-files.zip</li></ul></div></div></div>`;
+<h3>Files for the printer</h3><ul class="f"><li>${id}-1-decal-white-ink (.png 1200 dpi, .pdf)</li><li>${id}-2-background (.pdf vector)</li><li>${id}-3-cut-lines (.pdf with CutContour and ThroughCut, .svg): kept here, sent only if the printer asks${run.send_cut_file ? ' (this run sends it)' : ''}</li><li>${id}-4-back (.pdf, .png 600 dpi)</li><li>All of them together: ${id}-print-files.zip</li></ul></div></div></div>`;
   const PCSS = `body{margin:0;background:#fff}.sheet{width:1500px;padding:28px;box-sizing:border-box;font:15px/1.4 Arial,sans-serif;color:#111}
 .top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;border-bottom:2px solid #111;padding-bottom:10px;margin-bottom:16px}h1{margin:0;font-size:24px}.m{margin:4px 0 0;color:#444}
 .st{font-weight:700;border:2px solid #b45309;color:#b45309;border-radius:8px;padding:6px 12px;font-size:18px}
@@ -356,9 +356,9 @@ ${panel(4, 'After the decal is peeled off: the print on the backing paper', 'Thi
 Card: 4.5 x 2.75 in (114.3 x 69.85 mm), custom size (not 2.8 in). Every file includes a 1/8 in (3.175 mm) bleed on each side, so the fish-side files are ${f2(PW)} x ${f2(PH)} mm and the back is ${f2(bw)} x ${f2(bh)} mm. All files line up with each other at the same size.
 
 1. **${id}-1-decal-white-ink** : clear vinyl, white ink only. White where the fish is white; the letters and everything else are clear (no ink).
-2. **${id}-2-backing-front** : printed on the FRONT of the backing paper, under the decal (not the back of the paper). Black over the whole card, the same fish in white, lined up exactly under the decal.
+2. **${id}-2-background** : the BACKGROUND, printed on the front of the card, under the decal (not on the back). Black over the whole card, the same fish in white, lined up exactly under the decal.
 ${run.send_cut_file ? `3. **${id}-3-cut-lines** : two spot colours. **CutContour** (magenta) is the kiss cut, through the vinyl only, 1/16 in outside the fish. **ThroughCut** (cyan) is the card edge, cut through everything. The SVG has the same two layers.` : `3. **Cut lines (R0015-3-cut-lines)** : THE FRONT DECAL IS KISS CUT. Cut through the clear vinyl only, in the shape of the fish, about 1/8 in (3 mm) or less outside the fish (magenta CutContour). Do not cut the backing paper there, so the card stays whole when the decal is peeled off. Then cut the card edge all the way through at 4.5 x 2.75 in (blue ThroughCut). You know the right distance for your machines; our cut line file is ready if you would rather use it.`}
-4. **${id}-4-back** : printed on the BACK of the backing paper. ${LAND ? 'It reads upright held the same way as the fish side (landscape).' : 'It reads upright when the card is turned on its side (portrait).'}
+4. **${id}-4-back** : printed on the BACK of the card. ${LAND ? 'It reads upright held the same way as the fish side (landscape).' : 'It reads upright when the card is turned on its side (portrait).'}
 
 The decal's white ink is the PNG (1200 dpi, transparent where there is no ink); the PDF holds the same picture. Colours are RGB: please convert to your press colours, and use a rich black for the black areas if that is what you recommend.
 
@@ -367,7 +367,7 @@ Quantity: ${run.qty || '?'}. Please send a proof showing all four before taking 
   // everything the printer needs in one file to attach
   const zip = name('print-files.zip'); try { fs.unlinkSync(zip); } catch (e) { /* first time */ }
   const { execFileSync } = await import('node:child_process');
-  execFileSync('zip', ['-j', '-q', zip].concat(['1-decal-white-ink.png', '1-decal-white-ink.pdf', '2-backing-front.pdf', '2-backing-front.png', '4-back.pdf', '4-back.png', 'printer-notes.md', 'proof.pdf'].concat(run.send_cut_file ? ['3-cut-lines.pdf', '3-cut-lines.svg'] : []).map(name)));
+  execFileSync('zip', ['-j', '-q', zip].concat(['1-decal-white-ink.png', '1-decal-white-ink.pdf', '2-background.pdf', '4-back.pdf', '4-back.png', 'printer-notes.md', 'proof.pdf'].concat(run.send_cut_file ? ['3-cut-lines.pdf', '3-cut-lines.svg'] : []).map(name)));
   await page.close();
   return { id, title: run.title || id, status: run.status || 'draft', qty: run.qty || 0, fish: run.fish, sponsor: S.name || '', anonymous: !!S.anonymous, codes, links, warn, editor: back.includes('data-b='), made: new Date().toISOString() };
 }
