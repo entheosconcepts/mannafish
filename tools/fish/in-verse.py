@@ -10,6 +10,7 @@ import json, os, re, sys
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')); H = os.path.dirname(os.path.abspath(__file__))
 def forms(w):
     w = w.lower(); s = {w}; b = w[:-1] if w.endswith('e') else w
+    s |= {'build': {'built', 'builded'}}.get(w, set())   # irregular: Build / built (Matthew 7:24, 19 Nov)
     for suf in ['s', 'es', 'ed', 'd', 'n', 'r', 'eth', 'th', 'est', 'st', 'ing', 'er', 'ers', 'ness', 'ly', 'ful', 'ment', 'ous', 'lous', 'ion', 'ation', 'k', 'hood', 'en']:
         s.add(w + suf); s.add(b + suf)
     if re.search(r'[^aeiou][aeiou][bdglmnprt]$', w):
