@@ -85,7 +85,7 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
     <div class="seg2" role="radiogroup" aria-label="Who chooses the words"><label class="same"><input type="radio" name="pick" value="me" checked> The sponsor chooses the words</label><label class="same"><input type="radio" name="pick" value="we"> MannaFish chooses the words</label></div>
     <p class="hint" id="nnote">At least 100 of each word, so 500 decals can be up to 5 different words. Each word gets its own tab below. The link, the logo and the sponsor line can be the same on every word, or changed on any word.</p>
     <div class="cardlist" id="cardlist" role="tablist" aria-label="Your cards"></div>
-    <div class="row"><button type="button" class="btn o" id="newcard">+ Add another word</button><button type="button" class="btn o" id="dupcard">Copy this word</button><button type="button" class="btn o" id="delcard">Remove this word</button><button type="button" class="btn y" id="savework" hidden>Save my work</button></div>
+    <div class="row"><button type="button" class="btn o" id="newcard">+ Add another word</button><button type="button" class="btn o" id="dupcard">Copy this word</button><button type="button" class="btn o" id="delcard">Remove this word</button><button type="button" class="btn y" id="savework" hidden>Save my work</button><button type="button" class="btn o dlfiles" hidden>Download the print files for this sponsorship</button></div>
     <div class="savebar" id="savebar" hidden><span id="savednote"></span><span class="savelink"><input type="text" id="savelink" readonly aria-label="Your link to come back to this order"><button type="button" class="btn o" id="copylink">Copy link</button></span></div></section>
   <section class="step"><h2><i>1</i> Choose a word</h2><p class="h">This is the big word in the middle of the fish. Its word study (the Greek and Hebrew, and four verses) fills in by itself on the back.</p>
     <input type="text" id="wsearch" placeholder="Search words: Build, Trust, Seek…" autocomplete="off" aria-label="Search words">
@@ -163,7 +163,7 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
     <div class="two"><div><label for="cname">Name</label><input type="text" id="cname" autocomplete="name"></div><div><label for="cemail">Email</label><input type="email" id="cemail" autocomplete="email"></div></div>
     <div class="two"><div><label for="cphone">Phone (optional)</label><input type="tel" id="cphone" autocomplete="tel"></div><div><label for="ccity">City or ZIP</label><input type="text" id="ccity" autocomplete="postal-code" maxlength="60"></div></div>
     <label for="cnote">Anything else we should know?</label><textarea id="cnote" maxlength="800"></textarea>
-    <div class="row"><button type="button" class="btn y" id="send">Send sponsorship request</button></div><p class="hint" id="sendnote"></p><div class="msg" id="msg" role="status"></div></section>
+    <div class="row"><button type="button" class="btn o dlfiles" hidden>Download the print files for this sponsorship</button><button type="button" class="btn y" id="send">Send sponsorship request</button></div><p class="hint" id="sendnote"></p><div class="msg" id="msg" role="status"></div></section>
 </div>
 <aside class="pv"><div class="pvtabs"><button type="button" data-v="back" aria-pressed="true">Back of the card</button><button type="button" data-v="front" aria-pressed="false">Front (the fish)</button></div>
   <div class="stage" id="stage"><div class="front" id="front"></div><div class="back" id="back"></div></div>
@@ -359,6 +359,20 @@ function qSet(){ var c=cur(), q={}, any=false; QF.forEach(function(f){ var v=+$(
 QF.forEach(function(f){ $(f[0]).addEventListener('input',qSet); });
 $('qadjr').addEventListener('click',function(){ var c=cur(), n=Object.assign({},c.cadj||{}); delete n.qrOut; c.cadj=Object.keys(n).length?n:null; qRead(); draw(); persist(); });
 $('qadjdone').addEventListener('click',function(){ $('qadj').open=false; });
+/* ---- the print files for this sponsorship, straight from the builder (Ken, 19 Nov; admin only) ---- */
+function dlRun(){ var btns=[].slice.call(document.querySelectorAll('.dlfiles')); pull(); syncSame(); var todo=[]; S.cards.forEach(function(c,i){ if(!c.choose) todo.push(i); });
+  if(!todo.length){ say('MannaFish is to choose every word, so there are no print files yet.','bad'); return; }
+  var bad=-1; todo.forEach(function(i){ if(bad<0&&problem(S.cards[i])) bad=i; }); if(bad>=0){ S.active=bad; push(); renderCards(); draw(); say('Word '+(bad+1)+': '+problem(S.cards[bad])+'.','bad'); return; }
+  var id=EDIT&&EDIT.id?EDIT.id:'', all=[], list=[], k=0; btns.forEach(function(b){ b.disabled=true; });
+  function next(){ if(k>=todo.length) return Promise.resolve(); var i=todo[k++], c=S.cards[i], cf=cfgOf(c), n=i+1;
+    say('Making the files for word '+n+' of '+S.cards.length+' ('+c.word+')…');
+    var cfg=Object.assign({},cf,{qrWords:cf.qrWords,two:!!c.two,cadj:c.cadj||undefined,qrLeft:id?'https://manna-fish.com/q/'+id+'-'+n:cf.url,qrRight:id?'https://manna-fish.com/q/devo':'https://manna-fish.com/devotional'});
+    return MFkit.files(cfg,{id:(id||'DRAFT')+'-'+n,dpi:1200}).then(function(files){ var dir=String(n).padStart(2,'0')+'-'+c.word.replace(/[^\w.\- ]+/g,'_')+'/'; files.forEach(function(f){ all.push({name:dir+f.name,blob:f.blob}); });
+      list.push(n+'. '+c.qty+' x '+c.word+(c.dest==='hub'?' for '+c.hubName:c.dest==='new'&&c.nOrg?' for '+c.nOrg:'')+' · QR '+(id?'counted':'straight to the link')); }).then(next); }
+  next().then(function(){ all.push({name:'sponsorship-list.txt',blob:new Blob([(S.contact.name||'')+' '+(S.contact.email||'')+'\n'+list.join('\n')+'\n'],{type:'text/plain'})}); say('Putting it all in one zip…'); return MFkit.zip(all); })
+   .then(function(z){ var a=document.createElement('a'), nm=(id||'MannaFish-sponsorship')+'-print-files.zip'; a.href=URL.createObjectURL(z); a.download=nm; document.body.appendChild(a); a.click(); a.remove(); say('Done: '+nm+' ('+todo.length+' word'+(todo.length===1?'':'s')+', a folder for each).'+(id?'':' The QR codes go straight to the link (the order is not sent yet, so scans are not counted).'),'ok'); btns.forEach(function(b){ b.disabled=false; }); })
+   .catch(function(e){ say('Could not make the files ('+(e&&e.message||e)+').','bad'); btns.forEach(function(b){ b.disabled=false; }); }); }
+[].forEach.call(document.querySelectorAll('.dlfiles'),function(b){ b.addEventListener('click',dlRun); if(adminKey()) b.hidden=false; });
 function useVerse(){ var c=cur(), raw=$('vref').value.trim(), ver=$('vver').value; c.ver=ver; if(!raw){ c.verse=null; c.vref=''; vnote('The fish comes with its own verse.'); draw(); persist(); fillVerseSelect(); return; }
   if(!c.word){ vnote('Choose a word first.','bad'); return; } var r=parseRef(raw); if(!r){ vnote('We could not read that address. Try it like Proverbs 24:3.','bad'); return; } if(r.v2-r.v1>2){ vnote('Please choose one to three verses.','bad'); return; }
   verseText(r,ver).then(function(text){ return applyVerse(refName(r),text,ver); }).catch(function(){ vnote(ver==='kjv'?'We could not find that verse. Check the address.':'We could not get that verse in the '+verName(ver)+' just now. Check the address, or try the King James Version.','bad'); }); }
