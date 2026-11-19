@@ -25,6 +25,8 @@ def add(k, word, ref, verse, ver=None):
 year = [add(x['id'][2:], x['word'], x['ref'], x['verse'], x.get('ver')) for x in net]
 new = [add(x['id'][2:], x['word'], x['ref'], x['verse'], x.get('ver')) for x in designs]
 daily = [add(x['k'], x['word'], x['ref'], x['verse']) for x in plan]
+# retired fish stay in the picture list so the days already sent still find them (Build, Jude 1:20, was the catch of 15 Oct)
+add('X004', 'Build', 'Jude 1:20', lines['X004']['verse']) if 'X004' in lines else None
 year, new, daily = [k for k in year if k], [k for k in new if k], [k for k in daily if k]
 # take turns: the new designs first (they are new), then a year fish, a Bible-in-a-year fish, ...
 others, i, j = list(new), 0, 0

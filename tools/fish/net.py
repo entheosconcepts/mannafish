@@ -23,6 +23,8 @@ print(len(net), 'fish in the net, plus the 24 =', len(net) + 24)
 # there's a word that's opposite I would like to add that"): fish outside the 153, drawn by tools/fish-format (extra-lines.json:
 # node build.js extra-lines.json), and plan fish worth having on their own (Rebuild). Writes fish/designs.json, same shape.
 extra = json.load(open(os.path.join(ROOT, 'tools', 'fish-format', 'extra-lines.json')))
+RETIRED = {'X004'}   # Ken, 19 Nov: the Build fish is now X010 (Matthew 7:24); the older Build (Jude 1:20, X004) stays as a file for the K-Tech prints already made but leaves the Go Fish pot and the rotation
+extra = [f for f in extra if f['k'] not in RETIRED]
 des = [{'id': f['id'], 'word': f['word'], 'ref': f['ref'], 'verse': f['verse'], **({'ver': f['ver']} if f.get('ver') else {}), **({'pair': f['pair']} if f.get('pair') else {})} for f in extra]
 for k in ['D271']:   # Rebuild (Amos 9:11)
     t = daily[k]; des.append({'id': 'D:' + k, 'word': t['word'], 'ref': t['ref'], 'verse': t.get('verse') or (t.get('top', '') + ' ' + t.get('bot', '')).strip()})
