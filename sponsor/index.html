@@ -124,6 +124,14 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
     <label for="credit">The words above it</label><input type="text" id="credit" maxlength="100" value="Sponsored by">
     <p class="hint">One line. A longer line is squeezed in width to fit above the logo, so the logo stays full size. Try: A free gift made possible by K-Tech Construction.</p>
     <div class="chips" id="cchips"></div>
+    <details class="lnb" id="sadj"><summary>Stretch, size and place the sponsor line</summary>
+      <p class="hint">Move the sliders and watch the card. Nothing is limited: the line can go over the QR codes if it is stretched far enough.</p>
+      <label class="same"><input type="checkbox" id="sadj2"> Put the line on two lines</label>
+      <label for="sadjs">Size <small id="sadjst"></small></label><input type="range" id="sadjs" min="40" max="260" step="1" value="100">
+      <label for="sadjx">Width, stretch it sideways <small id="sadjxt"></small></label><input type="range" id="sadjx" min="40" max="300" step="1" value="100">
+      <label for="sadjy">Up and down <small id="sadjyt"></small></label><input type="range" id="sadjy" min="-8" max="8" step="0.1" value="0">
+      <label for="sadjd">Left and right <small id="sadjdt"></small></label><input type="range" id="sadjd" min="-20" max="20" step="0.1" value="0">
+      <div class="row"><button type="button" class="btn o" id="sadjr">Back to automatic</button><button type="button" class="btn o" id="sadjdone">Done: fold this away</button></div></details>
     <label>Or give it from MannaFish's monthly donors</label><div class="chips" id="mfpre"><button type="button" data-mf="wordmark">With the MannaFish logo</button><button type="button" data-mf="twofish">With the 2 Fish logo</button></div>
     <p class="hint">This fills in "This gift is made possible by our monthly donors for the MannaFish Bible app", the logo, and sends the QR code to the app.</p></section>
   <section class="step"><h2><i>4</i> How many of this word?</h2><p class="h">Choose 100, 500 or 1,000 of this word. At least 100 of each.</p>
@@ -157,20 +165,20 @@ function esc(t){ return String(t).replace(/[&<>"]/g,function(c){ return {'&':'&a
 function fullUrl(u){ u=(u||'').trim(); if(u&&!/^https?:\/\//i.test(u)) u='https://'+u; return u; }
 function say(t,k){ $('msg').textContent=t; $('msg').className='msg '+(k||''); }
 /* ---- the order: a list of cards, one open at a time ---- */
-function blank(from){ var c={word:'',fishId:'',verse:null,vref:'',ver:'kjv',url:'',qrTo:'link',logoAspect:0,q1:'Visit us',q2:'to learn more',by:'logo',logoId:'',logoName:'',name:'',text:'',credit:'Sponsored by',qty:100,dest:'self',hubId:'',hubName:'',nOrg:'',nName:'',nEmail:'',nPhone:'',nCity:'',sameQr:false,sameBy:false,choose:false};
+function blank(from){ var c={word:'',fishId:'',verse:null,vref:'',ver:'kjv',url:'',qrTo:'link',logoAspect:0,q1:'Visit us',q2:'to learn more',by:'logo',logoId:'',logoName:'',name:'',text:'',credit:'Sponsored by',qty:100,dest:'self',hubId:'',hubName:'',nOrg:'',nName:'',nEmail:'',nPhone:'',nCity:'',sameQr:false,sameBy:false,choose:false,two:false,cadj:null};
   if(from) ['url','qrTo','ver','q1','q2','by','logoId','logoName','logoAspect','name','text','credit','qty'].forEach(function(k){ c[k]=from[k]; }); return c; }
 function fresh(){ return {cards:[blank()],active:0,logos:{},contact:{name:'',email:'',phone:'',city:'',note:''}}; }
 function cur(){ return S.cards[S.active]; }
 function logoOf(c){ return c.logoId&&S.logos[c.logoId]||''; }
 function cfgOf(c){ var by=c.by; if(by==='name'&&!c.name) by='text';
-  return {word:c.word,fishId:c.fishId,verse:c.verse,by:by,logo:logoOf(c),name:c.name,text:c.text,credit:c.credit||'Sponsored by',qrTo:c.qrTo,logoAspect:c.logoAspect||0,qrWords:[c.q1,c.q2].map(function(x){ return (x||'').trim(); }).filter(Boolean).join('\n')||'Visit us',url:c.qrTo==='app'?APP:(fullUrl(c.url)||'https://manna-fish.com/')}; }
+  return {two:!!c.two,cadj:c.cadj||undefined,word:c.word,fishId:c.fishId,verse:c.verse,by:by,logo:logoOf(c),name:c.name,text:c.text,credit:c.credit||'Sponsored by',qrTo:c.qrTo,logoAspect:c.logoAspect||0,qrWords:[c.q1,c.q2].map(function(x){ return (x||'').trim(); }).filter(Boolean).join('\n')||'Visit us',url:c.qrTo==='app'?APP:(fullUrl(c.url)||'https://manna-fish.com/')}; }
 function problem(c){ if(!c.word&&!c.choose) return 'Choose a word'; if(c.by==='logo'&&!logoOf(c)) return 'Add a logo or words'; if(c.by==='name'&&!c.name.trim()) return 'Type a name'; if(c.by==='text'&&!c.text.trim()) return 'Write the words'; if(c.qrTo!=='app'&&!c.url.trim()) return 'Add a web address'; if(c.dest==='new'&&!c.nOrg.trim()) return 'Name the place you are nominating'; if(c.dest==='new'&&c.nEmail&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c.nEmail.trim())) return 'Check that email address'; return ''; }
 /* form -> card */
 function pull(){ var c=cur(); c.url=$('url').value; c.q1=$('q1').value; c.q2=$('q2').value; c.name=$('name').value; c.text=$('text').value; c.credit=$('credit').value; c.vref=$('vref').value; c.ver=$('vver').value;
   c.qty=snap(c.qty); S.contact={name:$('cname').value,email:$('cemail').value,phone:$('cphone').value,city:$('ccity').value,note:$('cnote').value};
   c.nOrg=$('norg').value; c.nName=$('nname').value; c.nEmail=$('nemail').value; c.nPhone=$('nphone').value; c.nCity=$('ncity').value; var dv=$('dest').value; c.dest=dv==='self'||dv==='new'?dv:'hub'; if(c.dest==='hub'){ c.hubId=dv.slice(4); c.hubName=$('dest').selectedOptions[0].getAttribute('data-name')||$('dest').selectedOptions[0].textContent; } }
 /* card -> form */
-function push(){ syncSame(); var c=cur(); $('url').value=c.url; $('q1').value=c.q1; $('q2').value=c.q2; $('name').value=c.name; $('text').value=c.text; $('credit').value=c.credit; $('vref').value=c.vref||''; $('vver').value=c.ver||'kjv'; c.qty=snap(c.qty); qtyOpt(c.qty); $('qtysel').value=String(c.qty); toWhere();
+function push(){ syncSame(); var c=cur(); if(typeof sadjRead==='function'&&$('sadjs')) sadjRead(); $('url').value=c.url; $('q1').value=c.q1; $('q2').value=c.q2; $('name').value=c.name; $('text').value=c.text; $('credit').value=c.credit; $('vref').value=c.vref||''; $('vver').value=c.ver||'kjv'; c.qty=snap(c.qty); qtyOpt(c.qty); $('qtysel').value=String(c.qty); toWhere();
   $('cname').value=S.contact.name; $('cemail').value=S.contact.email; $('cphone').value=S.contact.phone; $('ccity').value=S.contact.city||''; $('cnote').value=S.contact.note;
   setDest(c);
   document.querySelectorAll('#by button').forEach(function(x){ x.setAttribute('aria-pressed',String(x.getAttribute('data-by')===c.by)); }); ['logo','name','text'].forEach(function(k){ $('by-'+k).hidden=k!==c.by; });
@@ -200,7 +208,7 @@ $('delcard').addEventListener('click',function(){ if(S.cards.length<2) return; S
 /* ---- saving: this browser at once, and the server a moment later (so the order can be picked up from the link on any device) ---- */
 var tl=null, ts=null, saved=0;
 function slim(){ var o=JSON.parse(JSON.stringify(S)); return o; }
-function syncSame(){ var f=S.cards[0]; S.cards.forEach(function(c,i){ if(!i) return; if(c.sameQr) ['url','qrTo','q1','q2'].forEach(function(k){ c[k]=f[k]; }); if(c.sameBy) ['by','logoId','logoName','logoAspect','name','text','credit'].forEach(function(k){ c[k]=f[k]; }); }); }
+function syncSame(){ var f=S.cards[0]; S.cards.forEach(function(c,i){ if(!i) return; if(c.sameQr) ['url','qrTo','q1','q2'].forEach(function(k){ c[k]=f[k]; }); if(c.sameBy) ['by','logoId','logoName','logoAspect','name','text','credit','two','cadj'].forEach(function(k){ c[k]=f[k]; }); }); }
 function persist(){ pull(); syncSame(); if(EDIT){ try{ localStorage.setItem('mf-sponsor-edit-'+EDIT.id,JSON.stringify(slim())); }catch(e){} renderCards(); return; } clearTimeout(tl); tl=setTimeout(function(){ try{ localStorage.setItem(STORE,JSON.stringify({id:DID,S:slim()})); }catch(e){ try{ var o=slim(); o.logos={}; localStorage.setItem(STORE,JSON.stringify({id:DID,S:o})); }catch(x){} } },300);
   clearTimeout(ts); ts=setTimeout(toServer,1800); renderCards(); }
 function toServer(){ var body=JSON.stringify({id:DID||undefined,data:Object.assign(slim(),{})}); if(body.length>4400000){ $('savednote').textContent='Saved on this device (the logos are too large to save online: use smaller pictures).'; $('savebar').hidden=false; return; }
@@ -212,7 +220,7 @@ $('copylink').addEventListener('click',function(){ var i=$('savelink'); i.select
 function adopt(o){ if(!o||!o.cards||!o.cards.length) return false; S={cards:o.cards.map(function(c){ return Object.assign(blank(),c); }),active:Math.min(o.active||0,o.cards.length-1),logos:o.logos||{},contact:Object.assign({name:'',email:'',phone:'',city:'',note:''},o.contact||{})}; return true; }
 /* change a request already sent: /sponsor/?edit=<id>.<token> (the link in the sponsor's email) */
 function fromOrder(o){ var logos={}; var cards=o.items.map(function(it){ var c=blank(), cf=it.cfg||{}, qw=(cf.qrWords||'').split('\n'), d=it.dest||{type:'self'}, v=cf.verse||null;
-  c.choose=(it.fish==='CHOOSE'); c.word=c.choose?'':it.title; c.fishId=c.choose?'':it.fish; c.qty=it.qty; c.qrTo=cf.qrTo==='app'?'app':'link'; c.url=c.qrTo==='app'?'':it.url; c.q1=qw[0]||''; c.q2=qw[1]||''; c.by=cf.by||'text'; c.name=cf.name||''; c.text=cf.text||''; c.credit=cf.credit||'Sponsored by'; c.logoAspect=cf.logoAspect||0;
+  c.two=!!cf.two; c.cadj=cf.cadj||null; c.choose=(it.fish==='CHOOSE'); c.word=c.choose?'':it.title; c.fishId=c.choose?'':it.fish; c.qty=it.qty; c.qrTo=cf.qrTo==='app'?'app':'link'; c.url=c.qrTo==='app'?'':it.url; c.q1=qw[0]||''; c.q2=qw[1]||''; c.by=cf.by||'text'; c.name=cf.name||''; c.text=cf.text||''; c.credit=cf.credit||'Sponsored by'; c.logoAspect=cf.logoAspect||0;
   if(it.logo){ var id=hash(it.logo); logos[id]=it.logo; c.logoId=id; c.logoName='Your logo'; } if(v){ c.verse={ref:v.ref,top:v.top,bot:v.bot,ver:v.ver}; c.vref=v.ref; c.ver=v.ver; }
   if(d.type==='hub'){ c.dest='hub'; c.hubId=d.hubId; c.hubName=d.hubName; } if(d.type==='new'){ c.dest='new'; c.nOrg=d.nominee.org; c.nName=d.nominee.name; c.nEmail=d.nominee.email; c.nPhone=d.nominee.phone||''; c.nCity=d.nominee.city; } return c; });
   S={cards:cards,active:0,logos:logos,contact:Object.assign({name:'',email:'',phone:'',city:'',note:''},o.contact)}; }
@@ -315,6 +323,13 @@ $('ncount').addEventListener('change',function(){ var v=this.value; if(v==='more
 [].forEach.call(document.querySelectorAll('input[name=pick]'),function(r){ r.addEventListener('change',function(){ var we=this.value==='we'; S.cards.forEach(function(c){ c.choose=we; }); push(); renderCards(); draw(); persist(); if(we) say('MannaFish will choose the words. They are shown on the order, and a proof comes back for approval.','ok'); }); });
 $('qtyall').addEventListener('click',function(){ var q=cur().qty; S.cards.forEach(function(c){ c.qty=q; }); totalSync(); renderCards(); persist(); say('Every word is now '+q+'.','ok'); });
 function openStep(i){ var st=document.querySelectorAll('.step')[i]; if(st) st.classList.remove('col'); }
+/* ---- the sponsor line: size, stretch, place and two lines, by hand ---- */
+function sadjRead(){ var c=cur(), a=(c.cadj&&c.cadj.sponsor)||{}; $('sadjs').value=a.s||100; $('sadjx').value=a.sx||100; $('sadjy').value=a.dy||0; $('sadjd').value=a.dx||0; $('sadj2').checked=!!c.two; sadjText(); }
+function sadjText(){ $('sadjst').textContent='· '+$('sadjs').value+'%'; $('sadjxt').textContent='· '+$('sadjx').value+'%'; $('sadjyt').textContent='· '+$('sadjy').value+' mm'; $('sadjdt').textContent='· '+$('sadjd').value+' mm'; }
+function sadjSet(){ var c=cur(), s=+$('sadjs').value, sx=+$('sadjx').value, dy=+$('sadjy').value, dx=+$('sadjd').value; c.cadj=(s===100&&sx===100&&!dy&&!dx)?null:{sponsor:{s:s,sx:sx,dx:dx,dy:dy}}; c.two=$('sadj2').checked; sadjText(); draw(); persist(); }
+['sadjs','sadjx','sadjy','sadjd'].forEach(function(id){ $(id).addEventListener('input',sadjSet); }); $('sadj2').addEventListener('change',sadjSet);
+$('sadjr').addEventListener('click',function(){ var c=cur(); c.cadj=null; c.two=false; sadjRead(); draw(); persist(); });
+$('sadjdone').addEventListener('click',function(){ $('sadj').open=false; });
 function useVerse(){ var c=cur(), raw=$('vref').value.trim(), ver=$('vver').value; c.ver=ver; if(!raw){ c.verse=null; c.vref=''; vnote('The fish comes with its own verse.'); draw(); persist(); fillVerseSelect(); return; }
   if(!c.word){ vnote('Choose a word first.','bad'); return; } var r=parseRef(raw); if(!r){ vnote('We could not read that address. Try it like Proverbs 24:3.','bad'); return; } if(r.v2-r.v1>2){ vnote('Please choose one to three verses.','bad'); return; }
   verseText(r,ver).then(function(text){ return applyVerse(refName(r),text,ver); }).catch(function(){ vnote(ver==='kjv'?'We could not find that verse. Check the address.':'We could not get that verse in the '+verName(ver)+' just now. Check the address, or try the King James Version.','bad'); }); }
@@ -362,7 +377,7 @@ $('logo').addEventListener('change',function(){ var f=this.files&&this.files[0];
     im.onerror=function(){ say('We could not read that picture.','bad'); }; im.src=src; }; rd.readAsDataURL(f); });
 /* ---- sending ---- */
 function item(c){ var cf=cfgOf(c); return {fish:c.choose?'CHOOSE':c.fishId,title:c.choose?'MannaFish chooses':c.word,name:cf.by==='name'?c.name:(cf.by==='text'?c.text:''),url:cf.url,label:cf.qrWords.replace(/\n/g,' '),logo:cf.by==='logo'?cf.logo:'',qty:c.qty,
-  cfg:{by:cf.by,qrTo:c.qrTo,logoAspect:c.logoAspect||0,credit:cf.credit,text:c.text,name:c.name,qrWords:cf.qrWords,verse:c.verse||undefined},
+  cfg:{two:!!c.two,cadj:c.cadj||undefined,by:cf.by,qrTo:c.qrTo,logoAspect:c.logoAspect||0,credit:cf.credit,text:c.text,name:c.name,qrWords:cf.qrWords,verse:c.verse||undefined},
   dest:c.dest==='hub'?{type:'hub',hubId:c.hubId,hubName:c.hubName}:c.dest==='new'?{type:'new',nominee:{org:c.nOrg,name:c.nName,email:c.nEmail,phone:c.nPhone,city:c.nCity}}:{type:'self'}}; }
 $('send').addEventListener('click',function(){ pull(); syncSame(); var bad=-1; S.cards.forEach(function(c,i){ if(bad<0&&problem(c)) bad=i; });
   if(bad>=0){ S.active=bad; push(); renderCards(); draw(); var pr=problem(S.cards[bad]); openStep(/word/i.test(pr)&&!/nominat/i.test(pr)?1:/address/i.test(pr)?2:/place|email/i.test(pr)?4:3); say('Word '+(bad+1)+': '+pr+'.','bad'); return; }

@@ -45,9 +45,13 @@
     sub('GST', esc(d.gst || '')); sub('HST', esc(d.hst || ''));
     swapRefs(d, cfg).forEach(function (r, i) { sub('R' + (i + 1) + 'N', esc(r[0])); sub('R' + (i + 1) + 'Q', esc(r[1])); });
     var cr = String(cfg.credit || 'Sponsored by').replace(/\s+/g, ' ').trim();
-    if (cr.length > 20) {   /* a longer line stays on one row: it is squeezed in width to fit (then made a little smaller if it must be); the logo keeps its size */
+    if (cfg.two && cr.indexOf(' ') > 0) {   /* two lines, split at the space nearest the middle (a longer line is easier to read this way) */
+      var mid = cr.length / 2, best = -1; for (var i = 0; i < cr.length; i++) if (cr[i] === ' ' && (best < 0 || Math.abs(i - mid) < Math.abs(best - mid))) best = i;
+      h = h.replace('<div class="sb" data-b="sponsor">§CREDIT§</div>', '<div class="sb sxf" data-b="sponsor" style="white-space:nowrap;width:100%;min-width:0;display:block;text-align:center;line-height:1.08"><span style="display:inline-block;flex:none;transform-origin:center">' + esc(cr.slice(0, best)) + '<br>' + esc(cr.slice(best + 1)) + '</span></div>').replace('<div class="sl" data-b="logo">', '<div class="sl" data-b="logo" style="height:14.4mm">');
+      cr = ' '; }
+    else if (cr.length > 20) {   /* a longer line stays on one row: it is squeezed in width to fit (then made a little smaller if it must be); the logo keeps its size */
       h = h.replace('<div class="sb" data-b="sponsor">§CREDIT§</div>', '<div class="sb sxf" data-b="sponsor" style="white-space:nowrap;width:100%;min-width:0;display:flex;justify-content:center"><span style="display:inline-block;flex:none;transform-origin:center">§CREDIT§</span></div>'); }
-    sub('CREDIT', esc(cr) || 'Sponsored by');
+    sub('CREDIT', esc(cr.trim()) || 'Sponsored by');
     sub('NAME', esc(cfg.by === 'text' ? cfg.text : cfg.name || ''));
     sub('LOGO', cfg.logo || '');
     sub('LABL', esc(cfg.qrWords || 'Visit us\nto learn more').replace(/\n/g, '<br>')); sub('LABR', 'Free MannaFish<br>Devotional');
@@ -55,7 +59,9 @@
     if (!d.gst) h = h.replace(/<div class="st4" data-b="gstrong">[^<]*<\/div>/, ''); if (!d.hst) h = h.replace(/<div class="st4" data-b="hstrong">[^<]*<\/div>/, '');
     return h; }
   /* a wide logo (wider than about 1.7 times its height, e.g. "Walmart, Monkey Junction, store 5241") may use the whole width of the middle of the card, so it is not scaled down like a round badge */
-  function adjFor(cfg) { var a = JSON.parse(JSON.stringify(K.adj)); if (cfg.logoAspect > 1.7 && cfg.by === 'logo') a.logo = { dy: -0.8, s: 100 }; return a; }
+  function adjFor(cfg) { var a = JSON.parse(JSON.stringify(K.adj)); if (cfg.logoAspect > 1.7 && cfg.by === 'logo') a.logo = { dy: -0.8, s: 100 };
+    if (cfg.cadj && typeof cfg.cadj === 'object') Object.keys(cfg.cadj).forEach(function (k) { a[k] = Object.assign({}, a[k] || {}, cfg.cadj[k]); });   /* the sponsor's (or Ken's) own size, stretch and place for a block, e.g. the sponsor line */
+    return a; }
   var styled = false;
   function addStyle() { if (styled) return; styled = true; var s = document.createElement('style'); s.id = 'mfkit-css'; s.textContent = K.css; document.head.appendChild(s); }
   /* puts the back on the page (millimetres, the same size as the printed card) and runs the fit step once the fonts are in */

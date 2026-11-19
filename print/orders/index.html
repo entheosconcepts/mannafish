@@ -93,7 +93,7 @@ h1{font-size:1.5rem;margin:6px 0 14px}.o{border:1px solid rgba(255,255,255,.16);
   /* the printer's files for one card, made here in the browser from the order (print/kit/kit.js): decal, backing front, cut lines, back, notes */
   out.addEventListener('click',function(e){ var b=e.target.closest('button[data-o]'); if(!b) return; var o=ORD[b.dataset.o], n=+b.dataset.n, x=o&&o.items[n-1]; if(!x||!x.cfg) return;
     var box=b.parentNode, st=box.querySelector('.st'), direct=box.querySelector('.direct').checked; b.disabled=true; st.textContent=' Making the files…';
-    var cfg={word:x.title,fishId:x.fish,by:x.cfg.by,logo:x.logo,name:x.cfg.name,text:x.cfg.text,credit:x.cfg.credit,qrWords:x.cfg.qrWords,verse:x.cfg.verse,logoAspect:x.cfg.logoAspect,
+    var cfg={word:x.title,fishId:x.fish,by:x.cfg.by,logo:x.logo,name:x.cfg.name,text:x.cfg.text,credit:x.cfg.credit,qrWords:x.cfg.qrWords,verse:x.cfg.verse,logoAspect:x.cfg.logoAspect,two:x.cfg.two,cadj:x.cfg.cadj,
       qrLeft:direct?x.url:'https://manna-fish.com/q/'+o.id+'-'+n, qrRight:direct?'https://manna-fish.com/devotional':'https://manna-fish.com/q/devo'};
     MFkit.files(cfg,{id:o.id+'-'+n,dpi:1200}).then(function(list){ return MFkit.zip(list).then(function(z){ var a=document.createElement('a'), nm=o.id+'-'+n+'-'+x.title+'-print-files.zip'; a.href=URL.createObjectURL(z); a.download=nm; document.body.appendChild(a); a.click(); a.remove();
       st.textContent=' Done: '+nm; b.disabled=false; }); }).catch(function(err){ st.textContent=' Could not make the files ('+(err&&err.message||err)+').'; b.disabled=false; }); });
@@ -110,7 +110,7 @@ h1{font-size:1.5rem;margin:6px 0 14px}.o{border:1px solid rgba(255,255,255,.16);
   /* front and back of one card, as the sponsor saw it */
   out.addEventListener('click',function(e){ var b=e.target.closest('button[data-pv]'); if(!b) return; var o=ORD[b.dataset.pv], x=o.items[+b.dataset.n-1], box=b.parentNode.nextSibling; if(!box.hidden){ box.hidden=true; b.textContent='Show front and back'; return; } if(!x.cfg){ return; }
     box.hidden=false; b.textContent='Hide'; box.innerHTML='<div class="stg"><div class="bk"></div></div><div class="stg fr"></div>'; var bk=box.querySelector('.bk'), fr=box.querySelector('.fr'), cf=x.cfg;
-    var conf={word:x.title,fishId:x.fish,by:cf.by,logo:x.logo,name:cf.name,text:cf.text,credit:cf.credit,qrWords:cf.qrWords,verse:cf.verse,logoAspect:cf.logoAspect,url:x.url,qrTo:cf.qrTo};
+    var conf={word:x.title,fishId:x.fish,by:cf.by,logo:x.logo,name:cf.name,text:cf.text,credit:cf.credit,qrWords:cf.qrWords,verse:cf.verse,logoAspect:cf.logoAspect,two:cf.two,cadj:cf.cadj,url:x.url,qrTo:cf.qrTo};
     MFkit.mount(bk,conf).then(function(){ var card=bk.querySelector('.card'); if(!card) return; var k=bk.parentNode.clientWidth/card.offsetWidth; bk.style.transform='scale('+k+') translate('+(-card.offsetLeft)+'px,'+(-card.offsetTop)+'px)'; }).catch(function(){ bk.textContent='Back could not be drawn.'; });
     MFkit.frontSvg(conf).then(function(svg){ fr.innerHTML=svg; }).catch(function(){ fr.textContent='Front could not be drawn.'; }); });
 

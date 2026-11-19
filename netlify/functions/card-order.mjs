@@ -31,6 +31,9 @@ async function limited(ip, what) {
     if (n >= 10) return true; await s.set(k, String(n + 1)); } catch (e) { /* never blocks */ }
   return false;
 }
+// the sponsor line's own size, stretch and place (Ken, 19 Nov): only the sponsor block, only numbers in a sane range
+const num = (v, lo, hi, d) => (isFinite(v) ? Math.max(lo, Math.min(hi, +Number(v).toFixed(2))) : d);
+const cleanAdj = (a) => { const x = a && a.sponsor; return x && typeof x === 'object' ? { sponsor: { s: num(x.s, 30, 300, 100), sx: num(x.sx, 30, 400, 100), dx: num(x.dx, -40, 40, 0), dy: num(x.dy, -20, 20, 0) } } : undefined; };
 // one card, cleaned
 export function cleanItem(x) {
   const qty = Math.max(MIN, Math.round((Number(x.qty) || MIN) / 100) * 100);
@@ -39,7 +42,7 @@ export function cleanItem(x) {
   const c = x.cfg && typeof x.cfg === 'object' ? x.cfg : null;
   const cfg = c ? { qrTo: c.qrTo === 'app' ? 'app' : 'link', logoAspect: isFinite(c.logoAspect) ? Math.max(0, Math.min(12, +Number(c.logoAspect).toFixed(3))) : 0, by: ['logo', 'name', 'text'].includes(c.by) ? c.by : 'text', credit: clean(c.credit, 100), text: clean(c.text, 120), name: clean(c.name, 60),
     verse: c.verse && typeof c.verse === 'object' && c.verse.top ? { ref: clean(c.verse.ref, 40), top: clean(c.verse.top, 130), bot: clean(c.verse.bot, 130), ver: ['kjv', 'web', 'asv', 'ylt', 'darby', 'bbe', 'dra'].includes(c.verse.ver) ? c.verse.ver : 'kjv' } : undefined,
-    qrWords: String(c.qrWords == null ? '' : c.qrWords).replace(/[\u0000-\u0009\u000b-\u001f]/g, ' ').split('\n').slice(0, 2).map((l) => clean(l, 24)).join('\n') } : null;
+    two: c.two === true, cadj: cleanAdj(c.cadj), qrWords: String(c.qrWords == null ? '' : c.qrWords).replace(/[\u0000-\u0009\u000b-\u001f]/g, ' ').split('\n').slice(0, 2).map((l) => clean(l, 24)).join('\n') } : null;
   const d = x.dest && typeof x.dest === 'object' ? x.dest : {};
   let dest = { type: 'self' };
   if (d.type === 'hub') dest = { type: 'hub', hubId: clean(d.hubId, 40), hubName: clean(d.hubName, 80), city: clean(d.city, 60) };
