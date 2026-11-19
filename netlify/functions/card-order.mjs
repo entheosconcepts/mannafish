@@ -67,9 +67,10 @@ export default async (req, context) => {
   const url = new URL(req.url), store = db(), origin = url.origin;
   if (req.method === 'GET') {
     const id = url.searchParams.get('id'), t = url.searchParams.get('t');
-    if (id && t) {   // the sponsor's own request, to change it
-      const o = await store.get('o/' + clean(id, 40), { type: 'json' }); if (!o || !o.edit || o.edit !== await hash(t)) return bad('We could not find that request.', 404);
-      return Response.json({ order: strip(o), locked: LOCKED.includes(o.status) }, { headers: NS });
+    const admin = !!KEY() && url.searchParams.get('k') === KEY();
+    if (id && (t || admin)) {   // the sponsor's own request, to change it (or Ken's, with the admin key)
+      const o = await store.get('o/' + clean(id, 40), { type: 'json' }); if (!o || (!admin && (!o.edit || o.edit !== await hash(t)))) return bad('We could not find that request.', 404);
+      return Response.json({ order: strip(o), locked: !admin && LOCKED.includes(o.status), admin }, { headers: NS });
     }
     if (!KEY() || url.searchParams.get('k') !== KEY()) return bad('Not allowed', 403);
     const { blobs } = await store.list({ prefix: 'o/' }), out = [];
@@ -121,12 +122,13 @@ export default async (req, context) => {
   const sum = (it) => `<li><b>${it.qty} × ${esc(it.title)}</b>${it.name ? ' · ' + esc(it.name) : ''}${it.url ? ' · ' + esc(it.url) : ''}${placeOf(it) ? ' · <b>for ' + esc(placeOf(it)) + ' (nomination)</b>' : ''}${it.logo ? ' · logo in the order' : ''}</li>`;
 
   if (b.edit) {   // a change
-    const e = b.edit, o = await store.get('o/' + clean(e.id, 40), { type: 'json' });
-    if (!o || !o.edit || o.edit !== await hash(String(e.t || ''))) return bad('We could not find that request.', 404);
-    if (LOCKED.includes(o.status)) return bad('This request is already being printed. Please email us and we will see what we can do.', 409);
+    const e = b.edit, o = await store.get('o/' + clean(e.id, 40), { type: 'json' }), adm = !!KEY() && e.k === KEY();
+    if (!o || (!adm && (!o.edit || o.edit !== await hash(String(e.t || ''))))) return bad('We could not find that request.', 404);
+    if (!adm && LOCKED.includes(o.status)) return bad('This request is already being printed. Please email us and we will see what we can do.', 409);
     const before = o.items; o.items = items.map((it) => { const old = before.find((x) => destKey(x.dest) === destKey(it.dest) && x.nom); if (it.dest.type !== 'self' && old) it.nom = old.nom; return it; });
     o.contact = contact; o.total = total; o.status = o.status === 'proof' ? 'talking' : o.status; await nominate(store, o, origin);
-    const what = diffText(before, o.items); (o.rev = o.rev || []).push({ at: Date.now(), what }); await store.setJSON('o/' + o.id, o);
+    const what = diffText(before, o.items); (o.rev = o.rev || []).push({ at: Date.now(), what: (adm ? 'changed by MannaFish: ' : '') + what }); await store.setJSON('o/' + o.id, o);
+    if (adm) { await store.setJSON('o/' + o.id, o); return Response.json({ ok: true, id: o.id, total }, { headers: NS }); }   // Ken's own change: logged, no emails
     await mail(TO(), `MannaFish card order ${o.id} CHANGED · ${total} decals · ${name}`, `<p>${esc(name)} changed request ${esc(o.id)}: ${esc(what)}.</p><ul>${o.items.map(sum).join('')}</ul><p>See it: ${esc(origin)}/print/orders/</p>`);
     await mail(email, 'Your MannaFish request was updated', wrap(`<p>Thank you, ${esc(name)}. Your request ${esc(o.id)} is updated: ${total} decals in ${o.items.length} ${o.items.length === 1 ? 'design' : 'designs'}.</p><p>You can change it again until printing starts: <a href="${esc(origin + '/?edit=' + o.id + '.' + e.t + '#sponsor')}">change my request</a>.</p>`), name);
     return Response.json({ ok: true, id: o.id, total }, { headers: NS });
