@@ -148,3 +148,5 @@ Nominations that get no answer: reminder email at 2 days, then a daily 'call / m
 **18 Nov: pushed live (private preview, main 2e4c9ad5):** nominations, nominee page, editing, sponsorship history, follow-up, header sign. Pricing rule is in docs/HUB-PACKAGE.md; waiting on Ken: StickerApp quotes for 500/1,000 (their site is blocked here, so he pastes a screenshot).
 
 **19 Nov: pushed live (private preview, main 660c9909):** sponsor builder (quantity first, words, same-as-word-1, line builder), print batch and the short StickerApp letter, K-Tech Build on Matthew 7:24 (X010), Bible app menu and fish card, Delight fish, wider sponsor line. Waiting on Ken: Greek for Build (G3618?), real K-Tech logo, StickerApp quotes, Hub vs Embassy answers recorded in docs/HUB-PACKAGE.md.
+
+**19 Nov (later): pushed live (main 44bdb3c7):** Build's Greek is G3618; sponsor line in narrow letters with size, stretch, place, two lines and full width; QR codes can be resized and moved anywhere. Waiting on Ken: real K-Tech logo, StickerApp quotes and answer to the letter, Hub package costs.
