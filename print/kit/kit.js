@@ -61,7 +61,7 @@
   /* a wide logo (wider than about 1.7 times its height, e.g. "Walmart, Monkey Junction, store 5241") may use the whole width of the middle of the card, so it is not scaled down like a round badge */
   function adjFor(cfg) { var a = JSON.parse(JSON.stringify(K.adj)); if (cfg.logoAspect > 1.7 && cfg.by === 'logo') a.logo = { dy: -0.8, s: 100 };
     if (cfg.cadj && typeof cfg.cadj === 'object') var lg = cfg.cadj && cfg.cadj.logo; if (lg) { a.logo = Object.assign({}, a.logo || {}); a.logo.s = (a.logo.s || 100) * ((+lg.s || 100) / 100); a.logo.dx = (a.logo.dx || 0) + (+lg.dx || 0); a.logo.dy = (a.logo.dy || 0) + (+lg.dy || 0); }   /* the sponsor's logo bigger or smaller than the layout's size, moved by hand */
-    Object.keys(cfg.cadj).forEach(function (k) { if (k === 'qrOut' || k === 'logo') return; a[k] = Object.assign({}, a[k] || {}, cfg.cadj[k]); });
+    if (cfg.cadj && typeof cfg.cadj === 'object') Object.keys(cfg.cadj).forEach(function (k) { if (k === 'qrOut' || k === 'logo') return; a[k] = Object.assign({}, a[k] || {}, cfg.cadj[k]); });
     var q = cfg.cadj && cfg.cadj.qrOut; if (q) {   /* the QR codes (and their labels) moved, resized and put anywhere, in mm and percent */
       [['qrL', 'labL', -(+q.l || 0), +q.ly || 0, +q.ls || 100], ['qrR', 'labR', +q.r || 0, +q.ry || 0, +q.rs || 100]].forEach(function (x) {
         var up = (100 - x[4]) / 100 * 7.6;   /* a smaller code shrinks toward its middle, so its label comes up with it */
