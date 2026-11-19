@@ -76,7 +76,7 @@ html.embed input[type=text],html.embed input[type=url],html.embed input[type=ema
 <div>
   <section class="step" id="orderbar"><h2>Your sponsorship <small id="tot"></small></h2><p class="h">Each design is its own card. Pick a card to work on it, or add another. Everything is saved as you go.</p>
     <div class="cardlist" id="cardlist" role="tablist" aria-label="Your cards"></div>
-    <div class="row"><button type="button" class="btn o" id="newcard">+ Add another card</button><button type="button" class="btn o" id="dupcard">Copy this card</button><button type="button" class="btn o" id="delcard">Remove this card</button></div>
+    <div class="row"><button type="button" class="btn o" id="newcard">+ Add another card</button><button type="button" class="btn o" id="dupcard">Copy this card</button><button type="button" class="btn o" id="delcard">Remove this card</button><button type="button" class="btn y" id="savework" hidden>Save my work</button></div>
     <div class="savebar" id="savebar" hidden><span id="savednote"></span><span class="savelink"><input type="text" id="savelink" readonly aria-label="Your link to come back to this order"><button type="button" class="btn o" id="copylink">Copy link</button></span></div></section>
   <section class="step"><h2><i>1</i> Choose your word</h2><p class="h">This is the big word in the middle of the fish. Its word study (the Greek and Hebrew, and four verses) fills in by itself on the back.</p>
     <input type="text" id="wsearch" placeholder="Search words: Build, Trust, Seek…" autocomplete="off" aria-label="Search words">
@@ -186,7 +186,7 @@ $('delcard').addEventListener('click',function(){ if(S.cards.length<2) return; S
 /* ---- saving: this browser at once, and the server a moment later (so the order can be picked up from the link on any device) ---- */
 var tl=null, ts=null, saved=0;
 function slim(){ var o=JSON.parse(JSON.stringify(S)); return o; }
-function persist(){ pull(); if(EDIT){ renderCards(); return; } clearTimeout(tl); tl=setTimeout(function(){ try{ localStorage.setItem(STORE,JSON.stringify({id:DID,S:slim()})); }catch(e){ try{ var o=slim(); o.logos={}; localStorage.setItem(STORE,JSON.stringify({id:DID,S:o})); }catch(x){} } },300);
+function persist(){ pull(); if(EDIT){ try{ localStorage.setItem('mf-sponsor-edit-'+EDIT.id,JSON.stringify(slim())); }catch(e){} renderCards(); return; } clearTimeout(tl); tl=setTimeout(function(){ try{ localStorage.setItem(STORE,JSON.stringify({id:DID,S:slim()})); }catch(e){ try{ var o=slim(); o.logos={}; localStorage.setItem(STORE,JSON.stringify({id:DID,S:o})); }catch(x){} } },300);
   clearTimeout(ts); ts=setTimeout(toServer,1800); renderCards(); }
 function toServer(){ var body=JSON.stringify({id:DID||undefined,data:Object.assign(slim(),{})}); if(body.length>4400000){ $('savednote').textContent='Saved on this device (the logos are too large to save online: use smaller pictures).'; $('savebar').hidden=false; return; }
   fetch('/api/sponsor-draft',{method:'POST',headers:{'content-type':'application/json'},body:body}).then(function(r){ return r.json().then(function(j){ return {r:r,j:j}; }); }).then(function(o){ if(!o.r.ok||!o.j.id) throw 0; DID=o.j.id;
@@ -202,8 +202,8 @@ function fromOrder(o){ var logos={}; var cards=o.items.map(function(it){ var c=b
   if(d.type==='hub'){ c.dest='hub'; c.hubId=d.hubId; c.hubName=d.hubName; } if(d.type==='new'){ c.dest='new'; c.nOrg=d.nominee.org; c.nName=d.nominee.name; c.nEmail=d.nominee.email; c.nPhone=d.nominee.phone||''; c.nCity=d.nominee.city; } return c; });
   S={cards:cards,active:0,logos:logos,contact:Object.assign({name:'',email:'',phone:'',city:'',note:''},o.contact)}; }
 function restoreEdit(e){ var m=/^(C[0-9A-Z]+)\.([a-f0-9]{32}|admin)$/.exec(e||''); if(!m) return Promise.resolve(false); var adm=m[2]==='admin';
-  return fetch('/api/card-order?id='+m[1]+(adm?'&k='+encodeURIComponent(adminKey()):'&t='+m[2]),{cache:'no-store'}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error); return j; }); }).then(function(j){ fromOrder(j.order); EDIT=adm?{id:m[1],k:adminKey()}:{id:m[1],t:m[2]};
-    $('savednote').textContent=j.locked?'This request is already being printed, so it can no longer be changed here. Please email us.':'You are changing request '+m[1]+'. Make your changes and press "Save my changes".'; $('savebar').hidden=false; $('savelink').hidden=true; $('copylink').hidden=true; if(j.locked) $('send').disabled=true; return true; })
+  return fetch('/api/card-order?id='+m[1]+(adm?'&k='+encodeURIComponent(adminKey()):'&t='+m[2]),{cache:'no-store'}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error); return j; }); }).then(function(j){ fromOrder(j.order); EDIT=adm?{id:m[1],k:adminKey()}:{id:m[1],t:m[2]}; var restored=false; try{ var sv=JSON.parse(localStorage.getItem('mf-sponsor-edit-'+m[1])||'null'); if(sv&&sv.cards&&sv.cards.length&&adopt(sv)) restored=true; }catch(e){}
+    $('savednote').textContent=j.locked?'This request is already being printed, so it can no longer be changed here. Please email us.':'You are changing request '+m[1]+(restored?' (your unsaved changes from earlier are back). ':'. ')+'Make your changes and press "Save my changes".'; $('savebar').hidden=false; $('savelink').hidden=true; $('copylink').hidden=true; if(j.locked) $('send').disabled=true; return true; })
    .catch(function(){ $('savednote').textContent='We could not find that request. It may have been mistyped.'; $('savebar').hidden=false; $('savelink').hidden=true; $('copylink').hidden=true; return false; }); }
 function restore(){ var pe=new URLSearchParams(location.search).get('edit'); if(pe) return restoreEdit(pe).then(function(ok){ return ok; }); var p=new URLSearchParams(location.search), id=p.get('d'), loc=null; try{ loc=JSON.parse(localStorage.getItem(STORE)||'null'); }catch(e){}
   var fromLocal=function(){ if(loc&&loc.S&&adopt(loc.S)){ DID=loc.id||''; return true; } return false; };
@@ -241,7 +241,7 @@ function verseText(r,ver){ if(ver==='kjv') return fetch('/fish-lang/bible/kjv/'+
 function refName(r){ return r.book+' '+r.c+':'+r.v1+(r.v2>r.v1?'-'+r.v2:''); }
 /* a verse chosen for the fish: the word (in any of its forms: build, built, builded) has to be in it; cut to the two curves the way "Make it a MannaFish" does */
 /* verses whose two lines were set by hand (Ken, 19 Nov: Matthew 7:24 for K-Tech's Build, squeezed to fit the whole thought on the fish) */
-var HANDLINES={'Matthew 7:24|kjv|BUILD':{top:'Whosoever heareth these sayings of mine, and doeth them,',bot:'I will liken him unto a wise man, which built his house upon a rock'}};
+var HANDLINES={'Matthew 7:24|kjv|BUILD':{top:'Whosoever heareth these sayings of mine, and doeth them,',bot:'I will liken him unto a wise man, which built his house upon a rock:'}};
 function applyVerse(ref,text,ver){ var c=cur(), m=formsRe(c.word).exec(text);
   if(!m){ vnote('“'+c.word+'” is not in '+ref+' in the '+verName(ver)+' wording. A MannaFish can only use the words of its own verse: pick another verse or version.','bad'); return Promise.resolve(); }
   return loadMake().then(function(){ var L=HANDLINES[ref+'|'+ver+'|'+c.word.toUpperCase()]||MFmake.lines(text,m[0].toLowerCase()); c.verse={ref:ref,top:L.top,bot:L.bot,ver:ver}; c.vref=ref; $('vref').value=ref; vnote(ref+' ('+verName(ver)+'): '+text,'ok'); draw(); persist(); fillVerseSelect(); lbShow(); }); }
@@ -326,7 +326,7 @@ $('send').addEventListener('click',function(){ pull(); var bad=-1; S.cards.forEa
   fetch('/api/card-order',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({edit:EDIT||undefined,items:S.cards.map(item),contact:{name:name,email:email,phone:S.contact.phone,city:S.contact.city,note:S.contact.note}})})
    .then(function(r){ return r.json().then(function(j){ return {r:r,j:j}; }); }).then(function(o){ $('send').disabled=false; if(!o.r.ok){ say(o.j.error||'That did not go through. Please try again.','bad'); return; }
      var cl=o.j.editToken?(EMB?location.origin+'/?edit='+o.j.id+'.'+o.j.editToken+'#sponsor':location.origin+'/sponsor/?edit='+o.j.id+'.'+o.j.editToken):'';
-     if(EDIT){ say(EDIT.k?'Saved the changes to order '+o.j.id+'. No email was sent to the sponsor.':'Updated. We emailed you the new request (number '+o.j.id+'), and told MannaFish.','ok'); return; }
+     if(EDIT){ try{ localStorage.removeItem('mf-sponsor-edit-'+EDIT.id); }catch(e){} say(EDIT.k?'Saved the changes to order '+o.j.id+'. No email was sent to the sponsor.':'Updated. We emailed you the new request (number '+o.j.id+'), and told MannaFish.','ok'); return; }
      try{ localStorage.removeItem(STORE); }catch(e){} try{ if(EMB) parent.postMessage({mfsb:'draft',id:''},'*'); else history.replaceState(null,'',location.pathname); }catch(e){} DID=''; var n=S.cards.length; S=fresh(); push(); renderCards(); draw(); $('savebar').hidden=true; if(cl){ $('savelink').value=cl; $('savednote').textContent='Change this request any time before printing starts with this link (we also emailed it to you):'; $('savebar').hidden=false; }
      say('Thank you. We have your sponsorship request for '+n+(n===1?' card':' cards')+' (number '+o.j.id+'). We will email you a proof to approve before anything is printed.','ok'); })
    .catch(function(){ $('send').disabled=false; say('We could not reach the server. Your order is saved here: please try again.','bad'); }); });
@@ -339,6 +339,8 @@ if(EMB) window.addEventListener('message',function(e){ if(e.source!==parent||!e.
 /* ---- inside the home page: keep the frame as tall as the builder ---- */
 if(EMB){ var lastH=0, tell=function(){ var h=Math.ceil(document.documentElement.scrollHeight); if(Math.abs(h-lastH)>2){ lastH=h; try{ parent.postMessage({mfsb:'h',h:h},'*'); }catch(e){} } };
   try{ new ResizeObserver(tell).observe(document.body); }catch(e){ setInterval(tell,600); } window.addEventListener('load',tell); setInterval(tell,1500); }
+if(adminKey()){ $('savework').hidden=false; }
+$('savework').addEventListener('click',function(){ pull(); if(EDIT){ persist(); say('Saved on this device. Press "Save my changes" to save it to the order itself.','ok'); } else { persist(); toServer(); say('Saved. The link above brings this order back on any device, until you send it.','ok'); } });
 /* ---- start ---- */
 S=fresh();
 loadHubs();
