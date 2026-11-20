@@ -1560,7 +1560,9 @@ body.par .bar #where,body.par .bar #ver,body.par .bar #say{display:none}body.par
   function bkDraw(keep){ var y=keep?$('bkDrop').scrollTop:0, lo=BKT==='nt'?39:0, hi=BKT==='nt'?66:39, cells=[], n, i;
     for(n=lo;n<hi;n++){ i=n-lo; cells.push('<button type="button" class="bkb'+(n===AT.b?' on':'')+'" data-bkn="'+n+'" aria-expanded="'+(BKOP===n)+'" style="--c:var(--'+bkGroup(n)+')'+(B[n][0].length>=15?';font-size:clamp(.66rem,3.1vw,.88rem)':'')+'">'+esc(B[n][0])+'</button>');}
     /* the chapter box goes after the end of its row: after the next book too when the tapped one is on the left */
-    var out=[]; for(n=lo;n<hi;n++){ out.push(cells[n-lo]); if(BKOP===n){ while((n-lo)%3!==2&&n+1<hi){ out.push(cells[n+1-lo]); n++; }
+    /* Ken, 20 Nov: the books read DOWN each column (Genesis, Exodus, Leviticus ... down the left, then the next column starts back at the top), not across */
+    var cnt=hi-lo, rows=Math.ceil(cnt/3), disp=[]; for(var r=0;r<rows;r++) for(var cc=0;cc<3;cc++){ var ix=cc*rows+r; if(ix<cnt) disp.push(lo+ix); }
+    var out=[]; for(var pp=0;pp<disp.length;pp++){ n=disp[pp]; out.push(cells[n-lo]); if(BKOP===n){ while(pp%3!==2&&pp+1<disp.length){ pp++; out.push(cells[disp[pp]-lo]); }
         var g='<div class="bkch"><p>'+esc(B[BKOP][0])+' · pick a chapter</p><div class="nums">'; for(var c=1;c<=B[BKOP][1];c++) g+='<button type="button" data-bkn="'+BKOP+'" data-bkc="'+c+'" class="'+(BKOP===AT.b&&c===AT.c?'on':'')+'">'+c+'</button>'; out.push(g+'</div></div>'); } }
     $('bkDrop').innerHTML='<div class="bkhd"><div class="bkseg" role="tablist" aria-label="Testament"><button type="button" role="tab" data-bkt="ot" aria-selected="'+(BKT==='ot')+'">OT</button><button type="button" role="tab" data-bkt="nt" aria-selected="'+(BKT==='nt')+'">NT</button></div><button type="button" class="bksr" data-bkmore="1" aria-label="Search, version and recent" title="Search, version and recent">&#128269;&#xFE0E;</button></div><div class="bklist">'+out.join('')+'</div>';
     $('bkDrop').scrollTop=y; }
