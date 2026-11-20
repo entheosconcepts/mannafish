@@ -306,7 +306,7 @@ async function make(id, browser) {
     // the same editor as a page for the Claude panel (a published Artifact): its own file, Save goes to the page's database
     fs.writeFileSync(path.join(PRINT, 'back-edit', id + '.artifact.html'), `<title>${esc((run.sponsor && run.sponsor.name) || id)} Back Editor</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n<style>${BACKCSS()}</style>\n<script>window.MF_RUN=${JSON.stringify(id)};window.MF_ARTIFACT=true</script>\n<div id="stage">${back}</div>\n<script>window.MF_FIT=function(){ document.querySelectorAll('.fit,.fitw').forEach(function(e){ e.style.fontSize=''; }); ${FIT.replace(/<\/script/g, '<\\/script')} }; MF_FIT(); if (document.fonts) document.fonts.ready.then(function(){ MF_FIT(); window.dispatchEvent(new Event('mf-fit')); });</script>\n<script>${fs.readFileSync(path.join(PRINT, 'back-edit.js'), 'utf8').replace(/<\/script/g, '<\\/script')}</script>`); }
   await pdf(back, bw, bh, name('4-back.pdf'), BACKCSS() + `.pg{width:${f2(bw)}mm!important;height:${f2(bh)}mm!important}`);
-  await shot(back, bw, bh, name('4-back.png'), { css: BACKCSS() + `.pg{width:${f2(bw)}mm!important;height:${f2(bh)}mm!important}`, scale: true, dpi: 600 });
+  await shot(back, bw, bh, name('4-back.png'), { css: BACKCSS() + `.pg{width:${f2(bw)}mm!important;height:${f2(bh)}mm!important}`, scale: true, dpi: 1200 });
 
   // where each QR goes
   const B = run.back || {}, links = {};
