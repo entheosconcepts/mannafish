@@ -4013,7 +4013,9 @@ window.MF=(function(){
     es:{skip:'Ir a compartir',catchT:'Pesca un pez y compártelo',catchS:'Al azar, o elige uno',again:'Pescar otro',pick:'Elegir un pez',find:'Buscar una palabra',shareThis:'Compartir este pez',gmail:'Gmail',outlook:'Outlook',mailapp:'App de correo',textHelp:'Una computadora no puede enviar mensajes de texto. El mensaje se copió: pégalo en los mensajes de tu teléfono, o envíalo por correo.',copiedM:'Mensaje copiado',none:'No se encontró ningún pez',sponsor:'Patrocina un Hub · Encuentra uno cerca'}};
   function shn(){ return SHN[MF.lang]||SHN.en; }
   var MOBILE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform));
-  function dvShareOpen(){ var T=dvT(); if(!T) return; var k=DV.k||cur, sy=(SAY[MF.lang]&&SAY[MF.lang][k])||SAY.en[k]; if(!sy) return;
+  /* Ken, 20 Nov: skipping to share while the devotional was playing left it playing; sharing now stops every sound and closes the player */
+  function dvHush(){ try{ if(!$('mfPlayer').hidden) plClose(); }catch(e){} try{ stopSpeak(); }catch(e){} try{ document.querySelectorAll('audio').forEach(function(a){ a.pause(); }); }catch(e){} }
+  function dvShareOpen(){ dvHush(); var T=dvT(); if(!T) return; var k=DV.k||cur, sy=(SAY[MF.lang]&&SAY[MF.lang][k])||SAY.en[k]; if(!sy) return;
     /* Ken, 16 Nov: sharing today's MannaFish sends the short /today link (it opens each person's own day's fish and devotional) and says it is a free word study devotional; a fish opened from a pinned link (?w= or ?fish=) is still shared as that fish */
     var pinned=/[?&](w|fish)=/.test(location.search), tail=MF.lang==='es'?' Un devocional gratuito de estudio de palabras:':(MF.lang==='en'?' A free word study devotional:':'');
     shareRender({w:titleIn(MF.lang,k),ref:sy[2],v:sy[1],url:pinned?dvShareLink(k):location.origin+'/today',msg:pinned?null:(T.msg+tail),promo:!!DV.promo}); }
@@ -4023,7 +4025,7 @@ window.MF=(function(){
         mail=MOBILE?'<a class="dgbtn" href="mailto:?subject='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(T.mail)+'</a>':'<button type="button" class="dgbtn" data-a="email">'+esc(T.mail)+'</button>';
     e.innerHTML='<div class="in"><b>'+esc(o.title||T.share)+'</b><div class="dvsb">'+txt+mail
       +'<button type="button" class="dgbtn" data-a="copy">'+esc(T.copy)+'</button>'+(navigator.share?'<button type="button" class="dgbtn" data-a="share">'+esc(T.more)+'</button>':'')+'</div>'
-      +'<div class="dvsb" style="margin-top:8px"><button type="button" class="dgbtn" data-a="other" style="background:none">🐟 '+(MF.lang==='es'?'Elegir otro pez':'Choose a different fish')+'</button><button type="button" class="dgbtn" data-a="mkfish" style="background:none">✏️ '+(MF.lang==='es'?'Crear un pez nuevo':'Make a new fish')+'</button></div>'
+      +'<div class="dvsb" style="margin-top:8px"><button type="button" class="dgbtn" data-a="other" style="background:none;line-height:1.25">🎣 '+(MF.lang==='es'?'A pescar':'Go Fish')+'<small style="display:block;font-weight:400;opacity:.8">'+(MF.lang==='es'?'Compartir otro pez':'Share a different fish')+'</small></button><button type="button" class="dgbtn" data-a="mkfish" style="background:none">✏️ '+(MF.lang==='es'?'Crear un pez nuevo':'Make a new fish')+'</button></div>'
       +(MOBILE?'':'<div class="dvsb" id="dvMailRow" hidden><a class="dgbtn" target="_blank" rel="noopener" href="https://mail.google.com/mail/?view=cm&fs=1&su='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(N.gmail)+'</a>'
       +'<a class="dgbtn" target="_blank" rel="noopener" href="https://outlook.live.com/mail/0/deeplink/compose?subject='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(N.outlook)+'</a>'
       +'<a class="dgbtn" href="mailto:?subject='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(N.mailapp)+'</a></div>')
@@ -4068,7 +4070,7 @@ window.MF=(function(){
   // up-front Share, and Skip to share under Listen / Read
   var sb=$('shBtn'); if(sb) sb.addEventListener('click',function(e){ e.stopPropagation(); dvShareOpen(); });
   var dg=document.querySelector('.devogo'); if(dg){ var k=document.createElement('button'); k.type='button'; k.className='dvskip'; k.id='dgSkip'; k.textContent=shn().skip+' \u2197\uFE0E'; dg.insertAdjacentElement('afterend',k);
-    k.addEventListener('click',function(){ try{ if(PL&&PL.src===$('dgListen')&&!$('mfPlayer').hidden) plToggle(); }catch(er){} dvShareOpen(); }); }
+    k.addEventListener('click',function(){ dvHush(); dvShareOpen(); }); }
   // the three dots on this page
   var more=$('siteMore'), menu=$('siteMenu'); if(menu){ var it=document.createElement('button'); it.type='button'; it.className='hbtn smi'; it.id='smCatch'; it.setAttribute('role','menuitem');
     it.innerHTML='<span class="hbi" aria-hidden="true">&#127907;&#xFE0E;</span><span class="hbt"><b>'+esc(shn().catchT)+'</b><small>'+esc(shn().catchS)+'</small></span>'; var st=$('smStories'); if(st) st.insertAdjacentElement('afterend',it); else menu.appendChild(it);
@@ -5418,7 +5420,7 @@ window.MF=(function(){
       +'<div class="gfrow"><a href="/bible/?r='+encodeURIComponent(x.ref)+'">📖 '+esc(P('bible'))+'</a><button type="button" data-gf="pray">🙏 '+esc(P('pray'))+'</button></div>'
       +'<div class="gfrow"><button type="button" data-gf="bk">🧺 '+esc(P('basket'))+'</button><button type="button" data-gf="sh">↗ '+esc(P('share'))+'</button></div>'
       +'<p class="gfmsg" aria-live="polite" style="text-align:center;min-height:1.2em;margin:4px 0 0;color:var(--gold,#f5d76e);font-weight:700"></p><div class="gfrow"><button type="button" data-gf="cast">🎣 '+esc(P('again'))+'</button><button type="button" data-gf="back">‹ '+esc(P('back'))+'</button></div>';
-    c.hidden=false; c.dataset.id=x.id; c.dataset.k=x.dev; d._x=x; d.querySelector('.in').scrollTop=0; }
+    c.hidden=false; c.dataset.id=x.id; c.dataset.k=x.dev; d._x=x; d.querySelector('.in').scrollTop=0; d.scrollTop=0; try{ c.scrollIntoView({block:'start'}); }catch(e){} }   /* Ken, 20 Nov: after choosing from the long list the card opened above the screen and it looked like nothing happened */
   function goFish(){ var l=MF.lang, T=GFT[l]||GFT.en, d=document.getElementById('gfSheet'), fl=/^(en|es|tl|zh|hi|el|de|ko|he|ar|ru)$/.test(l)?l:'en';
     if(!d){ d=document.createElement('div'); d.id='gfSheet'; d.className='gfsheet'; d.setAttribute('role','dialog'); d.setAttribute('aria-modal','true'); document.body.appendChild(d);
       /* Ken, 11 Nov (phone): inside the Bible page this is a small frame, so Go Fish was cut off and the Memory game opened inside it. While the sheet is open the frame asks the page for the whole screen, and its links open the whole page. */
