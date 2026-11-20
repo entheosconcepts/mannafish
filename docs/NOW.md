@@ -152,3 +152,4 @@ Nominations that get no answer: reminder email at 2 days, then a daily 'call / m
 **19 Nov (later): pushed live (main 44bdb3c7):** Build's Greek is G3618; sponsor line in narrow letters with size, stretch, place, two lines and full width; QR codes can be resized and moved anywhere. Waiting on Ken: real K-Tech logo, StickerApp quotes and answer to the letter, Hub package costs.
 
 **19 Nov (end of day): pushed live (main 36046ed0):** the builder can download the print files for a sponsorship (admin).
+- 20 Nov: Share box now takes a chosen or newly made fish; middle-word rule loosened (any form of a verse word). On test-site, not yet live.
