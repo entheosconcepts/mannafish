@@ -27,6 +27,10 @@ h1{font-size:1.5rem;margin:6px 0 14px}.o{border:1px solid rgba(255,255,255,.16);
   <details style="margin-top:8px"><summary style="cursor:pointer;font-weight:700">Saved logos</summary><div id="histl" class="note"></div></details>
   <details style="margin-top:8px"><summary style="cursor:pointer;font-weight:700">Saved wording</summary><div id="histp" class="note"></div></details>
 </details>
+<details id="fav" class="o"><summary style="cursor:pointer;font-weight:700;font-size:1.05rem">Favorite fish: who added what, and from where <small id="favc" style="color:#9fb2b6;font-weight:400"></small></summary>
+  <p class="note" style="margin:6px 0">Every fish added to a "My favorite fish" basket, with the page it came from. You are also emailed each one. The surprise merch is <b id="merchst">off</b> (turn it on in Netlify with MF_MERCH_ON=1; odds MF_MERCH_ODDS, a monthly limit MF_MERCH_MAX_MONTH).</p>
+  <div id="favtop" class="note"></div><div id="favl"></div><div id="favcl"></div>
+</details>
 <div id="batch" class="o bt" hidden>
   <h2>Print batch <small id="bcount"></small></h2>
   <p class="note" style="margin:0">Tick "In print batch" on any card, from any order or place. One at a time or all together: download one zip, or send the files to yourself or to the print company with one click.</p>
@@ -56,7 +60,7 @@ h1{font-size:1.5rem;margin:6px 0 14px}.o{border:1px solid rgba(255,255,255,.16);
     document.getElementById('go').onclick=function(){ try{ localStorage.setItem('mf-admin-key',document.getElementById('k').value.trim()); }catch(e){} load(); }; }
   function load(){ var k=key(); if(!k){ ask(); return; }
     fetch('/api/card-order?k='+encodeURIComponent(k),{cache:'no-store'}).then(function(r){ if(r.status===403){ ask(); throw 0; } return r.json(); }).then(function(j){
-      loadHist(k); ALL=j.orders||[]; if(!ALL.length){ out.innerHTML='<p class="empty">No card orders yet.</p>'; return; } document.getElementById('tools').hidden=false; ALL.forEach(function(o){ ORD[o.id]=o; }); show(); scans(k); loadBatch(k); }).catch(function(e){ if(e!==0) out.innerHTML='<p class="empty">Couldn’t open the orders just now.</p>'; }); }
+      loadHist(k); loadFav(k); ALL=j.orders||[]; if(!ALL.length){ out.innerHTML='<p class="empty">No card orders yet.</p>'; return; } document.getElementById('tools').hidden=false; ALL.forEach(function(o){ ORD[o.id]=o; }); show(); scans(k); loadBatch(k); }).catch(function(e){ if(e!==0) out.innerHTML='<p class="empty">Couldn’t open the orders just now.</p>'; }); }
   var OPEN={}, ALL=[], NM={wait:'invited',pending:'waiting for your OK',invited:'invitation sent',accepted:'accepted',declined:'declined',noanswer:'no answer after 14 days'};
   function place(x){ var d=x.dest||{type:'self'}; return d.type==='hub'?d.hubName:d.type==='new'?d.nominee.org:''; }
   function where(o,x){ var d=x.dest||{}; return String((d.type==='new'?d.nominee.city:d.city)||(o.contact&&o.contact.city)||'').toLowerCase().replace(/\s+/g,' ').trim(); }
@@ -97,6 +101,13 @@ h1{font-size:1.5rem;margin:6px 0 14px}.o{border:1px solid rgba(255,255,255,.16);
         document.querySelectorAll('.dl[data-code]').forEach(function(el){ var c=C[el.getAttribute('data-code')], t=el.querySelector('.scans'); if(!t) return; var last=c&&c.last?new Date(c.last).toLocaleDateString():''; t.textContent='Scans of this card\u2019s QR code: '+(c?c.n:0)+(last?' (last '+last+')':'')+' \u00b7 free devotional code, all cards: '+devo; }); }).catch(function(){});
   }
 
+
+  /* ---- favorite fish: the feed, the most loved, and the surprise-merch claims ---- */
+  function loadFav(k){ fetch('/api/favorite?k='+encodeURIComponent(k),{cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){
+    document.getElementById('favc').textContent='· '+(j.total||0)+' added'; document.getElementById('merchst').textContent=j.merch?'ON':'off';
+    document.getElementById('favtop').innerHTML='<b>Most loved:</b> '+((j.top||[]).slice(0,12).map(function(t){ return esc(t.word)+' <small>('+t.n+')</small>'; }).join(' · ')||'nothing yet');
+    document.getElementById('favl').innerHTML=(j.events||[]).length?'<table style="width:100%;border-collapse:collapse;font-size:.88rem;margin-top:6px"><tr style="color:#9fb2b6;text-align:left"><th>When</th><th>Fish</th><th>From</th><th>Who</th></tr>'+(j.events||[]).slice(0,60).map(function(e){ return '<tr style="border-top:1px solid rgba(255,255,255,.1)"><td>'+new Date(e.at).toLocaleString()+'</td><td><b>'+esc(e.word)+'</b> <small>'+esc(e.ref||'')+'</small>'+(e.lucky?' 🎁':'')+'</td><td>'+esc(e.src)+'</td><td>'+esc(e.who)+'</td></tr>'; }).join('')+'</table>':'<p class="empty">No fish added yet.</p>';
+    var C=j.claims||[]; document.getElementById('favcl').innerHTML=C.length?'<p><b>Surprise merch</b></p>'+C.map(function(c){ return '<div class="it" style="align-items:flex-start"><span style="flex:1">🎁 <b>'+esc(c.word)+'</b> from '+esc(c.src)+' · '+esc(c.who)+' · '+new Date(c.at).toLocaleDateString()+'<br>'+(c.claimed&&c.ship?'<b>Ship to:</b> '+esc(c.ship.name)+' · '+esc(c.ship.email)+' · '+esc(c.ship.street+', '+c.ship.city+' '+c.ship.state+' '+c.ship.zip):'<small style="color:#9fb2b6">waiting for them to give an address</small>')+'</span></div>'; }).join(''):''; }).catch(function(){ document.getElementById('favl').innerHTML='<p class="empty">The favorites could not be opened just now.</p>'; }); }
   /* ---- the library: every build with its files, the saved logos and the saved wording ---- */
   function loadHist(k){ fetch('/api/build-library?k='+encodeURIComponent(k),{cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){
     var B=j.builds||[]; document.getElementById('histc').textContent='· '+B.length+' build'+(B.length===1?'':'s')+' · '+(j.logos||[]).length+' logo'+((j.logos||[]).length===1?'':'s');
