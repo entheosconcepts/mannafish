@@ -40,11 +40,15 @@
     img.onerror=function(){ URL.revokeObjectURL(u); rej(0); }; img.src=u; }); }
   /* Ken, 12 Nov: a fish can only carry the words of its own verse. The two curves must be pieces of the verse, in order ("..." marks a cut), and the middle word must be in it. */
   function nrm(t){ return String(t||'').toLowerCase().replace(/[“”"‘’]/g,'').replace(/[^\p{L}\p{N}' ]+/gu,' ').replace(/\s+/g,' ').trim(); }
+  /* Ken, 20 Nov: the middle word may be any form of a word that is in the fish: "grieve" is fine when the verse says "grieved" (and love / loved / loveth). It can come from the verse or from the fish's own lines. */
+  function stem(w){ w=w.replace(/(ing|eth|est|ed|es|s|d|th|st|e)$/,''); return w.length>=3?w:w; }
+  function sameWord(a,b){ if(a===b) return true; if(a.length<3||b.length<3) return false; var sa=stem(a), sb=stem(b); return sa===sb||(sa.length>=3&&b.indexOf(sa)===0&&b.length-sa.length<=4)||(sb.length>=3&&a.indexOf(sb)===0&&a.length-sb.length<=4); }
+  function inText(t,w){ return nrm(t).split(' ').some(function(x){ return x&&sameWord(x,w); }); }
   function fromVerse(f){ var v=nrm(f.verse); if(!v) return true; var from=0, ok=true;
     [f.top,f.bot].forEach(function(x){ x=nrm(String(x||'').replace(/\.{2,}|…/g,' ')); if(!x||!ok) return; var i=v.indexOf(x,from); if(i<0){ ok=false; return; } from=i+x.length; });
-    var w=nrm(f.word); if(ok&&w&&(' '+v+' ').indexOf(' '+w+' ')<0&&!new RegExp('(^| )'+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(s|es|ed|ing|eth|est)?( |$)','u').test(v)) ok=false;
+    var w=nrm(f.word); if(ok&&w&&!w.split(' ').every(function(p){ return inText(v,p)||inText(f.top||'',p)||inText(f.bot||'',p); })) ok=false;
     return ok; }
-  var WHY='A MannaFish can only carry the words of its verse. Please use the verse’s own words.';
+  var WHY='The word in the middle has to be a word from the verse (any form of it is fine).';
   /* every fish someone keeps or shares is reported to Ken with its picture (/api/fish-made); once per fish */
   function report(f){ try{ var id=idOf(f), done=get('mf-myfish-reported',[]); if(done.indexOf(id)>=0) return; done.push(id); put('mf-myfish-reported',done.slice(-300));
       (f._svg?Promise.resolve(f._svg):render(f)).then(function(svg){ return new Promise(function(res){ var img=new Image(), u=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
@@ -89,6 +93,7 @@
       if(t.closest('[data-x]')||t===EL){ close(); return; }
       var w=t.closest('[data-w]'); if(w){ CUR.word=title(w.dataset.w); draw(); return; }
       if((t.closest('[data-keep]')||t.closest('[data-share]'))&&!fromVerse(CUR)){ msg(WHY); return; }
+      if(t.closest('[data-share]')&&CUR.onShare){ var cb=CUR.onShare, f0=CUR; close(); cb(f0); return; }   /* opened from the Share box: back to it with this fish */
       if(t.closest('[data-keep]')){ msg(keep(CUR)?'Kept in My MannaFish':'Already in My MannaFish'); return; }
       if(t.closest('[data-share]')){ msg('…'); share(CUR,CUR._svg).then(function(r){ msg(r==='shared'?'Shared · listed in My MannaFish':r==='saved'?'The picture is saved · the words are copied to paste with it':''); }).catch(function(){ msg('Couldn’t make the picture just now'); }); } });
     EL.addEventListener('input',function(e){ if(e.target.matches('[data-top]')) CUR.top=e.target.value; else if(e.target.matches('[data-bot]')) CUR.bot=e.target.value; else return; clearTimeout(EL._t); EL._t=setTimeout(draw,200); });
@@ -100,7 +105,8 @@
   var SMALL=/^(the|a|an|and|of|to|in|on|at|by|for|with|from|but|or|nor|so|as|is|are|was|were|be|been|am|it|its|he|him|his|she|her|they|them|their|we|us|our|you|ye|thee|thou|thy|thine|i|me|my|mine|that|which|who|whom|this|these|those|unto|upon|not|shall|will|hath|have|had|doth|did|do|all|there|then|than|when|what|also|into|out|up|el|la|los|las|de|del|y|que|en|un|una|por|para|con|se|su|sus|lo|al|ang|ng|sa|at|mga|der|die|das|und|zu|den|ist|nicht)$/i;
   function wordsOf(t){ var seen={}, out=[]; (String(t).match(/[\p{L}’']+/gu)||[]).forEach(function(w){ w=w.replace(/[’']s$/,''); var k=w.toLowerCase(); if(k.length<3||SMALL.test(k)||seen[k]) return; seen[k]=1; out.push(w); }); return out.slice(0,40); }
   function open(o){ if(!EL) build(); var L=lines(o.verse,o.word);
-    CUR={word:title(o.word),verse:String(o.verse||'').trim(),top:L.top,bot:L.bot,ref:o.ref||'',refShort:o.refShort||'',tag:o.tag==null?' (KJV)':o.tag,href:o.href||'',words:wordsOf(o.verse)};
+    CUR={word:title(o.word),verse:String(o.verse||'').trim(),top:L.top,bot:L.bot,ref:o.ref||'',refShort:o.refShort||'',tag:o.tag==null?' (KJV)':o.tag,href:o.href||'',onShare:o.onShare||null,words:wordsOf(o.verse)};
+    EL.querySelector('[data-share]').textContent=o.onShare?'📤 Share this fish':'📤 Share it';
     if(CUR.words.map(title).indexOf(CUR.word)<0) CUR.words.unshift(o.word);
     EL.querySelector('[data-ref]').textContent=(o.ref||'')+' · tap another word to change it'; EL.querySelector('[data-top]').value=L.top; EL.querySelector('[data-bot]').value=L.bot; msg('');
     EL.hidden=false; document.documentElement.style.overflow='hidden'; draw(); }

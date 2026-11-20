@@ -4024,7 +4024,7 @@ window.MF=(function(){
     var txt=MOBILE?'<a class="dgbtn" href="sms:'+(/iPhone|iPad/.test(navigator.userAgent)?'&':'?')+'body='+encodeURIComponent(body)+'">'+esc(T.text)+'</a>':'<button type="button" class="dgbtn" data-a="text">'+esc(T.text)+'</button>',
         mail=MOBILE?'<a class="dgbtn" href="mailto:?subject='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(T.mail)+'</a>':'<button type="button" class="dgbtn" data-a="email">'+esc(T.mail)+'</button>';
     e._k=o.k||'';
-    e.innerHTML='<div class="in"><b>'+esc(o.title||T.share)+'</b><div class="dvsb">'+txt+mail
+    e.innerHTML='<div class="in"><b>'+esc(o.title||T.share)+'</b>'+(o.img?'<img src="'+esc(o.img)+'" alt="" style="display:block;width:100%;max-width:300px;margin:8px auto;background:#000;border-radius:10px;aspect-ratio:2/1;object-fit:contain">':o.svg?'<div class="dvfi" style="width:100%;max-width:300px;margin:8px auto;background:#000;border-radius:10px;overflow:hidden;aspect-ratio:2/1">'+o.svg+'</div>':'')+'<div class="dvsb">'+txt+mail
       +'<button type="button" class="dgbtn" data-a="copy">'+esc(T.copy)+'</button>'+(navigator.share?'<button type="button" class="dgbtn" data-a="share">'+esc(T.more)+'</button>':'')+'</div>'
       +'<div class="dvsb" style="margin-top:8px"><button type="button" class="dgbtn" data-a="other" style="background:none;line-height:1.25">🎣 '+(MF.lang==='es'?'A pescar':'Go Fish')+'<small style="display:block;font-weight:400;opacity:.8">'+(MF.lang==='es'?'Compartir otro pez':'Share a different fish')+'</small></button>'+(o.k?'<button type="button" class="dgbtn" data-a="basket" style="background:none;line-height:1.25">🧺 '+(MF.lang==='es'?'Agregar a mi canasta':'Add to my basket')+'<small style="display:block;font-weight:400;opacity:.8">'+(MF.lang==='es'?'Mis peces favoritos':'My favorite fish')+'</small></button>':'')+'<button type="button" class="dgbtn" data-a="mkfish" style="background:none">✏️ '+(MF.lang==='es'?'Crear un pez nuevo':'Make a new fish')+'</button></div>'
       +(MOBILE?'':'<div class="dvsb" id="dvMailRow" hidden><a class="dgbtn" target="_blank" rel="noopener" href="https://mail.google.com/mail/?view=cm&fs=1&su='+encodeURIComponent(T.subj)+'&body='+encodeURIComponent(body)+'">'+esc(N.gmail)+'</a>'
@@ -4038,7 +4038,8 @@ window.MF=(function(){
     else if(a==='text'){ $('dvShareMsg').textContent=e._n.textHelp; try{ navigator.clipboard.writeText(e._b).catch(function(){ window.prompt('',e._b); }); }catch(er){ window.prompt('',e._b); } }
     else if(a==='copy'){ try{ navigator.clipboard.writeText(e._u).then(function(){ $('dvShareMsg').textContent=e._t.copied; }); }catch(er){ window.prompt('',e._u); } }
     else if(a==='basket'){ if(e._k) bkAdd(e._k); }
-    else if(a==='other'||a==='mkfish'){ e.hidden=true; try{ goFish(); }catch(er){} setTimeout(function(){ var gd=document.getElementById('gfSheet'); if(!gd) return; if(a==='other') gfAll(gd); else { var q=gd.querySelector('#gfQ'); if(q){ q.focus(); } } },350); }
+    else if(a==='other'||a==='mkfish'){ e.hidden=true; try{ goFish(); }catch(er){} var g0=document.getElementById('gfSheet'); if(g0) g0._share=true;   /* Ken, 20 Nov: choosing a fish from here goes back to Share with that fish */
+      setTimeout(function(){ var gd=document.getElementById('gfSheet'); if(!gd) return; if(a==='other') gfAll(gd); else { var q=gd.querySelector('#gfQ'); if(q){ q.focus(); } } },350); }
     else if(a==='share'){ try{ navigator.share({title:e._t.subj,text:e._b.replace(' '+e._u,''),url:e._u}).catch(function(){}); }catch(er){} } });
 
 /* Ken, 10 Nov: share up front, skip to share, and "Catch a fish and share it" (random, or pick one) in the three dots */
@@ -5387,7 +5388,9 @@ window.MF=(function(){
       var re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\w*)','ig');
       w.outerHTML=d._vs.length?'<div class="gfvl">'+d._vs.map(function(v,i){ return '<button type="button" data-gv="'+i+'"><b>'+esc(v.ref)+'</b><span>'+esc(v.text).replace(re,'<mark>$1</mark>')+'</span></button>'; }).join('')+'</div>':'<p class="gfn">'+esc(P('nov'))+'</p>'; })
       .catch(function(){ var w=d.querySelector('#gfVw'); if(w) w.textContent=P('nov'); }); }
-  function gfMake(q,v){ var go=function(){ MFmake.open({word:q,verse:v.text,ref:v.ref,refShort:'',tag:' (KJV)',href:'/bible/?r='+encodeURIComponent(v.ref)}); };
+  function gfMake(q,v){ var gs=document.getElementById('gfSheet'), inShare=!!(gs&&gs._share);
+    var go=function(){ MFmake.open({word:q,verse:v.text,ref:v.ref,refShort:'',tag:' (KJV)',href:'/bible/?r='+encodeURIComponent(v.ref),
+      onShare:inShare?function(f){ if(gs){ gs._share=false; gs.hidden=true; } MFmake.render(f).then(function(svg){ return svg; },function(){ return ''; }).then(function(svg){ shareRender({title:shn().shareThis+' · '+f.word,svg:svg,msg:(MF.lang==='es'?'Un MannaFish para ti: {w} ({ref}). “{v}”':'A MannaFish for you: {w} ({ref}). “{v}”'),w:f.word,ref:f.ref,v:f.verse,url:location.origin+(f.href||'/')}); }); }:null}); };
     if(window.MFmake){ go(); return; } var sc=document.createElement('script'); sc.src='/fish-lang/makefish.js'; sc.onload=go; document.head.appendChild(sc); }
   function gfObj(it){ var l=MF.lang, fl=/^(en|es|tl|zh|hi|el|de|ko|he|ar|ru)$/.test(l)?l:'en';
     if(it.id) return {id:it.id,dev:'',img:'/fish/'+it.id.slice(2)+'.svg',word:it.word,ref:it.ref,verse:it.verse,ver:it.ver};
@@ -5414,7 +5417,9 @@ window.MF=(function(){
     var pool=ORDER.filter(function(k){ return DATA[k]; }).map(function(k){ return {k:k,t:titleIn(MF.lang,k)}; }).concat(netAll().map(function(x){ return Object.assign({t:x.word},x); }));
     pool.sort(function(a,b){ return String(a.t).localeCompare(String(b.t),MF.lang); }); d._m=pool;
     r.innerHTML='<div class="gfgrid">'+pool.map(function(x,i){ var o=gfObj(x); return '<button type="button" data-gm="'+i+'"><img loading="lazy" src="'+esc(o.img)+'" alt=""><span>'+esc(o.word)+'</span></button>'; }).join('')+'</div>'; r.scrollIntoView({block:'start',behavior:'smooth'}); }
-  function gfCatch(d,x){ var T=GFT[MF.lang]||GFT.en, c=d.querySelector('.gfcatch'), P=function(k){ return T[k]||GFT.en[k]; };
+  function shareFish(x){ shareRender({title:shn().shareThis+' · '+x.word,img:x.img,k:x.dev||'',msg:(MF.lang==='es'?'Un MannaFish para ti: {w} ({ref}). “{v}”':'A MannaFish for you: {w} ({ref}). “{v}”'),w:x.word,ref:x.ref,v:x.verse,url:location.origin+(x.dev?'/?w='+x.dev.toLowerCase():'/?fish='+x.id.slice(2))}); }
+  function gfCatch(d,x){ if(d._share){ d._share=false; d.hidden=true; shareFish(x); return; }   /* Ken, 20 Nov: opened from Share, so a chosen fish goes straight back to the Share box */
+    var T=GFT[MF.lang]||GFT.en, c=d.querySelector('.gfcatch'), P=function(k){ return T[k]||GFT.en[k]; };
     c.innerHTML='<div class="gfbig"><img src="'+esc(x.img)+'" alt=""></div><h3>'+esc(x.word)+'</h3><p class="gfv">“'+esc(x.verse)+'” <b>'+esc(x.ref+(x.ver?' ('+x.ver+')':''))+'</b></p>'
       +'<div class="gfrow"><button type="button" class="gfmine" data-gf="mine">⭐ '+esc(P('mine1')||'Make it my fish today')+'</button></div>'
       +'<div class="gfrow gfopt"><label>'+esc(MF.lang==='es'?'Idioma':'Language')+'<select data-gfo="lang">'+Object.keys(GFLN).map(function(l){ return '<option value="'+l+'"'+(l===(x.lng||MF.lang)?' selected':'')+'>'+esc(GFLN[l])+'</option>'; }).join('')+'</select></label>'
@@ -5424,6 +5429,7 @@ window.MF=(function(){
       +'<p class="gfmsg" aria-live="polite" style="text-align:center;min-height:1.2em;margin:4px 0 0;color:var(--gold,#f5d76e);font-weight:700"></p><div class="gfrow"><button type="button" data-gf="cast">🎣 '+esc(P('again'))+'</button><button type="button" data-gf="back">‹ '+esc(P('back'))+'</button></div>';
     c.hidden=false; c.dataset.id=x.id; c.dataset.k=x.dev; d._x=x; d.querySelector('.in').scrollTop=0; d.scrollTop=0; try{ c.scrollIntoView({block:'start'}); }catch(e){} }   /* Ken, 20 Nov: after choosing from the long list the card opened above the screen and it looked like nothing happened */
   function goFish(){ var l=MF.lang, T=GFT[l]||GFT.en, d=document.getElementById('gfSheet'), fl=/^(en|es|tl|zh|hi|el|de|ko|he|ar|ru)$/.test(l)?l:'en';
+    if(d) d._share=false;
     if(!d){ d=document.createElement('div'); d.id='gfSheet'; d.className='gfsheet'; d.setAttribute('role','dialog'); d.setAttribute('aria-modal','true'); document.body.appendChild(d);
       /* Ken, 11 Nov (phone): inside the Bible page this is a small frame, so Go Fish was cut off and the Memory game opened inside it. While the sheet is open the frame asks the page for the whole screen, and its links open the whole page. */
       new MutationObserver(function(){ document.documentElement.style.overflow=d.hidden?'':'hidden'; }).observe(d,{attributes:true,attributeFilter:['hidden']});
@@ -5454,6 +5460,7 @@ window.MF=(function(){
         if(r){ var all=ORDER.filter(function(k){ return DATA[k]&&k!==cur; }).map(function(k){ return {k:k}; }).concat(netAll()), got=all[Math.floor(Math.random()*all.length)];
           gfCatch(d,gfObj(got)); return; } else nk=b.dataset.gk;
         if(!DATA[nk]) return;
+        if(d._share){ gfCatch(d,gfObj({k:nk})); return; }
         d.hidden=true; planSet(nk); if(cmpShown()) $('cmpClear').click(); if(nk!==cur) pick(nk,false); ftUI();
         if(r){ var tb=$('mfToast'); if(tb){ tb.textContent='🎣 '+(GFT[MF.lang]||GFT.en).got.replace('{w}',titleIn(MF.lang,nk)); tb.hidden=false; clearTimeout(tb._t); tb._t=setTimeout(function(){ tb.hidden=true; },2200); } }
         $('stage').scrollIntoView({block:'center',behavior:'smooth'}); }); }
