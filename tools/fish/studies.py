@@ -61,7 +61,7 @@ MAN = {'acknowledge': {'g': 'G1921'}, 'atone': {'g': 'G2433', 'h': 'H3722'}, 'ba
   'direct': {'h': 'H3474'}, 'enjoy': {'h': 'H7521'}, 'extol': {'h': 'H7311'}, 'grant': {'h': 'H5414'}, 'impart': {'h': 'H2505'}, 'marvel': {'h': 'H8539'}, 'nourish': {'h': 'H3557'},
   'overcome': {'h': 'H3201'}, 'preach': {'h': 'H7121'}, 'recover': {'h': 'H2421'}, 'render': {'h': 'H7725'}}
 # a clearer meaning than the lexicon's own short gloss, where that reads badly aloud
-MEAN = {('marvel', 'h'): 'To be astounded', ('yearn', 'h'): 'To grow warm with longing', ('repair', 'g'): 'To mend, restore, put in order', ('refine', 'g'): 'To refine by fire', ('agree', 'h'): 'To appoint a meeting',
+MEAN = {('build', 'g'): 'To build a house; to build up', ('build', 'h'): 'To build, rebuild, establish', ('marvel', 'h'): 'To be astounded', ('yearn', 'h'): 'To grow warm with longing', ('repair', 'g'): 'To mend, restore, put in order', ('refine', 'g'): 'To refine by fire', ('agree', 'h'): 'To appoint a meeting',
   ('direct', 'h'): 'To make straight', ('enjoy', 'h'): 'To accept, to delight in', ('overcome', 'h'): 'To be able, to prevail', ('confess', 'h'): 'To give thanks, to confess', ('prosper', 'g'): 'To go well, to prosper',
   ('publish', 'g'): 'To proclaim', ('recover', 'h'): 'To live, to revive', ('train', 'g'): 'To train, to exercise', ('cheer', 'g'): 'To take heart, to be of good cheer', ('nourish', 'h'): 'To sustain, to nourish',
   ('overtake', 'g'): 'To seize, to overtake', ('dedicate', 'g'): 'To inaugurate, to dedicate', ('encourage', 'g'): 'To comfort, to encourage', ('intreat', 'g'): 'To plead with, to comfort', ('study', 'g'): 'To be eager, to give diligence',
