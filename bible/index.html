@@ -954,11 +954,12 @@ body.par .bar #where,body.par .bar #ver,body.par .bar #say{display:none}body.par
     if(!WMEL){ WMEL=document.createElement('div'); WMEL.className='wm'; WMEL.setAttribute('role','menu'); document.body.appendChild(WMEL);
       WMEL.addEventListener('click',wmClick); WMEL.addEventListener('change',function(e){ if(e.target.type==='color') wmHl(wheelKey(e.target.value)); }); document.addEventListener('pointerdown',function(e){ if(WM&&WMEL&&!WMEL.contains(e.target)) wmClose(); },true);
       document.addEventListener('keydown',function(e){ if(e.key==='Escape') wmClose(); }); }
-    var L=ogLang(), fish=!!(window.MFmake&&MFmake.latin&&MFmake.latin(VT[a.v]||''));
-    WMEL.innerHTML='<button type="button" data-wm="copy">&#128203;&#xFE0E; Copy</button><button type="button" data-wm="hl" aria-expanded="false">&#128397;&#xFE0E; Highlight <span style="margin-left:auto;opacity:.5">&#9662;</span></button><div class="wmc" id="wmC" hidden>'+swatches(BASE,colour())+'<button type="button" data-wm="pal" aria-label="More colours" style="background:#fff;font-size:1.1rem;line-height:1">&#127912;&#xFE0E;</button><div class="wmc2" id="wmC2" hidden>'+swatches(HLX.concat(customs().filter(function(c){ return HLX.indexOf(c)<0; })),colour())+WHEEL+'</div></div>'
+    var L=ogLang(), fish=!!(window.MFmake&&MFmake.latin&&MFmake.latin(VT[a.v]||'')), hh=phrases(a.v,hls()).filter(function(q){ return q.s<T.e&&q.e>T.s; })[0], hc=hh&&hh.c; if(hh) WM.ph={s:hh.s,e:hh.e};
+    WMEL.innerHTML='<button type="button" data-wm="copy">&#128203;&#xFE0E; Copy</button><button type="button" data-wm="hl" aria-expanded="false">&#128397;&#xFE0E; Highlight <span style="margin-left:auto;opacity:.5">&#9662;</span></button><div class="wmc" id="wmC" hidden>'+(hh?'<button type="button" data-wm="unhl" aria-label="Remove highlight" style="background:#fff">&#10005;</button>':'')+swatches(BASE,hc||colour())+'<button type="button" data-wm="pal" aria-label="More colours" style="background:#fff;font-size:1.1rem;line-height:1">&#127912;&#xFE0E;</button><div class="wmc2" id="wmC2" hidden>'+swatches(HLX.concat(customs().filter(function(c){ return HLX.indexOf(c)<0; })),colour())+WHEEL+'</div></div>'
       +'<button type="button" data-wm="orig">&#128266;&#xFE0E; In '+L.n+': hear it, what it means</button><div class="wmo" id="wmOut" hidden></div>'
       +'<button type="button" data-wm="study">&#128214;&#xFE0E; Word study · every verse</button><button type="button" data-wm="more">&#127760;&#xFE0E; Translate and more…</button>'
       +(fish?'<button type="button" data-wm="fish">&#127903;&#xFE0E; Make it a MannaFish</button>':'');
+    if(hh){ $('wmC').hidden=false; WMEL.querySelector('[data-wm=hl]').setAttribute('aria-expanded','true'); }   /* a word already highlighted opens with its colours showing */
     fdShow([{v:a.v,s:T.s,e:T.e}],'sel');
     var el=$('txt').querySelector('.v[data-v="'+a.v+'"] .w[data-j="'+a.j+'"]'), r=el?el.getBoundingClientRect():{left:innerWidth/2-100,bottom:innerHeight/2,top:innerHeight/2-20};
     WMEL.hidden=false; var w=WMEL.offsetWidth, h=WMEL.offsetHeight, x=Math.max(12,Math.min(innerWidth-w-12,r.left-20)), y=r.bottom+8;
@@ -969,6 +970,7 @@ body.par .bar #where,body.par .bar #ver,body.par .bar #say{display:none}body.par
   function wmClick(e){ var cb=e.target.closest('#wmC [data-c]'); if(cb&&WM){ wmHl(cb.dataset.c); return; } if(e.target.closest('[data-wm=pal]')){ var c2=$('wmC2'); if(c2) c2.hidden=!c2.hidden; return; } var b=e.target.closest('[data-wm]'); if(!b||!WM) return; var a=b.dataset.wm, W=WM;
     if(a==='copy'){ try{ navigator.clipboard.writeText(W.w).then(function(){ toast('Copied'); },function(){ toast('Could not copy'); }); }catch(er){ window.prompt('',W.w); } wmClose(); return; }
     if(a==='hl'){ var cc=$('wmC'); if(cc){ cc.hidden=!cc.hidden; b.setAttribute('aria-expanded',String(!cc.hidden)); } return; }   /* Ken, 26 Nov: Highlight opens the colours and the colour wheel */
+    if(a==='unhl'){ var ph=W.ph; wmClose(); closeWc(); if(ph){ PHS=[{v:W.v,s:ph.s,e:ph.e}]; SEL=[W.v]; applyHl('',true); } return; }
     if(a==='study'){ wmClose(); wordCard(W.v,W.j); return; }
     if(a==='more'){ wmClose(); TAPW={v:W.v,s:W.s,e:W.e,w:W.w}; PHS=null; SEL=[W.v]; selUI(); return; }
     if(a==='fish'){ wmClose(); if(!window.MFmake) return; var n=B[AT.b][0], ref=n+' '+AT.c+':'+W.v; MFmake.open({word:W.w,verse:VT[W.v]||'',ref:ref,refShort:SHORT[n]?SHORT[n]+' '+AT.c+':'+W.v:'',tag:' ('+ver().s+')',href:'/bible/?r='+encodeURIComponent(ref)}); return; }
