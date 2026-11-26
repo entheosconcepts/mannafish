@@ -4,6 +4,7 @@
 //   POST /api/card-send {to, fromName, fromEmail, note, pdf: base64} -> {ok:true}
 import { getStore } from '@netlify/blobs';
 import { sendMail, hasMail } from './lib/mail.mjs';
+import { premiumOk, premiumNo } from './lib/premium.mjs';
 
 const okOrigin = (o) => /^https:\/\/([a-z0-9-]+\.)?manna-fish\.com$|^https:\/\/([a-z0-9-]+--)?yadamannafishtest\.netlify\.app$|^http:\/\/localhost(:\d+)?$/.test(o || '');
 const bad = (msg, status, error) => Response.json({ error: error || 'bad', msg }, { status, headers: { 'cache-control': 'no-store' } });
@@ -19,6 +20,7 @@ async function limited(ip) {
 export default async (req, context) => {
   if (req.method !== 'POST') return bad('POST only', 405);
   if (!okOrigin(req.headers.get('origin'))) return bad('Not allowed', 403);
+  if (!premiumOk(req)) return premiumNo();
   if (!hasMail()) return bad('Email is not set up yet', 501, 'nomail');
   let b; try { b = await req.json(); } catch (e) { return bad('Bad request', 400); }
   const to = one(b.to, 200), fromName = one(b.fromName, 60), fromEmail = one(b.fromEmail, 200), note = one(b.note, 400), pdf = String(b.pdf || '').replace(/^data:application\/pdf;base64,/, '');

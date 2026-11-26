@@ -8,6 +8,7 @@
 // Settings (Netlify environment variables, all optional): PICTURE_MODEL (default gpt-image-1), PICTURE_QUALITY
 // (default low: fastest and cheapest), PICTURE_PER_DAY (default 3), PICTURE_ALL_DAY (default 300).
 import { getStore } from '@netlify/blobs';
+import { premiumOk, premiumNo } from './lib/premium.mjs';
 
 const okOrigin = (o) => /^https:\/\/([a-z0-9-]+\.)?manna-fish\.com$|^https:\/\/([a-z0-9-]+--)?yadamannafishtest\.netlify\.app$|^http:\/\/localhost(:\d+)?$/.test(o || '');
 const bad = (msg, status, code) => Response.json({ error: msg, code: code || '' }, { status, headers: { 'cache-control': 'no-store' } });
@@ -46,6 +47,7 @@ export default async (req, context) => {
   const key = env('OPENAI_API_KEY', '');
   if (!key) return bad('Pictures are not set up yet', 503, 'off');
   let b; try { b = await req.json(); } catch (e) { return bad('Bad request', 400); }
+  if (b && b.kind === 'card' && !premiumOk(req)) return premiumNo();   // the card maker's pictures are premium; the Picture verse page stays free
   const words = String(b.prompt || '').replace(/[\u0000-\u001f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 300);
   if (words.length < 3) return bad('Say what the picture should show', 400, 'empty');
   const [me, all] = await used(ip);

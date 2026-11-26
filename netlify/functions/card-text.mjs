@@ -5,6 +5,7 @@
 //   POST /api/card-text {occasion, brief, to, from, verse, ref} -> {title, saying, message, picture}
 import { getStore } from '@netlify/blobs';
 import { MODEL } from './lib/tr.mjs';
+import { premiumOk, premiumNo } from './lib/premium.mjs';
 
 const okOrigin = (o) => /^https:\/\/([a-z0-9-]+\.)?manna-fish\.com$|^https:\/\/([a-z0-9-]+--)?yadamannafishtest\.netlify\.app$|^http:\/\/localhost(:\d+)?$/.test(o || '');
 const bad = (msg, status, error) => Response.json({ error: error || 'bad', msg }, { status, headers: { 'cache-control': 'no-store' } });
@@ -27,6 +28,7 @@ Return ONLY valid JSON with those four keys.`;
 export default async (req, context) => {
   if (req.method !== 'POST') return bad('POST only', 405);
   if (!okOrigin(req.headers.get('origin'))) return bad('Not allowed', 403);
+  if (!premiumOk(req)) return premiumNo();
   let b; try { b = await req.json(); } catch (e) { return bad('Bad request', 400); }
   const key = process.env.OPENAI_TRANSLATE_KEY || process.env.OPENAI_API_KEY;
   if (!key) return bad('Not set up yet', 501, 'nokey');

@@ -57,6 +57,7 @@ details>summary{cursor:pointer;font-weight:700;margin:2px 0 8px}
 <body>
 <div class="bar"><div class="in"><a class="ib" href="/bible/" id="back">‹ Back</a><h1>Make a card</h1><span></span></div></div>
 <main>
+  <section id="premNote" hidden style="border-color:#f5d76e"><b>Premium · coming soon.</b> AI words, AI pictures and emailing cards are for people who sponsor MannaFish. You can still write your own card here and download or print it.</section>
   <section>
     <h2>1 · What kind of card?</h2>
     <div class="chips" id="occ">
@@ -161,6 +162,7 @@ $('grads').addEventListener('click',function(e){ var b=e.target.closest('[data-g
 [['tsz','tsz'],['bsz','bsz'],['dk','dk']].forEach(function(p){ $(p[0]).addEventListener('input',function(){ S[p[1]]=+$(p[0]).value; lazy(); }); });
 $('tFront').addEventListener('click',function(){ view('front'); }); $('tIn').addEventListener('click',function(){ view('in'); });
 function view(v){ S.view=v; $('tFront').setAttribute('aria-pressed',String(v==='front')); $('tIn').setAttribute('aria-pressed',String(v==='in')); draw(); }
+try{ if(!localStorage.getItem('mf-admin-key')) $('premNote').hidden=false; }catch(e){ $('premNote').hidden=false; }
 var T=0; function lazy(){ clearTimeout(T); T=setTimeout(draw,140); }
 
 // a verse from the Bible (the highlighted verse)
@@ -225,21 +227,22 @@ $('sh').addEventListener('click',function(){ pdfFile().then(function(f){ if(navi
 $('em').addEventListener('click',function(){ var to=$('toE').value.trim(); if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(to)){ toast('sendMsg','Please type the email address to send it to.'); return; }
   var fe=$('fromE').value.trim(), fn=($('from').value||S.sign||'').trim(); put('mf-card-me',{from:fn,email:fe}); toast('sendMsg','Sending…'); $('em').disabled=true;
   buildPdf().then(function(b){ return new Promise(function(res){ var r=new FileReader(); r.onload=function(){ res(String(r.result).split(',')[1]); }; r.readAsDataURL(b); }); })
-  .then(function(b64){ return fetch('/api/card-send',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({to:to,fromName:fn,fromEmail:fe,note:$('note').value,pdf:b64})}); })
-  .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ $('em').disabled=false; toast('sendMsg',r.ok?'Sent to '+to+'.':(j.msg||'It could not be sent just now. You can download it instead.')); }); })
+  .then(function(b64){ return fetch('/api/card-send',{method:'POST',headers:{'content-type':'application/json','x-mf-key':KEY()},body:JSON.stringify({to:to,fromName:fn,fromEmail:fe,note:$('note').value,pdf:b64})}); })
+  .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ $('em').disabled=false; toast('sendMsg',r.ok?'Sent to '+to+'.':(r.status===402?'Emailing cards is for MannaFish sponsors (coming soon). You can still download or print it.':(j.msg||'It could not be sent just now. You can download it instead.'))); }); })
   .catch(function(){ $('em').disabled=false; toast('sendMsg','It could not be sent just now. You can download it instead.'); }); });
 
 // AI: the words, then the picture
-function post(u,b){ return fetch(u,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)}).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(!r.ok){ var e=new Error(j.msg||j.error||'failed'); e.code=j.code||j.error; throw e; } return j; }); }); }
+function KEY(){ try{ return localStorage.getItem('mf-admin-key')||''; }catch(e){ return ''; } }
+function post(u,b){ return fetch(u,{method:'POST',headers:{'content-type':'application/json','x-mf-key':KEY()},body:JSON.stringify(b)}).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(!r.ok){ var e=new Error(j.msg||j.error||'failed'); e.code=j.code||j.error; throw e; } return j; }); }); }
 function loadImg(src){ return new Promise(function(res,rej){ var i=new Image(); i.onload=function(){ res(i); }; i.onerror=rej; i.src=src; }); }
 function makePicture(desc){ return post('/api/picture',{prompt:desc,shape:'tall',kind:'card'}).then(function(j){ return loadImg(j.img); }).then(function(i){ S.bg=i; S.bgKind='ai'; draw(); return true; }); }
 $('build').addEventListener('click',function(){ var occ=S.o==='other'?($('occOther').value||'greeting'):S.o; $('build').disabled=true; toast('buildMsg','Writing your card…');
   post('/api/card-text',{occasion:occ,brief:$('brief').value,to:$('to').value,from:$('from').value,verse:S.verse,ref:S.ref}).then(function(j){
     if(j.title) S.title=j.title; if(j.saying) S.saying=j.saying; if(j.message) S.message=j.message; if(!S.sign) S.sign=$('from').value; syncFields(); $('pic').value=j.picture||$('pic').value; fontsThen(draw); view('front'); toast('buildMsg','Making the picture…');
     return makePicture((j.picture||$('brief').value||occ+' card background')+'').then(function(){ toast('buildMsg','Done. Change anything you like below.'); },function(e){ toast('buildMsg',e.code==='mine'||e.code==='all'?'The words are ready. No more AI pictures today: choose a colour or use your own photo.':'The words are ready. The picture could not be made just now: choose a colour or use your own photo.'); });
-  }).catch(function(e){ var d=DEF[S.o]||DEF.other; if(!S.title) S.title=d.t; toast('buildMsg',e.code==='nokey'||e.code==='key'?'The AI writer is not set up yet. Here are starter words: change them below.':(e.message||'It could not be built just now.')+' Here are starter words: change them below.'); syncFields(); fontsThen(draw); })
+  }).catch(function(e){ var d=DEF[S.o]||DEF.other; if(!S.title) S.title=d.t; toast('buildMsg',e.code==='premium'?'AI words and pictures are for MannaFish sponsors (coming soon). Here are starter words: change them below, and print your own card.':e.code==='nokey'||e.code==='key'?'The AI writer is not set up yet. Here are starter words: change them below.':(e.message||'It could not be built just now.')+' Here are starter words: change them below.'); syncFields(); fontsThen(draw); })
   .then(function(){ $('build').disabled=false; }); });
-$('mkPic').addEventListener('click',function(){ var d=$('pic').value.trim()||$('brief').value.trim(); if(d.length<3){ toast('picMsg','Say what the picture should show.'); return; } toast('picMsg','Making it…'); makePicture(d).then(function(){ toast('picMsg','Done.'); },function(e){ toast('picMsg',e.code==='mine'||e.code==='all'?'No more AI pictures today. Choose a colour or use your own photo.':'It could not be made just now.'); }); });
+$('mkPic').addEventListener('click',function(){ var d=$('pic').value.trim()||$('brief').value.trim(); if(d.length<3){ toast('picMsg','Say what the picture should show.'); return; } toast('picMsg','Making it…'); makePicture(d).then(function(){ toast('picMsg','Done.'); },function(e){ toast('picMsg',e.code==='premium'?'AI pictures are for MannaFish sponsors (coming soon). Choose a colour or use your own photo.':e.code==='mine'||e.code==='all'?'No more AI pictures today. Choose a colour or use your own photo.':'It could not be made just now.'); }); });
 $('photo').addEventListener('change',function(){ var f=$('photo').files[0]; if(!f) return; var u=URL.createObjectURL(f); loadImg(u).then(function(i){ S.bg=i; S.bgKind='photo'; draw(); toast('picMsg','Your photo is on the front. It stays on this device.'); }); });
 
 // start
