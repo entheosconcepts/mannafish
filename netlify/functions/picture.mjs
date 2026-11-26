@@ -27,7 +27,11 @@ async function count(ip, by) {
 }
 
 // the person's words go inside a frame that keeps the picture a background: no writing in it, no real people
-function frame(words) {
+function frame(words, kind) {
+  if (kind === 'card') return 'A beautiful, cheerful, artistic background image for a greeting card: ' + words + '. '
+    + 'Leave calm, uncluttered space in the middle where words can be written over it. '
+    + 'Do not include any text, words, letters, numbers, logos, signatures or watermarks. '
+    + 'Do not show any real, famous or identifiable person.';
   return 'A beautiful, reverent background image for a Bible verse card: ' + words + '. '
     + 'Leave calm, uncluttered space where a verse can be written over it. '
     + 'Do not include any text, words, letters, numbers, logos, signatures or watermarks. '
@@ -51,7 +55,7 @@ export default async (req, context) => {
   try {
     const r = await fetch('https://api.openai.com/v1/images/generations', {
       method: 'POST', headers: { authorization: 'Bearer ' + key, 'content-type': 'application/json' },
-      body: JSON.stringify({ model: env('PICTURE_MODEL', 'gpt-image-1'), prompt: frame(words), size: SIZES[b.shape] || SIZES.square,
+      body: JSON.stringify({ model: env('PICTURE_MODEL', 'gpt-image-1'), prompt: frame(words, b.kind === 'card' ? 'card' : ''), size: SIZES[b.shape] || SIZES.square,
         quality: env('PICTURE_QUALITY', 'low'), n: 1, output_format: 'jpeg', output_compression: 88, moderation: 'auto' }),
       signal: AbortSignal.timeout(27000) });
     const j = await r.json().catch(() => ({}));
