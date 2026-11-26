@@ -74,6 +74,7 @@ body:not(.tools-open) .ht{margin:0 0 6px}#toolsRound[aria-expanded=true]{backgro
 .htmore summary{list-style:none;cursor:pointer;padding:9px 10px;font-weight:700;font-size:.9rem;color:var(--dim)}.htmore summary::-webkit-details-marker{display:none}#main>.hlm{display:block;margin:0 auto 10px}
 .txt{font-family:var(--ff,'Spectral',Georgia,serif);font-size:var(--fs,1.18rem);line-height:var(--lh,1.85)}
 .novn .txt .v .vn{display:none}.lines .txt .v{display:block;margin:0 0 .45em}.lines .txt .nis{display:block;margin-top:-.4em}.nomarks .txt .nis{display:none}
+.ps119{display:block;margin:1.2em 0 .4em;font:800 .8rem/1 Archivo,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--blue2,#6f9bff)}.ps119 span{font-size:1rem;letter-spacing:0;margin-left:4px}
 .txt .v{cursor:pointer;border-radius:4px;box-decoration-break:clone;-webkit-box-decoration-break:clone;transition:background .15s}
 .txt .v.hl{color:#14181c}
 .txt .v.say{outline:2px solid var(--blue2);outline-offset:1px}
@@ -722,10 +723,13 @@ body.par .bar #where,body.par .bar #ver,body.par .bar #say{display:none}body.par
   // the original words of a chapter as a column: each verse, its words to tap and hear, and how to say them
   function ogText(b,c){ return ogCh(b,c).then(function(J){ var t=[]; Object.keys(J.v).forEach(function(n){ var w=J.v[n].w||[]; t[+n-1]=w.map(function(x){ return x[0]; }).join(' '); }); return {t:t,J:J,note:''}; }); }
   function ogClean(t){ return String(t||'').replace(/[\u0591-\u05AF\u05BD\u05C0\u05C3\u05C6]/g,'').replace(/[\/\\]/g,'').replace(/\s+/g,' ').trim(); }
+  /* Ken, 26 Nov: Psalm 119 has a letter heading before every 8 verses (Aleph, Beth, Gimel ...), as the King James prints it */
+  var P119=[['Aleph','א'],['Beth','ב'],['Gimel','ג'],['Daleth','ד'],['He','ה'],['Vau','ו'],['Zain','ז'],['Cheth','ח'],['Teth','ט'],['Jod','י'],['Caph','כ'],['Lamed','ל'],['Mem','מ'],['Nun','נ'],['Samech','ס'],['Ain','ע'],['Pe','פ'],['Tzaddi','צ'],['Koph','ק'],['Resh','ר'],['Shin','ש'],['Tau','ת']];
+  function psH(n){ if(B[AT.b][0]!=='Psalm'||AT.c!==119||(n-1)%8!==0) return ''; var k=(n-1)/8, L=P119[k]; return L?'<span class="ps119">'+L[0]+' <span lang="he" dir="rtl">'+L[1]+'</span></span>':''; }
   function verseH(n){ return '<span class="v" data-v="'+n+'"><span class="vn">'+n+'</span><span class="vt"></span><span class="xrs" data-xv="'+n+'"></span></span><span class="nis" data-after="'+n+'"></span>'; }
   function draw(PK){ var num=function(a,b){ return a-b; }, ns=Object.keys(VT).map(Number).sort(num), V1=ver(), n=PK?PK.length:0; document.body.classList.toggle('par',!!n); document.body.classList.toggle('par3',n>1); document.body.classList.toggle('par4',n>2);
     $('txt').setAttribute('lang',vlang(V1)); $('txt').dir=!n&&V1.rtl?'rtl':'ltr'; $('txt').style.setProperty('--pc',String(1+n));   // Hebrew and Arabic read right to left
-    if(!n){ $('txt').innerHTML='<p>'+ns.map(function(n){ return verseH(n)+' '; }).join('')+'</p>'; xrMark(); return; }
+    if(!n){ $('txt').innerHTML='<p>'+ns.map(function(n){ return psH(n)+verseH(n)+' '; }).join('')+'</p>'; xrMark(); return; }
     var all=ns.slice(); PK.forEach(function(x){ Object.keys(x.T).map(Number).forEach(function(v){ if(all.indexOf(v)<0) all.push(v); }); }); all.sort(num);
     var bkBtn=function(bk,ch,t){ return '<button type="button" class="pbtn" data-bks="'+t+'" aria-haspopup="dialog" aria-label="Choose the book and chapter">'+esc(B[bk][0]+' '+ch)+' <span class="ar" aria-hidden="true">▾</span></button>'; };
     var head='<div class="phd"><span class="phc"><span class="p2"><select data-mver="1" aria-label="The first column\u2019s version">'+$('ver').innerHTML+'</select><button type="button" class="ogall" data-hear="m" aria-pressed="false" title="Hear the whole chapter in '+esc(V1.s)+'">&#9654;&#xFE0E;<span class="hlab"> Hear</span></button></span><span class="p2 pbc">'+bkBtn(AT.b,AT.c,'m')+'</span></span>'+PK.map(function(x,i){ var at=x.P.at||{b:AT.b,c:AT.c}; return '<span class="phc"><span class="p2"><select data-pi="'+i+'" aria-label="'+(i?'The third column':'The version beside it')+'">'+parOpts(i,1)+'</select>'
@@ -742,7 +746,7 @@ body.par .bar #where,body.par .bar #ver,body.par .bar #say{display:none}body.par
     if(indep){ var vs1=ns.slice().sort(num), cols='<div class="pcol">'+vs1.filter(function(v){ return VT[v]; }).map(function(v){ return '<div class="c1" lang="'+vlang(V1)+'" dir="'+(V1.rtl?'rtl':'ltr')+'">'+verseH(v)+'</div>'; }).join('')+'</div>';
       PK.forEach(function(x,i){ var keys=Object.keys(x.P.og?((x.J&&x.J.v)||{}):x.T).map(Number).sort(num); cols+='<div class="pcol">'+(keys.length?keys.map(function(v){ return colCell(x,i,v); }).join(''):colCell(x,i,all[0]||1))+'</div>'; });
       $('txt').innerHTML=head+'<div class="pcols">'+cols+'</div>'; var mv0=$('txt').querySelector('[data-mver]'); if(mv0) mv0.value=ver().k; xrMark(); colPaint(); return; }
-    $('txt').innerHTML=head+all.map(function(v){ return '<div class="pr"><div class="c1" lang="'+vlang(V1)+'" dir="'+(V1.rtl?'rtl':'ltr')+'">'+(VT[v]?verseH(v):'')+'</div>'
+    $('txt').innerHTML=head+all.map(function(v){ return psH(v)+'<div class="pr"><div class="c1" lang="'+vlang(V1)+'" dir="'+(V1.rtl?'rtl':'ltr')+'">'+(VT[v]?verseH(v):'')+'</div>'
       +PK.map(function(x,i){ return colCell(x,i,v); }).join('')+'</div>'; }).join(''); var mv=$('txt').querySelector('[data-mver]'); if(mv) mv.value=ver().k; xrMark(); colPaint(); }
   $('txt').addEventListener('change',function(e){ var d=e.target.dataset||{};
     if(e.target.dataset&&e.target.dataset.mver){ $('ver').value=e.target.value; $('ver').dispatchEvent(new Event('change')); return; } var p=e.target.dataset&&e.target.dataset.pi; if(p!=null&&e.target.tagName==='SELECT'){ putPar(+p,e.target.value); go(AT.b,AT.c,0,true); htUI(); } });
@@ -940,6 +944,41 @@ body.par .bar #where,body.par .bar #ver,body.par .bar #say{display:none}body.par
   $('aWlHl').addEventListener('click',function(){ var W=wlWord(); if(!W) return; PHS=[{v:W.v,s:W.s,e:W.e}]; SEL=[W.v]; var keep=PHS.slice(); applyHl(colour(),true); PHS=keep; SEL=[W.v]; selUI(); });
   $('aWlSay').addEventListener('click',function(){ say(this.dataset.t,this.dataset.l); });
   $('aWlSay0').addEventListener('click',function(){ var W=wlWord(); if(W) say(W.w,vlang()); });
+  /* Ken, 26 Nov: hold a word and a menu opens beside it (like Blue Letter Bible): Copy, Highlight, hear the Greek or Hebrew and see what it means and how many verses use it, the word study, translate and more, make it a MannaFish */
+  var WM=null, WMEL=null;
+  (function(){ var st=document.createElement('style'); st.textContent='.wm{position:fixed;z-index:70;width:min(300px,calc(100vw - 24px));background:rgba(250,250,252,.98);color:#14181c;border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.5);padding:4px 0;font:600 1rem Archivo,system-ui,sans-serif;max-height:72vh;overflow:auto}.wm[hidden]{display:none}'
+      +'.wm button{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:none;border:0;padding:12px 18px;color:inherit;font:inherit;cursor:pointer}.wm>button+button,.wm>button+.wmo{border-top:1px solid rgba(0,0,0,.08)}'
+      +'.wm .wmo{padding:10px 18px 12px;font-weight:400;font-size:.92rem;line-height:1.4;border-top:1px solid rgba(0,0,0,.08);background:rgba(0,0,0,.03)}.wm .wmo b{display:block;font-size:1.7rem;font-weight:400;margin-bottom:2px}.wm .wmo .wmb{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.wm .wmo .wmb button{width:auto;border:1px solid rgba(0,0,0,.2);border-radius:999px;padding:7px 12px;font-size:.85rem}'; document.head.appendChild(st); })();
+  function wmClose(){ if(WMEL) WMEL.hidden=true; if(WM){ WM=null; fdShow(null); } }
+  function wmOpen(a){ var T=tk(a.v)[a.j]; if(!T) return; WM={v:a.v,j:a.j,s:T.s,e:T.e,w:T.w}; closeWc(); TAPW={v:a.v,s:T.s,e:T.e,w:T.w};
+    if(!WMEL){ WMEL=document.createElement('div'); WMEL.className='wm'; WMEL.setAttribute('role','menu'); document.body.appendChild(WMEL);
+      WMEL.addEventListener('click',wmClick); document.addEventListener('pointerdown',function(e){ if(WM&&WMEL&&!WMEL.contains(e.target)) wmClose(); },true);
+      document.addEventListener('keydown',function(e){ if(e.key==='Escape') wmClose(); }); }
+    var L=ogLang(), fish=!!(window.MFmake&&MFmake.latin&&MFmake.latin(VT[a.v]||''));
+    WMEL.innerHTML='<button type="button" data-wm="copy">&#128203;&#xFE0E; Copy</button><button type="button" data-wm="hl">&#128397;&#xFE0E; Highlight</button>'
+      +'<button type="button" data-wm="orig">&#128266;&#xFE0E; In '+L.n+': hear it, what it means</button><div class="wmo" id="wmOut" hidden></div>'
+      +'<button type="button" data-wm="study">&#128214;&#xFE0E; Word study · every verse</button><button type="button" data-wm="more">&#127760;&#xFE0E; Translate and more…</button>'
+      +(fish?'<button type="button" data-wm="fish">&#127903;&#xFE0E; Make it a MannaFish</button>':'');
+    fdShow([{v:a.v,s:T.s,e:T.e}],'sel');
+    var el=$('txt').querySelector('.v[data-v="'+a.v+'"] .w[data-j="'+a.j+'"]'), r=el?el.getBoundingClientRect():{left:innerWidth/2-100,bottom:innerHeight/2,top:innerHeight/2-20};
+    WMEL.hidden=false; var w=WMEL.offsetWidth, h=WMEL.offsetHeight, x=Math.max(12,Math.min(innerWidth-w-12,r.left-20)), y=r.bottom+8;
+    if(y+h>innerHeight-12) y=Math.max(12,r.top-h-8); WMEL.style.left=x+'px'; WMEL.style.top=y+'px'; }
+  function wmClick(e){ var b=e.target.closest('[data-wm]'); if(!b||!WM) return; var a=b.dataset.wm, W=WM;
+    if(a==='copy'){ try{ navigator.clipboard.writeText(W.w).then(function(){ toast('Copied'); },function(){ toast('Could not copy'); }); }catch(er){ window.prompt('',W.w); } wmClose(); return; }
+    if(a==='hl'){ wmClose(); closeWc(); PHS=[{v:W.v,s:W.s,e:W.e}]; SEL=[W.v]; applyHl(colour(),true); return; }
+    if(a==='study'){ wmClose(); wordCard(W.v,W.j); return; }
+    if(a==='more'){ wmClose(); TAPW={v:W.v,s:W.s,e:W.e,w:W.w}; PHS=null; SEL=[W.v]; selUI(); return; }
+    if(a==='fish'){ wmClose(); if(!window.MFmake) return; var n=B[AT.b][0], ref=n+' '+AT.c+':'+W.v; MFmake.open({word:W.w,verse:VT[W.v]||'',ref:ref,refShort:SHORT[n]?SHORT[n]+' '+AT.c+':'+W.v:'',tag:' ('+ver().s+')',href:'/bible/?r='+encodeURIComponent(ref)}); return; }
+    if(a==='say'){ if(WM&&WM.o) say(WM.o,WM.ol); return; }
+    if(a==='orig'){ var out=$('wmOut'), L=ogLang(); if(ver().k!=='kjv'){ wmClose(); wordCard(W.v,W.j); return; }
+      out.hidden=false; out.innerHTML='…';
+      ogCh(AT.b,AT.c).then(function(J){ if(WM!==W) return; var o=J.v[String(W.v)], i=o&&o.a?o.a[W.j]:-1, w=o&&i!=null&&i>=0?o.w[i]:null;
+        if(!w){ out.innerHTML='“'+esc(W.w)+'” has no '+L.n+' word of its own here: the translators added it so the sentence reads well.'; return; }
+        var sn=strongN(w[3]), org=String(w[0]).replace(/[¶,.;:·]+$/,''); W.o=org; W.ol=L.l;
+        Promise.all([lexOf(w[3]).catch(function(){ return null; }),concOf(sn).catch(function(){ return []; })]).then(function(y){ if(WM!==W) return; var x=y[0], nv=(y[1]||[]).length;
+          out.innerHTML='<b lang="'+L.l+'" dir="'+L.d+'">'+esc(org)+'</b><i>'+esc(w[1]||'')+'</i> · Strong’s '+esc(sn)+'<br>'+esc(x&&x.g?x.g:String(w[2]).replace(/[<>]/g,''))+(x&&x.d?'<br><span style="opacity:.75">'+esc(String(x.d).slice(0,200))+'</span>':'')
+            +(nv?'<br>Used in '+nv.toLocaleString()+' verse'+(nv===1?'':'s')+' of the Bible':'')
+            +'<div class="wmb"><button type="button" data-wm="say">&#128266;&#xFE0E; Hear it</button><button type="button" data-wm="study">See every verse</button></div>'; say(org,L.l); }); }).catch(function(){ out.innerHTML='Could not open the '+L.n+' just now.'; }); return; } }
   // save: a bookmark, kept on this device (Saved, in the book list and under You)
   function saved(){ try{ return JSON.parse(ls('mf-bible-saved')||'[]')||[]; }catch(e){ return []; } }
   function savedAt(){ var r=selLabel(); return saved().filter(function(x){ return x.ref===r; })[0]; }
@@ -1129,13 +1168,14 @@ body.par .bar #where,body.par .bar #ver,body.par .bar #say{display:none}body.par
     var bh=(parseFloat(getComputedStyle(root).getPropertyValue('--barh'))||100)+($('selbar').classList.contains('on')?34:0);
     if(t.clientY>innerHeight-70) window.scrollBy(0,12); else if(t.clientY<bh+30) window.scrollBy(0,-12); },{passive:false});
   $('txt').addEventListener('touchend',function(e){ if(!FD) return; clearTimeout(FD.tm); var f=FD; FD=null; if(!f.on) return; if(e.cancelable) e.preventDefault(); TDRAG=Date.now();
+    if(!PEN&&f.a&&f.z&&f.a.v===f.z.v&&f.a.j===f.z.j){ fdShow(null); wmOpen(f.a); return; }   /* Ken, 26 Nov: a hold on one word opens its menu; a slide across words still highlights them */
     var L=fdRange(f.a,f.z); if(!L.length){ fdShow(null); return; } closeWc(); PHS=L; SEL=L.map(function(x){ return x.v; });
     // Ken, 1 Nov ("still can't tap and drag to highlight"): a slide highlights at once, in your colour; the colours stay open to change
     // it (or ✕ to take it off), with Save, Note, Copy and the rest for the same words
     /* Ken, 10 Nov: the sheet no longer opens over the words just highlighted; tap the highlighted words to change the colour or see the tools */
     if(PEN){ fdShow(null); penApply(); } else { fdShow(null); applyHl(colour(),true); } },{passive:false});
   $('txt').addEventListener('touchcancel',function(){ if(FD){ clearTimeout(FD.tm); FD=null; fdShow(null); } });
-  $('txt').addEventListener('contextmenu',function(e){ if(TOUCH&&(FD||Date.now()-TDRAG<1500)) e.preventDefault(); });
+  $('txt').addEventListener('contextmenu',function(e){ if(TOUCH&&(FD||Date.now()-TDRAG<1500)){ e.preventDefault(); return; } if(!TOUCH){ var w0=wordAt(e.clientX,e.clientY); if(w0){ e.preventDefault(); wmOpen(w0); } } });
   // the pen: highlight the words slid across; slide across ones already highlighted in the pen's colour to take it off them (only
   // those words). Ken, 1 Nov ("I chose red but it's still yellow"): words in another colour are changed to the pen's colour instead
   function covered(h,p){ var pc=colour(), vx=h[hkey(AT.b,AT.c,p.v)]; if(vx) return (HLC[vx.c]?vx.c:'gold')===pc; var ph=phrases(p.v,h);

@@ -153,3 +153,4 @@ Nominations that get no answer: reminder email at 2 days, then a daily 'call / m
 
 **19 Nov (end of day): pushed live (main 36046ed0):** the builder can download the print files for a sponsorship (admin).
 - 20 Nov: Share box now takes a chosen or newly made fish; middle-word rule loosened (any form of a verse word). On test-site, not yet live.
+- 26 Nov: Bible word hold-menu and Psalm 119 letter headings added on test-site; not live yet.
